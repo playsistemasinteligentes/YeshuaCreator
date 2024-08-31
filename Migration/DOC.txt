@@ -1,0 +1,11 @@
+﻿Problemas resolvidos pela arquitetura 
+auta performance	
+- fragmentação de tabelas 
+- base historica 
+
+- escalabilidade  elasticidade 
+- abstração de datacenter não dependencia de servidor 
+- dominio não dependente de linguagem 
+- contingencia entre diferentes datacenters
+- auta disponibilidade 
+- custo deduzido 
