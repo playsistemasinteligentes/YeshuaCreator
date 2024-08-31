@@ -6,10 +6,12 @@ using Shered.DB.Connection;
 using System.Data;
 using System.IO;
 
+string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=YESHUA;User ID=sa;Password=sa;TrustServerCertificate=True;";
+
 
 var gbs = GlobalSettingsSingleton.Instance
-    .SetStringConetionWrite(File.ReadAllText("cnx.txt").Trim())
-    .SetStringConetionRead(File.ReadAllText("cnx.txt").Trim());
+    .SetStringConetionWrite(conectionString)
+    .SetStringConetionRead(conectionString);
 
 using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gbs.GetConnectionStringWrite()).SqlConnection())
 {

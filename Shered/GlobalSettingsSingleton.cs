@@ -20,9 +20,6 @@ namespace DominioDeTestes.config
 
         private GlobalSettingsSingleton()
         {
-            string filePath = Path.Combine(AppContext.BaseDirectory, "cnx.txt");
-            Client = new HttpClient();
-            ConnectionString = GetConnectionString(filePath);
         }
 
         public string GetConnectionStringWrite()
