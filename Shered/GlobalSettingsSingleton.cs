@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,9 @@ namespace DominioDeTestes.config
         private static readonly Lazy<GlobalSettingsSingleton> _instance =
             new Lazy<GlobalSettingsSingleton>(() => new GlobalSettingsSingleton());
         public object _instanceLock = new object();
-        
-        public string ConnectionString { get; private set; }
+
+        private string _connectionStringWrite { get; set;}
+        private string _connectionStringRead { get; set;}
         public HttpClient Client = new HttpClient();
         public int Contador { get; private set; }
 
@@ -23,30 +25,29 @@ namespace DominioDeTestes.config
             ConnectionString = GetConnectionString(filePath);
         }
 
-        public void contar()
+        public string GetConnectionStringWrite()
         {
-            lock (_instance.Value._instanceLock)
-            {
-                _instance.Value.Contador++;
-            }
-        }
-        private string GetConnectionString(string path)
-        {
-            // Verifica se o arquivo existe
-            if (File.Exists(path))
-            {
-                // Lê o conteúdo do arquivo e retorna
-                return File.ReadAllText(path).Trim();
-            }
+            if (!_connectionStringWrite.IsNullOrEmpty())
+                return _connectionStringWrite;
             else
-            {
-                throw new FileNotFoundException("O arquivo de configuração não foi encontrado.", path);
-            }
+                throw new FileNotFoundException("String de conexão write não informado");
         }
-
-        public int GetQTD()
+        public string GetConnectionStringRead()
         {
-            return _instance.Value.Contador;
+            if (!_connectionStringRead.IsNullOrEmpty())
+                return _connectionStringRead;
+            else
+                throw new FileNotFoundException("String de conexão read não informado");
+        }
+        public GlobalSettingsSingleton SetStringConetionWrite(string stringConetionWrite)
+        {
+            _connectionStringWrite = stringConetionWrite;
+            return this;
+        }
+        public GlobalSettingsSingleton SetStringConetionRead(string stringConetionRead)
+        {
+            _connectionStringRead = stringConetionRead;
+            return this;
         }
 
         public static GlobalSettingsSingleton Instance {get {return _instance.Value;} }

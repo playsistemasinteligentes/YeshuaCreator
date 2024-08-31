@@ -1,12 +1,17 @@
 ﻿using Dominio.Migration;
 using Dominio.Schemas;
 using Dominio.Schemas.CQRS;
+using DominioDeTestes.config;
 using Shered.DB.Connection;
 using System.Data;
+using System.IO;
 
 
+var gbs = GlobalSettingsSingleton.Instance
+    .SetStringConetionWrite(File.ReadAllText("cnx.txt").Trim())
+    .SetStringConetionRead(File.ReadAllText("cnx.txt").Trim());
 
-using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer).SqlConnection())
+using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gbs.GetConnectionStringWrite()).SqlConnection())
 {
     using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
     {
