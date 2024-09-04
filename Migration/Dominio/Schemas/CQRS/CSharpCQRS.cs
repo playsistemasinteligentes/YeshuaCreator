@@ -17,8 +17,8 @@ namespace Dominio.Schemas.CQRS
             _solutionDirectory = solutionDirectory;
         }
 
-        public string _name { get ; set ; }
-        public string _solutionDirectory { get ; set ; }
+        public string _name { get; set; }
+        public string _solutionDirectory { get; set; }
 
         public void AppAplicationGenerateCommand(Migration.MigrationBase migration)
         {
@@ -33,9 +33,9 @@ namespace Dominio.Schemas.CQRS
                 var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(filePath, entity);
                 sourceCodeMigration.WriteCode();
 
-                filePath = Path.Combine(GetPathAppAplicationCommandCommands(), $"{entity.EntityName}\\{entity.EntityName}CommandsCuston.cs");
-                var sourceCodeCuston = new SourceCodeAplicationCommandCommandsCuston(filePath, entity, true);
-                sourceCodeCuston.WriteCode();
+                //filePath = Path.Combine(GetPathAppAplicationCommandCommands(), $"{entity.EntityName}\\{entity.EntityName}CommandsCuston.cs");
+                //var sourceCodeCuston = new SourceCodeAplicationCommandCommandsCuston(filePath, entity, true);
+                //sourceCodeCuston.WriteCode();
             }
         }
 
@@ -67,9 +67,9 @@ namespace Dominio.Schemas.CQRS
                 var sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(filePath, entity);
                 sourceCodeMigration.WriteCode();
 
-                filePath = Path.Combine(GetPathAppAplicationCommandReceivers(), $"{entity.EntityName}\\{entity.EntityName}ReceiversCuston.cs");
-                var sourceCodeCuston = new SourceCodeAplicationCommandReceiversCuston(filePath, entity, true);
-                sourceCodeCuston.WriteCode();
+                //filePath = Path.Combine(GetPathAppAplicationCommandReceivers(), $"{entity.EntityName}\\{entity.EntityName}ReceiversCuston.cs");
+                //var sourceCodeCuston = new SourceCodeAplicationCommandReceiversCuston(filePath, entity, true);
+                //sourceCodeCuston.WriteCode();
             }
         }
 
@@ -91,9 +91,15 @@ namespace Dominio.Schemas.CQRS
                 var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesReadMigration(filePath, entity);
                 sourceCodeMigration.WriteCode();
 
-                filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadCuston.cs");
-                var sourceCodeCuston = new SourceCodeAplicationRepositoryInterfacesReadCuston(filePath, entity, true);
-                sourceCodeCuston.WriteCode();
+                //filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadCuston.cs");
+                //var sourceCodeCuston = new SourceCodeAplicationRepositoryInterfacesReadCuston(filePath, entity, true);
+                //sourceCodeCuston.WriteCode();
+
+                filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadMigration.cs");
+                var sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(filePath, entity);
+                sourceCodeMigration.WriteCode();
+
+
             }
         }
 
@@ -128,12 +134,12 @@ namespace Dominio.Schemas.CQRS
 
         public void AppDominioGenerateDominio(Migration.MigrationBase migration)
         {
-            
+
         }
 
         private string GetPathAppDominioDominio()
         {
-            return Path.Combine(GetPathAppDominio(), "Dominio"); 
+            return Path.Combine(GetPathAppDominio(), "Dominio");
         }
 
         private string GetPathAppDominio()
@@ -143,7 +149,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppSolution()
         {
-            return Path.Combine(_solutionDirectory,_name);
+            return Path.Combine(_solutionDirectory, _name);
         }
 
         public void AppDominioGenerateDominioEntitys(Migration.MigrationBase migration)
@@ -152,8 +158,8 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(GetPathAppDominioDominio(), $"{entity.EntityName}\\{entity.EntityName}Migration.cs");
                 var sourceCodeMigration = new SourceCodeClassMigration(filePath, entity);
-                    sourceCodeMigration.WriteCode();
-                
+                sourceCodeMigration.WriteCode();
+
                 filePath = Path.Combine(GetPathAppDominioDominio(), $"{entity.EntityName}\\{entity.EntityName}Custon.cs");
                 var sourceCodeCuston = new SourceCodeClassCuston(filePath, entity, true);
                 sourceCodeCuston.WriteCode();
@@ -266,9 +272,9 @@ namespace Dominio.Schemas.CQRS
                 var sourceCodeMigration = new SourceCodeInfraestructureWriteConcreteRepositoryMigration(filePath, entity);
                 sourceCodeMigration.WriteCode();
 
-//                filePath = Path.Combine(AppInfraestructureWriteConcreteRepository(), $"{entity.EntityName}\\{entity.EntityName}WriteRepositoryCuston.cs");
-//                var sourceCodeCuston = new SourceCodeInfraestructureWriteConcreteRepositoryCuston(filePath, entity, true);
-//                sourceCodeCuston.WriteCode();
+                //                filePath = Path.Combine(AppInfraestructureWriteConcreteRepository(), $"{entity.EntityName}\\{entity.EntityName}WriteRepositoryCuston.cs");
+                //                var sourceCodeCuston = new SourceCodeInfraestructureWriteConcreteRepositoryCuston(filePath, entity, true);
+                //                sourceCodeCuston.WriteCode();
             }
         }
 
@@ -279,7 +285,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureWrite()
         {
-            return Path.Combine(GetPathAppInfraestructure(),"Write");
+            return Path.Combine(GetPathAppInfraestructure(), "Write");
         }
 
         public void AppInfraestructureGenerateWriteConcreteQuerys(Migration.MigrationBase migration)
@@ -309,32 +315,32 @@ namespace Dominio.Schemas.CQRS
         public void CodeGenaration(Migration.MigrationBase migration)
         {
             /////////AppSolutionGenerate(migration);
-         
+
             /////////AppInfraestructureGenerateAPI(migration);
-            
+
             /////////AppInfraestructureGenerateMigration(migration);
-            
+
             /////////AppInfraestructureGenerateRead(migration);
             AppInfraestructureGenerateReadConcreteRepository(migration);
             AppInfraestructureGenerateReadConcreteQuerys(migration);
-            
+
             /////////AppInfraestructureGenerateShered(migration);
-            
+
             /////////AppInfraestructureGenerateWrite(migration);
             AppInfraestructureGenerateWriteConcreteRepository(migration);
             AppInfraestructureGenerateWriteConcreteQuerys(migration);
-            
+
             /////////AppInfraestructureGenerateAutomacaoTest(migration);
-            
+
             /////////AppAplicationGenerateCommand(migration);
-            ///////AppAplicationGenerateCommandCommands(migration);
+            AppAplicationGenerateCommandCommands(migration);
             /////////AppAplicationGenerateCommandPartterns(migration);
-            ///////AppAplicationGenerateCommandReceivers(migration);
-            
+            AppAplicationGenerateCommandReceivers(migration);
+
             /////////AppAplicationGenerateRepositoryInterfaces(migration);
-            ///////AppAplicationGenerateRepositoryInterfacesRead(migration);
-            ///////AppAplicationGenerateRepositoryInterfacesWrite(migration);
-            
+            AppAplicationGenerateRepositoryInterfacesRead(migration);
+            AppAplicationGenerateRepositoryInterfacesWrite(migration);
+
             //AppDominioGenerateDominio(migration);
             AppDominioGenerateDominioEntitys(migration);
             //AppDominioGenerateDominioEnum(migration);

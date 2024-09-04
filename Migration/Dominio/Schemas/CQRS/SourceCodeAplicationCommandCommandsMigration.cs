@@ -17,17 +17,12 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-            // Adiciona as diretivas using
-            sb.AppendLine("using Comandos.Pateners.Command;");
-            sb.AppendLine("using Dominio.TiposPrimitivos;");
-            sb.AppendLine();
-
             // Adiciona a declaração do namespace
-            sb.AppendLine("namespace Comandos.Commands.Clinica");
+            sb.AppendLine("namespace Comandos.Commands");
             sb.AppendLine("{");
 
             // Define a classe
-            sb.AppendLine("    public class ClinicaCommand : ICommand");
+            sb.AppendLine($"    public class {_entity.EntityName}Command : ICommand");
             sb.AppendLine("    {");
 
             // Adiciona as propriedades
@@ -39,11 +34,6 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"        public {column.Type} {column.Name} {{ get; set; }}");
             }
-
-            // Adiciona o evento
-            sb.AppendLine();
-            sb.AppendLine("        public event EventHandler? CanExecuteChanged;");
-            sb.AppendLine();
 
             // Fecha a classe
             sb.AppendLine("    }");

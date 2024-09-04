@@ -67,7 +67,7 @@ namespace Dominio.Migration
         {
             // Cria um dicionário para acesso rápido às entidades já sanitizadas
             var entityDictionary = sanitizedEntities.ToDictionary(e => e.EntityName, e => e);
-            
+
             foreach (var entity in migration.Entitys)
             {
                 // Verifica se a entidade já existe na lista de sanitizadas
@@ -121,7 +121,7 @@ namespace Dominio.Migration
                 unitOfWork.Commit();
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 unitOfWork.Rollback();
             }

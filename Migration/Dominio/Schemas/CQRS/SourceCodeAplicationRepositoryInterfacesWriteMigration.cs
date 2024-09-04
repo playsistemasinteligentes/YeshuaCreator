@@ -15,22 +15,25 @@ namespace Dominio.Schemas.CQRS
 
         protected override string GenerateCode()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
-            // Adiciona o comentário de descrição da entidade
-            sb.AppendLine("// " + _entity.EntityDescription);
+            // Adiciona os usings
+            sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+            sb.AppendLine($"using System;");
+            sb.AppendLine($"using System.Collections.Generic;");
+            sb.AppendLine($"using System.Linq;");
+            sb.AppendLine($"using System.Text;");
+            sb.AppendLine($"using System.Threading.Tasks;");
+            sb.AppendLine();
 
-            // Define a classe
-            sb.AppendLine($"public partial class {_entity.EntityName}");
+            // Adiciona o namespace e a interface
+            sb.AppendLine($"namespace Repositorio.Inputs.Repositorio.{_entity.EntityName}");
             sb.AppendLine("{");
-
-            // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns)
-            {
-                sb.AppendLine($"    public {column.Type} {column.Name} {{ get; set; }}");
-            }
-
-            // Fecha a classe
+            sb.AppendLine($"    public interface I{_entity.EntityName}WriteRepository");
+            sb.AppendLine("    {");
+            sb.AppendLine($"        void Insert({_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
+            sb.AppendLine($"        void InsertSmall({_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
+            sb.AppendLine("    }");
             sb.AppendLine("}");
 
             return sb.ToString();

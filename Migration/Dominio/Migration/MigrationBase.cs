@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio.TiposPrimitivos;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Dominio.Migration
             {
                 _entity = new Entity(EntityName);
                 Entitys.Add(_entity);
-            _entity.create = create;
+                _entity.create = create;
             }
             return _entity;
         }
@@ -42,10 +43,23 @@ namespace Dominio.Migration
             AddToListEntity(EntityName, true);
             return this;
         }
+        public MigrationBase AddEntity(string EntityName)
+        {
+            Descricao descricao = new Descricao().Normalize(EntityName);
+            AddToListEntity(EntityName, true);
+            return this;
+        }
         public Entity AddColumn(string columnName, string descrition)
         {
-            _entity.StatusColuns = 1; 
+            _entity.StatusColuns = 1;
             return _entity.AddColumn(columnName, descrition);
+        }
+
+        public Entity AddColumn(string columnName)
+        {
+            _entity.StatusColuns = 1;
+            Descricao descricao = columnName;
+            return _entity.AddColumn(columnName, descricao.Normalize(columnName));
         }
         public Entity AlterColumn(string columnName, string descrition)
         {

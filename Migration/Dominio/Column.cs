@@ -10,11 +10,11 @@ namespace Dominio
             this.Description = description;
             this.Entity = entity;
 
-    }
+        }
 
-    public Entity Entity { get; set; }
+        public Entity Entity { get; set; }
         public bool AutoIncremento { get; set; }
-        public string Name {  get; private set; }
+        public string Name { get; private set; }
         private string Description { get; set; }
         public string Type { get; set; }
         public float Length { get; set; }

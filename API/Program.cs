@@ -34,10 +34,11 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=YESHUA;User ID=sa;Password=sa;TrustServerCertificate=True;";
 
 
 builder.Services.AddScoped<SqlFactory>(provader => { 
-    return new SqlFactory(EnumSqlConections.SqlServer);
+    return new SqlFactory(EnumSqlConections.SqlServer,conectionString);
 });
 builder.Services.AddTransient<IClinicaWriteRepository, ClinicaWriteRepository>();
 builder.Services.AddTransient<IClinicaReadRepositorys, ClinicaReadRepository>();

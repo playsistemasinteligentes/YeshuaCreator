@@ -1,12 +1,14 @@
 ﻿
 
 
+using Dominio.TiposPrimitivos;
+
 namespace Dominio
 {
     public class Entity
     {
         public string EntityName { get; private set; }
-        public string EntityDescription { get; private set;}
+        public string EntityDescription { get; private set; }
         public List<Column> AddColumns = new List<Column>();
         public List<Column> DropColumns = new List<Column>();
         public List<Column> AlterColumns = new List<Column>();
@@ -25,12 +27,20 @@ namespace Dominio
             this.EntityDescription = entityDescription;
         }
 
-        private string Name {  get; set; }
+        private string Name { get; set; }
         private string Description { get; set; }
+
+        internal Entity AddColumn(string columnName)
+        {
+            Descricao description = new Descricao();
+            var col = new Column(columnName, Descricao.normalise(columnName), this);
+            AddColumns.Add(col);
+            return this;
+        }
 
         internal Entity AddColumn(string columnName, string description)
         {
-            var col = new Column(columnName, description,this);
+            var col = new Column(columnName, description, this);
             AddColumns.Add(col);
             return this;
         }
@@ -76,7 +86,7 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Key();
         }
-        internal Entity Incremento() 
+        internal Entity Incremento()
         {
             if (this.StatusColuns == 1)
                 return this.AddColumns.Last().Incremento();
