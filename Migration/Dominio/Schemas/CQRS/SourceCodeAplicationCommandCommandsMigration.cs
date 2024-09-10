@@ -17,6 +17,9 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
+            sb.AppendLine("using Comandos.Pateners.Command;");
+            sb.AppendLine("using Dominio.TiposPrimitivos;");
+
             // Adiciona a declaração do namespace
             sb.AppendLine("namespace Comandos.Commands");
             sb.AppendLine("{");

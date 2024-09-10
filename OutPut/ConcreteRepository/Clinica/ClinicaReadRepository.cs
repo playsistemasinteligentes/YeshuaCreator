@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Output.Querys.Clinica;
 using Repositorio.Outputs.DTOs.Clinica;
+using RepositoryInterfaces.Read.Repository;
 using RepositoryInterfaces.Read.Repository.Clinica;
 using Shered.DB.Connection;
 using System;
@@ -45,6 +46,11 @@ namespace Read.ConcreteRepository.Clinica
         }
 
         public ClincaDTO getByIds()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<object> IReadRepositoryBase.getAll()
         {
             throw new NotImplementedException();
         }

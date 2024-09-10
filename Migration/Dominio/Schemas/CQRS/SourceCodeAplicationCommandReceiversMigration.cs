@@ -18,7 +18,8 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
 
             // Adiciona os usings
-            sb.AppendLine($"using Comandos.Commands.{_entity.EntityName};");
+
+
             sb.AppendLine($"using Comandos.Pateners.Command;");
             sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
             sb.AppendLine($"using Dominio.TiposPrimitivos;");
@@ -44,9 +45,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine($"        protected override State Action(ICommand comand)");
             sb.AppendLine("        {");
-            sb.AppendLine($"            var c = (Comandos.Commands.{_entity.EntityName}.{_entity.EntityName}Command)comand;");
+            sb.AppendLine($"            var c = (Comandos.Commands.{_entity.EntityName}Command)comand;");
             sb.AppendLine();
-            sb.AppendLine($"            var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Entity(c.NomeFantasia, c.RazaoSocial);");
+            sb.AppendLine($"            var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
             sb.AppendLine($"            if (!{_entity.EntityName.ToLower()}.isValid())");
             sb.AppendLine("                return new State(300, \"Erro \", comand);");
             sb.AppendLine();

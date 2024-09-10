@@ -330,10 +330,10 @@ namespace Dominio.Schemas.CQRS
 
             ///////////AppInfraestructureGenerateAutomacaoTest(migration);
 
-            ///////////AppAplicationGenerateCommand(migration);
-            //AppAplicationGenerateCommandCommands(migration);
+            AppAplicationGenerateCommandReceivers(migration);
             ///////////AppAplicationGenerateCommandPartterns(migration);
-            //AppAplicationGenerateCommandReceivers(migration);
+            AppAplicationGenerateCommandCommands(migration);
+            ///////////AppAplicationGenerateCommand(migration);
 
             ///////////AppAplicationGenerateRepositoryInterfaces(migration);
             AppAplicationGenerateRepositoryInterfacesRead(migration);
