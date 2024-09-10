@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace RepositoryInterfaces.Read.Repository.Clinica
 {
-    public interface IClinicaReadRepositorys
+    public interface IClinicaReadRepositorys : IReadRepositoryBase
     {
-        public IEnumerable<ClincaDTO> getAllClinicas();
-        public ClincaDTO getById();
 
     }
 }

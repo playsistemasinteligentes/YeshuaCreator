@@ -29,7 +29,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a interface
             sb.AppendLine($"namespace Repositorio.Inputs.Repositorio.{_entity.EntityName}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public interface I{_entity.EntityName}WriteRepository");
+            sb.AppendLine($"    public partial interface I{_entity.EntityName}WriteRepository");
             sb.AppendLine("    {");
             sb.AppendLine($"        void Insert({_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void InsertSmall({_entity.EntityName}Entity {_entity.EntityName.ToLower()});");

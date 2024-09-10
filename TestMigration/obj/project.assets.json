@@ -3124,9 +3124,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\TestMigration\\TestMigration.csproj",
+      "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\TestMigration\\TestMigration.csproj",
       "projectName": "TestMigration",
-      "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\TestMigration\\TestMigration.csproj",
+      "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\TestMigration\\TestMigration.csproj",
       "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\TestMigration\\obj\\",
       "projectStyle": "PackageReference",
@@ -3149,32 +3149,32 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\API\\API.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\API\\API.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\API\\API.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\API\\API.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Comandos\\Command.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Comandos\\Command.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Comandos\\Command.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Comandos\\Command.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Dominio\\Dominio.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Dominio\\Dominio.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Dominio\\Dominio.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Dominio\\Dominio.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Infraestrutura\\RepositoryInterfaces.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Infraestrutura\\RepositoryInterfaces.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Infraestrutura\\RepositoryInterfaces.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Infraestrutura\\RepositoryInterfaces.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Input\\Write.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Input\\Write.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Input\\Write.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Input\\Write.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Migration\\Migration.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Migration\\Migration.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Migration\\Migration.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Migration\\Migration.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\OutPut\\Read.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\OutPut\\Read.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\OutPut\\Read.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\OutPut\\Read.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Shered\\Shered.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Shered\\Shered.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Shered\\Shered.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Shered\\Shered.csproj"
             },
-            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Teste\\Test.csproj": {
-              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Teste\\Test.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Teste\\Test.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Teste\\Test.csproj"
             }
           }
         }

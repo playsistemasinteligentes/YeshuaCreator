@@ -13,4 +13,21 @@ namespace Repositorio.Inputs.Repositorio.Clinica
         void InsertSmall(ClinicaEntity Clinica);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

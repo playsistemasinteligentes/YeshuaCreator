@@ -34,7 +34,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona as propriedades da entidade
             foreach (var column in _entity.AddColumns)
             {
-                sb.AppendLine($"    public {column.Type} {column.Name} {{ get; set; }}");
+                sb.AppendLine($"    public {column.GetCsharpType()} {column.Name} {{ get; set; }}");
             }
             sb.AppendLine("    }");
             sb.AppendLine("}");

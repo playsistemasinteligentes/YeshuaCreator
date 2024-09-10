@@ -21,6 +21,11 @@ namespace Read.ConcreteRepository.Clinica
             _connection = factory.SqlConnection();
         }
 
+        public IEnumerable<ClincaDTO> getAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ClincaDTO> getAllClinicas()
         {
             List<ClincaDTO> lista;
@@ -35,6 +40,11 @@ namespace Read.ConcreteRepository.Clinica
         }
 
         public ClincaDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ClincaDTO getByIds()
         {
             throw new NotImplementedException();
         }

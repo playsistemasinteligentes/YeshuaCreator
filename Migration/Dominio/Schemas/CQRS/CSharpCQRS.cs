@@ -87,7 +87,7 @@ namespace Dominio.Schemas.CQRS
         {
             foreach (var entity in migration.Entitys)
             {
-                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadMigration.cs");
+                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadMigration.cs");
                 var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesReadMigration(filePath, entity);
                 sourceCodeMigration.WriteCode();
 
@@ -95,11 +95,9 @@ namespace Dominio.Schemas.CQRS
                 //var sourceCodeCuston = new SourceCodeAplicationRepositoryInterfacesReadCuston(filePath, entity, true);
                 //sourceCodeCuston.WriteCode();
 
-                filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadMigration.cs");
+                filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\{entity.EntityName}\\{entity.EntityName}RepositoryInterfacesReadDTOMigration.cs");
                 var sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(filePath, entity);
-                sourceCodeMigration.WriteCode();
-
-
+                sourceCodeDTOMigration.WriteCode();
             }
         }
 
@@ -139,7 +137,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppDominioDominio()
         {
-            return Path.Combine(GetPathAppDominio(), "Dominio");
+            return Path.Combine(GetPathAppDominio(), "Entitys");
         }
 
         private string GetPathAppDominio()
@@ -156,12 +154,12 @@ namespace Dominio.Schemas.CQRS
         {
             foreach (var entity in migration.Entitys)
             {
-                var filePath = Path.Combine(GetPathAppDominioDominio(), $"{entity.EntityName}\\{entity.EntityName}Migration.cs");
-                var sourceCodeMigration = new SourceCodeClassMigration(filePath, entity);
+                var filePath = Path.Combine(GetPathAppDominioDominio(), $"{entity.EntityName}\\{entity.EntityName}EntityMigration.cs");
+                var sourceCodeMigration = new SourceCodeEntityMigration(filePath, entity);
                 sourceCodeMigration.WriteCode();
 
-                filePath = Path.Combine(GetPathAppDominioDominio(), $"{entity.EntityName}\\{entity.EntityName}Custon.cs");
-                var sourceCodeCuston = new SourceCodeClassCuston(filePath, entity, true);
+                filePath = Path.Combine(GetPathAppDominioDominio(), $"{entity.EntityName}\\{entity.EntityName}EntityCuston.cs");
+                var sourceCodeCuston = new SourceCodeEntityCuston(filePath, entity, true);
                 sourceCodeCuston.WriteCode();
             }
         }
@@ -314,30 +312,30 @@ namespace Dominio.Schemas.CQRS
 
         public void CodeGenaration(Migration.MigrationBase migration)
         {
-            /////////AppSolutionGenerate(migration);
+            ///////////AppSolutionGenerate(migration);
 
-            /////////AppInfraestructureGenerateAPI(migration);
+            ///////////AppInfraestructureGenerateAPI(migration);
 
-            /////////AppInfraestructureGenerateMigration(migration);
+            ///////////AppInfraestructureGenerateMigration(migration);
 
-            /////////AppInfraestructureGenerateRead(migration);
-            AppInfraestructureGenerateReadConcreteRepository(migration);
-            AppInfraestructureGenerateReadConcreteQuerys(migration);
+            ///////////AppInfraestructureGenerateRead(migration);
+            //AppInfraestructureGenerateReadConcreteRepository(migration);
+            //AppInfraestructureGenerateReadConcreteQuerys(migration);
 
-            /////////AppInfraestructureGenerateShered(migration);
+            ///////////AppInfraestructureGenerateShered(migration);
 
-            /////////AppInfraestructureGenerateWrite(migration);
-            AppInfraestructureGenerateWriteConcreteRepository(migration);
-            AppInfraestructureGenerateWriteConcreteQuerys(migration);
+            ///////////AppInfraestructureGenerateWrite(migration);
+            //AppInfraestructureGenerateWriteConcreteRepository(migration);
+            //AppInfraestructureGenerateWriteConcreteQuerys(migration);
 
-            /////////AppInfraestructureGenerateAutomacaoTest(migration);
+            ///////////AppInfraestructureGenerateAutomacaoTest(migration);
 
-            /////////AppAplicationGenerateCommand(migration);
-            AppAplicationGenerateCommandCommands(migration);
-            /////////AppAplicationGenerateCommandPartterns(migration);
-            AppAplicationGenerateCommandReceivers(migration);
+            ///////////AppAplicationGenerateCommand(migration);
+            //AppAplicationGenerateCommandCommands(migration);
+            ///////////AppAplicationGenerateCommandPartterns(migration);
+            //AppAplicationGenerateCommandReceivers(migration);
 
-            /////////AppAplicationGenerateRepositoryInterfaces(migration);
+            ///////////AppAplicationGenerateRepositoryInterfaces(migration);
             AppAplicationGenerateRepositoryInterfacesRead(migration);
             AppAplicationGenerateRepositoryInterfacesWrite(migration);
 

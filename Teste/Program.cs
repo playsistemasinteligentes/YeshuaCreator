@@ -21,7 +21,7 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gb
             .ADDSchema(new CSharpCQRS("Clinica", "C:\\temp"))
             .ADDSchema(new SqlServerSchema(unitOfWork))
             .Build().Run();
-        
+
         // pendecias 
         // kubernate
         // half checking 

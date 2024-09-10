@@ -21,13 +21,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("// " + _entity.EntityDescription);
 
             // Define a classe
-            sb.AppendLine($"public partial class {_entity.EntityName}");
+            sb.AppendLine($"public partial interface  {_entity.EntityName}");
             sb.AppendLine("{");
 
             // Adiciona as propriedades da entidade
             foreach (var column in _entity.AddColumns)
             {
-                sb.AppendLine($"    public {column.Type} {column.Name} {{ get; set; }}");
+                sb.AppendLine($"    public {column.GetCsharpType()} {column.Name} {{ get; set; }}");
             }
 
             // Fecha a classe

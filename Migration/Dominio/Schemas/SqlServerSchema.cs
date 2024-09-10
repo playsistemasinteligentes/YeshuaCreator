@@ -41,12 +41,12 @@ namespace Dominio.Schemas
             var dropColumnsString = string.Join("; ", dropColumns);
 
             var addColumns = entity.AddColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c.Type, c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c.GetSqlType(), c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
             ).ToArray();
             var addColumnsString = string.Join("; ", addColumns);
 
             var alterColumns = entity.AlterColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c.Type, c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c.GetSqlType(), c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
             ).ToArray();
             var alterColumnsString = string.Join("; ", alterColumns);
 
@@ -61,7 +61,7 @@ namespace Dominio.Schemas
             }
 
             var columnsSql = entity.AddColumns.Select(c =>
-                $"{c.Name} {GetSqlDataType(c.Type, c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"{c.Name} {GetSqlDataType(c.GetSqlType(), c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
             ).ToArray();
 
             var columnsSqlString = string.Join(", ", columnsSql);
