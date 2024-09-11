@@ -6,17 +6,17 @@
                 using System.Text;
                 using System.Threading.Tasks;
 
-                namespace Dominio.Entitys.ExecoesCalendario
+                namespace Dominio.Entitys.Paciente
                 {
-                    public partial class ExecoesCalendarioEntity
+                    public partial class PacienteEntity
                     {
                 public int Id { get; set; }
-    public DateTime De { get; set; }
-    public DateTime Ate { get; set; }
- public ExecoesCalendarioEntity(int Id, DateTime De, DateTime Ate ){
+    public string RazaoSocial { get; set; }
+    public string NomeReduzido { get; set; }
+ public PacienteEntity(int Id, string RazaoSocial, string NomeReduzido ){
  Id = Id; 
- De = De; 
- Ate = Ate; 
+ RazaoSocial = RazaoSocial; 
+ NomeReduzido = NomeReduzido; 
 }
 
                 public bool isValid()
