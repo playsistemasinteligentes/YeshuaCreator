@@ -51,7 +51,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppAplication()
         {
-            return Path.Combine(GetPathAppSolution(), "Aplication");
+            return Path.Combine(GetPathAppSolution(), "AppAplication");
         }
 
         public void AppAplicationGenerateCommandPartterns(Migration.MigrationBase migration)
@@ -142,7 +142,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppDominio()
         {
-            return Path.Combine(GetPathAppSolution(), "Dominio");
+            return Path.Combine(GetPathAppSolution(), Path.Combine("AppDominio", "Dominio"));
         }
 
         private string GetPathAppSolution()
@@ -225,12 +225,12 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureRead()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Read");
+            return Path.Combine(GetPathAppInfraestructure(), "RepositoryRead");
         }
 
         private string GetPathAppInfraestructure()
         {
-            return Path.Combine(GetPathAppSolution(), "InfraEstructure");
+            return Path.Combine(GetPathAppSolution(), "APPInfraEstructure");
         }
 
         public void AppInfraestructureGenerateReadConcreteQuerys(Migration.MigrationBase migration)
@@ -283,7 +283,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureWrite()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Write");
+            return Path.Combine(GetPathAppInfraestructure(), "RepositoryWrite");
         }
 
         public void AppInfraestructureGenerateWriteConcreteQuerys(Migration.MigrationBase migration)
