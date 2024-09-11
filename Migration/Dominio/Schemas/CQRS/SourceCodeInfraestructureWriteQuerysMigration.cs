@@ -16,7 +16,7 @@ namespace Dominio.Schemas.CQRS
         protected override string GenerateCode()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("using Dominio.Entitys.Clinica;");
+            sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
             sb.AppendLine("using Shered.DB;");
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;");
@@ -31,18 +31,16 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        public QueryModel Inserir{_entity.EntityName}Query({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
 
-            var columnsString = string.Join(", ", _entity.AddColumns.Select(x => x.Name));
-            var parametersString = string.Join(", ", _entity.AddColumns.Select(c => $"@{c.Name}"));
+            var columnsString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(x => x.Name));
+            var parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(c => $"@{c.Name}"));
 
             sb.AppendLine($"            this.Query = $@\" INSERT INTO {_entity.EntityName} ({columnsString}) VALUES({parametersString}) \";");
 
             // Adiciona parâmetros
             sb.AppendLine("            this.Parameters = new");
             sb.AppendLine("            {");
-            foreach (var column in _entity.AddColumns)
-            {
-                sb.AppendLine($"                {column.Name} = Clinica.{column.Name}.Value,");
-            }
+            foreach (var column in _entity.AddColumns.Where(x => !x.AutoIncremento))
+                sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
             sb.AppendLine("            };");
             sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
             sb.AppendLine("        }");
