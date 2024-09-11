@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppAplication\Comandos\Command.csproj" />
+    <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
+    <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
+    <ProjectReference Include="..\RepositoryRead\RepositoryRead.csproj" />
+    <ProjectReference Include="..\RepositoryWrite\RepositoryWrite.csproj" />
+  </ItemGroup>
+
+</Project>

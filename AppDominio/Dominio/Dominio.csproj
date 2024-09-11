@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Enum\" />
+    <Folder Include="Especificacoes\Agenda\" />
+    <Folder Include="Especificacoes\Clinica\" />
+    <Folder Include="Especificacoes\Paciente\" />
+    <Folder Include="Especificacoes\Proficional\" />
+    <Folder Include="Validation\Agenda\" />
+    <Folder Include="Validation\Clinica\" />
+    <Folder Include="Validation\Paciente\" />
+    <Folder Include="Validation\Proficional\" />
+  </ItemGroup>
+
+</Project>

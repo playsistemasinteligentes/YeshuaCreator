@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Write\Repository\Agenda\" />
+    <Folder Include="Write\Repository\Paciente\" />
+    <Folder Include="Write\Repository\Proficional\" />
+    <Folder Include="Read\DTOs\Agenda\" />
+    <Folder Include="Read\DTOs\Paciente\" />
+    <Folder Include="Read\DTOs\Proficional\" />
+    <Folder Include="Read\Repository\Agenda\" />
+    <Folder Include="Read\Repository\Paciente\" />
+    <Folder Include="Read\Repository\Proficional\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,25 @@
+﻿Problemas resolvidos pela arquitetura 
+auta performance	
+- fragmentação de tabelas 
+- base historica 
+
+- escalabilidade  elasticidade 
+- abstração de datacenter não dependencia de servidor 
+- dominio não dependente de linguagem 
+- contingencia entre diferentes datacenters
+- auta disponibilidade 
+- custo deduzido 
+
+
+
+--Marketing 
+-- precisamos ter agilidade para não perder oportunidades e parcerias de negocio
+ nossas aplicações estão em um nivel de complexidade que não permite mudanças ageis 
+ a arquitetura bem feita melhora muita e facilita a agilidade e redução de custo na mudança de software 
+ turnover
+ custo de equipe de elite 
+-- quando a taxa de mudança de uma empresa é mais lenta que a taxa de mudança dos clientes  a empresa esta fadada a sumir a questão é quando 
+
+-- desafio de quem trabalha com software e reduzir o custo e o risco da mudança 
+-- mudar software precisa ser mais barate e ou menos ariscado 
+ARQUITETURA ROBUSTA AJUDA

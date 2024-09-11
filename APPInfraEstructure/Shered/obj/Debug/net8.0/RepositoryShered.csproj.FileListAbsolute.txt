@@ -1,0 +1,14 @@
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\bin\Debug\net8.0\RepositoryShered.dll.config
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\bin\Debug\net8.0\RepositoryShered.deps.json
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\bin\Debug\net8.0\RepositoryShered.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\bin\Debug\net8.0\RepositoryShered.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.csproj.AssemblyReference.cache
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.AssemblyInfoInputs.cache
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.AssemblyInfo.cs
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.csproj.CoreCompileInputs.cache
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.sourcelink.json
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\refint\RepositoryShered.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\RepositoryShered.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Shered\obj\Debug\net8.0\ref\RepositoryShered.dll
