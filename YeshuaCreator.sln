@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App.Aplication", "App.Aplic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App.Infraestrutura", "App.Infraestrutura", "{17E882F3-0C8F-4755-99A8-906C6F7EEDDE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Read", "OutPut\Read.csproj", "{541AC047-F38A-4C7D-A6E4-DCC9F8A91609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryRead", "OutPut\RepositoryRead.csproj", "{541AC047-F38A-4C7D-A6E4-DCC9F8A91609}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Write", "Input\Write.csproj", "{2BCFC620-12B7-4718-BBDE-1CF97D5C293C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryWrite", "Input\RepositoryWrite.csproj", "{2BCFC620-12B7-4718-BBDE-1CF97D5C293C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shered", "Shered\Shered.csproj", "{7ED4888C-35F7-4761-A0BC-DF1C0048C558}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migration", "Migration\Migr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App.Test", "App.Test", "{6EBC1011-F282-4EA4-8DBA-85A9C0C62502}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMigration", "TestMigration\TestMigration.csproj", "{F55D9F06-5132-4460-B4A2-8B2D76C8292A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMigration", "TestMigration\TestMigration.csproj", "{F55D9F06-5132-4460-B4A2-8B2D76C8292A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

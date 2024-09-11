@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Comandos\Command.csproj" />
-    <ProjectReference Include="..\Input\Write.csproj" />
+    <ProjectReference Include="..\Input\RepositoryWrite.csproj" />
     <ProjectReference Include="..\Migration\Migration.csproj" />
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>

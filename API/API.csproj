@@ -16,8 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Comandos\Command.csproj" />
     <ProjectReference Include="..\Infraestrutura\RepositoryInterfaces.csproj" />
-    <ProjectReference Include="..\Input\Write.csproj" />
-    <ProjectReference Include="..\OutPut\Read.csproj" />
+    <ProjectReference Include="..\Input\RepositoryWrite.csproj" />
+    <ProjectReference Include="..\OutPut\RepositoryRead.csproj" />
   </ItemGroup>
 
 </Project>
