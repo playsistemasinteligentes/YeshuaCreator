@@ -19,8 +19,8 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
             sb.Append($@"
-                using Dominio.TiposPrimitivos;
                 using System;
+                using Dominio.TiposPrimitivos;
                 using System.Collections.Generic;
                 using System.Linq;
                 using System.Text;

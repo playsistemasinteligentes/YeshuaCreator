@@ -147,7 +147,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppSolution()
         {
-            return Path.Combine(_solutionDirectory, _name);
+            return _solutionDirectory;
         }
 
         public void AppDominioGenerateDominioEntitys(Migration.MigrationBase migration)

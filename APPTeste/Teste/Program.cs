@@ -18,7 +18,7 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gb
     using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
     {
         new MigrationBuilder()
-            .ADDSchema(new CSharpCQRS("Clinica", "C:\\temp"))
+            .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))
             .ADDSchema(new SqlServerSchema(unitOfWork))
             .Build().Run();
 
