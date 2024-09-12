@@ -12,11 +12,12 @@ namespace Input.Querys.Clinica
     {
         public QueryModel InserirClinicaQuery(ClinicaEntity Clinica)
         {
-            this.Query = $@" INSERT INTO Clinica (RazaoSocial, NomeReduzido) VALUES(@RazaoSocial, @NomeReduzido) ";
+            this.Query = $@" INSERT INTO Clinica (RazaoSocial, NomeReduzido, Endereco) VALUES(@RazaoSocial, @NomeReduzido, @Endereco) ";
             this.Parameters = new
             {
                 RazaoSocial = Clinica.RazaoSocial,
                 NomeReduzido = Clinica.NomeReduzido,
+                Endereco = Clinica.Endereco,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

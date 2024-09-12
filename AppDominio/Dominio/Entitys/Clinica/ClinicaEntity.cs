@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Dominio.Entitys.Clinica
 {
-    public struct ClinicaEntity
+    public struct ClinicaEntity_
     {
-        public ClinicaEntity(Nome nomeFantasia, Nome razaoSocial)
+        public ClinicaEntity_(Nome nomeFantasia, Nome razaoSocial)
         {
             //Id = id;
             NomeFantasia = nomeFantasia;

@@ -37,8 +37,9 @@ builder.Services.AddSwaggerGen(c =>
 string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=YESHUA;User ID=sa;Password=sa;TrustServerCertificate=True;";
 
 
-builder.Services.AddScoped<SqlFactory>(provader => { 
-    return new SqlFactory(EnumSqlConections.SqlServer,conectionString);
+builder.Services.AddScoped<SqlFactory>(provader =>
+{
+    return new SqlFactory(EnumSqlConections.SqlServer, conectionString);
 });
 builder.Services.AddTransient<IClinicaWriteRepository, ClinicaWriteRepository>();
 builder.Services.AddTransient<IClinicaReadRepositorys, ClinicaReadRepository>();
@@ -76,11 +77,12 @@ app.Use(async (context, next) =>
     await next();
 });
 
-object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepositorys rep) => {
+object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepositorys rep) =>
+{
 
     try
     {
-        var teste  = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT");
+        var teste = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT");
 
 
         return rep.getAll();
@@ -95,8 +97,11 @@ object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepositorys 
 });
 
 
-object value = app.MapPost("/clinica/PostClinica", ([FromServices] InsertClinicaReceiver receiver, [FromBody] ClinicaCommand comand) => {
+object value = app.MapPost("/clinica/PostClinica", ([FromServices] InsertClinicaReceiver receiver, [FromBody] ClinicaCommand comand) =>
+{
+
     return receiver.Execute(comand);
+
 });
 
 app.Run();

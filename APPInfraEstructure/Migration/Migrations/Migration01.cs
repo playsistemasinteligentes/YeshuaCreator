@@ -56,6 +56,17 @@ namespace Migrations
         }
 
     }
+    [Migration(000004)]
+    public class M000004 : MigrationBase
+    {
+        public override void Up()
+        {
+            AlterEntity("Clinica")
+                .AddColumn("Endereco").Varchar(100);
+            //.GPT("quero metodo que calcula desconto baseado na classe x ")
+        }
+
+    }
 }
 
 
