@@ -2,16 +2,12 @@
 # Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
 ################################################################################
 
-
-
 /AppAplication/Comandos/bin
 /AppAplication/Comandos/obj
 /AppAplication/RepositoryInterfaces/bin
 /AppAplication/RepositoryInterfaces/obj
-
 /AppDominio/Dominio/bin
 /AppDominio/Dominio/obj
-
 /APPInfraEstructure/API/bin
 /APPInfraEstructure/API/obj
 /APPInfraEstructure/Migration/bin
@@ -22,7 +18,6 @@
 /APPInfraEstructure/RepositoryWrite/obj
 /APPInfraEstructure/Shered/bin
 /APPInfraEstructure/Shered/obj
-
 /APPTeste/Teste/bin
 /APPTeste/Teste/obj
 /APPTeste/TestMigration/bin
