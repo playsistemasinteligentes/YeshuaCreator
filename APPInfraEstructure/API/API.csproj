@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AppAplication\Comandos\Command.csproj" />
+    <ProjectReference Include="..\..\AppAplication\Command\Command.csproj" />
     <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
     <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
     <ProjectReference Include="..\RepositoryRead\RepositoryRead.csproj" />

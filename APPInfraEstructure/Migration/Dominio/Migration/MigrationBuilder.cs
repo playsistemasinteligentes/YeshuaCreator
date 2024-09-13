@@ -124,6 +124,7 @@ namespace Dominio.Migration
             catch (Exception e)
             {
                 unitOfWork.Rollback();
+                throw;
             }
         }
         private void setMigrationVersion(int id, string migrationName, IUnitOfWork unitOfWork)

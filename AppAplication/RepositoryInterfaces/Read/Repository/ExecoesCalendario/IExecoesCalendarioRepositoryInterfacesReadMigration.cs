@@ -9,7 +9,7 @@ namespace RepositoryInterfaces.Read.Repository.ExecoesCalendario
 {
     public interface IExecoesCalendarioReadRepository
     {
-        public IEnumerable<ExecoesCalendarioDTO> GetAllExecoesCalendarios();
-        public ExecoesCalendarioDTO GetById();
+        public IEnumerable<ExecoesCalendarioDTO> getAllExecoesCalendario();
+        public ExecoesCalendarioDTO getById();
     }
 }

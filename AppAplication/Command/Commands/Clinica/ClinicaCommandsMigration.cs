@@ -8,5 +8,6 @@ namespace Comandos.Commands
         public string RazaoSocial { get; set; }
         public string NomeReduzido { get; set; }
         public string Endereco { get; set; }
+        public string Fone { get; set; }
     }
 }

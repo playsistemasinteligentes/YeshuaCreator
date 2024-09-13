@@ -1963,8 +1963,8 @@
     },
     "Command/1.0.0": {
       "type": "project",
-      "path": "../../AppAplication/Comandos/Command.csproj",
-      "msbuildProject": "../../AppAplication/Comandos/Command.csproj"
+      "path": "../../AppAplication/Command/Command.csproj",
+      "msbuildProject": "../../AppAplication/Command/Command.csproj"
     },
     "Dominio/1.0.0": {
       "type": "project",
@@ -2036,8 +2036,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Comandos\\Command.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Comandos\\Command.csproj"
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Command\\Command.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Command\\Command.csproj"
             },
             "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
               "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"

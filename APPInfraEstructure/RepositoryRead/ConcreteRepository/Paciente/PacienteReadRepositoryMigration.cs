@@ -33,10 +33,6 @@ namespace Read.ConcreteRepository.Paciente
             return lista;
         }
 
-       public IEnumerable<PacienteDTO> GetAllPacientes()
-        {
-            throw new NotImplementedException();
-         }
         public PacienteDTO getById()
         {
             throw new NotImplementedException();

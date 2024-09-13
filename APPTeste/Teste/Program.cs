@@ -25,23 +25,13 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gb
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // pendecias 
 // kubernate
 // half checking 
-
+//PacienteSpecification
+//PacienteValidation
+// azure infra 
+// amazon infra 
 
 //ClinicaWriteRepository rep = new ClinicaWriteRepository(new SqlFactory());
 //InsertClinicaReceiver receiver = new InsertClinicaReceiver(rep);

@@ -33,10 +33,6 @@ namespace Read.ConcreteRepository.Clinica
             return lista;
         }
 
-       public IEnumerable<ClinicaDTO> GetAllClinicas()
-        {
-            throw new NotImplementedException();
-         }
         public ClinicaDTO getById()
         {
             throw new NotImplementedException();

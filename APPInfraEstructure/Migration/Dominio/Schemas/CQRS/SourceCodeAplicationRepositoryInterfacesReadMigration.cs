@@ -31,8 +31,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public interface I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
-            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> GetAll{_entity.EntityName}s();");
-            sb.AppendLine($"        public {_entity.EntityName}DTO GetById();");
+            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> getAll{_entity.EntityName}();");
+            sb.AppendLine($"        public {_entity.EntityName}DTO getById();");
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Dominio
 {
@@ -13,6 +14,7 @@ namespace Dominio
 
         public Entity Entity { get; set; }
         public bool AutoIncremento { get; set; }
+        public Dictionary<int, string> Enum { get; set; }
         public string Name { get; private set; }
         private string Description { get; set; }
         private string Type { get; set; }
@@ -47,7 +49,16 @@ namespace Dominio
 
         public Entity Incremento()
         {
+            this.Type ??= "int";
             AutoIncremento = true;
+            return this.Entity;
+        }
+        public Entity Enumerable(int codigo, string descricao)
+        {
+            this.Type = "int";
+            this.Enum ??= new Dictionary<int, string>();
+            this.Enum.Add(codigo, descricao);
+
             return this.Entity;
         }
         public Entity Key()
@@ -56,7 +67,7 @@ namespace Dominio
             return this.Entity;
         }
 
-        internal string GetCsharpType()
+        internal string getCsharpType()
         {
             switch (this.Type)
             {
@@ -71,6 +82,10 @@ namespace Dominio
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
+        }
+        internal string getParameterConstructor()
+        {
+            return this.Name.ToLower();
         }
 
         internal string GetSqlType()

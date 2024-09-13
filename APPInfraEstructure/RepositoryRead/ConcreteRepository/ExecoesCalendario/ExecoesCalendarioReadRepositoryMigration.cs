@@ -33,10 +33,6 @@ namespace Read.ConcreteRepository.ExecoesCalendario
             return lista;
         }
 
-       public IEnumerable<ExecoesCalendarioDTO> GetAllExecoesCalendarios()
-        {
-            throw new NotImplementedException();
-         }
         public ExecoesCalendarioDTO getById()
         {
             throw new NotImplementedException();

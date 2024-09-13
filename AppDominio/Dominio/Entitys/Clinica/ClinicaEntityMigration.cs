@@ -14,11 +14,13 @@
     public string RazaoSocial { get; set; }
     public string NomeReduzido { get; set; }
     public string Endereco { get; set; }
- public ClinicaEntity(int Id, string RazaoSocial, string NomeReduzido, string Endereco ){
- Id = Id; 
- RazaoSocial = RazaoSocial; 
- NomeReduzido = NomeReduzido; 
- Endereco = Endereco; 
+    public string Fone { get; set; }
+ public ClinicaEntity(int id, string razaosocial, string nomereduzido, string endereco, string fone ){
+ Id = id; 
+ RazaoSocial = razaosocial; 
+ NomeReduzido = nomereduzido; 
+ Endereco = endereco; 
+ Fone = fone; 
 }
 
                 public bool isValid()

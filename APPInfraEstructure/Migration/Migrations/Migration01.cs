@@ -21,11 +21,18 @@ namespace Migrations
             AddColumn("Id", "ID").Int().Incremento().Key();
             AddColumn("RazaoSocial").Varchar(100);
             AddColumn("NomeReduzido").Varchar(100);
+            AddColumn("Endereco").Varchar(100);
+            AddColumn("Fone").Varchar(100);
+
+
+            //AddColumn função.gpt(agendamento, " precisa validar se tem agenda vaga jkjadfkjgk")
 
             AddEntity("Paciente");
             AddColumn("Id").Int().Incremento();
             AddColumn("RazaoSocial", "Razão Social").Varchar(100);
             AddColumn("NomeReduzido").Varchar(100);
+
+
         }
     }
 
@@ -61,8 +68,12 @@ namespace Migrations
     {
         public override void Up()
         {
-            AlterEntity("Clinica")
-                .AddColumn("Endereco").Varchar(100);
+            AddEntity("Atendimento")
+                .AddColumn("Id").Incremento()
+                .AddColumn("Status")
+                .Enumerable(1, "Inciou contato")
+                .Enumerable(2, "Recebeu Menu")
+                .AddColumn("UltimaInteracao").DateTime();
             //.GPT("quero metodo que calcula desconto baseado na classe x ")
         }
 

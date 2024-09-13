@@ -7,15 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Write\Repository\Agenda\" />
-    <Folder Include="Write\Repository\Paciente\" />
-    <Folder Include="Write\Repository\Proficional\" />
+    <Compile Remove="Read\Repository\Agenda\**" />
+    <Compile Remove="Read\Repository\Proficional\**" />
+    <EmbeddedResource Remove="Read\Repository\Agenda\**" />
+    <EmbeddedResource Remove="Read\Repository\Proficional\**" />
+    <None Remove="Read\Repository\Agenda\**" />
+    <None Remove="Read\Repository\Proficional\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Read\DTOs\Agenda\" />
     <Folder Include="Read\DTOs\Paciente\" />
     <Folder Include="Read\DTOs\Proficional\" />
-    <Folder Include="Read\Repository\Agenda\" />
-    <Folder Include="Read\Repository\Paciente\" />
-    <Folder Include="Read\Repository\Proficional\" />
+    <Folder Include="Write\" />
   </ItemGroup>
 
   <ItemGroup>

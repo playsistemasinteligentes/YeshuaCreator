@@ -34,12 +34,12 @@ namespace Dominio.Schemas.CQRS
 
             // atributos
             foreach (var column in _entity.AddColumns)
-                sb.AppendLine($"    public {column.GetCsharpType()} {column.Name} {{ get; set; }}");
+                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
 
             // construtor 
-            sb.AppendLine(@$" public {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => c.GetCsharpType() + " " + c.Name))} ){{");
+            sb.AppendLine(@$" public {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => c.getCsharpType() + " " + c.getParameterConstructor()))} ){{");
             foreach (var column in _entity.AddColumns)
-                sb.AppendLine($" {column.Name} = {column.Name}; ");
+                sb.AppendLine($" {column.Name} = {column.getParameterConstructor()}; ");
             sb.AppendLine("}");
 
             sb.Append($@"

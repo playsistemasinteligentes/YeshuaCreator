@@ -13,10 +13,10 @@
                 public int Id { get; set; }
     public string RazaoSocial { get; set; }
     public string NomeReduzido { get; set; }
- public PacienteEntity(int Id, string RazaoSocial, string NomeReduzido ){
- Id = Id; 
- RazaoSocial = RazaoSocial; 
- NomeReduzido = NomeReduzido; 
+ public PacienteEntity(int id, string razaosocial, string nomereduzido ){
+ Id = id; 
+ RazaoSocial = razaosocial; 
+ NomeReduzido = nomereduzido; 
 }
 
                 public bool isValid()

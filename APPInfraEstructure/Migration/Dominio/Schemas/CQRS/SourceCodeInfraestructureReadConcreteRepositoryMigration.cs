@@ -51,10 +51,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            return lista;");
             sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"       public IEnumerable<{_entity.EntityName}DTO> GetAll{_entity.EntityName}s()");
-            sb.AppendLine("        {");
-            sb.AppendLine("            throw new NotImplementedException();");
-            sb.AppendLine("         }");
             sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
             sb.AppendLine("        {");
             sb.AppendLine("            throw new NotImplementedException();");

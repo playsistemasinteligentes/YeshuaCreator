@@ -13,10 +13,10 @@
                 public int Id { get; set; }
     public DateTime De { get; set; }
     public DateTime Ate { get; set; }
- public ExecoesCalendarioEntity(int Id, DateTime De, DateTime Ate ){
- Id = Id; 
- De = De; 
- Ate = Ate; 
+ public ExecoesCalendarioEntity(int id, DateTime de, DateTime ate ){
+ Id = id; 
+ De = de; 
+ Ate = ate; 
 }
 
                 public bool isValid()

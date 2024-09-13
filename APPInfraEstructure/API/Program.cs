@@ -1,5 +1,3 @@
-using Comandos.Commands.Clinica;
-using Comandos.Receivers.Clinica;
 using Input.Repository.Clinica;
 using Repositorio.Inputs.Repositorio.Clinica;
 using Shered.DB.Connection;
@@ -7,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Read.ConcreteRepository.Clinica;
 using RepositoryInterfaces.Read.Repository.Clinica;
+using Comandos.Receivers.Clinica;
+using Comandos.Commands;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +42,7 @@ builder.Services.AddScoped<SqlFactory>(provader =>
     return new SqlFactory(EnumSqlConections.SqlServer, conectionString);
 });
 builder.Services.AddTransient<IClinicaWriteRepository, ClinicaWriteRepository>();
-builder.Services.AddTransient<IClinicaReadRepositorys, ClinicaReadRepository>();
+builder.Services.AddTransient<IClinicaReadRepository, ClinicaReadRepository>();
 builder.Services.AddTransient<InsertClinicaReceiver>();
 
 
@@ -77,7 +77,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepositorys rep) =>
+object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepository rep) =>
 {
 
     try
@@ -85,7 +85,7 @@ object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepositorys 
         var teste = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT");
 
 
-        return rep.getAll();
+        return rep.getAllClinica();
 
     }
     catch (Exception E)

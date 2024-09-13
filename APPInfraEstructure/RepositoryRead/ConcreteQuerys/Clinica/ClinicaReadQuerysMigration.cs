@@ -12,7 +12,7 @@ namespace Output.Querys.Clinica
     {
         public QueryModel SelectAllClinicaQuery()
         {
-            this.Query = $@" select Id, RazaoSocial, NomeReduzido, Endereco from Clinica ";
+            this.Query = $@" select Id, RazaoSocial, NomeReduzido, Endereco, Fone from Clinica ";
             return new QueryModel(this.Query, null);
         }
     }

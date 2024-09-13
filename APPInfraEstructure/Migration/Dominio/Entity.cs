@@ -93,6 +93,13 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Incremento();
         }
+        internal Entity Enumerable(int id, string description)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().Enumerable(id, description);
+            else
+                return this.AlterColumns.Last().Enumerable(id, description);
+        }
 
     }
 }
