@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WN0anOjd3YZUeiRy4GKEcy1z/NAJRMkh0Va6xcPyvL/CX8hhPtobxl+DAGc0cm8Q/gIRp3ypcpk8j5BKvEfYVg==",
+  "dgSpecHash": "YbbL3jzQCFdG/zIdnOaYCIfMLcCk688s62Im0uazF2OHHRiCSjUrctNW/08gP2fL+RtGGSDARUP6OVDlYuGzIg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj",
+  "projectFilePath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",

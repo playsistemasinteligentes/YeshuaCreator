@@ -135,7 +135,7 @@ namespace Dominio.Migration
         {
             try
             {
-                string sql = "SELECT MAX(ID) AS ID FROM MigrationVersion";
+                string sql = "SELECT isnull(MAX(ID),0) AS ID FROM MigrationVersion";
                 return unitOfWork.QuerySingle<int>(sql);
             }
             catch (Exception)

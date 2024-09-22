@@ -9,9 +9,8 @@ namespace Repositorio.Outputs.DTOs.Clinica
     public struct ClinicaDTO
     {
     public int Id { get; set; }
-    public string RazaoSocial { get; set; }
-    public string NomeReduzido { get; set; }
+    public string Nome { get; set; }
     public string Endereco { get; set; }
-    public string Fone { get; set; }
+    public string Telefone { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj": {}
+    "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj": {}
   },
   "projects": {
-    "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
+    "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
+        "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
         "projectName": "RepositoryInterfaces",
-        "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
+        "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
         "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\obj\\",
+        "outputPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
-                "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
+              "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
+                "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
               }
             }
           }
@@ -67,14 +67,14 @@
         }
       }
     },
-    "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
+    "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj",
+        "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj",
         "projectName": "Dominio",
-        "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj",
+        "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj",
         "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\obj\\",
+        "outputPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -126,14 +126,14 @@
         }
       }
     },
-    "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj": {
+    "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
+        "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
         "projectName": "RepositoryRead",
-        "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
+        "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
         "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\obj\\",
+        "outputPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -154,11 +154,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
-                "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
+              "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
+                "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
               },
-              "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
-                "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
+              "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
+                "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
               }
             }
           }
@@ -192,14 +192,14 @@
         }
       }
     },
-    "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
+    "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj",
+        "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj",
         "projectName": "Shered",
-        "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj",
+        "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj",
         "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\obj\\",
+        "outputPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

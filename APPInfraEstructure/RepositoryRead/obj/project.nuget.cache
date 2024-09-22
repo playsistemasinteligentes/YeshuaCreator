@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e04LBXObQMtD1rP5b/IiaRevyxyILAwytNnNYqlljXrvw30Hx/5NeGhX1NWG6goBxOoDmlyJF+AS7mIrNa9f5w==",
+  "dgSpecHash": "q3sZxOS+NzpDURnWGBPwl1T2/Q2rwysSPX38KRHQs+V47bQQvyelVMn9NypGxqaQOk3vI/qpwPopHlOcDz8LNw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
+  "projectFilePath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",

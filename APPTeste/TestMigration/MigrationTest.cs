@@ -17,7 +17,8 @@ namespace TestMigration
             string msgError = string.Empty;
             try
             {
-                string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=YESHUA;User ID=sa;Password=sa;TrustServerCertificate=True;";
+
+                string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=TESTE;User ID=sa;Password=sa;TrustServerCertificate=True;";
 
 
                 var gbs = GlobalSettingsSingleton.Instance

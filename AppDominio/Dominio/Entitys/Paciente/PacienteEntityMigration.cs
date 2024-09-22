@@ -11,12 +11,12 @@
                     public partial class PacienteEntity
                     {
                 public int Id { get; set; }
-    public string RazaoSocial { get; set; }
-    public string NomeReduzido { get; set; }
- public PacienteEntity(int id, string razaosocial, string nomereduzido ){
+    public string Nome { get; set; }
+    public string Telefone { get; set; }
+ public PacienteEntity(int id, string nome, string telefone ){
  Id = id; 
- RazaoSocial = razaosocial; 
- NomeReduzido = nomereduzido; 
+ Nome = nome; 
+ Telefone = telefone; 
 }
 
                 public bool isValid()

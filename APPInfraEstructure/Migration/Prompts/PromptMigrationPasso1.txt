@@ -1,0 +1,39 @@
+﻿Siga o modelo a baixo como padrao para definição de um sistema 
+
+            AddEntity("NomeEntidade");
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("Nome Coluna Tipo Varchar").Varchar(100).NotNull()
+            .AddColumn("Nome Coluna Tipo Int").Int(100)
+                .Enumerable(1, "Enumerador da coluna")
+                .Enumerable(2, "Enumerador da coluna")
+            .AddColumn("Nome Coluna Tipo DateTime").DateTime()
+            .AddColumn("Nome Colune Tipo FK").FK("NomeEntidade FK")
+            .AddAgents("Agente que funciona como um orquestrador da entidade").  
+                .AddAgentMetod("Metodo para Consultar Financeiro via WhatsApp")
+                .AddInteractionMenu("Menu Financeiro:")
+                .AddOption("1", "Opção 1")
+                .AddOption("2", "Opção 2 ")
+            .AddEntityMetod("Metodo da entidade ")    
+            
+Crie um sistema de clinica e sugira as entidades, a enfase é o agendamento e a controle financeiro de cobrança de serviços.
+É fuldamental registrar toda a movimentação financeira para controle de saldos.
+
+trabalhe com as seguintes entidades 
+AddEntity("Clinica")
+AddEntity("Proficional")
+AddEntity("Expecialidade")
+AddEntity("DisponibilidadeAgenda")
+AddEntity("GrupoServico")
+AddEntity("Servico")
+AddEntity("Paciente")
+AddEntity("Agendamentos")
+AddEntity("MovimentacaoFinanceira")
+
+
+Considere a criação de agentes autonomos que interajam via whatzapp 
+Crie agente que atenda pacientes para agendamento crie estrutura de menus para Interação 
+Crie agente que atenda pacientes para financeiro crie estrutura de menus para Interação 
+Crie agente que atenda administrador da clinica para agendamento crie estrutura de menus para Interação 
+Crie agente que atenda administrador da clinica para financeiro crie estrutura de menus para Interação 
+
+Considera que uma entidade poderá ter n agentes e adicioneos usando .AddAgents(

@@ -8,5 +8,6 @@ namespace Comandos.Pateners.Command
 {
     public class CommandBase
     {
+
     }
 }

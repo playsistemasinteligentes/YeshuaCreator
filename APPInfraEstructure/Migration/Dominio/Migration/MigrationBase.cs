@@ -71,14 +71,17 @@ namespace Dominio.Migration
             _entity.StatusColuns = 3;
             return _entity.DropColumn(columnName);
         }
-
-
         public abstract void Up();
 
-        internal void SetID(string name)
+        public void SetID(string name)
         {
             ID = int.Parse(name.Replace("M", ""));
             MigrationName = name;
+        }
+
+        public Entity AddAgents(string agente)
+        {
+            return _entity.AddAgent(agente);
         }
     }
 }

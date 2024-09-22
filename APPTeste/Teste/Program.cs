@@ -26,6 +26,16 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gb
 
 
 // pendecias 
+// palestra  codigo longe da margem    e custo de alteração 
+// chaves extrangeiras 
+// front end 
+// whatsApp
+// caching 
+// fluxo de estado para simular fazes de uma carga ou fases de um pedido 
+// autenticação 
+// Reports pdf, excel word , tela 
+// BI 
+
 // kubernate
 // half checking 
 //PacienteSpecification

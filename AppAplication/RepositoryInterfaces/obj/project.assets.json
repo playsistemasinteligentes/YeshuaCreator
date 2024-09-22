@@ -33,9 +33,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
+      "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
       "projectName": "RepositoryInterfaces",
-      "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
+      "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj",
       "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\obj\\",
       "projectStyle": "PackageReference",
@@ -58,8 +58,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
+            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
+              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
             }
           }
         }

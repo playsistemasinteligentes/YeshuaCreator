@@ -1789,9 +1789,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj",
+      "projectUniqueName": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj",
       "projectName": "RepositoryWrite",
-      "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj",
+      "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj",
       "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\obj\\",
       "projectStyle": "PackageReference",
@@ -1814,11 +1814,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
+            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
+              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
+            "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
+              "projectPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
             }
           }
         }

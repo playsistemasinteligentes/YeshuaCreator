@@ -10,6 +10,7 @@ namespace Dominio
             this.Name = columnName;
             this.Description = description;
             this.Entity = entity;
+            this.IsNotNull = false;
         }
 
         public Entity Entity { get; set; }
@@ -23,6 +24,12 @@ namespace Dominio
         public bool IsNullable { get; set; }
         public float Precision { get; set; }
         public bool IsKey { get; set; }
+        public bool IsFK { get; private set; }
+        public bool IsNotNull { get; private set; }
+
+        public string FkEntityName;
+
+        public string ColumnReference { get; private set; }
 
         public Entity Int()
         {
@@ -58,12 +65,20 @@ namespace Dominio
             this.Type = "int";
             this.Enum ??= new Dictionary<int, string>();
             this.Enum.Add(codigo, descricao);
-
             return this.Entity;
         }
         public Entity Key()
         {
             this.IsKey = true;
+            return this.Entity;
+        }
+
+
+        public Entity Decimal(int length, int precision)
+        {
+            Type = "decimal";
+            this.Length = length;
+            this.Precision = precision;
             return this.Entity;
         }
 
@@ -79,6 +94,8 @@ namespace Dominio
                     return "DateTime";
                 case "float":
                     return "Float";
+                case "decimal":
+                    return "Decimal";
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
@@ -101,10 +118,26 @@ namespace Dominio
                     return "DateTime";
                 case "float":
                     return "Float";
+                case "decimal":
+                    return "Decimal";
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
+        }
 
+        public Entity FK(string entityName, string columnReference)
+        {
+            this.IsFK = true;
+            this.FkEntityName = entityName;
+            this.ColumnReference = columnReference;
+            return this.Entity;
+        }
+
+
+        internal Entity NotNull()
+        {
+            this.IsNotNull = true;
+            return this.Entity;
         }
     }
 }

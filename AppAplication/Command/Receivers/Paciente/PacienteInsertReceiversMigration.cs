@@ -23,7 +23,7 @@ namespace Comandos.Receivers.Paciente
         {
             var c = (Comandos.Commands.PacienteCommand)comand;
 
-            var paciente = new PacienteEntity(c.Id, c.RazaoSocial, c.NomeReduzido);
+            var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone);
             if (!paciente.isValid())
                 return new State(300, "Erro ", comand);
 

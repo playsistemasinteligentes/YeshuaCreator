@@ -1,8 +1,11 @@
 ﻿using Dominio.Migration;
+using Dominio.Schemas.CQRS;
 using Interfaces.Schemas;
+using Microsoft.IdentityModel.Tokens;
 using Shered.DB.Connection;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Metrics;
 using static Dapper.SqlMapper;
 
 namespace Dominio.Schemas
@@ -41,16 +44,27 @@ namespace Dominio.Schemas
             var dropColumnsString = string.Join("; ", dropColumns);
 
             var addColumns = entity.AddColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c.GetSqlType(), c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
             ).ToArray();
             var addColumnsString = string.Join("; ", addColumns);
 
             var alterColumns = entity.AlterColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c.GetSqlType(), c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
             ).ToArray();
             var alterColumnsString = string.Join("; ", alterColumns);
 
-            return new MigrationQuery($@" {dropColumnsString} {alterColumnsString} {addColumnsString}", null);
+            var addForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
+                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.Name}); "
+            ).ToArray();
+            var addForingKeyString = string.Join("; ", addForingKey);
+
+            var alterForingKey = entity.AlterColumns.Where(x => x.IsFK).Select(c =>
+            $" IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_{c.FkEntityName}') BEGIN  " +
+            $"ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.Name}); " +
+            $"END ").ToArray();
+            var alterForingKeyString = string.Join("; ", alterForingKey);
+
+            return new MigrationQuery($@" {dropColumnsString} {alterColumnsString} {addColumnsString} {addForingKeyString}", null);
         }
 
         public MigrationQuery CreateTable(Entity entity)
@@ -59,19 +73,23 @@ namespace Dominio.Schemas
             {
                 throw new InvalidOperationException("EntityName cannot be null or empty.");
             }
-
             var columnsSql = entity.AddColumns.Select(c =>
-                $"{c.Name} {GetSqlDataType(c.GetSqlType(), c.Length, c.Precision)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"{c.Name} {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
             ).ToArray();
-
             var columnsSqlString = string.Join(", ", columnsSql);
-            return new MigrationQuery($@" CREATE TABLE {entity.EntityName} ({columnsSqlString});", null);
+
+            var columsForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
+                $"  CONSTRAINT FK_{c.Entity.EntityName}_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
+            ).ToArray();
+            var columsForingKeyString = string.Join(", ", columsForingKey);
+            columsForingKeyString = string.IsNullOrEmpty(columsForingKeyString) ? "" : ($",{columsForingKeyString}");
+            return new MigrationQuery($" CREATE TABLE {entity.EntityName} ({columnsSqlString} {columsForingKeyString});", null);
         }
 
-        private string GetSqlDataType(string dataType, float length, float precision)
+        private string GetSqlDataType(Column column)
         {
             string retorno = string.Empty;
-            switch (dataType.ToUpper())
+            switch (column.GetSqlType().ToUpper())
             {
                 case "INT":
                     return "INT";
@@ -82,7 +100,7 @@ namespace Dominio.Schemas
                 case "BIGINT":
                     return "BIGINT";
                 case "VARCHAR":
-                    return $"VARCHAR({length})"; // Tamanho padrão, ajuste conforme necessário
+                    return $"VARCHAR({column.Length})"; // Tamanho padrão, ajuste conforme necessário
                 case "TEXT":
                     return "TEXT";
                 case "DATE":
@@ -96,11 +114,11 @@ namespace Dominio.Schemas
                 case "REAL":
                     return "REAL";
                 case "DECIMAL":
-                    return $"DECIMAL({length}, {precision})";
+                    return $"DECIMAL({column.Length}, {column.Precision})";
                 case "BOOLEAN":
                     return "BIT"; // Tipo para SQL Server; use "BOOLEAN" para PostgreSQL e MySQL
                 default:
-                    throw new ArgumentException($"Tipo de dado '{dataType}' não suportado.");
+                    throw new ArgumentException($"Tipo de dado '{column.GetSqlType()}' não suportado.");
             }
         }
 

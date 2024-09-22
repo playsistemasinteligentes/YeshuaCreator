@@ -23,7 +23,7 @@ namespace Comandos.Receivers.Clinica
         {
             var c = (Comandos.Commands.ClinicaCommand)comand;
 
-            var clinica = new ClinicaEntity(c.Id, c.RazaoSocial, c.NomeReduzido, c.Endereco, c.Fone);
+            var clinica = new ClinicaEntity(c.Id, c.Nome, c.Endereco, c.Telefone);
             if (!clinica.isValid())
                 return new State(300, "Erro ", comand);
 

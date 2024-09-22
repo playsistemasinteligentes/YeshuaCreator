@@ -9,7 +9,7 @@ namespace Repositorio.Outputs.DTOs.Paciente
     public struct PacienteDTO
     {
     public int Id { get; set; }
-    public string RazaoSocial { get; set; }
-    public string NomeReduzido { get; set; }
+    public string Nome { get; set; }
+    public string Telefone { get; set; }
     }
 }
