@@ -3,14 +3,14 @@ namespace Dominio
 {
     public class InteractionMenu
     {
-        public InteractionMenu(Entity entity, string name)
+        public InteractionMenu(Hub hub, string name)
         {
-            Entity = entity;
+            Hub = hub;
             Name = name;
             Options = new Dictionary<int, string>();
         }
 
-        public Entity Entity { get; set; }
+        public Hub Hub { get; set; }
         public string Name { get; set; }
         public Dictionary<int, string> Options { get; set; }
 

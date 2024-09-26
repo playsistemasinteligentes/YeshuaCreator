@@ -21,7 +21,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("// " + _entity.EntityDescription);
 
             // Define a classe
-            sb.AppendLine($"public partial class {_entity.EntityName}");
+            sb.AppendLine($"public partial class {_entity.EntityName}Entity");
             sb.AppendLine("{");
 
             // Fecha a classe

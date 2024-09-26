@@ -9,14 +9,14 @@ namespace Migration.Dominio.Schemas
 {
     public class Method
     {
-        public Method(Entity entity, string name, string description)
+        public Method(Hub hub, string name, string description)
         {
-            Entity = entity;
+            Hub = hub;
             Name = name;
             Description = description;
         }
 
-        public Entity Entity { get; set; }
+        public Hub Hub { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 

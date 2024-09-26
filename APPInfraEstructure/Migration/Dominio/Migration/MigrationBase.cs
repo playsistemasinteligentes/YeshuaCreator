@@ -1,4 +1,5 @@
 ﻿using Dominio.TiposPrimitivos;
+using Migration.Dominio;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,9 @@ namespace Dominio.Migration
     public abstract class MigrationBase
     {
         public List<Entity> Entitys = new List<Entity>();
+        public List<Hub> Hubs = new List<Hub>();
         private Entity _entity;
+        private Hub _hub;
         public int ID { get; set; }
         public string MigrationName { get; set; }
 
@@ -38,6 +41,16 @@ namespace Dominio.Migration
             }
             return _entity;
         }
+        public Hub AddToListHub(string hubName)
+        {
+            _hub = Hubs.Where(x => x.Name == hubName).FirstOrDefault();
+            if (_hub == null)
+            {
+                _hub = new Hub(hubName);
+                Hubs.Add(_hub);
+            }
+            return _hub;
+        }
         public MigrationBase AddEntity(string EntityName, string EntityDescription)
         {
             AddToListEntity(EntityName, true);
@@ -48,6 +61,12 @@ namespace Dominio.Migration
             Descricao descricao = new Descricao().Normalize(EntityName);
             AddToListEntity(EntityName, true);
             return this;
+        }
+        public Hub AddHub(string hubName)
+        {
+            Descricao descricao = new Descricao().Normalize(hubName);
+            AddToListHub(hubName);
+            return this.Hubs.Last();
         }
         public Entity AddColumn(string columnName, string descrition)
         {
@@ -77,11 +96,6 @@ namespace Dominio.Migration
         {
             ID = int.Parse(name.Replace("M", ""));
             MigrationName = name;
-        }
-
-        public Entity AddAgents(string agente)
-        {
-            return _entity.AddAgent(agente);
         }
     }
 }

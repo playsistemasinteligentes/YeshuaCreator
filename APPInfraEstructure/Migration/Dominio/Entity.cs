@@ -1,7 +1,4 @@
-﻿
-
-
-using Dominio.TiposPrimitivos;
+﻿using Dominio.TiposPrimitivos;
 using Migration.Dominio.Schemas;
 using System.Runtime.CompilerServices;
 
@@ -16,7 +13,6 @@ namespace Dominio
         public List<Column> AlterColumns = new List<Column>();
         public List<string> GPTFunction = new List<string>();
         public List<string> IndexDB = new List<string>();
-        public List<Agent> Agents = new List<Agent>();
         public bool create { get; set; }
         public int StatusColuns { get; set; }
 
@@ -129,35 +125,6 @@ namespace Dominio
                 return this.AddColumns.Last().NotNull();
             else
                 return this.AlterColumns.Last().NotNull();
-        }
-
-        public Entity AddAgent(string columnName, string description)
-        {
-            var col = new Agent(columnName, description, this);
-            Agents.Add(col);
-            return this;
-        }
-
-        public Entity AddAgent(string columnName)
-        {
-            var col = new Agent(columnName, "", this);
-            Agents.Add(col);
-            return this;
-        }
-
-        public Entity AddAgentMetod(string name, string description)
-        {
-            var method = new Method(this, name, description);
-            return this.Agents.Last().AddMethod(method);
-        }
-        public Entity AddInteractionMenu(string name)
-        {
-            var menu = new InteractionMenu(this, name);
-            return this.Agents.Last().AddInteractionMenu(menu);
-        }
-        public Entity AddOption(int id, string name)
-        {
-            return this.Agents.Last().InteractionMenu.Last().AddOption(id, name).Entity;
         }
     }
 }

@@ -34,7 +34,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=YESHUA;User ID=sa;Password=sa;TrustServerCertificate=True;";
+string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=CLINICA;User ID=sa;Password=sa;TrustServerCertificate=True;";
 
 
 builder.Services.AddScoped<SqlFactory>(provader =>
@@ -99,9 +99,7 @@ object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepository r
 
 object value = app.MapPost("/clinica/PostClinica", ([FromServices] InsertClinicaReceiver receiver, [FromBody] ClinicaCommand comand) =>
 {
-
     return receiver.Execute(comand);
-
 });
 
 app.Run();

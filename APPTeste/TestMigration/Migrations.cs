@@ -87,7 +87,7 @@ namespace TestMigration
                 .Enumerable(1, "Inciou contato")
                 .Enumerable(2, "Recebeu Menu")
                 .AddColumn("UltimaInteracao").DateTime()
-                .AddColumn("IDPaciente").FK("Paciente");
+                .AddColumn("IDPaciente").FK("Paciente", "Id");
 
             //.GPT("quero metodo que calcula desconto baseado na classe x ")
         }

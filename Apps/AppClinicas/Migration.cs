@@ -20,12 +20,7 @@ namespace AppClinicas
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
                 .AddColumn("Endereco", "Endereço da Clínica").Varchar(250).NotNull()
-                .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull()
-                .AddAgent("Agente para interação da Clínica", "")
-                    .AddAgentMetod("Interagir com pacientes para informações da clínica", "")
-                    .AddInteractionMenu("Menu da Clínica:")
-                    .AddOption(1, "Informações sobre horários")
-                    .AddOption(2, "Endereço da clínica");
+                .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull();
             }
         }
     }
@@ -87,35 +82,29 @@ namespace AppClinicas
                 .AddColumn("DataMovimentacao", "Data da Movimentação").DateTime().NotNull()
                 .AddColumn("SaldoAtual", "Saldo Atual").Decimal(10, 2).NotNull();
 
+
             // Agente para interação de agendamento de pacientes via WhatsApp
-            AlterEntity("Paciente")
+            AddHub("ClinicaPaciente")
                 .AddAgents("Agente de Agendamento de Paciente")
                     .AddAgentMetod("Interagir com paciente para agendamentos via WhatsApp", "")
                     .AddInteractionMenu("Menu de Agendamento:")
                     .AddOption(1, "Agendar novo atendimento")
                     .AddOption(2, "Consultar agendamentos existentes")
-                    .AddOption(3, "Cancelar agendamento");
+                    .AddOption(3, "Cancelar agendamento")
 
-            // Agente para interação financeira de pacientes via WhatsApp
-            AlterEntity("Paciente")
                 .AddAgents("Agente Financeiro de Paciente")
                     .AddAgentMetod("Interagir com paciente para controle financeiro via WhatsApp", "")
                     .AddInteractionMenu("Menu Financeiro:")
                     .AddOption(1, "Verificar saldo")
                     .AddOption(2, "Histórico de transações")
-                    .AddOption(3, "Realizar pagamento de serviço");
-
-            // Agente para interação de agendamento de administradores via WhatsApp
-            AlterEntity("Clinica")
+                    .AddOption(3, "Realizar pagamento de serviço")
                 .AddAgents("Agente de Agendamento para Administrador")
                     .AddAgentMetod("Interagir com administrador para controle de agendamentos", "")
                     .AddInteractionMenu("Menu Administrativo de Agendamentos:")
                     .AddOption(1, "Verificar agendamentos do dia")
                     .AddOption(2, "Agendar atendimento para paciente")
-                    .AddOption(3, "Cancelar agendamento de paciente");
+                    .AddOption(3, "Cancelar agendamento de paciente")
 
-            // Agente para interação financeira de administradores via WhatsApp
-            AlterEntity("Clinica")
                 .AddAgents("Agente Financeiro para Administrador")
                     .AddAgentMetod("Interagir com administrador para controle financeiro", "")
                     .AddInteractionMenu("Menu Administrativo Financeiro:")
