@@ -1,4 +1,6 @@
 ﻿
+using Dominio.TiposPrimitivos;
+
 namespace Dominio
 {
     public class InteractionMenu
@@ -7,12 +9,12 @@ namespace Dominio
         {
             Hub = hub;
             Name = name;
-            Options = new Dictionary<int, string>();
+            Options = new Dictionary<int, Descricao>();
         }
 
         public Hub Hub { get; set; }
         public string Name { get; set; }
-        public Dictionary<int, string> Options { get; set; }
+        public Dictionary<int, Descricao> Options { get; set; }
 
         public InteractionMenu AddOption(int id, string name)
         {

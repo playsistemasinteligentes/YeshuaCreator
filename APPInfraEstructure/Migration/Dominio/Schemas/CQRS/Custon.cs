@@ -7,8 +7,8 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
 
-        public C(string filePath, Entity entity, bool isCuston)
-            : base(filePath, isCuston)
+        public C(Entity entity)
+            : base()
         {
             _entity = entity;
         }
@@ -34,6 +34,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("}");
 
             return sb.ToString();
+        }
+
+        protected override string GenerateCustonCode()
+        {
+            return "";
         }
     }
 }

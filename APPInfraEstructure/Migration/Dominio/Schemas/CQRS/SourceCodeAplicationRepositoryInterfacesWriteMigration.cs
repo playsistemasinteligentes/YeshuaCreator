@@ -7,8 +7,8 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
 
-        public SourceCodeAplicationRepositoryInterfacesWriteMigration(string filePath, Entity entity)
-            : base(filePath)
+        public SourceCodeAplicationRepositoryInterfacesWriteMigration(Entity entity)
+            : base()
         {
             _entity = entity;
         }
@@ -38,6 +38,27 @@ namespace Dominio.Schemas.CQRS
 
             return sb.ToString();
         }
-    }
+        protected override string GenerateCustonCode()
+        {
+            var sb = new StringBuilder();
 
+            // Adiciona o comentário de descrição da entidade
+            sb.AppendLine("// " + _entity.EntityDescription);
+
+            // Define a classe
+            sb.AppendLine($"public partial interface  {_entity.EntityName}");
+            sb.AppendLine("{");
+
+            // Adiciona as propriedades da entidade
+            foreach (var column in _entity.AddColumns)
+            {
+                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+            }
+
+            // Fecha a classe
+            sb.AppendLine("}");
+
+            return sb.ToString();
+        }
+    }
 }

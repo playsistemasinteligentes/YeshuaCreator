@@ -7,8 +7,8 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
 
-        public SourceCodeAplicationCommandCommandsMigration(string filePath, Entity entity)
-            : base(filePath)
+        public SourceCodeAplicationCommandCommandsMigration(Entity entity)
+            : base()
         {
             _entity = entity;
         }
@@ -37,6 +37,44 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"        public {column.getCsharpType()} {column.Name} {{ get; set; }}");
             }
+
+            // Fecha a classe
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+
+            return sb.ToString();
+        }
+        protected override string GenerateCustonCode()
+        {
+            var sb = new StringBuilder();
+
+            // Adiciona as diretivas using
+            sb.AppendLine("using Comandos.Pateners.Command;");
+            sb.AppendLine("using Dominio.TiposPrimitivos;");
+            sb.AppendLine();
+
+            // Adiciona a declaração do namespace
+            sb.AppendLine("namespace Comandos.Commands.Clinica");
+            sb.AppendLine("{");
+
+            // Define a classe
+            sb.AppendLine("    public class ClinicaCommand : ICommand");
+            sb.AppendLine("    {");
+
+            // Adiciona as propriedades
+            foreach (var column in _entity.AddColumns)
+            {
+                // Garante que o nome e o tipo da coluna sejam válidos
+                if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
+                    throw new InvalidOperationException("Column type or name cannot be null or empty.");
+
+                sb.AppendLine($"        public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+            }
+
+            // Adiciona o evento
+            sb.AppendLine();
+            sb.AppendLine("        public event EventHandler? CanExecuteChanged;");
+            sb.AppendLine();
 
             // Fecha a classe
             sb.AppendLine("    }");

@@ -5,61 +5,46 @@ namespace Migration.Dominio
 {
     public abstract class SourceCodeBase
     {
-        protected string FilePath { get; private set; }
-        protected bool IsCustonFile { get; private set; }
-        protected bool Sobrescrever { get; private set; } = true;
-
-        protected SourceCodeBase(string filePath, bool isCuston = false)
+        protected SourceCodeBase()
         {
-            FilePath = filePath;
-            IsCustonFile = isCuston;
+
         }
 
         // Método protegido para verificar se o diretório existe e criar se não existir
-        protected void EnsureDirectoryExists()
+        protected void EnsureDirectoryExists(string filePath)
         {
-            var directory = Path.GetDirectoryName(FilePath);
+            var directory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
         }
 
-        // Método protegido para verificar se o arquivo existe e criar se não existir
-        protected void EnsureFileExists()
-        {
-            if (File.Exists(FilePath))
-            {
-                if (IsCustonFile)
-                    Sobrescrever = false;
-            }
-            else
-            {
-                File.Create(FilePath).Dispose(); // Cria o arquivo e fecha o handle
-            }
-        }
-
         // Método protegido para obter o conteúdo atual do arquivo
-        protected string ReadFileContent()
+        protected string ReadFileContent(string filePath)
         {
-            return File.Exists(FilePath) ? File.ReadAllText(FilePath) : string.Empty;
+            return File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
         }
 
         // Método protegido para escrever o código no arquivo
-        protected void WriteToFile(string content)
+        protected void WriteToFile(string content, string filePath)
         {
-            EnsureDirectoryExists();
-            File.WriteAllText(FilePath, content);
+            EnsureDirectoryExists(filePath);
+            File.WriteAllText(filePath, content);
         }
 
         // Método abstrato para definir a lógica específica de geração de código
         protected abstract string GenerateCode();
+        protected abstract string GenerateCustonCode();
 
         // Método público para gerar e salvar o código
-        public void WriteCode()
+        public void WriteCode(string filePathMigration, string filePathCuston)
         {
-            if (Sobrescrever)
+            var code = GenerateCode();
+            WriteToFile(code, filePathMigration);
+
+            if (!File.Exists(filePathCuston))
             {
-                var code = GenerateCode();
-                WriteToFile(code);
+                code = GenerateCustonCode();
+                WriteToFile(code, filePathCuston);
             }
         }
     }

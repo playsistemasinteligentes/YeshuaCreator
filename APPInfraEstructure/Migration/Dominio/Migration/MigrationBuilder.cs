@@ -61,7 +61,10 @@ namespace Dominio.Migration
         private void PreparMigrationsToCodeGenerete(IEnumerable<MigrationBase> migrations)
         {
             foreach (var migration in migrations)
+            {
                 SanitizeMigrationEndEntityToCodeGenerete(migration);
+                SanitizeMigrationEndHubAgentsToCodeGenerete(migration);
+            }
         }
         private void SanitizeMigrationEndEntityToCodeGenerete(MigrationBase migration)
         {
@@ -105,6 +108,13 @@ namespace Dominio.Migration
 
                 foreach (var columnToRemove in entity.DropColumns)
                     sanitizedEntity.AddColumns.RemoveAll(c => c.Name == columnToRemove.Name);
+            }
+        }
+        private void SanitizeMigrationEndHubAgentsToCodeGenerete(MigrationBase migration)
+        {
+            foreach (var hub in migration.Hubs)
+            {
+                _migrationConcriteBase.Hubs.Add(hub);
             }
         }
         private void AplyQuerys(List<MigrationQuery> migrationQueries, IUnitOfWork unitOfWork, MigrationBase migration)

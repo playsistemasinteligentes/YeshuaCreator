@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xieVFJbG5Fyd9FlQKKCdVbj4078Qmfp/7NnYg7w+ymqir9PeVTQ2ZfR4Gw6m+eq9+YneqqhwHuaOMjNb27fPIA==",
+  "dgSpecHash": "3eN/9j+J8H/8S6e16IV+yrHuDp3dvYTbM7VWYWdwBotCTqbiSeRu82TCFByihPU/O/I1qtRPT+E3nDsKYvK9hg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\Apps\\AppClinicas\\AppClinicas.csproj",
+  "projectFilePath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\Apps\\AppClinicas\\AppClinicas.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",

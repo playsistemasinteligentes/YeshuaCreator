@@ -1,4 +1,5 @@
-﻿using Migration.Dominio.Schemas;
+﻿using Dominio.TiposPrimitivos;
+using Migration.Dominio.Schemas;
 using System.Collections.Generic;
 using System.Data.Common;
 
@@ -18,7 +19,7 @@ namespace Dominio
         public Hub Hub { get; set; }
         public List<Method> Methods { get; set; }
         public List<InteractionMenu> InteractionMenu { get; set; }
-        public string Name { get; private set; }
+        public Descricao Name { get; private set; }
         private string Description { get; set; }
 
         public Hub AddInteractionMenu(InteractionMenu menu)

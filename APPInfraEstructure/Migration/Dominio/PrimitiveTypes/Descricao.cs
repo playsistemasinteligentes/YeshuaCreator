@@ -40,6 +40,39 @@ namespace Dominio.TiposPrimitivos
         {
             return AddSpacesBeforeUpperCase(value);
         }
+        public string SourceType()
+        {
+            return RemoveSpacesAndCapitalize();
+        }
+        public string RemoveSpacesAndCapitalize()
+        {
+            if (string.IsNullOrEmpty(_value)) return _value;
+
+            StringBuilder result = new StringBuilder();
+            bool capitalizeNext = false;
+
+            for (int i = 0; i < _value.Length; i++)
+            {
+                if (char.IsWhiteSpace(_value[i]))
+                {
+                    capitalizeNext = true; // Próxima letra será maiúscula
+                }
+                else
+                {
+                    if (capitalizeNext || i == 0)
+                    {
+                        result.Append(char.ToUpper(_value[i])); // Letra maiúscula
+                        capitalizeNext = false; // Reseta a flag
+                    }
+                    else
+                    {
+                        result.Append(_value[i]); // Copia a letra original
+                    }
+                }
+            }
+
+            return result.ToString();
+        }
 
         public static string AddSpacesBeforeUpperCase(string input)
         {

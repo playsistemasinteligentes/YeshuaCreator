@@ -9,8 +9,8 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
 
-        public SourceCodeEntityMigration(string filePath, Entity entity)
-            : base(filePath)
+        public SourceCodeEntityMigration(Entity entity)
+            : base()
         {
             _entity = entity;
         }
@@ -49,6 +49,22 @@ namespace Dominio.Schemas.CQRS
                 }}
             }}
         }}");
+            return sb.ToString();
+        }
+        protected override string GenerateCustonCode()
+        {
+            var sb = new StringBuilder();
+
+            // Adiciona o comentário de descrição da entidade
+            sb.AppendLine("// " + _entity.EntityDescription);
+
+            // Define a classe
+            sb.AppendLine($"public partial class {_entity.EntityName}Entity");
+            sb.AppendLine("{");
+
+            // Fecha a classe
+            sb.AppendLine("}");
+
             return sb.ToString();
         }
     }

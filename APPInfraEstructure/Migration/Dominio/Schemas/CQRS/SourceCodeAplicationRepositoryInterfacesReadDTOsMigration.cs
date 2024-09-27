@@ -7,8 +7,8 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
 
-        public SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(string filePath, Entity entity)
-            : base(filePath)
+        public SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(Entity entity)
+            : base()
         {
             _entity = entity;
         }
@@ -41,6 +41,9 @@ namespace Dominio.Schemas.CQRS
 
             return sb.ToString();
         }
+        protected override string GenerateCustonCode()
+        {
+            return "";
+        }
     }
-
 }
