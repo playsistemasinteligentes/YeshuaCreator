@@ -1,4 +1,7 @@
-// 
-public partial class ServicoEntity
+
+                namespace Dominio.Entitys.Servico
+                {
+            public partial class ServicoEntity
 {
+}
 }

@@ -1,4 +1,7 @@
-// 
-public partial class DisponibilidadeAgendaEntity
+
+                namespace Dominio.Entitys.DisponibilidadeAgenda
+                {
+            public partial class DisponibilidadeAgendaEntity
 {
+}
 }

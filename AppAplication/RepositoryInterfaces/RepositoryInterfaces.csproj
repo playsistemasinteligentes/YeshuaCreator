@@ -7,22 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Read\Repository\Agenda\**" />
-    <Compile Remove="Read\Repository\Proficional\**" />
-    <EmbeddedResource Remove="Read\Repository\Agenda\**" />
-    <EmbeddedResource Remove="Read\Repository\Proficional\**" />
-    <None Remove="Read\Repository\Agenda\**" />
-    <None Remove="Read\Repository\Proficional\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Read\DTOs\Agenda\" />
-    <Folder Include="Read\DTOs\Paciente\" />
-    <Folder Include="Read\DTOs\Proficional\" />
-    <Folder Include="Write\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
   </ItemGroup>
 

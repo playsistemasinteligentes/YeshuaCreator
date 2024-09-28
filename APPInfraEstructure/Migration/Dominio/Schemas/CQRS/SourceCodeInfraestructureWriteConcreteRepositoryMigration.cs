@@ -78,7 +78,7 @@ namespace Dominio.Schemas.CQRS
 
             // Fecha a classe
             sb.AppendLine("}");
-
+            return "";
             return sb.ToString();
         }
     }

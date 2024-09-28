@@ -1,4 +1,7 @@
-// 
-public partial class PacienteEntity
+
+                namespace Dominio.Entitys.Paciente
+                {
+            public partial class PacienteEntity
 {
+}
 }

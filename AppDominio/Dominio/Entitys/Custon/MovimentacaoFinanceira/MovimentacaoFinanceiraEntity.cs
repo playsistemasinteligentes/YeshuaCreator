@@ -1,4 +1,7 @@
-// 
-public partial class MovimentacaoFinanceiraEntity
+
+                namespace Dominio.Entitys.MovimentacaoFinanceira
+                {
+            public partial class MovimentacaoFinanceiraEntity
 {
+}
 }

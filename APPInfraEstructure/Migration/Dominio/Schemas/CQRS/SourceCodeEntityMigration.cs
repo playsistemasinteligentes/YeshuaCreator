@@ -55,14 +55,17 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-            // Adiciona o comentário de descrição da entidade
-            sb.AppendLine("// " + _entity.EntityDescription);
+            sb.Append($@"
+                namespace Dominio.Entitys.{_entity.EntityName}
+                {{
+            ");
 
             // Define a classe
             sb.AppendLine($"public partial class {_entity.EntityName}Entity");
             sb.AppendLine("{");
 
             // Fecha a classe
+            sb.AppendLine("}");
             sb.AppendLine("}");
 
             return sb.ToString();

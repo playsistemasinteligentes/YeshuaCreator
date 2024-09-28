@@ -7,26 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ConcreteQuerys\Agenda\**" />
-    <Compile Remove="ConcreteQuerys\Proficional\**" />
-    <Compile Remove="ConcreteRepository\Agenda\**" />
-    <Compile Remove="ConcreteRepository\Proficional\**" />
-    <EmbeddedResource Remove="ConcreteQuerys\Agenda\**" />
-    <EmbeddedResource Remove="ConcreteQuerys\Proficional\**" />
-    <EmbeddedResource Remove="ConcreteRepository\Agenda\**" />
-    <EmbeddedResource Remove="ConcreteRepository\Proficional\**" />
-    <None Remove="ConcreteQuerys\Agenda\**" />
-    <None Remove="ConcreteQuerys\Proficional\**" />
-    <None Remove="ConcreteRepository\Agenda\**" />
-    <None Remove="ConcreteRepository\Proficional\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ConcreteQuerys\" />
-    <Folder Include="ConcreteRepository\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>

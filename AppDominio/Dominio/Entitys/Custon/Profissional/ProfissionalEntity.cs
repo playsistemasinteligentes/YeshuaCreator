@@ -1,4 +1,7 @@
-// 
-public partial class ProfissionalEntity
+
+                namespace Dominio.Entitys.Profissional
+                {
+            public partial class ProfissionalEntity
 {
+}
 }

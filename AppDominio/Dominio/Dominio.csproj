@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entitys\Agenda\" />
-    <Folder Include="Entitys\Clinica\" />
-    <Folder Include="Entitys\ExecoesCalendario\" />
-    <Folder Include="Entitys\Paciente\" />
-    <Folder Include="Entitys\Proficional\" />
     <Folder Include="Enum\" />
     <Folder Include="Especificacoes\Agenda\" />
     <Folder Include="Especificacoes\Clinica\" />

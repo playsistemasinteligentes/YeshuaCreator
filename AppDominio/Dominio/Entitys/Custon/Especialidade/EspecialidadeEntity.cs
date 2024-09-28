@@ -1,4 +1,7 @@
-// 
-public partial class EspecialidadeEntity
+
+                namespace Dominio.Entitys.Especialidade
+                {
+            public partial class EspecialidadeEntity
 {
+}
 }

@@ -42,11 +42,11 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-            // Adiciona o comentário de descrição da entidade
-            sb.AppendLine("// " + _entity.EntityDescription);
+            sb.AppendLine($"namespace Repositorio.Inputs.Repositorio.{_entity.EntityName}");
+            sb.AppendLine("{");
 
             // Define a classe
-            sb.AppendLine($"public partial interface  {_entity.EntityName}");
+            sb.AppendLine($"public partial interface  I{_entity.EntityName}");
             sb.AppendLine("{");
 
             // Adiciona as propriedades da entidade
@@ -57,7 +57,8 @@ namespace Dominio.Schemas.CQRS
 
             // Fecha a classe
             sb.AppendLine("}");
-
+            sb.AppendLine("}");
+            return "";
             return sb.ToString();
         }
     }
