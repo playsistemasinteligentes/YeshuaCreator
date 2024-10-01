@@ -79,21 +79,14 @@ app.Use(async (context, next) =>
 
 object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepository rep) =>
 {
-
     try
     {
-        var teste = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT");
-
-
         return rep.getAllClinica();
-
     }
     catch (Exception E)
     {
-
         throw;
     }
-
 });
 
 
