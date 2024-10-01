@@ -8,7 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=CLINICA;User ID=sa;Password=sa;TrustServerCertificate=True;";
+string conectionString = "Data Source=DESKTOP-2P3VSJ8;Initial Catalog=CLINICA;User ID=sa;Password=henrique662003;TrustServerCertificate=True;";
 var gbs = GlobalSettingsSingleton.Instance
     .SetStringConetionWrite(conectionString)
     .SetStringConetionRead(conectionString);
@@ -18,7 +18,7 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gb
     using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
     {
         new MigrationBuilder()
-            .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))
+            .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\henri\\OneDrive\\Área de Trabalho\\ProjetoEstagio\\ApiWhatsApp\\YeshuaCreator"))
             .ADDSchema(new SqlServerSchema(unitOfWork))
             .Build().Run();
     }
