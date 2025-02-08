@@ -1,4 +1,5 @@
 ﻿
+using Dominio.TiposPrimitivos;
 using Migration.Dominio.Schemas;
 
 namespace Dominio
@@ -11,7 +12,7 @@ namespace Dominio
         }
         public List<Agent> Agents = new List<Agent>();
 
-        public string Name { get; set; }
+        public Descricao Name { get; set; }
 
         public Hub AddAgents(string agente)
         {
@@ -29,17 +30,23 @@ namespace Dominio
             var method = new Method(this, name, description);
             return this.Agents.Last().AddMethod(method);
         }
-        public Hub AddInteractionMenu(string name)
+        public Hub AddMenu(string name)
         {
-            var menu = new InteractionMenu(this, name);
-            return this.Agents.Last().AddInteractionMenu(menu);
+            var menu = new Menu(this, name);
+            return this.Agents.Last().AddMenu(menu);
         }
-        public Hub AddOption(int id, string name)
+        public Hub AddSubMenu(string name)
         {
-            return this.Agents.Last().InteractionMenu.Last().AddOption(id, name).Hub;
+            var menu = new Menu(this, name);
+            return this.Agents.Last().Menus.Last().AddSubMenu(menu).Hub;
         }
-
-
-
+        public Hub AddMenuOption(int id, string name)
+        {
+            return this.Agents.Last().Menus.Last().AddOption(id, name).Hub;
+        }
+        public Hub AddSubMenuOption(int id, string name)
+        {
+            return this.Agents.Last().Menus.Last().SubMenus.Last().AddOption(id, name).Hub;
+        }
     }
 }

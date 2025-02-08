@@ -13,18 +13,18 @@ namespace Dominio
             this.Description = description;
             this.Hub = hub;
             this.Methods = new List<Method>();
-            this.InteractionMenu = new List<InteractionMenu>();
+            this.Menus = new List<Menu>();
         }
 
         public Hub Hub { get; set; }
         public List<Method> Methods { get; set; }
-        public List<InteractionMenu> InteractionMenu { get; set; }
+        public List<Menu> Menus { get; set; }
         public Descricao Name { get; private set; }
         private string Description { get; set; }
 
-        public Hub AddInteractionMenu(InteractionMenu menu)
+        public Hub AddMenu(Menu menu)
         {
-            InteractionMenu.Add(menu);
+            Menus.Add(menu);
             return this.Hub;
         }
 

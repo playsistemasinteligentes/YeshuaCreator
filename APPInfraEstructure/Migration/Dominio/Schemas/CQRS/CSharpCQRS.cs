@@ -1,8 +1,10 @@
 ﻿using Dominio.TiposPrimitivos;
 using Interfaces.Schemas;
 using Interfaces.Schemas.CQRS;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,30 +38,73 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration.WriteCode(filePath, filePathCuston);
             }
 
-            /*
-             AddHub("ClinicaPaciente")
-                .AddAgents("Agente de Agendamento de Paciente")
-                    .AddAgentMetod("Interagir com paciente para agendamentos via WhatsApp", "")
-                    .AddInteractionMenu("Menu de Agendamento:")
-                    .AddOption(1, "Agendar novo atendimento")
-             */
             foreach (var hub in migration.Hubs)
             {
+
+                string funcaoAtual = new StackTrace().GetFrame(1).GetMethod().Name;
+
+
+                var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Migration\\{hub.Name}\\{hub.Name.SourceType()}HubCommands.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Custon\\{hub.Name}\\{hub.Name.SourceType()}HubCommands.cs");
+                var sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsHub(hub);
+                sourceCodeMigrationHub.WriteCode(filePath, filePathCuston);
+
                 foreach (var agent in hub.Agents)
                 {
-                    foreach (var InteractionMenu in agent.InteractionMenu)
+                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Migration\\{hub.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentCommands.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Custon\\{hub.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentCommands.cs");
+                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandCommandsHubAgents(agent);
+                    sourceCodeMigrationAgent.WriteCode(filePath, filePathCuston);
+
+
+                    foreach (var InteractionMenu in agent.Menus)
                     {
                         foreach (var option in InteractionMenu.Options)
                         {
-                            var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Migration\\{hub.Name}\\{agent.Name.SourceType()}\\{option.Value.SourceType()}Commands.cs");
-                            var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Custon\\{hub.Name}\\{agent.Name.SourceType()}\\{option.Value.SourceType()}Commands.cs");
-                            var sourceCodeMigration = new SourceCodeAplicationCommandCommandsHubAgentsInteractionMenuMigration(option.Key, option.Value);
-                            sourceCodeMigration.WriteCode(filePath, filePathCuston);
+                            //var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Migration\\{hub.Name}\\{agent.Name.SourceType()}\\{option.Value.SourceType()}Commands.cs");
+                            //var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents(), $"Custon\\{hub.Name}\\{agent.Name.SourceType()}\\{option.Value.SourceType()}Commands.cs");
+                            //var sourceCodeMigration = new SourceCodeAplicationCommandCommandsHubAgentsOptions(option.Key, option.Value);
+                            //sourceCodeMigration.WriteCode(filePath, filePathCuston);
                         }
                     }
                 }
             }
         }
+
+
+        public void AppAplicationGenerateCommandReceivers(Migration.MigrationBase migration)
+        {
+            foreach (var entity in migration.Entitys)
+            {
+                var filePath = Path.Combine(GetPathAppAplicationCommandReceivers(), $"Migration\\{entity.EntityName}\\{entity.EntityName}InsertReceivers.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceivers(), $"Custon\\{entity.EntityName}\\{entity.EntityName}InsertReceivers.cs");
+                var sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity);
+                sourceCodeMigration.WriteCode(filePath, filePathCuston);
+            }
+
+            /*
+            // hubs => Agentes =>{menus,options}
+             hub 
+                agente = getAgentes (mensagem)
+                return = agente.getResponse(mensagem)
+             */
+            foreach (var hub in migration.Hubs)
+            {
+                var filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents(), $"Migration\\{hub.Name.SourceType()}\\{hub.Name.SourceType()}HubReceivers.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents(), $"Custon\\{hub.Name.SourceType()}\\{hub.Name.SourceType()}HubReceivers.cs");
+                var sourceCodeMigration = new SourceCodeAplicationCommandReceiversHub(hub);
+                sourceCodeMigration.WriteCode(filePath, filePathCuston);
+                foreach (var agent in hub.Agents)
+                {
+                    filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents(), $"Migration\\{hub.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentReceivers.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents(), $"Custon\\{hub.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentReceivers.cs");
+                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversHubAgents(agent);
+                    sourceCodeMigrationAgent.WriteCode(filePath, filePathCuston);
+                }
+            }
+
+        }
+
 
         private string GetPathAppAplicationCommandCommandsHubAgents()
         {
@@ -86,21 +131,16 @@ namespace Dominio.Schemas.CQRS
             throw new NotImplementedException();
         }
 
-        public void AppAplicationGenerateCommandReceivers(Migration.MigrationBase migration)
-        {
-            foreach (var entity in migration.Entitys)
-            {
-                var filePath = Path.Combine(GetPathAppAplicationCommandReceivers(), $"Migration\\{entity.EntityName}\\{entity.EntityName}InsertReceivers.cs");
-                var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceivers(), $"Custon\\{entity.EntityName}\\{entity.EntityName}InsertReceivers.cs");
-                var sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity);
-                sourceCodeMigration.WriteCode(filePath, filePathCuston);
-            }
-        }
-
         private string GetPathAppAplicationCommandReceivers()
         {
             return Path.Combine(GetPathAppAplicationCommand(), "Receivers");
         }
+        private string GetPathAppAplicationCommandReceiversHubAgents()
+        {
+            return Path.Combine(GetPathAppAplicationCommandReceivers(), "HubAgents");
+        }
+
+
 
         public void AppAplicationGenerateRepositoryInterfaces(Migration.MigrationBase migration)
         {

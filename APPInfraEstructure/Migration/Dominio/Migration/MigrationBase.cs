@@ -43,7 +43,7 @@ namespace Dominio.Migration
         }
         public Hub AddToListHub(string hubName)
         {
-            _hub = Hubs.Where(x => x.Name == hubName).FirstOrDefault();
+            _hub = Hubs.Where(x => x.Name._value == hubName).FirstOrDefault();
             if (_hub == null)
             {
                 _hub = new Hub(hubName);
