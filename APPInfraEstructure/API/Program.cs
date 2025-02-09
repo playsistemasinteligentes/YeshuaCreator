@@ -7,6 +7,14 @@ using Read.ConcreteRepository.Clinica;
 using RepositoryInterfaces.Read.Repository.Clinica;
 using Comandos.Receivers.Clinica;
 using Comandos.Commands;
+using Microsoft.IdentityModel.Tokens;
+
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using API.Migrations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +30,18 @@ builder.WebHost.ConfigureKestrel(options =>
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000") // Define o domínio permitido
+               .AllowAnyMethod()                    // Permite qualquer método HTTP (GET, POST, etc)
+               .AllowAnyHeader()                    // Permite qualquer cabeçalho
+               .AllowCredentials();                 // Permite enviar cookies e credenciais
+    });
+});
+
 // Adiciona suporte para endpoints e Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -33,9 +53,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=CLINICA;User ID=sa;Password=sa;TrustServerCertificate=True;";
-
 
 builder.Services.AddScoped<SqlFactory>(provader =>
 {
@@ -46,19 +64,30 @@ builder.Services.AddTransient<IClinicaReadRepository, ClinicaReadRepository>();
 builder.Services.AddTransient<InsertClinicaReceiver>();
 
 
+// Configurações do JWT
+var jwtSettings = new JwtSettings();
+builder.Configuration.Bind("JwtSettings", jwtSettings);
+builder.Services.AddSingleton(jwtSettings);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true
+        };
+    });
 
-
-
-
+builder.Services.AddAuthorization();
 
 
 var app = builder.Build();
 
-
-
-
-app.UseResponseCompression();
+//app.UseResponseCompression();
 
 //Adiciona middleware de redirecionamento HTTPS
 app.UseHttpsRedirection();
@@ -77,23 +106,33 @@ app.Use(async (context, next) =>
     await next();
 });
 
-object value1 = app.MapGet("/clinica/", ([FromServices] IClinicaReadRepository rep) =>
+Endpoints.MapEndpoints(app);
+
+app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
 {
-    try
+    //if (user.Username == "admin" && user.Password == "123456")
+    if (true)
     {
-        return rep.getAllClinica();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) }),
+            Expires = DateTime.UtcNow.AddSeconds(jwtSettings.ExpirationMinutes),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return Results.Ok(new { token = tokenHandler.WriteToken(token) });
     }
-    catch (Exception E)
-    {
-        throw;
-    }
+
+    return Results.Unauthorized();
 });
 
-
-object value = app.MapPost("/clinica/PostClinica", ([FromServices] InsertClinicaReceiver receiver, [FromBody] ClinicaCommand comand) =>
-{
-    return receiver.Execute(comand);
-});
-
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseCors("AllowLocalhost3000");
 app.Run();
+
+public record UserLogin(string Username, string Password);
 

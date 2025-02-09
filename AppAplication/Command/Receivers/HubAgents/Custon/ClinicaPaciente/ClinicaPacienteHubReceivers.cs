@@ -10,14 +10,5 @@ namespace Comandos.Receivers.ClinicaPaciente
 {
     public partial class ClinicaPacienteHubReceiver : ReciverBase
     {
-       private Agent getAgent(ICommand comand)
-        {
-            try
-            {
-            }
-            catch (Exception e)
-            {
-            }
-        }
     }
 }

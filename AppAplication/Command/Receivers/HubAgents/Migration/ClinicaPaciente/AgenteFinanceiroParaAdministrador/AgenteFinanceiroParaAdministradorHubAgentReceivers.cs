@@ -22,7 +22,6 @@ namespace Comandos.Receivers.AgenteFinanceiroParaAdministrador
         {
             try
             {
-                comand = getMenu();
                 return new State(200, "OK", comand);
             }
             catch (Exception e)

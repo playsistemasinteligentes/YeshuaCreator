@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Comandos.Pateners.Command
 {
-    public interface IReceiver<in C, out S >
+    public interface IReceiver<in C, out S>
         where C : ICommand
         where S : State
     {

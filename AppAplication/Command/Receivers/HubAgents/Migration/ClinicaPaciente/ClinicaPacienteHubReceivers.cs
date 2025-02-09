@@ -22,8 +22,6 @@ namespace Comandos.Receivers.ClinicaPaciente
         {
             try
             {
-                Agent = getAgent(comand);
-                comand = Agent.getMenu(comand);
                 return new State(200, "OK", comand);
             }
             catch (Exception e)
@@ -31,5 +29,5 @@ namespace Comandos.Receivers.ClinicaPaciente
                 return new State(500, "Erro", comand);
             }
         }
-    }
+}
 }

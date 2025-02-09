@@ -1,4 +1,5 @@
-﻿using Dominio.TiposPrimitivos;
+﻿using Dominio.Migration;
+using Dominio.TiposPrimitivos;
 using Interfaces.Schemas;
 using Interfaces.Schemas.CQRS;
 using Microsoft.VisualBasic.FileIO;
@@ -242,7 +243,15 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateAPI(Migration.MigrationBase migration)
         {
-            throw new NotImplementedException();
+            var filePath = Path.Combine(GetPathAppInfraestructureGenerateAPI(), $"Migration\\EndPoints{migration.MigrationName}.cs");
+            var filePathCuston = Path.Combine(GetPathAppInfraestructureGenerateAPI(), $"Custon\\EndPoints{migration.MigrationName}.cs");
+            var sourceCodeMigration = new SourceCodeInfraestructureAPIEndpointsMigration(migration);
+            sourceCodeMigration.WriteCode(filePath, filePathCuston);
+        }
+
+        private string GetPathAppInfraestructureGenerateAPI()
+        {
+            return Path.Combine(GetPathAppInfraestructure(), "API");
         }
 
         public void AppInfraestructureGenerateAutomacaoTest(Migration.MigrationBase migration)
@@ -366,7 +375,7 @@ namespace Dominio.Schemas.CQRS
         {
             ///////////AppSolutionGenerate(migration);
 
-            ///////////AppInfraestructureGenerateAPI(migration);
+            AppInfraestructureGenerateAPI(migration);
 
             ///////////AppInfraestructureGenerateMigration(migration);
 

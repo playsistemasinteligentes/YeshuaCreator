@@ -50,7 +50,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        {");
             sb.AppendLine("            try");
             sb.AppendLine("            {");
-            sb.AppendLine("                comand = getMenu();");
+            //sb.AppendLine("                comand = getMenu();");
             sb.AppendLine("                return new State(200, \"OK\", comand);");
             sb.AppendLine("            }");
             sb.AppendLine("            catch (Exception e)");
@@ -112,35 +112,35 @@ namespace Dominio.Schemas.CQRS
         protected override string GenerateCustonCode()
         {
             StringBuilder sb = new StringBuilder();
-            // Adiciona os usings
-            sb.AppendLine($"using Comandos.Pateners.Command;");
-            sb.AppendLine($"using Dominio.TiposPrimitivos;");
-            sb.AppendLine($"using System;");
-            sb.AppendLine($"using System.Collections.Generic;");
-            sb.AppendLine($"using System.Linq;");
-            sb.AppendLine($"using System.Text;");
-            sb.AppendLine($"using System.Threading.Tasks;");
-            sb.AppendLine();
-
-            // Adiciona o namespace e a classe
-            sb.AppendLine($"namespace Comandos.Receivers.{_agent.Name.SourceType()}");
-            sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_agent.Name.SourceType()}HubAgentReceiver : ReciverBase");
-            sb.AppendLine("    {");
-            sb.AppendLine($"       protected List<string> GetMenu(ICommand comand)");
-            sb.AppendLine("        {");
-            sb.AppendLine("            try");
-            sb.AppendLine("            {");
-
-
-            sb.AppendLine("            }");
-            sb.AppendLine("            catch (Exception e)");
-            sb.AppendLine("            {");
-
-            sb.AppendLine("            }");
-            sb.AppendLine("        }");
-            sb.AppendLine("    }");
-            sb.AppendLine("}");
+            //// Adiciona os usings
+            //sb.AppendLine($"using Comandos.Pateners.Command;");
+            //sb.AppendLine($"using Dominio.TiposPrimitivos;");
+            //sb.AppendLine($"using System;");
+            //sb.AppendLine($"using System.Collections.Generic;");
+            //sb.AppendLine($"using System.Linq;");
+            //sb.AppendLine($"using System.Text;");
+            //sb.AppendLine($"using System.Threading.Tasks;");
+            //sb.AppendLine();
+            //
+            //// Adiciona o namespace e a classe
+            //sb.AppendLine($"namespace Comandos.Receivers.{_agent.Name.SourceType()}");
+            //sb.AppendLine("{");
+            //sb.AppendLine($"    public partial class {_agent.Name.SourceType()}HubAgentReceiver : ReciverBase");
+            //sb.AppendLine("    {");
+            //sb.AppendLine($"       protected List<string> GetMenu(ICommand comand)");
+            //sb.AppendLine("        {");
+            //sb.AppendLine("            try");
+            //sb.AppendLine("            {");
+            //
+            //
+            //sb.AppendLine("            }");
+            //sb.AppendLine("            catch (Exception e)");
+            //sb.AppendLine("            {");
+            //
+            //sb.AppendLine("            }");
+            //sb.AppendLine("        }");
+            //sb.AppendLine("    }");
+            //sb.AppendLine("}");
             return sb.ToString();
         }
     }

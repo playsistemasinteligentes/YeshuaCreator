@@ -52,8 +52,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            {");
             // chamar o custon receiver
 
-            sb.AppendLine("                 Agent = getAgent(comand);    ");
-            sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
+            //sb.AppendLine("                 Agent = getAgent(comand);    ");
+            //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
 
             sb.AppendLine("                return new State(200, \"OK\", comand);");
@@ -63,6 +63,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                return new State(500, \"Erro\", comand);");
             sb.AppendLine("            }");
             sb.AppendLine("        }");
+            sb.AppendLine("}");
             //foreach (var menu in _agent.Menus)
             //{
             //    sb.AppendLine($"           private List<string> {menu.Name.SourceType()}()");
@@ -132,17 +133,17 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubReceiver : ReciverBase");
             sb.AppendLine("    {");
-            sb.AppendLine($"       private Agent getAgent(ICommand comand)");
-            sb.AppendLine("        {");
-            sb.AppendLine("            try");
-            sb.AppendLine("            {");
+            //sb.AppendLine($"       private Agent getAgent(ICommand comand)");
+            //sb.AppendLine("        {");
+            //sb.AppendLine("            try");
+            //sb.AppendLine("            {");
 
-            sb.AppendLine("            }");
-            sb.AppendLine("            catch (Exception e)");
-            sb.AppendLine("            {");
+            //sb.AppendLine("            }");
+            //sb.AppendLine("            catch (Exception e)");
+            //sb.AppendLine("            {");
 
-            sb.AppendLine("            }");
-            sb.AppendLine("        }");
+            //sb.AppendLine("            }");
+            //sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");
             return sb.ToString();
