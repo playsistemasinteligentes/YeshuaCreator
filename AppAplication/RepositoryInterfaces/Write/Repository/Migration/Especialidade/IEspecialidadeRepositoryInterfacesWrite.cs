@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.Especialidade
     public partial interface IEspecialidadeWriteRepository
     {
         void Insert(EspecialidadeEntity especialidade);
-        void InsertSmall(EspecialidadeEntity especialidade);
+        void Update(EspecialidadeEntity especialidade);
+        void Delete(EspecialidadeEntity especialidade);
     }
 }

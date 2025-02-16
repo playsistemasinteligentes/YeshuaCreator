@@ -1,1 +1,29 @@
-﻿
+﻿Crie um Front end HTML CSS JAVASCRIPT, deve ser responsivel rode em PCs e celulares. Organize em cabeçalho Rodape,menu lateral e paginas no centro 
+Task 1 - Criar login com usuario e senha aponte para API const API_BASE = "http://localhost:5162"; /Login. Salve o token no local storage para ser utilizado nas demais requisições 
+
+Task 2 - se login ok, monte um menu baseado no retorno do metodo getMenu {id,description,endpoint,type {crud,custon} } mantenha variaveis minusculas. 
+
+task 3 - Ao clicarmos no menu deve acessar o endpoint do menu e se type for crud 
+recebera metadados para criar 
+formulario com Seção de Pesquisa, Tabela de Registros e Formulário de Inclusão/Edição:
+
+exemplo de metadados que seram recebidos pelo endpoint do link do menu 
+metadatacrud = {
+            "searchFields": [
+                { "id": "name", "label": "Nome", "type": "text" },
+                { "id": "email", "label": "E-mail", "type": "email" }
+            ],
+            "formFields": [
+                { "id": "name", "label": "Nome", "type": "text", "required": true },
+                { "id": "email", "label": "E-mail", "type": "email", "required": true },
+                { "id": "age", "label": "Idade", "type": "number", "required": false }
+            ],
+            "endpoints": {
+                "create": "/api/users",
+                "read": "/api/users",
+                "update": "/api/users/{id}",
+                "delete": "/api/users/{id}"
+            }
+        };
+
+

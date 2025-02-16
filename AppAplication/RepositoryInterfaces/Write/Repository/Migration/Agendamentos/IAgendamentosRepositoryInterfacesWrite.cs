@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.Agendamentos
     public partial interface IAgendamentosWriteRepository
     {
         void Insert(AgendamentosEntity agendamentos);
-        void InsertSmall(AgendamentosEntity agendamentos);
+        void Update(AgendamentosEntity agendamentos);
+        void Delete(AgendamentosEntity agendamentos);
     }
 }

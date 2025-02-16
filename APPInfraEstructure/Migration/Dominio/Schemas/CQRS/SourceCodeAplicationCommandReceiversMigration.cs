@@ -1,25 +1,46 @@
-﻿using Migration.Dominio;
+﻿using Azure.Core;
+using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
+using System.Data;
 using System.Text;
+using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
 
 namespace Dominio.Schemas.CQRS
 {
     public class SourceCodeAplicationCommandReceiversMigration : SourceCodeBase
     {
         private readonly Entity _entity;
+        private readonly CommandType _commandType;
 
-        public SourceCodeAplicationCommandReceiversMigration(Entity entity)
+        public SourceCodeAplicationCommandReceiversMigration(Entity entity, CommandType commandType)
             : base()
         {
             _entity = entity;
+            _commandType = commandType;
         }
 
         protected override string GenerateCode()
         {
+
+            switch (_commandType)
+            {
+                case CommandType.Insert:
+                    return CommandCrud(CommandType.Insert);
+                    break;
+                case CommandType.Update:
+                    return CommandCrud(CommandType.Update);
+                    break;
+                case CommandType.Delete:
+                    return CommandCrud(CommandType.Delete);
+                    break;
+                default:
+                    break;
+            }
+            return string.Empty;
+        }
+        private string CommandCrud(CommandType action)
+        {
             StringBuilder sb = new StringBuilder();
-
-            // Adiciona os usings
-
-
             sb.AppendLine($"using Comandos.Pateners.Command;");
             sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
             sb.AppendLine($"using Dominio.TiposPrimitivos;");
@@ -34,11 +55,11 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace Comandos.Receivers.{_entity.EntityName}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public class Insert{_entity.EntityName}Receiver : ReciverBase");
+            sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase");
             sb.AppendLine("    {");
             sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
             sb.AppendLine();
-            sb.AppendLine($"        public Insert{_entity.EntityName}Receiver(I{_entity.EntityName}WriteRepository repository)");
+            sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(I{_entity.EntityName}WriteRepository repository)");
             sb.AppendLine("        {");
             sb.AppendLine("            _repository = repository;");
             sb.AppendLine("        }");
@@ -53,7 +74,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine("            try");
             sb.AppendLine("            {");
-            sb.AppendLine($"                _repository.Insert({_entity.EntityName.ToLower()});");
+            sb.AppendLine($"                _repository.{action.ToString()}({_entity.EntityName.ToLower()});");
             sb.AppendLine("                return new State(200, \"OK\", comand);");
             sb.AppendLine("            }");
             sb.AppendLine("            catch (Exception e)");
@@ -63,12 +84,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");
-
-
-
-
             return sb.ToString();
         }
+
+
+
         protected override string GenerateCustonCode()
         {
             var sb = new StringBuilder();

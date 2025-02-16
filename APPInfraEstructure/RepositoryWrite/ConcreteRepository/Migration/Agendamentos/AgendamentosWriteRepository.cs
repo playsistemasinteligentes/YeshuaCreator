@@ -30,9 +30,21 @@ namespace Input.Repository.Agendamentos
             }
         }
 
-        public void InsertSmall(AgendamentosEntity Agendamentos)
+        public void Update(AgendamentosEntity Agendamentos)
         {
-            throw new NotImplementedException();
+            var query = new AgendamentosWriteQuery().UpdateAgendamentosQuery(Agendamentos);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(AgendamentosEntity Agendamentos)
+        {
+            var query = new AgendamentosWriteQuery().DeleteAgendamentosQuery(Agendamentos);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

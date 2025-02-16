@@ -30,9 +30,21 @@ namespace Input.Repository.DisponibilidadeAgenda
             }
         }
 
-        public void InsertSmall(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public void Update(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            throw new NotImplementedException();
+            var query = new DisponibilidadeAgendaWriteQuery().UpdateDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        {
+            var query = new DisponibilidadeAgendaWriteQuery().DeleteDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

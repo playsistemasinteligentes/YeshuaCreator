@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
+    <ProjectReference Include="..\RepositoryRead\RepositoryRead.csproj" />
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>
 

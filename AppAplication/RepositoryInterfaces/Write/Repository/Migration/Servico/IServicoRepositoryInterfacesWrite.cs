@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.Servico
     public partial interface IServicoWriteRepository
     {
         void Insert(ServicoEntity servico);
-        void InsertSmall(ServicoEntity servico);
+        void Update(ServicoEntity servico);
+        void Delete(ServicoEntity servico);
     }
 }

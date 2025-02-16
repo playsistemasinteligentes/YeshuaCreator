@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.Clinica
     public partial interface IClinicaWriteRepository
     {
         void Insert(ClinicaEntity clinica);
-        void InsertSmall(ClinicaEntity clinica);
+        void Update(ClinicaEntity clinica);
+        void Delete(ClinicaEntity clinica);
     }
 }

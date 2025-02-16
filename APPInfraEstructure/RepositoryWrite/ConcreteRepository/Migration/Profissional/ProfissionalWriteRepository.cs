@@ -30,9 +30,21 @@ namespace Input.Repository.Profissional
             }
         }
 
-        public void InsertSmall(ProfissionalEntity Profissional)
+        public void Update(ProfissionalEntity Profissional)
         {
-            throw new NotImplementedException();
+            var query = new ProfissionalWriteQuery().UpdateProfissionalQuery(Profissional);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(ProfissionalEntity Profissional)
+        {
+            var query = new ProfissionalWriteQuery().DeleteProfissionalQuery(Profissional);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

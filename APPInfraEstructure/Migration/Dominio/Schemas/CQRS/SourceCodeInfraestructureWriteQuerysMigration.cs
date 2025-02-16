@@ -44,6 +44,47 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            };");
             sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
             sb.AppendLine("        }");
+
+            // update 
+            sb.AppendLine($"        public QueryModel Update{_entity.EntityName}Query({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine("        {");
+
+            parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey).Select(c => $"{c.Name} = @{c.Name}"));
+            var parametersWhere = string.Join(", ", _entity.AddColumns.Where(x => x.IsKey).Select(c => $"{c.Name} = @{c.Name}"));
+            sb.AppendLine($"            this.Query = $@\" UPDATE {_entity.EntityName} SET {parametersString} WHERE {parametersWhere} \";");
+
+            sb.AppendLine("            this.Parameters = new");
+            sb.AppendLine("            {");
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey))
+                sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
+
+            foreach (var column in _entity.AddColumns.Where(x => x.IsKey))
+                sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
+            sb.AppendLine("            };");
+            sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
+            sb.AppendLine("        }");
+
+
+            //delete 
+            sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine("        {");
+
+            parametersString = string.Join("AND ", _entity.AddColumns.Where(x => x.IsKey).Select(c => $"{c.Name} = @{c.Name}"));
+            sb.AppendLine($"            this.Query = $@\" DELETE FROM {_entity.EntityName} WHERE {parametersString} \";");
+
+            sb.AppendLine("            this.Parameters = new");
+            sb.AppendLine("            {");
+            foreach (var column in _entity.AddColumns.Where(x => x.IsKey))
+                sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
+            sb.AppendLine("            };");
+            sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
+            sb.AppendLine("        }");
+
+
+
+
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

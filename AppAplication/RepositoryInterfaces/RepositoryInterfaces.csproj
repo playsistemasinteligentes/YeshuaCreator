@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Write\Repository\" />
+  </ItemGroup>
+
 </Project>

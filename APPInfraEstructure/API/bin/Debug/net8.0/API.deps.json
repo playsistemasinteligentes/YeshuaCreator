@@ -428,6 +428,7 @@
       "RepositoryWrite/1.0.0": {
         "dependencies": {
           "RepositoryInterfaces": "1.0.0",
+          "RepositoryRead": "1.0.0",
           "Shered": "1.0.0"
         },
         "runtime": {

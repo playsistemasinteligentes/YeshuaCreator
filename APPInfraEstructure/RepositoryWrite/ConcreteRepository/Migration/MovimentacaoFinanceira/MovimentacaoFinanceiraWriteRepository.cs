@@ -30,9 +30,21 @@ namespace Input.Repository.MovimentacaoFinanceira
             }
         }
 
-        public void InsertSmall(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public void Update(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            throw new NotImplementedException();
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

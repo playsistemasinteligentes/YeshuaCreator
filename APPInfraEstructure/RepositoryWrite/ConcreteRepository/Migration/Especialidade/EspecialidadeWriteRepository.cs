@@ -30,9 +30,21 @@ namespace Input.Repository.Especialidade
             }
         }
 
-        public void InsertSmall(EspecialidadeEntity Especialidade)
+        public void Update(EspecialidadeEntity Especialidade)
         {
-            throw new NotImplementedException();
+            var query = new EspecialidadeWriteQuery().UpdateEspecialidadeQuery(Especialidade);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(EspecialidadeEntity Especialidade)
+        {
+            var query = new EspecialidadeWriteQuery().DeleteEspecialidadeQuery(Especialidade);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

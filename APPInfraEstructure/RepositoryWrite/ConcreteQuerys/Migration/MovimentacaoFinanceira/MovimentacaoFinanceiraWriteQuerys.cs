@@ -24,5 +24,29 @@ namespace Input.Querys.MovimentacaoFinanceira
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId, ServicoId = @ServicoId, Valor = @Valor, TipoMovimentacao = @TipoMovimentacao, DataMovimentacao = @DataMovimentacao, SaldoAtual = @SaldoAtual WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                PacienteId = MovimentacaoFinanceira.PacienteId,
+                ServicoId = MovimentacaoFinanceira.ServicoId,
+                Valor = MovimentacaoFinanceira.Valor,
+                TipoMovimentacao = MovimentacaoFinanceira.TipoMovimentacao,
+                DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
+                SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
+                Id = MovimentacaoFinanceira.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        {
+            this.Query = $@" DELETE FROM MovimentacaoFinanceira WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = MovimentacaoFinanceira.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
     }
 }

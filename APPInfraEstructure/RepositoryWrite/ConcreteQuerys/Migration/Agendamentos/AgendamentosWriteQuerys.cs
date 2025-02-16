@@ -23,5 +23,28 @@ namespace Input.Querys.Agendamentos
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateAgendamentosQuery(AgendamentosEntity Agendamentos)
+        {
+            this.Query = $@" UPDATE Agendamentos SET PacienteId = @PacienteId, ProfissionalId = @ProfissionalId, ServicoId = @ServicoId, DataHora = @DataHora, Status = @Status WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                PacienteId = Agendamentos.PacienteId,
+                ProfissionalId = Agendamentos.ProfissionalId,
+                ServicoId = Agendamentos.ServicoId,
+                DataHora = Agendamentos.DataHora,
+                Status = Agendamentos.Status,
+                Id = Agendamentos.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteAgendamentosQuery(AgendamentosEntity Agendamentos)
+        {
+            this.Query = $@" DELETE FROM Agendamentos WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Agendamentos.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
     }
 }

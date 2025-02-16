@@ -17,7 +17,7 @@ namespace Dominio
         public bool AutoIncremento { get; set; }
         public Dictionary<int, string> Enum { get; set; }
         public string Name { get; private set; }
-        private string Description { get; set; }
+        public string Description { get; set; }
         private string Type { get; set; }
 
         public float Length { get; set; }

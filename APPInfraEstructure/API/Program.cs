@@ -1,15 +1,6 @@
-using Input.Repository.Clinica;
-using Repositorio.Inputs.Repositorio.Clinica;
 using Shered.DB.Connection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using Read.ConcreteRepository.Clinica;
-using RepositoryInterfaces.Read.Repository.Clinica;
-using Comandos.Receivers.Clinica;
-using Comandos.Commands;
 using Microsoft.IdentityModel.Tokens;
-
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,7 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using API.Migrations;
 
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Configuração do Kestrel para otimização de desempenho
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -59,10 +50,8 @@ builder.Services.AddScoped<SqlFactory>(provader =>
 {
     return new SqlFactory(EnumSqlConections.SqlServer, conectionString);
 });
-builder.Services.AddTransient<IClinicaWriteRepository, ClinicaWriteRepository>();
-builder.Services.AddTransient<IClinicaReadRepository, ClinicaReadRepository>();
-builder.Services.AddTransient<InsertClinicaReceiver>();
 
+IndependenceInjection.MapIndependenceInjection(builder);
 
 // Configurações do JWT
 var jwtSettings = new JwtSettings();
@@ -106,7 +95,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-Endpoints.MapEndpoints(app);
+Endpoints.MapEndpoints(app, "http://localhost:5162/");
 
 app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
 {

@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.MovimentacaoFinanceira
     public partial interface IMovimentacaoFinanceiraWriteRepository
     {
         void Insert(MovimentacaoFinanceiraEntity movimentacaofinanceira);
-        void InsertSmall(MovimentacaoFinanceiraEntity movimentacaofinanceira);
+        void Update(MovimentacaoFinanceiraEntity movimentacaofinanceira);
+        void Delete(MovimentacaoFinanceiraEntity movimentacaofinanceira);
     }
 }

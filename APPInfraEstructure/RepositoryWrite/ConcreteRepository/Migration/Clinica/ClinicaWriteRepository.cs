@@ -30,9 +30,21 @@ namespace Input.Repository.Clinica
             }
         }
 
-        public void InsertSmall(ClinicaEntity Clinica)
+        public void Update(ClinicaEntity Clinica)
         {
-            throw new NotImplementedException();
+            var query = new ClinicaWriteQuery().UpdateClinicaQuery(Clinica);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(ClinicaEntity Clinica)
+        {
+            var query = new ClinicaWriteQuery().DeleteClinicaQuery(Clinica);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

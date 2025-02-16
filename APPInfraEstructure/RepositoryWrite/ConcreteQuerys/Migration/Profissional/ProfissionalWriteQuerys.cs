@@ -21,5 +21,26 @@ namespace Input.Querys.Profissional
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateProfissionalQuery(ProfissionalEntity Profissional)
+        {
+            this.Query = $@" UPDATE Profissional SET Nome = @Nome, EspecialidadeId = @EspecialidadeId, Telefone = @Telefone WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Profissional.Nome,
+                EspecialidadeId = Profissional.EspecialidadeId,
+                Telefone = Profissional.Telefone,
+                Id = Profissional.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteProfissionalQuery(ProfissionalEntity Profissional)
+        {
+            this.Query = $@" DELETE FROM Profissional WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Profissional.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
     }
 }

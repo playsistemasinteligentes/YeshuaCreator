@@ -30,9 +30,21 @@ namespace Input.Repository.GrupoServico
             }
         }
 
-        public void InsertSmall(GrupoServicoEntity GrupoServico)
+        public void Update(GrupoServicoEntity GrupoServico)
         {
-            throw new NotImplementedException();
+            var query = new GrupoServicoWriteQuery().UpdateGrupoServicoQuery(GrupoServico);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(GrupoServicoEntity GrupoServico)
+        {
+            var query = new GrupoServicoWriteQuery().DeleteGrupoServicoQuery(GrupoServico);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

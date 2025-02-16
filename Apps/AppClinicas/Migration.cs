@@ -114,9 +114,4 @@ namespace AppClinicas
                     .AddMenuOption(3, "Emitir relatório financeiro");
         }
     }
-
-
-
-
-
 }

@@ -30,9 +30,21 @@ namespace Input.Repository.Servico
             }
         }
 
-        public void InsertSmall(ServicoEntity Servico)
+        public void Update(ServicoEntity Servico)
         {
-            throw new NotImplementedException();
+            var query = new ServicoWriteQuery().UpdateServicoQuery(Servico);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(ServicoEntity Servico)
+        {
+            var query = new ServicoWriteQuery().DeleteServicoQuery(Servico);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

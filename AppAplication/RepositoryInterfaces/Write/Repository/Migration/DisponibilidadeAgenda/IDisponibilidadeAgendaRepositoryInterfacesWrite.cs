@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.DisponibilidadeAgenda
     public partial interface IDisponibilidadeAgendaWriteRepository
     {
         void Insert(DisponibilidadeAgendaEntity disponibilidadeagenda);
-        void InsertSmall(DisponibilidadeAgendaEntity disponibilidadeagenda);
+        void Update(DisponibilidadeAgendaEntity disponibilidadeagenda);
+        void Delete(DisponibilidadeAgendaEntity disponibilidadeagenda);
     }
 }

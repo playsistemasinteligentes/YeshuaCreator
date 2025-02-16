@@ -9,6 +9,7 @@
       "RepositoryWrite/1.0.0": {
         "dependencies": {
           "RepositoryInterfaces": "1.0.0",
+          "RepositoryRead": "1.0.0",
           "Shered": "1.0.0"
         },
         "runtime": {
@@ -394,6 +395,15 @@
           "RepositoryInterfaces.dll": {}
         }
       },
+      "RepositoryRead/1.0.0": {
+        "dependencies": {
+          "RepositoryInterfaces": "1.0.0",
+          "Shered": "1.0.0"
+        },
+        "runtime": {
+          "RepositoryRead.dll": {}
+        }
+      },
       "Shered/1.0.0": {
         "dependencies": {
           "Dapper": "2.1.35",
@@ -662,6 +672,11 @@
       "sha512": ""
     },
     "RepositoryInterfaces/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RepositoryRead/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

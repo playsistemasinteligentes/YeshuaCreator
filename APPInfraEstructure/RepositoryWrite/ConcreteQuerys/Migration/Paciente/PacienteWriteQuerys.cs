@@ -20,5 +20,25 @@ namespace Input.Querys.Paciente
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdatePacienteQuery(PacienteEntity Paciente)
+        {
+            this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Paciente.Nome,
+                Telefone = Paciente.Telefone,
+                Id = Paciente.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeletePacienteQuery(PacienteEntity Paciente)
+        {
+            this.Query = $@" DELETE FROM Paciente WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Paciente.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
     }
 }

@@ -30,9 +30,21 @@ namespace Input.Repository.Paciente
             }
         }
 
-        public void InsertSmall(PacienteEntity Paciente)
+        public void Update(PacienteEntity Paciente)
         {
-            throw new NotImplementedException();
+            var query = new PacienteWriteQuery().UpdatePacienteQuery(Paciente);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
+        }
+        public void Delete(PacienteEntity Paciente)
+        {
+            var query = new PacienteWriteQuery().DeletePacienteQuery(Paciente);
+            using (var conn = _Connection) 
+            {
+                _Connection.Execute(query.Query, query.Parameters);
+            }
         }
     }
 }

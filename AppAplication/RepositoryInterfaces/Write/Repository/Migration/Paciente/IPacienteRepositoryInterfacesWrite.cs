@@ -10,6 +10,7 @@ namespace Repositorio.Inputs.Repositorio.Paciente
     public partial interface IPacienteWriteRepository
     {
         void Insert(PacienteEntity paciente);
-        void InsertSmall(PacienteEntity paciente);
+        void Update(PacienteEntity paciente);
+        void Delete(PacienteEntity paciente);
     }
 }
