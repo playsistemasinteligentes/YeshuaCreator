@@ -111,44 +111,75 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-
-
-
-
             // menus 
-            sb.AppendLine("app.MapGet(\"/api/cadastros\", (HttpContext context) =>");
+            sb.AppendLine("app.MapGet(\"/getMenu\", (HttpContext context) =>");
             sb.AppendLine("{");
             sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;");
-
             sb.AppendLine("if (string.IsNullOrEmpty(userId))");
             sb.AppendLine("return Results.Unauthorized();");
-            sb.AppendLine("var cadastros = new Dictionary<string, object>");
+            sb.AppendLine("var menu = new[]");
+
             sb.AppendLine("{");
             string virgula = "";
             foreach (var entidade in _migration.Entitys)
             {
                 sb.AppendLine(virgula);
                 virgula = ",";
-
-                sb.AppendLine("{");
-                sb.AppendLine($"\"{entidade.EntityName}\", new ");
-                sb.AppendLine("{");
-                sb.AppendLine($"titulo = \"Cadastro de {entidade.EntityName}\",");
-                sb.AppendLine($"endpoint = dominio+\"{entidade.EntityName}/Post{entidade.EntityName}\", ");
-                sb.AppendLine("campos = new[] {");
-                foreach (var column in entidade.AddColumns)
-                {
-
-                    sb.AppendLine($"        new {{ nome = \"{column.Name}\", label = \"{column.Description}\", tipo = \"{column.getCsharpType()}\", chaveEstrangeira = \"{column.IsFK}\", endpoint= \"/api/medicos\" }},");
-                }
-                sb.AppendLine(" }");
-                sb.AppendLine(" }");
+                sb.AppendLine("new{");
+                sb.AppendLine($"id=\"{entidade.EntityName}\",");
+                sb.AppendLine($"description=\"{entidade.EntityName}\",");
+                sb.AppendLine($"endpoint=\"/getMetaData{entidade.EntityName}\",");
+                sb.AppendLine($"type = \"crud\"");
                 sb.AppendLine("}");
             }
             sb.AppendLine("};");
-
-            sb.AppendLine("return Results.Ok(cadastros); ");
+            sb.AppendLine("return Results.Ok(menu);");
             sb.AppendLine("}).RequireAuthorization();");
+
+
+
+
+
+            // get meta data 
+            foreach (var entidade in _migration.Entitys)
+            {
+                sb.AppendLine($"app.MapGet(\"/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
+                sb.AppendLine("{");
+                sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;");
+
+                sb.AppendLine("if (string.IsNullOrEmpty(userId))");
+                sb.AppendLine("return Results.Unauthorized();");
+
+
+                sb.AppendLine("var metadatacrud = new");
+                sb.AppendLine("{");
+                sb.AppendLine("searchFields = new[]");
+                sb.AppendLine("{");
+                // for
+                sb.AppendLine(" new { id = \"name\", label = \"Nome\", type = \"text\" },");
+                sb.AppendLine(" new { id = \"name1\", label = \"Nome1\", type = \"text\" }");
+                sb.AppendLine("},");
+
+                sb.AppendLine("formFields = new[]");
+                sb.AppendLine("{");
+                // for
+                sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
+                sb.AppendLine("},");
+
+                sb.AppendLine("             endpoints = new");
+                sb.AppendLine("             {");
+                sb.AppendLine("                 create = \"/api/users\",");
+                sb.AppendLine("                 read = \"/api/users\",");
+                sb.AppendLine("                 update = \"/api/users/{id}\",");
+                sb.AppendLine("                 delete = \"/api/users/{id}\"");
+                sb.AppendLine("             }");
+                sb.AppendLine("         };");
+
+                sb.AppendLine("         return Results.Ok(metadatacrud);");
+                sb.AppendLine("     }).RequireAuthorization();");
+            }
+
+
 
             sb.AppendLine("}");
             sb.AppendLine("}");
