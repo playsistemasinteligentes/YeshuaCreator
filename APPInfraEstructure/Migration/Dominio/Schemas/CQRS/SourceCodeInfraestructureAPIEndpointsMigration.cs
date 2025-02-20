@@ -137,9 +137,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("}).RequireAuthorization();");
 
 
-
-
-
             // get meta data 
             foreach (var entidade in _migration.Entitys)
             {
@@ -157,6 +154,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
                 // for
                 sb.AppendLine(" new { id = \"name\", label = \"Nome\", type = \"text\" },");
+                sb.AppendLine(" new { id = \"name\", label = \"Nome\", type = \"text\" },");
                 sb.AppendLine(" new { id = \"name1\", label = \"Nome1\", type = \"text\" }");
                 sb.AppendLine("},");
 
@@ -164,14 +162,28 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
                 // for
                 sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
+                sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
+                sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
                 sb.AppendLine("},");
+
+
+                /*  foreach (var item in entidade.AddColumns)
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType}\" }},");
+                sb.AppendLine("},");
+
+                sb.AppendLine("formFields = new[]");
+                sb.AppendLine("{");
+                foreach (var item in entidade.AddColumns)
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType}\", required = \"{item.required}\"  }},");
+*/
+
 
                 sb.AppendLine("             endpoints = new");
                 sb.AppendLine("             {");
-                sb.AppendLine("                 create = \"/api/users\",");
-                sb.AppendLine("                 read = \"/api/users\",");
-                sb.AppendLine("                 update = \"/api/users/{id}\",");
-                sb.AppendLine("                 delete = \"/api/users/{id}\"");
+                sb.AppendLine($"                 create = \"/{entidade.EntityName}/Post{entidade.EntityName}\",");
+                sb.AppendLine($"                 read = \"/{entidade.EntityName}/Read{entidade.EntityName}\",");
+                sb.AppendLine($"                 update = \"/{entidade.EntityName}/Put{entidade.EntityName}\",");
+                sb.AppendLine($"                 delete = \"/{entidade.EntityName}/Delete{entidade.EntityName}\"");
                 sb.AppendLine("             }");
                 sb.AppendLine("         };");
 

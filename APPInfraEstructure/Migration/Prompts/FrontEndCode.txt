@@ -6,93 +6,197 @@
     <title>Minha Aplicação</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Corpo geral */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #f0f4f8;
+            color: #333;
+	 
+
+					
+															  
+					 
+						   
+					  
+												 
         }
-        .container {
-            display: flex;
-            flex-grow: 1;
-        }
+
         header, footer {
-            background: #333;
+            background: linear-gradient(135deg, #4b79a1, #283e51);
             color: white;
             text-align: center;
-            padding: 0.8rem;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         footer {
             position: fixed;
             bottom: 0;
             width: 100%;
+							
+								
+									
         }
-        .sidebar {
-            width: 250px;
-            background: #222;
+
+        /* Estilo do formulário de login */
+        #login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 160px);
+        }
+
+        #login-container form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        #login-container h2 {
+            margin-bottom: 1rem;
+					  
+						 
+						
+							   
+						   
+        }
+
+        #login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+						
+            border-radius: 8px;
+						
+									
+        }
+
+        #login-container button {
+            width: 100%;
+            background: #007bff;
             color: white;
-            padding: 1rem;
-            display: none;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar ul li {
             padding: 12px;
+            border: none;
+            font-size: 1rem;
+            border-radius: 8px;
             cursor: pointer;
-            border-bottom: 1px solid #444;
             transition: background 0.3s;
         }
-        .sidebar ul li:hover {
-            background: #444;
+
+        #login-container button:hover {
+            background: #0056b3;
+					  
+									
         }
+
+        /* Layout da página */
+        .container {
+            display: flex;
+            height: calc(100vh - 120px);
+				  
+				 
+											 
+																
+																
+        }
+
+        /* Menu lateral */
+        aside.sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #283e51, #4b79a1);
+            padding: 1rem;
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        aside.sidebar nav ul {
+            list-style-type: none;
+            padding: 0;
+						
+						   
+										 
+        }
+
+        aside.sidebar nav ul li {
+            padding: 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        aside.sidebar nav ul li:hover {
+		  
+					 
+					  
+						  
+            background: rgba(255, 255, 255, 0.2);
+					 
+						   
+						 
+        }
+
+        /* Área de conteúdo */
         main {
             flex-grow: 1;
             padding: 2rem;
             background: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+					  
             margin: 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
+            overflow-y: auto;
         }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10px;
-        }
-        .form-group input, .form-group button {
-            padding: 8px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+
+        /* Botões e tabela */
         button {
             background: #007bff;
             color: white;
             border: none;
             cursor: pointer;
-            padding: 10px;
+            padding: 12px;
             font-size: 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
         }
+
         button:hover {
             background: #0056b3;
+								  
+						   
+												 
+						   
+						 
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
-        table, th, td {
+
+        th, td {
+            padding: 12px;
+            text-align: left;
             border: 1px solid #ddd;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
+		
+
         th {
             background: #007bff;
             color: white;
@@ -143,7 +247,6 @@
                 localStorage.setItem('token', data.token);
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('app').style.display = 'flex';
-                document.getElementById('sidebar').style.display = 'block';
                 loadMenu();
             } else {
                 alert('Login falhou!');
@@ -201,6 +304,7 @@
             // Seção de Pesquisa
             const searchSection = document.createElement('div');
             searchSection.innerHTML = `<h3>Pesquisar</h3>`;
+
             metadata.searchFields.forEach(field => {
                 const input = document.createElement('input');
                 input.type = field.type;
@@ -211,33 +315,267 @@
 
             const searchButton = document.createElement('button');
             searchButton.textContent = "Buscar";
-            searchButton.addEventListener('click', () => fetchSearchResults(fullUrl));
+            searchButton.addEventListener('click', () => fetchSearchResults(metadata.endpoints.read, metadata));
             searchSection.appendChild(searchButton);
             content.appendChild(searchSection);
 
-            // Tabela de Registros
-            const table = document.createElement('table');
-            table.innerHTML = `<thead><tr><th>Nome</th><th>Email</th></tr></thead><tbody id="results"></tbody>`;
-            content.appendChild(table);
+            // Seção de Inserção
+            const insertSection = document.createElement('div');
+            insertSection.innerHTML = `<h3>Inserir Novo Registro</h3>`;
+            metadata.formFields.forEach(field => {
+                const input = document.createElement('input');
+                input.type = field.type;
+                input.placeholder = field.label;
+                input.id = `insert-${field.id}`;
+                insertSection.appendChild(input);
+            });
+
+            const insertButton = document.createElement('button');
+            insertButton.textContent = "Inserir";
+            insertButton.addEventListener('click', () => insertNewRecord(metadata.endpoints.create, metadata));
+            insertSection.appendChild(insertButton);
+            content.appendChild(insertSection);
+
+											  
+														  
+																
+														   
+
+												  
+														
+											 
+										  
+			   
+
+											   
+										   
+
+															  
+										 
+									   
         }
 
-        async function fetchSearchResults(url) {
-			const token = localStorage.getItem('token');
-            const response = await fetch(url, {
-                headers: { 'Authorization': `Bearer ${token}` }
+		
+  
+															
+												
+						 
+
+																					 
+										  
+																			   
+										 
+	   
+
+																							
+					  
+
+															  
+										  
+																			   
+											   
+												 
+		 
+	   
+
+																  
+					   
+				  
+											   
+											   
+		  
+																		   
+	   
+
+					  
+												
+														 
+			
+											 
+	 
+ 
+
+  
+
+
+        async function fetchSearchResults(endpoint, metadata) {
+            const token = localStorage.getItem('token');
+            const queryParams = new URLSearchParams();
+            
+            metadata.searchFields.forEach(field => {
+                const value = document.getElementById(`search-${field.id}`).value;
+                if (value) {
+                    queryParams.append(field.id, value);
+                }
             });
+
+																			 
+																		
+			const response = await fetch(`${API_BASE}${endpoint}?${queryParams}`, {
+				headers: { 'Authorization': `Bearer ${token}` }
+			});
+
 
             if (response.ok) {
                 const data = await response.json();
-                const tbody = document.getElementById('results');
-                tbody.innerHTML = '';
-
-                data.forEach(item => {
-                    const row = `<tr><td>${item.name}</td><td>${item.email}</td></tr>`;
-                    tbody.innerHTML += row;
-                });
+                renderTable(data, metadata);
+            } else {
+                alert('Erro ao buscar os dados.');
             }
         }
+
+        function renderTable(data, metadata) {
+            const table = document.createElement('table');
+            const header = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            
+            metadata.formFields.forEach(field => {
+                const th = document.createElement('th');
+                th.textContent = field.label;
+                headerRow.appendChild(th);
+            });
+
+            const thActions = document.createElement('th');
+            thActions.textContent = 'Ações';
+            headerRow.appendChild(thActions);
+            header.appendChild(headerRow);
+            table.appendChild(header);
+            
+            const tbody = document.createElement('tbody');
+            table.appendChild(tbody);
+            
+            if (data.length === 0) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = metadata.formFields.length + 1; 
+                cell.textContent = "Nenhum dado encontrado";
+                row.appendChild(cell);
+                tbody.appendChild(row);
+                content.appendChild(table);
+                return;
+            }
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+
+                metadata.formFields.forEach(field => {
+                    const cell = document.createElement('td');
+                    cell.textContent = item[field.id] || '';
+                    row.appendChild(cell);
+                });
+
+                const actionsCell = document.createElement('td');
+                
+                // Link de Edição
+                const editLink = document.createElement('a');
+                editLink.href = "#";
+                editLink.textContent = "Editar";
+                editLink.addEventListener('click', () => editRecord(item, metadata));
+                actionsCell.appendChild(editLink);
+                
+                actionsCell.appendChild(document.createTextNode(" | "));
+                
+                // Link de Exclusão
+                const deleteLink = document.createElement('a');
+                deleteLink.href = "#";
+                deleteLink.textContent = "Excluir";
+                deleteLink.addEventListener('click', () => deleteRecord(item, metadata));
+                actionsCell.appendChild(deleteLink);
+
+                row.appendChild(actionsCell);
+                tbody.appendChild(row);
+            });
+
+            content.appendChild(table);
+        }
+
+        async function insertNewRecord(endpoint, metadata) {
+            const token = localStorage.getItem('token');
+            const newRecord = {};
+
+		metadata.formFields.forEach(field => {
+			newRecord[field.id] = document.getElementById(`insert-${field.id}`).value;
+		});
+
+
+const response = await fetch(`${API_BASE}${endpoint.replace("{entidade.EntityName}", metadata.entityName)}`, {
+    method: 'POST',
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newRecord)
+});
+
+
+if (response.ok) {
+    alert('Registro inserido com sucesso!');
+    loadPage(`${API_BASE}${metadata.endpoints.read.replace("{entidade.EntityName}", metadata.entityName)}`, "crud");
+} else {
+    alert('Erro ao inserir o registro.');
+}
+        }
+
+ async function editRecord(item, metadata) {
+    // Exemplo de edição
+    const token = localStorage.getItem('token');
+    const updateEndpoint = `${API_BASE}${metadata.endpoints.update.replace("{entidade.EntityName}", metadata.entityName)}`;
+    
+    // Preencher formulário de edição
+    metadata.formFields.forEach(field => {
+        document.getElementById(`insert-${field.id}`).value = item[field.id];
+    });
+
+    const submitButton = document.getElementById('insertButton');
+    submitButton.textContent = "Atualizar";
+    submitButton.removeEventListener('click', insertNewRecord);
+    submitButton.addEventListener('click', async () => {
+        const updatedRecord = {};
+
+        metadata.formFields.forEach(field => {
+            updatedRecord[field.id] = document.getElementById(`insert-${field.id}`).value;
+        });
+
+        const response = await fetch(updateEndpoint, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedRecord),
+        });
+
+        if (response.ok) {
+            alert('Registro atualizado com sucesso!');
+            loadPage(`${API_BASE}${metadata.endpoints.read.replace("{entidade.EntityName}", metadata.entityName)}`, "crud");
+        } else {
+            alert('Erro ao atualizar o registro.');
+        }
+    });
+}
+
+async function deleteRecord(item, metadata) {
+    const token = localStorage.getItem('token');
+    const deleteEndpoint = `${API_BASE}${metadata.endpoints.delete.replace("{entidade.EntityName}", metadata.entityName)}`;
+
+    if (!confirm(`Tem certeza que deseja excluir o registro com ID ${item.id}?`)) return;
+
+    const response = await fetch(deleteEndpoint, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: item.id }),
+    });
+
+    if (response.ok) {
+        alert('Registro excluído com sucesso!');
+        loadPage(`${API_BASE}${metadata.endpoints.read.replace("{entidade.EntityName}", metadata.entityName)}`, "crud");
+    } else {
+        alert('Erro ao excluir o registro.');
+    }
+}
     </script>
 </body>
 </html>

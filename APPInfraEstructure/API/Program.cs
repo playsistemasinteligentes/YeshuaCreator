@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using API.Migrations;
+using RepositoryInterfaces.Read.Repository.Clinica;
 
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -93,6 +94,28 @@ app.Use(async (context, next) =>
 {
     Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
     await next();
+});
+
+
+app.MapGet("/Clinica/ReadClinica", async (HttpContext context, IClinicaReadRepository rep) =>
+{
+    try
+    {
+        // Obtendo os parâmetros da query string manualmente
+        var id = context.Request.Query["id"].ToString();
+        var nome = context.Request.Query["Nome"].ToString();
+        var endereco = context.Request.Query["Endereco"].ToString();
+        var telefone = context.Request.Query["Telefone"].ToString();
+
+        // Chamando o repositório com os filtros
+        var result = rep.getAllClinica();
+
+        return Results.Ok(result);
+    }
+    catch (Exception e)
+    {
+        return Results.Problem(e.Message);
+    }
 });
 
 Endpoints.MapEndpoints(app, "http://localhost:5162/");

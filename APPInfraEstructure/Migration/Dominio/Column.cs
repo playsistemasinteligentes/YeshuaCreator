@@ -30,6 +30,7 @@ namespace Dominio
         public string FkEntityName;
 
         public string ColumnReference { get; private set; }
+        public bool required { get; internal set; }
 
         public Entity Int()
         {
