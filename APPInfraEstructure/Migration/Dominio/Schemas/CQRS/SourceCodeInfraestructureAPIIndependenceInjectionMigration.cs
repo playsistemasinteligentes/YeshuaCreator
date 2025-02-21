@@ -37,6 +37,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"builder.Services.AddTransient<Repositorio.Inputs.Repositorio.{entity.EntityName}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository, Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<Comandos.Receivers.{entity.EntityName}.Insert{entity.EntityName}Receiver>();");
+                sb.AppendLine($"builder.Services.AddTransient<Comandos.Receivers.{entity.EntityName}.Update{entity.EntityName}Receiver>();");
             }
 
 

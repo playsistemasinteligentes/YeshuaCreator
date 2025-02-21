@@ -468,12 +468,12 @@ type = "crud"
                     searchFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Descricao", label = "Descri√ß√£o da Especialidade", type = "System.Func`1[System.String]" },
+ new { id = "Descricao", label = "DescriÁ„o da Especialidade", type = "System.Func`1[System.String]" },
             },
                     formFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Descricao", label = "Descri√ß√£o da Especialidade", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Descricao", label = "DescriÁ„o da Especialidade", type = "System.Func`1[System.String]", required = "False"  },
             },
                     endpoints = new
                     {
@@ -527,13 +527,13 @@ type = "crud"
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]" },
- new { id = "DataHora", label = "Hor√°rio Dispon√≠vel", type = "System.Func`1[System.String]" },
+ new { id = "DataHora", label = "Hor·rio DisponÌvel", type = "System.Func`1[System.String]" },
             },
                     formFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataHora", label = "Hor√°rio Dispon√≠vel", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DataHora", label = "Hor·rio DisponÌvel", type = "System.Func`1[System.String]", required = "False"  },
             },
                     endpoints = new
                     {
@@ -555,12 +555,12 @@ type = "crud"
                     searchFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Descricao", label = "Descri√ß√£o do Grupo de Servi√ßos", type = "System.Func`1[System.String]" },
+ new { id = "Descricao", label = "DescriÁ„o do Grupo de ServiÁos", type = "System.Func`1[System.String]" },
             },
                     formFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Descricao", label = "Descri√ß√£o do Grupo de Servi√ßos", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Descricao", label = "DescriÁ„o do Grupo de ServiÁos", type = "System.Func`1[System.String]", required = "False"  },
             },
                     endpoints = new
                     {
@@ -582,16 +582,16 @@ type = "crud"
                     searchFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "GrupoServicoId", label = "Grupo de Servi√ßo", type = "System.Func`1[System.String]" },
- new { id = "Nome", label = "Nome do Servi√ßo", type = "System.Func`1[System.String]" },
- new { id = "Valor", label = "Valor do Servi√ßo", type = "System.Func`1[System.String]" },
+ new { id = "GrupoServicoId", label = "Grupo de ServiÁo", type = "System.Func`1[System.String]" },
+ new { id = "Nome", label = "Nome do ServiÁo", type = "System.Func`1[System.String]" },
+ new { id = "Valor", label = "Valor do ServiÁo", type = "System.Func`1[System.String]" },
             },
                     formFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "GrupoServicoId", label = "Grupo de Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Nome", label = "Nome do Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Valor", label = "Valor do Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "GrupoServicoId", label = "Grupo de ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Nome", label = "Nome do ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Valor", label = "Valor do ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
             },
                     endpoints = new
                     {
@@ -644,7 +644,7 @@ type = "crud"
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]" },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]" },
- new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]" },
+ new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]" },
  new { id = "DataHora", label = "Data e Hora do Agendamento", type = "System.Func`1[System.String]" },
  new { id = "Status", label = "Status do Agendamento", type = "System.Func`1[System.String]" },
             },
@@ -653,7 +653,7 @@ type = "crud"
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "DataHora", label = "Data e Hora do Agendamento", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "Status", label = "Status do Agendamento", type = "System.Func`1[System.String]", required = "False"  },
             },
@@ -678,20 +678,20 @@ type = "crud"
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]" },
- new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]" },
- new { id = "Valor", label = "Valor da Transa√ß√£o", type = "System.Func`1[System.String]" },
- new { id = "TipoMovimentacao", label = "Tipo de Movimenta√ß√£o", type = "System.Func`1[System.String]" },
- new { id = "DataMovimentacao", label = "Data da Movimenta√ß√£o", type = "System.Func`1[System.String]" },
+ new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]" },
+ new { id = "Valor", label = "Valor da TransaÁ„o", type = "System.Func`1[System.String]" },
+ new { id = "TipoMovimentacao", label = "Tipo de MovimentaÁ„o", type = "System.Func`1[System.String]" },
+ new { id = "DataMovimentacao", label = "Data da MovimentaÁ„o", type = "System.Func`1[System.String]" },
  new { id = "SaldoAtual", label = "Saldo Atual", type = "System.Func`1[System.String]" },
             },
                     formFields = new[]
     {
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Valor", label = "Valor da Transa√ß√£o", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "TipoMovimentacao", label = "Tipo de Movimenta√ß√£o", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataMovimentacao", label = "Data da Movimenta√ß√£o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Valor", label = "Valor da TransaÁ„o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "TipoMovimentacao", label = "Tipo de MovimentaÁ„o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DataMovimentacao", label = "Data da MovimentaÁ„o", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "SaldoAtual", label = "Saldo Atual", type = "System.Func`1[System.String]", required = "False"  },
             },
                     endpoints = new
@@ -714,15 +714,15 @@ type = "crud"
                     searchFields = new[]
     {
  new { id = "id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "nome", label = "Nome da Cl√≠nica", type = "System.Func`1[System.String]" },
- new { id = "endereco", label = "Endere√ßo da Cl√≠nica", type = "System.Func`1[System.String]" },
+ new { id = "nome", label = "Nome da ClÌnica", type = "System.Func`1[System.String]" },
+ new { id = "endereco", label = "EndereÁo da ClÌnica", type = "System.Func`1[System.String]" },
  new { id = "telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]" },
             },
                     formFields = new[]
     {
  new { id = "id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "nome", label = "Nome da Cl√≠nica", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "endereco", label = "Endere√ßo da Cl√≠nica", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "nome", label = "Nome da ClÌnica", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "endereco", label = "EndereÁo da ClÌnica", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]", required = "False"  },
             },
                     endpoints = new
