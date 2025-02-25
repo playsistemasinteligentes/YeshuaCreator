@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.Servico
+namespace Command.Receivers.Write
 {
     public class InsertServicoReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.Servico
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.ServicoCommand)comand;
+            var c = (Command.Commands.ServicoCrudCommand)comand;
 
             var servico = new ServicoEntity(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
             if (!servico.isValid())

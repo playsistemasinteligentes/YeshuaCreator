@@ -15,7 +15,7 @@ var gbs = GlobalSettingsSingleton.Instance
 
 using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gbs.GetConnectionStringWrite()).SqlConnection())
 {
-    using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
+    using (IUnitOfWork unitOfWork = new UnitOfWork(connection, true))
     {
         new MigrationBuilder()
             .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))

@@ -43,6 +43,12 @@ namespace Dominio
             AddColumns.Add(col);
             return this;
         }
+        public Entity AddColumn(string columnName, string description, string helper)
+        {
+            var col = new Column(columnName, description, this, helper);
+            AddColumns.Add(col);
+            return this;
+        }
         public Entity AlterColumn(string columnName, string description)
         {
             var col = new Column(columnName, description, this);

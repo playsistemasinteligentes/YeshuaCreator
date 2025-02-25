@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Migration.Dominio.Schemas.CQRS
+{
+    public sealed class CQRSParam
+    {
+        private static readonly Lazy<CQRSParam> _instance = new(() => new CQRSParam());
+
+        public static CQRSParam I => _instance.Value;
+
+        public string NameSpaceCommandsRead { get; set; } = "Command.Commands.Read";
+        public string NameSpaceCommands { get; internal set; } = "Command.Commands";
+        public string NameSpaceCommandReceiversRead { get; set; } = "Command.Receivers.Read";
+        public string NameSpaceCommandReceiversWrite { get; set; } = "Command.Receivers.Write";
+
+        private CQRSParam() { }
+    }
+}

@@ -1,31 +1,34 @@
 ﻿using Migration.Dominio;
 using System.Text;
+using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
 
 namespace Dominio.Schemas.CQRS
 {
     public class SourceCodeAplicationCommandCommandsMigration : SourceCodeBase
     {
         private readonly Entity _entity;
-
-        public SourceCodeAplicationCommandCommandsMigration(Entity entity)
+        private readonly CommandType _commandType;
+        private readonly string _nameSpace;
+        public SourceCodeAplicationCommandCommandsMigration(Entity entity, CommandType commandType, string nameSpace)
             : base()
         {
             _entity = entity;
+            _commandType = commandType;
+            _nameSpace = nameSpace;
         }
 
         protected override string GenerateCode()
         {
             var sb = new StringBuilder();
-
             sb.AppendLine("using Comandos.Pateners.Command;");
             sb.AppendLine("using Dominio.TiposPrimitivos;");
 
             // Adiciona a declaração do namespace
-            sb.AppendLine("namespace Comandos.Commands");
+            sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
 
             // Define a classe
-            sb.AppendLine($"    public class {_entity.EntityName}Command : ICommand");
+            sb.AppendLine($"    public class {_entity.EntityName}{_commandType}Command : ICommand");
             sb.AppendLine("    {");
 
             // Adiciona as propriedades
@@ -44,6 +47,8 @@ namespace Dominio.Schemas.CQRS
 
             return sb.ToString();
         }
+
+
         protected override string GenerateCustonCode()
         {
             return "";

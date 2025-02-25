@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.Especialidade
+namespace Command.Receivers.Write
 {
     public class UpdateEspecialidadeReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.Especialidade
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.EspecialidadeCommand)comand;
+            var c = (Command.Commands.EspecialidadeCrudCommand)comand;
 
             var especialidade = new EspecialidadeEntity(c.Id, c.Descricao);
             if (!especialidade.isValid())

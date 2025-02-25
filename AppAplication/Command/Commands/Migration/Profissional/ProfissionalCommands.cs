@@ -1,8 +1,8 @@
 using Comandos.Pateners.Command;
 using Dominio.TiposPrimitivos;
-namespace Comandos.Commands
+namespace Command.Commands
 {
-    public class ProfissionalCommand : ICommand
+    public class ProfissionalCrudCommand : ICommand
     {
         public int Id { get; set; }
         public string Nome { get; set; }

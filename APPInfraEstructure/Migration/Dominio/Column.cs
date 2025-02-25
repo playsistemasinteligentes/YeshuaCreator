@@ -5,12 +5,13 @@ namespace Dominio
 {
     public class Column
     {
-        public Column(string columnName, string description, Entity entity)
+        public Column(string columnName, string description, Entity entity, string helper = "")
         {
             this.Name = columnName;
             this.Description = description;
             this.Entity = entity;
             this.IsNotNull = false;
+            this.Helper = helper;
         }
 
         public Entity Entity { get; set; }
@@ -26,6 +27,7 @@ namespace Dominio
         public bool IsKey { get; set; }
         public bool IsFK { get; private set; }
         public bool IsNotNull { get; private set; }
+        public string Helper { get; }
 
         public string FkEntityName;
 

@@ -1,8 +1,8 @@
 using Comandos.Pateners.Command;
 using Dominio.TiposPrimitivos;
-namespace Comandos.Commands
+namespace Command.Commands
 {
-    public class ServicoCommand : ICommand
+    public class ServicoCrudCommand : ICommand
     {
         public int Id { get; set; }
         public int GrupoServicoId { get; set; }

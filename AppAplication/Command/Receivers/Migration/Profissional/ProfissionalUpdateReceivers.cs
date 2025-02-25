@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.Profissional
+namespace Command.Receivers.Write
 {
     public class UpdateProfissionalReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.Profissional
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.ProfissionalCommand)comand;
+            var c = (Command.Commands.ProfissionalCrudCommand)comand;
 
             var profissional = new ProfissionalEntity(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
             if (!profissional.isValid())

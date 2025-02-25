@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.Agendamentos
+namespace Command.Receivers.Write
 {
     public class InsertAgendamentosReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.Agendamentos
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.AgendamentosCommand)comand;
+            var c = (Command.Commands.AgendamentosCrudCommand)comand;
 
             var agendamentos = new AgendamentosEntity(c.Id, c.PacienteId, c.ProfissionalId, c.ServicoId, c.DataHora, c.Status);
             if (!agendamentos.isValid())

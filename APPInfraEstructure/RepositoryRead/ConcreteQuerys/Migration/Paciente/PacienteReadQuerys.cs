@@ -12,7 +12,7 @@ namespace Output.Querys.Paciente
     {
         public QueryModel SelectAllPacienteQuery()
         {
-            this.Query = $@" select Id, Nome, Telefone from Paciente ";
+            this.Query = $@" select Id, Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional from Paciente ";
             return new QueryModel(this.Query, null);
         }
     }

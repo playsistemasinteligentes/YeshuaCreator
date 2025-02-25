@@ -34,10 +34,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("public static void MapEndpoints(this WebApplication app, string dominio)");
             sb.AppendLine("{");
 
-            // inserts 
+            #region Insert 
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] Comandos.Receivers.{entity.EntityName}.Insert{entity.EntityName}Receiver receiver, [FromBody] {entity.EntityName}Command command) =>");
+                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
 
                 sb.AppendLine("{");
 
@@ -58,12 +58,12 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("");
                 sb.AppendLine("");
             }
-
+            #endregion
 
             // update 
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPut(\"/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] Comandos.Receivers.{entity.EntityName}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {entity.EntityName}Command command) =>");
+                sb.AppendLine($"app.MapPut(\"/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
 
                 sb.AppendLine("{");
 
@@ -88,7 +88,7 @@ namespace Dominio.Schemas.CQRS
             // Delete
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapDelete(\"/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] Comandos.Receivers.{entity.EntityName}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {entity.EntityName}Command command) =>");
+                sb.AppendLine($"app.MapDelete(\"/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
 
                 sb.AppendLine("{");
 
@@ -137,6 +137,31 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("}).RequireAuthorization();");
 
 
+
+            #region Read  
+            foreach (var entity in _migration.Entitys)
+            {
+                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
+                sb.AppendLine("{");
+                sb.AppendLine("try");
+                sb.AppendLine("{");
+                sb.AppendLine("var result = receiver.Execute(command);");
+                sb.AppendLine("return Results.Ok(result.Data);");
+
+                sb.AppendLine("}");
+
+
+                sb.AppendLine("catch (Exception ex)");
+                sb.AppendLine("{");
+                sb.AppendLine("return Results.Problem(ex.Message);");
+                sb.AppendLine("}");
+                sb.AppendLine("}).RequireAuthorization();");
+                sb.AppendLine("");
+                sb.AppendLine("");
+            }
+            #endregion
+
+
             // get meta data 
             foreach (var entidade in _migration.Entitys)
             {
@@ -152,22 +177,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
                 sb.AppendLine("searchFields = new[]");
                 sb.AppendLine("{");
-                // for
-                sb.AppendLine(" new { id = \"name\", label = \"Nome\", type = \"text\" },");
-                sb.AppendLine(" new { id = \"name\", label = \"Nome\", type = \"text\" },");
-                sb.AppendLine(" new { id = \"name1\", label = \"Nome1\", type = \"text\" }");
-                sb.AppendLine("},");
 
-                sb.AppendLine("formFields = new[]");
-                sb.AppendLine("{");
-                // for
-                sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
-                sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
-                sb.AppendLine("new { id = \"name\", label = \"Nome\", type = \"text\", required = true },");
-                sb.AppendLine("},");
-
-
-                /*  foreach (var item in entidade.AddColumns)
+                foreach (var item in entidade.AddColumns)
                     sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType}\" }},");
                 sb.AppendLine("},");
 
@@ -175,8 +186,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
                 foreach (var item in entidade.AddColumns)
                     sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType}\", required = \"{item.required}\"  }},");
-*/
-
+                sb.AppendLine("},");
 
                 sb.AppendLine("             endpoints = new");
                 sb.AppendLine("             {");

@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using API.Migrations;
 using RepositoryInterfaces.Read.Repository.Clinica;
+using Comandos.Commands;
 
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -97,7 +98,17 @@ app.Use(async (context, next) =>
 });
 
 
-app.MapGet("/Clinica/ReadClinica", async (HttpContext context, IClinicaReadRepository rep) =>
+
+
+
+
+
+
+
+//app.MapPost(, async ([FromServices] Comandos.Receivers.MovimentacaoFinanceira.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] MovimentacaoFinanceiraCommand command) =>
+
+
+app.MapGet("/Clinica/ReadClinica1", async (HttpContext context, IClinicaReadRepository rep) =>
 {
     try
     {

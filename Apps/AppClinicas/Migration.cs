@@ -32,7 +32,6 @@ namespace AppClinicas
     {
         public override void Up()
         {
-
             AddEntity("Especialidade")
                     .AddColumn("Id", "ID").Int().Incremento().Key()
                     .AddColumn("Descricao", "Descrição da Especialidade").Varchar(100).NotNull();
@@ -48,6 +47,8 @@ namespace AppClinicas
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int()
                 .AddColumn("DataHora", "Horário Disponível").DateTime().NotNull();
 
+            // recursos 
+
             AddEntity("GrupoServico")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Descricao", "Descrição do Grupo de Serviços").Varchar(150).NotNull();
@@ -61,15 +62,69 @@ namespace AppClinicas
             AddEntity("Paciente")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Nome", "Nome do Paciente").Varchar(150).NotNull()
-                .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull();
+                .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull()
+                .AddColumn("DataNascimento", "Data Nascimento").DateTime()
 
-            AddEntity("Agendamentos")
+                .AddColumn("Genero", "Gênero").Int()
+                    .Enumerable(1, "Mascolino")
+                    .Enumerable(2, "Feminino")
+                    .Enumerable(3, "Outros")
+                .AddColumn("Escolaridade", "Escolaridade").Varchar(60)
+                .AddColumn("Profissao", "Profissão").Varchar(60)
+                .AddColumn("Endereco", "Endereço").Varchar(250)
+                .AddColumn("NomeResponsavel", "Nome Responsavel").Varchar(250)
+                .AddColumn("TelefoneResponsavel", "Telefone Responsavel").Varchar(15)
+                .AddColumn("PrincipaisQueixas", "PrincipaisQueixas").Varchar(4000)
+                .AddColumn("ObservacaoAdicional", "ObservacaoAdicional").Varchar(2000);
+
+            AddEntity("Sesoes")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int()
                 .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int()
-                .AddColumn("DataHora", "Data e Hora do Agendamento").DateTime().NotNull()
-                .AddColumn("Status", "Status do Agendamento").Varchar(50).NotNull();
+                .AddColumn("DataInicio", "Data Inicio").DateTime().NotNull()
+                .AddColumn("DataFim", "Data Fim").DateTime().NotNull()
+                .AddColumn("Status", "Status do Agendamento").Int()
+                .Enumerable(0, "Em Aberto")
+                .Enumerable(1, "Compareceu")
+                .Enumerable(2, "Não Compareceu")
+                .Enumerable(3, "Remarcado pelo proficional")
+                .Enumerable(4, "Remarcado pelo paciente")
+                .AddColumn("MovimentacaoFinanceiraId", "Financeiro").FK("MovimentacaoFinanceira", "Id").Int()
+
+                .AddColumn("SinteseProntuario", "Sintese Prontuario").Varchar(8000)
+                // prontuario CRP
+                // RegistroDocumental CRP
+                // Anaminese 
+                //3. Queixa Principal e Evolução
+                .AddColumn("QueixaPrincipal", "Queixa Principal").Varchar(500)
+                .AddColumn("MotivoConsultaAtual", "Motivo da consulta atual").Varchar(500)
+                .AddColumn("SintomasRelatados", "Sintomas relatados").Varchar(500)
+                .AddColumn("MudancasDesdeUltimaSessaao", "Mudanças desde a última sessão").Int()
+                .Enumerable(1, "Menteve")
+                .Enumerable(2, "Melhora")
+                .Enumerable(3, "Piora")
+                .Enumerable(4, "Eventos novos")
+                //4. Observações Clínicas
+                .AddColumn("ComportamentoObservado", "Comportamento observado durante a sessão").Varchar(500)
+                .AddColumn("EstadoEmocionalGeral", "Estado emocional geral", "(exemplo: ansioso, deprimido, irritado, estável)").Varchar(500)
+                .AddColumn("DiscursoPensamentos", "Discurso e pensamentos", "(lógicos, acelerados, confusos, obsessivos)").Varchar(500)
+                //5. Estratégias e Intervenções na Sessão
+                .AddColumn("TecnicasUtilizadas", "Técnicas utilizadas").Varchar(500)
+                .AddColumn("QuestionamentosReflexoesAbordadas", "Questionamentos e reflexões abordadas").Varchar(500)
+                .AddColumn("ExerciciosTarefasSugeridas", "Exercícios ou tarefas de casa sugeridas").Varchar(500)
+
+                //6. Diagnóstico ou Hipótese Diagnóstica (se aplicável)
+                .AddColumn("DiagnoosticoHipoteseDiagnoostica", "Diagnóstico ou Hipótese Diagnóstica").Varchar(500)
+                //7. Plano Terapêutico e Encaminhamentos
+                .AddColumn("ObjetivosCurtoPrazo", "Objetivos a curto prazo").Varchar(500)
+                .AddColumn("ObjetivosLongoPrazo", "Objetivos a longo prazo").Varchar(500)
+                .AddColumn("FrequenciaSugeridaSessooes", "Frequência sugerida das sessões").Varchar(500)
+                .AddColumn("EncaminhamentoOutrosProfissionais", "Encaminhamento para outros profissionais").Varchar(500)
+                //8. Anotações Extras
+                .AddColumn("InformacoesRelevantesFuturasConsultas", "Informações relevantes que podem ser úteis em futuras consultas").Varchar(500)
+                .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(500);
+
 
             AddEntity("MovimentacaoFinanceira")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -81,7 +136,6 @@ namespace AppClinicas
                     .Enumerable(2, "Pagamento")
                 .AddColumn("DataMovimentacao", "Data da Movimentação").DateTime().NotNull()
                 .AddColumn("SaldoAtual", "Saldo Atual").Decimal(10, 2).NotNull();
-
 
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddHub("ClinicaPaciente")

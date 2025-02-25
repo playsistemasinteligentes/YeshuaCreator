@@ -9,10 +9,15 @@ namespace Migration.Dominio.Schemas.CQRS
 {
     public enum CommandType
     {
+        Crud = 0,
+
         Insert = 1,
 
         Update = 2,
 
-        Delete = 3
+        Delete = 3,
+
+        Read = 4
+
     }
 }

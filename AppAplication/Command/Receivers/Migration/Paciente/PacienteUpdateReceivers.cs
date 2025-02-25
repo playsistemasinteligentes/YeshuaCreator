@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.Paciente
+namespace Command.Receivers.Write
 {
     public class UpdatePacienteReceiver : ReciverBase
     {
@@ -21,9 +21,9 @@ namespace Comandos.Receivers.Paciente
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.PacienteCommand)comand;
+            var c = (Command.Commands.PacienteCrudCommand)comand;
 
-            var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone);
+            var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
             if (!paciente.isValid())
                 return new State(300, "Erro ", comand);
 

@@ -1,8 +1,8 @@
 using Comandos.Pateners.Command;
 using Dominio.TiposPrimitivos;
-namespace Comandos.Commands
+namespace Command.Commands
 {
-    public class MovimentacaoFinanceiraCommand : ICommand
+    public class MovimentacaoFinanceiraCrudCommand : ICommand
     {
         public int Id { get; set; }
         public int PacienteId { get; set; }

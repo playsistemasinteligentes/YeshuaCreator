@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.Clinica
+namespace Command.Receivers.Write
 {
     public class DeleteClinicaReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.Clinica
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.ClinicaCommand)comand;
+            var c = (Command.Commands.ClinicaCrudCommand)comand;
 
             var clinica = new ClinicaEntity(c.Id, c.Nome, c.Endereco, c.Telefone);
             if (!clinica.isValid())

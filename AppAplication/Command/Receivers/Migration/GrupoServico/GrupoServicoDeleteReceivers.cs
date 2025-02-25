@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.GrupoServico
+namespace Command.Receivers.Write
 {
     public class DeleteGrupoServicoReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.GrupoServico
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.GrupoServicoCommand)comand;
+            var c = (Command.Commands.GrupoServicoCrudCommand)comand;
 
             var gruposervico = new GrupoServicoEntity(c.Id, c.Descricao);
             if (!gruposervico.isValid())

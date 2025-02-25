@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.MovimentacaoFinanceira
+namespace Command.Receivers.Write
 {
     public class InsertMovimentacaoFinanceiraReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.MovimentacaoFinanceira
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.MovimentacaoFinanceiraCommand)comand;
+            var c = (Command.Commands.MovimentacaoFinanceiraCrudCommand)comand;
 
             var movimentacaofinanceira = new MovimentacaoFinanceiraEntity(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
             if (!movimentacaofinanceira.isValid())

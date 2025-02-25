@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Receivers.DisponibilidadeAgenda
+namespace Command.Receivers.Write
 {
     public class UpdateDisponibilidadeAgendaReceiver : ReciverBase
     {
@@ -21,7 +21,7 @@ namespace Comandos.Receivers.DisponibilidadeAgenda
 
         protected override State Action(ICommand comand)
         {
-            var c = (Comandos.Commands.DisponibilidadeAgendaCommand)comand;
+            var c = (Command.Commands.DisponibilidadeAgendaCrudCommand)comand;
 
             var disponibilidadeagenda = new DisponibilidadeAgendaEntity(c.Id, c.ProfissionalId, c.DataHora);
             if (!disponibilidadeagenda.isValid())

@@ -3,395 +3,395 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 namespace API.Migrations
 {
-    public static class Endpoints
-    {
-        public static void MapEndpoints(this WebApplication app, string dominio)
-        {
-            app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Comandos.Receivers.Especialidade.InsertEspecialidadeReceiver receiver, [FromBody] EspecialidadeCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+public static class Endpoints
+{
+public static void MapEndpoints(this WebApplication app, string dominio)
+{
+app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Receivers.Write.InsertEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/Profissional/PostProfissional", async ([FromServices] Comandos.Receivers.Profissional.InsertProfissionalReceiver receiver, [FromBody] ProfissionalCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Receivers.Write.InsertProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServices] Comandos.Receivers.DisponibilidadeAgenda.InsertDisponibilidadeAgendaReceiver receiver, [FromBody] DisponibilidadeAgendaCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.InsertDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Comandos.Receivers.GrupoServico.InsertGrupoServicoReceiver receiver, [FromBody] GrupoServicoCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Receivers.Write.InsertGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/Servico/PostServico", async ([FromServices] Comandos.Receivers.Servico.InsertServicoReceiver receiver, [FromBody] ServicoCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Write.InsertServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/Paciente/PostPaciente", async ([FromServices] Comandos.Receivers.Paciente.InsertPacienteReceiver receiver, [FromBody] PacienteCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Write.InsertPacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/Agendamentos/PostAgendamentos", async ([FromServices] Comandos.Receivers.Agendamentos.InsertAgendamentosReceiver receiver, [FromBody] AgendamentosCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromServices] Comandos.Receivers.MovimentacaoFinanceira.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] MovimentacaoFinanceiraCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPost("/Clinica/PostClinica", async ([FromServices] Comandos.Receivers.Clinica.InsertClinicaReceiver receiver, [FromBody] ClinicaCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Comandos.Receivers.Especialidade.UpdateEspecialidadeReceiver receiver, [FromBody] EspecialidadeCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Receivers.Write.UpdateEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/Profissional/PutProfissional", async ([FromServices] Comandos.Receivers.Profissional.UpdateProfissionalReceiver receiver, [FromBody] ProfissionalCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/Profissional/PutProfissional", async ([FromServices] Command.Receivers.Write.UpdateProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServices] Comandos.Receivers.DisponibilidadeAgenda.UpdateDisponibilidadeAgendaReceiver receiver, [FromBody] DisponibilidadeAgendaCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.UpdateDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Comandos.Receivers.GrupoServico.UpdateGrupoServicoReceiver receiver, [FromBody] GrupoServicoCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receivers.Write.UpdateGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/Servico/PutServico", async ([FromServices] Comandos.Receivers.Servico.UpdateServicoReceiver receiver, [FromBody] ServicoCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/Servico/PutServico", async ([FromServices] Command.Receivers.Write.UpdateServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/Paciente/PutPaciente", async ([FromServices] Comandos.Receivers.Paciente.UpdatePacienteReceiver receiver, [FromBody] PacienteCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Write.UpdatePacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/Agendamentos/PutAgendamentos", async ([FromServices] Comandos.Receivers.Agendamentos.UpdateAgendamentosReceiver receiver, [FromBody] AgendamentosCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Comandos.Receivers.MovimentacaoFinanceira.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] MovimentacaoFinanceiraCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapPut("/Clinica/PutClinica", async ([FromServices] Comandos.Receivers.Clinica.UpdateClinicaReceiver receiver, [FromBody] ClinicaCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Comandos.Receivers.Especialidade.DeleteEspecialidadeReceiver receiver, [FromBody] EspecialidadeCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Command.Receivers.Write.DeleteEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Comandos.Receivers.Profissional.DeleteProfissionalReceiver receiver, [FromBody] ProfissionalCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.Receivers.Write.DeleteProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([FromServices] Comandos.Receivers.DisponibilidadeAgenda.DeleteDisponibilidadeAgendaReceiver receiver, [FromBody] DisponibilidadeAgendaCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.DeleteDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Comandos.Receivers.GrupoServico.DeleteGrupoServicoReceiver receiver, [FromBody] GrupoServicoCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.Receivers.Write.DeleteGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/Servico/DeleteServico", async ([FromServices] Comandos.Receivers.Servico.DeleteServicoReceiver receiver, [FromBody] ServicoCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.Write.DeleteServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Comandos.Receivers.Paciente.DeletePacienteReceiver receiver, [FromBody] PacienteCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receivers.Write.DeletePacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/Agendamentos/DeleteAgendamentos", async ([FromServices] Comandos.Receivers.Agendamentos.DeleteAgendamentosReceiver receiver, [FromBody] AgendamentosCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([FromServices] Comandos.Receivers.MovimentacaoFinanceira.DeleteMovimentacaoFinanceiraReceiver receiver, [FromBody] MovimentacaoFinanceiraCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.DeleteMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Comandos.Receivers.Clinica.DeleteClinicaReceiver receiver, [FromBody] ClinicaCommand command) =>
-            {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    return Results.Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
-            }).RequireAuthorization();
+app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
-            app.MapGet("/getMenu", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var menu = new[]
-    {
+app.MapGet("/getMenu", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var menu = new[]
+{
 
 new{
 id="Especialidade",
@@ -436,9 +436,9 @@ type = "crud"
 }
 ,
 new{
-id="Agendamentos",
-description="Agendamentos",
-endpoint="/getMetaDataAgendamentos",
+id="Sesoes",
+description="Sesoes",
+endpoint="/getMetaDataSesoes",
 type = "crud"
 }
 ,
@@ -455,286 +455,470 @@ description="Clinica",
 endpoint="/getMetaDataClinica",
 type = "crud"
 }
-            };
-                return Results.Ok(menu);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataEspecialidade", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+};
+return Results.Ok(menu);
+}).RequireAuthorization();
+app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Receivers.Read.EspecialidadeReadReceiver receiver, [FromBody] Command.Commands.Read.EspecialidadeReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Receivers.Read.ProfissionalReadReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadReceiver receiver, [FromBody] Command.Commands.Read.DisponibilidadeAgendaReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Receivers.Read.GrupoServicoReadReceiver receiver, [FromBody] Command.Commands.Read.GrupoServicoReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read.ServicoReadReceiver receiver, [FromBody] Command.Commands.Read.ServicoReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Read.PacienteReadReceiver receiver, [FromBody] Command.Commands.Read.PacienteReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Commands.Read.ClinicaReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapGet("/getMetaDataEspecialidade", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Descricao", label = "DescriÁ„o da Especialidade", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+ new { id = "Descricao", label = "Descri√ß√£o da Especialidade", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Descricao", label = "DescriÁ„o da Especialidade", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/Especialidade/PostEspecialidade",
-                        read = "/Especialidade/ReadEspecialidade",
-                        update = "/Especialidade/PutEspecialidade",
-                        delete = "/Especialidade/DeleteEspecialidade"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataProfissional", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+ new { id = "Descricao", label = "Descri√ß√£o da Especialidade", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/Especialidade/PostEspecialidade",
+                 read = "/Especialidade/ReadEspecialidade",
+                 update = "/Especialidade/PutEspecialidade",
+                 delete = "/Especialidade/DeleteEspecialidade"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataProfissional", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "Nome", label = "Nome do Profissional", type = "System.Func`1[System.String]" },
  new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "System.Func`1[System.String]" },
  new { id = "Telefone", label = "Telefone do Profissional", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "Nome", label = "Nome do Profissional", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "Telefone", label = "Telefone do Profissional", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/Profissional/PostProfissional",
-                        read = "/Profissional/ReadProfissional",
-                        update = "/Profissional/PutProfissional",
-                        delete = "/Profissional/DeleteProfissional"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+},
+             endpoints = new
+             {
+                 create = "/Profissional/PostProfissional",
+                 read = "/Profissional/ReadProfissional",
+                 update = "/Profissional/PutProfissional",
+                 delete = "/Profissional/DeleteProfissional"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]" },
- new { id = "DataHora", label = "Hor·rio DisponÌvel", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+ new { id = "DataHora", label = "Hor√°rio Dispon√≠vel", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataHora", label = "Hor·rio DisponÌvel", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/DisponibilidadeAgenda/PostDisponibilidadeAgenda",
-                        read = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
-                        update = "/DisponibilidadeAgenda/PutDisponibilidadeAgenda",
-                        delete = "/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataGrupoServico", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+ new { id = "DataHora", label = "Hor√°rio Dispon√≠vel", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/DisponibilidadeAgenda/PostDisponibilidadeAgenda",
+                 read = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
+                 update = "/DisponibilidadeAgenda/PutDisponibilidadeAgenda",
+                 delete = "/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataGrupoServico", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Descricao", label = "DescriÁ„o do Grupo de ServiÁos", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+ new { id = "Descricao", label = "Descri√ß√£o do Grupo de Servi√ßos", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Descricao", label = "DescriÁ„o do Grupo de ServiÁos", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/GrupoServico/PostGrupoServico",
-                        read = "/GrupoServico/ReadGrupoServico",
-                        update = "/GrupoServico/PutGrupoServico",
-                        delete = "/GrupoServico/DeleteGrupoServico"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataServico", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+ new { id = "Descricao", label = "Descri√ß√£o do Grupo de Servi√ßos", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/GrupoServico/PostGrupoServico",
+                 read = "/GrupoServico/ReadGrupoServico",
+                 update = "/GrupoServico/PutGrupoServico",
+                 delete = "/GrupoServico/DeleteGrupoServico"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataServico", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "GrupoServicoId", label = "Grupo de ServiÁo", type = "System.Func`1[System.String]" },
- new { id = "Nome", label = "Nome do ServiÁo", type = "System.Func`1[System.String]" },
- new { id = "Valor", label = "Valor do ServiÁo", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+ new { id = "GrupoServicoId", label = "Grupo de Servi√ßo", type = "System.Func`1[System.String]" },
+ new { id = "Nome", label = "Nome do Servi√ßo", type = "System.Func`1[System.String]" },
+ new { id = "Valor", label = "Valor do Servi√ßo", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "GrupoServicoId", label = "Grupo de ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Nome", label = "Nome do ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Valor", label = "Valor do ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/Servico/PostServico",
-                        read = "/Servico/ReadServico",
-                        update = "/Servico/PutServico",
-                        delete = "/Servico/DeleteServico"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataPaciente", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+ new { id = "GrupoServicoId", label = "Grupo de Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Nome", label = "Nome do Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Valor", label = "Valor do Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/Servico/PostServico",
+                 read = "/Servico/ReadServico",
+                 update = "/Servico/PutServico",
+                 delete = "/Servico/DeleteServico"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataPaciente", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "Nome", label = "Nome do Paciente", type = "System.Func`1[System.String]" },
  new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+ new { id = "DataNascimento", label = "Data Nascimento", type = "System.Func`1[System.String]" },
+ new { id = "Genero", label = "G√™nero", type = "System.Func`1[System.String]" },
+ new { id = "Escolaridade", label = "Escolaridade", type = "System.Func`1[System.String]" },
+ new { id = "Profissao", label = "Profiss√£o", type = "System.Func`1[System.String]" },
+ new { id = "Endereco", label = "Endere√ßo", type = "System.Func`1[System.String]" },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "System.Func`1[System.String]" },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "System.Func`1[System.String]" },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "System.Func`1[System.String]" },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "Nome", label = "Nome do Paciente", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/Paciente/PostPaciente",
-                        read = "/Paciente/ReadPaciente",
-                        update = "/Paciente/PutPaciente",
-                        delete = "/Paciente/DeletePaciente"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataAgendamentos", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+ new { id = "DataNascimento", label = "Data Nascimento", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Genero", label = "G√™nero", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Escolaridade", label = "Escolaridade", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Profissao", label = "Profiss√£o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Endereco", label = "Endere√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/Paciente/PostPaciente",
+                 read = "/Paciente/ReadPaciente",
+                 update = "/Paciente/PutPaciente",
+                 delete = "/Paciente/DeletePaciente"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]" },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]" },
- new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]" },
- new { id = "DataHora", label = "Data e Hora do Agendamento", type = "System.Func`1[System.String]" },
+ new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]" },
+ new { id = "DataInicio", label = "Data Inicio", type = "System.Func`1[System.String]" },
+ new { id = "DataFim", label = "Data Fim", type = "System.Func`1[System.String]" },
  new { id = "Status", label = "Status do Agendamento", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "System.Func`1[System.String]" },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "System.Func`1[System.String]" },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "System.Func`1[System.String]" },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "System.Func`1[System.String]" },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "System.Func`1[System.String]" },
+ new { id = "MudancasDesdeUltimaSessaao", label = "MudancÃßas desde a uÃÅltima sessaÃÉo", type = "System.Func`1[System.String]" },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessaÃÉo", type = "System.Func`1[System.String]" },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "System.Func`1[System.String]" },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "System.Func`1[System.String]" },
+ new { id = "TecnicasUtilizadas", label = "TeÃÅcnicas utilizadas", type = "System.Func`1[System.String]" },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexoÃÉes abordadas", type = "System.Func`1[System.String]" },
+ new { id = "ExerciciosTarefasSugeridas", label = "ExerciÃÅcios ou tarefas de casa sugeridas", type = "System.Func`1[System.String]" },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "DiagnoÃÅstico ou HipoÃÅtese DiagnoÃÅstica", type = "System.Func`1[System.String]" },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "System.Func`1[System.String]" },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "System.Func`1[System.String]" },
+ new { id = "FrequenciaSugeridaSessooes", label = "FrequeÃÇncia sugerida das sessoÃÉes", type = "System.Func`1[System.String]" },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "System.Func`1[System.String]" },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "InformacÃßoÃÉes relevantes que podem ser uÃÅteis em futuras consultas", type = "System.Func`1[System.String]" },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapeÃÇutico", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataHora", label = "Data e Hora do Agendamento", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DataInicio", label = "Data Inicio", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DataFim", label = "Data Fim", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "Status", label = "Status do Agendamento", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/Agendamentos/PostAgendamentos",
-                        read = "/Agendamentos/ReadAgendamentos",
-                        update = "/Agendamentos/PutAgendamentos",
-                        delete = "/Agendamentos/DeleteAgendamentos"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "MudancasDesdeUltimaSessaao", label = "MudancÃßas desde a uÃÅltima sessaÃÉo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessaÃÉo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "TecnicasUtilizadas", label = "TeÃÅcnicas utilizadas", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexoÃÉes abordadas", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ExerciciosTarefasSugeridas", label = "ExerciÃÅcios ou tarefas de casa sugeridas", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "DiagnoÃÅstico ou HipoÃÅtese DiagnoÃÅstica", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "FrequenciaSugeridaSessooes", label = "FrequeÃÇncia sugerida das sessoÃÉes", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "InformacÃßoÃÉes relevantes que podem ser uÃÅteis em futuras consultas", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapeÃÇutico", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/Sesoes/PostSesoes",
+                 read = "/Sesoes/ReadSesoes",
+                 update = "/Sesoes/PutSesoes",
+                 delete = "/Sesoes/DeleteSesoes"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]" },
- new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]" },
- new { id = "Valor", label = "Valor da TransaÁ„o", type = "System.Func`1[System.String]" },
- new { id = "TipoMovimentacao", label = "Tipo de MovimentaÁ„o", type = "System.Func`1[System.String]" },
- new { id = "DataMovimentacao", label = "Data da MovimentaÁ„o", type = "System.Func`1[System.String]" },
+ new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]" },
+ new { id = "Valor", label = "Valor da Transa√ß√£o", type = "System.Func`1[System.String]" },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimenta√ß√£o", type = "System.Func`1[System.String]" },
+ new { id = "DataMovimentacao", label = "Data da Movimenta√ß√£o", type = "System.Func`1[System.String]" },
  new { id = "SaldoAtual", label = "Saldo Atual", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
+},
+formFields = new[]
+{
  new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ServicoId", label = "ServiÁo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Valor", label = "Valor da TransaÁ„o", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "TipoMovimentacao", label = "Tipo de MovimentaÁ„o", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataMovimentacao", label = "Data da MovimentaÁ„o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "ServicoId", label = "Servi√ßo", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Valor", label = "Valor da Transa√ß√£o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimenta√ß√£o", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "DataMovimentacao", label = "Data da Movimenta√ß√£o", type = "System.Func`1[System.String]", required = "False"  },
  new { id = "SaldoAtual", label = "Saldo Atual", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/MovimentacaoFinanceira/PostMovimentacaoFinanceira",
-                        read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
-                        update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
-                        delete = "/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-            app.MapGet("/getMetaDataClinica", (HttpContext context) =>
-            {
-                var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                    return Results.Unauthorized();
-                var metadatacrud = new
-                {
-                    searchFields = new[]
-    {
- new { id = "id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "nome", label = "Nome da ClÌnica", type = "System.Func`1[System.String]" },
- new { id = "endereco", label = "EndereÁo da ClÌnica", type = "System.Func`1[System.String]" },
- new { id = "telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]" },
-            },
-                    formFields = new[]
-    {
- new { id = "id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "nome", label = "Nome da ClÌnica", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "endereco", label = "EndereÁo da ClÌnica", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]", required = "False"  },
-            },
-                    endpoints = new
-                    {
-                        create = "/Clinica/PostClinica",
-                        read = "/Clinica/ReadClinica",
-                        update = "/Clinica/PutClinica",
-                        delete = "/Clinica/DeleteClinica"
-                    }
-                };
-                return Results.Ok(metadatacrud);
-            }).RequireAuthorization();
-        }
-    }
+},
+             endpoints = new
+             {
+                 create = "/MovimentacaoFinanceira/PostMovimentacaoFinanceira",
+                 read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
+                 update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
+                 delete = "/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataClinica", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
+ new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
+ new { id = "Nome", label = "Nome da Cl√≠nica", type = "System.Func`1[System.String]" },
+ new { id = "Endereco", label = "Endere√ßo da Cl√≠nica", type = "System.Func`1[System.String]" },
+ new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]" },
+},
+formFields = new[]
+{
+ new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Nome", label = "Nome da Cl√≠nica", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Endereco", label = "Endere√ßo da Cl√≠nica", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/Clinica/PostClinica",
+                 read = "/Clinica/ReadClinica",
+                 update = "/Clinica/PutClinica",
+                 delete = "/Clinica/DeleteClinica"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+}
+}
 }
