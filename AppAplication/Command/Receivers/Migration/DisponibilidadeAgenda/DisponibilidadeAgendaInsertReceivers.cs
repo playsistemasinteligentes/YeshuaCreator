@@ -24,8 +24,8 @@ namespace Command.Receivers.Write
             var c = (Command.Commands.DisponibilidadeAgendaCrudCommand)comand;
 
             var disponibilidadeagenda = new DisponibilidadeAgendaEntity(c.Id, c.ProfissionalId, c.DataHora);
-            if (!disponibilidadeagenda.isValid())
-                return new State(300, "Erro ", comand);
+            if (!disponibilidadeagenda.isValidInsert())
+                return new State(300, disponibilidadeagenda.getErroMensagens(), comand);
 
             try
             {
@@ -34,7 +34,7 @@ namespace Command.Receivers.Write
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
     }

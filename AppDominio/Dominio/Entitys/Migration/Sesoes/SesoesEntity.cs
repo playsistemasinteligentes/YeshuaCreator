@@ -10,19 +10,19 @@
                 {
                     public partial class SesoesEntity
                     {
-                public int Id { get; set; }
-    public int PacienteId { get; set; }
-    public int ProfissionalId { get; set; }
-    public int ServicoId { get; set; }
+                public int? Id { get; set; }
+    public int? PacienteId { get; set; }
+    public int? ProfissionalId { get; set; }
+    public int? ServicoId { get; set; }
     public DateTime DataInicio { get; set; }
     public DateTime DataFim { get; set; }
-    public int Status { get; set; }
-    public int MovimentacaoFinanceiraId { get; set; }
+    public int? Status { get; set; }
+    public int? MovimentacaoFinanceiraId { get; set; }
     public string SinteseProntuario { get; set; }
     public string QueixaPrincipal { get; set; }
     public string MotivoConsultaAtual { get; set; }
     public string SintomasRelatados { get; set; }
-    public int MudancasDesdeUltimaSessaao { get; set; }
+    public int? MudancasDesdeUltimaSessaao { get; set; }
     public string ComportamentoObservado { get; set; }
     public string EstadoEmocionalGeral { get; set; }
     public string DiscursoPensamentos { get; set; }
@@ -36,13 +36,14 @@
     public string EncaminhamentoOutrosProfissionais { get; set; }
     public string InformacoesRelevantesFuturasConsultas { get; set; }
     public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+    private List<string> _erroMensagem = null;
  public SesoesEntity(int id, int pacienteid, int profissionalid, int servicoid, DateTime datainicio, DateTime datafim, int status, int movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
  Id = id; 
  PacienteId = pacienteid; 
  ProfissionalId = profissionalid; 
  ServicoId = servicoid; 
- DataInicio = datainicio; 
- DataFim = datafim; 
+ DataInicio = (datainicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : datainicio; 
+ DataFim = (datafim < (new DateTime(1800, 1, 1))) ? DateTime.Now : datafim; 
  Status = status; 
  MovimentacaoFinanceiraId = movimentacaofinanceiraid; 
  SinteseProntuario = sinteseprontuario; 
@@ -64,10 +65,31 @@
  InformacoesRelevantesFuturasConsultas = informacoesrelevantesfuturasconsultas; 
  FeedbackPacienteSobreProcessoTerapeeutico = feedbackpacientesobreprocessoterapeeutico; 
 }
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if (DataInicio == null || DataInicio < (new DateTime(1800, 1, 1)))
+   this._erroMensagem.Add("Data Inicio deve ser informado.");
+   if (DataFim == null || DataFim < (new DateTime(1800, 1, 1)))
+   this._erroMensagem.Add("Data Fim deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
 
-                public bool isValid()
+                public bool isValidInsert()
+                {
+                    return isValidData();
+                }
+                public bool isValidUpdate()
+                {
+                    return isValidData();
+                }
+                public bool isValidDelete()
                 {
                     return true;
+                }
+                public List<string> getErroMensagens()
+                {
+                    return this._erroMensagem;
                 }
             }
         }

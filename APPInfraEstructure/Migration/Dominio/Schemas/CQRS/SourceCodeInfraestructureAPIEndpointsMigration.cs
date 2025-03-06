@@ -1,6 +1,7 @@
 ﻿using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using static Dapper.SqlMapper;
@@ -41,18 +42,7 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("{");
 
-                sb.AppendLine("try");
-                sb.AppendLine("{");
-                sb.AppendLine("var result = receiver.Execute(command);");
-                sb.AppendLine("return Results.Ok(result);");
-                sb.AppendLine("}");
-
-
-                sb.AppendLine("catch (Exception ex)");
-                sb.AppendLine("{");
-                sb.AppendLine("return Results.Problem(ex.Message);");
-                sb.AppendLine("}");
-
+                setResultHttp(sb, "result");
 
                 sb.AppendLine("}).RequireAuthorization();");
                 sb.AppendLine("");
@@ -92,18 +82,7 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("{");
 
-                sb.AppendLine("try");
-                sb.AppendLine("{");
-                sb.AppendLine("var result = receiver.Execute(command);");
-                sb.AppendLine("return Results.Ok(result);");
-                sb.AppendLine("}");
-
-
-                sb.AppendLine("catch (Exception ex)");
-                sb.AppendLine("{");
-                sb.AppendLine("return Results.Problem(ex.Message);");
-                sb.AppendLine("}");
-
+                setResultHttp(sb, "result");
 
                 sb.AppendLine("}).RequireAuthorization();");
                 sb.AppendLine("");
@@ -143,18 +122,9 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
                 sb.AppendLine("{");
-                sb.AppendLine("try");
-                sb.AppendLine("{");
-                sb.AppendLine("var result = receiver.Execute(command);");
-                sb.AppendLine("return Results.Ok(result.Data);");
 
-                sb.AppendLine("}");
+                setResultHttp(sb, "result.Data");
 
-
-                sb.AppendLine("catch (Exception ex)");
-                sb.AppendLine("{");
-                sb.AppendLine("return Results.Problem(ex.Message);");
-                sb.AppendLine("}");
                 sb.AppendLine("}).RequireAuthorization();");
                 sb.AppendLine("");
                 sb.AppendLine("");
@@ -179,13 +149,13 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
 
                 foreach (var item in entidade.AddColumns)
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType}\" }},");
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\" }},");
                 sb.AppendLine("},");
 
                 sb.AppendLine("formFields = new[]");
                 sb.AppendLine("{");
                 foreach (var item in entidade.AddColumns)
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType}\", required = \"{item.required}\"  }},");
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\"  }},");
                 sb.AppendLine("},");
 
                 sb.AppendLine("             endpoints = new");
@@ -212,6 +182,40 @@ namespace Dominio.Schemas.CQRS
         protected override string GenerateCustonCode()
         {
             return "";
+        }
+        private void setResultHttp(StringBuilder sb, string result)
+        {
+
+            sb.AppendLine("try");
+            sb.AppendLine("{");
+            sb.AppendLine("var result = receiver.Execute(command);");
+            sb.AppendLine("if (result.StatusCode == 200)");
+            sb.AppendLine($"    return Results.Ok({result});");
+            sb.AppendLine("else");
+            sb.AppendLine("    return Results.BadRequest(result);");
+            sb.AppendLine("}");
+            sb.AppendLine("catch (Exception ex)");
+            sb.AppendLine("{");
+            sb.AppendLine("return Results.Problem(ex.Message);");
+            sb.AppendLine("}");
+
+
+
+            sb.AppendLine("try");
+            sb.AppendLine("{");
+            sb.AppendLine("var result = receiver.Execute(command);");
+            sb.AppendLine("return Results.Ok(result.Data);");
+
+            sb.AppendLine("}");
+
+
+            sb.AppendLine("catch (Exception ex)");
+            sb.AppendLine("{");
+            sb.AppendLine("return Results.Problem(ex.Message);");
+            sb.AppendLine("}");
+
+
+
         }
     }
 }

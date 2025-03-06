@@ -24,8 +24,8 @@ namespace Command.Receivers.Write
             var c = (Command.Commands.EspecialidadeCrudCommand)comand;
 
             var especialidade = new EspecialidadeEntity(c.Id, c.Descricao);
-            if (!especialidade.isValid())
-                return new State(300, "Erro ", comand);
+            if (!especialidade.isValidUpdate())
+                return new State(300, especialidade.getErroMensagens(), comand);
 
             try
             {
@@ -34,7 +34,7 @@ namespace Command.Receivers.Write
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
     }

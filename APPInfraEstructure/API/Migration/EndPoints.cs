@@ -12,7 +12,19 @@ app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Re
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -26,7 +38,19 @@ app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Rece
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -40,7 +64,19 @@ app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServ
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -54,7 +90,19 @@ app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Rece
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -68,7 +116,19 @@ app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Writ
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -82,21 +142,19 @@ app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Wr
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
 }
 catch (Exception ex)
 {
 return Results.Problem(ex.Message);
 }
-}).RequireAuthorization();
-
-
-app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
-{
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -110,7 +168,45 @@ app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromSe
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -124,7 +220,19 @@ app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Writ
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -217,7 +325,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
 {
 try
 {
@@ -231,7 +339,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
 {
 try
 {
@@ -264,7 +372,19 @@ app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Comman
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -278,7 +398,19 @@ app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -292,7 +424,19 @@ app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([From
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -306,7 +450,19 @@ app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -320,7 +476,19 @@ app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -334,21 +502,19 @@ app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receiver
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
 }
 catch (Exception ex)
 {
 return Results.Problem(ex.Message);
 }
-}).RequireAuthorization();
-
-
-app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
-{
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -362,7 +528,45 @@ app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([Fr
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -376,7 +580,19 @@ app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
 }
 catch (Exception ex)
 {
@@ -436,16 +652,16 @@ type = "crud"
 }
 ,
 new{
-id="Sesoes",
-description="Sesoes",
-endpoint="/getMetaDataSesoes",
+id="MovimentacaoFinanceira",
+description="MovimentacaoFinanceira",
+endpoint="/getMetaDataMovimentacaoFinanceira",
 type = "crud"
 }
 ,
 new{
-id="MovimentacaoFinanceira",
-description="MovimentacaoFinanceira",
-endpoint="/getMetaDataMovimentacaoFinanceira",
+id="Sesoes",
+description="Sesoes",
+endpoint="/getMetaDataSesoes",
 type = "crud"
 }
 ,
@@ -463,6 +679,18 @@ app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Re
 try
 {
 var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
 return Results.Ok(result.Data);
 }
 catch (Exception ex)
@@ -474,6 +702,18 @@ return Results.Problem(ex.Message);
 
 app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Receivers.Read.ProfissionalReadReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadCommand command) =>
 {
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
 try
 {
 var result = receiver.Execute(command);
@@ -491,6 +731,18 @@ app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServ
 try
 {
 var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
 return Results.Ok(result.Data);
 }
 catch (Exception ex)
@@ -502,6 +754,18 @@ return Results.Problem(ex.Message);
 
 app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Receivers.Read.GrupoServicoReadReceiver receiver, [FromBody] Command.Commands.Read.GrupoServicoReadCommand command) =>
 {
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
 try
 {
 var result = receiver.Execute(command);
@@ -519,6 +783,18 @@ app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read
 try
 {
 var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
 return Results.Ok(result.Data);
 }
 catch (Exception ex)
@@ -533,17 +809,15 @@ app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Re
 try
 {
 var result = receiver.Execute(command);
-return Results.Ok(result.Data);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
 }
 catch (Exception ex)
 {
 return Results.Problem(ex.Message);
 }
-}).RequireAuthorization();
-
-
-app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadCommand command) =>
-{
 try
 {
 var result = receiver.Execute(command);
@@ -561,6 +835,44 @@ app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromSe
 try
 {
 var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
 return Results.Ok(result.Data);
 }
 catch (Exception ex)
@@ -572,6 +884,18 @@ return Results.Problem(ex.Message);
 
 app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Commands.Read.ClinicaReadCommand command) =>
 {
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
 try
 {
 var result = receiver.Execute(command);
@@ -593,13 +917,13 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Descricao", label = "Descrição da Especialidade", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "Descricao", label = "Descrição da Especialidade", type = "string" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Descricao", label = "Descrição da Especialidade", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "Descricao", label = "Descrição da Especialidade", type = "string", required = "False"  },
 },
              endpoints = new
              {
@@ -620,17 +944,17 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Nome", label = "Nome do Profissional", type = "System.Func`1[System.String]" },
- new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "System.Func`1[System.String]" },
- new { id = "Telefone", label = "Telefone do Profissional", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "Nome", label = "Nome do Profissional", type = "string" },
+ new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int" },
+ new { id = "Telefone", label = "Telefone do Profissional", type = "string" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Nome", label = "Nome do Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Telefone", label = "Telefone do Profissional", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "Nome", label = "Nome do Profissional", type = "string", required = "False"  },
+ new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", required = "False"  },
+ new { id = "Telefone", label = "Telefone do Profissional", type = "string", required = "False"  },
 },
              endpoints = new
              {
@@ -651,15 +975,15 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]" },
- new { id = "DataHora", label = "Horário Disponível", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "ProfissionalId", label = "Profissional", type = "int" },
+ new { id = "DataHora", label = "Horário Disponível", type = "DateTime" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataHora", label = "Horário Disponível", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False"  },
+ new { id = "DataHora", label = "Horário Disponível", type = "DateTime", required = "False"  },
 },
              endpoints = new
              {
@@ -680,13 +1004,13 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", required = "False"  },
 },
              endpoints = new
              {
@@ -707,17 +1031,17 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "System.Func`1[System.String]" },
- new { id = "Nome", label = "Nome do Serviço", type = "System.Func`1[System.String]" },
- new { id = "Valor", label = "Valor do Serviço", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int" },
+ new { id = "Nome", label = "Nome do Serviço", type = "string" },
+ new { id = "Valor", label = "Valor do Serviço", type = "Decimal" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Nome", label = "Nome do Serviço", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Valor", label = "Valor do Serviço", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", required = "False"  },
+ new { id = "Nome", label = "Nome do Serviço", type = "string", required = "False"  },
+ new { id = "Valor", label = "Valor do Serviço", type = "Decimal", required = "False"  },
 },
              endpoints = new
              {
@@ -738,33 +1062,33 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Nome", label = "Nome do Paciente", type = "System.Func`1[System.String]" },
- new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]" },
- new { id = "DataNascimento", label = "Data Nascimento", type = "System.Func`1[System.String]" },
- new { id = "Genero", label = "Gênero", type = "System.Func`1[System.String]" },
- new { id = "Escolaridade", label = "Escolaridade", type = "System.Func`1[System.String]" },
- new { id = "Profissao", label = "Profissão", type = "System.Func`1[System.String]" },
- new { id = "Endereco", label = "Endereço", type = "System.Func`1[System.String]" },
- new { id = "NomeResponsavel", label = "Nome Responsavel", type = "System.Func`1[System.String]" },
- new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "System.Func`1[System.String]" },
- new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "System.Func`1[System.String]" },
- new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "Nome", label = "Nome do Paciente", type = "string" },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string" },
+ new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime" },
+ new { id = "Genero", label = "Gênero", type = "int" },
+ new { id = "Escolaridade", label = "Escolaridade", type = "string" },
+ new { id = "Profissao", label = "Profissão", type = "string" },
+ new { id = "Endereco", label = "Endereço", type = "string" },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string" },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string" },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string" },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Nome", label = "Nome do Paciente", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataNascimento", label = "Data Nascimento", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Genero", label = "Gênero", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Escolaridade", label = "Escolaridade", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Profissao", label = "Profissão", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Endereco", label = "Endereço", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "NomeResponsavel", label = "Nome Responsavel", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "Nome", label = "Nome do Paciente", type = "string", required = "False"  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False"  },
+ new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", required = "False"  },
+ new { id = "Genero", label = "Gênero", type = "int", required = "False"  },
+ new { id = "Escolaridade", label = "Escolaridade", type = "string", required = "False"  },
+ new { id = "Profissao", label = "Profissão", type = "string", required = "False"  },
+ new { id = "Endereco", label = "Endereço", type = "string", required = "False"  },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", required = "False"  },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", required = "False"  },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", required = "False"  },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", required = "False"  },
 },
              endpoints = new
              {
@@ -772,81 +1096,6 @@ formFields = new[]
                  read = "/Paciente/ReadPaciente",
                  update = "/Paciente/PutPaciente",
                  delete = "/Paciente/DeletePaciente"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
-app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
-{
-var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-searchFields = new[]
-{
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]" },
- new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]" },
- new { id = "ServicoId", label = "Serviço", type = "System.Func`1[System.String]" },
- new { id = "DataInicio", label = "Data Inicio", type = "System.Func`1[System.String]" },
- new { id = "DataFim", label = "Data Fim", type = "System.Func`1[System.String]" },
- new { id = "Status", label = "Status do Agendamento", type = "System.Func`1[System.String]" },
- new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "System.Func`1[System.String]" },
- new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "System.Func`1[System.String]" },
- new { id = "QueixaPrincipal", label = "Queixa Principal", type = "System.Func`1[System.String]" },
- new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "System.Func`1[System.String]" },
- new { id = "SintomasRelatados", label = "Sintomas relatados", type = "System.Func`1[System.String]" },
- new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "System.Func`1[System.String]" },
- new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "System.Func`1[System.String]" },
- new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "System.Func`1[System.String]" },
- new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "System.Func`1[System.String]" },
- new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "System.Func`1[System.String]" },
- new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "System.Func`1[System.String]" },
- new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "System.Func`1[System.String]" },
- new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "System.Func`1[System.String]" },
- new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "System.Func`1[System.String]" },
- new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "System.Func`1[System.String]" },
- new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "System.Func`1[System.String]" },
- new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "System.Func`1[System.String]" },
- new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "System.Func`1[System.String]" },
- new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "System.Func`1[System.String]" },
-},
-formFields = new[]
-{
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ProfissionalId", label = "Profissional", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ServicoId", label = "Serviço", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataInicio", label = "Data Inicio", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataFim", label = "Data Fim", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Status", label = "Status do Agendamento", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "QueixaPrincipal", label = "Queixa Principal", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "SintomasRelatados", label = "Sintomas relatados", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "System.Func`1[System.String]", required = "False"  },
-},
-             endpoints = new
-             {
-                 create = "/Sesoes/PostSesoes",
-                 read = "/Sesoes/ReadSesoes",
-                 update = "/Sesoes/PutSesoes",
-                 delete = "/Sesoes/DeleteSesoes"
              }
          };
          return Results.Ok(metadatacrud);
@@ -860,23 +1109,23 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]" },
- new { id = "ServicoId", label = "Serviço", type = "System.Func`1[System.String]" },
- new { id = "Valor", label = "Valor da Transação", type = "System.Func`1[System.String]" },
- new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "System.Func`1[System.String]" },
- new { id = "DataMovimentacao", label = "Data da Movimentação", type = "System.Func`1[System.String]" },
- new { id = "SaldoAtual", label = "Saldo Atual", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "PacienteId", label = "Paciente", type = "int" },
+ new { id = "ServicoId", label = "Serviço", type = "int" },
+ new { id = "Valor", label = "Valor da Transação", type = "Decimal" },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int" },
+ new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime" },
+ new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "PacienteId", label = "Paciente", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "ServicoId", label = "Serviço", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Valor", label = "Valor da Transação", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "DataMovimentacao", label = "Data da Movimentação", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "SaldoAtual", label = "Saldo Atual", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "PacienteId", label = "Paciente", type = "int", required = "False"  },
+ new { id = "ServicoId", label = "Serviço", type = "int", required = "False"  },
+ new { id = "Valor", label = "Valor da Transação", type = "Decimal", required = "False"  },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", required = "False"  },
+ new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", required = "False"  },
+ new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", required = "False"  },
 },
              endpoints = new
              {
@@ -884,6 +1133,81 @@ formFields = new[]
                  read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
                  update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
                  delete = "/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+searchFields = new[]
+{
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "PacienteId", label = "Paciente", type = "int" },
+ new { id = "ProfissionalId", label = "Profissional", type = "int" },
+ new { id = "ServicoId", label = "Serviço", type = "int" },
+ new { id = "DataInicio", label = "Data Inicio", type = "DateTime" },
+ new { id = "DataFim", label = "Data Fim", type = "DateTime" },
+ new { id = "Status", label = "Status do Agendamento", type = "int" },
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int" },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string" },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string" },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string" },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string" },
+ new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int" },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string" },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string" },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string" },
+ new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string" },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string" },
+ new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string" },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string" },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string" },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string" },
+ new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string" },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string" },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string" },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string" },
+},
+formFields = new[]
+{
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "PacienteId", label = "Paciente", type = "int", required = "False"  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False"  },
+ new { id = "ServicoId", label = "Serviço", type = "int", required = "False"  },
+ new { id = "DataInicio", label = "Data Inicio", type = "DateTime", required = "False"  },
+ new { id = "DataFim", label = "Data Fim", type = "DateTime", required = "False"  },
+ new { id = "Status", label = "Status do Agendamento", type = "int", required = "False"  },
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", required = "False"  },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", required = "False"  },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", required = "False"  },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", required = "False"  },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", required = "False"  },
+ new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", required = "False"  },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", required = "False"  },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", required = "False"  },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", required = "False"  },
+ new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", required = "False"  },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", required = "False"  },
+ new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", required = "False"  },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", required = "False"  },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", required = "False"  },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", required = "False"  },
+ new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", required = "False"  },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", required = "False"  },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", required = "False"  },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", required = "False"  },
+},
+             endpoints = new
+             {
+                 create = "/Sesoes/PostSesoes",
+                 read = "/Sesoes/ReadSesoes",
+                 update = "/Sesoes/PutSesoes",
+                 delete = "/Sesoes/DeleteSesoes"
              }
          };
          return Results.Ok(metadatacrud);
@@ -897,17 +1221,17 @@ var metadatacrud = new
 {
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]" },
- new { id = "Nome", label = "Nome da Clínica", type = "System.Func`1[System.String]" },
- new { id = "Endereco", label = "Endereço da Clínica", type = "System.Func`1[System.String]" },
- new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]" },
+ new { id = "Id", label = "ID", type = "int" },
+ new { id = "Nome", label = "Nome da Clínica", type = "string" },
+ new { id = "Endereco", label = "Endereço da Clínica", type = "string" },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string" },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Nome", label = "Nome da Clínica", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Endereco", label = "Endereço da Clínica", type = "System.Func`1[System.String]", required = "False"  },
- new { id = "Telefone", label = "Telefone de Contato", type = "System.Func`1[System.String]", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False"  },
+ new { id = "Nome", label = "Nome da Clínica", type = "string", required = "False"  },
+ new { id = "Endereco", label = "Endereço da Clínica", type = "string", required = "False"  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False"  },
 },
              endpoints = new
              {

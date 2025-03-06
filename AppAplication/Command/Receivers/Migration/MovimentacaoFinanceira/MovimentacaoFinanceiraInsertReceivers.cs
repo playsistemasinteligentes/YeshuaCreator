@@ -24,8 +24,8 @@ namespace Command.Receivers.Write
             var c = (Command.Commands.MovimentacaoFinanceiraCrudCommand)comand;
 
             var movimentacaofinanceira = new MovimentacaoFinanceiraEntity(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
-            if (!movimentacaofinanceira.isValid())
-                return new State(300, "Erro ", comand);
+            if (!movimentacaofinanceira.isValidInsert())
+                return new State(300, movimentacaofinanceira.getErroMensagens(), comand);
 
             try
             {
@@ -34,7 +34,7 @@ namespace Command.Receivers.Write
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
     }

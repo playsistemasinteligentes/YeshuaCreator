@@ -44,12 +44,12 @@ namespace Dominio.Schemas
             var dropColumnsString = string.Join("; ", dropColumns);
 
             var addColumns = entity.AddColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
             ).ToArray();
             var addColumnsString = string.Join("; ", addColumns);
 
             var alterColumns = entity.AlterColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
             ).ToArray();
             var alterColumnsString = string.Join("; ", alterColumns);
 
@@ -74,7 +74,7 @@ namespace Dominio.Schemas
                 throw new InvalidOperationException("EntityName cannot be null or empty.");
             }
             var columnsSql = entity.AddColumns.Select(c =>
-                $"{c.Name} {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNullable ? "NULL" : "NOT NULL" : "")}"
+                $"{c.Name} {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
             ).ToArray();
             var columnsSqlString = string.Join(", ", columnsSql);
 

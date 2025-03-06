@@ -24,8 +24,8 @@ namespace Command.Receivers.Write
             var c = (Command.Commands.ClinicaCrudCommand)comand;
 
             var clinica = new ClinicaEntity(c.Id, c.Nome, c.Endereco, c.Telefone);
-            if (!clinica.isValid())
-                return new State(300, "Erro ", comand);
+            if (!clinica.isValidDelete())
+                return new State(300, clinica.getErroMensagens(), comand);
 
             try
             {
@@ -34,7 +34,7 @@ namespace Command.Receivers.Write
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
     }

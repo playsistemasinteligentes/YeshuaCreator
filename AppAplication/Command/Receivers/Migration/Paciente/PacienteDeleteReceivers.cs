@@ -24,8 +24,8 @@ namespace Command.Receivers.Write
             var c = (Command.Commands.PacienteCrudCommand)comand;
 
             var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
-            if (!paciente.isValid())
-                return new State(300, "Erro ", comand);
+            if (!paciente.isValidDelete())
+                return new State(300, paciente.getErroMensagens(), comand);
 
             try
             {
@@ -34,7 +34,7 @@ namespace Command.Receivers.Write
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
     }

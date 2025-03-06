@@ -8,12 +8,27 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using API.Migrations;
 using RepositoryInterfaces.Read.Repository.Clinica;
 using Comandos.Commands;
-
+using System.Net;
+using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
+using System;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
 // Configuração do Kestrel para otimização de desempenho
 builder.WebHost.ConfigureKestrel(options =>
 {
+    // HTTP (opcional)
+    options.Listen(IPAddress.Parse("192.168.18.19"), 5162);
+
+    // HTTPS com certificado
+    options.Listen(IPAddress.Parse("192.168.18.19"), 7214, listenOptions =>
+    {
+        listenOptions.UseHttps("C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\API\\bin\\Debug\\net8.0\\certi\\ck.pfx", "123456");
+    });
+
+
+
     options.Limits.MaxConcurrentConnections = 1000; // Ajuste conforme necessário
     options.Limits.MaxConcurrentUpgradedConnections = 1000; // Para WebSockets
     options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // Limite do corpo da requisição
@@ -23,12 +38,12 @@ builder.WebHost.ConfigureKestrel(options =>
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();
 
-
+// Adiciona a política CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost3000", builder =>
+    options.AddPolicy("AllowLocalhostAndNetwork", builder =>
     {
-        builder.WithOrigins("http://localhost:3000") // Define o domínio permitido
+        builder.WithOrigins("http://localhost:3000", "http://192.168.18.19:3000", "https://192.168.18.19:3000") // Permite ambos os domínios
                .AllowAnyMethod()                    // Permite qualquer método HTTP (GET, POST, etc)
                .AllowAnyHeader()                    // Permite qualquer cabeçalho
                .AllowCredentials();                 // Permite enviar cookies e credenciais
@@ -71,16 +86,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             ValidateLifetime = true
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+                var result = System.Text.Json.JsonSerializer.Serialize(new { message = "Autenticação falhou. Token inválido ou expirado." });
+                return context.Response.WriteAsync(result);
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
 
-
 var app = builder.Build();
 
-//app.UseResponseCompression();
+// Aplica a política CORS
+app.UseCors("AllowLocalhostAndNetwork");
 
-//Adiciona middleware de redirecionamento HTTPS
+// Adiciona middleware de redirecionamento HTTPS
 app.UseHttpsRedirection();
 
 // Configura o Swagger e Swagger UI
@@ -90,51 +116,27 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Example v1");
 });
 
+// Middleware de autenticação e autorização
+app.UseAuthentication();
+app.UseAuthorization();
+
 // Adiciona um middleware personalizado para logging de requisições
 app.Use(async (context, next) =>
 {
     Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
     await next();
+    Console.WriteLine($"Response: {context.Response.StatusCode} {context.Request.Method} {context.Request.Path}");
 });
 
 
+// Endpoints
 
-
-
-
-
-
-
-//app.MapPost(, async ([FromServices] Comandos.Receivers.MovimentacaoFinanceira.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] MovimentacaoFinanceiraCommand command) =>
-
-
-app.MapGet("/Clinica/ReadClinica1", async (HttpContext context, IClinicaReadRepository rep) =>
-{
-    try
-    {
-        // Obtendo os parâmetros da query string manualmente
-        var id = context.Request.Query["id"].ToString();
-        var nome = context.Request.Query["Nome"].ToString();
-        var endereco = context.Request.Query["Endereco"].ToString();
-        var telefone = context.Request.Query["Telefone"].ToString();
-
-        // Chamando o repositório com os filtros
-        var result = rep.getAllClinica();
-
-        return Results.Ok(result);
-    }
-    catch (Exception e)
-    {
-        return Results.Problem(e.Message);
-    }
-});
 
 Endpoints.MapEndpoints(app, "http://localhost:5162/");
 
 app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
 {
-    //if (user.Username == "admin" && user.Password == "123456")
-    if (true)
+    if (true) // Substitua pelo seu critério de validação
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
@@ -152,10 +154,45 @@ app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
     return Results.Unauthorized();
 });
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCors("AllowLocalhost3000");
+
+
+app.MapPost("/upload", async (HttpContext context) =>
+{
+    try
+    {
+        var request = context.Request;
+        if (!request.HasFormContentType)
+            return Results.BadRequest("Requisição inválida. Esperado form-data.");
+
+        var form = await request.ReadFormAsync();
+        var file = form.Files["audio"];
+
+        if (file == null || file.Length == 0)
+            return Results.BadRequest("Nenhum arquivo foi enviado.");
+
+        // Define o caminho onde os áudios serão salvos
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+        Directory.CreateDirectory(uploadsFolder); // Garante que a pasta existe
+
+        var filePath = Path.Combine(uploadsFolder, file.FileName);
+
+        // Salva o arquivo no servidor
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        Console.WriteLine($"Arquivo salvo em: {filePath}");
+        return Results.Ok(new { message = "Arquivo recebido com sucesso!", filePath });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Erro ao receber arquivo: {ex.Message}");
+        return Results.Problem("Erro ao processar o arquivo.");
+    }
+});
+
+
 app.Run();
 
 public record UserLogin(string Username, string Password);
-

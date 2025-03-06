@@ -22,7 +22,6 @@ namespace Dominio
         private string Type { get; set; }
 
         public float Length { get; set; }
-        public bool IsNullable { get; set; }
         public float Precision { get; set; }
         public bool IsKey { get; set; }
         public bool IsFK { get; private set; }
@@ -85,20 +84,20 @@ namespace Dominio
             return this.Entity;
         }
 
-        internal string getCsharpType()
+        internal string getCsharpType(bool nulableTag = false)
         {
             switch (this.Type)
             {
                 case "int":
-                    return "int";
+                    return "int" + (nulableTag && !this.IsNotNull ? "?" : "");
                 case "varchar":
                     return "string";
                 case "datetime":
                     return "DateTime";
                 case "float":
-                    return "Float";
+                    return "Float" + (nulableTag && this.IsNotNull ? "?" : "");
                 case "decimal":
-                    return "Decimal";
+                    return "Decimal" + (nulableTag && this.IsNotNull ? "?" : "");
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }

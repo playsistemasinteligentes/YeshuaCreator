@@ -26,7 +26,7 @@ namespace Comandos.Receivers.AgenteDeAgendamentoDePaciente
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
            private List<string> MenuDeAgendamento()

@@ -55,7 +55,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            }");
             sb.AppendLine("            catch (Exception e)");
             sb.AppendLine("            {");
-            sb.AppendLine("                return new State(500, \"Erro\", comand);");
+            sb.AppendLine("                return new State(500, e, comand);");
             sb.AppendLine("            }");
             sb.AppendLine("        }");
             foreach (var menu in _agent.Menus)

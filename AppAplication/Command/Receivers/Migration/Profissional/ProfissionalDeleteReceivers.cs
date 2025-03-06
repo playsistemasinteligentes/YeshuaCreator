@@ -24,8 +24,8 @@ namespace Command.Receivers.Write
             var c = (Command.Commands.ProfissionalCrudCommand)comand;
 
             var profissional = new ProfissionalEntity(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
-            if (!profissional.isValid())
-                return new State(300, "Erro ", comand);
+            if (!profissional.isValidDelete())
+                return new State(300, profissional.getErroMensagens(), comand);
 
             try
             {
@@ -34,7 +34,7 @@ namespace Command.Receivers.Write
             }
             catch (Exception e)
             {
-                return new State(500, "Erro", comand);
+                return new State(500, e, comand);
             }
         }
     }

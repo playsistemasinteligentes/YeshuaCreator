@@ -76,8 +76,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            var c = ({CQRSParam.I.NameSpaceCommands}.{_entity.EntityName}CrudCommand)comand;");
                 sb.AppendLine();
                 sb.AppendLine($"            var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
-                sb.AppendLine($"            if (!{_entity.EntityName.ToLower()}.isValid())");
-                sb.AppendLine("                return new State(300, \"Erro \", comand);");
+                sb.AppendLine($"            if (!{_entity.EntityName.ToLower()}.isValid{action}())");
+                sb.AppendLine($"                return new State(300, {_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
                 sb.AppendLine();
                 sb.AppendLine("            try");
                 sb.AppendLine("            {");
@@ -86,7 +86,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            }");
                 sb.AppendLine("            catch (Exception e)");
                 sb.AppendLine("            {");
-                sb.AppendLine("                return new State(500, \"Erro\", comand);");
+                sb.AppendLine("                return new State(500, e, comand);");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");

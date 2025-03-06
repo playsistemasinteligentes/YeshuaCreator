@@ -77,6 +77,18 @@ namespace AppClinicas
                 .AddColumn("PrincipaisQueixas", "PrincipaisQueixas").Varchar(4000)
                 .AddColumn("ObservacaoAdicional", "ObservacaoAdicional").Varchar(2000);
 
+            AddEntity("MovimentacaoFinanceira")
+                .AddColumn("Id", "ID").Int().Incremento().Key()
+                .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
+                .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int()
+                .AddColumn("Valor", "Valor da Transação").Decimal(10, 2).NotNull()
+                .AddColumn("TipoMovimentacao", "Tipo de Movimentação").Int().NotNull()
+                    .Enumerable(1, "Recebimento")
+                    .Enumerable(2, "Pagamento")
+                .AddColumn("DataMovimentacao", "Data da Movimentação").DateTime().NotNull()
+                .AddColumn("SaldoAtual", "Saldo Atual").Decimal(10, 2).NotNull();
+
+
             AddEntity("Sesoes")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
@@ -126,16 +138,6 @@ namespace AppClinicas
                 .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(500);
 
 
-            AddEntity("MovimentacaoFinanceira")
-                .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
-                .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int()
-                .AddColumn("Valor", "Valor da Transação").Decimal(10, 2).NotNull()
-                .AddColumn("TipoMovimentacao", "Tipo de Movimentação").Varchar(50).NotNull()
-                    .Enumerable(1, "Recebimento")
-                    .Enumerable(2, "Pagamento")
-                .AddColumn("DataMovimentacao", "Data da Movimentação").DateTime().NotNull()
-                .AddColumn("SaldoAtual", "Saldo Atual").Decimal(10, 2).NotNull();
 
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddHub("ClinicaPaciente")
