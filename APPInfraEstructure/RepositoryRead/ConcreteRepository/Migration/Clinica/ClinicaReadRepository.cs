@@ -43,3 +43,4 @@ namespace Read.ConcreteRepository.Clinica
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

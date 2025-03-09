@@ -15,7 +15,7 @@
     public string Endereco { get; set; }
     public string Telefone { get; set; }
     private List<string> _erroMensagem = null;
- public ClinicaEntity(int id, string nome, string endereco, string telefone ){
+ public ClinicaEntity(int? id, string nome, string endereco, string telefone ){
  Id = id; 
  Nome = nome; 
  Endereco = endereco; 
@@ -50,4 +50,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

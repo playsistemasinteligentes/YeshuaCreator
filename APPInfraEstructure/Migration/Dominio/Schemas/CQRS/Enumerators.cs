@@ -17,7 +17,9 @@ namespace Migration.Dominio.Schemas.CQRS
 
         Delete = 3,
 
-        Read = 4
+        Read = 4,
+        ReadFK = 5
+
 
     }
 }

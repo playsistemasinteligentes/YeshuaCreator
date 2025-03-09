@@ -21,7 +21,7 @@ namespace Dominio.Schemas.CQRS
             _nameSpace = nameSpace;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
 
             switch (_commandType)
@@ -38,12 +38,15 @@ namespace Dominio.Schemas.CQRS
                 case CommandType.Read:
                     return CommandCrud(CommandType.Read);
                     break;
+                case CommandType.ReadFK:
+                    return CommandCrud(CommandType.ReadFK);
+                    break;
                 default:
                     break;
             }
-            return string.Empty;
+            return new StringBuilder();
         }
-        private string CommandCrud(CommandType action)
+        private StringBuilder CommandCrud(CommandType action)
         {
             StringBuilder sb = new StringBuilder();
             if (action == CommandType.Insert || action == CommandType.Update || action == CommandType.Delete)
@@ -91,9 +94,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
-                return sb.ToString();
+                return sb;
             }
-            else if (action == CommandType.Read)
+            else if (action == CommandType.Read || action == CommandType.ReadFK)
             {
 
                 sb.AppendLine("using Comandos.Pateners.Command;");
@@ -104,11 +107,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}ReadReceiver : ReciverBase");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}Receiver : ReciverBase");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}ReadReceiver(I{_entity.EntityName}ReadRepository repository)");
+                sb.AppendLine($"        public {_entity.EntityName}{action}Receiver(I{_entity.EntityName}ReadRepository repository)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");
@@ -120,17 +123,17 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
-                return sb.ToString();
+                return sb;
             }
-            return string.Empty;
+            return new StringBuilder();
         }
 
 
 
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
             var sb = new StringBuilder();
-
+            return new StringBuilder();
             // Adiciona o comentário de descrição da entidade
             sb.AppendLine("// " + _entity.EntityDescription);
 
@@ -146,8 +149,8 @@ namespace Dominio.Schemas.CQRS
 
             // Fecha a classe
             sb.AppendLine("}");
-            return "";
-            return sb.ToString();
+
+            return sb;
         }
     }
 

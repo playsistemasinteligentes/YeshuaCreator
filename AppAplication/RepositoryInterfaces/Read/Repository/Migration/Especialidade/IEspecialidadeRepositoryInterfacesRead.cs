@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.Especialidade
         public EspecialidadeDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -48,3 +48,4 @@ namespace Input.Repository.GrupoServico
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

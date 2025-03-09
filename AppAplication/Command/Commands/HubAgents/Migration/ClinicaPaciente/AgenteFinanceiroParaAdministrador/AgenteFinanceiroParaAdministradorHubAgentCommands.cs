@@ -6,3 +6,4 @@ namespace Comandos.Commands
     {
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsHubAgents

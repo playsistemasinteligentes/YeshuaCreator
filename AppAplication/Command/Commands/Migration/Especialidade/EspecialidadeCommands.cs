@@ -4,7 +4,8 @@ namespace Command.Commands
 {
     public class EspecialidadeCrudCommand : ICommand
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Descricao { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -43,3 +43,4 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

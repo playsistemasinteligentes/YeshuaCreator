@@ -22,3 +22,4 @@ namespace Repositorio.Outputs.DTOs.Paciente
     public string ObservacaoAdicional { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

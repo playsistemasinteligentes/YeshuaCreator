@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda
         public DisponibilidadeAgendaDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

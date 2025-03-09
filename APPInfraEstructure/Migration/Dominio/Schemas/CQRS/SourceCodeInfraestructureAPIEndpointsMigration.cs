@@ -21,7 +21,7 @@ namespace Dominio.Schemas.CQRS
             _migration = migration;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
 
@@ -132,6 +132,22 @@ namespace Dominio.Schemas.CQRS
             #endregion
 
 
+            #region FKs  
+            foreach (var entity in _migration.Entitys)
+            {
+                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.ReadFK}Command command) =>");
+                sb.AppendLine("{");
+
+                setResultHttp(sb, "result.Data");
+
+                sb.AppendLine("}).RequireAuthorization();");
+                sb.AppendLine("");
+                sb.AppendLine("");
+            }
+            #endregion
+
+
+
             // get meta data 
             foreach (var entidade in _migration.Entitys)
             {
@@ -145,17 +161,19 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("var metadatacrud = new");
                 sb.AppendLine("{");
+                sb.AppendLine($"entityDescription = \"{entidade.getDescription()}\",");
+
                 sb.AppendLine("searchFields = new[]");
                 sb.AppendLine("{");
 
                 foreach (var item in entidade.AddColumns)
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\" }},");
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", isFk = {item.IsFK.ToString().ToLower()}  }},");
                 sb.AppendLine("},");
 
                 sb.AppendLine("formFields = new[]");
                 sb.AppendLine("{");
                 foreach (var item in entidade.AddColumns)
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\"  }},");
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}  }},");
                 sb.AppendLine("},");
 
                 sb.AppendLine("             endpoints = new");
@@ -177,11 +195,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("}");
             sb.AppendLine("}");
 
-            return sb.ToString();
+            return sb;
         }
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
-            return "";
+            return new StringBuilder();
         }
         private void setResultHttp(StringBuilder sb, string result)
         {

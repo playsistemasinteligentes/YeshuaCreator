@@ -50,6 +50,14 @@ namespace Dominio.Schemas.CQRS
                 var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(entity, CommandType.Read, CQRSParam.I.NameSpaceCommandsRead);
                 sourceCodeMigration.WriteCode(filePath, filePathCuston);
             }
+            // Read FKs
+            foreach (var entity in migration.Entitys)
+            {
+                var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead(), $"Migration\\{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}Commands.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead(), $"Custon\\{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}Commands.cs");
+                var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(entity, CommandType.ReadFK, CQRSParam.I.NameSpaceCommandsRead);
+                sourceCodeMigration.WriteCode(filePath, filePathCuston);
+            }
 
             #endregion  
             foreach (var hub in migration.Hubs)
@@ -107,6 +115,11 @@ namespace Dominio.Schemas.CQRS
                 filePath = Path.Combine(GetPathAppAplicationCommandReceiversRead(), $"Migration\\{entity.EntityName}\\{entity.EntityName}{CommandType.Read}Receivers.cs");
                 filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead(), $"Custon\\{entity.EntityName}\\{entity.EntityName}{CommandType.Read}Receivers.cs");
                 sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Read, CQRSParam.I.NameSpaceCommandReceiversRead);
+                sourceCodeMigration.WriteCode(filePath, filePathCuston);
+
+                filePath = Path.Combine(GetPathAppAplicationCommandReceiversRead(), $"Migration\\{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}Receivers.cs");
+                filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead(), $"Custon\\{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}Receivers.cs");
+                sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.ReadFK, CQRSParam.I.NameSpaceCommandReceiversRead);
                 sourceCodeMigration.WriteCode(filePath, filePathCuston);
             }
 

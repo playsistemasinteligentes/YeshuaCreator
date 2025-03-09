@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.Especialidade
         void Delete(EspecialidadeEntity especialidade);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

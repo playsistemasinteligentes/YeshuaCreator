@@ -4,12 +4,13 @@ namespace Command.Commands
 {
     public class MovimentacaoFinanceiraCrudCommand : ICommand
     {
-        public int Id { get; set; }
-        public int PacienteId { get; set; }
-        public int ServicoId { get; set; }
-        public Decimal Valor { get; set; }
+        public int? Id { get; set; }
+        public int? PacienteId { get; set; }
+        public int? ServicoId { get; set; }
+        public Decimal? Valor { get; set; }
         public int TipoMovimentacao { get; set; }
         public DateTime DataMovimentacao { get; set; }
-        public Decimal SaldoAtual { get; set; }
+        public Decimal? SaldoAtual { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

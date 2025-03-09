@@ -17,7 +17,7 @@ namespace Dominio.Schemas.CQRS
             _hub = hub;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -113,9 +113,9 @@ namespace Dominio.Schemas.CQRS
 
 
 
-            return sb.ToString();
+            return sb;
         }
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
@@ -146,7 +146,7 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");
-            return sb.ToString();
+            return sb;
         }
     }
 }

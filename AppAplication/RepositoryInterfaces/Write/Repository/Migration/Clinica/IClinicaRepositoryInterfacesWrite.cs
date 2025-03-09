@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.Clinica
         void Delete(ClinicaEntity clinica);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

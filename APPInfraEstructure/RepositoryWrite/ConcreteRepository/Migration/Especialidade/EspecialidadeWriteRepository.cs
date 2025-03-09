@@ -48,3 +48,4 @@ namespace Input.Repository.Especialidade
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

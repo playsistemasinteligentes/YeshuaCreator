@@ -43,3 +43,4 @@ namespace Read.ConcreteRepository.Servico
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

@@ -18,7 +18,7 @@ namespace Dominio.Schemas.CQRS
             _entity = entity;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
             sb.Append($@"
@@ -43,7 +43,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    private List<string> _erroMensagem = null;");
 
             // construtor 
-            sb.AppendLine(@$" public {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => c.getCsharpType() + " " + c.getParameterConstructor()))} ){{");
+            sb.AppendLine(@$" public {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} ){{");
             foreach (var column in _entity.AddColumns)
                 if (column.getCsharpType() == "DateTime")
                     sb.AppendLine($" {column.Name} = ({column.getParameterConstructor()} < (new DateTime(1800, 1, 1))) ? DateTime.Now : {column.getParameterConstructor()}; ");
@@ -90,9 +90,9 @@ namespace Dominio.Schemas.CQRS
                 }}
             }}
         }}");
-            return sb.ToString();
+            return sb;
         }
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
             var sb = new StringBuilder();
 
@@ -109,7 +109,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("}");
             sb.AppendLine("}");
 
-            return sb.ToString();
+            return sb;
         }
     }
 }

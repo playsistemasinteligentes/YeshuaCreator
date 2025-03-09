@@ -14,7 +14,7 @@
     public int? ProfissionalId { get; set; }
     public DateTime DataHora { get; set; }
     private List<string> _erroMensagem = null;
- public DisponibilidadeAgendaEntity(int id, int profissionalid, DateTime datahora ){
+ public DisponibilidadeAgendaEntity(int? id, int? profissionalid, DateTime datahora ){
  Id = id; 
  ProfissionalId = profissionalid; 
  DataHora = (datahora < (new DateTime(1800, 1, 1))) ? DateTime.Now : datahora; 
@@ -44,4 +44,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

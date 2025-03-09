@@ -14,3 +14,4 @@ namespace Repositorio.Outputs.DTOs.Profissional
     public string Telefone { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

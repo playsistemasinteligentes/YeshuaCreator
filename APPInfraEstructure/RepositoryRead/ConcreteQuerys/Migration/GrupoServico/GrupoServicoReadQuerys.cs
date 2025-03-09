@@ -17,3 +17,4 @@ namespace Output.Querys.GrupoServico
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

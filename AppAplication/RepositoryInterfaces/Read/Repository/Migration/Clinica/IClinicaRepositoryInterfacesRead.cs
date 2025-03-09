@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.Clinica
         public ClinicaDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

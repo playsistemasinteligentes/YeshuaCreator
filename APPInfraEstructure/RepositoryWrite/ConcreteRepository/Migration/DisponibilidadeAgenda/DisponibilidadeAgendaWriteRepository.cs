@@ -48,3 +48,4 @@ namespace Input.Repository.DisponibilidadeAgenda
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

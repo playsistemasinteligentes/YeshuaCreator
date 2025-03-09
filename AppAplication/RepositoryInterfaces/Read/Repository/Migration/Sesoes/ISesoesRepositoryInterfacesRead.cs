@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.Sesoes
         public SesoesDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

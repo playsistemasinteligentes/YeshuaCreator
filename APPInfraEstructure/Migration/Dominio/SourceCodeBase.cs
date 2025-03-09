@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace Migration.Dominio
 {
@@ -25,25 +26,32 @@ namespace Migration.Dominio
         }
 
         // Método protegido para escrever o código no arquivo
-        protected void WriteToFile(string content, string filePath)
+        protected void WriteToFile(StringBuilder content, string filePath)
         {
             EnsureDirectoryExists(filePath);
-            File.WriteAllText(filePath, content);
+            File.WriteAllText(filePath, content.ToString());
         }
 
         // Método abstrato para definir a lógica específica de geração de código
-        protected abstract string GenerateCode();
-        protected abstract string GenerateCustonCode();
+        protected abstract StringBuilder GenerateCode();
+        protected abstract StringBuilder GenerateCustonCode();
 
         // Método público para gerar e salvar o código
         public void WriteCode(string filePathMigration, string filePathCuston)
         {
-            var code = GenerateCode();
+            StringBuilder code = GenerateCode();
+            code.Append("");
+            code.Append("");
+            code.Append($"//{this.GetType()}");
+
             WriteToFile(code, filePathMigration);
 
             if (!File.Exists(filePathCuston))
             {
                 code = GenerateCustonCode();
+                code.Append("");
+                code.Append("");
+                code.Append($"//{this.GetType()}");
                 WriteToFile(code, filePathCuston);
             }
         }

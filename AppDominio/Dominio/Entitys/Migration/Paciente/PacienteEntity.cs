@@ -23,7 +23,7 @@
     public string PrincipaisQueixas { get; set; }
     public string ObservacaoAdicional { get; set; }
     private List<string> _erroMensagem = null;
- public PacienteEntity(int id, string nome, string telefone, DateTime datanascimento, int genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string principaisqueixas, string observacaoadicional ){
+ public PacienteEntity(int? id, string nome, string telefone, DateTime datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string principaisqueixas, string observacaoadicional ){
  Id = id; 
  Nome = nome; 
  Telefone = telefone; 
@@ -64,4 +64,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

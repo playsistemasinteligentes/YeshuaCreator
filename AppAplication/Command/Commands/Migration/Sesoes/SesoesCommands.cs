@@ -4,19 +4,19 @@ namespace Command.Commands
 {
     public class SesoesCrudCommand : ICommand
     {
-        public int Id { get; set; }
-        public int PacienteId { get; set; }
-        public int ProfissionalId { get; set; }
-        public int ServicoId { get; set; }
+        public int? Id { get; set; }
+        public int? PacienteId { get; set; }
+        public int? ProfissionalId { get; set; }
+        public int? ServicoId { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
-        public int Status { get; set; }
-        public int MovimentacaoFinanceiraId { get; set; }
+        public int? Status { get; set; }
+        public int? MovimentacaoFinanceiraId { get; set; }
         public string SinteseProntuario { get; set; }
         public string QueixaPrincipal { get; set; }
         public string MotivoConsultaAtual { get; set; }
         public string SintomasRelatados { get; set; }
-        public int MudancasDesdeUltimaSessaao { get; set; }
+        public int? MudancasDesdeUltimaSessaao { get; set; }
         public string ComportamentoObservado { get; set; }
         public string EstadoEmocionalGeral { get; set; }
         public string DiscursoPensamentos { get; set; }
@@ -32,3 +32,4 @@ namespace Command.Commands
         public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

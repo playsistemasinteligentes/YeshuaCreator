@@ -48,3 +48,4 @@ namespace Input.Repository.Sesoes
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

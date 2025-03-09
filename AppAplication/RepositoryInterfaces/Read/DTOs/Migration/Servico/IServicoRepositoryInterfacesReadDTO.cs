@@ -14,3 +14,4 @@ namespace Repositorio.Outputs.DTOs.Servico
     public Decimal Valor { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

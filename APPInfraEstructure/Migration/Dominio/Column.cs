@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Migration.Dominio.Schemas.CQRS;
+using System.Collections.Generic;
 using System.Data.Common;
 
 namespace Dominio
@@ -12,6 +13,8 @@ namespace Dominio
             this.Entity = entity;
             this.IsNotNull = false;
             this.Helper = helper;
+            if (CQRSParam.I.ColumnsDescriptions.Contains(columnName.ToLower()))
+                this.SearchFK = true;
         }
 
         public Entity Entity { get; set; }
@@ -25,6 +28,7 @@ namespace Dominio
         public float Precision { get; set; }
         public bool IsKey { get; set; }
         public bool IsFK { get; private set; }
+        public bool SearchFK { get; set; }
         public bool IsNotNull { get; private set; }
         public string Helper { get; }
 
@@ -72,6 +76,7 @@ namespace Dominio
         public Entity Key()
         {
             this.IsKey = true;
+            this.SearchFK = true;
             return this.Entity;
         }
 

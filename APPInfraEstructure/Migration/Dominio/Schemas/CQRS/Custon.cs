@@ -13,7 +13,7 @@ namespace Dominio.Schemas.CQRS
             _entity = entity;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
 
@@ -33,12 +33,13 @@ namespace Dominio.Schemas.CQRS
             // Fecha a classe
             sb.AppendLine("}");
 
-            return sb.ToString();
+
+            return sb;
         }
 
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
-            return "";
+            return new StringBuilder();
         }
     }
 }

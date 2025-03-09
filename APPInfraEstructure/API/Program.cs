@@ -19,10 +19,10 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
     // HTTP (opcional)
-    options.Listen(IPAddress.Parse("192.168.18.19"), 5162);
+    options.Listen(IPAddress.Parse("192.168.0.110"), 5162);
 
     // HTTPS com certificado
-    options.Listen(IPAddress.Parse("192.168.18.19"), 7214, listenOptions =>
+    options.Listen(IPAddress.Parse("192.168.0.110"), 7214, listenOptions =>
     {
         listenOptions.UseHttps("C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\API\\bin\\Debug\\net8.0\\certi\\ck.pfx", "123456");
     });
@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhostAndNetwork", builder =>
     {
-        builder.WithOrigins("http://localhost:3000", "http://192.168.18.19:3000", "https://192.168.18.19:3000") // Permite ambos os domínios
+        builder.WithOrigins("http://localhost:3000", "http://192.168.0.110:3000", "https://192.168.0.110:3000") // Permite ambos os domínios
                .AllowAnyMethod()                    // Permite qualquer método HTTP (GET, POST, etc)
                .AllowAnyHeader()                    // Permite qualquer cabeçalho
                .AllowCredentials();                 // Permite enviar cookies e credenciais
@@ -123,9 +123,18 @@ app.UseAuthorization();
 // Adiciona um middleware personalizado para logging de requisições
 app.Use(async (context, next) =>
 {
-    Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
-    await next();
-    Console.WriteLine($"Response: {context.Response.StatusCode} {context.Request.Method} {context.Request.Path}");
+    try
+    {
+        Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
+        await next();
+        Console.WriteLine($"Response: {context.Response.StatusCode} {context.Request.Method} {context.Request.Path}");
+
+    }
+    catch (Exception e)
+    {
+
+
+    }
 });
 
 

@@ -39,3 +39,4 @@ namespace Command.Receivers.Write
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

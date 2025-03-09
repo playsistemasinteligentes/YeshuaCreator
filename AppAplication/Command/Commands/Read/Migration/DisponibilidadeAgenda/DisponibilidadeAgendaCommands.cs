@@ -4,8 +4,9 @@ namespace Command.Commands.Read
 {
     public class DisponibilidadeAgendaReadCommand : ICommand
     {
-        public int Id { get; set; }
-        public int ProfissionalId { get; set; }
+        public int? Id { get; set; }
+        public int? ProfissionalId { get; set; }
         public DateTime DataHora { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

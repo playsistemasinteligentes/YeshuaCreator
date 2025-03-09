@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.Profissional
         public ProfissionalDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

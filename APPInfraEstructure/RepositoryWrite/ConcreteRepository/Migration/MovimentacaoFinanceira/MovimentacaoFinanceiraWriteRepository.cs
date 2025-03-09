@@ -48,3 +48,4 @@ namespace Input.Repository.MovimentacaoFinanceira
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

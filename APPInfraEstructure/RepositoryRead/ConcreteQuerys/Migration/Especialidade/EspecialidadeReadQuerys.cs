@@ -17,3 +17,4 @@ namespace Output.Querys.Especialidade
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

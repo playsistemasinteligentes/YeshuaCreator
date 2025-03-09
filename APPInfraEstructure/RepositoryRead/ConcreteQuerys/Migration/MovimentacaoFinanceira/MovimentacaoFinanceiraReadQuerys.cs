@@ -17,3 +17,4 @@ namespace Output.Querys.MovimentacaoFinanceira
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

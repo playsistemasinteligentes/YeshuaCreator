@@ -45,3 +45,4 @@ public enum MenuDeAgendamento
 }
 
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHubAgents

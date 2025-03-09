@@ -48,3 +48,4 @@ namespace Input.Repository.Clinica
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

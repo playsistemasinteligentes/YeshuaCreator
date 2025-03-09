@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.Paciente
         public PacienteDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

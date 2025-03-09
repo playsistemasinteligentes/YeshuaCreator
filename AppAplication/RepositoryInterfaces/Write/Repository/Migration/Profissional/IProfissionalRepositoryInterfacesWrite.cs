@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.Profissional
         void Delete(ProfissionalEntity profissional);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

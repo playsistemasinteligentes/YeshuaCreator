@@ -132,5 +132,13 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().NotNull();
         }
+
+        public string getDescription()
+        {
+            if (string.IsNullOrEmpty(this.EntityDescription))
+                return this.EntityName;
+            else
+                return this.EntityDescription;
+        }
     }
 }

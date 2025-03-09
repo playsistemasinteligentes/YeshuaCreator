@@ -15,7 +15,7 @@
     public int? EspecialidadeId { get; set; }
     public string Telefone { get; set; }
     private List<string> _erroMensagem = null;
- public ProfissionalEntity(int id, string nome, int especialidadeid, string telefone ){
+ public ProfissionalEntity(int? id, string nome, int? especialidadeid, string telefone ){
  Id = id; 
  Nome = nome; 
  EspecialidadeId = especialidadeid; 
@@ -48,4 +48,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

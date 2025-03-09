@@ -12,3 +12,4 @@ namespace Repositorio.Outputs.DTOs.GrupoServico
     public string Descricao { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

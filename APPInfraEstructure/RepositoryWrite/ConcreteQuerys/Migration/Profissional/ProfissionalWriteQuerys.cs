@@ -44,3 +44,4 @@ namespace Input.Querys.Profissional
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration

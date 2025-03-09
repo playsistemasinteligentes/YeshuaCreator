@@ -37,7 +37,7 @@
     public string InformacoesRelevantesFuturasConsultas { get; set; }
     public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
     private List<string> _erroMensagem = null;
- public SesoesEntity(int id, int pacienteid, int profissionalid, int servicoid, DateTime datainicio, DateTime datafim, int status, int movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
+ public SesoesEntity(int? id, int? pacienteid, int? profissionalid, int? servicoid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
  Id = id; 
  PacienteId = pacienteid; 
  ProfissionalId = profissionalid; 
@@ -92,4 +92,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

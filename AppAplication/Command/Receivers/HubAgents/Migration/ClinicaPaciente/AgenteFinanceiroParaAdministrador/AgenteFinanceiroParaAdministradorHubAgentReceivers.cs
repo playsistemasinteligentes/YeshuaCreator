@@ -45,3 +45,4 @@ public enum MenuAdministrativoFinanceiro
 }
 
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHubAgents

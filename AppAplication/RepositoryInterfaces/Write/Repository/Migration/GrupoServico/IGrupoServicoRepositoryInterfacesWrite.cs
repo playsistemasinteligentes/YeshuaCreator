@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.GrupoServico
         void Delete(GrupoServicoEntity gruposervico);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -17,3 +17,4 @@ namespace Output.Querys.Paciente
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

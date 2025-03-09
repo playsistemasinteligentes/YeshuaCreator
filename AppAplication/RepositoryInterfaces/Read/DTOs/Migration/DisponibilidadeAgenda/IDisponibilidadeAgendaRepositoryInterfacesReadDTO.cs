@@ -13,3 +13,4 @@ namespace Repositorio.Outputs.DTOs.DisponibilidadeAgenda
     public DateTime DataHora { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -50,3 +50,4 @@ namespace Input.Querys.MovimentacaoFinanceira
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration

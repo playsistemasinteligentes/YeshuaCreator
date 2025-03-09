@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.DisponibilidadeAgenda
         void Delete(DisponibilidadeAgendaEntity disponibilidadeagenda);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

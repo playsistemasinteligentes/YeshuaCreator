@@ -70,3 +70,4 @@ builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadReceiver>();
 }
 }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIIndependenceInjectionMigration

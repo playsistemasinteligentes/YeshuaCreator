@@ -60,3 +60,4 @@ namespace Input.Querys.Paciente
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration

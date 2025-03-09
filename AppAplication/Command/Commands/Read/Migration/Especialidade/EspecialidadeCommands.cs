@@ -4,7 +4,8 @@ namespace Command.Commands.Read
 {
     public class EspecialidadeReadCommand : ICommand
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Descricao { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.MovimentacaoFinanceira
         void Delete(MovimentacaoFinanceiraEntity movimentacaofinanceira);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

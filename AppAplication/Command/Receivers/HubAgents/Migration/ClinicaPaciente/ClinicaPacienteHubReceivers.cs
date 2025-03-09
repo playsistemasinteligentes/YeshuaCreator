@@ -31,3 +31,4 @@ namespace Comandos.Receivers.ClinicaPaciente
         }
 }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHub

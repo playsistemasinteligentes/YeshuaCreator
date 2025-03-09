@@ -17,7 +17,7 @@ namespace Dominio.Schemas.CQRS
             _nameSpace = nameSpace;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
             sb.AppendLine("using Comandos.Pateners.Command;");
@@ -34,24 +34,30 @@ namespace Dominio.Schemas.CQRS
             // Adiciona as propriedades
             foreach (var column in _entity.AddColumns)
             {
-                // Garante que o nome e o tipo da coluna sejam válidos
                 if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
                     throw new InvalidOperationException("Column type or name cannot be null or empty.");
 
-                sb.AppendLine($"        public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+                if (_commandType == CommandType.ReadFK)
+                {
+                    if (column.SearchFK)
+                        sb.AppendLine($"        public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
+                }
+                else
+                    sb.AppendLine($"        public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
+
             }
 
             // Fecha a classe
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
-            return sb.ToString();
+            return sb;
         }
 
 
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
-            return "";
+            return new StringBuilder();
         }
     }
 

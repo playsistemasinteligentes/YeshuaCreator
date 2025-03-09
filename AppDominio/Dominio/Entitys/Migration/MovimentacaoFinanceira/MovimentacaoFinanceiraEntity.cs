@@ -18,7 +18,7 @@
     public DateTime DataMovimentacao { get; set; }
     public Decimal? SaldoAtual { get; set; }
     private List<string> _erroMensagem = null;
- public MovimentacaoFinanceiraEntity(int id, int pacienteid, int servicoid, Decimal valor, int tipomovimentacao, DateTime datamovimentacao, Decimal saldoatual ){
+ public MovimentacaoFinanceiraEntity(int? id, int? pacienteid, int? servicoid, Decimal? valor, int tipomovimentacao, DateTime datamovimentacao, Decimal? saldoatual ){
  Id = id; 
  PacienteId = pacienteid; 
  ServicoId = servicoid; 
@@ -58,4 +58,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

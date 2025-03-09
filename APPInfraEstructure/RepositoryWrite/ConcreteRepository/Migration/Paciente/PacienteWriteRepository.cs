@@ -48,3 +48,4 @@ namespace Input.Repository.Paciente
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

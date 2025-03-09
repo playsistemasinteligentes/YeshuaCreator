@@ -17,3 +17,4 @@ namespace Output.Querys.Servico
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

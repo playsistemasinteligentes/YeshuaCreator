@@ -17,3 +17,4 @@ namespace Repositorio.Outputs.DTOs.MovimentacaoFinanceira
     public Decimal SaldoAtual { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

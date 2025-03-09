@@ -36,3 +36,4 @@ namespace Repositorio.Outputs.DTOs.Sesoes
     public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

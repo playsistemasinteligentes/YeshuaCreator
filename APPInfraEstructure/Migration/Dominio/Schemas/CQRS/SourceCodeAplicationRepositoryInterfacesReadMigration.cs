@@ -13,7 +13,7 @@ namespace Dominio.Schemas.CQRS
             _entity = entity;
         }
 
-        protected override string GenerateCode()
+        protected override StringBuilder GenerateCode()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -36,11 +36,12 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
-            return sb.ToString();
+            return sb;
         }
-        protected override string GenerateCustonCode()
+        protected override StringBuilder GenerateCustonCode()
         {
             var sb = new StringBuilder();
+            return new StringBuilder();
 
             sb.AppendLine($"namespace RepositoryInterfaces.Read.Repository.{_entity.EntityName}");
             sb.AppendLine("{");
@@ -58,8 +59,7 @@ namespace Dominio.Schemas.CQRS
             // Fecha a classe
             sb.AppendLine("}");
             sb.AppendLine("}");
-            return "";
-            return sb.ToString();
+            return sb;
         }
     }
 }

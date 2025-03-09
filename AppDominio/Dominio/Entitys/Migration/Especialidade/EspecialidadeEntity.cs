@@ -13,7 +13,7 @@
                 public int? Id { get; set; }
     public string Descricao { get; set; }
     private List<string> _erroMensagem = null;
- public EspecialidadeEntity(int id, string descricao ){
+ public EspecialidadeEntity(int? id, string descricao ){
  Id = id; 
  Descricao = descricao; 
 }
@@ -42,4 +42,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

@@ -40,3 +40,4 @@ namespace Input.Querys.GrupoServico
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration

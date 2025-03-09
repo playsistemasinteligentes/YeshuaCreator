@@ -88,3 +88,4 @@ namespace Input.Querys.Sesoes
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration

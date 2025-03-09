@@ -908,6 +908,240 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/Especialidade/EspecialidadeReadFK", async ([FromServices] Command.Receivers.Read.EspecialidadeReadFKReceiver receiver, [FromBody] Command.Commands.Read.EspecialidadeReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Profissional/ProfissionalReadFK", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/DisponibilidadeAgenda/DisponibilidadeAgendaReadFK", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKReceiver receiver, [FromBody] Command.Commands.Read.DisponibilidadeAgendaReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/GrupoServico/GrupoServicoReadFK", async ([FromServices] Command.Receivers.Read.GrupoServicoReadFKReceiver receiver, [FromBody] Command.Commands.Read.GrupoServicoReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Servico/ServicoReadFK", async ([FromServices] Command.Receivers.Read.ServicoReadFKReceiver receiver, [FromBody] Command.Commands.Read.ServicoReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Paciente/PacienteReadFK", async ([FromServices] Command.Receivers.Read.PacienteReadFKReceiver receiver, [FromBody] Command.Commands.Read.PacienteReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFK", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Sesoes/SesoesReadFK", async ([FromServices] Command.Receivers.Read.SesoesReadFKReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Clinica/ClinicaReadFK", async ([FromServices] Command.Receivers.Read.ClinicaReadFKReceiver receiver, [FromBody] Command.Commands.Read.ClinicaReadFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapGet("/getMetaDataEspecialidade", (HttpContext context) =>
 {
 var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -915,15 +1149,16 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "Especialidade",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "Descricao", label = "Descrição da Especialidade", type = "string" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "Descricao", label = "Descrição da Especialidade", type = "string", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "Descricao", label = "Descrição da Especialidade", type = "string", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "Descricao", label = "Descrição da Especialidade", type = "string", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -942,19 +1177,20 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "Profissional",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "Nome", label = "Nome do Profissional", type = "string" },
- new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int" },
- new { id = "Telefone", label = "Telefone do Profissional", type = "string" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "Nome", label = "Nome do Profissional", type = "string", isFk = false  },
+ new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", isFk = true  },
+ new { id = "Telefone", label = "Telefone do Profissional", type = "string", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "Nome", label = "Nome do Profissional", type = "string", required = "False"  },
- new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", required = "False"  },
- new { id = "Telefone", label = "Telefone do Profissional", type = "string", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "Nome", label = "Nome do Profissional", type = "string", required = "False" , isFk = false  },
+ new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", required = "False" , isFk = true  },
+ new { id = "Telefone", label = "Telefone do Profissional", type = "string", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -973,17 +1209,18 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "DisponibilidadeAgenda",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "ProfissionalId", label = "Profissional", type = "int" },
- new { id = "DataHora", label = "Horário Disponível", type = "DateTime" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", isFk = true  },
+ new { id = "DataHora", label = "Horário Disponível", type = "DateTime", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False"  },
- new { id = "DataHora", label = "Horário Disponível", type = "DateTime", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False" , isFk = true  },
+ new { id = "DataHora", label = "Horário Disponível", type = "DateTime", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1002,15 +1239,16 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "GrupoServico",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1029,19 +1267,20 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "Servico",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int" },
- new { id = "Nome", label = "Nome do Serviço", type = "string" },
- new { id = "Valor", label = "Valor do Serviço", type = "Decimal" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", isFk = true  },
+ new { id = "Nome", label = "Nome do Serviço", type = "string", isFk = false  },
+ new { id = "Valor", label = "Valor do Serviço", type = "Decimal", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", required = "False"  },
- new { id = "Nome", label = "Nome do Serviço", type = "string", required = "False"  },
- new { id = "Valor", label = "Valor do Serviço", type = "Decimal", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", required = "False" , isFk = true  },
+ new { id = "Nome", label = "Nome do Serviço", type = "string", required = "False" , isFk = false  },
+ new { id = "Valor", label = "Valor do Serviço", type = "Decimal", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1060,35 +1299,36 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "Paciente",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "Nome", label = "Nome do Paciente", type = "string" },
- new { id = "Telefone", label = "Telefone de Contato", type = "string" },
- new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime" },
- new { id = "Genero", label = "Gênero", type = "int" },
- new { id = "Escolaridade", label = "Escolaridade", type = "string" },
- new { id = "Profissao", label = "Profissão", type = "string" },
- new { id = "Endereco", label = "Endereço", type = "string" },
- new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string" },
- new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string" },
- new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string" },
- new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "Nome", label = "Nome do Paciente", type = "string", isFk = false  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", isFk = false  },
+ new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", isFk = false  },
+ new { id = "Genero", label = "Gênero", type = "int", isFk = false  },
+ new { id = "Escolaridade", label = "Escolaridade", type = "string", isFk = false  },
+ new { id = "Profissao", label = "Profissão", type = "string", isFk = false  },
+ new { id = "Endereco", label = "Endereço", type = "string", isFk = false  },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", isFk = false  },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", isFk = false  },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", isFk = false  },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "Nome", label = "Nome do Paciente", type = "string", required = "False"  },
- new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False"  },
- new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", required = "False"  },
- new { id = "Genero", label = "Gênero", type = "int", required = "False"  },
- new { id = "Escolaridade", label = "Escolaridade", type = "string", required = "False"  },
- new { id = "Profissao", label = "Profissão", type = "string", required = "False"  },
- new { id = "Endereco", label = "Endereço", type = "string", required = "False"  },
- new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", required = "False"  },
- new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", required = "False"  },
- new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", required = "False"  },
- new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "Nome", label = "Nome do Paciente", type = "string", required = "False" , isFk = false  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false  },
+ new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", required = "False" , isFk = false  },
+ new { id = "Genero", label = "Gênero", type = "int", required = "False" , isFk = false  },
+ new { id = "Escolaridade", label = "Escolaridade", type = "string", required = "False" , isFk = false  },
+ new { id = "Profissao", label = "Profissão", type = "string", required = "False" , isFk = false  },
+ new { id = "Endereco", label = "Endereço", type = "string", required = "False" , isFk = false  },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", required = "False" , isFk = false  },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", required = "False" , isFk = false  },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", required = "False" , isFk = false  },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1107,25 +1347,26 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "MovimentacaoFinanceira",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "PacienteId", label = "Paciente", type = "int" },
- new { id = "ServicoId", label = "Serviço", type = "int" },
- new { id = "Valor", label = "Valor da Transação", type = "Decimal" },
- new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int" },
- new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime" },
- new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "PacienteId", label = "Paciente", type = "int", isFk = true  },
+ new { id = "ServicoId", label = "Serviço", type = "int", isFk = true  },
+ new { id = "Valor", label = "Valor da Transação", type = "Decimal", isFk = false  },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", isFk = false  },
+ new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false  },
+ new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "PacienteId", label = "Paciente", type = "int", required = "False"  },
- new { id = "ServicoId", label = "Serviço", type = "int", required = "False"  },
- new { id = "Valor", label = "Valor da Transação", type = "Decimal", required = "False"  },
- new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", required = "False"  },
- new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", required = "False"  },
- new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "PacienteId", label = "Paciente", type = "int", required = "False" , isFk = true  },
+ new { id = "ServicoId", label = "Serviço", type = "int", required = "False" , isFk = true  },
+ new { id = "Valor", label = "Valor da Transação", type = "Decimal", required = "False" , isFk = false  },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", required = "False" , isFk = false  },
+ new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", required = "False" , isFk = false  },
+ new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1144,63 +1385,64 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "Sesoes",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "PacienteId", label = "Paciente", type = "int" },
- new { id = "ProfissionalId", label = "Profissional", type = "int" },
- new { id = "ServicoId", label = "Serviço", type = "int" },
- new { id = "DataInicio", label = "Data Inicio", type = "DateTime" },
- new { id = "DataFim", label = "Data Fim", type = "DateTime" },
- new { id = "Status", label = "Status do Agendamento", type = "int" },
- new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int" },
- new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string" },
- new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string" },
- new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string" },
- new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string" },
- new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int" },
- new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string" },
- new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string" },
- new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string" },
- new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string" },
- new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string" },
- new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string" },
- new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string" },
- new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string" },
- new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string" },
- new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string" },
- new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string" },
- new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string" },
- new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "PacienteId", label = "Paciente", type = "int", isFk = true  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", isFk = true  },
+ new { id = "ServicoId", label = "Serviço", type = "int", isFk = true  },
+ new { id = "DataInicio", label = "Data Inicio", type = "DateTime", isFk = false  },
+ new { id = "DataFim", label = "Data Fim", type = "DateTime", isFk = false  },
+ new { id = "Status", label = "Status do Agendamento", type = "int", isFk = false  },
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", isFk = true  },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", isFk = false  },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", isFk = false  },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", isFk = false  },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", isFk = false  },
+ new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", isFk = false  },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", isFk = false  },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", isFk = false  },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", isFk = false  },
+ new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", isFk = false  },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", isFk = false  },
+ new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", isFk = false  },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", isFk = false  },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", isFk = false  },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", isFk = false  },
+ new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", isFk = false  },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", isFk = false  },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", isFk = false  },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "PacienteId", label = "Paciente", type = "int", required = "False"  },
- new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False"  },
- new { id = "ServicoId", label = "Serviço", type = "int", required = "False"  },
- new { id = "DataInicio", label = "Data Inicio", type = "DateTime", required = "False"  },
- new { id = "DataFim", label = "Data Fim", type = "DateTime", required = "False"  },
- new { id = "Status", label = "Status do Agendamento", type = "int", required = "False"  },
- new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", required = "False"  },
- new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", required = "False"  },
- new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", required = "False"  },
- new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", required = "False"  },
- new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", required = "False"  },
- new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", required = "False"  },
- new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", required = "False"  },
- new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", required = "False"  },
- new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", required = "False"  },
- new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", required = "False"  },
- new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", required = "False"  },
- new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", required = "False"  },
- new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", required = "False"  },
- new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", required = "False"  },
- new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", required = "False"  },
- new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", required = "False"  },
- new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", required = "False"  },
- new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", required = "False"  },
- new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "PacienteId", label = "Paciente", type = "int", required = "False" , isFk = true  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False" , isFk = true  },
+ new { id = "ServicoId", label = "Serviço", type = "int", required = "False" , isFk = true  },
+ new { id = "DataInicio", label = "Data Inicio", type = "DateTime", required = "False" , isFk = false  },
+ new { id = "DataFim", label = "Data Fim", type = "DateTime", required = "False" , isFk = false  },
+ new { id = "Status", label = "Status do Agendamento", type = "int", required = "False" , isFk = false  },
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", required = "False" , isFk = true  },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", required = "False" , isFk = false  },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", required = "False" , isFk = false  },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", required = "False" , isFk = false  },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", required = "False" , isFk = false  },
+ new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", required = "False" , isFk = false  },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", required = "False" , isFk = false  },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", required = "False" , isFk = false  },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", required = "False" , isFk = false  },
+ new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", required = "False" , isFk = false  },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", required = "False" , isFk = false  },
+ new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", required = "False" , isFk = false  },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", required = "False" , isFk = false  },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", required = "False" , isFk = false  },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", required = "False" , isFk = false  },
+ new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", required = "False" , isFk = false  },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", required = "False" , isFk = false  },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", required = "False" , isFk = false  },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1219,19 +1461,20 @@ if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
+entityDescription = "Clinica",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int" },
- new { id = "Nome", label = "Nome da Clínica", type = "string" },
- new { id = "Endereco", label = "Endereço da Clínica", type = "string" },
- new { id = "Telefone", label = "Telefone de Contato", type = "string" },
+ new { id = "Id", label = "ID", type = "int", isFk = false  },
+ new { id = "Nome", label = "Nome da Clínica", type = "string", isFk = false  },
+ new { id = "Endereco", label = "Endereço da Clínica", type = "string", isFk = false  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", isFk = false  },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False"  },
- new { id = "Nome", label = "Nome da Clínica", type = "string", required = "False"  },
- new { id = "Endereco", label = "Endereço da Clínica", type = "string", required = "False"  },
- new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False"  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
+ new { id = "Nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false  },
+ new { id = "Endereco", label = "Endereço da Clínica", type = "string", required = "False" , isFk = false  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false  },
 },
              endpoints = new
              {
@@ -1246,3 +1489,4 @@ formFields = new[]
 }
 }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration

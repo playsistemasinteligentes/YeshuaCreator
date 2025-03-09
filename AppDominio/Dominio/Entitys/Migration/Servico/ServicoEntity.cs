@@ -15,7 +15,7 @@
     public string Nome { get; set; }
     public Decimal? Valor { get; set; }
     private List<string> _erroMensagem = null;
- public ServicoEntity(int id, int gruposervicoid, string nome, Decimal valor ){
+ public ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal? valor ){
  Id = id; 
  GrupoServicoId = gruposervicoid; 
  Nome = nome; 
@@ -48,4 +48,4 @@ return _erroMensagem.Count() <= 0;
                     return this._erroMensagem;
                 }
             }
-        }
+        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

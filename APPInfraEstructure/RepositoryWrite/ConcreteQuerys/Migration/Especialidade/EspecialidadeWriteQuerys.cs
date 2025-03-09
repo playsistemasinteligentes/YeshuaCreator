@@ -40,3 +40,4 @@ namespace Input.Querys.Especialidade
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration

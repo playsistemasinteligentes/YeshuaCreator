@@ -17,3 +17,4 @@ namespace Output.Querys.Clinica
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

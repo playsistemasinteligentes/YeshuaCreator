@@ -17,3 +17,4 @@ namespace Output.Querys.DisponibilidadeAgenda
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

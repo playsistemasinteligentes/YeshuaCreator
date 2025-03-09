@@ -22,3 +22,4 @@ namespace Command.Receivers.Read
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

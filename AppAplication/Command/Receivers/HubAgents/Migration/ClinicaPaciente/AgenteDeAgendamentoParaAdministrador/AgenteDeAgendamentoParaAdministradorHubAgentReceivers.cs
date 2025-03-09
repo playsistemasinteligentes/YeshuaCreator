@@ -45,3 +45,4 @@ public enum MenuAdministrativoDeAgendamentos
 }
 
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHubAgents

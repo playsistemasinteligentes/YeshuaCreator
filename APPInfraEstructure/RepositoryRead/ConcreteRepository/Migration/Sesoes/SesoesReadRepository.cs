@@ -43,3 +43,4 @@ namespace Read.ConcreteRepository.Sesoes
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

@@ -14,3 +14,4 @@ namespace Repositorio.Outputs.DTOs.Clinica
     public string Telefone { get; set; }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

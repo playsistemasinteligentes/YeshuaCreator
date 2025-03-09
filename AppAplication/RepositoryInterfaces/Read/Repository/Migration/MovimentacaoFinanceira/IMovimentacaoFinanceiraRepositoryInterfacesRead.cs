@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira
         public MovimentacaoFinanceiraDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

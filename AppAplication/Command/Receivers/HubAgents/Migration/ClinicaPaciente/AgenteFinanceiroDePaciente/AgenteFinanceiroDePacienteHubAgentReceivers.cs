@@ -45,3 +45,4 @@ public enum MenuFinanceiro
 }
 
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHubAgents

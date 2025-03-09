@@ -14,3 +14,4 @@ namespace Repositorio.Inputs.Repositorio.Sesoes
         void Delete(SesoesEntity sesoes);
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

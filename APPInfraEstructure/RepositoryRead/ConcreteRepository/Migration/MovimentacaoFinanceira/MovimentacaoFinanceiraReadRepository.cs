@@ -43,3 +43,4 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

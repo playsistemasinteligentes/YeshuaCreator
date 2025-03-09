@@ -17,3 +17,4 @@ namespace Output.Querys.Sesoes
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

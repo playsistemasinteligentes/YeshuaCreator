@@ -13,3 +13,4 @@ namespace RepositoryInterfaces.Read.Repository.Servico
         public ServicoDTO getById();
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
