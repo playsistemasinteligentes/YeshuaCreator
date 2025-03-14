@@ -21,7 +21,19 @@ namespace Read.ConcreteRepository.Servico
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ServicoDTO> getAllServico()
+        public IEnumerable<ServicoReadDTO> getServico(object command)
+        {
+            List<ServicoDTO> lista;
+            var query = new ServicoReadQuery().SelectAllServicoQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<ServicoDTO>(query.Query) as List<ServicoDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<ServicoDTO> getServicoReadFKGrupoServicoId(object command)
         {
             List<ServicoDTO> lista;
             var query = new ServicoReadQuery().SelectAllServicoQuery();

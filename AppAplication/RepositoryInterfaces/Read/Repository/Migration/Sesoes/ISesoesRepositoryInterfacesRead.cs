@@ -9,8 +9,12 @@ namespace RepositoryInterfaces.Read.Repository.Sesoes
 {
     public interface ISesoesReadRepository
     {
-        public IEnumerable<SesoesDTO> getAllSesoes();
+        public IEnumerable<SesoesReadDTO> getSesoes(object command);
         public SesoesDTO getById();
+        public IEnumerable<SesoesDTO> getSesoesReadFKPacienteId(object command);
+        public IEnumerable<SesoesDTO> getSesoesReadFKProfissionalId(object command);
+        public IEnumerable<SesoesDTO> getSesoesReadFKServicoId(object command);
+        public IEnumerable<SesoesDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

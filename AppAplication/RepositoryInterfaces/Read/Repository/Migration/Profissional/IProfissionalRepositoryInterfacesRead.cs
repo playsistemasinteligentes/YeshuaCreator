@@ -9,8 +9,9 @@ namespace RepositoryInterfaces.Read.Repository.Profissional
 {
     public interface IProfissionalReadRepository
     {
-        public IEnumerable<ProfissionalDTO> getAllProfissional();
+        public IEnumerable<ProfissionalReadDTO> getProfissional(object command);
         public ProfissionalDTO getById();
+        public IEnumerable<ProfissionalDTO> getProfissionalReadFKEspecialidadeId(object command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

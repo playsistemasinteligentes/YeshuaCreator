@@ -9,7 +9,7 @@ namespace RepositoryInterfaces.Read.Repository.Especialidade
 {
     public interface IEspecialidadeReadRepository
     {
-        public IEnumerable<EspecialidadeDTO> getAllEspecialidade();
+        public IEnumerable<EspecialidadeReadDTO> getEspecialidade(object command);
         public EspecialidadeDTO getById();
     }
 }

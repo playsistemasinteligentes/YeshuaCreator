@@ -109,6 +109,10 @@ namespace Dominio.Migration
                 foreach (var columnToRemove in entity.DropColumns)
                     sanitizedEntity.AddColumns.RemoveAll(c => c.Name == columnToRemove.Name);
             }
+
+            foreach (var entity in sanitizedEntities)
+                foreach (var colun in entity.AddColumns.Where(x => x.IsFK))
+                    colun.EntityFK = sanitizedEntities.Where(x => x.EntityName == colun.FkEntityName).FirstOrDefault();
         }
         private void SanitizeMigrationEndHubAgentsToCodeGenerete(MigrationBase migration)
         {

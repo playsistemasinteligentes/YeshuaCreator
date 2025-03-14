@@ -908,7 +908,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Especialidade/EspecialidadeReadFK", async ([FromServices] Command.Receivers.Read.EspecialidadeReadFKReceiver receiver, [FromBody] Command.Commands.Read.EspecialidadeReadFKCommand command) =>
+app.MapPost("/Profissional/ProfissionalReadFKEspecialidadeId", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKEspecialidadeIdReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadFKEspecialidadeIdCommand command) =>
 {
 try
 {
@@ -934,7 +934,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Profissional/ProfissionalReadFK", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadFKCommand command) =>
+app.MapPost("/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKProfissionalIdReceiver receiver, [FromBody] Command.Commands.Read.DisponibilidadeAgendaReadFKProfissionalIdCommand command) =>
 {
 try
 {
@@ -960,7 +960,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/DisponibilidadeAgenda/DisponibilidadeAgendaReadFK", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKReceiver receiver, [FromBody] Command.Commands.Read.DisponibilidadeAgendaReadFKCommand command) =>
+app.MapPost("/Servico/ServicoReadFKGrupoServicoId", async ([FromServices] Command.Receivers.Read.ServicoReadFKGrupoServicoIdReceiver receiver, [FromBody] Command.Commands.Read.ServicoReadFKGrupoServicoIdCommand command) =>
 {
 try
 {
@@ -986,7 +986,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/GrupoServico/GrupoServicoReadFK", async ([FromServices] Command.Receivers.Read.GrupoServicoReadFKReceiver receiver, [FromBody] Command.Commands.Read.GrupoServicoReadFKCommand command) =>
+app.MapPost("/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKPacienteIdReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadFKPacienteIdCommand command) =>
 {
 try
 {
@@ -1012,7 +1012,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Servico/ServicoReadFK", async ([FromServices] Command.Receivers.Read.ServicoReadFKReceiver receiver, [FromBody] Command.Commands.Read.ServicoReadFKCommand command) =>
+app.MapPost("/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKServicoIdReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadFKServicoIdCommand command) =>
 {
 try
 {
@@ -1038,7 +1038,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Paciente/PacienteReadFK", async ([FromServices] Command.Receivers.Read.PacienteReadFKReceiver receiver, [FromBody] Command.Commands.Read.PacienteReadFKCommand command) =>
+app.MapPost("/Sesoes/SesoesReadFKPacienteId", async ([FromServices] Command.Receivers.Read.SesoesReadFKPacienteIdReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadFKPacienteIdCommand command) =>
 {
 try
 {
@@ -1064,7 +1064,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFK", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadFKCommand command) =>
+app.MapPost("/Sesoes/SesoesReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadFKProfissionalIdCommand command) =>
 {
 try
 {
@@ -1090,7 +1090,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Sesoes/SesoesReadFK", async ([FromServices] Command.Receivers.Read.SesoesReadFKReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadFKCommand command) =>
+app.MapPost("/Sesoes/SesoesReadFKServicoId", async ([FromServices] Command.Receivers.Read.SesoesReadFKServicoIdReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadFKServicoIdCommand command) =>
 {
 try
 {
@@ -1116,7 +1116,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Clinica/ClinicaReadFK", async ([FromServices] Command.Receivers.Read.ClinicaReadFKReceiver receiver, [FromBody] Command.Commands.Read.ClinicaReadFKCommand command) =>
+app.MapPost("/Sesoes/SesoesReadFKMovimentacaoFinanceiraId", async ([FromServices] Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadFKMovimentacaoFinanceiraIdCommand command) =>
 {
 try
 {
@@ -1152,13 +1152,13 @@ var metadatacrud = new
 entityDescription = "Especialidade",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "Descricao", label = "Descrição da Especialidade", type = "string", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Descricao", label = "Descrição da Especialidade", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "Descricao", label = "Descrição da Especialidade", type = "string", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Descricao", label = "Descrição da Especialidade", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
@@ -1180,20 +1180,21 @@ var metadatacrud = new
 entityDescription = "Profissional",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "Nome", label = "Nome do Profissional", type = "string", isFk = false  },
- new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", isFk = true  },
- new { id = "Telefone", label = "Telefone do Profissional", type = "string", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Nome", label = "Nome do Profissional", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Descricao" } },
+ new { id = "Telefone", label = "Telefone do Profissional", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "Nome", label = "Nome do Profissional", type = "string", required = "False" , isFk = false  },
- new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", required = "False" , isFk = true  },
- new { id = "Telefone", label = "Telefone do Profissional", type = "string", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Nome", label = "Nome do Profissional", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "EspecialidadeId", label = "Especialidade do Profissional", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Descricao" }  },
+ new { id = "Telefone", label = "Telefone do Profissional", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
+                 especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
                  create = "/Profissional/PostProfissional",
                  read = "/Profissional/ReadProfissional",
                  update = "/Profissional/PutProfissional",
@@ -1212,18 +1213,19 @@ var metadatacrud = new
 entityDescription = "DisponibilidadeAgenda",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "ProfissionalId", label = "Profissional", type = "int", isFk = true  },
- new { id = "DataHora", label = "Horário Disponível", type = "DateTime", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" } },
+ new { id = "DataHora", label = "Horário Disponível", type = "DateTime", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False" , isFk = true  },
- new { id = "DataHora", label = "Horário Disponível", type = "DateTime", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Nome" }  },
+ new { id = "DataHora", label = "Horário Disponível", type = "DateTime", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
+                 profissionalid = "/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId",
                  create = "/DisponibilidadeAgenda/PostDisponibilidadeAgenda",
                  read = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
                  update = "/DisponibilidadeAgenda/PutDisponibilidadeAgenda",
@@ -1242,13 +1244,13 @@ var metadatacrud = new
 entityDescription = "GrupoServico",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Descricao", label = "Descrição do Grupo de Serviços", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
@@ -1270,20 +1272,21 @@ var metadatacrud = new
 entityDescription = "Servico",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", isFk = true  },
- new { id = "Nome", label = "Nome do Serviço", type = "string", isFk = false  },
- new { id = "Valor", label = "Valor do Serviço", type = "Decimal", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Descricao" } },
+ new { id = "Nome", label = "Nome do Serviço", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Valor", label = "Valor do Serviço", type = "Decimal", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", required = "False" , isFk = true  },
- new { id = "Nome", label = "Nome do Serviço", type = "string", required = "False" , isFk = false  },
- new { id = "Valor", label = "Valor do Serviço", type = "Decimal", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "GrupoServicoId", label = "Grupo de Serviço", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Descricao" }  },
+ new { id = "Nome", label = "Nome do Serviço", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Valor", label = "Valor do Serviço", type = "Decimal", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
+                 gruposervicoid = "/Servico/ServicoReadFKGrupoServicoId",
                  create = "/Servico/PostServico",
                  read = "/Servico/ReadServico",
                  update = "/Servico/PutServico",
@@ -1302,33 +1305,33 @@ var metadatacrud = new
 entityDescription = "Paciente",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "Nome", label = "Nome do Paciente", type = "string", isFk = false  },
- new { id = "Telefone", label = "Telefone de Contato", type = "string", isFk = false  },
- new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", isFk = false  },
- new { id = "Genero", label = "Gênero", type = "int", isFk = false  },
- new { id = "Escolaridade", label = "Escolaridade", type = "string", isFk = false  },
- new { id = "Profissao", label = "Profissão", type = "string", isFk = false  },
- new { id = "Endereco", label = "Endereço", type = "string", isFk = false  },
- new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", isFk = false  },
- new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", isFk = false  },
- new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", isFk = false  },
- new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Nome", label = "Nome do Paciente", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Genero", label = "Gênero", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Escolaridade", label = "Escolaridade", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Profissao", label = "Profissão", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Endereco", label = "Endereço", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "Nome", label = "Nome do Paciente", type = "string", required = "False" , isFk = false  },
- new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false  },
- new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", required = "False" , isFk = false  },
- new { id = "Genero", label = "Gênero", type = "int", required = "False" , isFk = false  },
- new { id = "Escolaridade", label = "Escolaridade", type = "string", required = "False" , isFk = false  },
- new { id = "Profissao", label = "Profissão", type = "string", required = "False" , isFk = false  },
- new { id = "Endereco", label = "Endereço", type = "string", required = "False" , isFk = false  },
- new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", required = "False" , isFk = false  },
- new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", required = "False" , isFk = false  },
- new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", required = "False" , isFk = false  },
- new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Nome", label = "Nome do Paciente", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "DataNascimento", label = "Data Nascimento", type = "DateTime", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Genero", label = "Gênero", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Escolaridade", label = "Escolaridade", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Profissao", label = "Profissão", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Endereco", label = "Endereço", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "NomeResponsavel", label = "Nome Responsavel", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "TelefoneResponsavel", label = "Telefone Responsavel", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "PrincipaisQueixas", label = "PrincipaisQueixas", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "ObservacaoAdicional", label = "ObservacaoAdicional", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
@@ -1350,26 +1353,28 @@ var metadatacrud = new
 entityDescription = "MovimentacaoFinanceira",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "PacienteId", label = "Paciente", type = "int", isFk = true  },
- new { id = "ServicoId", label = "Serviço", type = "int", isFk = true  },
- new { id = "Valor", label = "Valor da Transação", type = "Decimal", isFk = false  },
- new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", isFk = false  },
- new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false  },
- new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "PacienteId", label = "Paciente", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" } },
+ new { id = "ServicoId", label = "Serviço", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" } },
+ new { id = "Valor", label = "Valor da Transação", type = "Decimal", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "PacienteId", label = "Paciente", type = "int", required = "False" , isFk = true  },
- new { id = "ServicoId", label = "Serviço", type = "int", required = "False" , isFk = true  },
- new { id = "Valor", label = "Valor da Transação", type = "Decimal", required = "False" , isFk = false  },
- new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", required = "False" , isFk = false  },
- new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", required = "False" , isFk = false  },
- new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "PacienteId", label = "Paciente", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Nome" }  },
+ new { id = "ServicoId", label = "Serviço", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Nome" }  },
+ new { id = "Valor", label = "Valor da Transação", type = "Decimal", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "TipoMovimentacao", label = "Tipo de Movimentação", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "DataMovimentacao", label = "Data da Movimentação", type = "DateTime", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "SaldoAtual", label = "Saldo Atual", type = "Decimal", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
+                 pacienteid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId",
+                 servicoid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId",
                  create = "/MovimentacaoFinanceira/PostMovimentacaoFinanceira",
                  read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
                  update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
@@ -1388,64 +1393,68 @@ var metadatacrud = new
 entityDescription = "Sesoes",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "PacienteId", label = "Paciente", type = "int", isFk = true  },
- new { id = "ProfissionalId", label = "Profissional", type = "int", isFk = true  },
- new { id = "ServicoId", label = "Serviço", type = "int", isFk = true  },
- new { id = "DataInicio", label = "Data Inicio", type = "DateTime", isFk = false  },
- new { id = "DataFim", label = "Data Fim", type = "DateTime", isFk = false  },
- new { id = "Status", label = "Status do Agendamento", type = "int", isFk = false  },
- new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", isFk = true  },
- new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", isFk = false  },
- new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", isFk = false  },
- new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", isFk = false  },
- new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", isFk = false  },
- new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", isFk = false  },
- new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", isFk = false  },
- new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", isFk = false  },
- new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", isFk = false  },
- new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", isFk = false  },
- new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", isFk = false  },
- new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", isFk = false  },
- new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", isFk = false  },
- new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", isFk = false  },
- new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", isFk = false  },
- new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", isFk = false  },
- new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", isFk = false  },
- new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", isFk = false  },
- new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "PacienteId", label = "Paciente", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" } },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" } },
+ new { id = "ServicoId", label = "Serviço", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" } },
+ new { id = "DataInicio", label = "Data Inicio", type = "DateTime", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "DataFim", label = "Data Fim", type = "DateTime", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Status", label = "Status do Agendamento", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", isFk = true , fksDisplayFields =  new string[]{  } },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "PacienteId", label = "Paciente", type = "int", required = "False" , isFk = true  },
- new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False" , isFk = true  },
- new { id = "ServicoId", label = "Serviço", type = "int", required = "False" , isFk = true  },
- new { id = "DataInicio", label = "Data Inicio", type = "DateTime", required = "False" , isFk = false  },
- new { id = "DataFim", label = "Data Fim", type = "DateTime", required = "False" , isFk = false  },
- new { id = "Status", label = "Status do Agendamento", type = "int", required = "False" , isFk = false  },
- new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", required = "False" , isFk = true  },
- new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", required = "False" , isFk = false  },
- new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", required = "False" , isFk = false  },
- new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", required = "False" , isFk = false  },
- new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", required = "False" , isFk = false  },
- new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", required = "False" , isFk = false  },
- new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", required = "False" , isFk = false  },
- new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", required = "False" , isFk = false  },
- new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", required = "False" , isFk = false  },
- new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", required = "False" , isFk = false  },
- new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", required = "False" , isFk = false  },
- new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", required = "False" , isFk = false  },
- new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", required = "False" , isFk = false  },
- new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", required = "False" , isFk = false  },
- new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", required = "False" , isFk = false  },
- new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", required = "False" , isFk = false  },
- new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", required = "False" , isFk = false  },
- new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", required = "False" , isFk = false  },
- new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "PacienteId", label = "Paciente", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Nome" }  },
+ new { id = "ProfissionalId", label = "Profissional", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Nome" }  },
+ new { id = "ServicoId", label = "Serviço", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "Nome" }  },
+ new { id = "DataInicio", label = "Data Inicio", type = "DateTime", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "DataFim", label = "Data Fim", type = "DateTime", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Status", label = "Status do Agendamento", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "MovimentacaoFinanceiraId", label = "Financeiro", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{  }  },
+ new { id = "SinteseProntuario", label = "Sintese Prontuario", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "QueixaPrincipal", label = "Queixa Principal", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "MotivoConsultaAtual", label = "Motivo da consulta atual", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "SintomasRelatados", label = "Sintomas relatados", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "MudancasDesdeUltimaSessaao", label = "Mudanças desde a última sessão", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "ComportamentoObservado", label = "Comportamento observado durante a sessão", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "EstadoEmocionalGeral", label = "Estado emocional geral", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "DiscursoPensamentos", label = "Discurso e pensamentos", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "TecnicasUtilizadas", label = "Técnicas utilizadas", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "QuestionamentosReflexoesAbordadas", label = "Questionamentos e reflexões abordadas", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "ExerciciosTarefasSugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "DiagnoosticoHipoteseDiagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "ObjetivosCurtoPrazo", label = "Objetivos a curto prazo", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "ObjetivosLongoPrazo", label = "Objetivos a longo prazo", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "FrequenciaSugeridaSessooes", label = "Frequência sugerida das sessões", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "EncaminhamentoOutrosProfissionais", label = "Encaminhamento para outros profissionais", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "InformacoesRelevantesFuturasConsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "FeedbackPacienteSobreProcessoTerapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {
+                 pacienteid = "/Sesoes/SesoesReadFKPacienteId",
+                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+                 servicoid = "/Sesoes/SesoesReadFKServicoId",
+                 movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
                  create = "/Sesoes/PostSesoes",
                  read = "/Sesoes/ReadSesoes",
                  update = "/Sesoes/PutSesoes",
@@ -1464,17 +1473,17 @@ var metadatacrud = new
 entityDescription = "Clinica",
 searchFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", isFk = false  },
- new { id = "Nome", label = "Nome da Clínica", type = "string", isFk = false  },
- new { id = "Endereco", label = "Endereço da Clínica", type = "string", isFk = false  },
- new { id = "Telefone", label = "Telefone de Contato", type = "string", isFk = false  },
+ new { id = "Id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Nome", label = "Nome da Clínica", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Endereco", label = "Endereço da Clínica", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", isFk = false , fksDisplayFields =  new string[]{} },
 },
 formFields = new[]
 {
- new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false  },
- new { id = "Nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false  },
- new { id = "Endereco", label = "Endereço da Clínica", type = "string", required = "False" , isFk = false  },
- new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false  },
+ new { id = "Id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Endereco", label = "Endereço da Clínica", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
+ new { id = "Telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}  },
 },
              endpoints = new
              {

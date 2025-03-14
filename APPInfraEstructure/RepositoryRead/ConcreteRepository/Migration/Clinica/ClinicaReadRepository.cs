@@ -21,7 +21,7 @@ namespace Read.ConcreteRepository.Clinica
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ClinicaDTO> getAllClinica()
+        public IEnumerable<ClinicaReadDTO> getClinica(object command)
         {
             List<ClinicaDTO> lista;
             var query = new ClinicaReadQuery().SelectAllClinicaQuery();

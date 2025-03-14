@@ -21,7 +21,7 @@ namespace Read.ConcreteRepository.Especialidade
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<EspecialidadeDTO> getAllEspecialidade()
+        public IEnumerable<EspecialidadeReadDTO> getEspecialidade(object command)
         {
             List<EspecialidadeDTO> lista;
             var query = new EspecialidadeReadQuery().SelectAllEspecialidadeQuery();

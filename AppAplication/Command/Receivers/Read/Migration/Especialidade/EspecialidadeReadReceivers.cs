@@ -17,7 +17,7 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var EspecialidadeReadRepository = _repository.getAllEspecialidade();
+            var EspecialidadeReadRepository = _repository.getEspecialidade(comand);
             return new State(200, "OK", EspecialidadeReadRepository);
         }
     }

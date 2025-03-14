@@ -21,7 +21,19 @@ namespace Read.ConcreteRepository.Profissional
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ProfissionalDTO> getAllProfissional()
+        public IEnumerable<ProfissionalReadDTO> getProfissional(object command)
+        {
+            List<ProfissionalDTO> lista;
+            var query = new ProfissionalReadQuery().SelectAllProfissionalQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<ProfissionalDTO>(query.Query) as List<ProfissionalDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<ProfissionalDTO> getProfissionalReadFKEspecialidadeId(object command)
         {
             List<ProfissionalDTO> lista;
             var query = new ProfissionalReadQuery().SelectAllProfissionalQuery();

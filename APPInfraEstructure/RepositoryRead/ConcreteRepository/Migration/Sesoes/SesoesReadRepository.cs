@@ -21,7 +21,55 @@ namespace Read.ConcreteRepository.Sesoes
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<SesoesDTO> getAllSesoes()
+        public IEnumerable<SesoesReadDTO> getSesoes(object command)
+        {
+            List<SesoesDTO> lista;
+            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<SesoesDTO> getSesoesReadFKPacienteId(object command)
+        {
+            List<SesoesDTO> lista;
+            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<SesoesDTO> getSesoesReadFKProfissionalId(object command)
+        {
+            List<SesoesDTO> lista;
+            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<SesoesDTO> getSesoesReadFKServicoId(object command)
+        {
+            List<SesoesDTO> lista;
+            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<SesoesDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command)
         {
             List<SesoesDTO> lista;
             var query = new SesoesReadQuery().SelectAllSesoesQuery();

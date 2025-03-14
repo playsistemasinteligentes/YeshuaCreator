@@ -9,12 +9,15 @@ namespace Dominio.Schemas.CQRS
         private readonly Entity _entity;
         private readonly CommandType _commandType;
         private readonly string _nameSpace;
-        public SourceCodeAplicationCommandCommandsMigration(Entity entity, CommandType commandType, string nameSpace)
+        private readonly string _column;
+
+        public SourceCodeAplicationCommandCommandsMigration(Entity entity, CommandType commandType, string nameSpace, string column)
             : base()
         {
             _entity = entity;
             _commandType = commandType;
             _nameSpace = nameSpace;
+            _column = column;
         }
 
         protected override StringBuilder GenerateCode()
@@ -28,7 +31,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
             // Define a classe
-            sb.AppendLine($"    public class {_entity.EntityName}{_commandType}Command : ICommand");
+            sb.AppendLine($"    public class {_entity.EntityName}{_commandType}{_column}Command : ICommand");
             sb.AppendLine("    {");
 
             // Adiciona as propriedades

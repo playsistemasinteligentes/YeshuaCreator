@@ -21,7 +21,7 @@ namespace Read.ConcreteRepository.GrupoServico
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<GrupoServicoDTO> getAllGrupoServico()
+        public IEnumerable<GrupoServicoReadDTO> getGrupoServico(object command)
         {
             List<GrupoServicoDTO> lista;
             var query = new GrupoServicoReadQuery().SelectAllGrupoServicoQuery();

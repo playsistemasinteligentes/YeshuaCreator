@@ -1,4 +1,5 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -39,7 +40,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            _connection = factory.SqlConnection();");
             sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> getAll{_entity.EntityName}()");
+            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}ReadDTO> get{_entity.EntityName}(object command)");
             sb.AppendLine("        {");
             sb.AppendLine($"            List<{_entity.EntityName}DTO> lista;");
             sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().SelectAll{_entity.EntityName}Query();");
@@ -51,6 +52,27 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            return lista;");
             sb.AppendLine("        }");
             sb.AppendLine();
+
+            foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+            {
+
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            List<{_entity.EntityName}DTO> lista;");
+                sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().SelectAll{_entity.EntityName}Query();");
+                sb.AppendLine();
+                sb.AppendLine("            using (_connection)");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}DTO>(query.Query) as List<{_entity.EntityName}DTO>;");
+                sb.AppendLine("            }");
+                sb.AppendLine("            return lista;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+
+
+            }
+
+
             sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
             sb.AppendLine("        {");
             sb.AppendLine("            throw new NotImplementedException();");

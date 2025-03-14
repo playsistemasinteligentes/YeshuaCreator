@@ -29,6 +29,7 @@ namespace Dominio
         public bool IsKey { get; set; }
         public bool IsFK { get; private set; }
         public bool SearchFK { get; set; }
+        public Entity EntityFK { get; set; }
         public bool IsNotNull { get; private set; }
         public string Helper { get; }
 

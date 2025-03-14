@@ -121,8 +121,6 @@ namespace Dominio
             else
                 entity = this.AlterColumns.Last().FK(EntityName, columnReference);
 
-
-
             return entity;
         }
         public Entity NotNull()

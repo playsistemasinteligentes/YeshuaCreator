@@ -1,4 +1,6 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
+using System.Data.Common;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -31,8 +33,15 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public interface I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
-            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> getAll{_entity.EntityName}();");
+
+            //--trocar ICommand comando por um DTO apenas pra não gerar dependencia do Repositorio para o command
+
+            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{CommandType.Read}DTO> get{_entity.EntityName}(object command);");
             sb.AppendLine($"        public {_entity.EntityName}DTO getById();");
+
+            foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command);");
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

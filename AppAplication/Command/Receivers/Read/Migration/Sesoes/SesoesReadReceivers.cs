@@ -17,7 +17,7 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var SesoesReadRepository = _repository.getAllSesoes();
+            var SesoesReadRepository = _repository.getSesoes(comand);
             return new State(200, "OK", SesoesReadRepository);
         }
     }

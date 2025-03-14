@@ -9,7 +9,7 @@ namespace RepositoryInterfaces.Read.Repository.Paciente
 {
     public interface IPacienteReadRepository
     {
-        public IEnumerable<PacienteDTO> getAllPaciente();
+        public IEnumerable<PacienteReadDTO> getPaciente(object command);
         public PacienteDTO getById();
     }
 }

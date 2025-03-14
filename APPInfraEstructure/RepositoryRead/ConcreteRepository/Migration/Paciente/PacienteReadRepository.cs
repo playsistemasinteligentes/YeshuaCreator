@@ -21,7 +21,7 @@ namespace Read.ConcreteRepository.Paciente
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<PacienteDTO> getAllPaciente()
+        public IEnumerable<PacienteReadDTO> getPaciente(object command)
         {
             List<PacienteDTO> lista;
             var query = new PacienteReadQuery().SelectAllPacienteQuery();

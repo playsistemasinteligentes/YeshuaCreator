@@ -17,7 +17,7 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var ServicoReadRepository = _repository.getAllServico();
+            var ServicoReadRepository = _repository.getServico(comand);
             return new State(200, "OK", ServicoReadRepository);
         }
     }

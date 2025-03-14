@@ -9,7 +9,7 @@ namespace RepositoryInterfaces.Read.Repository.GrupoServico
 {
     public interface IGrupoServicoReadRepository
     {
-        public IEnumerable<GrupoServicoDTO> getAllGrupoServico();
+        public IEnumerable<GrupoServicoReadDTO> getGrupoServico(object command);
         public GrupoServicoDTO getById();
     }
 }

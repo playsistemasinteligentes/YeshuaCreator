@@ -12,13 +12,15 @@ namespace Dominio.Schemas.CQRS
         private readonly Entity _entity;
         private readonly CommandType _commandType;
         private readonly string _nameSpace;
+        private readonly string _column;
 
-        public SourceCodeAplicationCommandReceiversMigration(Entity entity, CommandType commandType, string nameSpace)
+        public SourceCodeAplicationCommandReceiversMigration(Entity entity, CommandType commandType, string nameSpace, string column)
             : base()
         {
             _entity = entity;
             _commandType = commandType;
             _nameSpace = nameSpace;
+            _column = column;
         }
 
         protected override StringBuilder GenerateCode()
@@ -107,18 +109,24 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}Receiver : ReciverBase");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}{action}Receiver(I{_entity.EntityName}ReadRepository repository)");
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(I{_entity.EntityName}ReadRepository repository)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
                 sb.AppendLine("        protected override State Action(ICommand comand)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            var {_entity.EntityName}ReadRepository = _repository.getAll{_entity.EntityName}();");
+
+
+                if (action == CommandType.Read)
+                    sb.AppendLine($"            var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}(comand);");
+                else if (action == CommandType.ReadFK)
+                    sb.AppendLine($"            var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}{action}{_column}(comand);");
+
                 sb.AppendLine($"            return new State(200, \"OK\", {_entity.EntityName}ReadRepository);");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");

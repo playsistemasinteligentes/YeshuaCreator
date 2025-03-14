@@ -1,16 +1,22 @@
 ﻿using Migration.Dominio;
 using System.Text;
+using Migration.Dominio.Schemas.CQRS;
+using System.Linq;
 
 namespace Dominio.Schemas.CQRS
 {
     public class SourceCodeAplicationRepositoryInterfacesReadDTOsMigration : SourceCodeBase
     {
         private readonly Entity _entity;
+        private readonly string _column;
+        private readonly CommandType _commandType;
 
-        public SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(Entity entity)
+        public SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(Entity entity, CommandType commandType, string column)
             : base()
         {
             _entity = entity;
+            _column = column;
+            _commandType = commandType;
         }
 
         protected override StringBuilder GenerateCode()
@@ -28,14 +34,30 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a struct
             sb.AppendLine($"namespace Repositorio.Outputs.DTOs.{_entity.EntityName}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public struct {_entity.EntityName}DTO");
+            sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}DTO");
             sb.AppendLine("    {");
 
-            // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns)
+            switch (_commandType)
             {
-                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+                case CommandType.Read:
+
+                    foreach (var column in _entity.AddColumns)
+                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+
+                    break;
+                case CommandType.ReadFK:
+
+                    Column columnFK = _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault();
+                    foreach (var column in columnFK.EntityFK.AddColumns.Where(x => x.SearchFK))
+                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+
+                    break;
+                default:
+                    break;
             }
+
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

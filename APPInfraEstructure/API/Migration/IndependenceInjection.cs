@@ -18,6 +18,7 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertProfissionalReceiver
 builder.Services.AddTransient<Command.Receivers.Write.UpdateProfissionalReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteProfissionalReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKEspecialidadeIdReceiver>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.DisponibilidadeAgenda.IDisponibilidadeAgendaWriteRepository, Input.Repository.DisponibilidadeAgenda.DisponibilidadeAgendaWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda.IDisponibilidadeAgendaReadRepository, Read.ConcreteRepository.DisponibilidadeAgenda.DisponibilidadeAgendaReadRepository>();
@@ -25,6 +26,7 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertDisponibilidadeAgend
 builder.Services.AddTransient<Command.Receivers.Write.UpdateDisponibilidadeAgendaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteDisponibilidadeAgendaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.DisponibilidadeAgendaReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.DisponibilidadeAgendaReadFKProfissionalIdReceiver>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.GrupoServico.IGrupoServicoWriteRepository, Input.Repository.GrupoServico.GrupoServicoWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.GrupoServico.IGrupoServicoReadRepository, Read.ConcreteRepository.GrupoServico.GrupoServicoReadRepository>();
@@ -39,6 +41,7 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertServicoReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateServicoReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteServicoReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ServicoReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ServicoReadFKGrupoServicoIdReceiver>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Paciente.IPacienteWriteRepository, Input.Repository.Paciente.PacienteWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Paciente.IPacienteReadRepository, Read.ConcreteRepository.Paciente.PacienteReadRepository>();
@@ -53,6 +56,8 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentacaoFinancei
 builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentacaoFinanceiraReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentacaoFinanceiraReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentacaoFinanceiraReadFKPacienteIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentacaoFinanceiraReadFKServicoIdReceiver>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Sesoes.ISesoesWriteRepository, Input.Repository.Sesoes.SesoesWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Sesoes.ISesoesReadRepository, Read.ConcreteRepository.Sesoes.SesoesReadRepository>();
@@ -60,6 +65,10 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertSesoesReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateSesoesReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteSesoesReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKPacienteIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKServicoIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Clinica.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Clinica.IClinicaReadRepository, Read.ConcreteRepository.Clinica.ClinicaReadRepository>();

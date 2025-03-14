@@ -17,7 +17,7 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var ProfissionalReadRepository = _repository.getAllProfissional();
+            var ProfissionalReadRepository = _repository.getProfissional(comand);
             return new State(200, "OK", ProfissionalReadRepository);
         }
     }

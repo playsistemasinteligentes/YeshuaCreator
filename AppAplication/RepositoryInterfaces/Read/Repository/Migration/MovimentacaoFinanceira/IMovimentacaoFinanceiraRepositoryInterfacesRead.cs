@@ -9,8 +9,10 @@ namespace RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira
 {
     public interface IMovimentacaoFinanceiraReadRepository
     {
-        public IEnumerable<MovimentacaoFinanceiraDTO> getAllMovimentacaoFinanceira();
+        public IEnumerable<MovimentacaoFinanceiraReadDTO> getMovimentacaoFinanceira(object command);
         public MovimentacaoFinanceiraDTO getById();
+        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceiraReadFKPacienteId(object command);
+        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceiraReadFKServicoId(object command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

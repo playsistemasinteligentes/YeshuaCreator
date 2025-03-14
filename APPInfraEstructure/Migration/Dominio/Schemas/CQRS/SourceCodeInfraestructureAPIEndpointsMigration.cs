@@ -3,6 +3,7 @@ using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Globalization;
 using System.Net.Http;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using static Dapper.SqlMapper;
 using static System.Net.Mime.MediaTypeNames;
@@ -135,14 +136,17 @@ namespace Dominio.Schemas.CQRS
             #region FKs  
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.ReadFK}Command command) =>");
-                sb.AppendLine("{");
+                foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                {
+                    sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}{column.Name}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Command command) =>");
+                    sb.AppendLine("{");
 
-                setResultHttp(sb, "result.Data");
+                    setResultHttp(sb, "result.Data");
 
-                sb.AppendLine("}).RequireAuthorization();");
-                sb.AppendLine("");
-                sb.AppendLine("");
+                    sb.AppendLine("}).RequireAuthorization();");
+                    sb.AppendLine("");
+                    sb.AppendLine("");
+                }
             }
             #endregion
 
@@ -167,19 +171,36 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
 
                 foreach (var item in entidade.AddColumns)
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", isFk = {item.IsFK.ToString().ToLower()}  }},");
+                {
+                    string fksDisplay = "fksDisplayFields =  new string[]{}";
+                    if (item.IsFK)
+                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.SearchFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", isFk = {item.IsFK.ToString().ToLower()} , {fksDisplay} }},");
+                }
                 sb.AppendLine("},");
 
                 sb.AppendLine("formFields = new[]");
                 sb.AppendLine("{");
                 foreach (var item in entidade.AddColumns)
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}  }},");
+                {
+                    string fksDisplay = "fksDisplayFields =  new string[]{}";
+                    if (item.IsFK)
+                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.SearchFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+
+                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}, {fksDisplay}  }},");
+                }
                 sb.AppendLine("},");
 
                 sb.AppendLine("             endpoints = new");
                 sb.AppendLine("             {");
+
+                foreach (var column in entidade.AddColumns.Where(x => x.IsFK))
+                    sb.AppendLine($"                 {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
+
+
+
                 sb.AppendLine($"                 create = \"/{entidade.EntityName}/Post{entidade.EntityName}\",");
-                sb.AppendLine($"                 read = \"/{entidade.EntityName}/Read{entidade.EntityName}\",");
+                sb.AppendLine($"                 read = \"/{entidade.EntityName}/{CommandType.Read}{entidade.EntityName}\",");
                 sb.AppendLine($"                 update = \"/{entidade.EntityName}/Put{entidade.EntityName}\",");
                 sb.AppendLine($"                 delete = \"/{entidade.EntityName}/Delete{entidade.EntityName}\"");
                 sb.AppendLine("             }");

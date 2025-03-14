@@ -21,7 +21,31 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<MovimentacaoFinanceiraDTO> getAllMovimentacaoFinanceira()
+        public IEnumerable<MovimentacaoFinanceiraReadDTO> getMovimentacaoFinanceira(object command)
+        {
+            List<MovimentacaoFinanceiraDTO> lista;
+            var query = new MovimentacaoFinanceiraReadQuery().SelectAllMovimentacaoFinanceiraQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query) as List<MovimentacaoFinanceiraDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceiraReadFKPacienteId(object command)
+        {
+            List<MovimentacaoFinanceiraDTO> lista;
+            var query = new MovimentacaoFinanceiraReadQuery().SelectAllMovimentacaoFinanceiraQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query) as List<MovimentacaoFinanceiraDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceiraReadFKServicoId(object command)
         {
             List<MovimentacaoFinanceiraDTO> lista;
             var query = new MovimentacaoFinanceiraReadQuery().SelectAllMovimentacaoFinanceiraQuery();

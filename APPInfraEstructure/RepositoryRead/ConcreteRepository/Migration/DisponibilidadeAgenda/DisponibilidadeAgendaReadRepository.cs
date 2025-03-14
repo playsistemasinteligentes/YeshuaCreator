@@ -21,7 +21,19 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<DisponibilidadeAgendaDTO> getAllDisponibilidadeAgenda()
+        public IEnumerable<DisponibilidadeAgendaReadDTO> getDisponibilidadeAgenda(object command)
+        {
+            List<DisponibilidadeAgendaDTO> lista;
+            var query = new DisponibilidadeAgendaReadQuery().SelectAllDisponibilidadeAgendaQuery();
+
+            using (_connection)
+            {
+                lista = _connection.Query<DisponibilidadeAgendaDTO>(query.Query) as List<DisponibilidadeAgendaDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<DisponibilidadeAgendaDTO> getDisponibilidadeAgendaReadFKProfissionalId(object command)
         {
             List<DisponibilidadeAgendaDTO> lista;
             var query = new DisponibilidadeAgendaReadQuery().SelectAllDisponibilidadeAgendaQuery();

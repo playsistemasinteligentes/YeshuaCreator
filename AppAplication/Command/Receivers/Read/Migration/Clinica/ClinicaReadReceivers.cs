@@ -17,7 +17,7 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var ClinicaReadRepository = _repository.getAllClinica();
+            var ClinicaReadRepository = _repository.getClinica(comand);
             return new State(200, "OK", ClinicaReadRepository);
         }
     }
