@@ -36,11 +36,11 @@ namespace Dominio.Schemas.CQRS
 
             //--trocar ICommand comando por um DTO apenas pra não gerar dependencia do Repositorio para o command
 
-            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{CommandType.Read}DTO> get{_entity.EntityName}(object command);");
+            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}(object command);");
             sb.AppendLine($"        public {_entity.EntityName}DTO getById();");
 
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
-                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command);");
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command);");
 
             sb.AppendLine("    }");
             sb.AppendLine("}");

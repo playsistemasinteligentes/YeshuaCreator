@@ -9,7 +9,7 @@ namespace RepositoryInterfaces.Read.Repository.Clinica
 {
     public interface IClinicaReadRepository
     {
-        public IEnumerable<ClinicaReadDTO> getClinica(object command);
+        public IEnumerable<ClinicaDTO> getClinica(object command);
         public ClinicaDTO getById();
     }
 }

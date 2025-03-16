@@ -2,7 +2,7 @@ using Comandos.Pateners.Command;
 using Dominio.TiposPrimitivos;
 namespace Command.Commands
 {
-    public class MovimentacaoFinanceiraCrudCommand : ICommand
+    public struct MovimentacaoFinanceiraCrudCommand : ICommand
     {
         public int? Id { get; set; }
         public int? PacienteId { get; set; }

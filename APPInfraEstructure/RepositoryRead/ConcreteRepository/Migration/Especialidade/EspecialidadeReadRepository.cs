@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.Especialidade
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<EspecialidadeReadDTO> getEspecialidade(object command)
+        public IEnumerable<EspecialidadeDTO> getEspecialidade(object command)
+         {
+            if (command is Command.Commands.Read.EspecialidadeReadCommand c)
+            {
+                return getEspecialidade(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<EspecialidadeDTO> getEspecialidade(Command.Commands.Read.EspecialidadeReadCommand command)
         {
             List<EspecialidadeDTO> lista;
-            var query = new EspecialidadeReadQuery().SelectAllEspecialidadeQuery();
+            var query = new EspecialidadeReadQuery().EspecialidadeQuery(command);
 
             using (_connection)
             {

@@ -21,20 +21,25 @@ namespace Command.Receivers.Write
 
         protected override State Action(ICommand comand)
         {
-            var c = (Command.Commands.DisponibilidadeAgendaCrudCommand)comand;
+             if(comand is Command.Commands.DisponibilidadeAgendaCrudCommand c) 
+             {    
+                 var disponibilidadeagenda = new DisponibilidadeAgendaEntity(c.Id, c.ProfissionalId, c.DataHora);
+                 if (!disponibilidadeagenda.isValidUpdate())
+                     return new State(300, disponibilidadeagenda.getErroMensagens(), comand);
 
-            var disponibilidadeagenda = new DisponibilidadeAgendaEntity(c.Id, c.ProfissionalId, c.DataHora);
-            if (!disponibilidadeagenda.isValidUpdate())
-                return new State(300, disponibilidadeagenda.getErroMensagens(), comand);
-
-            try
-            {
-                _repository.Update(disponibilidadeagenda);
-                return new State(200, "OK", comand);
+                 try
+                 {
+                     _repository.Update(disponibilidadeagenda);
+                     return new State(200, "OK", comand);
+                 }
+                 catch (Exception e)
+                 {
+                     return new State(500, e, comand);
+                 }
             }
-            catch (Exception e)
+            else 
             {
-                return new State(500, e, comand);
+                 return new State(500, "ErroConversao", comand);
             }
         }
     }

@@ -138,7 +138,7 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK))
                 {
-                    sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}{column.Name}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Command command) =>");
+                    sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}{column.Name}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>");
                     sb.AppendLine("{");
 
                     setResultHttp(sb, "result.Data");
@@ -174,7 +174,7 @@ namespace Dominio.Schemas.CQRS
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     if (item.IsFK)
-                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.SearchFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
                     sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", isFk = {item.IsFK.ToString().ToLower()} , {fksDisplay} }},");
                 }
                 sb.AppendLine("},");
@@ -185,7 +185,7 @@ namespace Dominio.Schemas.CQRS
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     if (item.IsFK)
-                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.SearchFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
 
                     sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}, {fksDisplay}  }},");
                 }

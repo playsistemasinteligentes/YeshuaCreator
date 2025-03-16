@@ -17,8 +17,15 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var PacienteReadRepository = _repository.getPaciente(comand);
-            return new State(200, "OK", PacienteReadRepository);
+            if(comand is Command.Commands.Read.PacienteReadCommand c) 
+             {    
+                var PacienteReadRepository = _repository.getPaciente(c);
+                return new State(200, "OK", PacienteReadRepository);
+            }
+            else 
+            {
+                 return new State(500, "ErroConversao", comand);
+            }
         }
     }
 }

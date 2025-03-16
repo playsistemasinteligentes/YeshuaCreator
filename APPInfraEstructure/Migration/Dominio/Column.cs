@@ -14,7 +14,7 @@ namespace Dominio
             this.IsNotNull = false;
             this.Helper = helper;
             if (CQRSParam.I.ColumnsDescriptions.Contains(columnName.ToLower()))
-                this.SearchFK = true;
+                this.DisplayFK = true;
         }
 
         public Entity Entity { get; set; }
@@ -28,7 +28,7 @@ namespace Dominio
         public float Precision { get; set; }
         public bool IsKey { get; set; }
         public bool IsFK { get; private set; }
-        public bool SearchFK { get; set; }
+        public bool DisplayFK { get; set; }
         public Entity EntityFK { get; set; }
         public bool IsNotNull { get; private set; }
         public string Helper { get; }
@@ -77,7 +77,7 @@ namespace Dominio
         public Entity Key()
         {
             this.IsKey = true;
-            this.SearchFK = true;
+            this.DisplayFK = true;
             return this.Entity;
         }
 

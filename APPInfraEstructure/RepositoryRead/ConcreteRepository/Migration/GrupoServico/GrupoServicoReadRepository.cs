@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.GrupoServico
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<GrupoServicoReadDTO> getGrupoServico(object command)
+        public IEnumerable<GrupoServicoDTO> getGrupoServico(object command)
+         {
+            if (command is Command.Commands.Read.GrupoServicoReadCommand c)
+            {
+                return getGrupoServico(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<GrupoServicoDTO> getGrupoServico(Command.Commands.Read.GrupoServicoReadCommand command)
         {
             List<GrupoServicoDTO> lista;
-            var query = new GrupoServicoReadQuery().SelectAllGrupoServicoQuery();
+            var query = new GrupoServicoReadQuery().GrupoServicoQuery(command);
 
             using (_connection)
             {

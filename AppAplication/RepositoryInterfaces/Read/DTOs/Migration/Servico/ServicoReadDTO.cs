@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs.DTOs.Servico
 {
-    public struct ServicoReadDTO
+    public struct ServicoDTO
     {
     public int Id { get; set; }
     public int GrupoServicoId { get; set; }

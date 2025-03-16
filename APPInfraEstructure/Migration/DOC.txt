@@ -11,6 +11,10 @@
 // Reports pdf, excel word , tela 
 // BI 
 
+// tratar a pasta pateners como um projeto que sera todo gerado pelo migration mas que mantera os padroes como classes base de command receives etc... e interfaces 
+//.... as dependencias ficam repositorio interface depende de paterners commando depende de interfaces
+// ....  o projeto interfacerepository pode mudar para interfeces apenas  e pastas vão definir 
+
 
 // kubernate
 // half checking 

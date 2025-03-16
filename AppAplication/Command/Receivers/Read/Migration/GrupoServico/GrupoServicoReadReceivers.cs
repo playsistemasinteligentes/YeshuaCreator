@@ -17,8 +17,15 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var GrupoServicoReadRepository = _repository.getGrupoServico(comand);
-            return new State(200, "OK", GrupoServicoReadRepository);
+            if(comand is Command.Commands.Read.GrupoServicoReadCommand c) 
+             {    
+                var GrupoServicoReadRepository = _repository.getGrupoServico(c);
+                return new State(200, "OK", GrupoServicoReadRepository);
+            }
+            else 
+            {
+                 return new State(500, "ErroConversao", comand);
+            }
         }
     }
 }

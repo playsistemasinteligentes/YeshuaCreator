@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.Clinica
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ClinicaReadDTO> getClinica(object command)
+        public IEnumerable<ClinicaDTO> getClinica(object command)
+         {
+            if (command is Command.Commands.Read.ClinicaReadCommand c)
+            {
+                return getClinica(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<ClinicaDTO> getClinica(Command.Commands.Read.ClinicaReadCommand command)
         {
             List<ClinicaDTO> lista;
-            var query = new ClinicaReadQuery().SelectAllClinicaQuery();
+            var query = new ClinicaReadQuery().ClinicaQuery(command);
 
             using (_connection)
             {

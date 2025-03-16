@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<MovimentacaoFinanceiraReadDTO> getMovimentacaoFinanceira(object command)
+        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(object command)
+         {
+            if (command is Command.Commands.Read.MovimentacaoFinanceiraReadCommand c)
+            {
+                return getMovimentacaoFinanceira(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(Command.Commands.Read.MovimentacaoFinanceiraReadCommand command)
         {
             List<MovimentacaoFinanceiraDTO> lista;
-            var query = new MovimentacaoFinanceiraReadQuery().SelectAllMovimentacaoFinanceiraQuery();
+            var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraQuery(command);
 
             using (_connection)
             {
@@ -33,28 +41,46 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
             return lista;
         }
 
-        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceiraReadFKPacienteId(object command)
+        private IEnumerable<MovimentacaoFinanceiraPacienteIdDTO> getMovimentacaoFinanceiraReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command)
         {
-            List<MovimentacaoFinanceiraDTO> lista;
-            var query = new MovimentacaoFinanceiraReadQuery().SelectAllMovimentacaoFinanceiraQuery();
+            List<MovimentacaoFinanceiraPacienteIdDTO> lista;
+            var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraPacienteIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query) as List<MovimentacaoFinanceiraDTO>;
+                lista = _connection.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query) as List<MovimentacaoFinanceiraPacienteIdDTO>;
             }
             return lista;
         }
 
-        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceiraReadFKServicoId(object command)
+        public IEnumerable<MovimentacaoFinanceiraPacienteIdDTO> getMovimentacaoFinanceiraReadFKPacienteId(object command)
         {
-            List<MovimentacaoFinanceiraDTO> lista;
-            var query = new MovimentacaoFinanceiraReadQuery().SelectAllMovimentacaoFinanceiraQuery();
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getMovimentacaoFinanceiraReadFKPacienteId(c);
+            }
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<MovimentacaoFinanceiraServicoIdDTO> getMovimentacaoFinanceiraReadFKServicoId(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<MovimentacaoFinanceiraServicoIdDTO> lista;
+            var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraServicoIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query) as List<MovimentacaoFinanceiraDTO>;
+                lista = _connection.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query) as List<MovimentacaoFinanceiraServicoIdDTO>;
             }
             return lista;
+        }
+
+        public IEnumerable<MovimentacaoFinanceiraServicoIdDTO> getMovimentacaoFinanceiraReadFKServicoId(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getMovimentacaoFinanceiraReadFKServicoId(c);
+            }
+            throw new NotImplementedException();
         }
 
         public MovimentacaoFinanceiraDTO getById()

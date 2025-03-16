@@ -10,7 +10,7 @@ namespace Output.Querys.Especialidade
 {
     public class EspecialidadeReadQuery : QueryBase
     {
-        public QueryModel SelectAllEspecialidadeQuery()
+        public QueryModel EspecialidadeQuery(Command.Commands.Read.EspecialidadeReadCommand Command)
         {
             this.Query = $@" select Id, Descricao from Especialidade ";
             return new QueryModel(this.Query, null);

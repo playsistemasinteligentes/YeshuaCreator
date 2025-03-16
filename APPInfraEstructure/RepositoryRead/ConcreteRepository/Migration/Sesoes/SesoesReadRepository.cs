@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.Sesoes
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<SesoesReadDTO> getSesoes(object command)
+        public IEnumerable<SesoesDTO> getSesoes(object command)
+         {
+            if (command is Command.Commands.Read.SesoesReadCommand c)
+            {
+                return getSesoes(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<SesoesDTO> getSesoes(Command.Commands.Read.SesoesReadCommand command)
         {
             List<SesoesDTO> lista;
-            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+            var query = new SesoesReadQuery().SesoesQuery(command);
 
             using (_connection)
             {
@@ -33,52 +41,88 @@ namespace Read.ConcreteRepository.Sesoes
             return lista;
         }
 
-        public IEnumerable<SesoesDTO> getSesoesReadFKPacienteId(object command)
+        private IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command)
         {
-            List<SesoesDTO> lista;
-            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+            List<SesoesPacienteIdDTO> lista;
+            var query = new SesoesReadQuery().SesoesPacienteIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+                lista = _connection.Query<SesoesPacienteIdDTO>(query.Query) as List<SesoesPacienteIdDTO>;
             }
             return lista;
         }
 
-        public IEnumerable<SesoesDTO> getSesoesReadFKProfissionalId(object command)
+        public IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(object command)
         {
-            List<SesoesDTO> lista;
-            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getSesoesReadFKPacienteId(c);
+            }
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<SesoesProfissionalIdDTO> lista;
+            var query = new SesoesReadQuery().SesoesProfissionalIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+                lista = _connection.Query<SesoesProfissionalIdDTO>(query.Query) as List<SesoesProfissionalIdDTO>;
             }
             return lista;
         }
 
-        public IEnumerable<SesoesDTO> getSesoesReadFKServicoId(object command)
+        public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command)
         {
-            List<SesoesDTO> lista;
-            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getSesoesReadFKProfissionalId(c);
+            }
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<SesoesServicoIdDTO> lista;
+            var query = new SesoesReadQuery().SesoesServicoIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+                lista = _connection.Query<SesoesServicoIdDTO>(query.Query) as List<SesoesServicoIdDTO>;
             }
             return lista;
         }
 
-        public IEnumerable<SesoesDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command)
+        public IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(object command)
         {
-            List<SesoesDTO> lista;
-            var query = new SesoesReadQuery().SelectAllSesoesQuery();
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getSesoesReadFKServicoId(c);
+            }
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<SesoesMovimentacaoFinanceiraIdDTO> lista;
+            var query = new SesoesReadQuery().SesoesMovimentacaoFinanceiraIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+                lista = _connection.Query<SesoesMovimentacaoFinanceiraIdDTO>(query.Query) as List<SesoesMovimentacaoFinanceiraIdDTO>;
             }
             return lista;
+        }
+
+        public IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getSesoesReadFKMovimentacaoFinanceiraId(c);
+            }
+            throw new NotImplementedException();
         }
 
         public SesoesDTO getById()

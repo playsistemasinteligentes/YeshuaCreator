@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AppAplication\Command\Command.csproj" />
     <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>

@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.Profissional
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ProfissionalReadDTO> getProfissional(object command)
+        public IEnumerable<ProfissionalDTO> getProfissional(object command)
+         {
+            if (command is Command.Commands.Read.ProfissionalReadCommand c)
+            {
+                return getProfissional(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<ProfissionalDTO> getProfissional(Command.Commands.Read.ProfissionalReadCommand command)
         {
             List<ProfissionalDTO> lista;
-            var query = new ProfissionalReadQuery().SelectAllProfissionalQuery();
+            var query = new ProfissionalReadQuery().ProfissionalQuery(command);
 
             using (_connection)
             {
@@ -33,16 +41,25 @@ namespace Read.ConcreteRepository.Profissional
             return lista;
         }
 
-        public IEnumerable<ProfissionalDTO> getProfissionalReadFKEspecialidadeId(object command)
+        private IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(Command.Patterns.Command.SearchFKCommand command)
         {
-            List<ProfissionalDTO> lista;
-            var query = new ProfissionalReadQuery().SelectAllProfissionalQuery();
+            List<ProfissionalEspecialidadeIdDTO> lista;
+            var query = new ProfissionalReadQuery().ProfissionalEspecialidadeIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<ProfissionalDTO>(query.Query) as List<ProfissionalDTO>;
+                lista = _connection.Query<ProfissionalEspecialidadeIdDTO>(query.Query) as List<ProfissionalEspecialidadeIdDTO>;
             }
             return lista;
+        }
+
+        public IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getProfissionalReadFKEspecialidadeId(c);
+            }
+            throw new NotImplementedException();
         }
 
         public ProfissionalDTO getById()

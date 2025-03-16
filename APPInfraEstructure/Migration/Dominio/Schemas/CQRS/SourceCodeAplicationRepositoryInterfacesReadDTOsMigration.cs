@@ -34,7 +34,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a struct
             sb.AppendLine($"namespace Repositorio.Outputs.DTOs.{_entity.EntityName}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}DTO");
+            sb.AppendLine($"    public struct {_entity.EntityName}{_column}DTO");
             sb.AppendLine("    {");
 
             switch (_commandType)
@@ -48,7 +48,7 @@ namespace Dominio.Schemas.CQRS
                 case CommandType.ReadFK:
 
                     Column columnFK = _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault();
-                    foreach (var column in columnFK.EntityFK.AddColumns.Where(x => x.SearchFK))
+                    foreach (var column in columnFK.EntityFK.AddColumns.Where(x => x.DisplayFK))
                         sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
 
                     break;

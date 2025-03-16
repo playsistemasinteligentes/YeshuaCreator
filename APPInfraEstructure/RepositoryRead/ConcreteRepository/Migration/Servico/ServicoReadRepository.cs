@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.Servico
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ServicoReadDTO> getServico(object command)
+        public IEnumerable<ServicoDTO> getServico(object command)
+        {
+            if (command is Command.Commands.Read.ServicoReadCommand c)
+            {
+                return getServico(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<ServicoDTO> getServico(Command.Commands.Read.ServicoReadCommand command)
         {
             List<ServicoDTO> lista;
-            var query = new ServicoReadQuery().SelectAllServicoQuery();
+            var query = new ServicoReadQuery().ServicoQuery(command);
 
             using (_connection)
             {
@@ -33,16 +41,25 @@ namespace Read.ConcreteRepository.Servico
             return lista;
         }
 
-        public IEnumerable<ServicoDTO> getServicoReadFKGrupoServicoId(object command)
+        private IEnumerable<ServicoGrupoServicoIdDTO> getServicoReadFKGrupoServicoId(Command.Patterns.Command.SearchFKCommand command)
         {
-            List<ServicoDTO> lista;
-            var query = new ServicoReadQuery().SelectAllServicoQuery();
+            List<ServicoGrupoServicoIdDTO> lista;
+            var query = new ServicoReadQuery().ServicoGrupoServicoIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<ServicoDTO>(query.Query) as List<ServicoDTO>;
+                lista = _connection.Query<ServicoGrupoServicoIdDTO>(query.Query, query.Parameters) as List<ServicoGrupoServicoIdDTO>;
             }
             return lista;
+        }
+
+        public IEnumerable<ServicoGrupoServicoIdDTO> getServicoReadFKGrupoServicoId(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getServicoReadFKGrupoServicoId(c);
+            }
+            throw new NotImplementedException();
         }
 
         public ServicoDTO getById()

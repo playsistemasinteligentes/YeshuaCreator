@@ -21,20 +21,25 @@ namespace Command.Receivers.Write
 
         protected override State Action(ICommand comand)
         {
-            var c = (Command.Commands.ProfissionalCrudCommand)comand;
+             if(comand is Command.Commands.ProfissionalCrudCommand c) 
+             {    
+                 var profissional = new ProfissionalEntity(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
+                 if (!profissional.isValidUpdate())
+                     return new State(300, profissional.getErroMensagens(), comand);
 
-            var profissional = new ProfissionalEntity(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
-            if (!profissional.isValidUpdate())
-                return new State(300, profissional.getErroMensagens(), comand);
-
-            try
-            {
-                _repository.Update(profissional);
-                return new State(200, "OK", comand);
+                 try
+                 {
+                     _repository.Update(profissional);
+                     return new State(200, "OK", comand);
+                 }
+                 catch (Exception e)
+                 {
+                     return new State(500, e, comand);
+                 }
             }
-            catch (Exception e)
+            else 
             {
-                return new State(500, e, comand);
+                 return new State(500, "ErroConversao", comand);
             }
         }
     }

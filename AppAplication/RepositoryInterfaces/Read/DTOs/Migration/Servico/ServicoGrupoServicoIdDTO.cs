@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs.DTOs.Servico
 {
-    public struct ServicoDTO
+    public struct ServicoGrupoServicoIdDTO
     {
     public int Id { get; set; }
-    public int GrupoServicoId { get; set; }
-    public string Nome { get; set; }
-    public Decimal Valor { get; set; }
+    public string Descricao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

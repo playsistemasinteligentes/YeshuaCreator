@@ -17,8 +17,15 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var MovimentacaoFinanceiraReadRepository = _repository.getMovimentacaoFinanceira(comand);
-            return new State(200, "OK", MovimentacaoFinanceiraReadRepository);
+            if(comand is Command.Commands.Read.MovimentacaoFinanceiraReadCommand c) 
+             {    
+                var MovimentacaoFinanceiraReadRepository = _repository.getMovimentacaoFinanceira(c);
+                return new State(200, "OK", MovimentacaoFinanceiraReadRepository);
+            }
+            else 
+            {
+                 return new State(500, "ErroConversao", comand);
+            }
         }
     }
 }

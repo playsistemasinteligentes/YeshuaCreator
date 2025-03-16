@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs.DTOs.DisponibilidadeAgenda
 {
-    public struct DisponibilidadeAgendaReadDTO
+    public struct DisponibilidadeAgendaDTO
     {
     public int Id { get; set; }
     public int ProfissionalId { get; set; }

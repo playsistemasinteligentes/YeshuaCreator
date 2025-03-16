@@ -10,7 +10,7 @@ namespace Output.Querys.Clinica
 {
     public class ClinicaReadQuery : QueryBase
     {
-        public QueryModel SelectAllClinicaQuery()
+        public QueryModel ClinicaQuery(Command.Commands.Read.ClinicaReadCommand Command)
         {
             this.Query = $@" select Id, Nome, Endereco, Telefone from Clinica ";
             return new QueryModel(this.Query, null);

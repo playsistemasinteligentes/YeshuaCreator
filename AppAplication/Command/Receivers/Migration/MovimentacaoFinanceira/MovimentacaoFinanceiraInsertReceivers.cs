@@ -21,20 +21,25 @@ namespace Command.Receivers.Write
 
         protected override State Action(ICommand comand)
         {
-            var c = (Command.Commands.MovimentacaoFinanceiraCrudCommand)comand;
+             if(comand is Command.Commands.MovimentacaoFinanceiraCrudCommand c) 
+             {    
+                 var movimentacaofinanceira = new MovimentacaoFinanceiraEntity(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
+                 if (!movimentacaofinanceira.isValidInsert())
+                     return new State(300, movimentacaofinanceira.getErroMensagens(), comand);
 
-            var movimentacaofinanceira = new MovimentacaoFinanceiraEntity(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
-            if (!movimentacaofinanceira.isValidInsert())
-                return new State(300, movimentacaofinanceira.getErroMensagens(), comand);
-
-            try
-            {
-                _repository.Insert(movimentacaofinanceira);
-                return new State(200, "OK", comand);
+                 try
+                 {
+                     _repository.Insert(movimentacaofinanceira);
+                     return new State(200, "OK", comand);
+                 }
+                 catch (Exception e)
+                 {
+                     return new State(500, e, comand);
+                 }
             }
-            catch (Exception e)
+            else 
             {
-                return new State(500, e, comand);
+                 return new State(500, "ErroConversao", comand);
             }
         }
     }

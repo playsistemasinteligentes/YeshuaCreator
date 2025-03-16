@@ -2,7 +2,7 @@ using Comandos.Pateners.Command;
 using Dominio.TiposPrimitivos;
 namespace Command.Commands.Read
 {
-    public class ProfissionalReadCommand : ICommand
+    public struct ProfissionalReadCommand : ICommand
     {
         public int? Id { get; set; }
         public string Nome { get; set; }

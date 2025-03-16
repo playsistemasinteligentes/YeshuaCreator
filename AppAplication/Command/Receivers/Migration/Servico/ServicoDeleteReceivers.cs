@@ -21,20 +21,25 @@ namespace Command.Receivers.Write
 
         protected override State Action(ICommand comand)
         {
-            var c = (Command.Commands.ServicoCrudCommand)comand;
+             if(comand is Command.Commands.ServicoCrudCommand c) 
+             {    
+                 var servico = new ServicoEntity(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
+                 if (!servico.isValidDelete())
+                     return new State(300, servico.getErroMensagens(), comand);
 
-            var servico = new ServicoEntity(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
-            if (!servico.isValidDelete())
-                return new State(300, servico.getErroMensagens(), comand);
-
-            try
-            {
-                _repository.Delete(servico);
-                return new State(200, "OK", comand);
+                 try
+                 {
+                     _repository.Delete(servico);
+                     return new State(200, "OK", comand);
+                 }
+                 catch (Exception e)
+                 {
+                     return new State(500, e, comand);
+                 }
             }
-            catch (Exception e)
+            else 
             {
-                return new State(500, e, comand);
+                 return new State(500, "ErroConversao", comand);
             }
         }
     }

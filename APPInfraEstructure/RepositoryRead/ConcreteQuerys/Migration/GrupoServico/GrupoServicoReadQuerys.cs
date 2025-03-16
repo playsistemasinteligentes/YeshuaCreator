@@ -10,7 +10,7 @@ namespace Output.Querys.GrupoServico
 {
     public class GrupoServicoReadQuery : QueryBase
     {
-        public QueryModel SelectAllGrupoServicoQuery()
+        public QueryModel GrupoServicoQuery(Command.Commands.Read.GrupoServicoReadCommand Command)
         {
             this.Query = $@" select Id, Descricao from GrupoServico ";
             return new QueryModel(this.Query, null);

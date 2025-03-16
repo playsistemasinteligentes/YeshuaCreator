@@ -40,10 +40,19 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            _connection = factory.SqlConnection();");
             sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}ReadDTO> get{_entity.EntityName}(object command)");
+            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}(object command)");
+            sb.AppendLine("         {");
+            sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command c)");
+            sb.AppendLine("            {");
+            sb.AppendLine($"                return get{_entity.EntityName}(c);");
+            sb.AppendLine("            }");
+            sb.AppendLine("            throw new NotImplementedException();");
+            sb.AppendLine("        }");
+
+            sb.AppendLine($"        private IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command command)");
             sb.AppendLine("        {");
             sb.AppendLine($"            List<{_entity.EntityName}DTO> lista;");
-            sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().SelectAll{_entity.EntityName}Query();");
+            sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().{_entity.EntityName}Query(command);");
             sb.AppendLine();
             sb.AppendLine("            using (_connection)");
             sb.AppendLine("            {");
@@ -56,18 +65,35 @@ namespace Dominio.Schemas.CQRS
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
             {
 
-                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
+                sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(Command.Patterns.Command.SearchFKCommand command)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            List<{_entity.EntityName}DTO> lista;");
-                sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().SelectAll{_entity.EntityName}Query();");
+                sb.AppendLine($"            List<{_entity.EntityName}{column.Name}DTO> lista;");
+                sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().{_entity.EntityName}{column.Name}Query(command);");
                 sb.AppendLine();
                 sb.AppendLine("            using (_connection)");
                 sb.AppendLine("            {");
-                sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}DTO>(query.Query) as List<{_entity.EntityName}DTO>;");
+                sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}{column.Name}DTO>(query.Query) as List<{_entity.EntityName}{column.Name}DTO>;");
                 sb.AppendLine("            }");
                 sb.AppendLine("            return lista;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
+
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
+                sb.AppendLine("        {");
+
+                sb.AppendLine($"            if (command is Command.Patterns.Command.SearchFKCommand c)");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                return get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(c);");
+                sb.AppendLine("            }");
+                sb.AppendLine("            throw new NotImplementedException();");
+
+                sb.AppendLine("        }");
+                sb.AppendLine();
+
+
+
+
+
 
 
             }

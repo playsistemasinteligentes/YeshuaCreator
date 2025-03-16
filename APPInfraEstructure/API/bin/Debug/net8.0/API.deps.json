@@ -418,6 +418,7 @@
       },
       "RepositoryRead/1.0.0": {
         "dependencies": {
+          "Command": "1.0.0",
           "RepositoryInterfaces": "1.0.0",
           "Shered": "1.0.0"
         },

@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Outputs.DTOs.DisponibilidadeAgenda
+namespace Repositorio.Outputs.DTOs.MovimentacaoFinanceira
 {
-    public struct DisponibilidadeAgendaDTO
+    public struct MovimentacaoFinanceiraServicoIdDTO
     {
     public int Id { get; set; }
-    public int ProfissionalId { get; set; }
-    public DateTime DataHora { get; set; }
+    public string Nome { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -17,8 +17,15 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var DisponibilidadeAgendaReadRepository = _repository.getDisponibilidadeAgenda(comand);
-            return new State(200, "OK", DisponibilidadeAgendaReadRepository);
+            if(comand is Command.Commands.Read.DisponibilidadeAgendaReadCommand c) 
+             {    
+                var DisponibilidadeAgendaReadRepository = _repository.getDisponibilidadeAgenda(c);
+                return new State(200, "OK", DisponibilidadeAgendaReadRepository);
+            }
+            else 
+            {
+                 return new State(500, "ErroConversao", comand);
+            }
         }
     }
 }

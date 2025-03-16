@@ -9,9 +9,9 @@ namespace RepositoryInterfaces.Read.Repository.Servico
 {
     public interface IServicoReadRepository
     {
-        public IEnumerable<ServicoReadDTO> getServico(object command);
+        public IEnumerable<ServicoDTO> getServico(object command);
         public ServicoDTO getById();
-        public IEnumerable<ServicoDTO> getServicoReadFKGrupoServicoId(object command);
+        public IEnumerable<ServicoGrupoServicoIdDTO> getServicoReadFKGrupoServicoId(object command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

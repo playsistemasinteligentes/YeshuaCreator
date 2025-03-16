@@ -219,8 +219,8 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK))
                 {
-                    filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}DTO.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\I{entity.EntityName}{CommandType.ReadFK}DTO.cs");
+                    filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{entity.EntityName}{column.Name}DTO.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\I{entity.EntityName}{column.Name}DTO.cs");
                     sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(entity, CommandType.ReadFK, column.Name);
                     sourceCodeDTOMigration.WriteCode(filePath, filePathCuston);
                 }

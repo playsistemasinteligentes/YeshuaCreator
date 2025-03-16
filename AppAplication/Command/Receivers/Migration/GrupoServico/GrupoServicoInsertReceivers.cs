@@ -21,20 +21,25 @@ namespace Command.Receivers.Write
 
         protected override State Action(ICommand comand)
         {
-            var c = (Command.Commands.GrupoServicoCrudCommand)comand;
+             if(comand is Command.Commands.GrupoServicoCrudCommand c) 
+             {    
+                 var gruposervico = new GrupoServicoEntity(c.Id, c.Descricao);
+                 if (!gruposervico.isValidInsert())
+                     return new State(300, gruposervico.getErroMensagens(), comand);
 
-            var gruposervico = new GrupoServicoEntity(c.Id, c.Descricao);
-            if (!gruposervico.isValidInsert())
-                return new State(300, gruposervico.getErroMensagens(), comand);
-
-            try
-            {
-                _repository.Insert(gruposervico);
-                return new State(200, "OK", comand);
+                 try
+                 {
+                     _repository.Insert(gruposervico);
+                     return new State(200, "OK", comand);
+                 }
+                 catch (Exception e)
+                 {
+                     return new State(500, e, comand);
+                 }
             }
-            catch (Exception e)
+            else 
             {
-                return new State(500, e, comand);
+                 return new State(500, "ErroConversao", comand);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Output.Querys.Paciente
 {
     public class PacienteReadQuery : QueryBase
     {
-        public QueryModel SelectAllPacienteQuery()
+        public QueryModel PacienteQuery(Command.Commands.Read.PacienteReadCommand Command)
         {
             this.Query = $@" select Id, Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional from Paciente ";
             return new QueryModel(this.Query, null);

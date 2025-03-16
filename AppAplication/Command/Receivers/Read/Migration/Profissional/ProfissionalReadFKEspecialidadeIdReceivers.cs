@@ -17,8 +17,15 @@ namespace Command.Receivers.Read
 
         protected override State Action(ICommand comand)
         {
-            var ProfissionalReadRepository = _repository.getProfissionalReadFKEspecialidadeId(comand);
-            return new State(200, "OK", ProfissionalReadRepository);
+            if(comand is Command.Patterns.Command.SearchFKCommand c) 
+             {    
+                var ProfissionalReadRepository = _repository.getProfissionalReadFKEspecialidadeId(c);
+                return new State(200, "OK", ProfissionalReadRepository);
+            }
+            else 
+            {
+                 return new State(500, "ErroConversao", comand);
+            }
         }
     }
 }

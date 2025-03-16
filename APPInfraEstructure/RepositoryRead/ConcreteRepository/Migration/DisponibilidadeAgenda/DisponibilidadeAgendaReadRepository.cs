@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<DisponibilidadeAgendaReadDTO> getDisponibilidadeAgenda(object command)
+        public IEnumerable<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(object command)
+         {
+            if (command is Command.Commands.Read.DisponibilidadeAgendaReadCommand c)
+            {
+                return getDisponibilidadeAgenda(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(Command.Commands.Read.DisponibilidadeAgendaReadCommand command)
         {
             List<DisponibilidadeAgendaDTO> lista;
-            var query = new DisponibilidadeAgendaReadQuery().SelectAllDisponibilidadeAgendaQuery();
+            var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaQuery(command);
 
             using (_connection)
             {
@@ -33,16 +41,25 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
             return lista;
         }
 
-        public IEnumerable<DisponibilidadeAgendaDTO> getDisponibilidadeAgendaReadFKProfissionalId(object command)
+        private IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command)
         {
-            List<DisponibilidadeAgendaDTO> lista;
-            var query = new DisponibilidadeAgendaReadQuery().SelectAllDisponibilidadeAgendaQuery();
+            List<DisponibilidadeAgendaProfissionalIdDTO> lista;
+            var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaProfissionalIdQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<DisponibilidadeAgendaDTO>(query.Query) as List<DisponibilidadeAgendaDTO>;
+                lista = _connection.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query) as List<DisponibilidadeAgendaProfissionalIdDTO>;
             }
             return lista;
+        }
+
+        public IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getDisponibilidadeAgendaReadFKProfissionalId(c);
+            }
+            throw new NotImplementedException();
         }
 
         public DisponibilidadeAgendaDTO getById()

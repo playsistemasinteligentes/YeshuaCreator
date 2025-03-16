@@ -30,24 +30,31 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
 
-            // Define a classe
-            sb.AppendLine($"    public class {_entity.EntityName}{_commandType}{_column}Command : ICommand");
+            // Define a struct que são desde comandos de insert update delete como filtros para pesquisas ou conjuntos de dados para determinar a execução de metodos
+            sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommand");
             sb.AppendLine("    {");
 
             // Adiciona as propriedades
-            foreach (var column in _entity.AddColumns)
-            {
-                if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
-                    throw new InvalidOperationException("Column type or name cannot be null or empty.");
 
-                if (_commandType == CommandType.ReadFK)
+            if (_commandType == CommandType.ReadFK)
+            {
+                foreach (var column in _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault().EntityFK.AddColumns.Where(x => x.DisplayFK))
                 {
-                    if (column.SearchFK)
+                    if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
+                        throw new InvalidOperationException("Column type or name cannot be null or empty.");
+
+                    if (column.DisplayFK)
                         sb.AppendLine($"        public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
                 }
-                else
+            }
+            else
+            {
+                foreach (var column in _entity.AddColumns)
+                {
+                    if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
+                        throw new InvalidOperationException("Column type or name cannot be null or empty.");
                     sb.AppendLine($"        public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
-
+                }
             }
 
             // Fecha a classe

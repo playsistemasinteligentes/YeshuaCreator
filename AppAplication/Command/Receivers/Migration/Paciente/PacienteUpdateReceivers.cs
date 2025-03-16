@@ -21,20 +21,25 @@ namespace Command.Receivers.Write
 
         protected override State Action(ICommand comand)
         {
-            var c = (Command.Commands.PacienteCrudCommand)comand;
+             if(comand is Command.Commands.PacienteCrudCommand c) 
+             {    
+                 var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
+                 if (!paciente.isValidUpdate())
+                     return new State(300, paciente.getErroMensagens(), comand);
 
-            var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
-            if (!paciente.isValidUpdate())
-                return new State(300, paciente.getErroMensagens(), comand);
-
-            try
-            {
-                _repository.Update(paciente);
-                return new State(200, "OK", comand);
+                 try
+                 {
+                     _repository.Update(paciente);
+                     return new State(200, "OK", comand);
+                 }
+                 catch (Exception e)
+                 {
+                     return new State(500, e, comand);
+                 }
             }
-            catch (Exception e)
+            else 
             {
-                return new State(500, e, comand);
+                 return new State(500, "ErroConversao", comand);
             }
         }
     }

@@ -78,27 +78,69 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State Action(ICommand comand)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            var c = ({CQRSParam.I.NameSpaceCommands}.{_entity.EntityName}CrudCommand)comand;");
+
+                sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommands}.{_entity.EntityName}CrudCommand c) ");
+                sb.AppendLine("             {    ");
+                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
+                sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
+                sb.AppendLine($"                     return new State(300, {_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
                 sb.AppendLine();
-                sb.AppendLine($"            var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
-                sb.AppendLine($"            if (!{_entity.EntityName.ToLower()}.isValid{action}())");
-                sb.AppendLine($"                return new State(300, {_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
-                sb.AppendLine();
-                sb.AppendLine("            try");
-                sb.AppendLine("            {");
-                sb.AppendLine($"                _repository.{action.ToString()}({_entity.EntityName.ToLower()});");
-                sb.AppendLine("                return new State(200, \"OK\", comand);");
+                sb.AppendLine("                 try");
+                sb.AppendLine("                 {");
+                sb.AppendLine($"                     _repository.{action.ToString()}({_entity.EntityName.ToLower()});");
+                sb.AppendLine("                     return new State(200, \"OK\", comand);");
+                sb.AppendLine("                 }");
+                sb.AppendLine("                 catch (Exception e)");
+                sb.AppendLine("                 {");
+                sb.AppendLine("                     return new State(500, e, comand);");
+                sb.AppendLine("                 }");
                 sb.AppendLine("            }");
-                sb.AppendLine("            catch (Exception e)");
+                sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                return new State(500, e, comand);");
+                sb.AppendLine("                 return new State(500, \"ErroConversao\", comand);");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
                 return sb;
             }
-            else if (action == CommandType.Read || action == CommandType.ReadFK)
+            else if (action == CommandType.Read)
+            {
+                sb.AppendLine("using Comandos.Pateners.Command;");
+                sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+                sb.AppendLine("using Dominio.TiposPrimitivos;");
+                sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+                sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
+                sb.AppendLine();
+                sb.AppendLine($"namespace {_nameSpace}");
+                sb.AppendLine("{");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase");
+                sb.AppendLine("    {");
+                sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
+                sb.AppendLine();
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(I{_entity.EntityName}ReadRepository repository)");
+                sb.AppendLine("        {");
+                sb.AppendLine("            _repository = repository;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+                sb.AppendLine("        protected override State Action(ICommand comand)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
+                sb.AppendLine("             {    ");
+                sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}(c);");
+                sb.AppendLine($"                return new State(200, \"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else ");
+                sb.AppendLine("            {");
+                sb.AppendLine("                 return new State(500, \"ErroConversao\", comand);");
+                sb.AppendLine("            }");
+                sb.AppendLine("        }");
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+                return sb;
+            }
+
+            else if (action == CommandType.ReadFK)
             {
 
                 sb.AppendLine("using Comandos.Pateners.Command;");
@@ -121,13 +163,15 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        protected override State Action(ICommand comand)");
                 sb.AppendLine("        {");
 
-
-                if (action == CommandType.Read)
-                    sb.AppendLine($"            var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}(comand);");
-                else if (action == CommandType.ReadFK)
-                    sb.AppendLine($"            var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}{action}{_column}(comand);");
-
-                sb.AppendLine($"            return new State(200, \"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine($"            if(comand is Command.Patterns.Command.SearchFKCommand c) ");
+                sb.AppendLine("             {    ");
+                sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}{action}{_column}(c);");
+                sb.AppendLine($"                return new State(200, \"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else ");
+                sb.AppendLine("            {");
+                sb.AppendLine("                 return new State(500, \"ErroConversao\", comand);");
+                sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
                 sb.AppendLine("}");

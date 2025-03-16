@@ -1,4 +1,8 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
+using System.Collections.Specialized;
+using System.Data.Common;
+using System.Diagnostics;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -28,7 +32,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public class {_entity.EntityName}ReadQuery : QueryBase");
             sb.AppendLine("    {");
-            sb.AppendLine($"        public QueryModel SelectAll{_entity.EntityName}Query()");
+
+            sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command Command)");
             sb.AppendLine("        {");
 
             var columnsString = string.Join(", ", _entity.AddColumns.Select(x => x.Name));
@@ -36,6 +41,21 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("            return new QueryModel(this.Query, null);");
             sb.AppendLine("        }");
+
+
+            foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+            {
+                sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query(Command.Patterns.Command.SearchFKCommand Command)");
+                sb.AppendLine("        {");
+
+                columnsString = string.Join(", ", column.EntityFK.AddColumns.Where(x => x.DisplayFK).Select(x => x.Name));
+                sb.AppendLine($"            this.Query = $@\" select {columnsString} from {column.EntityFK.EntityName} \";");
+
+                sb.AppendLine("            return new QueryModel(this.Query, null);");
+                sb.AppendLine("        }");
+            }
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

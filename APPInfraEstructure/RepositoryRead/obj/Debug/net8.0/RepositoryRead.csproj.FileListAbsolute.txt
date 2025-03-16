@@ -19,3 +19,5 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryRead\obj\Debug\net8.0\refint\RepositoryRead.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryRead\obj\Debug\net8.0\RepositoryRead.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryRead\obj\Debug\net8.0\ref\RepositoryRead.dll
+C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryRead\bin\Debug\net8.0\Command.dll
+C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryRead\bin\Debug\net8.0\Command.pdb

@@ -21,10 +21,18 @@ namespace Read.ConcreteRepository.Paciente
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<PacienteReadDTO> getPaciente(object command)
+        public IEnumerable<PacienteDTO> getPaciente(object command)
+         {
+            if (command is Command.Commands.Read.PacienteReadCommand c)
+            {
+                return getPaciente(c);
+            }
+            throw new NotImplementedException();
+        }
+        private IEnumerable<PacienteDTO> getPaciente(Command.Commands.Read.PacienteReadCommand command)
         {
             List<PacienteDTO> lista;
-            var query = new PacienteReadQuery().SelectAllPacienteQuery();
+            var query = new PacienteReadQuery().PacienteQuery(command);
 
             using (_connection)
             {

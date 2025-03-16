@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Outputs.DTOs.GrupoServico
+namespace Repositorio.Outputs.DTOs.Sesoes
 {
-    public struct GrupoServicoDTO
+    public struct SesoesMovimentacaoFinanceiraIdDTO
     {
     public int Id { get; set; }
-    public string Descricao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Entitys\" />
     <Folder Include="Especificacoes\Agenda\" />
     <Folder Include="Especificacoes\Clinica\" />
     <Folder Include="Especificacoes\Paciente\" />
