@@ -13,9 +13,9 @@
                 public int? Id { get; set; }
     public int? GrupoServicoId { get; set; }
     public string Nome { get; set; }
-    public Decimal? Valor { get; set; }
+    public Decimal Valor { get; set; }
     private List<string> _erroMensagem = null;
- public ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal? valor ){
+ public ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal valor ){
  Id = id; 
  GrupoServicoId = gruposervicoid; 
  Nome = nome; 

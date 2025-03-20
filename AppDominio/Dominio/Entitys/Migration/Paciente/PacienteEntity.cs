@@ -13,7 +13,7 @@
                 public int? Id { get; set; }
     public string Nome { get; set; }
     public string Telefone { get; set; }
-    public DateTime DataNascimento { get; set; }
+    public DateTime? DataNascimento { get; set; }
     public int? Genero { get; set; }
     public string Escolaridade { get; set; }
     public string Profissao { get; set; }
@@ -23,7 +23,7 @@
     public string PrincipaisQueixas { get; set; }
     public string ObservacaoAdicional { get; set; }
     private List<string> _erroMensagem = null;
- public PacienteEntity(int? id, string nome, string telefone, DateTime datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string principaisqueixas, string observacaoadicional ){
+ public PacienteEntity(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string principaisqueixas, string observacaoadicional ){
  Id = id; 
  Nome = nome; 
  Telefone = telefone; 

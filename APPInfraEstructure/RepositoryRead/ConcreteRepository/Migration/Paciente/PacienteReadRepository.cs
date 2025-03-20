@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.Paciente
 
             using (_connection)
             {
-                lista = _connection.Query<PacienteDTO>(query.Query) as List<PacienteDTO>;
+                lista = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
             }
             return lista;
         }

@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
 
             using (_connection)
             {
-                lista = _connection.Query<DisponibilidadeAgendaDTO>(query.Query) as List<DisponibilidadeAgendaDTO>;
+                lista = _connection.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
             }
             return lista;
         }
@@ -48,7 +48,7 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
 
             using (_connection)
             {
-                lista = _connection.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query) as List<DisponibilidadeAgendaProfissionalIdDTO>;
+                lista = _connection.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaProfissionalIdDTO>;
             }
             return lista;
         }

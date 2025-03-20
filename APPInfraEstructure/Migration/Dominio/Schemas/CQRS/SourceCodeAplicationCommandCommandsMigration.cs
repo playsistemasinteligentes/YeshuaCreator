@@ -44,7 +44,7 @@ namespace Dominio.Schemas.CQRS
                         throw new InvalidOperationException("Column type or name cannot be null or empty.");
 
                     if (column.DisplayFK)
-                        sb.AppendLine($"        public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
+                        sb.AppendLine($"        public {column.getCsharpType(true, true)} {column.Name} {{ get; set; }}");
                 }
             }
             else
@@ -53,7 +53,11 @@ namespace Dominio.Schemas.CQRS
                 {
                     if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
                         throw new InvalidOperationException("Column type or name cannot be null or empty.");
-                    sb.AppendLine($"        public {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
+                    if (_commandType == CommandType.Read || _commandType == CommandType.ReadFK)
+                        sb.AppendLine($"        public {column.getCsharpType(true, true)} {column.Name} {{ get; set; }}");
+                    else
+                        sb.AppendLine($"        public {column.getCsharpType(true, false)} {column.Name} {{ get; set; }}");
+
                 }
             }
 

@@ -8,8 +8,8 @@ namespace Repositorio.Outputs.DTOs.Servico
 {
     public struct ServicoGrupoServicoIdDTO
     {
-    public int Id { get; set; }
-    public string Descricao { get; set; }
+    public int id { get; set; }
+    public string descricao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

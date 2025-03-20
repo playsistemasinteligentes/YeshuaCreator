@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eAk6caDK1hC4swKbobm55ol2z/VG3jrZuujOnjlMiswq6N1lIhOgoDIzwlP3QQcTCxqn1GO3hr6zVmnpBqKdJg==",
+  "dgSpecHash": "mZ25W6Ud4klshgGgGPDu14RIX30kP06XonHzs9uBx97+mVJ+WjTml/eCYeighazSmLrfDpDBy6/Og7VktMzWVQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPTeste\\TestMigration\\TestMigration.csproj",
+  "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPTeste\\TestMigration\\TestMigration.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",

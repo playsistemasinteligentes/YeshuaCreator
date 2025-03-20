@@ -42,14 +42,14 @@ namespace Dominio.Schemas.CQRS
                 case CommandType.Read:
 
                     foreach (var column in _entity.AddColumns)
-                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name.ToLower()} {{ get; set; }}");
 
                     break;
                 case CommandType.ReadFK:
 
                     Column columnFK = _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault();
                     foreach (var column in columnFK.EntityFK.AddColumns.Where(x => x.DisplayFK))
-                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
+                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name.ToLower()} {{ get; set; }}");
 
                     break;
                 default:

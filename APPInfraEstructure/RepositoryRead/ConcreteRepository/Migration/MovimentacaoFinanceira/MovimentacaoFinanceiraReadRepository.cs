@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
 
             using (_connection)
             {
-                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query) as List<MovimentacaoFinanceiraDTO>;
+                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
             }
             return lista;
         }
@@ -48,7 +48,7 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
 
             using (_connection)
             {
-                lista = _connection.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query) as List<MovimentacaoFinanceiraPacienteIdDTO>;
+                lista = _connection.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraPacienteIdDTO>;
             }
             return lista;
         }
@@ -69,7 +69,7 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
 
             using (_connection)
             {
-                lista = _connection.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query) as List<MovimentacaoFinanceiraServicoIdDTO>;
+                lista = _connection.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraServicoIdDTO>;
             }
             return lista;
         }

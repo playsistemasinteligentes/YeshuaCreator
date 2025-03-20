@@ -8,8 +8,8 @@ namespace Command.Commands.Read
         public int? PacienteId { get; set; }
         public int? ProfissionalId { get; set; }
         public int? ServicoId { get; set; }
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
+        public DateTime? DataInicio { get; set; }
+        public DateTime? DataFim { get; set; }
         public int? Status { get; set; }
         public int? MovimentacaoFinanceiraId { get; set; }
         public string SinteseProntuario { get; set; }

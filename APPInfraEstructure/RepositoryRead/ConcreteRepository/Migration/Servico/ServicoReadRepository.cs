@@ -22,7 +22,7 @@ namespace Read.ConcreteRepository.Servico
         }
 
         public IEnumerable<ServicoDTO> getServico(object command)
-        {
+         {
             if (command is Command.Commands.Read.ServicoReadCommand c)
             {
                 return getServico(c);
@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.Servico
 
             using (_connection)
             {
-                lista = _connection.Query<ServicoDTO>(query.Query) as List<ServicoDTO>;
+                lista = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
             }
             return lista;
         }
@@ -48,7 +48,7 @@ namespace Read.ConcreteRepository.Servico
 
             using (_connection)
             {
-                lista = _connection.Query<ServicoGrupoServicoIdDTO>(query.Query, query.Parameters) as List<ServicoGrupoServicoIdDTO>;
+                lista = _connection.Query<ServicoGrupoServicoIdDTO>(query.Query,query.Parameters) as List<ServicoGrupoServicoIdDTO>;
             }
             return lista;
         }

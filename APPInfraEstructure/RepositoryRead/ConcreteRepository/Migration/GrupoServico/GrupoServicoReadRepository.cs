@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.GrupoServico
 
             using (_connection)
             {
-                lista = _connection.Query<GrupoServicoDTO>(query.Query) as List<GrupoServicoDTO>;
+                lista = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
             }
             return lista;
         }

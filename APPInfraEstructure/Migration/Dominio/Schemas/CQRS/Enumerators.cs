@@ -20,6 +20,5 @@ namespace Migration.Dominio.Schemas.CQRS
         Read = 4,
         ReadFK = 5
 
-
     }
 }

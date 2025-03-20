@@ -8,18 +8,18 @@ namespace Repositorio.Outputs.DTOs.Paciente
 {
     public struct PacienteDTO
     {
-    public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Telefone { get; set; }
-    public DateTime DataNascimento { get; set; }
-    public int Genero { get; set; }
-    public string Escolaridade { get; set; }
-    public string Profissao { get; set; }
-    public string Endereco { get; set; }
-    public string NomeResponsavel { get; set; }
-    public string TelefoneResponsavel { get; set; }
-    public string PrincipaisQueixas { get; set; }
-    public string ObservacaoAdicional { get; set; }
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string telefone { get; set; }
+    public DateTime datanascimento { get; set; }
+    public int genero { get; set; }
+    public string escolaridade { get; set; }
+    public string profissao { get; set; }
+    public string endereco { get; set; }
+    public string nomeresponsavel { get; set; }
+    public string telefoneresponsavel { get; set; }
+    public string principaisqueixas { get; set; }
+    public string observacaoadicional { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

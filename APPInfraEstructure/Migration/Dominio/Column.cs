@@ -29,11 +29,11 @@ namespace Dominio
         public bool IsKey { get; set; }
         public bool IsFK { get; private set; }
         public bool DisplayFK { get; set; }
+        public string FkEntityName;
         public Entity EntityFK { get; set; }
         public bool IsNotNull { get; private set; }
         public string Helper { get; }
 
-        public string FkEntityName;
 
         public string ColumnReference { get; private set; }
         public bool required { get; internal set; }
@@ -90,8 +90,33 @@ namespace Dominio
             return this.Entity;
         }
 
-        internal string getCsharpType(bool nulableTag = false)
+        internal string getCsharpType(bool nulableTag = false, bool search = false)
         {
+            string nulable = ((nulableTag && !this.IsNotNull) || search) ? "?" : "";
+            switch (this.Type)
+            {
+                case "int":
+                    return "int" + nulable;
+                case "varchar":
+                    return "string";
+                case "datetime":
+                    return "DateTime" + nulable;
+                case "float":
+                    return "Float" + nulable;
+                case "decimal":
+                    return "Decimal" + nulable;
+                default:
+                    throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
+            }
+        }
+
+        internal string getFrontType(bool nulableTag = false)
+        {
+            if (this.Enum != null && this.Enum.Count > 0)
+            {
+                return "enum";
+            }
+
             switch (this.Type)
             {
                 case "int":
@@ -108,6 +133,8 @@ namespace Dominio
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
         }
+
+
         internal string getParameterConstructor()
         {
             return this.Name.ToLower();

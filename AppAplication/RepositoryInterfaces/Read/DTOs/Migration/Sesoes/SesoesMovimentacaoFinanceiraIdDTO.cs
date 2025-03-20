@@ -8,7 +8,7 @@ namespace Repositorio.Outputs.DTOs.Sesoes
 {
     public struct SesoesMovimentacaoFinanceiraIdDTO
     {
-    public int Id { get; set; }
+    public int id { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

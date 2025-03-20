@@ -56,7 +56,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine("            using (_connection)");
             sb.AppendLine("            {");
-            sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}DTO>(query.Query) as List<{_entity.EntityName}DTO>;");
+            sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
             sb.AppendLine("            }");
             sb.AppendLine("            return lista;");
             sb.AppendLine("        }");
@@ -72,7 +72,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine("            using (_connection)");
                 sb.AppendLine("            {");
-                sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}{column.Name}DTO>(query.Query) as List<{_entity.EntityName}{column.Name}DTO>;");
+                sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{column.Name}DTO>;");
                 sb.AppendLine("            }");
                 sb.AppendLine("            return lista;");
                 sb.AppendLine("        }");

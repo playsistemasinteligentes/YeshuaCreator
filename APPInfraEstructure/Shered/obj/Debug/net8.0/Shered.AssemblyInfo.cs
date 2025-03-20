@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Shered")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92f2fbb22b3cb9f53c10a78e15ed972e432caaea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ceb27443e3c982cd061a59a198824523ce0643c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Shered")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Shered")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

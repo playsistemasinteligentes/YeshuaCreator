@@ -8,10 +8,10 @@ namespace Repositorio.Outputs.DTOs.Clinica
 {
     public struct ClinicaDTO
     {
-    public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Endereco { get; set; }
-    public string Telefone { get; set; }
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string endereco { get; set; }
+    public string telefone { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

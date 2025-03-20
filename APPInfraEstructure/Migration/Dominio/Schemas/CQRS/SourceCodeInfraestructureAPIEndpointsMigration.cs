@@ -175,7 +175,22 @@ namespace Dominio.Schemas.CQRS
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     if (item.IsFK)
                         fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", isFk = {item.IsFK.ToString().ToLower()} , {fksDisplay} }},");
+
+                    StringBuilder sbEnum = new StringBuilder();
+                    if (item.Enum != null && item.Enum.Count() > 0)
+                    {
+                        sbEnum.AppendLine("options = new[]{");
+                        foreach (var Enum in item.Enum)
+                            sbEnum.AppendLine($"new {{value = {Enum.Key},display = \"{Enum.Value}\"}},");
+
+                        sbEnum.AppendLine("}");
+                    }
+                    else
+                    {
+                        sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
+                    }
+
+                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", isFk = {item.IsFK.ToString().ToLower()} , {fksDisplay}, {sbEnum.ToString()} }},");
                 }
                 sb.AppendLine("},");
 
@@ -185,9 +200,23 @@ namespace Dominio.Schemas.CQRS
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     if (item.IsFK)
-                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name.ToLower()}\""))} }}";
 
-                    sb.AppendLine($" new {{ id = \"{item.Name}\", label = \"{item.Description}\", type = \"{item.getCsharpType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}, {fksDisplay}  }},");
+                    StringBuilder sbEnum = new StringBuilder();
+                    if (item.Enum != null && item.Enum.Count() > 0)
+                    {
+                        sbEnum.AppendLine("options = new[]{");
+                        foreach (var Enum in item.Enum)
+                            sbEnum.AppendLine($"new {{value = {Enum.Key},display = \"{Enum.Value}\"}},");
+
+                        sbEnum.AppendLine("}");
+                    }
+                    else
+                    {
+                        sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
+                    }
+
+                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}, {fksDisplay}, {sbEnum.ToString()}  }},");
                 }
                 sb.AppendLine("},");
 

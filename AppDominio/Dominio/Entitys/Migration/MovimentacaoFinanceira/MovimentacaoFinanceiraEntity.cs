@@ -13,12 +13,12 @@
                 public int? Id { get; set; }
     public int? PacienteId { get; set; }
     public int? ServicoId { get; set; }
-    public Decimal? Valor { get; set; }
+    public Decimal Valor { get; set; }
     public int TipoMovimentacao { get; set; }
     public DateTime DataMovimentacao { get; set; }
-    public Decimal? SaldoAtual { get; set; }
+    public Decimal SaldoAtual { get; set; }
     private List<string> _erroMensagem = null;
- public MovimentacaoFinanceiraEntity(int? id, int? pacienteid, int? servicoid, Decimal? valor, int tipomovimentacao, DateTime datamovimentacao, Decimal? saldoatual ){
+ public MovimentacaoFinanceiraEntity(int? id, int? pacienteid, int? servicoid, Decimal valor, int tipomovimentacao, DateTime datamovimentacao, Decimal saldoatual ){
  Id = id; 
  PacienteId = pacienteid; 
  ServicoId = servicoid; 

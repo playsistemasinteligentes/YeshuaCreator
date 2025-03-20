@@ -6,7 +6,7 @@ namespace Command.Commands.Read
     {
         public int? Id { get; set; }
         public int? ProfissionalId { get; set; }
-        public DateTime DataHora { get; set; }
+        public DateTime? DataHora { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

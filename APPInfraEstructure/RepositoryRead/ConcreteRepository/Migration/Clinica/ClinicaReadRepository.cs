@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.Clinica
 
             using (_connection)
             {
-                lista = _connection.Query<ClinicaDTO>(query.Query) as List<ClinicaDTO>;
+                lista = _connection.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
             }
             return lista;
         }

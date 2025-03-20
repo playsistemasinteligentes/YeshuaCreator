@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "O1bdbXahCH2KcHpzbcAHB/hNMAaTEEO7p+0zfkmK+wyAvadEI54U/3T96+k8SFdHAehj/PBsXn9jVOERgui9SA==",
+  "dgSpecHash": "tMy06jyzmGvruVbzXOWmMTdLCeCZnDeAOqzSNr8QrcktbhrnhnFIRVl3KPluRyAJvJR8hlYWa+tmtlCWE7VsKQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",

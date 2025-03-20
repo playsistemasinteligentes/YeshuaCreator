@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.Profissional
 
             using (_connection)
             {
-                lista = _connection.Query<ProfissionalDTO>(query.Query) as List<ProfissionalDTO>;
+                lista = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
             }
             return lista;
         }
@@ -48,7 +48,7 @@ namespace Read.ConcreteRepository.Profissional
 
             using (_connection)
             {
-                lista = _connection.Query<ProfissionalEspecialidadeIdDTO>(query.Query) as List<ProfissionalEspecialidadeIdDTO>;
+                lista = _connection.Query<ProfissionalEspecialidadeIdDTO>(query.Query,query.Parameters) as List<ProfissionalEspecialidadeIdDTO>;
             }
             return lista;
         }

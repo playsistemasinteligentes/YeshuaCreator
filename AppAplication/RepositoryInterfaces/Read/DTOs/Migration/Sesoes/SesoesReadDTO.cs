@@ -8,32 +8,32 @@ namespace Repositorio.Outputs.DTOs.Sesoes
 {
     public struct SesoesDTO
     {
-    public int Id { get; set; }
-    public int PacienteId { get; set; }
-    public int ProfissionalId { get; set; }
-    public int ServicoId { get; set; }
-    public DateTime DataInicio { get; set; }
-    public DateTime DataFim { get; set; }
-    public int Status { get; set; }
-    public int MovimentacaoFinanceiraId { get; set; }
-    public string SinteseProntuario { get; set; }
-    public string QueixaPrincipal { get; set; }
-    public string MotivoConsultaAtual { get; set; }
-    public string SintomasRelatados { get; set; }
-    public int MudancasDesdeUltimaSessaao { get; set; }
-    public string ComportamentoObservado { get; set; }
-    public string EstadoEmocionalGeral { get; set; }
-    public string DiscursoPensamentos { get; set; }
-    public string TecnicasUtilizadas { get; set; }
-    public string QuestionamentosReflexoesAbordadas { get; set; }
-    public string ExerciciosTarefasSugeridas { get; set; }
-    public string DiagnoosticoHipoteseDiagnoostica { get; set; }
-    public string ObjetivosCurtoPrazo { get; set; }
-    public string ObjetivosLongoPrazo { get; set; }
-    public string FrequenciaSugeridaSessooes { get; set; }
-    public string EncaminhamentoOutrosProfissionais { get; set; }
-    public string InformacoesRelevantesFuturasConsultas { get; set; }
-    public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+    public int id { get; set; }
+    public int pacienteid { get; set; }
+    public int profissionalid { get; set; }
+    public int servicoid { get; set; }
+    public DateTime datainicio { get; set; }
+    public DateTime datafim { get; set; }
+    public int status { get; set; }
+    public int movimentacaofinanceiraid { get; set; }
+    public string sinteseprontuario { get; set; }
+    public string queixaprincipal { get; set; }
+    public string motivoconsultaatual { get; set; }
+    public string sintomasrelatados { get; set; }
+    public int mudancasdesdeultimasessaao { get; set; }
+    public string comportamentoobservado { get; set; }
+    public string estadoemocionalgeral { get; set; }
+    public string discursopensamentos { get; set; }
+    public string tecnicasutilizadas { get; set; }
+    public string questionamentosreflexoesabordadas { get; set; }
+    public string exerciciostarefassugeridas { get; set; }
+    public string diagnoosticohipotesediagnoostica { get; set; }
+    public string objetivoscurtoprazo { get; set; }
+    public string objetivoslongoprazo { get; set; }
+    public string frequenciasugeridasessooes { get; set; }
+    public string encaminhamentooutrosprofissionais { get; set; }
+    public string informacoesrelevantesfuturasconsultas { get; set; }
+    public string feedbackpacientesobreprocessoterapeeutico { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

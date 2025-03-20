@@ -8,13 +8,13 @@ namespace Repositorio.Outputs.DTOs.MovimentacaoFinanceira
 {
     public struct MovimentacaoFinanceiraDTO
     {
-    public int Id { get; set; }
-    public int PacienteId { get; set; }
-    public int ServicoId { get; set; }
-    public Decimal Valor { get; set; }
-    public int TipoMovimentacao { get; set; }
-    public DateTime DataMovimentacao { get; set; }
-    public Decimal SaldoAtual { get; set; }
+    public int id { get; set; }
+    public int pacienteid { get; set; }
+    public int servicoid { get; set; }
+    public Decimal valor { get; set; }
+    public int tipomovimentacao { get; set; }
+    public DateTime datamovimentacao { get; set; }
+    public Decimal saldoatual { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

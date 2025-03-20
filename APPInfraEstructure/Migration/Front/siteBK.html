@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f3;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0077b6;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            position: relative;
+        }
+        .navbar h1 {
+            margin: 0;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .menu button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .menu-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            min-width: 150px;
+            border-radius: 5px;
+            top: 50px;
+            right: 10px;
+        }
+        .menu-content a {
+            color: #0077b6;
+            padding: 12px;
+            display: block;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .menu-content a:hover { background-color: #caf0f8; }
+        .menu.active .menu-content { display: block; }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            position: relative;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .left-buttons, .right-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            background: #00b4d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover { background: #0096c7; }
+        .alert {
+            background: rgba(0, 180, 216, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            top: -40px;
+            right: 20px;
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+            font-size: 14px;
+        }
+        .alert.show {
+            display: block;
+            opacity: 1;
+        }
+        .form-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .form-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container {
+            width: 300px;
+            margin: 100px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .navbar { flex-direction: column; align-items: flex-start; }
+            .form-group { flex-direction: column; width: 100%; }
+            .buttons { flex-direction: column; align-items: flex-start; }
+            .right-buttons { margin-top: 10px; }
+            .menu-content {
+                top: 40px;
+                right: 0;
+                width: 100%;
+            }
+        }
+
+        /* Tabela com rolagem horizontal */
+        .table-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px; /* Garantir que a tabela tenha largura mínima para rolar horizontalmente */
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #0077b6;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        td {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-screen" class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="login-user" placeholder="Usuário" /><br><br>
+        <input type="password" id="login-pass" placeholder="Senha" /><br><br>
+        <button onclick="login()">Entrar</button>
+    </div>
+
+    <div id="app" style="display:none;">
+        <div class="navbar">
+            <h1>Sistema de Cadastro</h1>
+            <div class="menu">
+                <button onclick="toggleMenu()">☰</button>
+                <div class="menu-content" id="menu-content">
+                    <a href="#" onclick="showForm('dashboard')">Dashboard</a>
+                    <a href="#" onclick="showForm('configuracoes')">Configurações</a>
+                    <a href="#" onclick="logout()">Logout</a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="dashboard-form" class="container">
+            <div class="alert" id="alert-msg">Registro salvo com sucesso!</div>
+            <div class="buttons">
+                <div class="left-buttons">
+                    <button id="novo-registro" onclick="novoRegistro()">Novo Registro</button>
+                    <button id="pesquisar" onclick="pesquisar()">Pesquisar</button>
+                </div>
+                <div class="right-buttons">
+                    <button id="btn-salvar" style="display:none;" onclick="salvar()">Salvar</button>
+                    <button id="btn-buscar" style="display:none;" onclick="mostrarTabela()">Buscar</button>
+                </div>
+            </div>
+            <h2>Cadastro</h2>
+            <div class="form-group">
+                <input type="text" id="nome" placeholder="Nome" />
+                <input type="email" id="email" placeholder="Email" />
+            </div>
+
+            <!-- Tabela de resultados dentro de uma div com rolagem horizontal -->
+            <div id="tabela-container" class="table-container" style="display:none;">
+                <h3>Resultados da Pesquisa</h3>
+                <table id="tabela">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Endereço</th>
+                            <th>Data de Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>João Silva</td>
+                            <td>joao.silva@email.com</td>
+                            <td>(11) 99999-9999</td>
+                            <td>Rua A, 123</td>
+                            <td>01/01/2022</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Maria Souza</td>
+                            <td>maria.souza@email.com</td>
+                            <td>(21) 98888-8888</td>
+                            <td>Rua B, 456</td>
+                            <td>02/02/2022</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Carlos Pereira</td>
+                            <td>carlos.pereira@email.com</td>
+                            <td>(31) 97777-7777</td>
+                            <td>Rua C, 789</td>
+                            <td>03/03/2022</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="configuracoes-form" class="container" style="display:none;">
+            <h2>Configurações</h2>
+            <div class="form-group">
+                <input type="text" id="config-nome" placeholder="Nome da Empresa" />
+                <input type="email" id="config-email" placeholder="Email de Contato" />
+            </div>
+            <div class="buttons">
+                <button onclick="salvarConfiguracoes()">Salvar Configurações</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function login() {
+            let user = document.getElementById("login-user").value;
+            let pass = document.getElementById("login-pass").value;
+            if (user === "1" && pass === "1") {
+                document.getElementById("login-screen").style.display = "none";
+                document.getElementById("app").style.display = "block";
+            } else {
+                alert("Usuário ou senha incorretos");
+            }
+        }
+
+        function logout() {
+            document.getElementById("app").style.display = "none";
+            document.getElementById("login-screen").style.display = "block";
+        }
+
+        function toggleMenu() {
+            let menu = document.getElementById("menu-content");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        function showForm(form) {
+            document.getElementById('dashboard-form').style.display = 'none';
+            document.getElementById('configuracoes-form').style.display = 'none';
+            if (form === 'dashboard') {
+                document.getElementById('dashboard-form').style.display = 'block';
+            } else if (form === 'configuracoes') {
+                document.getElementById('configuracoes-form').style.display = 'block';
+            }
+        }
+
+        function novoRegistro() {
+            document.getElementById("btn-salvar").style.display = "inline-block";
+            document.getElementById("btn-buscar").style.display = "none";
+        }
+
+        function pesquisar() {
+            document.getElementById("btn-salvar").style.display = "none";
+            document.getElementById("btn-buscar").style.display = "inline-block";
+        }
+
+        function salvar() {
+            document.getElementById("alert-msg").classList.add("show");
+            setTimeout(() => {
+                document.getElementById("alert-msg").classList.remove("show");
+            }, 3000);
+        }
+
+        function salvarConfiguracoes() {
+            alert('Configurações salvas com sucesso!');
+        }
+
+        function mostrarTabela() {
+            document.getElementById("tabela-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>

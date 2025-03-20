@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.Especialidade
 
             using (_connection)
             {
-                lista = _connection.Query<EspecialidadeDTO>(query.Query) as List<EspecialidadeDTO>;
+                lista = _connection.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
             }
             return lista;
         }

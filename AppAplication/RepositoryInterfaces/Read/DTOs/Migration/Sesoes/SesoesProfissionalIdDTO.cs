@@ -8,8 +8,8 @@ namespace Repositorio.Outputs.DTOs.Sesoes
 {
     public struct SesoesProfissionalIdDTO
     {
-    public int Id { get; set; }
-    public string Nome { get; set; }
+    public int id { get; set; }
+    public string nome { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

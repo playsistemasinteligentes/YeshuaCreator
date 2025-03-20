@@ -8,10 +8,10 @@ namespace Repositorio.Outputs.DTOs.Profissional
 {
     public struct ProfissionalDTO
     {
-    public int Id { get; set; }
-    public string Nome { get; set; }
-    public int EspecialidadeId { get; set; }
-    public string Telefone { get; set; }
+    public int id { get; set; }
+    public string nome { get; set; }
+    public int especialidadeid { get; set; }
+    public string telefone { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

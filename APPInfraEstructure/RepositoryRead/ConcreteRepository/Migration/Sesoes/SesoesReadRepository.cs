@@ -36,7 +36,7 @@ namespace Read.ConcreteRepository.Sesoes
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesDTO>(query.Query) as List<SesoesDTO>;
+                lista = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
             }
             return lista;
         }
@@ -48,7 +48,7 @@ namespace Read.ConcreteRepository.Sesoes
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesPacienteIdDTO>(query.Query) as List<SesoesPacienteIdDTO>;
+                lista = _connection.Query<SesoesPacienteIdDTO>(query.Query,query.Parameters) as List<SesoesPacienteIdDTO>;
             }
             return lista;
         }
@@ -69,7 +69,7 @@ namespace Read.ConcreteRepository.Sesoes
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesProfissionalIdDTO>(query.Query) as List<SesoesProfissionalIdDTO>;
+                lista = _connection.Query<SesoesProfissionalIdDTO>(query.Query,query.Parameters) as List<SesoesProfissionalIdDTO>;
             }
             return lista;
         }
@@ -90,7 +90,7 @@ namespace Read.ConcreteRepository.Sesoes
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesServicoIdDTO>(query.Query) as List<SesoesServicoIdDTO>;
+                lista = _connection.Query<SesoesServicoIdDTO>(query.Query,query.Parameters) as List<SesoesServicoIdDTO>;
             }
             return lista;
         }
@@ -111,7 +111,7 @@ namespace Read.ConcreteRepository.Sesoes
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesMovimentacaoFinanceiraIdDTO>(query.Query) as List<SesoesMovimentacaoFinanceiraIdDTO>;
+                lista = _connection.Query<SesoesMovimentacaoFinanceiraIdDTO>(query.Query,query.Parameters) as List<SesoesMovimentacaoFinanceiraIdDTO>;
             }
             return lista;
         }

@@ -8,9 +8,9 @@ namespace Repositorio.Outputs.DTOs.DisponibilidadeAgenda
 {
     public struct DisponibilidadeAgendaDTO
     {
-    public int Id { get; set; }
-    public int ProfissionalId { get; set; }
-    public DateTime DataHora { get; set; }
+    public int id { get; set; }
+    public int profissionalid { get; set; }
+    public DateTime datahora { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

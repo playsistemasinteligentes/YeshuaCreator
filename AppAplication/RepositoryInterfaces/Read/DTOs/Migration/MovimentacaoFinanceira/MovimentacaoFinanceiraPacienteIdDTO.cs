@@ -8,8 +8,8 @@ namespace Repositorio.Outputs.DTOs.MovimentacaoFinanceira
 {
     public struct MovimentacaoFinanceiraPacienteIdDTO
     {
-    public int Id { get; set; }
-    public string Nome { get; set; }
+    public int id { get; set; }
+    public string nome { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
