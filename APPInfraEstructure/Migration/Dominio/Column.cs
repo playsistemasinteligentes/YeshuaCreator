@@ -37,6 +37,9 @@ namespace Dominio
 
         public string ColumnReference { get; private set; }
         public bool required { get; internal set; }
+        public bool IsBackEndField { get; private set; }
+        public bool IsUserEncryptedField { get; private set; }
+        public bool IsPassword { get; private set; }
 
         public Entity Int()
         {
@@ -172,6 +175,23 @@ namespace Dominio
         internal Entity NotNull()
         {
             this.IsNotNull = true;
+            return this.Entity;
+        }
+
+        internal Entity BackEndField()
+        {
+            this.IsBackEndField = true;
+            return this.Entity;
+        }
+
+        internal Entity Password()
+        {
+            this.IsPassword = true;
+            return this.Entity;
+        }
+        internal Entity UserEncryptedField()
+        {
+            this.IsUserEncryptedField = true;
             return this.Entity;
         }
     }

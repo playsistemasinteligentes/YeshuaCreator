@@ -1,0 +1,87 @@
+	:root {
+    --primary-color: #0071e3;      /* Azul principal */
+    --primary-hover: #005bb5;      /* Azul escuro para hover */
+    --secondary-color: #333;       /* Cinza escuro */
+    --background-color: #f9f9f9;   /* Fundo claro */
+    --text-color: #333;            /* Cor do texto */
+    --border-color: #d2d2d7;       /* Cor da borda */
+    --button-bg: #007bff;          /* Azul para botões */
+    --button-hover: #0056b3;       /* Azul mais escuro para hover */
+}
+
+
+/* Estilo para as seções do formulário */
+.form-section {
+    margin-bottom: 20px;
+}
+
+/* Container flexível para os campos */
+.input-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Aumentando o espaçamento entre os campos */
+}
+
+/* Grupo de input e label */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - 10px); /* Divide em duas colunas */
+    margin-bottom: 10px; /* Adicionando mais espaço abaixo de cada campo */
+}
+
+/* Estilização dos inputs */
+.styled-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Botões */
+.styled-button {
+    background-color: var(--button-bg);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.styled-button:hover {
+    background-color: var(--button-hover);
+}
+
+/* Responsividade: Quando a tela for menor, os campos ficam um abaixo do outro */
+@media (max-width: 768px) {
+    .input-group {
+        width: 100%; /* Ocupa 100% da largura em telas menores */
+    }
+}
+
+/* Container para os botões */
+.button-container {
+    display: flex;
+    justify-content: flex-start; /* Alinha os botões à esquerda */
+    gap: 15px; /* Espaço entre os botões */
+    margin-top: 10px; /* Espaço acima dos botões */
+}
+
+/* Quando o input estiver focado */
+.styled-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 113, 227, 0.5);
+    outline: none;
+}
+
+/* Estilizando os labels */
+.input-group label {
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 5px;
+}

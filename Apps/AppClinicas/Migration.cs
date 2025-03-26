@@ -127,7 +127,7 @@ namespace AppClinicas
                 .AddColumn("ExerciciosTarefasSugeridas", "Exercícios ou tarefas de casa sugeridas").Varchar(500)
 
                 //6. Diagnóstico ou Hipótese Diagnóstica (se aplicável)
-                .AddColumn("DiagnoosticoHipoteseDiagnoostica", "Diagnóstico ou Hipótese Diagnóstica").Varchar(500)
+                .AddColumn("DiagnoosticoHipoteseDiagnoostica", "Diagnóstico ou Hipótese Diagnóstica").Varchar(500).UserEncryptedField()
                 //7. Plano Terapêutico e Encaminhamentos
                 .AddColumn("ObjetivosCurtoPrazo", "Objetivos a curto prazo").Varchar(500)
                 .AddColumn("ObjetivosLongoPrazo", "Objetivos a longo prazo").Varchar(500)

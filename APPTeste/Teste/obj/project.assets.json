@@ -450,6 +450,19 @@
           }
         }
       },
+      "Newtonsoft.Json/13.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Std.UriTemplate/0.0.57": {
         "type": "package",
         "compile": {
@@ -703,7 +716,8 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Dapper": "2.1.35",
-          "Microsoft.Data.SqlClient": "5.2.1"
+          "Microsoft.Data.SqlClient": "5.2.1",
+          "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
           "bin/placeholder/Shered.dll": {}
@@ -1315,6 +1329,33 @@
         "microsoft.sqlserver.server.nuspec"
       ]
     },
+    "Newtonsoft.Json/13.0.1": {
+      "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
     "Std.UriTemplate/0.0.57": {
       "sha512": "9pKu3V7jhHmZkZNktbBqnCPbZgFpmAjyXyuKRHhnLsXoYTVs0LOcPW9D13nOpwP0DFjvi7hdLC5uMtYX+/yj/Q==",
       "type": "package",
@@ -1766,7 +1807,7 @@
       "projectName": "Test",
       "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPTeste\\Teste\\Test.csproj",
       "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\angel\\Source\\Repos\\playsistemasinteligentes\\YeshuaCreator\\APPTeste\\Teste\\obj\\",
+      "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPTeste\\Teste\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

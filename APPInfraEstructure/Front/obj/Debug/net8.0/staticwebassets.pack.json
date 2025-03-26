@@ -1,0 +1,89 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\APP gravação.txt",
+      "PackagePath": "staticwebassets\\APP gravação.txt"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\app.js",
+      "PackagePath": "staticwebassets\\app.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\audio.html",
+      "PackagePath": "staticwebassets\\audio.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\crud.css",
+      "PackagePath": "staticwebassets\\crud.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\crud.js",
+      "PackagePath": "staticwebassets\\crud.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\enumerators",
+      "PackagePath": "staticwebassets"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\enumerators.js",
+      "PackagePath": "staticwebassets\\enumerators.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\fields.css",
+      "PackagePath": "staticwebassets\\fields.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\menu.css",
+      "PackagePath": "staticwebassets\\menu.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\menu.js",
+      "PackagePath": "staticwebassets\\menu.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\root.css",
+      "PackagePath": "staticwebassets\\root.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\site.html",
+      "PackagePath": "staticwebassets\\site.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\site.jsx",
+      "PackagePath": "staticwebassets\\site.jsx"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\style.css",
+      "PackagePath": "staticwebassets\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\styleTables.css",
+      "PackagePath": "staticwebassets\\styleTables.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\teste.js",
+      "PackagePath": "staticwebassets\\teste.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Front.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Front.props",
+      "PackagePath": "build\\Front.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Front.props",
+      "PackagePath": "buildMultiTargeting\\Front.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Front.props",
+      "PackagePath": "buildTransitive\\Front.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

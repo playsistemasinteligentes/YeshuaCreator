@@ -8,15 +8,18 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=CLINICA;User ID=sa;Password=sa;TrustServerCertificate=True;";
-var gbs = GlobalSettingsSingleton.Instance
-    .SetStringConetionWrite(conectionString)
-    .SetStringConetionRead(conectionString);
+Console.WriteLine("Begin");
 
-using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gbs.GetConnectionStringWrite()).SqlConnection())
+Console.WriteLine("Try Parameters");
+string conectionString = GS.I.MYC.ReadConectionString;
+
+using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, conectionString).SqlConnection())
 {
+    Console.WriteLine("Try Conection");
+
     using (IUnitOfWork unitOfWork = new UnitOfWork(connection, true))
     {
+        Console.WriteLine("Try Migrations");
         new MigrationBuilder()
             .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))
             .ADDSchema(new SqlServerSchema(unitOfWork))

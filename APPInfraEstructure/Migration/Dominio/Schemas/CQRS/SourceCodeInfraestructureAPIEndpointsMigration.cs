@@ -33,7 +33,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine("public static class Endpoints");
             sb.AppendLine("{");
-            sb.AppendLine("public static void MapEndpoints(this WebApplication app, string dominio)");
+            sb.AppendLine("public static void MapEndpoints(this WebApplication app)");
             sb.AppendLine("{");
 
             #region Insert 

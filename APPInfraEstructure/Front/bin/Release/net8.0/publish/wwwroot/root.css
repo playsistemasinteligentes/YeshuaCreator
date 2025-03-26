@@ -1,0 +1,13 @@
+/* 🎨 Definição da paleta de cores */
+:root {
+    --primary-color: #0071e3;      /* Azul principal */
+    --primary-hover: #005bb5;      /* Azul escuro para hover */
+    --secondary-color: #333;       /* Cinza escuro */
+    --background-color: #f9f9f9;   /* Fundo claro */
+    --text-color: white;           /* Cor do texto */
+    --border-color: #d2d2d7;       /* Cor da borda */
+    --menu-bg: #222;               /* Fundo do menu */
+    --menu-hover: rgba(255, 255, 255, 0.2); /* Hover do menu */
+    --dropdown-bg: #444;           /* Fundo do dropdown */
+    --dropdown-hover: #666;        /* Hover do dropdown */
+}

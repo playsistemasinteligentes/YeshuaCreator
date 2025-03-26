@@ -4,34 +4,30 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using API.Migrations;
-using RepositoryInterfaces.Read.Repository.Clinica;
-using Comandos.Commands;
 using System.Net;
-using System.Diagnostics;
-using System.Runtime.ConstrainedExecution;
-using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
 // Configuração do Kestrel para otimização de desempenho
 builder.WebHost.ConfigureKestrel(options =>
 {
     // HTTP (opcional)
-    options.Listen(IPAddress.Parse("192.168.0.110"), 5162);
+    options.Listen(IPAddress.Parse(GS.I.MYC.HttpIPListen), GS.I.MYC.HttpPortListen);
 
     // HTTPS com certificado
-    options.Listen(IPAddress.Parse("192.168.0.110"), 7214, listenOptions =>
+    options.Listen(IPAddress.Parse(GS.I.MYC.HttpsIPListen), GS.I.MYC.HttpsPortListen, listenOptions =>
     {
-        listenOptions.UseHttps("C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\API\\bin\\Debug\\net8.0\\certi\\ck.pfx", "123456");
+        listenOptions.UseHttps(GS.I.MYC.HttpsPathCertificado, GS.I.MYC.HttpssenhaCertificado);
     });
 
 
 
-    options.Limits.MaxConcurrentConnections = 1000; // Ajuste conforme necessário
-    options.Limits.MaxConcurrentUpgradedConnections = 1000; // Para WebSockets
-    options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // Limite do corpo da requisição
+    options.Limits.MaxConcurrentConnections = GS.I.MYC.MaxConcurrentConnections; // Ajuste conforme necessário
+    options.Limits.MaxConcurrentUpgradedConnections = GS.I.MYC.MaxConcurrentUpgradedConnections; // Para WebSockets
+    options.Limits.MaxRequestBodySize = GS.I.MYC.MaxRequestBodySize; // Limite do corpo da requisição
 });
 
 // Adiciona cache e compressão
@@ -43,7 +39,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhostAndNetwork", builder =>
     {
-        builder.WithOrigins("http://localhost:3000", "http://192.168.0.110:3000", "https://192.168.0.110:3000") // Permite ambos os domínios
+        builder.WithOrigins(GS.I.MYC.CorsOrigins) // Permite ambos os domínios
                .AllowAnyMethod()                    // Permite qualquer método HTTP (GET, POST, etc)
                .AllowAnyHeader()                    // Permite qualquer cabeçalho
                .AllowCredentials();                 // Permite enviar cookies e credenciais
@@ -59,13 +55,40 @@ builder.Services.AddSwaggerGen(c =>
         Title = "API Example",
         Version = "v1"
     });
+
+    // Configuração de segurança para o Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        Description = "Por favor, insira o token JWT com o prefixo 'Bearer ' na frente."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
 
-string conectionString = "Data Source=DESKTOP-JT9N4SD;Initial Catalog=CLINICA;User ID=sa;Password=sa;TrustServerCertificate=True;";
+
+
 
 builder.Services.AddScoped<SqlFactory>(provader =>
 {
-    return new SqlFactory(EnumSqlConections.SqlServer, conectionString);
+    return new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString);
 });
 
 IndependenceInjection.MapIndependenceInjection(builder);
@@ -138,10 +161,7 @@ app.Use(async (context, next) =>
 });
 
 
-// Endpoints
-
-
-Endpoints.MapEndpoints(app, "http://localhost:5162/");
+Endpoints.MapEndpoints(app);
 
 app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
 {

@@ -60,3 +60,4 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClini
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\Shered.dll.config
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\AppClinicas.csproj.AssemblyReference.cache
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\AppClinicas.csproj.CopyComplete
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\Newtonsoft.Json.dll

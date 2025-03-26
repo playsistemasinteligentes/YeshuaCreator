@@ -5,7 +5,7 @@ namespace API.Migrations
 {
 public static class Endpoints
 {
-public static void MapEndpoints(this WebApplication app, string dominio)
+public static void MapEndpoints(this WebApplication app)
 {
 app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Receivers.Write.InsertEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
 {
@@ -241,6 +241,162 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/Y_User/PostY_User", async ([FromServices] Command.Receivers.Write.InsertY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Company/PostY_Company", async ([FromServices] Command.Receivers.Write.InsertY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Perfil/PostY_Perfil", async ([FromServices] Command.Receivers.Write.InsertY_PerfilReceiver receiver, [FromBody] Command.Commands.Y_PerfilCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Permtions/PostY_Permtions", async ([FromServices] Command.Receivers.Write.InsertY_PermtionsReceiver receiver, [FromBody] Command.Commands.Y_PermtionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_PerfilPermitions/PostY_PerfilPermitions", async ([FromServices] Command.Receivers.Write.InsertY_PerfilPermitionsReceiver receiver, [FromBody] Command.Commands.Y_PerfilPermitionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_UserPermitions/PostY_UserPermitions", async ([FromServices] Command.Receivers.Write.InsertY_UserPermitionsReceiver receiver, [FromBody] Command.Commands.Y_UserPermitionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Receivers.Write.UpdateEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
 {
 try
@@ -354,6 +510,90 @@ return Results.Problem(ex.Message);
 
 
 app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPut("/Y_User/PutY_User", async ([FromServices] Command.Receivers.Write.UpdateY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPut("/Y_Company/PutY_Company", async ([FromServices] Command.Receivers.Write.UpdateY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPut("/Y_Perfil/PutY_Perfil", async ([FromServices] Command.Receivers.Write.UpdateY_PerfilReceiver receiver, [FromBody] Command.Commands.Y_PerfilCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPut("/Y_Permtions/PutY_Permtions", async ([FromServices] Command.Receivers.Write.UpdateY_PermtionsReceiver receiver, [FromBody] Command.Commands.Y_PermtionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPut("/Y_PerfilPermitions/PutY_PerfilPermitions", async ([FromServices] Command.Receivers.Write.UpdateY_PerfilPermitionsReceiver receiver, [FromBody] Command.Commands.Y_PerfilPermitionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPut("/Y_UserPermitions/PutY_UserPermitions", async ([FromServices] Command.Receivers.Write.UpdateY_UserPermitionsReceiver receiver, [FromBody] Command.Commands.Y_UserPermitionsCrudCommand command) =>
 {
 try
 {
@@ -601,6 +841,162 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapDelete("/Y_User/DeleteY_User", async ([FromServices] Command.Receivers.Write.DeleteY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapDelete("/Y_Company/DeleteY_Company", async ([FromServices] Command.Receivers.Write.DeleteY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapDelete("/Y_Perfil/DeleteY_Perfil", async ([FromServices] Command.Receivers.Write.DeleteY_PerfilReceiver receiver, [FromBody] Command.Commands.Y_PerfilCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapDelete("/Y_Permtions/DeleteY_Permtions", async ([FromServices] Command.Receivers.Write.DeleteY_PermtionsReceiver receiver, [FromBody] Command.Commands.Y_PermtionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapDelete("/Y_PerfilPermitions/DeleteY_PerfilPermitions", async ([FromServices] Command.Receivers.Write.DeleteY_PerfilPermitionsReceiver receiver, [FromBody] Command.Commands.Y_PerfilPermitionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapDelete("/Y_UserPermitions/DeleteY_UserPermitions", async ([FromServices] Command.Receivers.Write.DeleteY_UserPermitionsReceiver receiver, [FromBody] Command.Commands.Y_UserPermitionsCrudCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapGet("/getMenu", (HttpContext context) =>
 {
 var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -669,6 +1065,48 @@ new{
 id="Clinica",
 description="Clinica",
 endpoint="/getMetaDataClinica",
+type = "crud"
+}
+,
+new{
+id="Y_User",
+description="Y_User",
+endpoint="/getMetaDataY_User",
+type = "crud"
+}
+,
+new{
+id="Y_Company",
+description="Y_Company",
+endpoint="/getMetaDataY_Company",
+type = "crud"
+}
+,
+new{
+id="Y_Perfil",
+description="Y_Perfil",
+endpoint="/getMetaDataY_Perfil",
+type = "crud"
+}
+,
+new{
+id="Y_Permtions",
+description="Y_Permtions",
+endpoint="/getMetaDataY_Permtions",
+type = "crud"
+}
+,
+new{
+id="Y_PerfilPermitions",
+description="Y_PerfilPermitions",
+endpoint="/getMetaDataY_PerfilPermitions",
+type = "crud"
+}
+,
+new{
+id="Y_UserPermitions",
+description="Y_UserPermitions",
+endpoint="/getMetaDataY_UserPermitions",
 type = "crud"
 }
 };
@@ -908,6 +1346,162 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/Y_User/ReadY_User", async ([FromServices] Command.Receivers.Read.Y_UserReadReceiver receiver, [FromBody] Command.Commands.Read.Y_UserReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Company/ReadY_Company", async ([FromServices] Command.Receivers.Read.Y_CompanyReadReceiver receiver, [FromBody] Command.Commands.Read.Y_CompanyReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Perfil/ReadY_Perfil", async ([FromServices] Command.Receivers.Read.Y_PerfilReadReceiver receiver, [FromBody] Command.Commands.Read.Y_PerfilReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Permtions/ReadY_Permtions", async ([FromServices] Command.Receivers.Read.Y_PermtionsReadReceiver receiver, [FromBody] Command.Commands.Read.Y_PermtionsReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_PerfilPermitions/ReadY_PerfilPermitions", async ([FromServices] Command.Receivers.Read.Y_PerfilPermitionsReadReceiver receiver, [FromBody] Command.Commands.Read.Y_PerfilPermitionsReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_UserPermitions/ReadY_UserPermitions", async ([FromServices] Command.Receivers.Read.Y_UserPermitionsReadReceiver receiver, [FromBody] Command.Commands.Read.Y_UserPermitionsReadCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/Profissional/ProfissionalReadFKEspecialidadeId", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKEspecialidadeIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -1117,6 +1711,136 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/Sesoes/SesoesReadFKMovimentacaoFinanceiraId", async ([FromServices] Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Company/Y_CompanyReadFKUserIDAdmin", async ([FromServices] Command.Receivers.Read.Y_CompanyReadFKUserIDAdminReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_PerfilPermitions/Y_PerfilPermitionsReadFKPerfilId", async ([FromServices] Command.Receivers.Read.Y_PerfilPermitionsReadFKPerfilIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_PerfilPermitions/Y_PerfilPermitionsReadFKPermitionsId", async ([FromServices] Command.Receivers.Read.Y_PerfilPermitionsReadFKPermitionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_UserPermitions/Y_UserPermitionsReadFKUserId", async ([FromServices] Command.Receivers.Read.Y_UserPermitionsReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_UserPermitions/Y_UserPermitionsReadFKPermitionsId", async ([FromServices] Command.Receivers.Read.Y_UserPermitionsReadFKPermitionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1655,6 +2379,219 @@ formFields = new[]
                  read = "/Clinica/ReadClinica",
                  update = "/Clinica/PutClinica",
                  delete = "/Clinica/DeleteClinica"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_User", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_User",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "email", label = "Email", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "senha", label = "Senha", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "email", label = "Email", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "senha", label = "Senha", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 create = "/Y_User/PostY_User",
+                 read = "/Y_User/ReadY_User",
+                 update = "/Y_User/PutY_User",
+                 delete = "/Y_User/DeleteY_User"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_Company", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_Company",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "nome", label = "Nome", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "proxyserver", label = "ProxyServer", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "useridadmin", label = "Administrador", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "nome", label = "Nome", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "proxyserver", label = "ProxyServer", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "useridadmin", label = "Administrador", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 useridadmin = "/Y_Company/Y_CompanyReadFKUserIDAdmin",
+                 create = "/Y_Company/PostY_Company",
+                 read = "/Y_Company/ReadY_Company",
+                 update = "/Y_Company/PutY_Company",
+                 delete = "/Y_Company/DeleteY_Company"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_Perfil", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_Perfil",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "description", label = "Descrição", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "description", label = "Descrição", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 create = "/Y_Perfil/PostY_Perfil",
+                 read = "/Y_Perfil/ReadY_Perfil",
+                 update = "/Y_Perfil/PutY_Perfil",
+                 delete = "/Y_Perfil/DeleteY_Perfil"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_Permtions", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_Permtions",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "description", label = "Descrição", type = "string", isFk = false , fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "description", label = "Descrição", type = "string", required = "False" , isFk = false, fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 create = "/Y_Permtions/PostY_Permtions",
+                 read = "/Y_Permtions/ReadY_Permtions",
+                 update = "/Y_Permtions/PutY_Permtions",
+                 delete = "/Y_Permtions/DeleteY_Permtions"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_PerfilPermitions", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_PerfilPermitions",
+searchFields = new[]
+{
+ new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true , fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "permitionsid", label = "ID Permição", type = "string", isFk = true , fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "perfilid", label = "ID Perfil", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "permitionsid", label = "ID Permição", type = "string", required = "False" , isFk = true, fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 perfilid = "/Y_PerfilPermitions/Y_PerfilPermitionsReadFKPerfilId",
+                 permitionsid = "/Y_PerfilPermitions/Y_PerfilPermitionsReadFKPermitionsId",
+                 create = "/Y_PerfilPermitions/PostY_PerfilPermitions",
+                 read = "/Y_PerfilPermitions/ReadY_PerfilPermitions",
+                 update = "/Y_PerfilPermitions/PutY_PerfilPermitions",
+                 delete = "/Y_PerfilPermitions/DeleteY_PerfilPermitions"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_UserPermitions", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_UserPermitions",
+searchFields = new[]
+{
+ new { id = "userid", label = "User ID", type = "int", isFk = true , fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "permitionsid", label = "ID Permição", type = "string", isFk = true , fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "userid", label = "User ID", type = "int", required = "False" , isFk = true, fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "permitionsid", label = "ID Permição", type = "string", required = "False" , isFk = true, fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 userid = "/Y_UserPermitions/Y_UserPermitionsReadFKUserId",
+                 permitionsid = "/Y_UserPermitions/Y_UserPermitionsReadFKPermitionsId",
+                 create = "/Y_UserPermitions/PostY_UserPermitions",
+                 read = "/Y_UserPermitions/ReadY_UserPermitions",
+                 update = "/Y_UserPermitions/PutY_UserPermitions",
+                 delete = "/Y_UserPermitions/DeleteY_UserPermitions"
              }
          };
          return Results.Ok(metadatacrud);

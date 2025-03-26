@@ -76,6 +76,53 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertClinicaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateClinicaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteClinicaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadReceiver>();
+
+builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Y_User.IY_UserWriteRepository, Input.Repository.Y_User.Y_UserWriteRepository>();
+builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Y_User.IY_UserReadRepository, Read.ConcreteRepository.Y_User.Y_UserReadRepository>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertY_UserReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateY_UserReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteY_UserReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_UserReadReceiver>();
+
+builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Y_Company.IY_CompanyWriteRepository, Input.Repository.Y_Company.Y_CompanyWriteRepository>();
+builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Y_Company.IY_CompanyReadRepository, Read.ConcreteRepository.Y_Company.Y_CompanyReadRepository>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertY_CompanyReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateY_CompanyReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteY_CompanyReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_CompanyReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_CompanyReadFKUserIDAdminReceiver>();
+
+builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Y_Perfil.IY_PerfilWriteRepository, Input.Repository.Y_Perfil.Y_PerfilWriteRepository>();
+builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Y_Perfil.IY_PerfilReadRepository, Read.ConcreteRepository.Y_Perfil.Y_PerfilReadRepository>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertY_PerfilReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateY_PerfilReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteY_PerfilReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_PerfilReadReceiver>();
+
+builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Y_Permtions.IY_PermtionsWriteRepository, Input.Repository.Y_Permtions.Y_PermtionsWriteRepository>();
+builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Y_Permtions.IY_PermtionsReadRepository, Read.ConcreteRepository.Y_Permtions.Y_PermtionsReadRepository>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertY_PermtionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateY_PermtionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteY_PermtionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_PermtionsReadReceiver>();
+
+builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Y_PerfilPermitions.IY_PerfilPermitionsWriteRepository, Input.Repository.Y_PerfilPermitions.Y_PerfilPermitionsWriteRepository>();
+builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Y_PerfilPermitions.IY_PerfilPermitionsReadRepository, Read.ConcreteRepository.Y_PerfilPermitions.Y_PerfilPermitionsReadRepository>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertY_PerfilPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateY_PerfilPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteY_PerfilPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_PerfilPermitionsReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_PerfilPermitionsReadFKPerfilIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_PerfilPermitionsReadFKPermitionsIdReceiver>();
+
+builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Y_UserPermitions.IY_UserPermitionsWriteRepository, Input.Repository.Y_UserPermitions.Y_UserPermitionsWriteRepository>();
+builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Y_UserPermitions.IY_UserPermitionsReadRepository, Read.ConcreteRepository.Y_UserPermitions.Y_UserPermitionsReadRepository>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertY_UserPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateY_UserPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteY_UserPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_UserPermitionsReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_UserPermitionsReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.Y_UserPermitionsReadFKPermitionsIdReceiver>();
 }
 }
 }

@@ -1,0 +1,36 @@
+using Dominio.Entitys.Y_User;
+using Shered.DB;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Dynamic;
+using System.Threading.Tasks;
+
+namespace Output.Querys.Y_User
+{
+    public class Y_UserReadQuery : QueryBase
+    {
+        public QueryModel Y_UserQuery(Command.Commands.Read.Y_UserReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, Email, Senha from Y_User ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.Email)) parametersDict["Email"] = $"%{Command.Email}%";
+if (!string.IsNullOrEmpty(Command.Email)) whereClauses.Add($"Email like @Email");
+if (!string.IsNullOrEmpty(Command.Senha)) parametersDict["Senha"] = $"%{Command.Senha}%";
+if (!string.IsNullOrEmpty(Command.Senha)) whereClauses.Add($"Senha like @Senha");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

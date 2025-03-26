@@ -1,0 +1,13 @@
+using Comandos.Pateners.Command;
+using Dominio.TiposPrimitivos;
+namespace Command.Commands.Read
+{
+    public struct Y_CompanyReadCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -138,5 +138,28 @@ namespace Dominio
             else
                 return this.EntityDescription;
         }
+
+        public Entity BackEndField()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().BackEndField();
+            else
+                return this.AlterColumns.Last().BackEndField();
+        }
+
+        public Entity Password()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().Password();
+            else
+                return this.AlterColumns.Last().Password();
+        }
+        public Entity UserEncryptedField()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().UserEncryptedField();
+            else
+                return this.AlterColumns.Last().UserEncryptedField();
+        }
     }
 }

@@ -46,11 +46,14 @@ namespace Dominio.Migration
 
             foreach (var schema in _schemas.OfType<ISchemaDataBase>())
             {
-                int LastVersion = GetLastVersion(schema._unitOfWork);
+                var (maxID, minID) = GetLastVersion(schema._unitOfWork);
 
-                foreach (var item in migration.Where(x => x.ID > LastVersion))
+                foreach (var item in migration.Where(x => x.ID < minID))
+                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
+                foreach (var item in migration.Where(x => x.ID > maxID))
                     AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
             }
+
 
             PreparMigrationsToCodeGenerete(migration);
             foreach (var schema in _schemas.OfType<ISchemaCodeGeneration>())
@@ -133,7 +136,6 @@ namespace Dominio.Migration
                 setMigrationVersion(migration.ID, migration.MigrationName, unitOfWork);
 
                 unitOfWork.Commit();
-
             }
             catch (Exception e)
             {
@@ -145,17 +147,17 @@ namespace Dominio.Migration
         {
             unitOfWork.ExecuteCommand($"Insert into MigrationVersion(ID,Migration,IssueDate) Values({id},'{migrationName}', GETDATE())");
         }
-        private int GetLastVersion(IUnitOfWork unitOfWork)
+        private (int MaxID, int MinID) GetLastVersion(IUnitOfWork unitOfWork)
         {
             try
             {
-                string sql = "SELECT isnull(MAX(ID),0) AS ID FROM MigrationVersion";
-                return unitOfWork.QuerySingle<int>(sql);
+                string sql = "SELECT ISNULL(MAX(ID),0) AS MaxID, ISNULL(MIN(ID),0) AS MinID FROM MigrationVersion";
+                return unitOfWork.QuerySingle<(int MaxID, int MinID)>(sql);
             }
             catch (Exception)
             {
-                unitOfWork.ExecuteCommand("CREATE TABLE MigrationVersion(ID INT  primary key, Migration varchar(20), IssueDate dateTime);");
-                return 0;
+                unitOfWork.ExecuteCommand("CREATE TABLE MigrationVersion(ID INT PRIMARY KEY, Migration VARCHAR(20), IssueDate DATETIME);");
+                return (0, 0);
             }
         }
     }

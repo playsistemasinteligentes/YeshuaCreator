@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repositorio.Outputs.DTOs.Y_Perfil
+{
+    public struct Y_PerfilDTO
+    {
+    public int id { get; set; }
+    public string description { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

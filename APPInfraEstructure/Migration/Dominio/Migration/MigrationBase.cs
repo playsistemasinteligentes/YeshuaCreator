@@ -94,7 +94,9 @@ namespace Dominio.Migration
 
         public void SetID(string name)
         {
-            ID = int.Parse(name.Replace("M", ""));
+            ID = int.Parse(name.Replace("M", "").Replace("S", ""));
+            if (!string.IsNullOrEmpty(name) && name[0] == 'S')
+                ID = ID * -1;
             MigrationName = name;
         }
     }

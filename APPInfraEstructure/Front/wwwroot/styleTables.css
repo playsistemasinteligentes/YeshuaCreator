@@ -1,0 +1,109 @@
+
+/* Estilo para o container da tabela */
+.table-container {
+    width: 100%;
+    margin-top: 20px;
+    overflow-x: auto; /* Adiciona barra de rolagem horizontal, se necessário */
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para a tabela */
+.table-container table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre células */
+    margin-top: 10px;
+    background-color: #fff;
+}
+
+/* Cabeçalho da tabela */
+.table-container th {
+    background-color: #4A90E2;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* Linhas da tabela */
+.table-container td {
+    padding: 12px;
+    border: 1px solid #d2d2d7;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Linhas alternadas para melhorar a leitura */
+.table-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table-container tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Efeito hover nas linhas */
+.table-container tr:hover {
+    background-color: rgba(0, 113, 227, 0.1);
+    cursor: pointer;
+}
+
+/* Estilo para os links de ações */
+.table-container a {
+    color: #0071e3;
+    text-decoration: none;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.table-container a:hover {
+    color: #005bb5;
+}
+
+/* Estilo para as células de ações */
+.table-container td:last-child {
+    text-align: center;
+}
+
+/* Estilo responsivo para telas pequenas */
+@media (max-width: 768px) {
+    /* Torna a tabela uma lista de cartões em telas pequenas */
+    .table-container table {
+        display: block; /* Transforma a tabela em um bloco */
+    }
+
+    .table-container th,
+    .table-container td {
+        display: block;
+        width: 100%; /* Cada célula ocupa 100% da largura */
+        box-sizing: border-box; /* Para garantir que a largura seja calculada corretamente */
+    }
+
+    .table-container tr {
+        margin-bottom: 15px;
+        border: none; /* Remove a borda da linha */
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .table-container td {
+        border: none; /* Remove a borda da célula */
+        padding: 10px;
+        font-size: 1rem;
+        background-color: #f5f5f7;
+    }
+
+    .table-container td:before {
+        content: attr(data-label); /* Adiciona o nome do campo antes do valor */
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    /* Esconde o cabeçalho da tabela em telas pequenas */
+    .table-container th {
+        display: none;
+    }
+}
