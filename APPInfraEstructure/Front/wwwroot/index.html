@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div id="modal-pesquisa" class="modal">
+    <div id="modal-pesquisa" class="modal" aria-hidden="true">
         <div class="modal-content">
             <span class="close" onclick="fecharModal()">&times;</span>
             <h2>Pesquisar Registro</h2>
@@ -36,13 +36,12 @@
         </div>
     </div>
 
-
-
-
     <div id="login-screen" class="login-container">
         <h2>Login</h2>
         <form id="login-form">
+            <label for="username">Usuário:</label>
             <input type="text" id="username" placeholder="Usuário" /><br><br>
+            <label for="password">Senha:</label>
             <input type="password" id="password" placeholder="Senha" /><br><br>
             <button type="submit">Entrar</button>
         </form>
@@ -70,23 +69,18 @@
                     <button id="btn-update" style="display:none;" onclick="crudUpdate()">Atualizar</button>
                     <button id="btn-search" style="display:none;" onclick="crudSearch()">Buscar</button>
                     <div class="alert" id="alert-msg">Registro salvo com sucesso!</div>
-
                 </div>
             </div>
             <h2></h2>
-
-            <div class="form-group" id="form-group">
-
-            </div>
-
-            <div id="table-container" class="table-container" style="display:none;">
-
-            </div>
+            <div class="form-group" id="form-group"></div>
+            <div id="table-container" class="table-container" style="display:none;"></div>
         </div>
     </div>
+
     <script src="environments.js"></script>
     <script src="crud.js"></script>
     <script src="enumerators.js"></script>
+
 </body>
 
 </html>

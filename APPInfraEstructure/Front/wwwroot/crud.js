@@ -1074,3 +1074,17 @@ function filtrarTabela() {
     paginaAtual = 1;
     atualizarTabela();
 }
+
+
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        fecharModal();
+    }
+});
+
+function fecharModal() {
+    let modal = document.getElementById("modal-pesquisa");
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+}
