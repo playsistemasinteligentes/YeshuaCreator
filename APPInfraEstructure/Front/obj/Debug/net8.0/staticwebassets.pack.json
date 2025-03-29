@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets\\enumerators.js"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\environments.js",
+      "PackagePath": "staticwebassets\\environments.js"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\fields.css",
       "PackagePath": "staticwebassets\\fields.css"
     },

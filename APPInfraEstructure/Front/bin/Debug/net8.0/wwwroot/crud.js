@@ -1,6 +1,6 @@
 
 const API_BASE = environments.production;
-
+alert(API_BASE);
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     if (token) {

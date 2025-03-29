@@ -68,3 +68,19 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\Shered.dll.config
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Debug\net8.0\Front.csproj.AssemblyReference.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Debug\net8.0\Front.csproj.CopyComplete
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\APP gravação.txt
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\app.js
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\audio.html
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\crud.css
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\crud.js
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\enumerators
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\fields.css
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\index.html
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\menu.css
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\menu.js
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\root.css
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\site.html
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\site.jsx
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\style.css
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\styleTables.css
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\teste.js
