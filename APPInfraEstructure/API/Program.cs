@@ -7,6 +7,9 @@ using System.Text;
 using API.Migrations;
 using System.Net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Comandos.Pateners.Command;
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 
 
@@ -91,6 +94,12 @@ builder.Services.AddScoped<SqlFactory>(provader =>
     return new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString);
 });
 
+
+builder.Services.AddScoped<IDbConnection>(provader =>
+{
+    return new SqlConnection(GS.I.MYC.ReadConectionString);
+});
+
 IndependenceInjection.MapIndependenceInjection(builder);
 
 // Configurações do JWT
@@ -169,9 +178,19 @@ app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Email, "admin@email.com"), // E-mail do usuário
+            new Claim(ClaimTypes.Role, "Admin"), // Permissão
+            new Claim("CompanyId", "123"), // ID da empresa, por exemplo
+            new Claim("CustomClaim", "MeuValorPersonalizado") // Qualquer outra informação
+        };
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) }),
+            Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddSeconds(jwtSettings.ExpirationMinutes),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -180,6 +199,20 @@ app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
         return Results.Ok(new { token = tokenHandler.WriteToken(token) });
     }
 
+    return Results.Unauthorized();
+});
+
+
+
+
+app.MapPost("/CreateAccount", (Account company) =>
+{
+
+});
+
+
+app.MapPost("/ForgotPassword", (string email) =>
+{
     return Results.Unauthorized();
 });
 
@@ -225,3 +258,4 @@ app.MapPost("/upload", async (HttpContext context) =>
 app.Run();
 
 public record UserLogin(string Username, string Password);
+public record Account(string idcompany, string email, string phone, string password, string confirmpassword);

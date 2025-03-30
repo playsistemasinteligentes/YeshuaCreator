@@ -14,6 +14,9 @@ namespace Migration.Dominio.Schemas.CQRS
 
         public string NameSpaceCommandsRead { get; set; } = "Command.Commands.Read";
         public string NameSpaceCommands { get; internal set; } = "Command.Commands";
+        public string NameSpaceCommandCommandsHubServiceMethod { get; set; } = "Command.Commands";
+        public string NameSpaceCommandReceiversHub { get; set; } = "Command.Receivers";
+        public string NameSpaceCommandReceiversHubServiceMethod { get; set; } = "Command.Receivers.HubServiceMethod";
         public string NameSpaceCommandReceiversRead { get; set; } = "Command.Receivers.Read";
         public string NameSpaceCommandReceiversWrite { get; set; } = "Command.Receivers.Write";
         public List<string> ColumnsDescriptions { get; set; } = new List<string> { "nome", "descricao" };

@@ -1,6 +1,7 @@
 ﻿using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using System.Data.Common;
 using System.Globalization;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
@@ -150,8 +151,6 @@ namespace Dominio.Schemas.CQRS
             }
             #endregion
 
-
-
             // get meta data 
             foreach (var entidade in _migration.Entitys)
             {
@@ -239,6 +238,26 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("     }).RequireAuthorization();");
             }
 
+            #region ServicesMethod
+            sb.AppendLine("#region ServicesMethod");
+            foreach (var hub in _migration.Hubs)
+            {
+                foreach (var service in hub.Services)
+                {
+                    foreach (var method in service.Methods)
+                    {
+                        sb.AppendLine($"app.MapPost(\"/{hub.Name}/{service.Name}{method.Name}{CommandType.ServiceMethod}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversHubServiceMethod}.{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsHubServiceMethod}.{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Command command) =>");
+                        sb.AppendLine("{");
+
+                        setResultHttp(sb, "result.Data");
+                        sb.AppendLine("}).RequireAuthorization();");
+                        sb.AppendLine("");
+                        sb.AppendLine("");
+                    }
+                }
+            }
+            sb.AppendLine("#endregion");
+            #endregion
 
 
             sb.AppendLine("}");

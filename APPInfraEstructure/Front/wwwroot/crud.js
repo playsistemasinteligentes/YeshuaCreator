@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.getElementById('login-form').addEventListener('submit', async (event) => {
     event.preventDefault();
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
@@ -43,6 +43,80 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
     }
 });
 
+
+
+document.getElementById('create-account-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const idCompany = document.getElementById('idcompany').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password-create').value.trim();
+    const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+    // Validações básicas
+    if (!idCompany || !email || !phone || !password || !confirmPassword) {
+        alert("Todos os campos são obrigatórios!");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert("As senhas não coincidem!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/CreateAccount`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idCompany, email, phone, password, confirmPassword })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("Conta criada com sucesso! Faça login para continuar.");
+            showLogin(); // Exibe a tela de login
+        } else {
+            alert(data.message || "Erro ao criar conta. Tente novamente.");
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao conectar ao servidor. Tente novamente mais tarde.");
+    }
+});
+
+document.getElementById('forgot-password-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById('forgot-email').value.trim();
+
+    if (!email) {
+        alert("Por favor, digite seu e-mail!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/ForgotPassword`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("Se este e-mail estiver cadastrado, você receberá instruções para redefinir sua senha.");
+            showLogin(); // Redireciona para a tela de login
+        } else {
+            alert(data.message || "Erro ao processar solicitação. Tente novamente.");
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao conectar ao servidor. Tente novamente mais tarde.");
+    }
+});
+
 // fim start apliction e login
 
 async function loadMenu() {
@@ -59,7 +133,7 @@ async function loadMenu() {
 
         const menuItems = await response.json();
         const menuList = document.getElementById('menu');
-        menuList.innerHTML = '';
+        menuList.innerHTML = '<a href="#" onclick="logout()">Logout</a>';
 
         menuItems.forEach(item => {
             const a = document.createElement('a'); // Criando o elemento <a>

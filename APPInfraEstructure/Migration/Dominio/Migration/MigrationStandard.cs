@@ -1,7 +1,9 @@
 ﻿using Dominio.Migration;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,5 +42,17 @@ namespace Migration.Dominio.Migration
             .AddColumn("UserId", "User ID").FK("Y_User", "Id").Int()
             .AddColumn("PermitionsId", "ID Permição").FK("Y_Permtions", "Id").Varchar(100);
         }
+    }
+
+    [Migration(000002)]
+    public class S000002 : MigrationBase
+    {
+        public override void Up()
+        {
+            Account acount = new Account("", "", "", "", "");
+
+            AddHub("Y").AddService("Contas").AddMethod("createConta", acount);
+        }
+        public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
     }
 }

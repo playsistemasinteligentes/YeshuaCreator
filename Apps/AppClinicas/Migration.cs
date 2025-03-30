@@ -1,7 +1,9 @@
 ﻿using Dominio.Migration;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -137,8 +139,6 @@ namespace AppClinicas
                 .AddColumn("InformacoesRelevantesFuturasConsultas", "Informações relevantes que podem ser úteis em futuras consultas").Varchar(500)
                 .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(500);
 
-
-
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddHub("ClinicaPaciente")
                 .AddAgents("Agente de Agendamento de Paciente")
@@ -167,7 +167,12 @@ namespace AppClinicas
                     .AddMenu("Menu Administrativo Financeiro")
                     .AddMenuOption(1, "Verificar saldo total da clínica")
                     .AddMenuOption(2, "Verificar transações financeiras")
-                    .AddMenuOption(3, "Emitir relatório financeiro");
+                    .AddMenuOption(3, "Emitir relatório financeiro")
+                .AddAgents("createConta");
+
+
+
+
         }
     }
 }

@@ -2596,6 +2596,34 @@ formFields = new[]
          };
          return Results.Ok(metadatacrud);
      }).RequireAuthorization();
+#region ServicesMethod
+app.MapPost("/Y/ContascreateContaServiceMethod", async ([FromServices] Command.Receivers.HubServiceMethod.ContasCreateContaServiceMethodReceiver receiver, [FromBody] Command.Commands.ContasCreateContaServiceMethodCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+#endregion
 }
 }
 }

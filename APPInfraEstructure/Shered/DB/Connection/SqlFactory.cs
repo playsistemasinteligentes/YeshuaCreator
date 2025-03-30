@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Shered.DB.Connection
 {
-    public class SqlFactory 
+    public class SqlFactory
     {
         private readonly EnumSqlConections _typeConnection;
         private readonly string _stringConection;

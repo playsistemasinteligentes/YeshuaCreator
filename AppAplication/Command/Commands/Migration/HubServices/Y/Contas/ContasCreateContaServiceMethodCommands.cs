@@ -1,0 +1,14 @@
+using Comandos.Pateners.Command;
+using Dominio.TiposPrimitivos;
+namespace Command.Commands
+{
+    public partial struct ContasCreateContaServiceMethodCommand : ICommand
+    {
+    public string idcompany { get; set; }
+    public string email { get; set; }
+    public string phone { get; set; }
+    public string password { get; set; }
+    public string confirmpassword { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsHub

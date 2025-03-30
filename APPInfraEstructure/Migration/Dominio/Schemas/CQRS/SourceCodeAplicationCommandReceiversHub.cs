@@ -5,18 +5,37 @@ using System.Collections.Generic;
 using static Dapper.SqlMapper;
 using System.Text;
 using System.Linq;
+using Migration.Dominio.Schemas.CQRS;
+using System.Xml.Linq;
 
 namespace Dominio.Schemas.CQRS
 {
     public class SourceCodeAplicationCommandReceiversHub : SourceCodeBase
     {
         private Hub _hub;
+        private CommandType _commandType;
+        private Service _service;
+        private Method _method;
+        private string _nameSpace;
+        private string _classe;
+
         public SourceCodeAplicationCommandReceiversHub(Hub hub)
             : base()
         {
             _hub = hub;
+            _nameSpace = CQRSParam.I.NameSpaceCommandReceiversHub;
+            _commandType = CommandType.Hub;
         }
-
+        public SourceCodeAplicationCommandReceiversHub(Method method)
+            : base()
+        {
+            _hub = method.Hub;
+            _service = method.Service;
+            _commandType = CommandType.ServiceMethod;
+            _method = method;
+            _nameSpace = CQRSParam.I.NameSpaceCommandReceiversHubServiceMethod;
+            _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Receiver";
+        }
         protected override StringBuilder GenerateCode()
         {
             StringBuilder sb = new StringBuilder();
@@ -34,14 +53,14 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a classe
-            sb.AppendLine($"namespace Comandos.Receivers.{_hub.Name.SourceType()}");
+            sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubReceiver : ReciverBase");
+            sb.AppendLine($"    public partial class {_classe} : ReciverBase");
             sb.AppendLine("    {");
             sb.AppendLine();
             sb.AppendLine($"        private readonly object _menssage;");
             sb.AppendLine();
-            sb.AppendLine($"        public {_hub.Name.SourceType()}HubReceiver(object menssage)");
+            sb.AppendLine($"        public {_classe}(object menssage)");
             sb.AppendLine("        {");
             sb.AppendLine("            _menssage = menssage;");
             sb.AppendLine("        }");
@@ -129,9 +148,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a classe
-            sb.AppendLine($"namespace Comandos.Receivers.{_hub.Name.SourceType()}");
+            sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubReceiver : ReciverBase");
+            sb.AppendLine($"    public partial class {_classe}HubReceiver");
             sb.AppendLine("    {");
             //sb.AppendLine($"       private Agent getAgent(ICommand comand)");
             //sb.AppendLine("        {");

@@ -10,15 +10,13 @@ namespace Migration.Dominio.Schemas.CQRS
     public enum CommandType
     {
         Crud = 0,
-
         Insert = 1,
-
         Update = 2,
-
         Delete = 3,
-
         Read = 4,
-        ReadFK = 5
-
+        ReadFK = 5,
+        Hub = 6,
+        ServiceMethod = 7,
+        Agent = 8
     }
 }
