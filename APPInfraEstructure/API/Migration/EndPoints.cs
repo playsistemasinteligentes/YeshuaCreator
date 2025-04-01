@@ -2620,7 +2620,7 @@ catch (Exception ex)
 {
 return Results.Problem(ex.Message);
 }
-}).RequireAuthorization();
+});
 
 
 #endregion

@@ -1,4 +1,5 @@
 ﻿using Dominio.Migration;
+using Migration.Dominio.Schemas.CQRS;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -51,7 +52,7 @@ namespace Migration.Dominio.Migration
         {
             Account acount = new Account("", "", "", "", "");
 
-            AddHub("Y").AddService("Contas").AddMethod("createConta", acount);
+            AddHub("Y").AddService("Contas").AddMethod("createConta", acount).Authorization(Authorization.Free);
         }
         public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
     }

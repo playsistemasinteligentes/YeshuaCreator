@@ -1,6 +1,7 @@
 ﻿
 using Dominio.TiposPrimitivos;
 using Migration.Dominio.Schemas;
+using Migration.Dominio.Schemas.CQRS;
 using System.Reflection;
 using System.Text;
 
@@ -28,5 +29,8 @@ namespace Dominio
         public StringBuilder VersaoAtualCodigo { get; set; }
         public StringBuilder VersaoAlterada { get; set; }
         public Service Service { get; set; }
+        public Authorization Authorization { get; set; }
+
+
     }
 }

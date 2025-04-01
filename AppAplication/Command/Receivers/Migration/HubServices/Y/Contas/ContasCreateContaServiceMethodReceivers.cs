@@ -11,12 +11,6 @@ namespace Command.Receivers.HubServiceMethod
     public partial class ContasCreateContaServiceMethodReceiver : ReciverBase
     {
 
-        private readonly object _menssage;
-
-        public ContasCreateContaServiceMethodReceiver(object menssage)
-        {
-            _menssage = menssage;
-        }
 
         protected override State Action(ICommand comand)
         {

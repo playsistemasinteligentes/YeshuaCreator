@@ -58,12 +58,12 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public partial class {_classe} : ReciverBase");
             sb.AppendLine("    {");
             sb.AppendLine();
-            sb.AppendLine($"        private readonly object _menssage;");
-            sb.AppendLine();
-            sb.AppendLine($"        public {_classe}(object menssage)");
-            sb.AppendLine("        {");
-            sb.AppendLine("            _menssage = menssage;");
-            sb.AppendLine("        }");
+            //sb.AppendLine($"        private readonly object _menssage;");
+            //sb.AppendLine();
+            //sb.AppendLine($"        public {_classe}(object menssage)");
+            //sb.AppendLine("        {");
+            //sb.AppendLine("            _menssage = menssage;");
+            //sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine($"        protected override State Action(ICommand comand)");
             sb.AppendLine("        {");

@@ -19,4 +19,11 @@ namespace Migration.Dominio.Schemas.CQRS
         ServiceMethod = 7,
         Agent = 8
     }
+
+
+    public enum Authorization
+    {
+        Free = 0,
+        User = 1
+    }
 }

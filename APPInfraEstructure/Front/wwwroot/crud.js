@@ -25,7 +25,7 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
         const response = await fetch(`${API_BASE}/Login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            //body: JSON.stringify({ username, password })
         });
 
 
@@ -46,13 +46,14 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
 
 
 document.getElementById('create-account-form').addEventListener('submit', async (event) => {
+
     event.preventDefault();
 
-    const idCompany = document.getElementById('idcompany').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const password = document.getElementById('password-create').value.trim();
-    const confirmPassword = document.getElementById('confirm-password').value.trim();
+    const idCompany = document.getElementById('create-account-idcompany').value.trim();
+    const email = document.getElementById('create-account-email').value.trim();
+    const phone = document.getElementById('create-account-phone').value.trim();
+    const password = document.getElementById('create-account-password-create').value.trim();
+    const confirmPassword = document.getElementById('create-account-confirm-password').value.trim();
 
     // Validações básicas
     if (!idCompany || !email || !phone || !password || !confirmPassword) {
@@ -66,7 +67,8 @@ document.getElementById('create-account-form').addEventListener('submit', async 
     }
 
     try {
-        const response = await fetch(`${API_BASE}/CreateAccount`, {
+
+        const response = await fetch(`${API_BASE}/Y/ContascreateContaServiceMethod`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idCompany, email, phone, password, confirmPassword })

@@ -250,7 +250,12 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("{");
 
                         setResultHttp(sb, "result.Data");
-                        sb.AppendLine("}).RequireAuthorization();");
+
+                        if (method.Authorization == Authorization.Free)
+                            sb.AppendLine("});");
+                        else
+                            sb.AppendLine("}).RequireAuthorization();");
+
                         sb.AppendLine("");
                         sb.AppendLine("");
                     }

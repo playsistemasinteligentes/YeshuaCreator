@@ -1,6 +1,7 @@
 ﻿
 using Dominio.TiposPrimitivos;
 using Migration.Dominio.Schemas;
+using Migration.Dominio.Schemas.CQRS;
 using System.Reflection;
 using System.Text;
 
@@ -92,6 +93,12 @@ namespace Dominio
         public Hub AddSubMenuOption(int id, string name)
         {
             return this.Agents.Last().Menus.Last().SubMenus.Last().AddOption(id, name).Hub;
+        }
+
+        public Hub Authorization(Authorization autorization)
+        {
+            this.Services.Last().Methods.Last().Authorization = autorization;
+            return this;
         }
     }
 }

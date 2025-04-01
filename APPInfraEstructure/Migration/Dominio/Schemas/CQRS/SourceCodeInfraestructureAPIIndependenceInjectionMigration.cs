@@ -46,6 +46,17 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver>();");
                 }
             }
+            foreach (var hub in _migration.Hubs)
+            {
+                foreach (var servico in hub.Services)
+                {
+                    foreach (var method in servico.Methods)
+                    {
+                        sb.AppendLine("");
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversHubServiceMethod}.{servico.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Receiver>();");
+                    }
+                }
+            }
 
 
             sb.AppendLine("}");
