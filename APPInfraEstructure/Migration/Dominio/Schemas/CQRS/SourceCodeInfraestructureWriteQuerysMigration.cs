@@ -34,7 +34,11 @@ namespace Dominio.Schemas.CQRS
             var columnsString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(x => x.Name));
             var parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(c => $"@{c.Name}"));
 
-            sb.AppendLine($"            this.Query = $@\" INSERT INTO {_entity.EntityName} ({columnsString}) VALUES({parametersString}) \";");
+            var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
+            if (incremento != null)
+                sb.AppendLine($"            this.Query = $@\" INSERT INTO {_entity.EntityName} ({columnsString}) OUTPUT INSERTED.{incremento.Name} VALUES({parametersString}) \";");
+            else
+                sb.AppendLine($"            this.Query = $@\" INSERT INTO {_entity.EntityName} ({columnsString}) OUTPUT INSERTED.ID VALUES({parametersString}) \";");
 
             // Adiciona parâmetros
             sb.AppendLine("            this.Parameters = new");

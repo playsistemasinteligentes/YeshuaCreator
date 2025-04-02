@@ -12,7 +12,7 @@ namespace Input.Querys.Y_User
     {
         public QueryModel InserirY_UserQuery(Y_UserEntity Y_User)
         {
-            this.Query = $@" INSERT INTO Y_User (Nome, Email, Senha) VALUES(@Nome, @Email, @Senha) ";
+            this.Query = $@" INSERT INTO Y_User (Nome, Email, Senha) OUTPUT INSERTED.Id VALUES(@Nome, @Email, @Senha) ";
             this.Parameters = new
             {
                 Nome = Y_User.Nome,

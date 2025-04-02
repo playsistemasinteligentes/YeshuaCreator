@@ -24,10 +24,7 @@ namespace Input.Repository.Servico
         public void Insert(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().InserirServicoQuery(Servico);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Servico.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(ServicoEntity Servico)

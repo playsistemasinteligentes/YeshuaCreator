@@ -30,7 +30,7 @@ namespace Command.Receivers.Write
                  try
                  {
                      _repository.Update(y_company);
-                     return new State(200, "OK", comand);
+                     return new State(200, "OK", y_company);
                  }
                  catch (Exception e)
                  {

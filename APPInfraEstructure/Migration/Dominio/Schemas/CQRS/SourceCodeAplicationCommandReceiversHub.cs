@@ -17,7 +17,9 @@ namespace Dominio.Schemas.CQRS
         private Service _service;
         private Method _method;
         private string _nameSpace;
-        private string _classe;
+        private string _nameSpaceCommand;
+        private string _classeReceiver;
+        private string _classeCommand;
 
         public SourceCodeAplicationCommandReceiversHub(Hub hub)
             : base()
@@ -34,7 +36,10 @@ namespace Dominio.Schemas.CQRS
             _commandType = CommandType.ServiceMethod;
             _method = method;
             _nameSpace = CQRSParam.I.NameSpaceCommandReceiversHubServiceMethod;
-            _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Receiver";
+            _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsHubServiceMethod;
+            _classeReceiver = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Receiver";
+            _classeCommand = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
+
         }
         protected override StringBuilder GenerateCode()
         {
@@ -55,7 +60,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_classe} : ReciverBase");
+            sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase");
             sb.AppendLine("    {");
             sb.AppendLine();
             //sb.AppendLine($"        private readonly object _menssage;");
@@ -74,14 +79,20 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("                 Agent = getAgent(comand);    ");
             //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
+            sb.AppendLine("                 State retorno = new State(200, \"OK\", comand);");
 
-            sb.AppendLine("                return new State(200, \"OK\", comand);");
+            sb.AppendLine($"                 if (comand is {_nameSpaceCommand}.{_classeCommand} specificCommand)");
+
+            sb.AppendLine("                 CustomActionHook(ref retorno, specificCommand);");
+            sb.AppendLine("                 return retorno;");
+
             sb.AppendLine("            }");
             sb.AppendLine("            catch (Exception e)");
             sb.AppendLine("            {");
             sb.AppendLine("                return new State(500, e, comand);");
             sb.AppendLine("            }");
             sb.AppendLine("        }");
+            sb.AppendLine($"partial void CustomActionHook(ref State state, {_nameSpaceCommand}.{_classeCommand} comand);");
             sb.AppendLine("}");
             //foreach (var menu in _agent.Menus)
             //{
@@ -150,7 +161,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_classe}HubReceiver");
+            sb.AppendLine($"    public partial class {_classeReceiver}");
             sb.AppendLine("    {");
             //sb.AppendLine($"       private Agent getAgent(ICommand comand)");
             //sb.AppendLine("        {");

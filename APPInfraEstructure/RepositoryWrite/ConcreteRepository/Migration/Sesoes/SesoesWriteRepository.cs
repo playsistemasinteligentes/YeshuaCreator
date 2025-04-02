@@ -24,10 +24,7 @@ namespace Input.Repository.Sesoes
         public void Insert(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().InserirSesoesQuery(Sesoes);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Sesoes.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(SesoesEntity Sesoes)

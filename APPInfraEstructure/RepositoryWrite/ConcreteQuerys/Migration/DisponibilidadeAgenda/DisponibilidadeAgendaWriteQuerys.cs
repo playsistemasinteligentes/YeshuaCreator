@@ -12,7 +12,7 @@ namespace Input.Querys.DisponibilidadeAgenda
     {
         public QueryModel InserirDisponibilidadeAgendaQuery(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora) VALUES(@ProfissionalId, @DataHora) ";
+            this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora) OUTPUT INSERTED.Id VALUES(@ProfissionalId, @DataHora) ";
             this.Parameters = new
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,

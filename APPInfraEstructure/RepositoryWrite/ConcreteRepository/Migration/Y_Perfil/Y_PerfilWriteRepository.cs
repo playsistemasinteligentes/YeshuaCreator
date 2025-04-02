@@ -24,10 +24,7 @@ namespace Input.Repository.Y_Perfil
         public void Insert(Y_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().InserirY_PerfilQuery(Y_Perfil);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Y_Perfil.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(Y_PerfilEntity Y_Perfil)

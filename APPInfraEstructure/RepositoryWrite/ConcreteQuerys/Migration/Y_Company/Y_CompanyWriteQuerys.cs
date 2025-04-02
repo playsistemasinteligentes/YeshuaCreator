@@ -12,7 +12,7 @@ namespace Input.Querys.Y_Company
     {
         public QueryModel InserirY_CompanyQuery(Y_CompanyEntity Y_Company)
         {
-            this.Query = $@" INSERT INTO Y_Company (Nome, ProxyServer, UserIDAdmin) VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Query = $@" INSERT INTO Y_Company (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
             this.Parameters = new
             {
                 Nome = Y_Company.Nome,

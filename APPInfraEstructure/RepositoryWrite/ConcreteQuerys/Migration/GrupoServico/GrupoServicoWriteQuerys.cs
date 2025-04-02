@@ -12,7 +12,7 @@ namespace Input.Querys.GrupoServico
     {
         public QueryModel InserirGrupoServicoQuery(GrupoServicoEntity GrupoServico)
         {
-            this.Query = $@" INSERT INTO GrupoServico (Descricao) VALUES(@Descricao) ";
+            this.Query = $@" INSERT INTO GrupoServico (Descricao) OUTPUT INSERTED.Id VALUES(@Descricao) ";
             this.Parameters = new
             {
                 Descricao = GrupoServico.Descricao,

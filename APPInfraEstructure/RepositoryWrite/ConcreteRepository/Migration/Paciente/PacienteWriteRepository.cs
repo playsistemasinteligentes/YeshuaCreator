@@ -24,10 +24,7 @@ namespace Input.Repository.Paciente
         public void Insert(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().InserirPacienteQuery(Paciente);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Paciente.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(PacienteEntity Paciente)

@@ -30,7 +30,7 @@ namespace Command.Receivers.Write
                  try
                  {
                      _repository.Insert(y_perfilpermitions);
-                     return new State(200, "OK", comand);
+                     return new State(200, "OK", y_perfilpermitions);
                  }
                  catch (Exception e)
                  {

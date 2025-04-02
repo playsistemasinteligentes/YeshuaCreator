@@ -24,10 +24,7 @@ namespace Input.Repository.Clinica
         public void Insert(ClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().InserirClinicaQuery(Clinica);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Clinica.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(ClinicaEntity Clinica)

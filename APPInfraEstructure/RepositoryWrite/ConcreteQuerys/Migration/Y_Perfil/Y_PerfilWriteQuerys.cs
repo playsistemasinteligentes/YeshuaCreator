@@ -12,7 +12,7 @@ namespace Input.Querys.Y_Perfil
     {
         public QueryModel InserirY_PerfilQuery(Y_PerfilEntity Y_Perfil)
         {
-            this.Query = $@" INSERT INTO Y_Perfil (Description) VALUES(@Description) ";
+            this.Query = $@" INSERT INTO Y_Perfil (Description) OUTPUT INSERTED.Id VALUES(@Description) ";
             this.Parameters = new
             {
                 Description = Y_Perfil.Description,

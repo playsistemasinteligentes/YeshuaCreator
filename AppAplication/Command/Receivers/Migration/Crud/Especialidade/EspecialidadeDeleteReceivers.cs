@@ -30,7 +30,7 @@ namespace Command.Receivers.Write
                  try
                  {
                      _repository.Delete(especialidade);
-                     return new State(200, "OK", comand);
+                     return new State(200, "OK", especialidade);
                  }
                  catch (Exception e)
                  {

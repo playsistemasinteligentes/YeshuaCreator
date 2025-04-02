@@ -12,12 +12,8 @@ namespace Comandos.Pateners.Command
 
         public State Execute(ICommand command)
         {
-            BeforeAction();
             State state = Action(command);
-            AfterAction();
             return state;
         }
-        protected void BeforeAction() { }
-        protected void AfterAction() { }
     }
 }

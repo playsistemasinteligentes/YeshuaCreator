@@ -88,7 +88,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("                 try");
                 sb.AppendLine("                 {");
                 sb.AppendLine($"                     _repository.{action.ToString()}({_entity.EntityName.ToLower()});");
-                sb.AppendLine("                     return new State(200, \"OK\", comand);");
+                sb.AppendLine($"                     return new State(200, \"OK\", {_entity.EntityName.ToLower()});");
                 sb.AppendLine("                 }");
                 sb.AppendLine("                 catch (Exception e)");
                 sb.AppendLine("                 {");

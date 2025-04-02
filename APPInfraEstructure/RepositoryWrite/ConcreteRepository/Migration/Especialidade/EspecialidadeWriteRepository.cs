@@ -24,10 +24,7 @@ namespace Input.Repository.Especialidade
         public void Insert(EspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().InserirEspecialidadeQuery(Especialidade);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Especialidade.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(EspecialidadeEntity Especialidade)

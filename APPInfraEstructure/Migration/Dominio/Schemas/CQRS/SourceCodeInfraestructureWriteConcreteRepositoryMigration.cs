@@ -43,10 +43,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        public void Insert({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Inserir{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("            using (var conn = _Connection) ");
-            sb.AppendLine("            {");
-            sb.AppendLine("                _Connection.Execute(query.Query, query.Parameters);");
-            sb.AppendLine("            }");
+
+            var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
+            if (incremento != null)
+                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _Connection.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters);");
+            else
+                sb.AppendLine("                _Connection.Execute(query.Query, query.Parameters);");
+
             sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine($"        public void Update({_entity.EntityName}Entity {_entity.EntityName})");

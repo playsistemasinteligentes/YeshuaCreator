@@ -24,10 +24,7 @@ namespace Input.Repository.Profissional
         public void Insert(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().InserirProfissionalQuery(Profissional);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Profissional.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(ProfissionalEntity Profissional)

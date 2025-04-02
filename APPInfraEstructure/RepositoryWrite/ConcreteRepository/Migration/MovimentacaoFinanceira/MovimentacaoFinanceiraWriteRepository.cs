@@ -24,10 +24,7 @@ namespace Input.Repository.MovimentacaoFinanceira
         public void Insert(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        MovimentacaoFinanceira.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)

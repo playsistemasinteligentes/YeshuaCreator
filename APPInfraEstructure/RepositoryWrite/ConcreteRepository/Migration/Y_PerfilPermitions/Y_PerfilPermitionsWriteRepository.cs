@@ -24,10 +24,7 @@ namespace Input.Repository.Y_PerfilPermitions
         public void Insert(Y_PerfilPermitionsEntity Y_PerfilPermitions)
         {
             var query = new Y_PerfilPermitionsWriteQuery().InserirY_PerfilPermitionsQuery(Y_PerfilPermitions);
-            using (var conn = _Connection) 
-            {
                 _Connection.Execute(query.Query, query.Parameters);
-            }
         }
 
         public void Update(Y_PerfilPermitionsEntity Y_PerfilPermitions)

@@ -12,7 +12,7 @@ namespace Input.Querys.Especialidade
     {
         public QueryModel InserirEspecialidadeQuery(EspecialidadeEntity Especialidade)
         {
-            this.Query = $@" INSERT INTO Especialidade (Descricao) VALUES(@Descricao) ";
+            this.Query = $@" INSERT INTO Especialidade (Descricao) OUTPUT INSERTED.Id VALUES(@Descricao) ";
             this.Parameters = new
             {
                 Descricao = Especialidade.Descricao,

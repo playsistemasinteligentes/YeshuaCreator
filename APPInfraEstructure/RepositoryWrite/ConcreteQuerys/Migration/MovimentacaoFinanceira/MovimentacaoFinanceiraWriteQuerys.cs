@@ -12,7 +12,7 @@ namespace Input.Querys.MovimentacaoFinanceira
     {
         public QueryModel InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            this.Query = $@" INSERT INTO MovimentacaoFinanceira (PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual) VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual) ";
+            this.Query = $@" INSERT INTO MovimentacaoFinanceira (PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual) OUTPUT INSERTED.Id VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual) ";
             this.Parameters = new
             {
                 PacienteId = MovimentacaoFinanceira.PacienteId,

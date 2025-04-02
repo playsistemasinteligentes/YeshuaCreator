@@ -24,10 +24,7 @@ namespace Input.Repository.DisponibilidadeAgenda
         public void Insert(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().InserirDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        DisponibilidadeAgenda.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(DisponibilidadeAgendaEntity DisponibilidadeAgenda)

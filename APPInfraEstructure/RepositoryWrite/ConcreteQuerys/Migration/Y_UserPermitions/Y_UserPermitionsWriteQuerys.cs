@@ -12,7 +12,7 @@ namespace Input.Querys.Y_UserPermitions
     {
         public QueryModel InserirY_UserPermitionsQuery(Y_UserPermitionsEntity Y_UserPermitions)
         {
-            this.Query = $@" INSERT INTO Y_UserPermitions (UserId, PermitionsId) VALUES(@UserId, @PermitionsId) ";
+            this.Query = $@" INSERT INTO Y_UserPermitions (UserId, PermitionsId) OUTPUT INSERTED.ID VALUES(@UserId, @PermitionsId) ";
             this.Parameters = new
             {
                 UserId = Y_UserPermitions.UserId,

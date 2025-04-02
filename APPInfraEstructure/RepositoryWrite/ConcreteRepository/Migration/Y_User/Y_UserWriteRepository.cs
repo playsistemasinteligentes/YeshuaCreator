@@ -24,10 +24,7 @@ namespace Input.Repository.Y_User
         public void Insert(Y_UserEntity Y_User)
         {
             var query = new Y_UserWriteQuery().InserirY_UserQuery(Y_User);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Y_User.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(Y_UserEntity Y_User)

@@ -12,7 +12,7 @@ namespace Input.Querys.Profissional
     {
         public QueryModel InserirProfissionalQuery(ProfissionalEntity Profissional)
         {
-            this.Query = $@" INSERT INTO Profissional (Nome, EspecialidadeId, Telefone) VALUES(@Nome, @EspecialidadeId, @Telefone) ";
+            this.Query = $@" INSERT INTO Profissional (Nome, EspecialidadeId, Telefone) OUTPUT INSERTED.Id VALUES(@Nome, @EspecialidadeId, @Telefone) ";
             this.Parameters = new
             {
                 Nome = Profissional.Nome,

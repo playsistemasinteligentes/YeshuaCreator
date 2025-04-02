@@ -24,10 +24,7 @@ namespace Input.Repository.Y_Company
         public void Insert(Y_CompanyEntity Y_Company)
         {
             var query = new Y_CompanyWriteQuery().InserirY_CompanyQuery(Y_Company);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        Y_Company.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(Y_CompanyEntity Y_Company)

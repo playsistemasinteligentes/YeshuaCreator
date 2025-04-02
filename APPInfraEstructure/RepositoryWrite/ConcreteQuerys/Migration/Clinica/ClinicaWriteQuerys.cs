@@ -12,7 +12,7 @@ namespace Input.Querys.Clinica
     {
         public QueryModel InserirClinicaQuery(ClinicaEntity Clinica)
         {
-            this.Query = $@" INSERT INTO Clinica (Nome, Endereco, Telefone) VALUES(@Nome, @Endereco, @Telefone) ";
+            this.Query = $@" INSERT INTO Clinica (Nome, Endereco, Telefone) OUTPUT INSERTED.Id VALUES(@Nome, @Endereco, @Telefone) ";
             this.Parameters = new
             {
                 Nome = Clinica.Nome,

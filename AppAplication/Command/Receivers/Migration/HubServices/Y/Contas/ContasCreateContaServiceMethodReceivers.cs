@@ -16,13 +16,17 @@ namespace Command.Receivers.HubServiceMethod
         {
             try
             {
-                return new State(200, "OK", comand);
+                State retorno = new State(200, "OK", comand);
+                if (comand is Command.Commands.ContasCreateContaServiceMethodCommand specificCommand)
+                    CustomActionHook(ref retorno, specificCommand);
+                return retorno;
             }
             catch (Exception e)
             {
                 return new State(500, e, comand);
             }
         }
-}
+        partial void CustomActionHook(ref State state, Command.Commands.ContasCreateContaServiceMethodCommand comand);
+    }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHub

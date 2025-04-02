@@ -24,10 +24,7 @@ namespace Input.Repository.GrupoServico
         public void Insert(GrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().InserirGrupoServicoQuery(GrupoServico);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+        GrupoServico.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(GrupoServicoEntity GrupoServico)
