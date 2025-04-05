@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var y_company = new Y_CompanyEntity(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
                  if (!y_company.isValidUpdate())
-                     return new State(300, y_company.getErroMensagens(), comand);
+                     return ValidationError(y_company.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Update(y_company);
-                     return new State(200, "OK", y_company);
+                     return Success("OK", y_company);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

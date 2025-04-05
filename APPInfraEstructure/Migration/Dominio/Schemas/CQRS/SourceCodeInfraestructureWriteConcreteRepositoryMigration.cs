@@ -21,6 +21,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
             sb.AppendLine($"using Input.Querys.{_entity.EntityName};");
             sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+            sb.AppendLine($"using RepositoryInterfaces.Patterns.UnitOfWork;");
             sb.AppendLine("using Shered.DB.Connection;");
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;");
@@ -33,11 +34,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public class {_entity.EntityName}WriteRepository : I{_entity.EntityName}WriteRepository");
             sb.AppendLine("    {");
-            sb.AppendLine("        private readonly IDbConnection _Connection;");
+            sb.AppendLine("        private readonly IUnitOfWork _UnitOfWork;");
             sb.AppendLine();
-            sb.AppendLine($"        public {_entity.EntityName}WriteRepository(SqlFactory factory)");
+            sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork)");
             sb.AppendLine("        {");
-            sb.AppendLine("            _Connection = factory.SqlConnection();");
+            sb.AppendLine("             _UnitOfWork= unitOfWork;");
             sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine($"        public void Insert({_entity.EntityName}Entity {_entity.EntityName})");
@@ -46,27 +47,21 @@ namespace Dominio.Schemas.CQRS
 
             var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
             if (incremento != null)
-                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _Connection.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters);");
+                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _UnitOfWork.Connection.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters);");
             else
-                sb.AppendLine("                _Connection.Execute(query.Query, query.Parameters);");
+                sb.AppendLine("                _UnitOfWork.Connection.Execute(query.Query, query.Parameters);");
 
             sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine($"        public void Update({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("            using (var conn = _Connection) ");
-            sb.AppendLine("            {");
-            sb.AppendLine("                _Connection.Execute(query.Query, query.Parameters);");
-            sb.AppendLine("            }");
+            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);");
             sb.AppendLine("        }");
             sb.AppendLine($"        public void Delete({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Delete{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("            using (var conn = _Connection) ");
-            sb.AppendLine("            {");
-            sb.AppendLine("                _Connection.Execute(query.Query, query.Parameters);");
-            sb.AppendLine("            }");
+            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");

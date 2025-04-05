@@ -61,3 +61,7 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClini
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\AppClinicas.csproj.AssemblyReference.cache
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\AppClinicas.csproj.CopyComplete
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\Dominio.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\RepositoryInterfaces.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\Dominio.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\RepositoryInterfaces.pdb

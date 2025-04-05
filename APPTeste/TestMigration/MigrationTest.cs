@@ -4,6 +4,7 @@ using Dominio.Schemas;
 using DominioDeTestes.config;
 using Shered.DB.Connection;
 using System.Data;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 
 namespace TestMigration
 {

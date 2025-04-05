@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Paciente;
 using Input.Querys.Paciente;
 using Repositorio.Inputs.Repositorio.Paciente;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Paciente
 {
     public class PacienteWriteRepository : IPacienteWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public PacienteWriteRepository(SqlFactory factory)
+        public PacienteWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().InserirPacienteQuery(Paciente);
-        Paciente.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Paciente.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().UpdatePacienteQuery(Paciente);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().DeletePacienteQuery(Paciente);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

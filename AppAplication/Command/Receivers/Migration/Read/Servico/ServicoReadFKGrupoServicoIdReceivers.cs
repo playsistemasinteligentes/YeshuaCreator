@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
                 var ServicoReadRepository = _repository.getServicoReadFKGrupoServicoId(c);
-                return new State(200, "OK", ServicoReadRepository);
+                return Success("OK", ServicoReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

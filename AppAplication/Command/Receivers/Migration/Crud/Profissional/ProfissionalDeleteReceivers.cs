@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var profissional = new ProfissionalEntity(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
                  if (!profissional.isValidDelete())
-                     return new State(300, profissional.getErroMensagens(), comand);
+                     return ValidationError(profissional.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Delete(profissional);
-                     return new State(200, "OK", profissional);
+                     return Success("OK", profissional);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

@@ -2,6 +2,7 @@
 using Dominio.Schemas.CQRS;
 using Interfaces.Schemas;
 using Microsoft.IdentityModel.Tokens;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System.Data;
 using System.Data.Common;

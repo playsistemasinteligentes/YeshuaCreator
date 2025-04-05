@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.Y_PerfilReadCommand c) 
              {    
                 var Y_PerfilReadRepository = _repository.getY_Perfil(c);
-                return new State(200, "OK", Y_PerfilReadRepository);
+                return Success("OK", Y_PerfilReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

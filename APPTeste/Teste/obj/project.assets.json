@@ -698,6 +698,16 @@
           "lib/netcoreapp2.1/_._": {}
         }
       },
+      "Dominio/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Dominio.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Dominio.dll": {}
+        }
+      },
       "Migration/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -711,13 +721,27 @@
           "bin/placeholder/Migration.dll": {}
         }
       },
+      "RepositoryInterfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Dominio": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/RepositoryInterfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RepositoryInterfaces.dll": {}
+        }
+      },
       "Shered/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Dapper": "2.1.35",
           "Microsoft.Data.SqlClient": "5.2.1",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.1",
+          "RepositoryInterfaces": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Shered.dll": {}
@@ -1778,10 +1802,20 @@
         "version.txt"
       ]
     },
+    "Dominio/1.0.0": {
+      "type": "project",
+      "path": "../../AppDominio/Dominio/Dominio.csproj",
+      "msbuildProject": "../../AppDominio/Dominio/Dominio.csproj"
+    },
     "Migration/1.0.0": {
       "type": "project",
       "path": "../../APPInfraEstructure/Migration/Migration.csproj",
       "msbuildProject": "../../APPInfraEstructure/Migration/Migration.csproj"
+    },
+    "RepositoryInterfaces/1.0.0": {
+      "type": "project",
+      "path": "../../AppAplication/RepositoryInterfaces/RepositoryInterfaces.csproj",
+      "msbuildProject": "../../AppAplication/RepositoryInterfaces/RepositoryInterfaces.csproj"
     },
     "Shered/1.0.0": {
       "type": "project",

@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
                 var DisponibilidadeAgendaReadRepository = _repository.getDisponibilidadeAgendaReadFKProfissionalId(c);
-                return new State(200, "OK", DisponibilidadeAgendaReadRepository);
+                return Success("OK", DisponibilidadeAgendaReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

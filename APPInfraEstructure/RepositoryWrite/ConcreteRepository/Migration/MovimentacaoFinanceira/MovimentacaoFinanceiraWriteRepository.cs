@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.MovimentacaoFinanceira;
 using Input.Querys.MovimentacaoFinanceira;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.MovimentacaoFinanceira
 {
     public class MovimentacaoFinanceiraWriteRepository : IMovimentacaoFinanceiraWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public MovimentacaoFinanceiraWriteRepository(SqlFactory factory)
+        public MovimentacaoFinanceiraWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-        MovimentacaoFinanceira.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        MovimentacaoFinanceira.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

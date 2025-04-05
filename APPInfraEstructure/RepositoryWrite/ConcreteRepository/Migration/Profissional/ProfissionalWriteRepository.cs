@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Profissional;
 using Input.Querys.Profissional;
 using Repositorio.Inputs.Repositorio.Profissional;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Profissional
 {
     public class ProfissionalWriteRepository : IProfissionalWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public ProfissionalWriteRepository(SqlFactory factory)
+        public ProfissionalWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().InserirProfissionalQuery(Profissional);
-        Profissional.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Profissional.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().UpdateProfissionalQuery(Profissional);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().DeleteProfissionalQuery(Profissional);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

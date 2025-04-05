@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.EspecialidadeReadCommand c) 
              {    
                 var EspecialidadeReadRepository = _repository.getEspecialidade(c);
-                return new State(200, "OK", EspecialidadeReadRepository);
+                return Success("OK", EspecialidadeReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

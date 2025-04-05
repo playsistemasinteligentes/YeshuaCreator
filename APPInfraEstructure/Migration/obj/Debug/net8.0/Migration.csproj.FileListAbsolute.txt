@@ -32,3 +32,7 @@ C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\obj\Debug\net8.0\refint\Migration.dll
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\obj\Debug\net8.0\Migration.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\obj\Debug\net8.0\ref\Migration.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\bin\Debug\net8.0\Dominio.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\bin\Debug\net8.0\RepositoryInterfaces.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\bin\Debug\net8.0\Dominio.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Migration\bin\Debug\net8.0\RepositoryInterfaces.pdb

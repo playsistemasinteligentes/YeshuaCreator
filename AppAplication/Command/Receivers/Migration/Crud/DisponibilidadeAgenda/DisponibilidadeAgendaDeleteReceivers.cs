@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var disponibilidadeagenda = new DisponibilidadeAgendaEntity(c.Id, c.ProfissionalId, c.DataHora);
                  if (!disponibilidadeagenda.isValidDelete())
-                     return new State(300, disponibilidadeagenda.getErroMensagens(), comand);
+                     return ValidationError(disponibilidadeagenda.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Delete(disponibilidadeagenda);
-                     return new State(200, "OK", disponibilidadeagenda);
+                     return Success("OK", disponibilidadeagenda);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

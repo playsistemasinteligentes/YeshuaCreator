@@ -26,3 +26,8 @@ C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\refint\Shered.dll
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.pdb
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\ref\Shered.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Dominio.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\RepositoryInterfaces.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\RepositoryInterfaces.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Dominio.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.csproj.CopyComplete

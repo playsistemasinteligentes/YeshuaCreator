@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var y_perfil = new Y_PerfilEntity(c.Id, c.Description);
                  if (!y_perfil.isValidUpdate())
-                     return new State(300, y_perfil.getErroMensagens(), comand);
+                     return ValidationError(y_perfil.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Update(y_perfil);
-                     return new State(200, "OK", y_perfil);
+                     return Success("OK", y_perfil);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

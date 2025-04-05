@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var y_user = new Y_UserEntity(c.Id, c.Nome, c.Email, c.Senha);
                  if (!y_user.isValidDelete())
-                     return new State(300, y_user.getErroMensagens(), comand);
+                     return ValidationError(y_user.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Delete(y_user);
-                     return new State(200, "OK", y_user);
+                     return Success("OK", y_user);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

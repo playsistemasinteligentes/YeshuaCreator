@@ -79,7 +79,7 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("                 Agent = getAgent(comand);    ");
             //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
-            sb.AppendLine("                 State retorno = new State(200, \"OK\", comand);");
+            sb.AppendLine("                 State retorno = Success(\"OK\", comand);");
 
             sb.AppendLine($"                 if (comand is {_nameSpaceCommand}.{_classeCommand} specificCommand)");
 
@@ -87,10 +87,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                 return retorno;");
 
             sb.AppendLine("            }");
-            sb.AppendLine("            catch (Exception e)");
-            sb.AppendLine("            {");
-            sb.AppendLine("                return new State(500, e, comand);");
-            sb.AppendLine("            }");
+
+            CQRSParam.I.AddExeptionReceiver(sb);
+
             sb.AppendLine("        }");
             sb.AppendLine($"partial void CustomActionHook(ref State state, {_nameSpaceCommand}.{_classeCommand} comand);");
             sb.AppendLine("}");

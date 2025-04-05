@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var gruposervico = new GrupoServicoEntity(c.Id, c.Descricao);
                  if (!gruposervico.isValidUpdate())
-                     return new State(300, gruposervico.getErroMensagens(), comand);
+                     return ValidationError(gruposervico.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Update(gruposervico);
-                     return new State(200, "OK", gruposervico);
+                     return Success("OK", gruposervico);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

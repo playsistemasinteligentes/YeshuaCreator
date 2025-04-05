@@ -4,6 +4,7 @@ public static class IndependenceInjection
 {
 public static void MapIndependenceInjection(WebApplicationBuilder builder)
 {
+builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Especialidade.IEspecialidadeWriteRepository, Input.Repository.Especialidade.EspecialidadeWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Especialidade.IEspecialidadeReadRepository, Read.ConcreteRepository.Especialidade.EspecialidadeReadRepository>();

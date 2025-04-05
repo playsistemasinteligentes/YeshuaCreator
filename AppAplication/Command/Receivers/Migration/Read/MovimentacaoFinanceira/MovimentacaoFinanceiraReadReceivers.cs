@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.MovimentacaoFinanceiraReadCommand c) 
              {    
                 var MovimentacaoFinanceiraReadRepository = _repository.getMovimentacaoFinanceira(c);
-                return new State(200, "OK", MovimentacaoFinanceiraReadRepository);
+                return Success("OK", MovimentacaoFinanceiraReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

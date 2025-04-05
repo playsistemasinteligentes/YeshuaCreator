@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.ProfissionalReadCommand c) 
              {    
                 var ProfissionalReadRepository = _repository.getProfissional(c);
-                return new State(200, "OK", ProfissionalReadRepository);
+                return Success("OK", ProfissionalReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

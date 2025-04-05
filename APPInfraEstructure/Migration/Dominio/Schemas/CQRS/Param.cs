@@ -21,7 +21,18 @@ namespace Migration.Dominio.Schemas.CQRS
         public string NameSpaceCommandReceiversWrite { get; set; } = "Command.Receivers.Write";
         public List<string> ColumnsDescriptions { get; set; } = new List<string> { "nome", "descricao" };
 
+        public void AddExeptionReceiver(StringBuilder sb)
+        {
+            sb.AppendLine("            catch (ReceiverException e)");
+            sb.AppendLine("            {");
+            sb.AppendLine("                return e.State;");
+            sb.AppendLine("            }");
 
+            sb.AppendLine("            catch (Exception e)");
+            sb.AppendLine("            {");
+            sb.AppendLine("                return Error(e, comand);");
+            sb.AppendLine("            }");
+        }
         private CQRSParam() { }
     }
 }

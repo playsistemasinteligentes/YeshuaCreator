@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
                 var Y_PerfilPermitionsReadRepository = _repository.getY_PerfilPermitionsReadFKPermitionsId(c);
-                return new State(200, "OK", Y_PerfilPermitionsReadRepository);
+                return Success("OK", Y_PerfilPermitionsReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

@@ -3,8 +3,7 @@ using System.Data;
 using Dapper;
 namespace Shered.DB.Connection
 {
-
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork_ : IDisposable
     {
         IDbConnection Connection { get; }
         IDbTransaction Transaction { get; }

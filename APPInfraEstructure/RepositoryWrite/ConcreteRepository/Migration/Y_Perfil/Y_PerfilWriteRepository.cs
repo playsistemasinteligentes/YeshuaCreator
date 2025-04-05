@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Y_Perfil;
 using Input.Querys.Y_Perfil;
 using Repositorio.Inputs.Repositorio.Y_Perfil;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Y_Perfil
 {
     public class Y_PerfilWriteRepository : IY_PerfilWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public Y_PerfilWriteRepository(SqlFactory factory)
+        public Y_PerfilWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(Y_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().InserirY_PerfilQuery(Y_Perfil);
-        Y_Perfil.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Y_Perfil.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(Y_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().UpdateY_PerfilQuery(Y_Perfil);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(Y_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().DeleteY_PerfilQuery(Y_Perfil);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

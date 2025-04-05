@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
                  if (!paciente.isValidUpdate())
-                     return new State(300, paciente.getErroMensagens(), comand);
+                     return ValidationError(paciente.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Update(paciente);
-                     return new State(200, "OK", paciente);
+                     return Success("OK", paciente);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

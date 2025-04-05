@@ -2,6 +2,7 @@
 using Dominio.Schemas;
 using Dominio.Schemas.CQRS;
 using DominioDeTestes.config;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System.Data;
 using System.IO;

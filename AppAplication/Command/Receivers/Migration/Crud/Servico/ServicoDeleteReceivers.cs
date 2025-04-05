@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var servico = new ServicoEntity(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
                  if (!servico.isValidDelete())
-                     return new State(300, servico.getErroMensagens(), comand);
+                     return ValidationError(servico.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Delete(servico);
-                     return new State(200, "OK", servico);
+                     return Success("OK", servico);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
                 var SesoesReadRepository = _repository.getSesoesReadFKPacienteId(c);
-                return new State(200, "OK", SesoesReadRepository);
+                return Success("OK", SesoesReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

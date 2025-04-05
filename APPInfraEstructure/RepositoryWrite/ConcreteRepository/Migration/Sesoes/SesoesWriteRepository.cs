@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Sesoes;
 using Input.Querys.Sesoes;
 using Repositorio.Inputs.Repositorio.Sesoes;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Sesoes
 {
     public class SesoesWriteRepository : ISesoesWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public SesoesWriteRepository(SqlFactory factory)
+        public SesoesWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().InserirSesoesQuery(Sesoes);
-        Sesoes.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Sesoes.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().UpdateSesoesQuery(Sesoes);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().DeleteSesoesQuery(Sesoes);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

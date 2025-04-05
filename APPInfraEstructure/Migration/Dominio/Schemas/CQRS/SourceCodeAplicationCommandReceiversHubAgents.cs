@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using static Dapper.SqlMapper;
 using System.Text;
 using System.Linq;
+using Migration.Dominio.Schemas.CQRS;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -51,12 +52,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            try");
             sb.AppendLine("            {");
             //sb.AppendLine("                comand = getMenu();");
-            sb.AppendLine("                return new State(200, \"OK\", comand);");
+            sb.AppendLine("                return Success(\"OK\", comand);");
             sb.AppendLine("            }");
-            sb.AppendLine("            catch (Exception e)");
-            sb.AppendLine("            {");
-            sb.AppendLine("                return new State(500, e, comand);");
-            sb.AppendLine("            }");
+            CQRSParam.I.AddExeptionReceiver(sb);
             sb.AppendLine("        }");
             foreach (var menu in _agent.Menus)
             {

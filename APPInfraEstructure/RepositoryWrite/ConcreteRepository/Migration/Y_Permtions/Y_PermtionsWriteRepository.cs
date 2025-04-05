@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Y_Permtions;
 using Input.Querys.Y_Permtions;
 using Repositorio.Inputs.Repositorio.Y_Permtions;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Y_Permtions
 {
     public class Y_PermtionsWriteRepository : IY_PermtionsWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public Y_PermtionsWriteRepository(SqlFactory factory)
+        public Y_PermtionsWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(Y_PermtionsEntity Y_Permtions)
         {
             var query = new Y_PermtionsWriteQuery().InserirY_PermtionsQuery(Y_Permtions);
-                _Connection.Execute(query.Query, query.Parameters);
+                _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
 
         public void Update(Y_PermtionsEntity Y_Permtions)
         {
             var query = new Y_PermtionsWriteQuery().UpdateY_PermtionsQuery(Y_Permtions);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(Y_PermtionsEntity Y_Permtions)
         {
             var query = new Y_PermtionsWriteQuery().DeleteY_PermtionsQuery(Y_Permtions);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

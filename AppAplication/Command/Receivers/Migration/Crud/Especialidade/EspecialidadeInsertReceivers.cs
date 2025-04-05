@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var especialidade = new EspecialidadeEntity(c.Id, c.Descricao);
                  if (!especialidade.isValidInsert())
-                     return new State(300, especialidade.getErroMensagens(), comand);
+                     return ValidationError(especialidade.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Insert(especialidade);
-                     return new State(200, "OK", especialidade);
+                     return Success("OK", especialidade);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

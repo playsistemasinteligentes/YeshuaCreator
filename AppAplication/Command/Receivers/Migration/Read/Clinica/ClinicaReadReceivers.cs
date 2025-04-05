@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.ClinicaReadCommand c) 
              {    
                 var ClinicaReadRepository = _repository.getClinica(c);
-                return new State(200, "OK", ClinicaReadRepository);
+                return Success("OK", ClinicaReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

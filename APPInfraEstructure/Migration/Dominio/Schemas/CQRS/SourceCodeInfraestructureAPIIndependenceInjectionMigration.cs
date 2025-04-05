@@ -1,6 +1,8 @@
 ﻿using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using Shered.DB.Connection;
 using System.Net.Http;
 using System.Text;
 using static Dapper.SqlMapper;
@@ -30,6 +32,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine("public static void MapIndependenceInjection(WebApplicationBuilder builder)");
             sb.AppendLine("{");
+
+
+
+            sb.AppendLine("builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();");
+
+
+
 
             // ingeção dependencia 
             foreach (var entity in _migration.Entitys)

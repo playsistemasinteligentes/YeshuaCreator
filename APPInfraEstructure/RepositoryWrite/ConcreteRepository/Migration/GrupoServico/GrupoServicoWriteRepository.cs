@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.GrupoServico;
 using Input.Querys.GrupoServico;
 using Repositorio.Inputs.Repositorio.GrupoServico;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.GrupoServico
 {
     public class GrupoServicoWriteRepository : IGrupoServicoWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public GrupoServicoWriteRepository(SqlFactory factory)
+        public GrupoServicoWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(GrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().InserirGrupoServicoQuery(GrupoServico);
-        GrupoServico.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        GrupoServico.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(GrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().UpdateGrupoServicoQuery(GrupoServico);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(GrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().DeleteGrupoServicoQuery(GrupoServico);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

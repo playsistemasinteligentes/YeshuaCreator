@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.Migration;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB;
 using Shered.DB.Connection;
 using System;

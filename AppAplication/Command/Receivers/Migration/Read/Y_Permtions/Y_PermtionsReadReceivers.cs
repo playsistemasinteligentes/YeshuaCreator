@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.Y_PermtionsReadCommand c) 
              {    
                 var Y_PermtionsReadRepository = _repository.getY_Permtions(c);
-                return new State(200, "OK", Y_PermtionsReadRepository);
+                return Success("OK", Y_PermtionsReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

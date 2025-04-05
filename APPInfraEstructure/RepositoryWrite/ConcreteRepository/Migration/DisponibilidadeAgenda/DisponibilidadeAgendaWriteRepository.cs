@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.DisponibilidadeAgenda;
 using Input.Querys.DisponibilidadeAgenda;
 using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.DisponibilidadeAgenda
 {
     public class DisponibilidadeAgendaWriteRepository : IDisponibilidadeAgendaWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public DisponibilidadeAgendaWriteRepository(SqlFactory factory)
+        public DisponibilidadeAgendaWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().InserirDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
-        DisponibilidadeAgenda.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        DisponibilidadeAgenda.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().UpdateDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().DeleteDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

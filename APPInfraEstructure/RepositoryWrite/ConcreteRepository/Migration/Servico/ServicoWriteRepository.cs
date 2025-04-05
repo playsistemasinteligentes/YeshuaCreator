@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Servico;
 using Input.Querys.Servico;
 using Repositorio.Inputs.Repositorio.Servico;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Servico
 {
     public class ServicoWriteRepository : IServicoWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public ServicoWriteRepository(SqlFactory factory)
+        public ServicoWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().InserirServicoQuery(Servico);
-        Servico.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Servico.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().UpdateServicoQuery(Servico);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().DeleteServicoQuery(Servico);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

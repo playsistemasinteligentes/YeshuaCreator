@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
                 var Y_CompanyReadRepository = _repository.getY_CompanyReadFKUserIDAdmin(c);
-                return new State(200, "OK", Y_CompanyReadRepository);
+                return Success("OK", Y_CompanyReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

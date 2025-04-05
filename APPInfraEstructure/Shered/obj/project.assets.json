@@ -611,6 +611,29 @@
         "runtime": {
           "lib/netcoreapp2.1/_._": {}
         }
+      },
+      "Dominio/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Dominio.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Dominio.dll": {}
+        }
+      },
+      "RepositoryInterfaces/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Dominio": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/RepositoryInterfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RepositoryInterfaces.dll": {}
+        }
       }
     }
   },
@@ -1762,13 +1785,24 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Dominio/1.0.0": {
+      "type": "project",
+      "path": "../../AppDominio/Dominio/Dominio.csproj",
+      "msbuildProject": "../../AppDominio/Dominio/Dominio.csproj"
+    },
+    "RepositoryInterfaces/1.0.0": {
+      "type": "project",
+      "path": "../../AppAplication/RepositoryInterfaces/RepositoryInterfaces.csproj",
+      "msbuildProject": "../../AppAplication/RepositoryInterfaces/RepositoryInterfaces.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Dapper >= 2.1.35",
       "Microsoft.Data.SqlClient >= 5.2.1",
-      "Newtonsoft.Json >= 13.0.1"
+      "Newtonsoft.Json >= 13.0.1",
+      "RepositoryInterfaces >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1802,7 +1836,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

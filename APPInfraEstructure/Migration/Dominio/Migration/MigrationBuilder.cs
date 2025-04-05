@@ -3,6 +3,7 @@ using Interfaces.Schemas;
 using Microsoft.Data.SqlClient;
 using Microsoft.Identity.Client;
 using Migration.Dominio.Migration;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;

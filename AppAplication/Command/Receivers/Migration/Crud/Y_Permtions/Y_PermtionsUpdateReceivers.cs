@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var y_permtions = new Y_PermtionsEntity(c.Id, c.Description);
                  if (!y_permtions.isValidUpdate())
-                     return new State(300, y_permtions.getErroMensagens(), comand);
+                     return ValidationError(y_permtions.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Update(y_permtions);
-                     return new State(200, "OK", y_permtions);
+                     return Success("OK", y_permtions);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

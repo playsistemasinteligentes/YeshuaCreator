@@ -22,11 +22,15 @@ namespace Comandos.Receivers.AgenteDeAgendamentoParaAdministrador
         {
             try
             {
-                return new State(200, "OK", comand);
+                return Success("OK", comand);
+            }
+            catch (ReceiverException e)
+            {
+                return e.State;
             }
             catch (Exception e)
             {
-                return new State(500, e, comand);
+                return Error(e, comand);
             }
         }
            private List<string> MenuAdministrativoDeAgendamentos()

@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var y_perfilpermitions = new Y_PerfilPermitionsEntity(c.PerfilId, c.PermitionsId);
                  if (!y_perfilpermitions.isValidDelete())
-                     return new State(300, y_perfilpermitions.getErroMensagens(), comand);
+                     return ValidationError(y_perfilpermitions.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Delete(y_perfilpermitions);
-                     return new State(200, "OK", y_perfilpermitions);
+                     return Success("OK", y_perfilpermitions);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

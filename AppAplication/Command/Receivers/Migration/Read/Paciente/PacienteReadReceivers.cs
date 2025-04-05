@@ -20,11 +20,11 @@ namespace Command.Receivers.Read
             if(comand is Command.Commands.Read.PacienteReadCommand c) 
              {    
                 var PacienteReadRepository = _repository.getPaciente(c);
-                return new State(200, "OK", PacienteReadRepository);
+                return Success("OK", PacienteReadRepository);
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

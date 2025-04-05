@@ -670,7 +670,8 @@
         "dependencies": {
           "Dapper": "2.1.35",
           "Microsoft.Data.SqlClient": "5.2.1",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.1",
+          "RepositoryInterfaces": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Shered.dll": {}

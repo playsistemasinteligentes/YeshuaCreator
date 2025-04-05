@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Clinica;
 using Input.Querys.Clinica;
 using Repositorio.Inputs.Repositorio.Clinica;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Clinica
 {
     public class ClinicaWriteRepository : IClinicaWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public ClinicaWriteRepository(SqlFactory factory)
+        public ClinicaWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(ClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().InserirClinicaQuery(Clinica);
-        Clinica.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Clinica.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(ClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().UpdateClinicaQuery(Clinica);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(ClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().DeleteClinicaQuery(Clinica);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }

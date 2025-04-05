@@ -25,21 +25,21 @@ namespace Command.Receivers.Write
              {    
                  var movimentacaofinanceira = new MovimentacaoFinanceiraEntity(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
                  if (!movimentacaofinanceira.isValidInsert())
-                     return new State(300, movimentacaofinanceira.getErroMensagens(), comand);
+                     return ValidationError(movimentacaofinanceira.getErroMensagens(), comand);
 
                  try
                  {
                      _repository.Insert(movimentacaofinanceira);
-                     return new State(200, "OK", movimentacaofinanceira);
+                     return Success("OK", movimentacaofinanceira);
                  }
                  catch (Exception e)
                  {
-                     return new State(500, e, comand);
+                     return Error(e, comand);
                  }
             }
             else 
             {
-                 return new State(500, "ErroConversao", comand);
+                 return Error("ErroConversao", comand);
             }
         }
     }

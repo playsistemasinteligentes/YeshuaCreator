@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys.Especialidade;
 using Input.Querys.Especialidade;
 using Repositorio.Inputs.Repositorio.Especialidade;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -14,34 +15,28 @@ namespace Input.Repository.Especialidade
 {
     public class EspecialidadeWriteRepository : IEspecialidadeWriteRepository
     {
-        private readonly IDbConnection _Connection;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public EspecialidadeWriteRepository(SqlFactory factory)
+        public EspecialidadeWriteRepository(IUnitOfWork unitOfWork)
         {
-            _Connection = factory.SqlConnection();
+             _UnitOfWork= unitOfWork;
         }
 
         public void Insert(EspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().InserirEspecialidadeQuery(Especialidade);
-        Especialidade.Id =  _Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Especialidade.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(EspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().UpdateEspecialidadeQuery(Especialidade);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
         public void Delete(EspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().DeleteEspecialidadeQuery(Especialidade);
-            using (var conn = _Connection) 
-            {
-                _Connection.Execute(query.Query, query.Parameters);
-            }
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
         }
     }
 }
