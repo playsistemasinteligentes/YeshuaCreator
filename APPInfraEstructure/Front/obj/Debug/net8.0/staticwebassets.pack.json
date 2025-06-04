@@ -1,6 +1,34 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\crud.css",
+      "PackagePath": "staticwebassets\\2\\crud.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\crud.js",
+      "PackagePath": "staticwebassets\\2\\crud.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\enumerators",
+      "PackagePath": "staticwebassets\\2"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\enumerators.js",
+      "PackagePath": "staticwebassets\\2\\enumerators.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\environments.js",
+      "PackagePath": "staticwebassets\\2\\environments.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\index.html",
+      "PackagePath": "staticwebassets\\2\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\menu.css",
+      "PackagePath": "staticwebassets\\2\\menu.css"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\APP gravação.txt",
       "PackagePath": "staticwebassets\\APP gravação.txt"
     },
@@ -59,6 +87,34 @@
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\site.jsx",
       "PackagePath": "staticwebassets\\site.jsx"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\index.html",
+      "PackagePath": "staticwebassets\\spa\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\main.js",
+      "PackagePath": "staticwebassets\\spa\\main.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\router.js",
+      "PackagePath": "staticwebassets\\spa\\router.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\dashboard.html",
+      "PackagePath": "staticwebassets\\spa\\views\\dashboard.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\forgot.html",
+      "PackagePath": "staticwebassets\\spa\\views\\forgot.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\login.html",
+      "PackagePath": "staticwebassets\\spa\\views\\login.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\register.html",
+      "PackagePath": "staticwebassets\\spa\\views\\register.html"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\style.css",

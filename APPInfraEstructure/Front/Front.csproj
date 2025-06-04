@@ -53,6 +53,10 @@
     <Content Update="wwwroot\site.jsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spa\main.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -62,6 +66,11 @@
     <Content Update="wwwroot\teste.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\spa\style\" />
+    <Folder Include="wwwroot\spa\scripts\" />
   </ItemGroup>
 
 </Project>
