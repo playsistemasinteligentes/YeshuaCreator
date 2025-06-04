@@ -100,5 +100,10 @@ namespace Dominio
             this.Services.Last().Methods.Last().Authorization = autorization;
             return this;
         }
+        public Hub AddScope(string scope)
+        {
+            this.Services.Last().Methods.Last().AddScope(scope);
+            return this;
+        }
     }
 }

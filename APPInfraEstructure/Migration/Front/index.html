@@ -27,9 +27,9 @@
             color: #666;
         }
 
-        .search-button:hover {
-            color: #000;
-        }
+            .search-button:hover {
+                color: #000;
+            }
 
 
 
@@ -103,9 +103,9 @@
             position: relative;
         }
 
-        .navbar h1 {
-            margin: 0;
-        }
+            .navbar h1 {
+                margin: 0;
+            }
 
         .menu {
             display: flex;
@@ -113,13 +113,13 @@
             align-items: flex-end;
         }
 
-        .menu button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
+            .menu button {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
 
         .menu-content {
             display: none;
@@ -132,17 +132,17 @@
             right: 10px;
         }
 
-        .menu-content a {
-            color: #0077b6;
-            padding: 12px;
-            display: block;
-            text-decoration: none;
-            transition: background 0.3s;
-        }
+            .menu-content a {
+                color: #0077b6;
+                padding: 12px;
+                display: block;
+                text-decoration: none;
+                transition: background 0.3s;
+            }
 
-        .menu-content a:hover {
-            background-color: #caf0f8;
-        }
+                .menu-content a:hover {
+                    background-color: #caf0f8;
+                }
 
         .menu.active .menu-content {
             display: block;
@@ -182,9 +182,9 @@
             transition: background 0.3s;
         }
 
-        button:hover {
-            background: #0096c7;
-        }
+            button:hover {
+                background: #0096c7;
+            }
 
         .alert {
             background: rgba(0, 180, 216, 0.9);
@@ -199,10 +199,10 @@
             font-size: 14px;
         }
 
-        .alert.show {
-            display: block;
-            opacity: 1;
-        }
+            .alert.show {
+                display: block;
+                opacity: 1;
+            }
 
         .form-group {
             display: flex;
@@ -365,12 +365,12 @@
 
     <script>
 
-        // start aplicatio e login 
+        // start aplicatio e login
 
         //const API_BASE = "http://localhost:5162";
         //const API_BASE = "http://192.168.18.19:5162";
         //const API_BASE = "https://192.168.18.19:7214";
-        const API_BASE = "https://192.168.0.110:7214";
+        const API_BASE = "https://192.168.0.102:7214";
 
 
 
@@ -419,7 +419,7 @@
 
 
 
-        // fim start apliction e login 
+        // fim start apliction e login
 
 
 
@@ -474,7 +474,7 @@
 
 
 
-        // crud 
+        // crud
         var _metadata = null;
         var _fullUrl = "";
 
@@ -643,7 +643,7 @@
                 // Se for chave estrangeira
                 if (field.isFk) {
                     input.type = "text";
-                    input.dataset.description = ""; // array de campos de retorno 
+                    input.dataset.description = ""; // array de campos de retorno
                     input.dataset.id = "";
 
                     // Evento para acionar a busca ao pressionar "Enter"
@@ -842,7 +842,7 @@
                 // Se for chave estrangeira
                 if (field.isFk) {
                     input.type = "text";
-                    input.dataset.description = ""; // array de campos de retorno 
+                    input.dataset.description = ""; // array de campos de retorno
                     input.dataset.id = "";
 
                     // Evento para acionar a busca ao pressionar "Enter"
@@ -908,7 +908,7 @@
                         input.dataset.id = Object.values(resultado)[0];
                         input.value = Object.values(resultado)[1];
 
-                        // futuro percorer todos os campos do display e colocar na tela 
+                        // futuro percorer todos os campos do display e colocar na tela
                         //fkField.fksDisplayFields.forEach(displayField => {
                         //    input.value = resultado[displayField.toLowerCase()];
                         //});

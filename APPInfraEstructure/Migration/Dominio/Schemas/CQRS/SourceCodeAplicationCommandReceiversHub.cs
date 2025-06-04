@@ -7,6 +7,9 @@ using System.Text;
 using System.Linq;
 using Migration.Dominio.Schemas.CQRS;
 using System.Xml.Linq;
+using Repositorio.Inputs.Repositorio.Y_Company;
+using Repositorio.Inputs.Repositorio.Y_User;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -39,15 +42,11 @@ namespace Dominio.Schemas.CQRS
             _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsHubServiceMethod;
             _classeReceiver = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Receiver";
             _classeCommand = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
-
         }
         protected override StringBuilder GenerateCode()
         {
             StringBuilder sb = new StringBuilder();
-
             // Adiciona os usings
-
-
             sb.AppendLine($"using Comandos.Pateners.Command;");
             sb.AppendLine($"using Dominio.TiposPrimitivos;");
             sb.AppendLine($"using System;");
@@ -148,13 +147,11 @@ namespace Dominio.Schemas.CQRS
         {
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
-            sb.AppendLine($"using Comandos.Pateners.Command;");
-            sb.AppendLine($"using Dominio.TiposPrimitivos;");
-            sb.AppendLine($"using System;");
-            sb.AppendLine($"using System.Collections.Generic;");
-            sb.AppendLine($"using System.Linq;");
-            sb.AppendLine($"using System.Text;");
-            sb.AppendLine($"using System.Threading.Tasks;");
+            sb.AppendLine("using Comandos.Pateners.Command;");
+            sb.AppendLine("using RepositoryInterfaces.Patterns.UnitOfWork;");
+            foreach (var scope in _method.Scopes)
+                sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");
+
             sb.AppendLine();
 
             // Adiciona o namespace e a classe
@@ -162,17 +159,19 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public partial class {_classeReceiver}");
             sb.AppendLine("    {");
-            //sb.AppendLine($"       private Agent getAgent(ICommand comand)");
-            //sb.AppendLine("        {");
-            //sb.AppendLine("            try");
-            //sb.AppendLine("            {");
 
-            //sb.AppendLine("            }");
-            //sb.AppendLine("            catch (Exception e)");
-            //sb.AppendLine("            {");
+            sb.AppendLine("/*");
 
-            //sb.AppendLine("            }");
-            //sb.AppendLine("        }");
+
+            sb.AppendLine("private readonly IUnitOfWork _unitOfWork;");
+            foreach (var scope in _method.Scopes)
+                sb.AppendLine($"private readonly I{scope} _{scope};");
+
+            sb.AppendLine("" +
+                "partial void CustomActionHook(ref State state, Command.Commands.ContasCreateContaServiceMethodCommand comand)\r\n        {\r\n            try\r\n            {\r\n                _unitOfWork.BeginTran();\r\n                State userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });\r\n                var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;\r\n\r\n                Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };\r\n                new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);\r\n\r\n                _unitOfWork.Commit();\r\n            }\r\n            catch (ReceiverException rex)\r\n            {\r\n                _unitOfWork.Rollback();\r\n                state = rex.State;\r\n            }\r\n            catch (Exception e)\r\n            {\r\n                Error(e, comand);\r\n            }\r\n        }" +
+                "");
+
+            sb.AppendLine("*/");
             sb.AppendLine("    }");
             sb.AppendLine("}");
             return sb;

@@ -50,10 +50,12 @@ namespace Migration.Dominio.Migration
     {
         public override void Up()
         {
-            Account acount = new Account("", "", "", "", "");
-
-            AddHub("Y").AddService("Contas").AddMethod("createConta", acount).Authorization(Authorization.Free);
+            AddHub("Y").AddService("Contas").AddMethod("createConta", new Account("", "", "", "", "")).Authorization(Authorization.Free);
+            AddHub("Y").AddService("Contas").AddMethod("Login", new LoginUserEndPassword("", ""))
+                .AddScope("")
+                ;
         }
         public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
+        public record LoginUserEndPassword(string email, string password);
     }
 }

@@ -1,7 +1,4 @@
 using Comandos.Pateners.Command;
-using Command.Patterns.Command;
-using Dominio.TiposPrimitivos;
-using Repositorio.Inputs.Repositorio.Clinica;
 using Repositorio.Inputs.Repositorio.Y_Company;
 using Repositorio.Inputs.Repositorio.Y_User;
 using RepositoryInterfaces.Patterns.UnitOfWork;
@@ -21,7 +18,6 @@ namespace Command.Receivers.HubServiceMethod
         private readonly IY_UserWriteRepository _repositoryUserWrite;
         private readonly IY_CompanyWriteRepository _repositoryCompanyWrite;
         private readonly IUnitOfWork _unitOfWork;
-
 
         public ContasCreateContaServiceMethodReceiver(IY_UserWriteRepository repositoryUserWrite, IY_CompanyWriteRepository repositoryCompanyWrite, IUnitOfWork unitOfWork)
         {

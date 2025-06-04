@@ -126,6 +126,8 @@ builder.Services.AddTransient<Command.Receivers.Read.Y_UserPermitionsReadFKUserI
 builder.Services.AddTransient<Command.Receivers.Read.Y_UserPermitionsReadFKPermitionsIdReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.HubServiceMethod.ContasCreateContaServiceMethodReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.HubServiceMethod.ContasLoginServiceMethodReceiver>();
 }
 }
 }

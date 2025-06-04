@@ -30,7 +30,11 @@ namespace Dominio
         public StringBuilder VersaoAlterada { get; set; }
         public Service Service { get; set; }
         public Authorization Authorization { get; set; }
+        public List<string> Scopes = new List<string>();
 
-
+        public void AddScope(string scope)
+        {
+            Scopes.Add(scope);
+        }
     }
 }

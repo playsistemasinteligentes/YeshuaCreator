@@ -2623,6 +2623,32 @@ return Results.Problem(ex.Message);
 });
 
 
+app.MapPost("/Y/ContasLoginServiceMethod", async ([FromServices] Command.Receivers.HubServiceMethod.ContasLoginServiceMethodReceiver receiver, [FromBody] Command.Commands.ContasLoginServiceMethodCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+try
+{
+var result = receiver.Execute(command);
+return Results.Ok(result.Data);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+});
+
+
 #endregion
 }
 }
