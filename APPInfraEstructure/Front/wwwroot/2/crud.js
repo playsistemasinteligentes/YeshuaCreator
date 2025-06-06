@@ -19,14 +19,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.getElementById('login-form').addEventListener('submit', async (event) => {
     event.preventDefault();
-    const username = document.getElementById('email').value;
+    const login = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
         const response = await fetch(`${API_BASE}/Login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ login, password })
         });
 
 

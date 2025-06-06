@@ -181,7 +181,7 @@ app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.NameIdentifier, user.Login),
             new Claim(ClaimTypes.Email, "admin@email.com"), // E-mail do usuário
             new Claim(ClaimTypes.Role, "Admin"), // Permissão
             new Claim("CompanyId", "123"), // ID da empresa, por exemplo
@@ -257,5 +257,5 @@ app.MapPost("/upload", async (HttpContext context) =>
 
 app.Run();
 
-public record UserLogin(string Username, string Password);
+public record UserLogin(string Login, string Password);
 public record Account(string idcompany, string email, string phone, string password, string confirmpassword);

@@ -1,62 +1,81 @@
+import { loadMenu } from './scripts/menu.js';
+
 export async function handleRouting(hash) {
     const token = localStorage.getItem('token');
     const app = document.getElementById('app');
-
     const publicRoutes = ['#login', '#register', '#forgot'];
     const route = hash || '#login';
 
-    // Redireciona se não estiver autenticado e tentar acessar rota protegida
+    // Redireciona para login se tentar acessar rota protegida sem token
     if (!token && !publicRoutes.includes(route)) {
         location.hash = '#login';
         return;
     }
 
-    // Carrega a view correspondente
+    // Carrega a view HTML da rota
     try {
         const res = await fetch(`views/${route.replace('#', '')}.html`);
-        if (!res.ok) throw new Error('Página não encontrada...');
+        if (!res.ok) throw new Error('Página não encontrada.');
 
         const html = await res.text();
         app.innerHTML = html;
 
         attachEvents(route);
     } catch (err) {
-        app.innerHTML = `<p class="text-red-500 text-center mt-10">Erro ao carregar página</p>`;
+        console.error('Erro ao carregar view:', err);
+        app.innerHTML = `<p class="text-red-500 text-center mt-10">Erro ao carregar página.</p>`;
     }
 }
 
 function attachEvents(route) {
     if (route === '#login') {
-        document.getElementById('btn-login')?.addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        const form = document.getElementById('login-form');
 
-            try {
-                const res = await fetch(`${environments.urlApi}/Login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password }),
-                });
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault(); // evita reload
 
-                const data = await res.json();
-                if (res.ok && data.token) {
-                    localStorage.setItem('token', data.token);
-                    location.hash = '#dashboard';
-                } else {
-                    alert('Login inválido');
+                const login = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                if (!login || !password) {
+                    //alert('Por favor, preencha email e senha');
+                    //return;
                 }
-            } catch {
-                alert('Erro de conexão');
-            }
-        });
+
+                try {
+                    const res = await fetch(`${environments.urlApi}/Login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ login, password }),
+                    });
+
+                    const data = await res.json();
+
+                    if (res.ok && data.token) {
+                        localStorage.setItem('token', data.token);
+                        location.hash = '#dashboard';
+                    } else {
+                        alert(data.message || 'Login inválido');
+                    }
+                } catch (err) {
+                    //console.error('Erro de conexão:', err);
+                    Alert(environments.urlApi);
+                }
+            });
+        }
     }
 
     if (route === '#dashboard') {
-        document.getElementById('btn-logout')?.addEventListener('click', () => {
-            localStorage.removeItem('token');
-            location.hash = '#login';
-        });
+        loadMenu();
+        // Você pode adicionar outros eventos do dashboard aqui
     }
 
-    // Aqui você pode adicionar attachEvents para outras páginas também
+    if (route === '#register') {
+        // Eventos para a tela de cadastro, se quiser
+    }
+
+    if (route === '#forgot') {
+        // Eventos para recuperação de senha
+    }
 }

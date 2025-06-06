@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iessAFQZBMxKz150tkHmi9AiF4YyuIrvZtZ6csETdeQ=",
+  "Hash": "UOxo0tJMmnZJWpyJsE3daGsmILwZW4Z7S8J/HQaNJFU=",
   "Source": "Front",
   "BasePath": "_content/Front",
   "Mode": "Default",
@@ -435,6 +435,25 @@
       "OriginalItemSpec": "wwwroot\\site.jsx"
     },
     {
+      "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\environments.js",
+      "SourceId": "Front",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\",
+      "BasePath": "_content/Front",
+      "RelativePath": "spa/environments.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\spa\\environments.js"
+    },
+    {
       "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\index.html",
       "SourceId": "Front",
       "SourceType": "Discovered",
@@ -490,6 +509,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\spa\\router.js"
+    },
+    {
+      "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\menu.js",
+      "SourceId": "Front",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\",
+      "BasePath": "_content/Front",
+      "RelativePath": "spa/scripts/menu.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\spa\\scripts\\menu.js"
     },
     {
       "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\dashboard.html",

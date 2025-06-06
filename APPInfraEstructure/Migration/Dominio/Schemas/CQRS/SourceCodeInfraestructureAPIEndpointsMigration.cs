@@ -95,7 +95,7 @@ namespace Dominio.Schemas.CQRS
             // menus 
             sb.AppendLine("app.MapGet(\"/getMenu\", (HttpContext context) =>");
             sb.AppendLine("{");
-            sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;");
+            sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;");
             sb.AppendLine("if (string.IsNullOrEmpty(userId))");
             sb.AppendLine("return Results.Unauthorized();");
             sb.AppendLine("var menu = new[]");
@@ -156,7 +156,7 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine($"app.MapGet(\"/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
                 sb.AppendLine("{");
-                sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;");
+                sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;");
 
                 sb.AppendLine("if (string.IsNullOrEmpty(userId))");
                 sb.AppendLine("return Results.Unauthorized();");

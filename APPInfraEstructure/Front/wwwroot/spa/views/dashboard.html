@@ -1,16 +1,21 @@
-<div id="login-screen" class="login-container">
-    <h2>Login</h2>
-    <form id="login-form">
-        <input type="text" id="email" placeholder="Email" /><br><br>
-        <input type="password" id="password" placeholder="Senha" /><br><br>
-        <div align="center">
-            <button type="submit" style="vertical-align: middle;">Entrar</button>
-            <a href="#" onclick="showForgotPassword()" title="Esqueci a senha" style="margin: 0 10px; vertical-align: middle;">
-                <i class="fas fa-key" style="font-size: 32px; vertical-align: middle;"></i>
-            </a>
-            <a href="#" onclick="showCreateAccount()" title="Criar conta" style="margin: 0 10px; vertical-align: middle;">
-                <i class="fas fa-user-plus" style="font-size: 32px; vertical-align: middle;"></i>
-            </a>
-        </div>
-    </form>
+﻿<div class="flex justify-between items-center p-4 bg-blue-600 text-white">
+    <h1 id="form-description" class="text-xl font-bold"></h1>
+    <button onclick="toggleMenu()" class="text-2xl">☰</button>
+</div>
+
+<div id="menu" class="hidden absolute right-4 mt-2 bg-white shadow rounded p-2 z-10"></div>
+
+<div id="crud-form" class="p-6" style="display:none;">
+    <div class="flex justify-end gap-2 mb-4">
+        <button id="btn-new" class="bg-green-600 text-white px-4 py-2 rounded" onclick="crudNew()">Novo Registro</button>
+        <button id="btn-search-parameters" class="bg-blue-600 text-white px-4 py-2 rounded" onclick="crudSearchParameters()">Pesquisar</button>
+        <button id="btn-create" class="hidden bg-green-600 text-white px-4 py-2 rounded" onclick="crudCreate()">Salvar</button>
+        <button id="btn-update" class="hidden bg-yellow-500 text-white px-4 py-2 rounded" onclick="crudUpdate()">Atualizar</button>
+        <button id="btn-search" class="hidden bg-blue-600 text-white px-4 py-2 rounded" onclick="crudSearch()">Buscar</button>
+    </div>
+
+    <div id="alert-msg" class="hidden text-green-600 font-medium mb-4">Registro salvo com sucesso!</div>
+
+    <div id="form-group" class="space-y-4"></div>
+    <div id="table-container" class="hidden mt-6"></div>
 </div>
