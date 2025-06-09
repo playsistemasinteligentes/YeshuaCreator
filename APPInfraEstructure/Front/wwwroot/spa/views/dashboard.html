@@ -1,21 +1,83 @@
-﻿<div class="flex justify-between items-center p-4 bg-blue-600 text-white">
+﻿
+<div class="flex justify-between items-center p-4 bg-blue-600 text-white">
     <h1 id="form-description" class="text-xl font-bold"></h1>
-    <button onclick="toggleMenu()" class="text-2xl">☰</button>
+    <button id="btn-toggle-menu" class="text-2xl" aria-label="Toggle menu">☰</button>
 </div>
 
 <div id="menu" class="hidden absolute right-4 mt-2 bg-white shadow rounded p-2 z-10"></div>
 
-<div id="crud-form" class="p-6" style="display:none;">
-    <div class="flex justify-end gap-2 mb-4">
-        <button id="btn-new" class="bg-green-600 text-white px-4 py-2 rounded" onclick="crudNew()">Novo Registro</button>
-        <button id="btn-search-parameters" class="bg-blue-600 text-white px-4 py-2 rounded" onclick="crudSearchParameters()">Pesquisar</button>
-        <button id="btn-create" class="hidden bg-green-600 text-white px-4 py-2 rounded" onclick="crudCreate()">Salvar</button>
-        <button id="btn-update" class="hidden bg-yellow-500 text-white px-4 py-2 rounded" onclick="crudUpdate()">Atualizar</button>
-        <button id="btn-search" class="hidden bg-blue-600 text-white px-4 py-2 rounded" onclick="crudSearch()">Buscar</button>
+<!-- 🔍 Pesquisa + Resultados -->
+<div id="crud-container" class="hidden space-y-6 px-4 py-6">
+    <!-- 🔍 Pesquisa -->
+    <div class="bg-white p-4 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-2">
+            <h2 class="text-xl font-bold">
+                <button id="btn-toggle-pesquisa"
+                        class="flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    Pesquisa
+                </button>
+            </h2>
+            <button id="btn-search" class="btn-search bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded">Buscar</button>
+        </div>
+
+        <!-- Filtros e resultados -->
+        <div id="area-pesquisa" class="space-y-6 hidden transition-all duration-300">
+
+            <!-- Filtros simples -->
+            <div id="filtros-simples" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text" placeholder="Nome" class="border p-2 rounded">
+                <input type="email" placeholder="Email" class="border p-2 rounded">
+                <select class="border p-2 rounded">
+                    <option>Status</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="inativo">Inativo</option>
+                </select>
+            </div>
+
+            <!-- Parâmetros avançados -->
+            <div>
+                <button id="btn-toggle-avancado" class="text-sm text-gray-600 hover:underline">Parâmetros Avançados</button>
+                <div id="filtros-avancados" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden mt-2">
+                    <input type="date" class="border p-2 rounded" placeholder="Data de criação">
+                    <input type="text" class="border p-2 rounded" placeholder="CPF/CNPJ">
+                    <input type="text" class="border p-2 rounded" placeholder="Código interno">
+                </div>
+            </div>
+
+
+            <!-- Resultados -->
+            <div id="crud-tabela" class="space-y-4">
+                <h2 class="text-xl font-bold mb-2">Resultados</h2>
+                <div id="table-container"></div> <!-- É aqui que sua função insere -->
+            </div>
+
+        </div>
     </div>
 
-    <div id="alert-msg" class="hidden text-green-600 font-medium mb-4">Registro salvo com sucesso!</div>
+    <!-- 📝 Cadastro -->
+    <div class="bg-white p-4 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold mb-4">Cadastro</h2>
+        <div id="form-group" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" placeholder="Nome completo" class="border p-2 rounded" />
+            <input type="email" placeholder="E-mail" class="border p-2 rounded" />
+            <input type="password" placeholder="Senha" class="border p-2 rounded" />
+            <select class="border p-2 rounded">
+                <option value="">Perfil</option>
+                <option>Administrador</option>
+                <option>Usuário</option>
+            </select>
+        </div>
 
-    <div id="form-group" class="space-y-4"></div>
-    <div id="table-container" class="hidden mt-6"></div>
+        <div class="mt-4 flex justify-between items-center">
+            <button id="btn-new" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded">
+                Novo
+            </button>
+            <button id="btn-save" class="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2 rounded">
+                Salvar
+            </button>
+        </div>
+    </div>
 </div>

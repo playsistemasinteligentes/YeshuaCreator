@@ -808,12 +808,6 @@ function logout() {
     localStorage.removeItem('token');
 }
 
-function toggleMenu() {
-    let menu = document.getElementById("menu");
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-
-
 function closeMenu() {
     menu.style.display = "none";
 }

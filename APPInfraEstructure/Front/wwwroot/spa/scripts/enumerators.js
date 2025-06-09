@@ -1,4 +1,4 @@
-const Actions = Object.freeze({
+export const Actions = Object.freeze({
     NEW: "New",
     SEARCH_PARAMETERS: "searchParameters",
     SEARCH: "Search",

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\spa\scripts\alert.js" />
+    <Content Remove="wwwroot\spa\scripts\crudEnumerator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>
 
@@ -53,7 +58,7 @@
     <Content Update="wwwroot\site.jsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\spa\main.js">
+    <Content Update="wwwroot\spa\scripts\main.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
