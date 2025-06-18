@@ -1,37 +1,35 @@
 ﻿using RepositoryInterfaces.Patterns.UnitOfWork;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Comandos.Pateners.Command
 {
-    public abstract class ReciverBase : IReceiver<ICommand, State>
+    public abstract class ReciverBase<T> : IReceiver<ICommand, T>
     {
-        protected abstract State Action(ICommand comand);
+        protected abstract State<T> Action(ICommand command);
 
-        public State Execute(ICommand command)
+        public State<T> Execute(ICommand command)
         {
-            State state = Action(command);
-            return state;
+            return Action(command);
         }
-        protected static State Error(string message, object data = null, bool propagation = true)
-        => new State(500, message, data, propagation);
 
-        protected static State Error(Exception message, object data = null)
-                => new State(500, message, data, false);
+        protected static State<T> Error(string message, T data = default, bool propagation = true)
+            => new State<T>(500, message, data, propagation);
 
-        protected static State Success(string message, object data = null)
-            => new State(200, message, data);
+        protected static State<T> Error(Exception exception, T data = default)
+            => new State<T>(500, exception, data, false);
 
-        protected static State Created(string message, object data = null)
-            => new State(201, message, data);
+        protected static State<T> Success(string message, T data = default)
+            => new State<T>(200, message, data);
 
-        protected static State ValidationError(string message, object data = null)
-            => new State(400, message, data);
-        protected static State ValidationError(List<string> message, object data = null)
-             => new State(400, message, data);
+        protected static State<T> Created(string message, T data = default)
+            => new State<T>(201, message, data);
+
+        protected static State<T> ValidationError(string message, T data = default)
+            => new State<T>(400, message, data);
+
+        protected static State<T> ValidationError(List<string> messages, ICommand c, T data = default)
+            => new State<T>(400, messages, data);
 
     }
 }

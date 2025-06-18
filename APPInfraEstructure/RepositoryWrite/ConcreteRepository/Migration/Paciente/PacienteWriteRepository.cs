@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.Paciente;
+using Dominio.Entitys;
 using Input.Querys.Paciente;
 using Repositorio.Inputs.Repositorio.Paciente;
 using RepositoryInterfaces.Patterns.UnitOfWork;

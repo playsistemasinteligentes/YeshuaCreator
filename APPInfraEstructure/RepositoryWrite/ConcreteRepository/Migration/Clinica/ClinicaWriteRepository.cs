@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.Clinica;
+using Dominio.Entitys;
 using Input.Querys.Clinica;
 using Repositorio.Inputs.Repositorio.Clinica;
 using RepositoryInterfaces.Patterns.UnitOfWork;

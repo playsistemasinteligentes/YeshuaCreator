@@ -1,4 +1,5 @@
-﻿using Interfaces.Schemas;
+﻿using Dominio.Entitys.GrupoServico;
+using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
@@ -27,6 +28,7 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
+
             sb.AppendLine("using Comandos.Commands;");
             sb.AppendLine("using Microsoft.AspNetCore.Mvc;");
             sb.AppendLine("using System.Security.Claims;");
@@ -41,12 +43,14 @@ namespace Dominio.Schemas.CQRS
             foreach (var entity in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
-
                 sb.AppendLine("{");
+                sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
+                //setResultHttp(sb, "result");
 
-                setResultHttp(sb, "result");
-
-                sb.AppendLine("}).RequireAuthorization();");
+                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
+                sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
                 sb.AppendLine("");
             }
@@ -56,23 +60,14 @@ namespace Dominio.Schemas.CQRS
             foreach (var entity in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapPut(\"/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
-
                 sb.AppendLine("{");
 
-                sb.AppendLine("try");
-                sb.AppendLine("{");
-                sb.AppendLine("var result = receiver.Execute(command);");
-                sb.AppendLine("return Results.Ok(result);");
-                sb.AppendLine("}");
+                sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
 
-
-                sb.AppendLine("catch (Exception ex)");
-                sb.AppendLine("{");
-                sb.AppendLine("return Results.Problem(ex.Message);");
-                sb.AppendLine("}");
-
-
-                sb.AppendLine("}).RequireAuthorization();");
+                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
+                sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
                 sb.AppendLine("");
             }
@@ -81,12 +76,15 @@ namespace Dominio.Schemas.CQRS
             foreach (var entity in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapDelete(\"/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
-
                 sb.AppendLine("{");
 
-                setResultHttp(sb, "result");
+                sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
+                //setResultHttp(sb, "result");
 
-                sb.AppendLine("}).RequireAuthorization();");
+                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
+                sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
                 sb.AppendLine("");
             }
@@ -125,9 +123,13 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
                 sb.AppendLine("{");
 
-                setResultHttp(sb, "result.Data");
+                sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
+                //setResultHttp(sb, "result");
 
-                sb.AppendLine("}).RequireAuthorization();");
+                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
+                sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
                 sb.AppendLine("");
             }
@@ -277,7 +279,6 @@ namespace Dominio.Schemas.CQRS
         }
         private void setResultHttp(StringBuilder sb, string result)
         {
-
             sb.AppendLine("try");
             sb.AppendLine("{");
             sb.AppendLine("var result = receiver.Execute(command);");
@@ -290,24 +291,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine("return Results.Problem(ex.Message);");
             sb.AppendLine("}");
-
-
-
-            sb.AppendLine("try");
-            sb.AppendLine("{");
-            sb.AppendLine("var result = receiver.Execute(command);");
-            sb.AppendLine("return Results.Ok(result.Data);");
-
-            sb.AppendLine("}");
-
-
-            sb.AppendLine("catch (Exception ex)");
-            sb.AppendLine("{");
-            sb.AppendLine("return Results.Problem(ex.Message);");
-            sb.AppendLine("}");
-
-
-
         }
     }
 }

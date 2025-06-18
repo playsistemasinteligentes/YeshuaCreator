@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.MovimentacaoFinanceira;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
+using Repositorio.Outputs.DTOs.MovimentacaoFinanceira;
 using RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira;
 
 namespace Command.Receivers.Read
 {
-    public class MovimentacaoFinanceiraReadReceiver : ReciverBase
+    public class MovimentacaoFinanceiraReadReceiver : ReciverBase<IEnumerable<MovimentacaoFinanceiraDTO>>
     {
         private readonly IMovimentacaoFinanceiraReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<IEnumerable<MovimentacaoFinanceiraDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.MovimentacaoFinanceiraReadCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

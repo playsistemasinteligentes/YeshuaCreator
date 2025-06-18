@@ -1,5 +1,5 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Y_User;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Y_User;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteY_UserReceiver : ReciverBase
+    public class DeleteY_UserReceiver : ReciverBase <Y_UserEntity>
     {
         private readonly IY_UserWriteRepository _repository;
 
@@ -19,7 +19,7 @@ namespace Command.Receivers.Write
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<Y_UserEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_UserCrudCommand c) 
              {    
@@ -34,12 +34,12 @@ namespace Command.Receivers.Write
                  }
                  catch (Exception e)
                  {
-                     return Error(e, comand);
+                    return Error(e, y_user);
                  }
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

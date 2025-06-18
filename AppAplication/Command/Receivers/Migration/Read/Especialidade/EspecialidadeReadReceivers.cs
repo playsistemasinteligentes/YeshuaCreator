@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Especialidade;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Especialidade;
+using Repositorio.Outputs.DTOs.Especialidade;
 using RepositoryInterfaces.Read.Repository.Especialidade;
 
 namespace Command.Receivers.Read
 {
-    public class EspecialidadeReadReceiver : ReciverBase
+    public class EspecialidadeReadReceiver : ReciverBase<IEnumerable<EspecialidadeDTO>>
     {
         private readonly IEspecialidadeReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<IEnumerable<EspecialidadeDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.EspecialidadeReadCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

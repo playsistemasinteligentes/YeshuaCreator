@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.MovimentacaoFinanceira;
+using Dominio.Entitys;
 using Input.Querys.MovimentacaoFinanceira;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
 using RepositoryInterfaces.Patterns.UnitOfWork;

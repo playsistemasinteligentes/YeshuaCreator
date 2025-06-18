@@ -1,5 +1,5 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Y_PerfilPermitions;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Y_PerfilPermitions;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateY_PerfilPermitionsReceiver : ReciverBase
+    public class UpdateY_PerfilPermitionsReceiver : ReciverBase <Y_PerfilPermitionsEntity>
     {
         private readonly IY_PerfilPermitionsWriteRepository _repository;
 
@@ -19,7 +19,7 @@ namespace Command.Receivers.Write
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<Y_PerfilPermitionsEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_PerfilPermitionsCrudCommand c) 
              {    
@@ -34,12 +34,12 @@ namespace Command.Receivers.Write
                  }
                  catch (Exception e)
                  {
-                     return Error(e, comand);
+                    return Error(e, y_perfilpermitions);
                  }
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

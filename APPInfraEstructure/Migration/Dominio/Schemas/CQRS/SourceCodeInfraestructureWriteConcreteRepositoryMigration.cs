@@ -1,4 +1,5 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -18,7 +19,7 @@ namespace Dominio.Schemas.CQRS
             var sb = new StringBuilder();
 
             sb.AppendLine("using Dapper;");
-            sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
             sb.AppendLine($"using Input.Querys.{_entity.EntityName};");
             sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
             sb.AppendLine($"using RepositoryInterfaces.Patterns.UnitOfWork;");

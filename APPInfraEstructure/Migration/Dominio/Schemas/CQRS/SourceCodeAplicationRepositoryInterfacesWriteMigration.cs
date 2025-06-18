@@ -1,4 +1,5 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -18,7 +19,7 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
 
             // Adiciona os usings
-            sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
             sb.AppendLine($"using System;");
             sb.AppendLine($"using System.Collections.Generic;");
             sb.AppendLine($"using System.Linq;");

@@ -29,7 +29,7 @@ namespace Dominio.Schemas.CQRS
                 using System.Text;
                 using System.Threading.Tasks;
 
-                namespace Dominio.Entitys.{_entity.EntityName}
+                namespace {CQRSParam.I.NameSpaceEntitys}
                 {{
                     public partial class {_entity.EntityName}Entity
                     {{

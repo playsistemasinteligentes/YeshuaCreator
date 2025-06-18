@@ -1,10 +1,10 @@
 ﻿namespace Comandos.Pateners.Command
 {
-    public class ReceiverException : Exception
+    public class ReceiverException<T> : Exception
     {
-        public State State { get; }
+        public State<T> State { get; }
 
-        public ReceiverException(State state) : base(state.Message)
+        public ReceiverException(State<T> state) : base(state.Message)
         {
             State = state;
         }

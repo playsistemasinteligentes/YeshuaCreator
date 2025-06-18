@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Paciente;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Paciente;
+using Repositorio.Outputs.DTOs.Paciente;
 using RepositoryInterfaces.Read.Repository.Paciente;
 
 namespace Command.Receivers.Read
 {
-    public class PacienteReadReceiver : ReciverBase
+    public class PacienteReadReceiver : ReciverBase<IEnumerable<PacienteDTO>>
     {
         private readonly IPacienteReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<IEnumerable<PacienteDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.PacienteReadCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

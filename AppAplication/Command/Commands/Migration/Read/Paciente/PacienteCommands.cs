@@ -1,8 +1,9 @@
 using Comandos.Pateners.Command;
+using Command.Patterns.Command;
 using Dominio.TiposPrimitivos;
 namespace Command.Commands.Read
 {
-    public struct PacienteReadCommand : ICommand
+    public struct PacienteReadCommand : ICommandRead
     {
         public int? Id { get; set; }
         public string Nome { get; set; }
@@ -16,6 +17,7 @@ namespace Command.Commands.Read
         public string TelefoneResponsavel { get; set; }
         public string PrincipaisQueixas { get; set; }
         public string ObservacaoAdicional { get; set; }
+ public Pagination Paginacao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -1,11 +1,13 @@
 using Comandos.Pateners.Command;
+using Command.Patterns.Command;
 using Dominio.TiposPrimitivos;
 namespace Command.Commands.Read
 {
-    public struct Y_UserPermitionsReadCommand : ICommand
+    public struct Y_UserPermitionsReadCommand : ICommandRead
     {
         public int? UserId { get; set; }
         public string PermitionsId { get; set; }
+ public Pagination Paginacao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

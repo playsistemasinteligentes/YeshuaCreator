@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.Sesoes;
+using Dominio.Entitys;
 using Input.Querys.Sesoes;
 using Repositorio.Inputs.Repositorio.Sesoes;
 using RepositoryInterfaces.Patterns.UnitOfWork;

@@ -1,4 +1,4 @@
-using Dominio.Entitys.Profissional;
+using Dominio.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;

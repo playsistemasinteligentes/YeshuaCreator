@@ -1,5 +1,5 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Y_Perfil;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Y_Perfil;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertY_PerfilReceiver : ReciverBase
+    public class InsertY_PerfilReceiver : ReciverBase <Y_PerfilEntity>
     {
         private readonly IY_PerfilWriteRepository _repository;
 
@@ -19,7 +19,7 @@ namespace Command.Receivers.Write
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<Y_PerfilEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_PerfilCrudCommand c) 
              {    
@@ -34,12 +34,12 @@ namespace Command.Receivers.Write
                  }
                  catch (Exception e)
                  {
-                     return Error(e, comand);
+                    return Error(e, y_perfil);
                  }
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

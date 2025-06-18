@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.DisponibilidadeAgenda;
+using Dominio.Entitys;
 using Input.Querys.DisponibilidadeAgenda;
 using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
 using RepositoryInterfaces.Patterns.UnitOfWork;

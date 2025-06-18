@@ -6,7 +6,7 @@
                 using System.Text;
                 using System.Threading.Tasks;
 
-                namespace Dominio.Entitys.Especialidade
+                namespace Dominio.Entitys
                 {
                     public partial class EspecialidadeEntity
                     {

@@ -1,5 +1,5 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Clinica;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Clinica;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertClinicaReceiver : ReciverBase
+    public class InsertClinicaReceiver : ReciverBase <ClinicaEntity>
     {
         private readonly IClinicaWriteRepository _repository;
 
@@ -19,7 +19,7 @@ namespace Command.Receivers.Write
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<ClinicaEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.ClinicaCrudCommand c) 
              {    
@@ -34,12 +34,12 @@ namespace Command.Receivers.Write
                  }
                  catch (Exception e)
                  {
-                     return Error(e, comand);
+                    return Error(e, clinica);
                  }
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

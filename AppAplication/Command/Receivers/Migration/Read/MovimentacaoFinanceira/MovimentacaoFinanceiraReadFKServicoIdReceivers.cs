@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.MovimentacaoFinanceira;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
 using RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira;
+using Repositorio.Outputs.DTOs.MovimentacaoFinanceira;
 
 namespace Command.Receivers.Read
 {
-    public class MovimentacaoFinanceiraReadFKServicoIdReceiver : ReciverBase
+    public class MovimentacaoFinanceiraReadFKServicoIdReceiver : ReciverBase<IEnumerable<MovimentacaoFinanceiraServicoIdDTO>>
     {
         private readonly IMovimentacaoFinanceiraReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State <IEnumerable<MovimentacaoFinanceiraServicoIdDTO>> Action(ICommand comand)
         {
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

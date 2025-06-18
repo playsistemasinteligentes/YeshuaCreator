@@ -1,4 +1,4 @@
-using Dominio.Entitys.Y_Perfil;
+using Dominio.Entitys;
 using Shered.DB;
 using System;
 using System.Collections.Generic;

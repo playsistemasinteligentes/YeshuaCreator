@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Y_Company;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Y_Company;
+using Repositorio.Outputs.DTOs.Y_Company;
 using RepositoryInterfaces.Read.Repository.Y_Company;
 
 namespace Command.Receivers.Read
 {
-    public class Y_CompanyReadReceiver : ReciverBase
+    public class Y_CompanyReadReceiver : ReciverBase<IEnumerable<Y_CompanyDTO>>
     {
         private readonly IY_CompanyReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<IEnumerable<Y_CompanyDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.Y_CompanyReadCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

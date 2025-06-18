@@ -18,14 +18,18 @@ namespace Output.Querys.GrupoServico
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $@" select Id, Descricao from GrupoServico ";
-if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
-if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
-if (!string.IsNullOrEmpty(Command.Descricao)) parametersDict["Descricao"] = $"%{Command.Descricao}%";
-if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+            if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+            if (!string.IsNullOrEmpty(Command.Descricao)) parametersDict["Descricao"] = $"%{Command.Descricao}%";
+            if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
+            if (whereClauses.Any())
+                this.Query += " WHERE " + string.Join(" AND ", whereClauses);
             this.Parameters = parameters;
+
+
+
             return new QueryModel(this.Query, this.Parameters);
+
         }
     }
 }

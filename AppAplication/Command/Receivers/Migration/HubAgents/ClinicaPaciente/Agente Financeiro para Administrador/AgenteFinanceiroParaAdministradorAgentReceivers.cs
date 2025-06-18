@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Comandos.Receivers.AgenteFinanceiroParaAdministrador
 {
-    public partial class AgenteFinanceiroParaAdministradorHubAgentReceiver : ReciverBase
+    public partial class AgenteFinanceiroParaAdministradorHubAgentReceiver : ReciverBase<ICommand>
     {
 
         private readonly object _menssage;
@@ -18,19 +18,19 @@ namespace Comandos.Receivers.AgenteFinanceiroParaAdministrador
             _menssage = menssage;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<ICommand> Action(ICommand comand)
         {
             try
             {
                 return Success("OK", comand);
             }
-            catch (ReceiverException e)
+            catch (ReceiverException<ICommand> e)
             {
                 return e.State;
             }
             catch (Exception e)
             {
-                return Error(e, comand);
+                return Error(e, default);
             }
         }
            private List<string> MenuAdministrativoFinanceiro()

@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.DisponibilidadeAgenda;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
 using RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda;
+using Repositorio.Outputs.DTOs.DisponibilidadeAgenda;
 
 namespace Command.Receivers.Read
 {
-    public class DisponibilidadeAgendaReadFKProfissionalIdReceiver : ReciverBase
+    public class DisponibilidadeAgendaReadFKProfissionalIdReceiver : ReciverBase<IEnumerable<DisponibilidadeAgendaProfissionalIdDTO>>
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State <IEnumerable<DisponibilidadeAgendaProfissionalIdDTO>> Action(ICommand comand)
         {
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

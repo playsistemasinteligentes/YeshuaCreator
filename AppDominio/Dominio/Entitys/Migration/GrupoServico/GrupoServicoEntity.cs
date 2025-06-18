@@ -6,7 +6,7 @@
                 using System.Text;
                 using System.Threading.Tasks;
 
-                namespace Dominio.Entitys.GrupoServico
+                namespace Dominio.Entitys
                 {
                     public partial class GrupoServicoEntity
                     {

@@ -30,7 +30,53 @@ export function buildCrud() {
         setStateCreate();
     });
 
+    document.getElementById('chkCountTotal').addEventListener('change', (e) => {
+        crudState.pagination.PageWhithCount = e.target.checked;
+    });
 }
+function togglePaginationControls() {
+    const container = document.getElementById('pagination-controls');
+    container.innerHTML = ''; // Limpa controles anteriores
+
+    const { page, hasNext, total, PageWhithCount } = crudState.pagination;
+
+    // 👉 Botão Anterior
+    const btnPrev = document.createElement('button');
+    btnPrev.textContent = '⬅ Anterior';
+    btnPrev.className = 'px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50';
+    btnPrev.disabled = page <= 1;
+    btnPrev.onclick = () => {
+        crudState.pagination.page--;
+        fetchSearchResults();
+    };
+
+    // 👉 Botão Próximo
+    const btnNext = document.createElement('button');
+    btnNext.textContent = 'Próximo ➡';
+    btnNext.className = 'px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50';
+    btnNext.disabled = !hasNext;
+    btnNext.onclick = () => {
+        crudState.pagination.page++;
+        fetchSearchResults();
+    };
+
+    // 👉 Info de Página / Total
+    const info = document.createElement('span');
+    info.className = 'mx-4 text-sm';
+    if (PageWhithCount && total !== undefined) {
+        const start = (page - 1) * crudState.pagination.pageSize + 1;
+        const end = Math.min(start + crudState.pagination.pageSize - 1, total);
+        info.textContent = `Exibindo ${start} a ${end} de ${total}`;
+    } else {
+        info.textContent = `Página ${page}`;
+    }
+
+    // Adiciona ao container
+    container.appendChild(btnPrev);
+    container.appendChild(info);
+    container.appendChild(btnNext);
+}
+
 export async function loadDataCrud(fullUrl, type) {
 
     document.getElementById('table-container').innerHTML = '';
@@ -67,43 +113,57 @@ function crudSearch() {
 async function fetchSearchResults() {
     const token = localStorage.getItem('token');
 
-    // Criando um objeto com os filtros preenchidos
+    // Coleta os filtros preenchidos
     const searchFilters = {};
     crudState.metadata.formFields.forEach(field => {
-        var input = document.getElementById(`search-${field.id}`);
-        if (input.value != "") {
-            if (field.isFk) {
-                if (input.dataset.id) {
-                    searchFilters[field.id] = input.dataset.id;
-                } else {
-                    input.value = "";
-                }
+        const input = document.getElementById(`search-${field.id}`);
+        if (!input || input.value === '') return;
+
+        if (field.isFk) {
+            if (input.dataset.id) {
+                searchFilters[field.id] = input.dataset.id;
             } else {
-                searchFilters[field.id] = input.value;
+                input.value = "";
             }
+        } else {
+            searchFilters[field.id] = input.value;
         }
     });
 
+    // Adiciona parâmetros de paginação
+    searchFilters.page = crudState.pagination.page || 1;
+    searchFilters.pageSize = crudState.pagination.pageSize || 20;
+    searchFilters.pageWhithCount = crudState.pagination.PageWhithCount;
 
     try {
-
         const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.read}`, {
-            method: 'POST', // Mudamos de GET para POST
+            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(searchFilters) // Enviamos os filtros como JSON
+            body: JSON.stringify(searchFilters)
         });
 
+        //aqui mudar o result tem que ter data   mas tambem metadados pra pelo menos saber o total de registros
+        const responseJson = await response.json();
 
         if (response.ok) {
-            const data = await response.json();
-            renderTableSearch(data);
+            //// 🔄 Verifica se ainda há próxima página com base no tamanho do array
+            //crudState.pagination.hasNext = Array.isArray(results) && results.length === crudState.pagination.pageSize;
+
+            //// Se for modo com contagem total e o back tiver retornado total (caso raro)
+            //if (crudState.pagination.PageWhithCount && results.total !== undefined) {
+            //    crudState.pagination.total = results.total;
+            //}
+
+            // Passa apenas os resultados
+            renderTableSearch(responseJson.data || []);
+            togglePaginationControls(); // (criado anteriormente para exibir os botões)
         } else {
-            const data = await response.json();
-            showAlert(data.message, 'error');//data.messageList
+            showAlert(responseJson.data.message || "Erro na pesquisa", 'error');
         }
+
     } catch (error) {
         erroRequestResponse(error);
     }
@@ -459,11 +519,10 @@ async function crudCreate() {
             body: JSON.stringify(newRecord)
         });
 
-
         if (response.ok) {
             showAlert('Registro inserido com sucesso!', 'success');
         } else {
-            const data = await response.json();
+            const responseJson = await response.json();
             showAlert(data.message, 'error');//data.messageList
         }
     } catch (error) {
@@ -504,8 +563,8 @@ async function crudUpdate() {
         if (response.ok) {
             showAlert('Registro atualizado com sucesso!', 'success');
         } else {
-            const data = await response.json();
-            showAlert(data.message, 'error');//data.messageList
+            const responseJson = await response.json();
+            showAlert(responseJson.message, 'error');//data.messageList
         }
     } catch (error) {
         erroRequestResponse(error);
@@ -547,8 +606,8 @@ async function deleteRecord(item) {
             if (response.ok) {
                 showAlert('Registro excluído com sucesso!', 'success');
             } else {
-                const data = await response.json();
-                showAlert(data.message, 'error');//data.messageList
+                const responseJson = await response.json();
+                showAlert(responseJson.data.message, 'error');//data.messageList
             }
         } catch (error) {
             erroRequestResponse(error);

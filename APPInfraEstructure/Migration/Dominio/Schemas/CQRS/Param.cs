@@ -20,17 +20,19 @@ namespace Migration.Dominio.Schemas.CQRS
         public string NameSpaceCommandReceiversRead { get; set; } = "Command.Receivers.Read";
         public string NameSpaceCommandReceiversWrite { get; set; } = "Command.Receivers.Write";
         public List<string> ColumnsDescriptions { get; set; } = new List<string> { "nome", "descricao" };
+        public object NameSpaceEntitys { get; set; } = "Dominio.Entitys";
+        public object NameSpaceCommandsPartners { get; set; } = "Command.Patterns.Command";
 
-        public void AddExeptionReceiver(StringBuilder sb)
+        public void AddExeptionReceiver(StringBuilder sb, string classe)
         {
-            sb.AppendLine("            catch (ReceiverException e)");
+            sb.AppendLine($"            catch (ReceiverException<{classe}> e)");
             sb.AppendLine("            {");
             sb.AppendLine("                return e.State;");
             sb.AppendLine("            }");
 
             sb.AppendLine("            catch (Exception e)");
             sb.AppendLine("            {");
-            sb.AppendLine("                return Error(e, comand);");
+            sb.AppendLine("                return Error(e, default);");
             sb.AppendLine("            }");
         }
         private CQRSParam() { }

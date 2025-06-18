@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.Servico;
+using Dominio.Entitys;
 using Input.Querys.Servico;
 using Repositorio.Inputs.Repositorio.Servico;
 using RepositoryInterfaces.Patterns.UnitOfWork;

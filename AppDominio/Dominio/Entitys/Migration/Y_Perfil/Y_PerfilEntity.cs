@@ -6,7 +6,7 @@
                 using System.Text;
                 using System.Threading.Tasks;
 
-                namespace Dominio.Entitys.Y_Perfil
+                namespace Dominio.Entitys
                 {
                     public partial class Y_PerfilEntity
                     {

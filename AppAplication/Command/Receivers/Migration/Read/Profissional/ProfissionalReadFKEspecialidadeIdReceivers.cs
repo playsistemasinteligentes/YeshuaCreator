@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Profissional;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Profissional;
 using RepositoryInterfaces.Read.Repository.Profissional;
+using Repositorio.Outputs.DTOs.Profissional;
 
 namespace Command.Receivers.Read
 {
-    public class ProfissionalReadFKEspecialidadeIdReceiver : ReciverBase
+    public class ProfissionalReadFKEspecialidadeIdReceiver : ReciverBase<IEnumerable<ProfissionalEspecialidadeIdDTO>>
     {
         private readonly IProfissionalReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State <IEnumerable<ProfissionalEspecialidadeIdDTO>> Action(ICommand comand)
         {
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

@@ -1,5 +1,5 @@
 using Dapper;
-using Dominio.Entitys.Y_UserPermitions;
+using Dominio.Entitys;
 using Input.Querys.Y_UserPermitions;
 using Repositorio.Inputs.Repositorio.Y_UserPermitions;
 using RepositoryInterfaces.Patterns.UnitOfWork;

@@ -1,4 +1,5 @@
 using Comandos.Pateners.Command;
+using Command.Commands;
 using Dominio.TiposPrimitivos;
 using System;
 using System.Collections.Generic;
@@ -8,29 +9,29 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.HubServiceMethod
 {
-    public partial class ContasLoginServiceMethodReceiver : ReciverBase
+    public partial class ContasLoginServiceMethodReceiver : ReciverBase<ContasLoginServiceMethodCommand>
     {
 
 
-        protected override State Action(ICommand comand)
+        protected override State<ContasLoginServiceMethodCommand> Action(ICommand comand)
         {
             try
             {
-                 State retorno = Success("OK", comand);
+                 State<ContasLoginServiceMethodCommand> retorno = Success("OK", (ContasLoginServiceMethodCommand)comand);
                  if (comand is Command.Commands.ContasLoginServiceMethodCommand specificCommand)
                  CustomActionHook(ref retorno, specificCommand);
                  return retorno;
             }
-            catch (ReceiverException e)
+            catch (ReceiverException<ContasLoginServiceMethodCommand> e)
             {
                 return e.State;
             }
             catch (Exception e)
             {
-                return Error(e, comand);
+                return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State state, Command.Commands.ContasLoginServiceMethodCommand comand);
+partial void CustomActionHook(ref State<ContasLoginServiceMethodCommand> state, Command.Commands.ContasLoginServiceMethodCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHub

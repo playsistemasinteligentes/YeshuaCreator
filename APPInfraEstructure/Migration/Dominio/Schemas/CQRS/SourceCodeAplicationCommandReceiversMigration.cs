@@ -13,6 +13,7 @@ namespace Dominio.Schemas.CQRS
         private readonly CommandType _commandType;
         private readonly string _nameSpace;
         private readonly string _column;
+        private readonly string _generiClass;
 
         public SourceCodeAplicationCommandReceiversMigration(Entity entity, CommandType commandType, string nameSpace, string column)
             : base()
@@ -54,7 +55,7 @@ namespace Dominio.Schemas.CQRS
             if (action == CommandType.Insert || action == CommandType.Update || action == CommandType.Delete)
             {
                 sb.AppendLine($"using Comandos.Pateners.Command;");
-                sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using Dominio.TiposPrimitivos;");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using System;");
@@ -67,7 +68,7 @@ namespace Dominio.Schemas.CQRS
                 // Adiciona o namespace e a classe
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase");
+                sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase <{_entity.EntityName}Entity>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
                 sb.AppendLine();
@@ -76,7 +77,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State Action(ICommand comand)");
+                sb.AppendLine($"        protected override State<{_entity.EntityName}Entity> Action(ICommand comand)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommands}.{_entity.EntityName}CrudCommand c) ");
@@ -92,12 +93,12 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("                 }");
                 sb.AppendLine("                 catch (Exception e)");
                 sb.AppendLine("                 {");
-                sb.AppendLine("                     return Error(e, comand);");
+                sb.AppendLine($"                    return Error(e, {_entity.EntityName.ToLower()});");
                 sb.AppendLine("                 }");
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", comand);");
+                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
@@ -107,14 +108,15 @@ namespace Dominio.Schemas.CQRS
             else if (action == CommandType.Read)
             {
                 sb.AppendLine("using Comandos.Pateners.Command;");
-                sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine("using Dominio.TiposPrimitivos;");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+                sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
                 sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<IEnumerable<{_entity.EntityName}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();
@@ -123,7 +125,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine("        protected override State Action(ICommand comand)");
+                sb.AppendLine($"        protected override State<IEnumerable<{_entity.EntityName}DTO>> Action(ICommand comand)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
                 sb.AppendLine("             {    ");
@@ -132,7 +134,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", comand);");
+                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
@@ -144,14 +146,15 @@ namespace Dominio.Schemas.CQRS
             {
 
                 sb.AppendLine("using Comandos.Pateners.Command;");
-                sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine("using Dominio.TiposPrimitivos;");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
+                sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<IEnumerable<{_entity.EntityName}{_column}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();
@@ -160,7 +163,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine("        protected override State Action(ICommand comand)");
+                sb.AppendLine($"        protected override State <IEnumerable<{_entity.EntityName}{_column}DTO>> Action(ICommand comand)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"            if(comand is Command.Patterns.Command.SearchFKCommand c) ");
@@ -170,7 +173,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", comand);");
+                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");

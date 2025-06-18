@@ -22,7 +22,7 @@ namespace Read.ConcreteRepository.GrupoServico
         }
 
         public IEnumerable<GrupoServicoDTO> getGrupoServico(object command)
-         {
+        {
             if (command is Command.Commands.Read.GrupoServicoReadCommand c)
             {
                 return getGrupoServico(c);
@@ -31,14 +31,11 @@ namespace Read.ConcreteRepository.GrupoServico
         }
         private IEnumerable<GrupoServicoDTO> getGrupoServico(Command.Commands.Read.GrupoServicoReadCommand command)
         {
-            List<GrupoServicoDTO> lista;
             var query = new GrupoServicoReadQuery().GrupoServicoQuery(command);
-
             using (_connection)
             {
-                lista = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return _connection.Query<GrupoServicoDTO>(query.Query, query.Parameters);
             }
-            return lista;
         }
 
         public GrupoServicoDTO getById()

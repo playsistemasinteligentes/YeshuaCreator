@@ -1,4 +1,5 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -16,7 +17,7 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
             sb.AppendLine("using Shered.DB;");
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;");

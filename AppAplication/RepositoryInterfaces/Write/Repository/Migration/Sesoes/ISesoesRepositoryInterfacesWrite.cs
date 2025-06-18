@@ -1,4 +1,4 @@
-using Dominio.Entitys.Sesoes;
+using Dominio.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;

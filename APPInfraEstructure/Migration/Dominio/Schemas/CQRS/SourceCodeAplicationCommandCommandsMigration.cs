@@ -1,4 +1,6 @@
 ﻿using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
+using System.Data.Common;
 using System.Text;
 using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
 
@@ -24,6 +26,8 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
             sb.AppendLine("using Comandos.Pateners.Command;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+
             sb.AppendLine("using Dominio.TiposPrimitivos;");
 
             // Adiciona a declaração do namespace
@@ -31,7 +35,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
             // Define a struct que são desde comandos de insert update delete como filtros para pesquisas ou conjuntos de dados para determinar a execução de metodos
-            sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommand");
+            if (_commandType == CommandType.Read)
+                sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommandRead");
+            else
+                sb.AppendLine($"    public struct {_entity.EntityName}{_commandType}{_column}Command : ICommand");
+
             sb.AppendLine("    {");
 
             // Adiciona as propriedades
@@ -60,6 +68,11 @@ namespace Dominio.Schemas.CQRS
 
                 }
             }
+
+
+            // paginação 
+            if (_commandType == CommandType.Read)
+                sb.AppendLine(" public Pagination Paginacao { get; set; }");
 
             // Fecha a classe
             sb.AppendLine("    }");

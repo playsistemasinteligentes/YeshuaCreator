@@ -13,7 +13,7 @@ using System.Transactions;
 
 namespace Command.Receivers.HubServiceMethod
 {
-    public partial class ContasCreateContaServiceMethodReceiver
+    public partial class ContasCreateContaServiceMethodReceiver<T>
     {
         private readonly IY_UserWriteRepository _repositoryUserWrite;
         private readonly IY_CompanyWriteRepository _repositoryCompanyWrite;
@@ -25,28 +25,28 @@ namespace Command.Receivers.HubServiceMethod
             _repositoryCompanyWrite = repositoryCompanyWrite;
             _unitOfWork = unitOfWork;
         }
-        partial void CustomActionHook(ref State state, Command.Commands.ContasCreateContaServiceMethodCommand comand)
-        {
-            try
-            {
-                _unitOfWork.BeginTran();
-                State userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });
-                var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;
+        //partial void CustomActionHook(ref State<T> state, Command.Commands.ContasCreateContaServiceMethodCommand comand)
+        //{
+        //    try
+        //    {
+        //        _unitOfWork.BeginTran();
+        //        State<T> userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });
+        //        var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;
 
-                Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };
-                new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);
+        //        Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };
+        //        new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);
 
-                _unitOfWork.Commit();
-            }
-            catch (ReceiverException rex)
-            {
-                _unitOfWork.Rollback();
-                state = rex.State;
-            }
-            catch (Exception e)
-            {
-                Error(e, comand);
-            }
-        }
+        //        _unitOfWork.Commit();
+        //    }
+        //    catch (ReceiverException rex)
+        //    {
+        //        _unitOfWork.Rollback();
+        //        state = rex.State;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Error(e, comand);
+        //    }
+        //}
     }
 }

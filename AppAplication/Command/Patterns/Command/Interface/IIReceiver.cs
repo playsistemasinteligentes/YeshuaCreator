@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Comandos.Pateners.Command
 {
-    public interface IReceiver<in C, out S>
+    public interface IReceiver<C, T>
         where C : ICommand
-        where S : State
     {
-        //S Action(C comand);
+        State<T> Execute(C command);
     }
+
 }

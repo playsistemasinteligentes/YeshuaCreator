@@ -53,6 +53,20 @@
                 <h2 class="text-xl font-bold mb-2">Resultados</h2>
                 <div id="table-container"></div> <!-- É aqui que sua função insere -->
             </div>
+            <div id="pagination-controls" class="mt-4 flex justify-between items-center">
+                <button id="btn-next-page" class="text-blue-600 hover:underline">Próxima Página</button>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <!-- Checkbox: à esquerda -->
+                <label class="inline-flex items-center space-x-2">
+                    <input type="checkbox" id="chkCountTotal" class="form-checkbox h-4 w-4 text-blue-600" />
+                    <span class="text-sm text-gray-700">Contar total de registros</span>
+                </label>
+
+                <!-- Controles de paginação: à direita -->
+                <div id="pagination-controls" class="flex items-center space-x-4 text-sm text-gray-700"></div>
+            </div>
 
         </div>
     </div>

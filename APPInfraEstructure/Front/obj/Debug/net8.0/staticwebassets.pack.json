@@ -105,16 +105,36 @@
       "PackagePath": "staticwebassets\\spa\\index.html"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\alerts.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\alerts.js"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crud.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\crud.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crudEnumerator.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\crudEnumerator.js"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crudState.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\crudState.js"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\enumerators",
+      "PackagePath": "staticwebassets\\spa\\scripts"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\enumerators.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\enumerators.js"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\main.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\main.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\menssagensConfirm.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\menssagensConfirm.js"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\menu.js",

@@ -1,4 +1,4 @@
-using Dominio.Entitys.Y_UserPermitions;
+using Dominio.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;

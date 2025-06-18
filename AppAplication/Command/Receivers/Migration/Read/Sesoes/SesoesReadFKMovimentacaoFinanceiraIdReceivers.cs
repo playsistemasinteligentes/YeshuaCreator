@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Sesoes;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Sesoes;
 using RepositoryInterfaces.Read.Repository.Sesoes;
+using Repositorio.Outputs.DTOs.Sesoes;
 
 namespace Command.Receivers.Read
 {
-    public class SesoesReadFKMovimentacaoFinanceiraIdReceiver : ReciverBase
+    public class SesoesReadFKMovimentacaoFinanceiraIdReceiver : ReciverBase<IEnumerable<SesoesMovimentacaoFinanceiraIdDTO>>
     {
         private readonly ISesoesReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State <IEnumerable<SesoesMovimentacaoFinanceiraIdDTO>> Action(ICommand comand)
         {
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

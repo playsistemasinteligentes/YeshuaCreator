@@ -1,12 +1,15 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.GrupoServico;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.GrupoServico;
+using Repositorio.Outputs.DTOs.GrupoServico;
 using RepositoryInterfaces.Read.Repository.GrupoServico;
+
+using RepositoryInterfaces.Patterns.Repository;
 
 namespace Command.Receivers.Read
 {
-    public class GrupoServicoReadReceiver : ReciverBase
+    public class GrupoServicoReadReceiver : ReciverBase<DataPagination<GrupoServicoDTO>>
     {
         private readonly IGrupoServicoReadRepository _repository;
 
@@ -15,16 +18,22 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<DataPagination<GrupoServicoDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Commands.Read.GrupoServicoReadCommand c) 
-             {    
-                var GrupoServicoReadRepository = _repository.getGrupoServico(c);
-                return Success("OK", GrupoServicoReadRepository);
-            }
-            else 
+            if (comand is Command.Commands.Read.GrupoServicoReadCommand c)
             {
-                 return Error("ErroConversao", comand);
+                var GrupoServicoReadRepository = _repository.getGrupoServico(c);
+                var paginacao = new DataPagination<GrupoServicoDTO>(
+           items: GrupoServicoReadRepository,
+           page: 1,
+           pageSize: 3,
+           totalItems: 4
+       );
+                return Success("OK", paginacao);
+            }
+            else
+            {
+                return Error("ErroConversao", default);
             }
         }
     }

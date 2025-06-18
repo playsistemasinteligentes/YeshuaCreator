@@ -48,6 +48,7 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
             sb.AppendLine($"using Comandos.Pateners.Command;");
+            sb.AppendLine($"using Command.Commands;");
             sb.AppendLine($"using Dominio.TiposPrimitivos;");
             sb.AppendLine($"using System;");
             sb.AppendLine($"using System.Collections.Generic;");
@@ -59,7 +60,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase");
+            sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase<{_classeCommand}>");
             sb.AppendLine("    {");
             sb.AppendLine();
             //sb.AppendLine($"        private readonly object _menssage;");
@@ -69,7 +70,7 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("            _menssage = menssage;");
             //sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        protected override State Action(ICommand comand)");
+            sb.AppendLine($"        protected override State<{_classeCommand}> Action(ICommand comand)");
             sb.AppendLine("        {");
             sb.AppendLine("            try");
             sb.AppendLine("            {");
@@ -78,7 +79,7 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("                 Agent = getAgent(comand);    ");
             //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
-            sb.AppendLine("                 State retorno = Success(\"OK\", comand);");
+            sb.AppendLine($"                 State<{_classeCommand}> retorno = Success(\"OK\", ({_classeCommand})comand);");
 
             sb.AppendLine($"                 if (comand is {_nameSpaceCommand}.{_classeCommand} specificCommand)");
 
@@ -87,10 +88,10 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("            }");
 
-            CQRSParam.I.AddExeptionReceiver(sb);
+            CQRSParam.I.AddExeptionReceiver(sb, $"{_classeCommand}");
 
             sb.AppendLine("        }");
-            sb.AppendLine($"partial void CustomActionHook(ref State state, {_nameSpaceCommand}.{_classeCommand} comand);");
+            sb.AppendLine($"partial void CustomActionHook(ref State<{_classeCommand}> state, {_nameSpaceCommand}.{_classeCommand} comand);");
             sb.AppendLine("}");
             //foreach (var menu in _agent.Menus)
             //{

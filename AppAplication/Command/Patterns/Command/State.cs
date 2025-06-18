@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace Comandos.Pateners.Command
 {
-    public class State
+    public class State<T>
     {
-        public State(int statusCode, List<string> menssages, object data, bool propagation = true)
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+        public List<string> MessageList { get; set; }
+        public T Data { get; set; }
+        public State(int statusCode, List<string> menssages, T data, bool propagation = true)
         {
             StatusCode = statusCode;
             MessageList = menssages;
@@ -19,7 +23,7 @@ namespace Comandos.Pateners.Command
                 EnsureSuccess();
         }
 
-        public State(int statusCode, string statusMessage, object data, bool propagation = true)
+        public State(int statusCode, string statusMessage, T data, bool propagation = true)
         {
             StatusCode = statusCode;
             Message = statusMessage;
@@ -28,7 +32,7 @@ namespace Comandos.Pateners.Command
                 EnsureSuccess();
         }
 
-        public State(int statusCode, Exception e, object data, bool propagation = true)
+        public State(int statusCode, Exception e, T data, bool propagation = true)
         {
             StatusCode = statusCode;
             bool debug = true;
@@ -41,11 +45,7 @@ namespace Comandos.Pateners.Command
         private void EnsureSuccess()
         {
             if ((int)StatusCode >= 400)
-                throw new ReceiverException(this);
+                throw new ReceiverException<T>(this);
         }
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
-        public List<string> MessageList { get; set; }
-        public object Data { get; set; }
     }
 }

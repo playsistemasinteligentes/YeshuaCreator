@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Servico;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Servico;
 using RepositoryInterfaces.Read.Repository.Servico;
+using Repositorio.Outputs.DTOs.Servico;
 
 namespace Command.Receivers.Read
 {
-    public class ServicoReadFKGrupoServicoIdReceiver : ReciverBase
+    public class ServicoReadFKGrupoServicoIdReceiver : ReciverBase<IEnumerable<ServicoGrupoServicoIdDTO>>
     {
         private readonly IServicoReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State <IEnumerable<ServicoGrupoServicoIdDTO>> Action(ICommand comand)
         {
             if(comand is Command.Patterns.Command.SearchFKCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }

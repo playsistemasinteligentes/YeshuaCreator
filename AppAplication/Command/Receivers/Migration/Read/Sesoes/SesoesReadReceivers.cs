@@ -1,12 +1,13 @@
 using Comandos.Pateners.Command;
-using Dominio.Entitys.Sesoes;
+using Dominio.Entitys;
 using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Sesoes;
+using Repositorio.Outputs.DTOs.Sesoes;
 using RepositoryInterfaces.Read.Repository.Sesoes;
 
 namespace Command.Receivers.Read
 {
-    public class SesoesReadReceiver : ReciverBase
+    public class SesoesReadReceiver : ReciverBase<IEnumerable<SesoesDTO>>
     {
         private readonly ISesoesReadRepository _repository;
 
@@ -15,7 +16,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State Action(ICommand comand)
+        protected override State<IEnumerable<SesoesDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.SesoesReadCommand c) 
              {    
@@ -24,7 +25,7 @@ namespace Command.Receivers.Read
             }
             else 
             {
-                 return Error("ErroConversao", comand);
+                 return Error("ErroConversao", default);
             }
         }
     }
