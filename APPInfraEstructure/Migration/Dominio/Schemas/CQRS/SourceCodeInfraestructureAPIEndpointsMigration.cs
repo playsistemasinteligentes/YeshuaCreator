@@ -175,8 +175,13 @@ namespace Dominio.Schemas.CQRS
                 foreach (var item in entidade.AddColumns)
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
+                    string endPontGetMetadata = string.Empty;
                     if (item.IsFK)
+                    {
+                        endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
                         fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                    }
+
 
                     StringBuilder sbEnum = new StringBuilder();
                     if (item.Enum != null && item.Enum.Count() > 0)
@@ -192,7 +197,7 @@ namespace Dominio.Schemas.CQRS
                         sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
                     }
 
-                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", isFk = {item.IsFK.ToString().ToLower()} , {fksDisplay}, {sbEnum.ToString()} }},");
+                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", isFk = {item.IsFK.ToString().ToLower()} ,endPontGetMetadata=\"{endPontGetMetadata}\", {fksDisplay}, {sbEnum.ToString()} }},");
                 }
                 sb.AppendLine("},");
 
@@ -201,8 +206,12 @@ namespace Dominio.Schemas.CQRS
                 foreach (var item in entidade.AddColumns)
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
+                    string endPontGetMetadata = string.Empty;
                     if (item.IsFK)
+                    {
+                        endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
                         fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name.ToLower()}\""))} }}";
+                    }
 
                     StringBuilder sbEnum = new StringBuilder();
                     if (item.Enum != null && item.Enum.Count() > 0)
@@ -218,7 +227,7 @@ namespace Dominio.Schemas.CQRS
                         sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
                     }
 
-                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()}, {fksDisplay}, {sbEnum.ToString()}  }},");
+                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()},endPontGetMetadata=\"{endPontGetMetadata}\", {fksDisplay}, {sbEnum.ToString()}  }},");
                 }
                 sb.AppendLine("},");
 

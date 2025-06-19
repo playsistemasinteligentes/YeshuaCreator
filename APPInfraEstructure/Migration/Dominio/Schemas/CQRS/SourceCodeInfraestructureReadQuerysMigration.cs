@@ -64,8 +64,16 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("            if (whereClauses.Any()) ");
             sb.AppendLine("            this.Query += \" WHERE \" + string.Join(\" AND \", whereClauses); ");
-            sb.AppendLine($"            this.Parameters = parameters;");
 
+            // Paginação
+            sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
+            sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
+            sb.AppendLine("            int offset = (page - 1) * pageSize;");
+            sb.AppendLine("            parametersDict[\"Offset\"] = offset;");
+            sb.AppendLine("            parametersDict[\"PageSize\"] = pageSize;");
+            sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
+
+            sb.AppendLine($"            this.Parameters = parameters;");
             sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
             sb.AppendLine("        }");
 

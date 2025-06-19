@@ -2,6 +2,7 @@
 import { Actions } from './crudEnumerator.js';
 import { showAlert } from './alerts.js';
 import { showConfirm } from './menssagensConfirm.js';
+import { showFkModal, hideFkModal } from './components/fk-modal.js';
 
 export function buildCrud() {
 
@@ -20,6 +21,9 @@ export function buildCrud() {
     // Botões CRUD
     document.getElementById('btn-search')?.addEventListener('click', () => {
         crudSearch();
+        if (areaPesquisa.classList.contains('hidden')) {
+            areaPesquisa.classList.remove('hidden');
+        }
     });
 
     document.getElementById('btn-save')?.addEventListener('click', () => {
@@ -34,33 +38,34 @@ export function buildCrud() {
         crudState.pagination.PageWhithCount = e.target.checked;
     });
 }
-function togglePaginationControls() {
-    const container = document.getElementById('pagination-controls');
-    container.innerHTML = ''; // Limpa controles anteriores
+function togglePaginationControls(metadata = crudState.metadata, modoFk = false) {
+    const container = modoFk
+        ? document.getElementById('pagination-controls-fk')
+        : document.getElementById('pagination-controls');
+
+
+    container.innerHTML = '';
 
     const { page, hasNext, total, PageWhithCount } = crudState.pagination;
 
-    // 👉 Botão Anterior
     const btnPrev = document.createElement('button');
     btnPrev.textContent = '⬅ Anterior';
     btnPrev.className = 'px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50';
     btnPrev.disabled = page <= 1;
     btnPrev.onclick = () => {
         crudState.pagination.page--;
-        fetchSearchResults();
+        fetchSearchResults(metadata, modoFk);
     };
 
-    // 👉 Botão Próximo
     const btnNext = document.createElement('button');
     btnNext.textContent = 'Próximo ➡';
     btnNext.className = 'px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50';
     btnNext.disabled = !hasNext;
     btnNext.onclick = () => {
         crudState.pagination.page++;
-        fetchSearchResults();
+        fetchSearchResults(metadata, modoFk);
     };
 
-    // 👉 Info de Página / Total
     const info = document.createElement('span');
     info.className = 'mx-4 text-sm';
     if (PageWhithCount && total !== undefined) {
@@ -71,7 +76,6 @@ function togglePaginationControls() {
         info.textContent = `Página ${page}`;
     }
 
-    // Adiciona ao container
     container.appendChild(btnPrev);
     container.appendChild(info);
     container.appendChild(btnNext);
@@ -93,7 +97,7 @@ export async function loadDataCrud(fullUrl, type) {
         if (response.ok) {
             crudState.metadata = await response.json();
             crudState.fullUrl = fullUrl;
-            renderSearch();
+            renderSearch(crudState.metadata);
             renderFormCrud();
         } else {
             crudContainer.innerHTML = `<p>Erro ao carregar os dados.</p>`;
@@ -106,16 +110,19 @@ function setStateCreate() {
     crudState.currentAction = Actions.CREATE;
     renderFormCrud();
 }
-function crudSearch() {
-    fetchSearchResults();
+function crudSearch(metadata = crudState.metadata, modoFk = false) {
+    resetPagination();
+    fetchSearchResults(metadata, modoFk);
+}
+function resetPagination() {
+    crudState.pagination.page = 1;
 }
 
-async function fetchSearchResults() {
+async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
     const token = localStorage.getItem('token');
 
-    // Coleta os filtros preenchidos
     const searchFilters = {};
-    crudState.metadata.formFields.forEach(field => {
+    metadata.formFields.forEach(field => {
         const input = document.getElementById(`search-${field.id}`);
         if (!input || input.value === '') return;
 
@@ -140,7 +147,7 @@ async function fetchSearchResults() {
     };
 
     try {
-        const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.read}`, {
+        const response = await fetch(`${environments.urlApi}${metadata.endpoints.read}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -149,35 +156,39 @@ async function fetchSearchResults() {
             body: JSON.stringify(payload)
         });
 
-        //aqui mudar o result tem que ter data   mas tambem metadados pra pelo menos saber o total de registros
         const responseJson = await response.json();
 
         if (response.ok) {
-            //// 🔄 Verifica se ainda há próxima página com base no tamanho do array
-            //crudState.pagination.hasNext = Array.isArray(results) && results.length === crudState.pagination.pageSize;
+            const paginatedData = responseJson.data || {};
+            const items = paginatedData.items || [];
 
-            //// Se for modo com contagem total e o back tiver retornado total (caso raro)
-            //if (crudState.pagination.PageWhithCount && results.total !== undefined) {
-            //    crudState.pagination.total = results.total;
-            //}
+            crudState.pagination.page = paginatedData.page || 1;
+            crudState.pagination.pageSize = paginatedData.pageSize || 20;
+            crudState.pagination.total = paginatedData.totalItems || 0;
+            crudState.pagination.hasNext = paginatedData.totalItems
+                ? (paginatedData.page * paginatedData.pageSize < paginatedData.totalItems)
+                : (items.length === crudState.pagination.pageSize);
 
-            // Passa apenas os resultados
-            renderTableSearch(responseJson.data.items || []);
-            togglePaginationControls(); // (criado anteriormente para exibir os botões)
+            renderTableSearch(items, modoFk, metadata);
+            togglePaginationControls(metadata, modoFk);
+
         } else {
-            showAlert(responseJson.data.message || "Erro na pesquisa", 'error');
+            showAlert(responseJson.data?.message || "Erro na pesquisa", 'error');
         }
-
     } catch (error) {
         erroRequestResponse(error);
     }
 }
 
-function renderSearch() {
-    const formGroup = document.getElementById('filtros-simples');
+function renderSearch(metadata, modoFk = false) {
+
+    const formGroup = modoFk
+        ? document.getElementById('modal-conteudo-fk')
+        : document.getElementById('filtros-simples');
+
     formGroup.innerHTML = '';
 
-    crudState.metadata.searchFields.forEach(field => {
+    metadata.searchFields.forEach(field => {
         const wrapper = document.createElement('div');
         wrapper.className = 'flex flex-col';
 
@@ -233,6 +244,11 @@ function renderSearch() {
         if (field.isFk) {
             input.dataset.description = '';
             input.dataset.id = '';
+            input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+
+            input.type = "text";
+            input.step = "";
+
 
             const inputGroup = document.createElement('div');
             inputGroup.className = 'flex space-x-2';
@@ -242,7 +258,7 @@ function renderSearch() {
             input.addEventListener("keypress", function (event) {
                 if (event.key === "Enter") {
                     event.preventDefault();
-                    buscarRegistro("search", field.id, input.value);
+                    buildSearchFK("search", field.id, input.value);
                 }
             });
 
@@ -250,7 +266,7 @@ function renderSearch() {
             button.type = 'button';
             button.innerHTML = '🔍';
             button.className = 'px-2 py-1 bg-gray-200 rounded hover:bg-gray-300';
-            button.onclick = () => buscarRegistro("search", field.id, input.value);
+            button.onclick = () => buildSearchFK("search", field.id, input.value);
 
             inputGroup.appendChild(input);
             inputGroup.appendChild(button);
@@ -261,10 +277,27 @@ function renderSearch() {
 
         formGroup.appendChild(wrapper);
     });
+    if (modoFk) {
+        // Adiciona botão de pesquisar dentro do modal
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'mt-4 flex justify-end';
+
+        const btnPesquisar = document.createElement('button');
+        btnPesquisar.textContent = 'Pesquisar';
+        btnPesquisar.className = 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600';
+        btnPesquisar.onclick = () => crudSearch(metadata, true);
+
+        btnContainer.appendChild(btnPesquisar);
+        formGroup.appendChild(btnContainer);
+    }
 }
 
-function renderTableSearch(data) {
-    const container = document.getElementById('table-container');
+function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) {
+
+    const container = modoFk
+        ? document.getElementById('modal-tabela-fk')
+        : document.getElementById('table-container');
+
     container.innerHTML = '';
 
     // --- DESKTOP TABLE ---
@@ -278,7 +311,7 @@ function renderTableSearch(data) {
     const headerRow = document.createElement('tr');
     headerRow.className = 'bg-gray-100';
 
-    crudState.metadata.formFields.forEach(field => {
+    metadata.formFields.forEach(field => {
         const th = document.createElement('th');
         th.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
         th.textContent = field.label;
@@ -297,7 +330,7 @@ function renderTableSearch(data) {
     if (data.length === 0) {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = crudState.metadata.formFields.length + 1;
+        cell.colSpan = metadata.formFields.length + 1;
         cell.className = 'px-4 py-2 border text-center text-gray-500';
         cell.textContent = "Nenhum dado encontrado";
         row.appendChild(cell);
@@ -307,7 +340,7 @@ function renderTableSearch(data) {
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
 
-            crudState.metadata.formFields.forEach(field => {
+            metadata.formFields.forEach(field => {
                 const cell = document.createElement('td');
                 cell.className = 'px-4 py-2 border text-sm text-gray-800';
                 cell.textContent = item[field.id.toLowerCase()] || '';
@@ -327,8 +360,22 @@ function renderTableSearch(data) {
             deleteBtn.className = 'text-red-600 hover:underline';
             deleteBtn.onclick = () => deleteRecord(item);
 
-            actionsCell.appendChild(editBtn);
-            actionsCell.appendChild(deleteBtn);
+            if (modoFk) {
+                const selectBtn = document.createElement('button');
+                selectBtn.textContent = 'Selecionar';
+                selectBtn.className = 'text-green-600 hover:underline';
+                selectBtn.onclick = () => {
+                    const campo = crudState.fkContext.campoDestino;
+                    const input = document.getElementById(`${campo}`);
+                    input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
+                    input.dataset.id = item.id;
+                    hideFkModal();
+                };
+                actionsCell.appendChild(selectBtn);
+            } else {
+                actionsCell.appendChild(editBtn);
+                actionsCell.appendChild(deleteBtn);
+            }
 
             row.appendChild(actionsCell);
             tbody.appendChild(row);
@@ -353,7 +400,7 @@ function renderTableSearch(data) {
             const card = document.createElement('div');
             card.className = 'bg-white border rounded p-4 shadow';
 
-            crudState.metadata.formFields.forEach(field => {
+            metadata.formFields.forEach(field => {
                 const fieldValue = item[field.id.toLowerCase()] || '';
                 const p = document.createElement('p');
                 p.innerHTML = `<strong>${field.label}:</strong> ${fieldValue}`;
@@ -373,8 +420,22 @@ function renderTableSearch(data) {
             deleteBtn.className = 'text-red-600 hover:underline';
             deleteBtn.onclick = () => deleteRecord(item);
 
-            actions.appendChild(editBtn);
-            actions.appendChild(deleteBtn);
+            if (modoFk) {
+                const selectBtn = document.createElement('button');
+                selectBtn.textContent = 'Selecionar';
+                selectBtn.className = 'text-green-600 hover:underline';
+                selectBtn.onclick = () => {
+                    const campo = crudState.fkContext.campoDestino;
+                    const input = document.getElementById(`${campo}`);
+                    input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
+                    input.dataset.id = item.id;
+                    hideFkModal();
+                };
+                actions.appendChild(selectBtn);
+            } else {
+                actions.appendChild(editBtn);
+                actions.appendChild(deleteBtn);
+            }
             card.appendChild(actions);
 
             cardWrapper.appendChild(card);
@@ -383,14 +444,12 @@ function renderTableSearch(data) {
 
     container.appendChild(cardWrapper);
     container.style.display = 'block';
+
 }
 
 function renderFormCrud() {
     const formGroup = document.getElementById('form-group');
     formGroup.innerHTML = '';
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
 
     crudState.metadata.formFields.forEach(field => {
         const wrapper = document.createElement('div');
@@ -449,11 +508,14 @@ function renderFormCrud() {
             if (field.isFk) {
                 input.dataset.description = '';
                 input.dataset.id = '';
+                input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+                input.type = "text";
+                input.step = "";
 
                 input.addEventListener('keypress', function (event) {
                     if (event.key === 'Enter') {
                         event.preventDefault();
-                        buscarRegistro('insert', field.id, input.value);
+                        buildSearchFK('insert', field.id, input.value);
                     }
                 });
 
@@ -464,7 +526,7 @@ function renderFormCrud() {
                 button.type = 'button';
                 button.innerHTML = '🔍';
                 button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
-                button.onclick = () => buscarRegistro('insert', field.id, input.value);
+                button.onclick = () => buildSearchFK('insert', field.id, input.value);
 
                 fkWrapper.appendChild(input);
                 fkWrapper.appendChild(button);
@@ -476,11 +538,49 @@ function renderFormCrud() {
                 wrapper.appendChild(input);
             }
         }
-
-        gridContainer.appendChild(wrapper);
+        formGroup.appendChild(wrapper);
     });
 
     formGroup.appendChild(gridContainer);
+}
+
+async function buildSearchFK(tipo, campoId, valor) {
+    // tipo = "search" ou "insert"
+    const inputId = `${tipo}-${campoId}`;
+    const input = document.getElementById(inputId);
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${environments.urlApi}${input.dataset.endPontGetMetadata}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const metadata = await response.json();
+            if (!metadata) {
+                showAlert('Não foi possível carregar os dados da pesquisa.', 'error');
+                return;
+            }
+            openSearchFK(metadata, inputId);
+
+        } else {
+            showAlert('Erro ao carregar os dados.', 'error');
+        }
+    } catch (error) {
+        erroRequestResponse(error);
+    }
+}
+function openSearchFK(metadataFk, campoDestino) {
+    const container = document.getElementById('modal-conteudo-fk');
+    showFkModal();
+
+    crudState.fkContext = {
+        metadata: metadataFk,
+        campoDestino: campoDestino
+    };
+
+    renderSearch(metadataFk, true); // true = modo FK
+    crudSearch(metadataFk, true);
 }
 
 async function crudCreateOrUpdate() {
@@ -527,7 +627,12 @@ async function crudCreate() {
             showAlert('Registro inserido com sucesso!', 'success');
         } else {
             const responseJson = await response.json();
-            showAlert(data.message, 'error');//data.messageList
+
+            if (responseJson.messageList && Array.isArray(responseJson.messageList)) {
+                responseJson.messageList.forEach(msg => {
+                    showAlert(msg, 'error');
+                });
+            }
         }
     } catch (error) {
         erroRequestResponse(error);

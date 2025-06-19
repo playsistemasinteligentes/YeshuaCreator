@@ -28,6 +28,12 @@ if (Command.TipoMovimentacao.HasValue) parametersDict["TipoMovimentacao"] = Comm
 if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @TipoMovimentacao");
             if (whereClauses.Any()) 
             this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }

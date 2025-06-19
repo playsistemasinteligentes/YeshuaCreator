@@ -4,7 +4,7 @@
     currentAction: null,
     pagination: {
         page: 1,
-        pageSize: 2,
+        pageSize: 5,
         hasNext: false,
         results: [],
         PageWhithCount: false

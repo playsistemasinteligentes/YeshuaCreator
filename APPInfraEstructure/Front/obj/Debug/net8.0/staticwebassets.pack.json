@@ -89,6 +89,10 @@
       "PackagePath": "staticwebassets\\site.jsx"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\fk-modal.html",
+      "PackagePath": "staticwebassets\\spa\\components\\fk-modal.html"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\enum\\enumerators",
       "PackagePath": "staticwebassets\\spa\\enum"
     },
@@ -107,6 +111,10 @@
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\alerts.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\alerts.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\components\\fk-modal.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\components\\fk-modal.js"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crud.js",
