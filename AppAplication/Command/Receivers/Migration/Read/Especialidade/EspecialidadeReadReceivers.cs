@@ -1,13 +1,14 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Especialidade;
 using Repositorio.Outputs.DTOs.Especialidade;
 using RepositoryInterfaces.Read.Repository.Especialidade;
 
 namespace Command.Receivers.Read
 {
-    public class EspecialidadeReadReceiver : ReciverBase<IEnumerable<EspecialidadeDTO>>
+    public class EspecialidadeReadReceiver : ReciverBase<DataPagination<EspecialidadeDTO>>
     {
         private readonly IEspecialidadeReadRepository _repository;
 
@@ -16,7 +17,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State<IEnumerable<EspecialidadeDTO>> Action(ICommand comand)
+        protected override State<DataPagination<EspecialidadeDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.EspecialidadeReadCommand c) 
              {    

@@ -23,7 +23,7 @@ namespace Dominio.Schemas.CQRS
         {
             _hub = hub;
             _commandType = CommandType.Hub;
-            _nameSpace = "namespace Comandos.Commands";
+            _nameSpace = CQRSParam.I.NameSpaceCommands;
         }
         public SourceCodeAplicationCommandCommandsHub(Method method)
                     : base()
@@ -40,8 +40,9 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("using Comandos.Pateners.Command;");
-            sb.AppendLine("using Dominio.TiposPrimitivos;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+
 
             // Adiciona a declaração do namespace
             sb.AppendLine($"namespace {_nameSpace}");

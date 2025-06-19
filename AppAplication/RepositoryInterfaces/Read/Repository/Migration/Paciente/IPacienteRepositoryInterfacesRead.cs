@@ -1,4 +1,6 @@
 using Repositorio.Outputs.DTOs.Paciente;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace RepositoryInterfaces.Read.Repository.Paciente
 {
     public interface IPacienteReadRepository
     {
-        public IEnumerable<PacienteDTO> getPaciente(object command);
+        public DataPagination<PacienteDTO> getPaciente(ICommandRead command);
         public PacienteDTO getById();
     }
 }

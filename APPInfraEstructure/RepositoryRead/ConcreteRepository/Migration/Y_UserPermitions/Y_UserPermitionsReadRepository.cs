@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Y_UserPermitions;
 using Repositorio.Outputs.DTOs.Y_UserPermitions;
 using RepositoryInterfaces.Read.Repository.Y_UserPermitions;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Y_UserPermitions
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<Y_UserPermitionsDTO> getY_UserPermitions(object command)
+        public DataPagination<Y_UserPermitionsDTO> getY_UserPermitions(ICommandRead command)
          {
             if (command is Command.Commands.Read.Y_UserPermitionsReadCommand c)
-            {
                 return getY_UserPermitions(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<Y_UserPermitionsDTO> getY_UserPermitions(Command.Commands.Read.Y_UserPermitionsReadCommand command)
+        private DataPagination<Y_UserPermitionsDTO> getY_UserPermitions(Command.Commands.Read.Y_UserPermitionsReadCommand command)
         {
-            List<Y_UserPermitionsDTO> lista;
             var query = new Y_UserPermitionsReadQuery().Y_UserPermitionsQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<Y_UserPermitionsDTO>(query.Query,query.Parameters) as List<Y_UserPermitionsDTO>;
+                var itens = _connection.Query<Y_UserPermitionsDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_UserPermitionsDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<Y_UserPermitionsUserIdDTO> getY_UserPermitionsReadFKUserId(Command.Patterns.Command.SearchFKCommand command)

@@ -1,7 +1,5 @@
-using Comandos.Pateners.Command;
 using Command.Patterns.Command;
-using Dominio.TiposPrimitivos;
-using RepositoryInterfaces.Patterns.Repository;
+using RepositoryInterfaces.Patterns.Command;
 namespace Command.Commands.Read
 {
     public struct ClinicaReadCommand : ICommandRead

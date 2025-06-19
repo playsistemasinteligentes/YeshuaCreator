@@ -1,8 +1,6 @@
-﻿using RepositoryInterfaces.Patterns.UnitOfWork;
-using System;
-using System.Collections.Generic;
+﻿using RepositoryInterfaces.Patterns.Command;
 
-namespace Comandos.Pateners.Command
+namespace Command.Patterns.Command
 {
     public abstract class ReciverBase<T> : IReceiver<ICommand, T>
     {

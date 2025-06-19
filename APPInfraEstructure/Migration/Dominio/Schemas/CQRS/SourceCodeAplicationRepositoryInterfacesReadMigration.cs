@@ -21,6 +21,9 @@ namespace Dominio.Schemas.CQRS
 
             // Adiciona os usings
             sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
+
             sb.AppendLine($"using System;");
             sb.AppendLine($"using System.Collections.Generic;");
             sb.AppendLine($"using System.Linq;");
@@ -36,7 +39,7 @@ namespace Dominio.Schemas.CQRS
 
             //--trocar ICommand comando por um DTO apenas pra não gerar dependencia do Repositorio para o command
 
-            sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> get{_entity.EntityName}(object command);");
+            sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command);");
             sb.AppendLine($"        public {_entity.EntityName}DTO getById();");
 
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK))

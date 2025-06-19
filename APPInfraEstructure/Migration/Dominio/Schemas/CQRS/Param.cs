@@ -14,6 +14,7 @@ namespace Migration.Dominio.Schemas.CQRS
 
         public string NameSpaceCommandsRead { get; set; } = "Command.Commands.Read";
         public string NameSpaceCommands { get; internal set; } = "Command.Commands";
+        public string NameSpaceCommandsPatterns { get; internal set; } = "Command.Patterns.Command";
         public string NameSpaceCommandCommandsHubServiceMethod { get; set; } = "Command.Commands";
         public string NameSpaceCommandReceiversHub { get; set; } = "Command.Receivers";
         public string NameSpaceCommandReceiversHubServiceMethod { get; set; } = "Command.Receivers.HubServiceMethod";
@@ -22,6 +23,9 @@ namespace Migration.Dominio.Schemas.CQRS
         public List<string> ColumnsDescriptions { get; set; } = new List<string> { "nome", "descricao" };
         public object NameSpaceEntitys { get; set; } = "Dominio.Entitys";
         public object NameSpaceCommandsPartners { get; set; } = "Command.Patterns.Command";
+        public object NameSpaceInterfaceCommandsPartners { get; set; } = "RepositoryInterfaces.Patterns.Command";
+        public object NameSpaceInterfaceRepositoryPartners { get; set; } = "RepositoryInterfaces.Patterns.Repository";
+
 
         public void AddExeptionReceiver(StringBuilder sb, string classe)
         {

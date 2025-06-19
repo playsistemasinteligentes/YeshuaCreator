@@ -1,13 +1,14 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Y_User;
 using Repositorio.Outputs.DTOs.Y_User;
 using RepositoryInterfaces.Read.Repository.Y_User;
 
 namespace Command.Receivers.Read
 {
-    public class Y_UserReadReceiver : ReciverBase<IEnumerable<Y_UserDTO>>
+    public class Y_UserReadReceiver : ReciverBase<DataPagination<Y_UserDTO>>
     {
         private readonly IY_UserReadRepository _repository;
 
@@ -16,7 +17,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State<IEnumerable<Y_UserDTO>> Action(ICommand comand)
+        protected override State<DataPagination<Y_UserDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.Y_UserReadCommand c) 
              {    

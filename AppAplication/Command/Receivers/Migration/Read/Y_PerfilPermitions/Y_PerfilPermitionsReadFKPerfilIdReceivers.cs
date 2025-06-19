@@ -1,6 +1,6 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Y_PerfilPermitions;
 using RepositoryInterfaces.Read.Repository.Y_PerfilPermitions;
 using Repositorio.Outputs.DTOs.Y_PerfilPermitions;
@@ -18,7 +18,7 @@ namespace Command.Receivers.Read
 
         protected override State <IEnumerable<Y_PerfilPermitionsPerfilIdDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Patterns.Command.SearchFKCommand c) 
+            if(comand is SearchFKCommand c) 
              {    
                 var Y_PerfilPermitionsReadRepository = _repository.getY_PerfilPermitionsReadFKPerfilId(c);
                 return Success("OK", Y_PerfilPermitionsReadRepository);

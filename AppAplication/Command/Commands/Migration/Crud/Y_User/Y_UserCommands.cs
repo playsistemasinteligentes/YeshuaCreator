@@ -1,6 +1,5 @@
-using Comandos.Pateners.Command;
 using Command.Patterns.Command;
-using Dominio.TiposPrimitivos;
+using RepositoryInterfaces.Patterns.Command;
 namespace Command.Commands
 {
     public struct Y_UserCrudCommand : ICommand

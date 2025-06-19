@@ -23,10 +23,10 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
 
             // Adiciona os usings
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
-
-            sb.AppendLine($"using Comandos.Pateners.Command;");
-            sb.AppendLine($"using Dominio.TiposPrimitivos;");
             sb.AppendLine($"using System;");
             sb.AppendLine($"using System.Collections.Generic;");
             sb.AppendLine($"using System.Linq;");
@@ -111,7 +111,7 @@ namespace Dominio.Schemas.CQRS
         {
             StringBuilder sb = new StringBuilder();
             //// Adiciona os usings
-            //sb.AppendLine($"using Comandos.Pateners.Command;");
+            //sb.AppendLine($"");
             //sb.AppendLine($"using Dominio.TiposPrimitivos;");
             //sb.AppendLine($"using System;");
             //sb.AppendLine($"using System.Collections.Generic;");

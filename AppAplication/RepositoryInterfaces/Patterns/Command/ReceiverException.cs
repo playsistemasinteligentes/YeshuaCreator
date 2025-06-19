@@ -1,4 +1,4 @@
-﻿namespace Comandos.Pateners.Command
+﻿namespace RepositoryInterfaces.Patterns.Command
 {
     public class ReceiverException<T> : Exception
     {

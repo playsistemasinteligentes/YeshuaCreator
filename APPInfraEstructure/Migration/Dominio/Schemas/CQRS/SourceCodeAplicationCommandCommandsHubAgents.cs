@@ -4,6 +4,7 @@ using Migration.Dominio;
 using System.Collections.Generic;
 using static Dapper.SqlMapper;
 using System.Text;
+using Migration.Dominio.Schemas.CQRS;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -22,11 +23,11 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine("using Comandos.Pateners.Command;");
-            sb.AppendLine("using Dominio.TiposPrimitivos;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
             // Adiciona a declaração do namespace
-            sb.AppendLine("namespace Comandos.Commands");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceCommands}");
             sb.AppendLine("{");
 
             // Define a classe
@@ -44,11 +45,12 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine("using Comandos.Pateners.Command;");
-            sb.AppendLine("using Dominio.TiposPrimitivos;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
             // Adiciona a declaração do namespace
-            sb.AppendLine("namespace Comandos.Commands");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceCommands}");
+
             sb.AppendLine("{");
 
             // Define a classe

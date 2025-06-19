@@ -1,5 +1,5 @@
-using Comandos.Pateners.Command;
-using Dominio.TiposPrimitivos;
+using RepositoryInterfaces.Patterns.Command;
+using Command.Patterns.Command;
 namespace Command.Commands
 {
     public partial struct ContasLoginServiceMethodCommand : ICommand

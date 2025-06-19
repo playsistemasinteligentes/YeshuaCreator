@@ -25,10 +25,9 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("using Comandos.Pateners.Command;");
-            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
 
-            sb.AppendLine("using Dominio.TiposPrimitivos;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
             // Adiciona a declaração do namespace
             sb.AppendLine($"namespace {_nameSpace}");

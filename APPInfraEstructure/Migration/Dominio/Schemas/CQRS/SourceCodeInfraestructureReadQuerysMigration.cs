@@ -72,7 +72,7 @@ namespace Dominio.Schemas.CQRS
 
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
             {
-                sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query(Command.Patterns.Command.SearchFKCommand Command)");
+                sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand Command)");
                 sb.AppendLine("        {");
 
                 columnsString = string.Join(", ", column.EntityFK.AddColumns.Where(x => x.DisplayFK).Select(x => x.Name));

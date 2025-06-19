@@ -28,8 +28,9 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
-            sb.AppendLine("using Comandos.Commands;");
             sb.AppendLine("using Microsoft.AspNetCore.Mvc;");
             sb.AppendLine("using System.Security.Claims;");
             sb.AppendLine("namespace API.Migrations");
@@ -47,8 +48,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
                 //setResultHttp(sb, "result");
 
-                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
-                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($"}}).Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
                 sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
                 sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
@@ -64,8 +65,8 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
 
-                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
-                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($"}}).Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
                 sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
                 sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
@@ -81,8 +82,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
                 //setResultHttp(sb, "result");
 
-                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
-                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($"}}).Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
                 sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
                 sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");
@@ -126,8 +127,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
                 //setResultHttp(sb, "result");
 
-                sb.AppendLine($"}}).Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
-                sb.AppendLine($".Produces<Comandos.Pateners.Command.State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                sb.AppendLine($"}}).Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                sb.AppendLine($".Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
                 sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
                 sb.AppendLine($".RequireAuthorization();");
                 sb.AppendLine("");

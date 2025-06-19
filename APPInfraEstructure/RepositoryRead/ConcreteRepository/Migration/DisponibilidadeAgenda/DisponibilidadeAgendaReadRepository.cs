@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.DisponibilidadeAgenda;
 using Repositorio.Outputs.DTOs.DisponibilidadeAgenda;
 using RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(object command)
+        public DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(ICommandRead command)
          {
             if (command is Command.Commands.Read.DisponibilidadeAgendaReadCommand c)
-            {
                 return getDisponibilidadeAgenda(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(Command.Commands.Read.DisponibilidadeAgendaReadCommand command)
+        private DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(Command.Commands.Read.DisponibilidadeAgendaReadCommand command)
         {
-            List<DisponibilidadeAgendaDTO> lista;
             var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var itens = _connection.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters);
+                return new DataPagination<DisponibilidadeAgendaDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command)

@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Profissional;
 using Repositorio.Outputs.DTOs.Profissional;
 using RepositoryInterfaces.Read.Repository.Profissional;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Profissional
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ProfissionalDTO> getProfissional(object command)
+        public DataPagination<ProfissionalDTO> getProfissional(ICommandRead command)
          {
             if (command is Command.Commands.Read.ProfissionalReadCommand c)
-            {
                 return getProfissional(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<ProfissionalDTO> getProfissional(Command.Commands.Read.ProfissionalReadCommand command)
+        private DataPagination<ProfissionalDTO> getProfissional(Command.Commands.Read.ProfissionalReadCommand command)
         {
-            List<ProfissionalDTO> lista;
             var query = new ProfissionalReadQuery().ProfissionalQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var itens = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters);
+                return new DataPagination<ProfissionalDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(Command.Patterns.Command.SearchFKCommand command)

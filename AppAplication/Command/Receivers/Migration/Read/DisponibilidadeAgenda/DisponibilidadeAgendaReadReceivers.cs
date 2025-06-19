@@ -1,13 +1,14 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
 using Repositorio.Outputs.DTOs.DisponibilidadeAgenda;
 using RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda;
 
 namespace Command.Receivers.Read
 {
-    public class DisponibilidadeAgendaReadReceiver : ReciverBase<IEnumerable<DisponibilidadeAgendaDTO>>
+    public class DisponibilidadeAgendaReadReceiver : ReciverBase<DataPagination<DisponibilidadeAgendaDTO>>
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
 
@@ -16,7 +17,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State<IEnumerable<DisponibilidadeAgendaDTO>> Action(ICommand comand)
+        protected override State<DataPagination<DisponibilidadeAgendaDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.DisponibilidadeAgendaReadCommand c) 
              {    

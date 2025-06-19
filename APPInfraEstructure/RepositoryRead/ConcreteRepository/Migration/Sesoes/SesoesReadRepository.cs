@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Sesoes;
 using Repositorio.Outputs.DTOs.Sesoes;
 using RepositoryInterfaces.Read.Repository.Sesoes;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Sesoes
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<SesoesDTO> getSesoes(object command)
+        public DataPagination<SesoesDTO> getSesoes(ICommandRead command)
          {
             if (command is Command.Commands.Read.SesoesReadCommand c)
-            {
                 return getSesoes(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<SesoesDTO> getSesoes(Command.Commands.Read.SesoesReadCommand command)
+        private DataPagination<SesoesDTO> getSesoes(Command.Commands.Read.SesoesReadCommand command)
         {
-            List<SesoesDTO> lista;
             var query = new SesoesReadQuery().SesoesQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var itens = _connection.Query<SesoesDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command)

@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Especialidade;
 using Repositorio.Outputs.DTOs.Especialidade;
 using RepositoryInterfaces.Read.Repository.Especialidade;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Especialidade
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<EspecialidadeDTO> getEspecialidade(object command)
+        public DataPagination<EspecialidadeDTO> getEspecialidade(ICommandRead command)
          {
             if (command is Command.Commands.Read.EspecialidadeReadCommand c)
-            {
                 return getEspecialidade(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<EspecialidadeDTO> getEspecialidade(Command.Commands.Read.EspecialidadeReadCommand command)
+        private DataPagination<EspecialidadeDTO> getEspecialidade(Command.Commands.Read.EspecialidadeReadCommand command)
         {
-            List<EspecialidadeDTO> lista;
             var query = new EspecialidadeReadQuery().EspecialidadeQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var itens = _connection.Query<EspecialidadeDTO>(query.Query,query.Parameters);
+                return new DataPagination<EspecialidadeDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         public EspecialidadeDTO getById()

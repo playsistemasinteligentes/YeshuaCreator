@@ -130,10 +130,14 @@ async function fetchSearchResults() {
         }
     });
 
-    // Adiciona parâmetros de paginação
-    searchFilters.page = crudState.pagination.page || 1;
-    searchFilters.pageSize = crudState.pagination.pageSize || 20;
-    searchFilters.pageWhithCount = crudState.pagination.PageWhithCount;
+    const payload = {
+        ...searchFilters,
+        paginacao: {
+            page: crudState.pagination.page || 1,
+            pageSize: crudState.pagination.pageSize || 20,
+            pageWhithCount: crudState.pagination.PageWhithCount || false
+        }
+    };
 
     try {
         const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.read}`, {
@@ -142,7 +146,7 @@ async function fetchSearchResults() {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(searchFilters)
+            body: JSON.stringify(payload)
         });
 
         //aqui mudar o result tem que ter data   mas tambem metadados pra pelo menos saber o total de registros
@@ -158,7 +162,7 @@ async function fetchSearchResults() {
             //}
 
             // Passa apenas os resultados
-            renderTableSearch(responseJson.data || []);
+            renderTableSearch(responseJson.data.items || []);
             togglePaginationControls(); // (criado anteriormente para exibir os botões)
         } else {
             showAlert(responseJson.data.message || "Erro na pesquisa", 'error');

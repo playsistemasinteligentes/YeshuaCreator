@@ -1,15 +1,8 @@
 ﻿
-using Dominio.TiposPrimitivos;
 using Migration.Dominio;
-using System.Collections.Generic;
 using static Dapper.SqlMapper;
 using System.Text;
-using System.Linq;
 using Migration.Dominio.Schemas.CQRS;
-using System.Xml.Linq;
-using Repositorio.Inputs.Repositorio.Y_Company;
-using Repositorio.Inputs.Repositorio.Y_User;
-using RepositoryInterfaces.Patterns.UnitOfWork;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -47,9 +40,9 @@ namespace Dominio.Schemas.CQRS
         {
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
-            sb.AppendLine($"using Comandos.Pateners.Command;");
-            sb.AppendLine($"using Command.Commands;");
-            sb.AppendLine($"using Dominio.TiposPrimitivos;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using System;");
             sb.AppendLine($"using System.Collections.Generic;");
             sb.AppendLine($"using System.Linq;");
@@ -148,7 +141,10 @@ namespace Dominio.Schemas.CQRS
         {
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
-            sb.AppendLine("using Comandos.Pateners.Command;");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+
             sb.AppendLine("using RepositoryInterfaces.Patterns.UnitOfWork;");
             foreach (var scope in _method.Scopes)
                 sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");

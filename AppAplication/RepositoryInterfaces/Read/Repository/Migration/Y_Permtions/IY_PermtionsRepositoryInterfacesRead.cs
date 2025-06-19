@@ -1,4 +1,6 @@
 using Repositorio.Outputs.DTOs.Y_Permtions;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace RepositoryInterfaces.Read.Repository.Y_Permtions
 {
     public interface IY_PermtionsReadRepository
     {
-        public IEnumerable<Y_PermtionsDTO> getY_Permtions(object command);
+        public DataPagination<Y_PermtionsDTO> getY_Permtions(ICommandRead command);
         public Y_PermtionsDTO getById();
     }
 }

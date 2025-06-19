@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.GrupoServico;
 using Repositorio.Outputs.DTOs.GrupoServico;
 using RepositoryInterfaces.Read.Repository.GrupoServico;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,20 +23,24 @@ namespace Read.ConcreteRepository.GrupoServico
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<GrupoServicoDTO> getGrupoServico(object command)
-        {
+        public DataPagination<GrupoServicoDTO> getGrupoServico(ICommandRead command)
+         {
             if (command is Command.Commands.Read.GrupoServicoReadCommand c)
-            {
                 return getGrupoServico(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<GrupoServicoDTO> getGrupoServico(Command.Commands.Read.GrupoServicoReadCommand command)
+        private DataPagination<GrupoServicoDTO> getGrupoServico(Command.Commands.Read.GrupoServicoReadCommand command)
         {
             var query = new GrupoServicoReadQuery().GrupoServicoQuery(command);
+
             using (_connection)
             {
-                return _connection.Query<GrupoServicoDTO>(query.Query, query.Parameters);
+                var itens = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters);
+                return new DataPagination<GrupoServicoDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
         }
 

@@ -1,6 +1,6 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Servico;
 using RepositoryInterfaces.Read.Repository.Servico;
 using Repositorio.Outputs.DTOs.Servico;
@@ -18,7 +18,7 @@ namespace Command.Receivers.Read
 
         protected override State <IEnumerable<ServicoGrupoServicoIdDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Patterns.Command.SearchFKCommand c) 
+            if(comand is SearchFKCommand c) 
              {    
                 var ServicoReadRepository = _repository.getServicoReadFKGrupoServicoId(c);
                 return Success("OK", ServicoReadRepository);

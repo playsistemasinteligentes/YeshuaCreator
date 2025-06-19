@@ -1,6 +1,6 @@
-using Comandos.Pateners.Command;
-using Dominio.TiposPrimitivos;
-namespace Comandos.Commands
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+namespace Command.Commands
 {
     public partial class CreateContaHubAgentCommand : ICommand
     {

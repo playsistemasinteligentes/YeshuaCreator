@@ -1,6 +1,6 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Profissional;
 using RepositoryInterfaces.Read.Repository.Profissional;
 using Repositorio.Outputs.DTOs.Profissional;
@@ -18,7 +18,7 @@ namespace Command.Receivers.Read
 
         protected override State <IEnumerable<ProfissionalEspecialidadeIdDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Patterns.Command.SearchFKCommand c) 
+            if(comand is SearchFKCommand c) 
              {    
                 var ProfissionalReadRepository = _repository.getProfissionalReadFKEspecialidadeId(c);
                 return Success("OK", ProfissionalReadRepository);

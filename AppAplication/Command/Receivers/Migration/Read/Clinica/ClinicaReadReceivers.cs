@@ -1,13 +1,14 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Clinica;
 using Repositorio.Outputs.DTOs.Clinica;
 using RepositoryInterfaces.Read.Repository.Clinica;
 
 namespace Command.Receivers.Read
 {
-    public class ClinicaReadReceiver : ReciverBase<IEnumerable<ClinicaDTO>>
+    public class ClinicaReadReceiver : ReciverBase<DataPagination<ClinicaDTO>>
     {
         private readonly IClinicaReadRepository _repository;
 
@@ -16,7 +17,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State<IEnumerable<ClinicaDTO>> Action(ICommand comand)
+        protected override State<DataPagination<ClinicaDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.ClinicaReadCommand c) 
              {    

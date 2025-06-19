@@ -7,7 +7,7 @@ using System.Text;
 using API.Migrations;
 using System.Net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Comandos.Pateners.Command;
+
 using System.Data;
 using Microsoft.Data.SqlClient;
 

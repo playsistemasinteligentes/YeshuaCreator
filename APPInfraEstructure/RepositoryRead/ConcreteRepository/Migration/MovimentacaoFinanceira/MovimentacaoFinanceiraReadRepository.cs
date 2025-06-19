@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.MovimentacaoFinanceira;
 using Repositorio.Outputs.DTOs.MovimentacaoFinanceira;
 using RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(object command)
+        public DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(ICommandRead command)
          {
             if (command is Command.Commands.Read.MovimentacaoFinanceiraReadCommand c)
-            {
                 return getMovimentacaoFinanceira(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(Command.Commands.Read.MovimentacaoFinanceiraReadCommand command)
+        private DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(Command.Commands.Read.MovimentacaoFinanceiraReadCommand command)
         {
-            List<MovimentacaoFinanceiraDTO> lista;
             var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var itens = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters);
+                return new DataPagination<MovimentacaoFinanceiraDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<MovimentacaoFinanceiraPacienteIdDTO> getMovimentacaoFinanceiraReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command)

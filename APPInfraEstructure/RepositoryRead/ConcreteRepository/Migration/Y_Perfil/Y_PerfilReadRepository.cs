@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Y_Perfil;
 using Repositorio.Outputs.DTOs.Y_Perfil;
 using RepositoryInterfaces.Read.Repository.Y_Perfil;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Y_Perfil
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<Y_PerfilDTO> getY_Perfil(object command)
+        public DataPagination<Y_PerfilDTO> getY_Perfil(ICommandRead command)
          {
             if (command is Command.Commands.Read.Y_PerfilReadCommand c)
-            {
                 return getY_Perfil(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<Y_PerfilDTO> getY_Perfil(Command.Commands.Read.Y_PerfilReadCommand command)
+        private DataPagination<Y_PerfilDTO> getY_Perfil(Command.Commands.Read.Y_PerfilReadCommand command)
         {
-            List<Y_PerfilDTO> lista;
             var query = new Y_PerfilReadQuery().Y_PerfilQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<Y_PerfilDTO>(query.Query,query.Parameters) as List<Y_PerfilDTO>;
+                var itens = _connection.Query<Y_PerfilDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_PerfilDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         public Y_PerfilDTO getById()

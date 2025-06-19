@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comandos.Pateners.Command
+namespace Command.Patterns.Command
 {
     public class CommandBase
     {

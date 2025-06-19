@@ -1,13 +1,14 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Profissional;
 using Repositorio.Outputs.DTOs.Profissional;
 using RepositoryInterfaces.Read.Repository.Profissional;
 
 namespace Command.Receivers.Read
 {
-    public class ProfissionalReadReceiver : ReciverBase<IEnumerable<ProfissionalDTO>>
+    public class ProfissionalReadReceiver : ReciverBase<DataPagination<ProfissionalDTO>>
     {
         private readonly IProfissionalReadRepository _repository;
 
@@ -16,7 +17,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State<IEnumerable<ProfissionalDTO>> Action(ICommand comand)
+        protected override State<DataPagination<ProfissionalDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.ProfissionalReadCommand c) 
              {    

@@ -1,6 +1,6 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
 using RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira;
 using Repositorio.Outputs.DTOs.MovimentacaoFinanceira;
@@ -18,7 +18,7 @@ namespace Command.Receivers.Read
 
         protected override State <IEnumerable<MovimentacaoFinanceiraServicoIdDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Patterns.Command.SearchFKCommand c) 
+            if(comand is SearchFKCommand c) 
              {    
                 var MovimentacaoFinanceiraReadRepository = _repository.getMovimentacaoFinanceiraReadFKServicoId(c);
                 return Success("OK", MovimentacaoFinanceiraReadRepository);

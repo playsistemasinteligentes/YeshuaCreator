@@ -1,6 +1,6 @@
-﻿using RepositoryInterfaces.Patterns.Repository;
+﻿
 
-namespace Comandos.Pateners.Command
+namespace RepositoryInterfaces.Patterns.Command
 {
     public interface ICommandRead : ICommand
     {

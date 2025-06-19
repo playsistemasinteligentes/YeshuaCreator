@@ -1,11 +1,10 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.GrupoServico;
 using Repositorio.Outputs.DTOs.GrupoServico;
 using RepositoryInterfaces.Read.Repository.GrupoServico;
-
-using RepositoryInterfaces.Patterns.Repository;
 
 namespace Command.Receivers.Read
 {
@@ -20,20 +19,14 @@ namespace Command.Receivers.Read
 
         protected override State<DataPagination<GrupoServicoDTO>> Action(ICommand comand)
         {
-            if (comand is Command.Commands.Read.GrupoServicoReadCommand c)
-            {
+            if(comand is Command.Commands.Read.GrupoServicoReadCommand c) 
+             {    
                 var GrupoServicoReadRepository = _repository.getGrupoServico(c);
-                var paginacao = new DataPagination<GrupoServicoDTO>(
-           items: GrupoServicoReadRepository,
-           page: 1,
-           pageSize: 3,
-           totalItems: 4
-       );
-                return Success("OK", paginacao);
+                return Success("OK", GrupoServicoReadRepository);
             }
-            else
+            else 
             {
-                return Error("ErroConversao", default);
+                 return Error("ErroConversao", default);
             }
         }
     }

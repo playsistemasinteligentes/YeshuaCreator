@@ -1,4 +1,6 @@
 using Repositorio.Outputs.DTOs.Especialidade;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace RepositoryInterfaces.Read.Repository.Especialidade
 {
     public interface IEspecialidadeReadRepository
     {
-        public IEnumerable<EspecialidadeDTO> getEspecialidade(object command);
+        public DataPagination<EspecialidadeDTO> getEspecialidade(ICommandRead command);
         public EspecialidadeDTO getById();
     }
 }

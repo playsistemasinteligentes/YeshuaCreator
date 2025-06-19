@@ -1,5 +1,5 @@
-﻿using global::Comandos.Pateners.Command;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using RepositoryInterfaces.Patterns.Command;
 
 namespace API
 {

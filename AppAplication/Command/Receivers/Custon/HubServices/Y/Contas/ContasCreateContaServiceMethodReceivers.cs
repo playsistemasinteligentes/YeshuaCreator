@@ -1,4 +1,3 @@
-using Comandos.Pateners.Command;
 using Repositorio.Inputs.Repositorio.Y_Company;
 using Repositorio.Inputs.Repositorio.Y_User;
 using RepositoryInterfaces.Patterns.UnitOfWork;

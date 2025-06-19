@@ -1,4 +1,6 @@
 using Repositorio.Outputs.DTOs.Servico;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace RepositoryInterfaces.Read.Repository.Servico
 {
     public interface IServicoReadRepository
     {
-        public IEnumerable<ServicoDTO> getServico(object command);
+        public DataPagination<ServicoDTO> getServico(ICommandRead command);
         public ServicoDTO getById();
         public IEnumerable<ServicoGrupoServicoIdDTO> getServicoReadFKGrupoServicoId(object command);
     }

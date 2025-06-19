@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Y_Permtions;
 using Repositorio.Outputs.DTOs.Y_Permtions;
 using RepositoryInterfaces.Read.Repository.Y_Permtions;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Y_Permtions
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<Y_PermtionsDTO> getY_Permtions(object command)
+        public DataPagination<Y_PermtionsDTO> getY_Permtions(ICommandRead command)
          {
             if (command is Command.Commands.Read.Y_PermtionsReadCommand c)
-            {
                 return getY_Permtions(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<Y_PermtionsDTO> getY_Permtions(Command.Commands.Read.Y_PermtionsReadCommand command)
+        private DataPagination<Y_PermtionsDTO> getY_Permtions(Command.Commands.Read.Y_PermtionsReadCommand command)
         {
-            List<Y_PermtionsDTO> lista;
             var query = new Y_PermtionsReadQuery().Y_PermtionsQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<Y_PermtionsDTO>(query.Query,query.Parameters) as List<Y_PermtionsDTO>;
+                var itens = _connection.Query<Y_PermtionsDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_PermtionsDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         public Y_PermtionsDTO getById()

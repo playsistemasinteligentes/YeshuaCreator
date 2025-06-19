@@ -1,4 +1,6 @@
 using Repositorio.Outputs.DTOs.Sesoes;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace RepositoryInterfaces.Read.Repository.Sesoes
 {
     public interface ISesoesReadRepository
     {
-        public IEnumerable<SesoesDTO> getSesoes(object command);
+        public DataPagination<SesoesDTO> getSesoes(ICommandRead command);
         public SesoesDTO getById();
         public IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(object command);
         public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command);

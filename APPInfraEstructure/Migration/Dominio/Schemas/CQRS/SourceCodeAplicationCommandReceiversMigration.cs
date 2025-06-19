@@ -54,9 +54,9 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
             if (action == CommandType.Insert || action == CommandType.Update || action == CommandType.Delete)
             {
-                sb.AppendLine($"using Comandos.Pateners.Command;");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
-                sb.AppendLine($"using Dominio.TiposPrimitivos;");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
@@ -107,16 +107,17 @@ namespace Dominio.Schemas.CQRS
             }
             else if (action == CommandType.Read)
             {
-                sb.AppendLine("using Comandos.Pateners.Command;");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
-                sb.AppendLine("using Dominio.TiposPrimitivos;");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
                 sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<IEnumerable<{_entity.EntityName}DTO>>");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<DataPagination<{_entity.EntityName}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();
@@ -125,7 +126,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<IEnumerable<{_entity.EntityName}DTO>> Action(ICommand comand)");
+                sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}DTO>> Action(ICommand comand)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
                 sb.AppendLine("             {    ");
@@ -145,9 +146,9 @@ namespace Dominio.Schemas.CQRS
             else if (action == CommandType.ReadFK)
             {
 
-                sb.AppendLine("using Comandos.Pateners.Command;");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
-                sb.AppendLine("using Dominio.TiposPrimitivos;");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
                 sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
@@ -166,7 +167,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        protected override State <IEnumerable<{_entity.EntityName}{_column}DTO>> Action(ICommand comand)");
                 sb.AppendLine("        {");
 
-                sb.AppendLine($"            if(comand is Command.Patterns.Command.SearchFKCommand c) ");
+                sb.AppendLine($"            if(comand is SearchFKCommand c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}{action}{_column}(c);");
                 sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");

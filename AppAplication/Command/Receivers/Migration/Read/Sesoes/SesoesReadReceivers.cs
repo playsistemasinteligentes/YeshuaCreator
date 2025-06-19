@@ -1,13 +1,14 @@
-using Comandos.Pateners.Command;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
-using Dominio.TiposPrimitivos;
 using Repositorio.Inputs.Repositorio.Sesoes;
 using Repositorio.Outputs.DTOs.Sesoes;
 using RepositoryInterfaces.Read.Repository.Sesoes;
 
 namespace Command.Receivers.Read
 {
-    public class SesoesReadReceiver : ReciverBase<IEnumerable<SesoesDTO>>
+    public class SesoesReadReceiver : ReciverBase<DataPagination<SesoesDTO>>
     {
         private readonly ISesoesReadRepository _repository;
 
@@ -16,7 +17,7 @@ namespace Command.Receivers.Read
             _repository = repository;
         }
 
-        protected override State<IEnumerable<SesoesDTO>> Action(ICommand comand)
+        protected override State<DataPagination<SesoesDTO>> Action(ICommand comand)
         {
             if(comand is Command.Commands.Read.SesoesReadCommand c) 
              {    

@@ -1,4 +1,5 @@
-using Comandos.Commands;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 namespace API.Migrations
@@ -10,8 +11,8 @@ public static void MapEndpoints(this WebApplication app)
 app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Receivers.Write.InsertEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -19,8 +20,8 @@ app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Re
 app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Receivers.Write.InsertProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -28,8 +29,8 @@ app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Rece
 app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.InsertDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -37,8 +38,8 @@ app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServ
 app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Receivers.Write.InsertGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -46,8 +47,8 @@ app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Rece
 app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Write.InsertServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -55,8 +56,8 @@ app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Writ
 app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Write.InsertPacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -64,8 +65,8 @@ app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Wr
 app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -73,8 +74,8 @@ app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromSe
 app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -82,8 +83,8 @@ app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.
 app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -91,8 +92,8 @@ app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Writ
 app.MapPost("/Y_User/PostY_User", async ([FromServices] Command.Receivers.Write.InsertY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -100,8 +101,8 @@ app.MapPost("/Y_User/PostY_User", async ([FromServices] Command.Receivers.Write.
 app.MapPost("/Y_Company/PostY_Company", async ([FromServices] Command.Receivers.Write.InsertY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -109,8 +110,8 @@ app.MapPost("/Y_Company/PostY_Company", async ([FromServices] Command.Receivers.
 app.MapPost("/Y_Perfil/PostY_Perfil", async ([FromServices] Command.Receivers.Write.InsertY_PerfilReceiver receiver, [FromBody] Command.Commands.Y_PerfilCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -118,8 +119,8 @@ app.MapPost("/Y_Perfil/PostY_Perfil", async ([FromServices] Command.Receivers.Wr
 app.MapPost("/Y_Permtions/PostY_Permtions", async ([FromServices] Command.Receivers.Write.InsertY_PermtionsReceiver receiver, [FromBody] Command.Commands.Y_PermtionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -127,8 +128,8 @@ app.MapPost("/Y_Permtions/PostY_Permtions", async ([FromServices] Command.Receiv
 app.MapPost("/Y_PerfilPermitions/PostY_PerfilPermitions", async ([FromServices] Command.Receivers.Write.InsertY_PerfilPermitionsReceiver receiver, [FromBody] Command.Commands.Y_PerfilPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -136,8 +137,8 @@ app.MapPost("/Y_PerfilPermitions/PostY_PerfilPermitions", async ([FromServices] 
 app.MapPost("/Y_UserPermitions/PostY_UserPermitions", async ([FromServices] Command.Receivers.Write.InsertY_UserPermitionsReceiver receiver, [FromBody] Command.Commands.Y_UserPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -145,8 +146,8 @@ app.MapPost("/Y_UserPermitions/PostY_UserPermitions", async ([FromServices] Comm
 app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Receivers.Write.UpdateEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -154,8 +155,8 @@ app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Rece
 app.MapPut("/Profissional/PutProfissional", async ([FromServices] Command.Receivers.Write.UpdateProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -163,8 +164,8 @@ app.MapPut("/Profissional/PutProfissional", async ([FromServices] Command.Receiv
 app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.UpdateDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -172,8 +173,8 @@ app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServic
 app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receivers.Write.UpdateGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -181,8 +182,8 @@ app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receiv
 app.MapPut("/Servico/PutServico", async ([FromServices] Command.Receivers.Write.UpdateServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -190,8 +191,8 @@ app.MapPut("/Servico/PutServico", async ([FromServices] Command.Receivers.Write.
 app.MapPut("/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Write.UpdatePacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -199,8 +200,8 @@ app.MapPut("/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Writ
 app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -208,8 +209,8 @@ app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServ
 app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -217,8 +218,8 @@ app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.Up
 app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -226,8 +227,8 @@ app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.
 app.MapPut("/Y_User/PutY_User", async ([FromServices] Command.Receivers.Write.UpdateY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -235,8 +236,8 @@ app.MapPut("/Y_User/PutY_User", async ([FromServices] Command.Receivers.Write.Up
 app.MapPut("/Y_Company/PutY_Company", async ([FromServices] Command.Receivers.Write.UpdateY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -244,8 +245,8 @@ app.MapPut("/Y_Company/PutY_Company", async ([FromServices] Command.Receivers.Wr
 app.MapPut("/Y_Perfil/PutY_Perfil", async ([FromServices] Command.Receivers.Write.UpdateY_PerfilReceiver receiver, [FromBody] Command.Commands.Y_PerfilCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -253,8 +254,8 @@ app.MapPut("/Y_Perfil/PutY_Perfil", async ([FromServices] Command.Receivers.Writ
 app.MapPut("/Y_Permtions/PutY_Permtions", async ([FromServices] Command.Receivers.Write.UpdateY_PermtionsReceiver receiver, [FromBody] Command.Commands.Y_PermtionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -262,8 +263,8 @@ app.MapPut("/Y_Permtions/PutY_Permtions", async ([FromServices] Command.Receiver
 app.MapPut("/Y_PerfilPermitions/PutY_PerfilPermitions", async ([FromServices] Command.Receivers.Write.UpdateY_PerfilPermitionsReceiver receiver, [FromBody] Command.Commands.Y_PerfilPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -271,8 +272,8 @@ app.MapPut("/Y_PerfilPermitions/PutY_PerfilPermitions", async ([FromServices] Co
 app.MapPut("/Y_UserPermitions/PutY_UserPermitions", async ([FromServices] Command.Receivers.Write.UpdateY_UserPermitionsReceiver receiver, [FromBody] Command.Commands.Y_UserPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -280,8 +281,8 @@ app.MapPut("/Y_UserPermitions/PutY_UserPermitions", async ([FromServices] Comman
 app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Command.Receivers.Write.DeleteEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -289,8 +290,8 @@ app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Comman
 app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.Receivers.Write.DeleteProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -298,8 +299,8 @@ app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.
 app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.DeleteDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -307,8 +308,8 @@ app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([From
 app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.Receivers.Write.DeleteGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -316,8 +317,8 @@ app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.
 app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.Write.DeleteServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -325,8 +326,8 @@ app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.
 app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receivers.Write.DeletePacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -334,8 +335,8 @@ app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receiver
 app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.DeleteMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -343,8 +344,8 @@ app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([Fr
 app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -352,8 +353,8 @@ app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Wr
 app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -361,8 +362,8 @@ app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.
 app.MapDelete("/Y_User/DeleteY_User", async ([FromServices] Command.Receivers.Write.DeleteY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -370,8 +371,8 @@ app.MapDelete("/Y_User/DeleteY_User", async ([FromServices] Command.Receivers.Wr
 app.MapDelete("/Y_Company/DeleteY_Company", async ([FromServices] Command.Receivers.Write.DeleteY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -379,8 +380,8 @@ app.MapDelete("/Y_Company/DeleteY_Company", async ([FromServices] Command.Receiv
 app.MapDelete("/Y_Perfil/DeleteY_Perfil", async ([FromServices] Command.Receivers.Write.DeleteY_PerfilReceiver receiver, [FromBody] Command.Commands.Y_PerfilCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -388,8 +389,8 @@ app.MapDelete("/Y_Perfil/DeleteY_Perfil", async ([FromServices] Command.Receiver
 app.MapDelete("/Y_Permtions/DeleteY_Permtions", async ([FromServices] Command.Receivers.Write.DeleteY_PermtionsReceiver receiver, [FromBody] Command.Commands.Y_PermtionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -397,8 +398,8 @@ app.MapDelete("/Y_Permtions/DeleteY_Permtions", async ([FromServices] Command.Re
 app.MapDelete("/Y_PerfilPermitions/DeleteY_PerfilPermitions", async ([FromServices] Command.Receivers.Write.DeleteY_PerfilPermitionsReceiver receiver, [FromBody] Command.Commands.Y_PerfilPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -406,8 +407,8 @@ app.MapDelete("/Y_PerfilPermitions/DeleteY_PerfilPermitions", async ([FromServic
 app.MapDelete("/Y_UserPermitions/DeleteY_UserPermitions", async ([FromServices] Command.Receivers.Write.DeleteY_UserPermitionsReceiver receiver, [FromBody] Command.Commands.Y_UserPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -530,8 +531,8 @@ return Results.Ok(menu);
 app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Receivers.Read.EspecialidadeReadReceiver receiver, [FromBody] Command.Commands.Read.EspecialidadeReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -539,8 +540,8 @@ app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Re
 app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Receivers.Read.ProfissionalReadReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -548,8 +549,8 @@ app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Rece
 app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadReceiver receiver, [FromBody] Command.Commands.Read.DisponibilidadeAgendaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -557,8 +558,8 @@ app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServ
 app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Receivers.Read.GrupoServicoReadReceiver receiver, [FromBody] Command.Commands.Read.GrupoServicoReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -566,8 +567,8 @@ app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Rece
 app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read.ServicoReadReceiver receiver, [FromBody] Command.Commands.Read.ServicoReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -575,8 +576,8 @@ app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read
 app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Read.PacienteReadReceiver receiver, [FromBody] Command.Commands.Read.PacienteReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -584,8 +585,8 @@ app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Re
 app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -593,8 +594,8 @@ app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromSe
 app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -602,8 +603,8 @@ app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.S
 app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Commands.Read.ClinicaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -611,8 +612,8 @@ app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read
 app.MapPost("/Y_User/ReadY_User", async ([FromServices] Command.Receivers.Read.Y_UserReadReceiver receiver, [FromBody] Command.Commands.Read.Y_UserReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -620,8 +621,8 @@ app.MapPost("/Y_User/ReadY_User", async ([FromServices] Command.Receivers.Read.Y
 app.MapPost("/Y_Company/ReadY_Company", async ([FromServices] Command.Receivers.Read.Y_CompanyReadReceiver receiver, [FromBody] Command.Commands.Read.Y_CompanyReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -629,8 +630,8 @@ app.MapPost("/Y_Company/ReadY_Company", async ([FromServices] Command.Receivers.
 app.MapPost("/Y_Perfil/ReadY_Perfil", async ([FromServices] Command.Receivers.Read.Y_PerfilReadReceiver receiver, [FromBody] Command.Commands.Read.Y_PerfilReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -638,8 +639,8 @@ app.MapPost("/Y_Perfil/ReadY_Perfil", async ([FromServices] Command.Receivers.Re
 app.MapPost("/Y_Permtions/ReadY_Permtions", async ([FromServices] Command.Receivers.Read.Y_PermtionsReadReceiver receiver, [FromBody] Command.Commands.Read.Y_PermtionsReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PermtionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -647,8 +648,8 @@ app.MapPost("/Y_Permtions/ReadY_Permtions", async ([FromServices] Command.Receiv
 app.MapPost("/Y_PerfilPermitions/ReadY_PerfilPermitions", async ([FromServices] Command.Receivers.Read.Y_PerfilPermitionsReadReceiver receiver, [FromBody] Command.Commands.Read.Y_PerfilPermitionsReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_PerfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -656,8 +657,8 @@ app.MapPost("/Y_PerfilPermitions/ReadY_PerfilPermitions", async ([FromServices] 
 app.MapPost("/Y_UserPermitions/ReadY_UserPermitions", async ([FromServices] Command.Receivers.Read.Y_UserPermitionsReadReceiver receiver, [FromBody] Command.Commands.Read.Y_UserPermitionsReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
-.Produces<Comandos.Pateners.Command.State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_UserPermitionsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 

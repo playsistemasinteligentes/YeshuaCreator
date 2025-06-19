@@ -11,4 +11,9 @@
     <ProjectReference Include="..\RepositoryInterfaces\RepositoryInterfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Custon\HubAgents\" />
+    <Folder Include="Patterns\Command\Interface\" />
+  </ItemGroup>
+
 </Project>

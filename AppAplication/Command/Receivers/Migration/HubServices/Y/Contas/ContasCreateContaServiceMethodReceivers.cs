@@ -1,6 +1,6 @@
-using Comandos.Pateners.Command;
 using Command.Commands;
-using Dominio.TiposPrimitivos;
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;

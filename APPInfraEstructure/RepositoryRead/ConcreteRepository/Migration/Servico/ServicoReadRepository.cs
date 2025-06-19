@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Servico;
 using Repositorio.Outputs.DTOs.Servico;
 using RepositoryInterfaces.Read.Repository.Servico;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Servico
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ServicoDTO> getServico(object command)
+        public DataPagination<ServicoDTO> getServico(ICommandRead command)
          {
             if (command is Command.Commands.Read.ServicoReadCommand c)
-            {
                 return getServico(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<ServicoDTO> getServico(Command.Commands.Read.ServicoReadCommand command)
+        private DataPagination<ServicoDTO> getServico(Command.Commands.Read.ServicoReadCommand command)
         {
-            List<ServicoDTO> lista;
             var query = new ServicoReadQuery().ServicoQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var itens = _connection.Query<ServicoDTO>(query.Query,query.Parameters);
+                return new DataPagination<ServicoDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<ServicoGrupoServicoIdDTO> getServicoReadFKGrupoServicoId(Command.Patterns.Command.SearchFKCommand command)

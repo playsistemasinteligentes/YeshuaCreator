@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Clinica;
 using Repositorio.Outputs.DTOs.Clinica;
 using RepositoryInterfaces.Read.Repository.Clinica;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Clinica
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<ClinicaDTO> getClinica(object command)
+        public DataPagination<ClinicaDTO> getClinica(ICommandRead command)
          {
             if (command is Command.Commands.Read.ClinicaReadCommand c)
-            {
                 return getClinica(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<ClinicaDTO> getClinica(Command.Commands.Read.ClinicaReadCommand command)
+        private DataPagination<ClinicaDTO> getClinica(Command.Commands.Read.ClinicaReadCommand command)
         {
-            List<ClinicaDTO> lista;
             var query = new ClinicaReadQuery().ClinicaQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var itens = _connection.Query<ClinicaDTO>(query.Query,query.Parameters);
+                return new DataPagination<ClinicaDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         public ClinicaDTO getById()

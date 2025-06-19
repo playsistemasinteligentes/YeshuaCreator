@@ -2,6 +2,8 @@ using Dapper;
 using Output.Querys.Y_Company;
 using Repositorio.Outputs.DTOs.Y_Company;
 using RepositoryInterfaces.Read.Repository.Y_Company;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -21,24 +23,25 @@ namespace Read.ConcreteRepository.Y_Company
             _connection = factory.SqlConnection();
         }
 
-        public IEnumerable<Y_CompanyDTO> getY_Company(object command)
+        public DataPagination<Y_CompanyDTO> getY_Company(ICommandRead command)
          {
             if (command is Command.Commands.Read.Y_CompanyReadCommand c)
-            {
                 return getY_Company(c);
-            }
             throw new NotImplementedException();
         }
-        private IEnumerable<Y_CompanyDTO> getY_Company(Command.Commands.Read.Y_CompanyReadCommand command)
+        private DataPagination<Y_CompanyDTO> getY_Company(Command.Commands.Read.Y_CompanyReadCommand command)
         {
-            List<Y_CompanyDTO> lista;
             var query = new Y_CompanyReadQuery().Y_CompanyQuery(command);
 
             using (_connection)
             {
-                lista = _connection.Query<Y_CompanyDTO>(query.Query,query.Parameters) as List<Y_CompanyDTO>;
+                var itens = _connection.Query<Y_CompanyDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_CompanyDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
             }
-            return lista;
         }
 
         private IEnumerable<Y_CompanyUserIDAdminDTO> getY_CompanyReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
