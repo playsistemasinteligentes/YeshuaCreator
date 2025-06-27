@@ -69,10 +69,6 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
         {
             throw new NotImplementedException();
         }
-        public DisponibilidadeAgendaDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

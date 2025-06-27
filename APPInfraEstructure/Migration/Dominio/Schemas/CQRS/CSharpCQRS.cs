@@ -376,8 +376,16 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Migration\\{entity.EntityName}\\{entity.EntityName}ReadRepository.cs");
                 var filePathCuston = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Custon\\{entity.EntityName}\\{entity.EntityName}ReadRepository.cs");
-                var sourceCodeMigration = new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity);
+                var sourceCodeMigration = new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, false);
                 sourceCodeMigration.WriteCode(filePath, filePathCuston);
+
+                if (entity.CachedTable)
+                {
+                    filePath = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Migration\\{entity.EntityName}\\{entity.EntityName}ReadRepositoryCacheDecorator.cs");
+                    filePathCuston = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Custon\\{entity.EntityName}\\{entity.EntityName}ReadRepositoryCacheDecorator.cs");
+                    sourceCodeMigration = new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, true);
+                    sourceCodeMigration.WriteCode(filePath, filePathCuston);
+                }
 
                 //filePath = Path.Combine(AppInfraestructureReadConcreteRepository(), $"{entity.EntityName}\\{entity.EntityName}ReadRepositoryCuston.cs");
                 //var sourceCodeCuston = new SourceCodeInfraestructureReadConcreteRepositoryCuston(filePath, entity, true);

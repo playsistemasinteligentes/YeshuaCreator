@@ -25,18 +25,18 @@ namespace Input.Repository.Y_User
         public void Insert(Y_UserEntity Y_User)
         {
             var query = new Y_UserWriteQuery().InserirY_UserQuery(Y_User);
-        Y_User.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Y_User.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(Y_UserEntity Y_User)
         {
             var query = new Y_UserWriteQuery().UpdateY_UserQuery(Y_User);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(Y_UserEntity Y_User)
         {
             var query = new Y_UserWriteQuery().DeleteY_UserQuery(Y_User);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
 }

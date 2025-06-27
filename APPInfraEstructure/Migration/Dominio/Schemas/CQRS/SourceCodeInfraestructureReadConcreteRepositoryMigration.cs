@@ -1,5 +1,8 @@
 ﻿using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using Repositorio.Outputs.DTOs.Y_Tenant_Configuration;
+using RepositoryInterfaces.Services;
+using System.Data.Common;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -7,16 +10,143 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeInfraestructureReadConcreteRepositoryMigration : SourceCodeBase
     {
         private readonly Entity _entity;
+        private readonly bool _cacheDecorator;
 
-        public SourceCodeInfraestructureReadConcreteRepositoryMigration(Entity entity)
+        public SourceCodeInfraestructureReadConcreteRepositoryMigration(Entity entity, bool cacheDecorator)
             : base()
         {
             _entity = entity;
+            _cacheDecorator = cacheDecorator;
         }
 
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
+            if (_cacheDecorator)
+            {
+                sb.AppendLine($"using Output.Querys.{_entity.EntityName};");
+                sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
+                sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
+                sb.AppendLine($"using RepositoryInterfaces.Services;");
+
+                sb.AppendLine();
+                sb.AppendLine($"namespace Read.ConcreteRepository.{_entity.EntityName}");
+                sb.AppendLine("{");
+                sb.AppendLine($"    public class {_entity.EntityName}ReadRepositoryCacheDecorator : I{_entity.EntityName}ReadRepository");
+                sb.AppendLine("    {");
+                sb.AppendLine($"    private readonly I{_entity.EntityName}ReadRepository _inner;");
+                sb.AppendLine($"    private readonly ICacheService<{_entity.EntityName}DTO> _cacheById;");
+                sb.AppendLine($"    private readonly ICacheService<IEnumerable<{_entity.EntityName}DTO>> _cacheAll;");
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                    sb.AppendLine($"    private readonly ICacheService<IEnumerable<{_entity.EntityName}{column.Name}DTO>> _cacheFK{column.Name};");
+
+                sb.AppendLine();
+                // Construtor
+                // Define as FKs
+                var fkColumns = _entity.AddColumns.Where(x => x.IsFK).ToList();
+
+                // Início do construtor
+                sb.AppendLine($"    public {_entity.EntityName}ReadRepositoryCacheDecorator(");
+                sb.AppendLine($"        I{_entity.EntityName}ReadRepository inner,");
+                sb.AppendLine($"        ICacheService<{_entity.EntityName}DTO> cacheById,");
+
+                // Só coloca vírgula no `cacheAll` se houver FKs
+                if (fkColumns.Any())
+                    sb.AppendLine($"        ICacheService<IEnumerable<{_entity.EntityName}DTO>> cacheAll,");
+                else
+                    sb.AppendLine($"        ICacheService<IEnumerable<{_entity.EntityName}DTO>> cacheAll");
+
+                // Parâmetros das FKs
+                for (int i = 0; i < fkColumns.Count; i++)
+                {
+                    var column = fkColumns[i];
+                    var comma = i < fkColumns.Count - 1 ? "," : "";
+                    sb.AppendLine($"        ICacheService<IEnumerable<{_entity.EntityName}{column.Name}DTO>> cacheFK{column.Name}{comma}");
+                }
+                sb.Append("    )");
+
+
+                sb.AppendLine("    {");
+                sb.AppendLine("        _inner = inner;");
+                sb.AppendLine("        _cacheById = cacheById;");
+                sb.AppendLine("        _cacheAll = cacheAll;");
+
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                    sb.AppendLine($"    _cacheFK{column.Name}=cacheFK{column.Name};");
+
+                sb.AppendLine("    }");
+                sb.AppendLine();
+
+
+
+                // get{EntityName}
+                sb.AppendLine($"    public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command)");
+                sb.AppendLine("    {");
+                sb.AppendLine("        bool isFullQuery = true; // Ajuste conforme sua lógica de filtros");
+                sb.AppendLine($"        var key = \"{_entity.EntityName}:All\";");
+                sb.AppendLine("        if (isFullQuery)");
+                sb.AppendLine("        {");
+                sb.AppendLine("            var cached = _cacheAll.Get(key);");
+                sb.AppendLine("            if (cached != null)");
+                sb.AppendLine($"                return new DataPagination<{_entity.EntityName}DTO>(cached, 1, cached.Count(), cached.Count());");
+                sb.AppendLine();
+                sb.AppendLine($"            var data = _inner.get{_entity.EntityName}(command);");
+                sb.AppendLine("            _cacheAll.Set(key, data.Items);");
+                sb.AppendLine("            return data;");
+                sb.AppendLine("        }");
+                sb.AppendLine($"        return _inner.get{_entity.EntityName}(command);");
+                sb.AppendLine("    }");
+
+
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                {
+
+
+                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand c)");
+                    sb.AppendLine("                return get" + _entity.EntityName + CommandType.ReadFK + column.Name + "(c);");
+                    sb.AppendLine("            throw new NotImplementedException();");
+                    sb.AppendLine("        }");
+
+                    sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command)");
+                    sb.AppendLine("        {");
+
+                    sb.AppendLine($"            string key = $\"{_entity.EntityName}:FK:{column.Name}:{{command.searchFK}}\";");
+
+                    sb.AppendLine($"            var cached = _cacheFK{column.Name}.Get(key);");
+                    sb.AppendLine("            if (cached != null) return cached;");
+                    sb.AppendLine($"            var result = _inner.get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(command);");
+                    sb.AppendLine($"            if (result != null) _cacheFK{column.Name}.Set(key, result);");
+                    sb.AppendLine("            return result;");
+                    sb.AppendLine("        }");
+
+
+                }
+
+
+                // GetById
+                //sb.AppendLine($"    public {_entity.EntityName}DTO GetById(int id)");
+                //sb.AppendLine("    {");
+                //sb.AppendLine($"        var key = $\"{_entity.EntityName}:Id:{{id}}\";");
+                //sb.AppendLine("        var cached = _cacheById.Get(key);");
+                //sb.AppendLine("        if (cached != null) return cached;");
+                //sb.AppendLine("        var result = _inner.GetById(id);");
+                //sb.AppendLine("        if (result != null) _cacheById.Set(key, result);");
+                //sb.AppendLine("        return result;");
+                //sb.AppendLine("    }");
+
+                sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
+                sb.AppendLine("        {");
+                sb.AppendLine("            throw new NotImplementedException();");
+                sb.AppendLine("        }");
+
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+                return sb;
+            }
             sb.AppendLine("using Dapper;");
             sb.AppendLine($"using Output.Querys.{_entity.EntityName};");
             sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
@@ -106,10 +236,6 @@ namespace Dominio.Schemas.CQRS
 
 
             sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
-            sb.AppendLine("        {");
-            sb.AppendLine("            throw new NotImplementedException();");
-            sb.AppendLine("        }");
-            sb.AppendLine($"        public {_entity.EntityName}DTO GetById()");
             sb.AppendLine("        {");
             sb.AppendLine("            throw new NotImplementedException();");
             sb.AppendLine("        }");

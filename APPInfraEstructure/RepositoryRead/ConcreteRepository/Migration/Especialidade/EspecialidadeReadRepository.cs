@@ -48,10 +48,6 @@ namespace Read.ConcreteRepository.Especialidade
         {
             throw new NotImplementedException();
         }
-        public EspecialidadeDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

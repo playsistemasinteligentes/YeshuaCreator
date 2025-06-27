@@ -53,7 +53,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase<{_classeCommand}>");
+            sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase<object>");
             sb.AppendLine("    {");
             sb.AppendLine();
             //sb.AppendLine($"        private readonly object _menssage;");
@@ -63,7 +63,7 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("            _menssage = menssage;");
             //sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        protected override State<{_classeCommand}> Action(ICommand comand)");
+            sb.AppendLine($"        protected override State<object> Action(ICommand comand)");
             sb.AppendLine("        {");
             sb.AppendLine("            try");
             sb.AppendLine("            {");
@@ -72,7 +72,7 @@ namespace Dominio.Schemas.CQRS
             //sb.AppendLine("                 Agent = getAgent(comand);    ");
             //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
-            sb.AppendLine($"                 State<{_classeCommand}> retorno = Success(\"OK\", ({_classeCommand})comand);");
+            sb.AppendLine($"                 State<object> retorno = Success(\"OK\", ({_classeCommand})comand);");
 
             sb.AppendLine($"                 if (comand is {_nameSpaceCommand}.{_classeCommand} specificCommand)");
 
@@ -81,10 +81,10 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("            }");
 
-            CQRSParam.I.AddExeptionReceiver(sb, $"{_classeCommand}");
+            CQRSParam.I.AddExeptionReceiver(sb, $"object");
 
             sb.AppendLine("        }");
-            sb.AppendLine($"partial void CustomActionHook(ref State<{_classeCommand}> state, {_nameSpaceCommand}.{_classeCommand} comand);");
+            sb.AppendLine($"partial void CustomActionHook(ref State<object> state, {_nameSpaceCommand}.{_classeCommand} comand);");
             sb.AppendLine("}");
             //foreach (var menu in _agent.Menus)
             //{
@@ -165,7 +165,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"private readonly I{scope} _{scope};");
 
             sb.AppendLine("" +
-                "partial void CustomActionHook(ref State state, Command.Commands.ContasCreateContaServiceMethodCommand comand)\r\n        {\r\n            try\r\n            {\r\n                _unitOfWork.BeginTran();\r\n                State userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });\r\n                var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;\r\n\r\n                Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };\r\n                new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);\r\n\r\n                _unitOfWork.Commit();\r\n            }\r\n            catch (ReceiverException rex)\r\n            {\r\n                _unitOfWork.Rollback();\r\n                state = rex.State;\r\n            }\r\n            catch (Exception e)\r\n            {\r\n                Error(e, comand);\r\n            }\r\n        }" +
+                "partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaServiceMethodCommand comand)\r\n        {\r\n            try\r\n            {\r\n                _unitOfWork.BeginTran();\r\n                State userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });\r\n                var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;\r\n\r\n                Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };\r\n                new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);\r\n\r\n                _unitOfWork.Commit();\r\n            }\r\n            catch (ReceiverException rex)\r\n            {\r\n                _unitOfWork.Rollback();\r\n                state = rex.State;\r\n            }\r\n            catch (Exception e)\r\n            {\r\n                Error(e, comand);\r\n            }\r\n        }" +
                 "");
 
             sb.AppendLine("*/");

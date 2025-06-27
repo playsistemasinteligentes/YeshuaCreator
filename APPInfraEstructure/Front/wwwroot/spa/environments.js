@@ -1,3 +1,3 @@
 ﻿const environments = {
-    urlApi: "https://192.168.0.103:7214",
+    urlApi: "https://192.168.0.104:7214",
 };

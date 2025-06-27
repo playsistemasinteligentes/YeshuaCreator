@@ -1,8 +1,8 @@
 
-using Repositorio.Inputs.Repositorio.Y_Company;
+using Repositorio.Inputs.Repositorio.Y_Tenant;
 using Repositorio.Inputs.Repositorio.Y_User;
 using RepositoryInterfaces.Patterns.UnitOfWork;
-using RepositoryInterfaces.Read.Repository.Y_Company;
+using RepositoryInterfaces.Read.Repository.Y_Tenant;
 using RepositoryInterfaces.Read.Repository.Y_User;
 using System.Security.Claims;
 using System.Text;
@@ -12,13 +12,13 @@ namespace Command.Receivers.HubServiceMethod
     public partial class ContasLoginServiceMethodReceiver<T>
     {
         private readonly IY_UserReadRepository _repositoryUserRead;
-        private readonly IY_CompanyReadRepository _repositoryCompanyRead;
+        private readonly IY_TenantReadRepository _repositoryTenantRead;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ContasLoginServiceMethodReceiver(IY_UserReadRepository repositoryUserRead, IY_CompanyReadRepository repositoryCompanyRead, IUnitOfWork unitOfWork)
+        public ContasLoginServiceMethodReceiver(IY_UserReadRepository repositoryUserRead, IY_TenantReadRepository repositoryTenantRead, IUnitOfWork unitOfWork)
         {
             _repositoryUserRead = repositoryUserRead;
-            _repositoryCompanyRead = repositoryCompanyRead;
+            _repositoryTenantRead = repositoryTenantRead;
             _unitOfWork = unitOfWork;
         }
 

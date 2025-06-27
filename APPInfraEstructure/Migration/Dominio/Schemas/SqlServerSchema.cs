@@ -55,7 +55,7 @@ namespace Dominio.Schemas
             var alterColumnsString = string.Join("; ", alterColumns);
 
             var addForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.Name}); "
+                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
             ).ToArray();
             var addForingKeyString = string.Join("; ", addForingKey);
 

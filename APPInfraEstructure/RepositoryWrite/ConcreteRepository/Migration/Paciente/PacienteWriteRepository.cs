@@ -25,18 +25,18 @@ namespace Input.Repository.Paciente
         public void Insert(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().InserirPacienteQuery(Paciente);
-        Paciente.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Paciente.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().UpdatePacienteQuery(Paciente);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(PacienteEntity Paciente)
         {
             var query = new PacienteWriteQuery().DeletePacienteQuery(Paciente);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
 }

@@ -1,0 +1,43 @@
+using Dapper;
+using Dominio.Entitys;
+using Input.Querys.Y_Tenant_Configuration;
+using Repositorio.Inputs.Repositorio.Y_Tenant_Configuration;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using Shered.DB.Connection;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Input.Repository.Y_Tenant_Configuration
+{
+    public class Y_Tenant_ConfigurationWriteRepository : IY_Tenant_ConfigurationWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+
+        public Y_Tenant_ConfigurationWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+
+        public void Insert(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        {
+            var query = new Y_Tenant_ConfigurationWriteQuery().InserirY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);
+                _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+
+        public void Update(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        {
+            var query = new Y_Tenant_ConfigurationWriteQuery().UpdateY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        {
+            var query = new Y_Tenant_ConfigurationWriteQuery().DeleteY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

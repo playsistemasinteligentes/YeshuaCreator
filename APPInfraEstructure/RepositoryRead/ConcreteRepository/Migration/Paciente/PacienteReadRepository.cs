@@ -48,10 +48,6 @@ namespace Read.ConcreteRepository.Paciente
         {
             throw new NotImplementedException();
         }
-        public PacienteDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

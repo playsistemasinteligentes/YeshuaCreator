@@ -73,6 +73,12 @@ namespace Dominio.Migration
             _entity.StatusColuns = 1;
             return _entity.AddColumn(columnName, descrition);
         }
+        public Entity Cached()
+        {
+            _entity.CachedTable = true;
+            return _entity;
+        }
+
 
         public Entity AddColumn(string columnName)
         {
@@ -99,5 +105,6 @@ namespace Dominio.Migration
                 ID = ID * -1;
             MigrationName = name;
         }
+
     }
 }

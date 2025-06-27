@@ -48,10 +48,6 @@ namespace Read.ConcreteRepository.Clinica
         {
             throw new NotImplementedException();
         }
-        public ClinicaDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

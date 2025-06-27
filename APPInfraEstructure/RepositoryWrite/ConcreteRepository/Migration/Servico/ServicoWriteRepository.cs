@@ -25,18 +25,18 @@ namespace Input.Repository.Servico
         public void Insert(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().InserirServicoQuery(Servico);
-        Servico.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Servico.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().UpdateServicoQuery(Servico);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(ServicoEntity Servico)
         {
             var query = new ServicoWriteQuery().DeleteServicoQuery(Servico);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
 }

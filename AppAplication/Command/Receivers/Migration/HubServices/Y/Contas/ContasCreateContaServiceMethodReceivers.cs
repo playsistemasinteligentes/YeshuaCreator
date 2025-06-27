@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.HubServiceMethod
 {
-    public partial class ContasCreateContaServiceMethodReceiver : ReciverBase<ContasCreateContaServiceMethodCommand>
+    public partial class ContasCreateContaServiceMethodReceiver : ReciverBase<object>
     {
 
 
-        protected override State<ContasCreateContaServiceMethodCommand> Action(ICommand comand)
+        protected override State<object> Action(ICommand comand)
         {
             try
             {
-                 State<ContasCreateContaServiceMethodCommand> retorno = Success("OK", (ContasCreateContaServiceMethodCommand)comand);
+                 State<object> retorno = Success("OK", (ContasCreateContaServiceMethodCommand)comand);
                  if (comand is Command.Commands.ContasCreateContaServiceMethodCommand specificCommand)
                  CustomActionHook(ref retorno, specificCommand);
                  return retorno;
             }
-            catch (ReceiverException<ContasCreateContaServiceMethodCommand> e)
+            catch (ReceiverException<object> e)
             {
                 return e.State;
             }
@@ -31,7 +31,7 @@ namespace Command.Receivers.HubServiceMethod
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<ContasCreateContaServiceMethodCommand> state, Command.Commands.ContasCreateContaServiceMethodCommand comand);
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaServiceMethodCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHub

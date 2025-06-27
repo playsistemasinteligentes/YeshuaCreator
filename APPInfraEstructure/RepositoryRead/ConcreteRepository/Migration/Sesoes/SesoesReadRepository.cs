@@ -132,10 +132,6 @@ namespace Read.ConcreteRepository.Sesoes
         {
             throw new NotImplementedException();
         }
-        public SesoesDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

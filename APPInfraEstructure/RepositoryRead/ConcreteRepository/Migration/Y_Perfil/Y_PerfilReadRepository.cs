@@ -48,10 +48,6 @@ namespace Read.ConcreteRepository.Y_Perfil
         {
             throw new NotImplementedException();
         }
-        public Y_PerfilDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

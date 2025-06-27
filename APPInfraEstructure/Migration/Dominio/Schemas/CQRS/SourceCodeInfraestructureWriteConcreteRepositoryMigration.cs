@@ -48,21 +48,21 @@ namespace Dominio.Schemas.CQRS
 
             var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
             if (incremento != null)
-                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _UnitOfWork.Connection.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters);");
+                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _UnitOfWork.Connection.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             else
-                sb.AppendLine("                _UnitOfWork.Connection.Execute(query.Query, query.Parameters);");
+                sb.AppendLine("                _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
 
             sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine($"        public void Update({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);");
+            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
             sb.AppendLine($"        public void Delete({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Delete{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);");
+            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");

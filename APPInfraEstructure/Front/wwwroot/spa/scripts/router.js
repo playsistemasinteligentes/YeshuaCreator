@@ -1,5 +1,6 @@
 import { loadDataMenu, buildMenu } from './menu.js';
 import { buildCrud } from './crud.js';
+import { buildRegister } from './register/register.js';
 
 
 export async function handleRouting(hash) {
@@ -63,7 +64,7 @@ function attachEvents(route) {
     }
 
     if (route === '#register') {
-        // Eventos para a tela de cadastro, se quiser
+        buildRegister();
     }
 
     if (route === '#forgot') {

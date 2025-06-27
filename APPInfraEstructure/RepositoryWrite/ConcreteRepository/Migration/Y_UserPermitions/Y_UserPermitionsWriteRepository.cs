@@ -25,18 +25,18 @@ namespace Input.Repository.Y_UserPermitions
         public void Insert(Y_UserPermitionsEntity Y_UserPermitions)
         {
             var query = new Y_UserPermitionsWriteQuery().InserirY_UserPermitionsQuery(Y_UserPermitions);
-                _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+                _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(Y_UserPermitionsEntity Y_UserPermitions)
         {
             var query = new Y_UserPermitionsWriteQuery().UpdateY_UserPermitionsQuery(Y_UserPermitions);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(Y_UserPermitionsEntity Y_UserPermitions)
         {
             var query = new Y_UserPermitionsWriteQuery().DeleteY_UserPermitionsQuery(Y_UserPermitions);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
 }

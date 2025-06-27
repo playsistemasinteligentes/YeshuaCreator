@@ -90,10 +90,6 @@ namespace Read.ConcreteRepository.Y_UserPermitions
         {
             throw new NotImplementedException();
         }
-        public Y_UserPermitionsDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

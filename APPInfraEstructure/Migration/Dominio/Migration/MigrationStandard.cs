@@ -15,17 +15,24 @@ namespace Migration.Dominio.Migration
     {
         public override void Up()
         {
+            AddEntity("Y_Tenant")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("Nome", "Nome").Varchar(150).NotNull()
+            .AddColumn("ProxyServer", "ProxyServer").Varchar(150).BackEndField();
+
             AddEntity("Y_User")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
-            .AddColumn("Senha", "Senha").Varchar(60).Password();
+            .AddColumn("Senha", "Senha").Varchar(60).Password()
+            .AddColumn("TenantID", "Administrador").FK("Y_Tenant", "Id").Int();
 
-            AddEntity("Y_Company")
-            .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("Nome", "Nome").Varchar(150).NotNull()
-            .AddColumn("ProxyServer", "ProxyServer").Varchar(150).BackEndField()
-            .AddColumn("UserIDAdmin", "Administrador").FK("Y_User", "Id").Int();
+
+            AddEntity("Y_Tenant_Configuration").Cached()
+            .AddColumn("Id", "ID").Int().Key()
+            .AddColumn("AuditTrackerActived", "AuditTrackerActived").Int()
+            .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int()
+            .AddColumn("TenantID", "Administrador").FK("Y_Tenant", "Id").Int();
 
             AddEntity("Y_Perfil")
             .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -50,6 +57,11 @@ namespace Migration.Dominio.Migration
     {
         public override void Up()
         {
+
+            AlterEntity("Y_Tenant")
+            .AddColumn("UserIDAdmin", "Administrador").FK("Y_User", "Id").Int();
+
+
             AddHub("Y").AddService("Contas").AddMethod("createConta", new Account("", "", "", "", "")).Authorization(Authorization.Free);
             AddHub("Y").AddService("Contas").AddMethod("Login", new LoginUserEndPassword("", ""))
                 .AddScope("")

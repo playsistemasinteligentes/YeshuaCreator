@@ -13,6 +13,7 @@ namespace RepositoryInterfaces.Read.Repository.Y_User
     {
         public DataPagination<Y_UserDTO> getY_User(ICommandRead command);
         public Y_UserDTO getById();
+        public IEnumerable<Y_UserTenantIDDTO> getY_UserReadFKTenantID(object command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

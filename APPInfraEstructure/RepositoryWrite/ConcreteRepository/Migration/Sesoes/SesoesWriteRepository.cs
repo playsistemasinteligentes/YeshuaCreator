@@ -25,18 +25,18 @@ namespace Input.Repository.Sesoes
         public void Insert(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().InserirSesoesQuery(Sesoes);
-        Sesoes.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Sesoes.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().UpdateSesoesQuery(Sesoes);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(SesoesEntity Sesoes)
         {
             var query = new SesoesWriteQuery().DeleteSesoesQuery(Sesoes);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
 }

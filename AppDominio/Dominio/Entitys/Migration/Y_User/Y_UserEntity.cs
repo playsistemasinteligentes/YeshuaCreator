@@ -14,12 +14,14 @@
     public string Nome { get; set; }
     public string Email { get; set; }
     public string Senha { get; set; }
+    public int? TenantID { get; set; }
     private List<string> _erroMensagem = null;
- public Y_UserEntity(int? id, string nome, string email, string senha ){
+ public Y_UserEntity(int? id, string nome, string email, string senha, int? tenantid ){
  Id = id; 
  Nome = nome; 
  Email = email; 
  Senha = senha; 
+ TenantID = tenantid; 
 }
 public bool isValidData()
 {

@@ -25,18 +25,18 @@ namespace Input.Repository.Profissional
         public void Insert(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().InserirProfissionalQuery(Profissional);
-        Profissional.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters);
+        Profissional.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().UpdateProfissionalQuery(Profissional);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(ProfissionalEntity Profissional)
         {
             var query = new ProfissionalWriteQuery().DeleteProfissionalQuery(Profissional);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
 }

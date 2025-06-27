@@ -69,10 +69,6 @@ namespace Read.ConcreteRepository.Profissional
         {
             throw new NotImplementedException();
         }
-        public ProfissionalDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

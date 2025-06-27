@@ -277,6 +277,7 @@ function renderSearch(metadata, modoFk = false) {
 
         formGroup.appendChild(wrapper);
     });
+
     if (modoFk) {
         // Adiciona botão de pesquisar dentro do modal
         const btnContainer = document.createElement('div');
@@ -453,11 +454,15 @@ function renderFormCrud() {
 
     crudState.metadata.formFields.forEach(field => {
         const wrapper = document.createElement('div');
+        wrapper.className = 'flex flex-col';
+
 
         const label = document.createElement('label');
         label.textContent = field.label;
         label.setAttribute('for', `insert-${field.id}`);
-        label.className = 'block text-sm font-medium text-gray-700 mb-1';
+        // label.className = 'block text-sm font-medium text-gray-700 mb-1';
+        label.className = 'block text-sm font-medium text-gray-400 mb-1';
+
 
         let input;
 
@@ -485,7 +490,7 @@ function renderFormCrud() {
         } else {
             input = document.createElement('input');
             input.id = `insert-${field.id}`;
-            input.placeholder = field.label;
+            //input.placeholder = field.label;
             input.className = 'border p-2 rounded';
 
             switch (field.type.toLowerCase()) {
@@ -632,6 +637,9 @@ async function crudCreate() {
                 responseJson.messageList.forEach(msg => {
                     showAlert(msg, 'error');
                 });
+            } else {
+                showAlert("Erro: " + responseJson.status, 'error');
+                console.log(responseJson.detail)
             }
         }
     } catch (error) {

@@ -69,10 +69,6 @@ namespace Read.ConcreteRepository.Servico
         {
             throw new NotImplementedException();
         }
-        public ServicoDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

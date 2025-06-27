@@ -89,6 +89,15 @@ app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
+app.MapPost("/Y_Tenant/PostY_Tenant", async ([FromServices] Command.Receivers.Write.InsertY_TenantReceiver receiver, [FromBody] Command.Commands.Y_TenantCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/Y_User/PostY_User", async ([FromServices] Command.Receivers.Write.InsertY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -98,11 +107,11 @@ app.MapPost("/Y_User/PostY_User", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
-app.MapPost("/Y_Company/PostY_Company", async ([FromServices] Command.Receivers.Write.InsertY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
+app.MapPost("/Y_Tenant_Configuration/PostY_Tenant_Configuration", async ([FromServices] Command.Receivers.Write.InsertY_Tenant_ConfigurationReceiver receiver, [FromBody] Command.Commands.Y_Tenant_ConfigurationCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -224,6 +233,15 @@ app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
+app.MapPut("/Y_Tenant/PutY_Tenant", async ([FromServices] Command.Receivers.Write.UpdateY_TenantReceiver receiver, [FromBody] Command.Commands.Y_TenantCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/Y_User/PutY_User", async ([FromServices] Command.Receivers.Write.UpdateY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -233,11 +251,11 @@ app.MapPut("/Y_User/PutY_User", async ([FromServices] Command.Receivers.Write.Up
 .RequireAuthorization();
 
 
-app.MapPut("/Y_Company/PutY_Company", async ([FromServices] Command.Receivers.Write.UpdateY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
+app.MapPut("/Y_Tenant_Configuration/PutY_Tenant_Configuration", async ([FromServices] Command.Receivers.Write.UpdateY_Tenant_ConfigurationReceiver receiver, [FromBody] Command.Commands.Y_Tenant_ConfigurationCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -359,6 +377,15 @@ app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
+app.MapDelete("/Y_Tenant/DeleteY_Tenant", async ([FromServices] Command.Receivers.Write.DeleteY_TenantReceiver receiver, [FromBody] Command.Commands.Y_TenantCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapDelete("/Y_User/DeleteY_User", async ([FromServices] Command.Receivers.Write.DeleteY_UserReceiver receiver, [FromBody] Command.Commands.Y_UserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -368,11 +395,11 @@ app.MapDelete("/Y_User/DeleteY_User", async ([FromServices] Command.Receivers.Wr
 .RequireAuthorization();
 
 
-app.MapDelete("/Y_Company/DeleteY_Company", async ([FromServices] Command.Receivers.Write.DeleteY_CompanyReceiver receiver, [FromBody] Command.Commands.Y_CompanyCrudCommand command) =>
+app.MapDelete("/Y_Tenant_Configuration/DeleteY_Tenant_Configuration", async ([FromServices] Command.Receivers.Write.DeleteY_Tenant_ConfigurationReceiver receiver, [FromBody] Command.Commands.Y_Tenant_ConfigurationCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -485,6 +512,13 @@ type = "crud"
 }
 ,
 new{
+id="Y_Tenant",
+description="Y_Tenant",
+endpoint="/getMetaDataY_Tenant",
+type = "crud"
+}
+,
+new{
 id="Y_User",
 description="Y_User",
 endpoint="/getMetaDataY_User",
@@ -492,9 +526,9 @@ type = "crud"
 }
 ,
 new{
-id="Y_Company",
-description="Y_Company",
-endpoint="/getMetaDataY_Company",
+id="Y_Tenant_Configuration",
+description="Y_Tenant_Configuration",
+endpoint="/getMetaDataY_Tenant_Configuration",
 type = "crud"
 }
 ,
@@ -609,6 +643,15 @@ app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read
 .RequireAuthorization();
 
 
+app.MapPost("/Y_Tenant/ReadY_Tenant", async ([FromServices] Command.Receivers.Read.Y_TenantReadReceiver receiver, [FromBody] Command.Commands.Read.Y_TenantReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_TenantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/Y_User/ReadY_User", async ([FromServices] Command.Receivers.Read.Y_UserReadReceiver receiver, [FromBody] Command.Commands.Read.Y_UserReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -618,11 +661,11 @@ app.MapPost("/Y_User/ReadY_User", async ([FromServices] Command.Receivers.Read.Y
 .RequireAuthorization();
 
 
-app.MapPost("/Y_Company/ReadY_Company", async ([FromServices] Command.Receivers.Read.Y_CompanyReadReceiver receiver, [FromBody] Command.Commands.Read.Y_CompanyReadCommand command) =>
+app.MapPost("/Y_Tenant_Configuration/ReadY_Tenant_Configuration", async ([FromServices] Command.Receivers.Read.Y_Tenant_ConfigurationReadReceiver receiver, [FromBody] Command.Commands.Read.Y_Tenant_ConfigurationReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Y_CompanyEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.Y_Tenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -816,7 +859,41 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Y_Company/Y_CompanyReadFKUserIDAdmin", async ([FromServices] Command.Receivers.Read.Y_CompanyReadFKUserIDAdminReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/Y_Tenant/Y_TenantReadFKUserIDAdmin", async ([FromServices] Command.Receivers.Read.Y_TenantReadFKUserIDAdminReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_User/Y_UserReadFKTenantID", async ([FromServices] Command.Receivers.Read.Y_UserReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Y_Tenant_Configuration/Y_Tenant_ConfigurationReadFKTenantID", async ([FromServices] Command.Receivers.Read.Y_Tenant_ConfigurationReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1418,54 +1495,14 @@ formFields = new[]
          };
          return Results.Ok(metadatacrud);
      }).RequireAuthorization();
-app.MapGet("/getMetaDataY_User", (HttpContext context) =>
+app.MapGet("/getMetaDataY_Tenant", (HttpContext context) =>
 {
 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
-entityDescription = "Y_User",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "email", label = "Email", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "senha", label = "Senha", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "email", label = "Email", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "senha", label = "Senha", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/Y_User/PostY_User",
-                 read = "/Y_User/ReadY_User",
-                 update = "/Y_User/PutY_User",
-                 delete = "/Y_User/DeleteY_User"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
-app.MapGet("/getMetaDataY_Company", (HttpContext context) =>
-{
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Y_Company",
+entityDescription = "Y_Tenant",
 searchFields = new[]
 {
  new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
@@ -1490,11 +1527,97 @@ formFields = new[]
 },
              endpoints = new
              {
-                 useridadmin = "/Y_Company/Y_CompanyReadFKUserIDAdmin",
-                 create = "/Y_Company/PostY_Company",
-                 read = "/Y_Company/ReadY_Company",
-                 update = "/Y_Company/PutY_Company",
-                 delete = "/Y_Company/DeleteY_Company"
+                 useridadmin = "/Y_Tenant/Y_TenantReadFKUserIDAdmin",
+                 create = "/Y_Tenant/PostY_Tenant",
+                 read = "/Y_Tenant/ReadY_Tenant",
+                 update = "/Y_Tenant/PutY_Tenant",
+                 delete = "/Y_Tenant/DeleteY_Tenant"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_User", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_User",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "email", label = "Email", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "senha", label = "Senha", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "tenantid", label = "Administrador", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataY_Tenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "email", label = "Email", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "senha", label = "Senha", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "tenantid", label = "Administrador", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataY_Tenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 tenantid = "/Y_User/Y_UserReadFKTenantID",
+                 create = "/Y_User/PostY_User",
+                 read = "/Y_User/ReadY_User",
+                 update = "/Y_User/PutY_User",
+                 delete = "/Y_User/DeleteY_User"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataY_Tenant_Configuration", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "Y_Tenant_Configuration",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "tenantid", label = "Administrador", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataY_Tenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "tenantid", label = "Administrador", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataY_Tenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 tenantid = "/Y_Tenant_Configuration/Y_Tenant_ConfigurationReadFKTenantID",
+                 create = "/Y_Tenant_Configuration/PostY_Tenant_Configuration",
+                 read = "/Y_Tenant_Configuration/ReadY_Tenant_Configuration",
+                 update = "/Y_Tenant_Configuration/PutY_Tenant_Configuration",
+                 delete = "/Y_Tenant_Configuration/DeleteY_Tenant_Configuration"
              }
          };
          return Results.Ok(metadatacrud);

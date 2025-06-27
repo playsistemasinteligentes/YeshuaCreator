@@ -1,0 +1,34 @@
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
+using Dominio.Entitys;
+using Repositorio.Inputs.Repositorio.Y_Tenant;
+using Repositorio.Outputs.DTOs.Y_Tenant;
+using RepositoryInterfaces.Read.Repository.Y_Tenant;
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

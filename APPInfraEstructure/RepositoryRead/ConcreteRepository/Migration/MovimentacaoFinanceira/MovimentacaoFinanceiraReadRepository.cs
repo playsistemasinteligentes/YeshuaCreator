@@ -90,10 +90,6 @@ namespace Read.ConcreteRepository.MovimentacaoFinanceira
         {
             throw new NotImplementedException();
         }
-        public MovimentacaoFinanceiraDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

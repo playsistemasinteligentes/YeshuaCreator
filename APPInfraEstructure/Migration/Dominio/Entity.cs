@@ -1,6 +1,7 @@
 ﻿using Dominio.TiposPrimitivos;
 using Migration.Dominio.Schemas;
 using System.Runtime.CompilerServices;
+using static Dapper.SqlMapper;
 
 namespace Dominio
 {
@@ -28,6 +29,7 @@ namespace Dominio
 
         private string Name { get; set; }
         private string Description { get; set; }
+        public bool CachedTable { get; set; } = false;
 
         public Entity AddColumn(string columnName)
         {
@@ -39,6 +41,7 @@ namespace Dominio
 
         public Entity AddColumn(string columnName, string description)
         {
+            this.StatusColuns = 1;
             var col = new Column(columnName, description, this);
             AddColumns.Add(col);
             return this;
@@ -83,6 +86,13 @@ namespace Dominio
                 return this.AddColumns.Last().Int();
             else
                 return this.AlterColumns.Last().Int();
+        }
+        public Entity Boolean()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().Boolean();
+            else
+                return this.AlterColumns.Last().Boolean();
         }
         public Entity Decimal(int length, int precision)
         {

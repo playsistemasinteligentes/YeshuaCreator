@@ -124,6 +124,8 @@ namespace Dominio
             {
                 case "int":
                     return "int" + (nulableTag && !this.IsNotNull ? "?" : "");
+                case "bool":
+                    return "bool" + (nulableTag && !this.IsNotNull ? "?" : "");
                 case "varchar":
                     return "string";
                 case "datetime":
@@ -194,5 +196,12 @@ namespace Dominio
             this.IsUserEncryptedField = true;
             return this.Entity;
         }
+
+        public Entity Boolean()
+        {
+            Type = "boolean";
+            return this.Entity;
+        }
+
     }
 }

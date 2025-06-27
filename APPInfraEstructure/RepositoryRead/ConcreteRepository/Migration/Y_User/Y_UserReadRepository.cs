@@ -44,11 +44,28 @@ namespace Read.ConcreteRepository.Y_User
             }
         }
 
-        public Y_UserDTO getById()
+        private IEnumerable<Y_UserTenantIDDTO> getY_UserReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
         {
+            List<Y_UserTenantIDDTO> lista;
+            var query = new Y_UserReadQuery().Y_UserTenantIDQuery(command);
+
+            using (_connection)
+            {
+                lista = _connection.Query<Y_UserTenantIDDTO>(query.Query,query.Parameters) as List<Y_UserTenantIDDTO>;
+            }
+            return lista;
+        }
+
+        public IEnumerable<Y_UserTenantIDDTO> getY_UserReadFKTenantID(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_UserReadFKTenantID(c);
+            }
             throw new NotImplementedException();
         }
-        public Y_UserDTO GetById()
+
+        public Y_UserDTO getById()
         {
             throw new NotImplementedException();
         }

@@ -48,10 +48,6 @@ namespace Read.ConcreteRepository.GrupoServico
         {
             throw new NotImplementedException();
         }
-        public GrupoServicoDTO GetById()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

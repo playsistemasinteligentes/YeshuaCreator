@@ -23,7 +23,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Commands.Y_UserCrudCommand c) 
              {    
-                 var y_user = new Y_UserEntity(c.Id, c.Nome, c.Email, c.Senha);
+                 var y_user = new Y_UserEntity(c.Id, c.Nome, c.Email, c.Senha, c.TenantID);
                  if (!y_user.isValidUpdate())
                      return ValidationError(y_user.getErroMensagens(), comand);
 
