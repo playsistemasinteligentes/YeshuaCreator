@@ -29,15 +29,15 @@ namespace Read.ConcreteRepository.Y_Tenant_Configuration
     public DataPagination<Y_Tenant_ConfigurationDTO> getY_Tenant_Configuration(ICommandRead command)
     {
         bool isFullQuery = true; // Ajuste conforme sua lógica de filtros
-        var key = "Y_Tenant_Configuration:All";
+        var key = $"Y_Tenant_Configuration:All:Page:{command.Paginacao.Page}:PageZize:{command.Paginacao.PageSize}";
         if (isFullQuery)
         {
             var cached = _cacheAll.Get(key);
             if (cached != null)
-                return new DataPagination<Y_Tenant_ConfigurationDTO>(cached, 1, cached.Count(), cached.Count());
+                return new DataPagination<Y_Tenant_ConfigurationDTO>(cached, command.Paginacao.Page, command.Paginacao.PageSize);
 
             var data = _inner.getY_Tenant_Configuration(command);
-            _cacheAll.Set(key, data.Items);
+            _cacheAll.Set(key, data.Items, "Y_Tenant_Configuration");
             return data;
         }
         return _inner.getY_Tenant_Configuration(command);
@@ -54,7 +54,7 @@ namespace Read.ConcreteRepository.Y_Tenant_Configuration
             var cached = _cacheFKTenantID.Get(key);
             if (cached != null) return cached;
             var result = _inner.getY_Tenant_ConfigurationReadFKTenantID(command);
-            if (result != null) _cacheFKTenantID.Set(key, result);
+            if (result != null) _cacheFKTenantID.Set(key, result,"Y_Tenant_Configuration");
             return result;
         }
         public Y_Tenant_ConfigurationDTO getById()

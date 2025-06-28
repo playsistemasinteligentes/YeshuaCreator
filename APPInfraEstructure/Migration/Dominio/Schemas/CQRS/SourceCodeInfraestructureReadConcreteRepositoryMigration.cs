@@ -1,6 +1,8 @@
-﻿using Migration.Dominio;
+﻿using Azure;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using Repositorio.Outputs.DTOs.Y_Tenant_Configuration;
+using RepositoryInterfaces.Patterns.Repository;
 using RepositoryInterfaces.Services;
 using System.Data.Common;
 using System.Text;
@@ -85,15 +87,17 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command)");
                 sb.AppendLine("    {");
                 sb.AppendLine("        bool isFullQuery = true; // Ajuste conforme sua lógica de filtros");
-                sb.AppendLine($"        var key = \"{_entity.EntityName}:All\";");
+                sb.AppendLine($"        var key = $\"{_entity.EntityName}:All:Page:{{command.Paginacao.Page}}:PageZize:{{command.Paginacao.PageSize}}\";");
+
                 sb.AppendLine("        if (isFullQuery)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            var cached = _cacheAll.Get(key);");
                 sb.AppendLine("            if (cached != null)");
-                sb.AppendLine($"                return new DataPagination<{_entity.EntityName}DTO>(cached, 1, cached.Count(), cached.Count());");
+                sb.AppendLine($"                return new DataPagination<{_entity.EntityName}DTO>(cached, command.Paginacao.Page, command.Paginacao.PageSize);");
+
                 sb.AppendLine();
                 sb.AppendLine($"            var data = _inner.get{_entity.EntityName}(command);");
-                sb.AppendLine("            _cacheAll.Set(key, data.Items);");
+                sb.AppendLine($"            _cacheAll.Set(key, data.Items, \"{_entity.EntityName}\");");
                 sb.AppendLine("            return data;");
                 sb.AppendLine("        }");
                 sb.AppendLine($"        return _inner.get{_entity.EntityName}(command);");
@@ -119,7 +123,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            var cached = _cacheFK{column.Name}.Get(key);");
                     sb.AppendLine("            if (cached != null) return cached;");
                     sb.AppendLine($"            var result = _inner.get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(command);");
-                    sb.AppendLine($"            if (result != null) _cacheFK{column.Name}.Set(key, result);");
+                    sb.AppendLine($"            if (result != null) _cacheFK{column.Name}.Set(key, result,\"{_entity.EntityName}\");");
                     sb.AppendLine("            return result;");
                     sb.AppendLine("        }");
 

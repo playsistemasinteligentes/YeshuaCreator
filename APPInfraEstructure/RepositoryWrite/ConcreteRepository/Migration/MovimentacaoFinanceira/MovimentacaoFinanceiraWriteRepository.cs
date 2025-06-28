@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys;
 using Input.Querys.MovimentacaoFinanceira;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
+using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;

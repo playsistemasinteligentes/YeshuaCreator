@@ -45,6 +45,8 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();");
             sb.AppendLine("builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));");
+            sb.AppendLine("builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();");
+
 
 
 
@@ -83,14 +85,12 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine($"        var cacheFK{column.Name} = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.DTOs.{entity.EntityName}.{entity.EntityName}{column.Name}DTO>>>();");
 
                     // fixo acrecentar quando tiver mais consultas
-                    sb.AppendLine($"    return new Read.ConcreteRepository.Y_Tenant_Configuration.Y_Tenant_ConfigurationReadRepositoryCacheDecorator(inner");
-                    sb.AppendLine($"    ,cacheById");
-                    sb.AppendLine($"    ,cacheAll");
+                    sb.Append($"    return new Read.ConcreteRepository.Y_Tenant_Configuration.Y_Tenant_ConfigurationReadRepositoryCacheDecorator(inner,cacheById,cacheAll");
 
                     foreach (var column in entity.AddColumns.Where(x => x.IsFK))
-                        sb.AppendLine($"        ,cacheFK{column.Name}");
+                        sb.Append($",cacheFK{column.Name}");
+                    sb.AppendLine("    );");
 
-                    sb.Append("    );");
                     sb.AppendLine("});");
 
 

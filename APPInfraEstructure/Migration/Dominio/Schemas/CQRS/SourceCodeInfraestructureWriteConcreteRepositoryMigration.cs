@@ -1,5 +1,6 @@
 ﻿using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using RepositoryInterfaces.Services;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -22,6 +23,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
             sb.AppendLine($"using Input.Querys.{_entity.EntityName};");
             sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+            sb.AppendLine($"using RepositoryInterfaces.Services;");
             sb.AppendLine($"using RepositoryInterfaces.Patterns.UnitOfWork;");
             sb.AppendLine("using Shered.DB.Connection;");
             sb.AppendLine("using System;");
@@ -36,14 +38,31 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public class {_entity.EntityName}WriteRepository : I{_entity.EntityName}WriteRepository");
             sb.AppendLine("    {");
             sb.AppendLine("        private readonly IUnitOfWork _UnitOfWork;");
-            sb.AppendLine();
-            sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork)");
-            sb.AppendLine("        {");
-            sb.AppendLine("             _UnitOfWork= unitOfWork;");
-            sb.AppendLine("        }");
+            if (_entity.CachedTable)
+            {
+                sb.AppendLine($"        private readonly ICacheService<object> _cacheService;");
+                sb.AppendLine();
+                sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork, ICacheService<object> cacheService)");
+                sb.AppendLine("        {");
+                sb.AppendLine("             _UnitOfWork= unitOfWork;");
+                sb.AppendLine("             _cacheService = cacheService;");
+                sb.AppendLine("        }");
+            }
+            else
+            {
+                sb.AppendLine();
+                sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork)");
+                sb.AppendLine("        {");
+                sb.AppendLine("             _UnitOfWork= unitOfWork;");
+                sb.AppendLine("        }");
+            }
+
             sb.AppendLine();
             sb.AppendLine($"        public void Insert({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
+            if (_entity.CachedTable)
+                sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
+
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Inserir{_entity.EntityName}Query({_entity.EntityName});");
 
             var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
@@ -56,11 +75,15 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine($"        public void Update({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
+            if (_entity.CachedTable)
+                sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{_entity.EntityName}Query({_entity.EntityName});");
             sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
             sb.AppendLine($"        public void Delete({_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
+            if (_entity.CachedTable)
+                sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Delete{_entity.EntityName}Query({_entity.EntityName});");
             sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");

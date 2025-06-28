@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys;
 using Input.Querys.Y_PerfilPermitions;
 using Repositorio.Inputs.Repositorio.Y_PerfilPermitions;
+using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;

@@ -2,6 +2,7 @@ using Dapper;
 using Dominio.Entitys;
 using Input.Querys.Y_User;
 using Repositorio.Inputs.Repositorio.Y_User;
+using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;

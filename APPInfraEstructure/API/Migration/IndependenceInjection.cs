@@ -8,6 +8,7 @@ public static void MapIndependenceInjection(WebApplicationBuilder builder)
 {
 builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
 builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
+builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
 
 builder.Services.AddTransient<Repositorio.Inputs.Repositorio.Especialidade.IEspecialidadeWriteRepository, Input.Repository.Especialidade.EspecialidadeWriteRepository>();
 builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.Especialidade.IEspecialidadeReadRepository, Read.ConcreteRepository.Especialidade.EspecialidadeReadRepository>();
@@ -105,11 +106,8 @@ builder.Services.AddTransient<Read.ConcreteRepository.Y_Tenant_Configuration.Y_T
     var cacheById = sp.GetRequiredService<ICacheService<Repositorio.Outputs.DTOs.Y_Tenant_Configuration.Y_Tenant_ConfigurationDTO >>();
     var cacheAll = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.DTOs.Y_Tenant_Configuration.Y_Tenant_ConfigurationDTO>>>();
         var cacheFKTenantID = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.DTOs.Y_Tenant_Configuration.Y_Tenant_ConfigurationTenantIDDTO>>>();
-    return new Read.ConcreteRepository.Y_Tenant_Configuration.Y_Tenant_ConfigurationReadRepositoryCacheDecorator(inner
-    ,cacheById
-    ,cacheAll
-        ,cacheFKTenantID
-    );});
+    return new Read.ConcreteRepository.Y_Tenant_Configuration.Y_Tenant_ConfigurationReadRepositoryCacheDecorator(inner,cacheById,cacheAll,cacheFKTenantID    );
+});
 builder.Services.AddTransient<Command.Receivers.Write.InsertY_Tenant_ConfigurationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateY_Tenant_ConfigurationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteY_Tenant_ConfigurationReceiver>();
