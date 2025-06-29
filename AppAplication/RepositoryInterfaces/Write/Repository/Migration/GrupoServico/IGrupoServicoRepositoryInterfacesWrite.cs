@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.GrupoServico
 {
     public partial interface IGrupoServicoWriteRepository
     {
-        void Insert(GrupoServicoEntity gruposervico);
-        void Update(GrupoServicoEntity gruposervico);
-        void Delete(GrupoServicoEntity gruposervico);
+        void Insert(IGrupoServicoEntity gruposervico);
+        void Update(IGrupoServicoEntity gruposervico);
+        void Delete(IGrupoServicoEntity gruposervico);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

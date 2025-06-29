@@ -80,7 +80,6 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\obj\Debug\net8.0\API.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\obj\Debug\net8.0\API.genruntimeconfig.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\obj\Debug\net8.0\ref\API.dll
-C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\obj\Debug\net8.0\API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\bin\Debug\net8.0\Migration.dll

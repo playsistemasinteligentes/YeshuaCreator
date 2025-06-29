@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertDisponibilidadeAgendaReceiver : ReciverBase <DisponibilidadeAgendaEntity>
+    public class InsertDisponibilidadeAgendaReceiver : ReciverBase <IDisponibilidadeAgendaEntity>
     {
         private readonly IDisponibilidadeAgendaWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public InsertDisponibilidadeAgendaReceiver(IDisponibilidadeAgendaWriteRepository repository)
+        public InsertDisponibilidadeAgendaReceiver(IDisponibilidadeAgendaWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<DisponibilidadeAgendaEntity> Action(ICommand comand)
+        protected override State<IDisponibilidadeAgendaEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.DisponibilidadeAgendaCrudCommand c) 
              {    
-                 var disponibilidadeagenda = new DisponibilidadeAgendaEntity(c.Id, c.ProfissionalId, c.DataHora);
+                 var disponibilidadeagenda = new DisponibilidadeAgendaFactory(_logger).Create(c.Id, c.ProfissionalId, c.DataHora);
                  if (!disponibilidadeagenda.isValidInsert())
                      return ValidationError(disponibilidadeagenda.getErroMensagens(), comand);
 

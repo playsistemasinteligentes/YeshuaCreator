@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Y_PerfilPermitions
 {
     public partial interface IY_PerfilPermitionsWriteRepository
     {
-        void Insert(Y_PerfilPermitionsEntity y_perfilpermitions);
-        void Update(Y_PerfilPermitionsEntity y_perfilpermitions);
-        void Delete(Y_PerfilPermitionsEntity y_perfilpermitions);
+        void Insert(IY_PerfilPermitionsEntity y_perfilpermitions);
+        void Update(IY_PerfilPermitionsEntity y_perfilpermitions);
+        void Delete(IY_PerfilPermitionsEntity y_perfilpermitions);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

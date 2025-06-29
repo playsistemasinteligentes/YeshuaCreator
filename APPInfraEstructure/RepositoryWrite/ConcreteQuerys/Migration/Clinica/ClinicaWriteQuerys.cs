@@ -10,7 +10,7 @@ namespace Input.Querys.Clinica
 {
     public class ClinicaWriteQuery : QueryBase
     {
-        public QueryModel InserirClinicaQuery(ClinicaEntity Clinica)
+        public QueryModel InserirClinicaQuery(IClinicaEntity Clinica)
         {
             this.Query = $@" INSERT INTO Clinica (Nome, Endereco, Telefone) OUTPUT INSERTED.Id VALUES(@Nome, @Endereco, @Telefone) ";
             this.Parameters = new
@@ -21,7 +21,7 @@ namespace Input.Querys.Clinica
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateClinicaQuery(ClinicaEntity Clinica)
+        public QueryModel UpdateClinicaQuery(IClinicaEntity Clinica)
         {
             this.Query = $@" UPDATE Clinica SET Nome = @Nome, Endereco = @Endereco, Telefone = @Telefone WHERE Id = @Id ";
             this.Parameters = new
@@ -33,7 +33,7 @@ namespace Input.Querys.Clinica
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteClinicaQuery(ClinicaEntity Clinica)
+        public QueryModel DeleteClinicaQuery(IClinicaEntity Clinica)
         {
             this.Query = $@" DELETE FROM Clinica WHERE Id = @Id ";
             this.Parameters = new

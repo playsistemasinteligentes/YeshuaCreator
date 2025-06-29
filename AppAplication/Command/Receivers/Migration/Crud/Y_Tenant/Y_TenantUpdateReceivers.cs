@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Y_Tenant;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateY_TenantReceiver : ReciverBase <Y_TenantEntity>
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
     {
         private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository)
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<Y_TenantEntity> Action(ICommand comand)
+        protected override State<IY_TenantEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_TenantCrudCommand c) 
              {    
-                 var y_tenant = new Y_TenantEntity(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
                  if (!y_tenant.isValidUpdate())
                      return ValidationError(y_tenant.getErroMensagens(), comand);
 

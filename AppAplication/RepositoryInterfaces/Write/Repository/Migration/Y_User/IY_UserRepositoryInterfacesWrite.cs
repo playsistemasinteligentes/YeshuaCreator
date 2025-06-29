@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Y_User
 {
     public partial interface IY_UserWriteRepository
     {
-        void Insert(Y_UserEntity y_user);
-        void Update(Y_UserEntity y_user);
-        void Delete(Y_UserEntity y_user);
+        void Insert(IY_UserEntity y_user);
+        void Update(IY_UserEntity y_user);
+        void Delete(IY_UserEntity y_user);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

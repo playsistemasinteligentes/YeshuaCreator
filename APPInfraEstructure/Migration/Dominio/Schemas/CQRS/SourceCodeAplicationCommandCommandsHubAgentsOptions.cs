@@ -2,7 +2,6 @@
 using Dominio.TiposPrimitivos;
 using Migration.Dominio;
 using System.Collections.Generic;
-using static Dapper.SqlMapper;
 using System.Text;
 using Migration.Dominio.Schemas.CQRS;
 

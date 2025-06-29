@@ -8,14 +8,14 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class ClinicaEntity
-                    {
-                public int? Id { get; set; }
+                    public partial class ClinicaEntity : IClinicaEntity
+{
+    public int? Id { get; set; }
     public string Nome { get; set; }
     public string Endereco { get; set; }
     public string Telefone { get; set; }
     private List<string> _erroMensagem = null;
- public ClinicaEntity(int? id, string nome, string endereco, string telefone ){
+ internal ClinicaEntity(int? id, string nome, string endereco, string telefone ){
  Id = id; 
  Nome = nome; 
  Endereco = endereco; 
@@ -33,21 +33,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

@@ -23,18 +23,18 @@ namespace Input.Repository.Clinica
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(ClinicaEntity Clinica)
+        public void Insert(IClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().InserirClinicaQuery(Clinica);
         Clinica.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(ClinicaEntity Clinica)
+        public void Update(IClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().UpdateClinicaQuery(Clinica);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(ClinicaEntity Clinica)
+        public void Delete(IClinicaEntity Clinica)
         {
             var query = new ClinicaWriteQuery().DeleteClinicaQuery(Clinica);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

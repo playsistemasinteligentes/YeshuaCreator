@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Y_Perfil;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteY_PerfilReceiver : ReciverBase <Y_PerfilEntity>
+    public class DeleteY_PerfilReceiver : ReciverBase <IY_PerfilEntity>
     {
         private readonly IY_PerfilWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public DeleteY_PerfilReceiver(IY_PerfilWriteRepository repository)
+        public DeleteY_PerfilReceiver(IY_PerfilWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<Y_PerfilEntity> Action(ICommand comand)
+        protected override State<IY_PerfilEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_PerfilCrudCommand c) 
              {    
-                 var y_perfil = new Y_PerfilEntity(c.Id, c.Description);
+                 var y_perfil = new Y_PerfilFactory(_logger).Create(c.Id, c.Description);
                  if (!y_perfil.isValidDelete())
                      return ValidationError(y_perfil.getErroMensagens(), comand);
 

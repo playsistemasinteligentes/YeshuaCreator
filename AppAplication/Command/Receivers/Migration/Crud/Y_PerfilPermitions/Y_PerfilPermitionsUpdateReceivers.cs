@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Y_PerfilPermitions;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateY_PerfilPermitionsReceiver : ReciverBase <Y_PerfilPermitionsEntity>
+    public class UpdateY_PerfilPermitionsReceiver : ReciverBase <IY_PerfilPermitionsEntity>
     {
         private readonly IY_PerfilPermitionsWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public UpdateY_PerfilPermitionsReceiver(IY_PerfilPermitionsWriteRepository repository)
+        public UpdateY_PerfilPermitionsReceiver(IY_PerfilPermitionsWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<Y_PerfilPermitionsEntity> Action(ICommand comand)
+        protected override State<IY_PerfilPermitionsEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_PerfilPermitionsCrudCommand c) 
              {    
-                 var y_perfilpermitions = new Y_PerfilPermitionsEntity(c.PerfilId, c.PermitionsId);
+                 var y_perfilpermitions = new Y_PerfilPermitionsFactory(_logger).Create(c.PerfilId, c.PermitionsId);
                  if (!y_perfilpermitions.isValidUpdate())
                      return ValidationError(y_perfilpermitions.getErroMensagens(), comand);
 

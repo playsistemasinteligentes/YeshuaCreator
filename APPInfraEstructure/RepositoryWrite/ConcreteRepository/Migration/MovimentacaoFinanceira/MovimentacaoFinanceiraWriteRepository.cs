@@ -23,18 +23,18 @@ namespace Input.Repository.MovimentacaoFinanceira
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public void Insert(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
         MovimentacaoFinanceira.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public void Update(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public void Delete(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = new MovimentacaoFinanceiraWriteQuery().DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

@@ -10,7 +10,7 @@ namespace Input.Querys.DisponibilidadeAgenda
 {
     public class DisponibilidadeAgendaWriteQuery : QueryBase
     {
-        public QueryModel InserirDisponibilidadeAgendaQuery(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public QueryModel InserirDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora) OUTPUT INSERTED.Id VALUES(@ProfissionalId, @DataHora) ";
             this.Parameters = new
@@ -20,7 +20,7 @@ namespace Input.Querys.DisponibilidadeAgenda
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDisponibilidadeAgendaQuery(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public QueryModel UpdateDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId, DataHora = @DataHora WHERE Id = @Id ";
             this.Parameters = new
@@ -31,7 +31,7 @@ namespace Input.Querys.DisponibilidadeAgenda
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteDisponibilidadeAgendaQuery(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public QueryModel DeleteDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             this.Query = $@" DELETE FROM DisponibilidadeAgenda WHERE Id = @Id ";
             this.Parameters = new

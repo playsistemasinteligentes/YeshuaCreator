@@ -10,7 +10,7 @@ namespace Input.Querys.Y_Perfil
 {
     public class Y_PerfilWriteQuery : QueryBase
     {
-        public QueryModel InserirY_PerfilQuery(Y_PerfilEntity Y_Perfil)
+        public QueryModel InserirY_PerfilQuery(IY_PerfilEntity Y_Perfil)
         {
             this.Query = $@" INSERT INTO Y_Perfil (Description) OUTPUT INSERTED.Id VALUES(@Description) ";
             this.Parameters = new
@@ -19,7 +19,7 @@ namespace Input.Querys.Y_Perfil
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateY_PerfilQuery(Y_PerfilEntity Y_Perfil)
+        public QueryModel UpdateY_PerfilQuery(IY_PerfilEntity Y_Perfil)
         {
             this.Query = $@" UPDATE Y_Perfil SET Description = @Description WHERE Id = @Id ";
             this.Parameters = new
@@ -29,7 +29,7 @@ namespace Input.Querys.Y_Perfil
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteY_PerfilQuery(Y_PerfilEntity Y_Perfil)
+        public QueryModel DeleteY_PerfilQuery(IY_PerfilEntity Y_Perfil)
         {
             this.Query = $@" DELETE FROM Y_Perfil WHERE Id = @Id ";
             this.Parameters = new

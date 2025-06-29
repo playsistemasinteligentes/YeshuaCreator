@@ -10,7 +10,7 @@ namespace Input.Querys.Sesoes
 {
     public class SesoesWriteQuery : QueryBase
     {
-        public QueryModel InserirSesoesQuery(SesoesEntity Sesoes)
+        public QueryModel InserirSesoesQuery(ISesoesEntity Sesoes)
         {
             this.Query = $@" INSERT INTO Sesoes (PacienteId, ProfissionalId, ServicoId, DataInicio, DataFim, Status, MovimentacaoFinanceiraId, SinteseProntuario, QueixaPrincipal, MotivoConsultaAtual, SintomasRelatados, MudancasDesdeUltimaSessaao, ComportamentoObservado, EstadoEmocionalGeral, DiscursoPensamentos, TecnicasUtilizadas, QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo, ObjetivosLongoPrazo, FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico) OUTPUT INSERTED.Id VALUES(@PacienteId, @ProfissionalId, @ServicoId, @DataInicio, @DataFim, @Status, @MovimentacaoFinanceiraId, @SinteseProntuario, @QueixaPrincipal, @MotivoConsultaAtual, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico) ";
             this.Parameters = new
@@ -43,7 +43,7 @@ namespace Input.Querys.Sesoes
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSesoesQuery(SesoesEntity Sesoes)
+        public QueryModel UpdateSesoesQuery(ISesoesEntity Sesoes)
         {
             this.Query = $@" UPDATE Sesoes SET PacienteId = @PacienteId, ProfissionalId = @ProfissionalId, ServicoId = @ServicoId, DataInicio = @DataInicio, DataFim = @DataFim, Status = @Status, MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId, SinteseProntuario = @SinteseProntuario, QueixaPrincipal = @QueixaPrincipal, MotivoConsultaAtual = @MotivoConsultaAtual, SintomasRelatados = @SintomasRelatados, MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao, ComportamentoObservado = @ComportamentoObservado, EstadoEmocionalGeral = @EstadoEmocionalGeral, DiscursoPensamentos = @DiscursoPensamentos, TecnicasUtilizadas = @TecnicasUtilizadas, QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo, ObjetivosLongoPrazo = @ObjetivosLongoPrazo, FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico WHERE Id = @Id ";
             this.Parameters = new
@@ -77,7 +77,7 @@ namespace Input.Querys.Sesoes
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteSesoesQuery(SesoesEntity Sesoes)
+        public QueryModel DeleteSesoesQuery(ISesoesEntity Sesoes)
         {
             this.Query = $@" DELETE FROM Sesoes WHERE Id = @Id ";
             this.Parameters = new

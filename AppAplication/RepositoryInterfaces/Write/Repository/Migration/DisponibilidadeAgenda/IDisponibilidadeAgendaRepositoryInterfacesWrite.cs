@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.DisponibilidadeAgenda
 {
     public partial interface IDisponibilidadeAgendaWriteRepository
     {
-        void Insert(DisponibilidadeAgendaEntity disponibilidadeagenda);
-        void Update(DisponibilidadeAgendaEntity disponibilidadeagenda);
-        void Delete(DisponibilidadeAgendaEntity disponibilidadeagenda);
+        void Insert(IDisponibilidadeAgendaEntity disponibilidadeagenda);
+        void Update(IDisponibilidadeAgendaEntity disponibilidadeagenda);
+        void Delete(IDisponibilidadeAgendaEntity disponibilidadeagenda);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

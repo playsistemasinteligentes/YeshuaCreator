@@ -23,18 +23,18 @@ namespace Input.Repository.DisponibilidadeAgenda
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public void Insert(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().InserirDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
         DisponibilidadeAgenda.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public void Update(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().UpdateDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(DisponibilidadeAgendaEntity DisponibilidadeAgenda)
+        public void Delete(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             var query = new DisponibilidadeAgendaWriteQuery().DeleteDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

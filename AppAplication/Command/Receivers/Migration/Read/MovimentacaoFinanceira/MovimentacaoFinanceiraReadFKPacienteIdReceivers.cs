@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
 using RepositoryInterfaces.Read.Repository.MovimentacaoFinanceira;
 using Repositorio.Outputs.DTOs.MovimentacaoFinanceira;

@@ -8,9 +8,9 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class MovimentacaoFinanceiraEntity
-                    {
-                public int? Id { get; set; }
+                    public partial class MovimentacaoFinanceiraEntity : IMovimentacaoFinanceiraEntity
+{
+    public int? Id { get; set; }
     public int? PacienteId { get; set; }
     public int? ServicoId { get; set; }
     public Decimal Valor { get; set; }
@@ -18,7 +18,7 @@
     public DateTime DataMovimentacao { get; set; }
     public Decimal SaldoAtual { get; set; }
     private List<string> _erroMensagem = null;
- public MovimentacaoFinanceiraEntity(int? id, int? pacienteid, int? servicoid, Decimal valor, int tipomovimentacao, DateTime datamovimentacao, Decimal saldoatual ){
+ internal MovimentacaoFinanceiraEntity(int? id, int? pacienteid, int? servicoid, Decimal valor, int tipomovimentacao, DateTime datamovimentacao, Decimal saldoatual ){
  Id = id; 
  PacienteId = pacienteid; 
  ServicoId = servicoid; 
@@ -41,21 +41,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

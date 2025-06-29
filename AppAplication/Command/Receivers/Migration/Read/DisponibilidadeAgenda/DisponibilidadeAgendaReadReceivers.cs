@@ -2,6 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
 using Repositorio.Outputs.DTOs.DisponibilidadeAgenda;
 using RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda;
@@ -11,10 +12,12 @@ namespace Command.Receivers.Read
     public class DisponibilidadeAgendaReadReceiver : ReciverBase<DataPagination<DisponibilidadeAgendaDTO>>
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
+        private readonly ILogger _logger;
 
-        public DisponibilidadeAgendaReadReceiver(IDisponibilidadeAgendaReadRepository repository)
+        public DisponibilidadeAgendaReadReceiver(IDisponibilidadeAgendaReadRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         protected override State<DataPagination<DisponibilidadeAgendaDTO>> Action(ICommand comand)

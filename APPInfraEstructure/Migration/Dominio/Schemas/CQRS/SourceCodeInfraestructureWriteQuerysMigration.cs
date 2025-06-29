@@ -29,7 +29,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public class {_entity.EntityName}WriteQuery : QueryBase");
             sb.AppendLine("    {");
-            sb.AppendLine($"        public QueryModel Inserir{_entity.EntityName}Query({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine($"        public QueryModel Inserir{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
 
             var columnsString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(x => x.Name));
@@ -51,7 +51,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
 
             // update 
-            sb.AppendLine($"        public QueryModel Update{_entity.EntityName}Query({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine($"        public QueryModel Update{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
 
             parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey).Select(c => $"{c.Name} = @{c.Name}"));
@@ -71,7 +71,7 @@ namespace Dominio.Schemas.CQRS
 
 
             //delete 
-            sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
 
             parametersString = string.Join("AND ", _entity.AddColumns.Where(x => x.IsKey).Select(c => $"{c.Name} = @{c.Name}"));

@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Profissional
 {
     public partial interface IProfissionalWriteRepository
     {
-        void Insert(ProfissionalEntity profissional);
-        void Update(ProfissionalEntity profissional);
-        void Delete(ProfissionalEntity profissional);
+        void Insert(IProfissionalEntity profissional);
+        void Update(IProfissionalEntity profissional);
+        void Delete(IProfissionalEntity profissional);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

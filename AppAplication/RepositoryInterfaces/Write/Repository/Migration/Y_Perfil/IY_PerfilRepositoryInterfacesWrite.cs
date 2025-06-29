@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Y_Perfil
 {
     public partial interface IY_PerfilWriteRepository
     {
-        void Insert(Y_PerfilEntity y_perfil);
-        void Update(Y_PerfilEntity y_perfil);
-        void Delete(Y_PerfilEntity y_perfil);
+        void Insert(IY_PerfilEntity y_perfil);
+        void Update(IY_PerfilEntity y_perfil);
+        void Delete(IY_PerfilEntity y_perfil);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using static Dapper.SqlMapper;
+
 
 namespace Dominio.Migration
 {

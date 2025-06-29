@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Especialidade
 {
     public partial interface IEspecialidadeWriteRepository
     {
-        void Insert(EspecialidadeEntity especialidade);
-        void Update(EspecialidadeEntity especialidade);
-        void Delete(EspecialidadeEntity especialidade);
+        void Insert(IEspecialidadeEntity especialidade);
+        void Update(IEspecialidadeEntity especialidade);
+        void Delete(IEspecialidadeEntity especialidade);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

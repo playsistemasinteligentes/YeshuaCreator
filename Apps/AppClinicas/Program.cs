@@ -1,13 +1,9 @@
 ﻿using Dominio.Migration;
 using Dominio.Schemas;
 using Dominio.Schemas.CQRS;
-using DominioDeTestes.config;
-using RepositoryInterfaces.Patterns.UnitOfWork;
-using Shered.DB.Connection;
+using Infra;
+using Migration.Interfaces;
 using System.Data;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
 
 Console.WriteLine("Begin");
 

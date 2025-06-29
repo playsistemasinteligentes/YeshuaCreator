@@ -2,6 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Y_Permtions;
 using Repositorio.Outputs.DTOs.Y_Permtions;
 using RepositoryInterfaces.Read.Repository.Y_Permtions;
@@ -11,10 +12,12 @@ namespace Command.Receivers.Read
     public class Y_PermtionsReadReceiver : ReciverBase<DataPagination<Y_PermtionsDTO>>
     {
         private readonly IY_PermtionsReadRepository _repository;
+        private readonly ILogger _logger;
 
-        public Y_PermtionsReadReceiver(IY_PermtionsReadRepository repository)
+        public Y_PermtionsReadReceiver(IY_PermtionsReadRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         protected override State<DataPagination<Y_PermtionsDTO>> Action(ICommand comand)

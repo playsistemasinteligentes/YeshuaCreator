@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Profissional;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertProfissionalReceiver : ReciverBase <ProfissionalEntity>
+    public class InsertProfissionalReceiver : ReciverBase <IProfissionalEntity>
     {
         private readonly IProfissionalWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public InsertProfissionalReceiver(IProfissionalWriteRepository repository)
+        public InsertProfissionalReceiver(IProfissionalWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<ProfissionalEntity> Action(ICommand comand)
+        protected override State<IProfissionalEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.ProfissionalCrudCommand c) 
              {    
-                 var profissional = new ProfissionalEntity(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
+                 var profissional = new ProfissionalFactory(_logger).Create(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
                  if (!profissional.isValidInsert())
                      return ValidationError(profissional.getErroMensagens(), comand);
 

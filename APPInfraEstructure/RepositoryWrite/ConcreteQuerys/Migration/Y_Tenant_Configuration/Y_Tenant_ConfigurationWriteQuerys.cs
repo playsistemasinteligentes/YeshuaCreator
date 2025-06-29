@@ -10,7 +10,7 @@ namespace Input.Querys.Y_Tenant_Configuration
 {
     public class Y_Tenant_ConfigurationWriteQuery : QueryBase
     {
-        public QueryModel InserirY_Tenant_ConfigurationQuery(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        public QueryModel InserirY_Tenant_ConfigurationQuery(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             this.Query = $@" INSERT INTO Y_Tenant_Configuration (Id, AuditTrackerActived, AuditCRUDActived, TenantID) OUTPUT INSERTED.ID VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID) ";
             this.Parameters = new
@@ -22,7 +22,7 @@ namespace Input.Querys.Y_Tenant_Configuration
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateY_Tenant_ConfigurationQuery(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        public QueryModel UpdateY_Tenant_ConfigurationQuery(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             this.Query = $@" UPDATE Y_Tenant_Configuration SET AuditTrackerActived = @AuditTrackerActived, AuditCRUDActived = @AuditCRUDActived, TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
@@ -34,7 +34,7 @@ namespace Input.Querys.Y_Tenant_Configuration
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteY_Tenant_ConfigurationQuery(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        public QueryModel DeleteY_Tenant_ConfigurationQuery(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             this.Query = $@" DELETE FROM Y_Tenant_Configuration WHERE Id = @Id ";
             this.Parameters = new

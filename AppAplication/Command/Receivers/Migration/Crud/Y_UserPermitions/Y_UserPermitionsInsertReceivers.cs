@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Y_UserPermitions;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertY_UserPermitionsReceiver : ReciverBase <Y_UserPermitionsEntity>
+    public class InsertY_UserPermitionsReceiver : ReciverBase <IY_UserPermitionsEntity>
     {
         private readonly IY_UserPermitionsWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public InsertY_UserPermitionsReceiver(IY_UserPermitionsWriteRepository repository)
+        public InsertY_UserPermitionsReceiver(IY_UserPermitionsWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<Y_UserPermitionsEntity> Action(ICommand comand)
+        protected override State<IY_UserPermitionsEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_UserPermitionsCrudCommand c) 
              {    
-                 var y_userpermitions = new Y_UserPermitionsEntity(c.UserId, c.PermitionsId);
+                 var y_userpermitions = new Y_UserPermitionsFactory(_logger).Create(c.UserId, c.PermitionsId);
                  if (!y_userpermitions.isValidInsert())
                      return ValidationError(y_userpermitions.getErroMensagens(), comand);
 

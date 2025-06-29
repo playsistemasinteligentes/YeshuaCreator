@@ -1,5 +1,4 @@
-﻿using Dominio.Entitys.GrupoServico;
-using Interfaces.Schemas;
+﻿using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
@@ -7,7 +6,6 @@ using System.Globalization;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
 using System.Text;
-using static Dapper.SqlMapper;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Dominio.Schemas.CQRS

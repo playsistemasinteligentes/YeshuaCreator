@@ -10,7 +10,7 @@ namespace Input.Querys.Y_UserPermitions
 {
     public class Y_UserPermitionsWriteQuery : QueryBase
     {
-        public QueryModel InserirY_UserPermitionsQuery(Y_UserPermitionsEntity Y_UserPermitions)
+        public QueryModel InserirY_UserPermitionsQuery(IY_UserPermitionsEntity Y_UserPermitions)
         {
             this.Query = $@" INSERT INTO Y_UserPermitions (UserId, PermitionsId) OUTPUT INSERTED.ID VALUES(@UserId, @PermitionsId) ";
             this.Parameters = new
@@ -20,7 +20,7 @@ namespace Input.Querys.Y_UserPermitions
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateY_UserPermitionsQuery(Y_UserPermitionsEntity Y_UserPermitions)
+        public QueryModel UpdateY_UserPermitionsQuery(IY_UserPermitionsEntity Y_UserPermitions)
         {
             this.Query = $@" UPDATE Y_UserPermitions SET UserId = @UserId, PermitionsId = @PermitionsId WHERE  ";
             this.Parameters = new
@@ -30,7 +30,7 @@ namespace Input.Querys.Y_UserPermitions
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteY_UserPermitionsQuery(Y_UserPermitionsEntity Y_UserPermitions)
+        public QueryModel DeleteY_UserPermitionsQuery(IY_UserPermitionsEntity Y_UserPermitions)
         {
             this.Query = $@" DELETE FROM Y_UserPermitions WHERE  ";
             this.Parameters = new

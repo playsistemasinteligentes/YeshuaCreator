@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.GrupoServico;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateGrupoServicoReceiver : ReciverBase <GrupoServicoEntity>
+    public class UpdateGrupoServicoReceiver : ReciverBase <IGrupoServicoEntity>
     {
         private readonly IGrupoServicoWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public UpdateGrupoServicoReceiver(IGrupoServicoWriteRepository repository)
+        public UpdateGrupoServicoReceiver(IGrupoServicoWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<GrupoServicoEntity> Action(ICommand comand)
+        protected override State<IGrupoServicoEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.GrupoServicoCrudCommand c) 
              {    
-                 var gruposervico = new GrupoServicoEntity(c.Id, c.Descricao);
+                 var gruposervico = new GrupoServicoFactory(_logger).Create(c.Id, c.Descricao);
                  if (!gruposervico.isValidUpdate())
                      return ValidationError(gruposervico.getErroMensagens(), comand);
 

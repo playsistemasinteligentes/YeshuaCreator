@@ -8,14 +8,14 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class ProfissionalEntity
-                    {
-                public int? Id { get; set; }
+                    public partial class ProfissionalEntity : IProfissionalEntity
+{
+    public int? Id { get; set; }
     public string Nome { get; set; }
     public int? EspecialidadeId { get; set; }
     public string Telefone { get; set; }
     private List<string> _erroMensagem = null;
- public ProfissionalEntity(int? id, string nome, int? especialidadeid, string telefone ){
+ internal ProfissionalEntity(int? id, string nome, int? especialidadeid, string telefone ){
  Id = id; 
  Nome = nome; 
  EspecialidadeId = especialidadeid; 
@@ -31,21 +31,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

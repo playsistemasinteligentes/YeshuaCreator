@@ -8,12 +8,12 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class GrupoServicoEntity
-                    {
-                public int? Id { get; set; }
+                    public partial class GrupoServicoEntity : IGrupoServicoEntity
+{
+    public int? Id { get; set; }
     public string Descricao { get; set; }
     private List<string> _erroMensagem = null;
- public GrupoServicoEntity(int? id, string descricao ){
+ internal GrupoServicoEntity(int? id, string descricao ){
  Id = id; 
  Descricao = descricao; 
 }
@@ -25,21 +25,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

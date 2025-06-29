@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Y_Tenant_Configuration
 {
     public partial interface IY_Tenant_ConfigurationWriteRepository
     {
-        void Insert(Y_Tenant_ConfigurationEntity y_tenant_configuration);
-        void Update(Y_Tenant_ConfigurationEntity y_tenant_configuration);
-        void Delete(Y_Tenant_ConfigurationEntity y_tenant_configuration);
+        void Insert(IY_Tenant_ConfigurationEntity y_tenant_configuration);
+        void Update(IY_Tenant_ConfigurationEntity y_tenant_configuration);
+        void Delete(IY_Tenant_ConfigurationEntity y_tenant_configuration);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

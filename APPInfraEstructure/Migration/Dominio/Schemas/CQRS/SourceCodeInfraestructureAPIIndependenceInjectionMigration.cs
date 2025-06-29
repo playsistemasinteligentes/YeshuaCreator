@@ -1,14 +1,8 @@
 ﻿using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
-using Repositorio.Outputs.DTOs.Y_Tenant_Configuration;
-using RepositoryInterfaces.Patterns.UnitOfWork;
-using RepositoryInterfaces.Services;
-using Shered.DB.Connection;
-using Shered.Services;
 using System.Net.Http;
 using System.Text;
-using static Dapper.SqlMapper;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Dominio.Schemas.CQRS
@@ -43,11 +37,12 @@ namespace Dominio.Schemas.CQRS
 
 
 
-            sb.AppendLine("builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();");
-            sb.AppendLine("builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));");
-            sb.AppendLine("builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();");
-
-
+            sb.AppendLine(@$"
+                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
+                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
+                    builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
+                    builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
+            ");
 
 
 

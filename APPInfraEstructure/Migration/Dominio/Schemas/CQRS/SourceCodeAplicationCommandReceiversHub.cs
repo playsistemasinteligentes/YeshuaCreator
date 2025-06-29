@@ -1,6 +1,5 @@
 ﻿
 using Migration.Dominio;
-using static Dapper.SqlMapper;
 using System.Text;
 using Migration.Dominio.Schemas.CQRS;
 

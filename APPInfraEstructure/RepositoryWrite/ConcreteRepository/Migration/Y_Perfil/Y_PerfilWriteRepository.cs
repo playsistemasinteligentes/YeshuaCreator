@@ -23,18 +23,18 @@ namespace Input.Repository.Y_Perfil
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(Y_PerfilEntity Y_Perfil)
+        public void Insert(IY_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().InserirY_PerfilQuery(Y_Perfil);
         Y_Perfil.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(Y_PerfilEntity Y_Perfil)
+        public void Update(IY_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().UpdateY_PerfilQuery(Y_Perfil);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(Y_PerfilEntity Y_Perfil)
+        public void Delete(IY_PerfilEntity Y_Perfil)
         {
             var query = new Y_PerfilWriteQuery().DeleteY_PerfilQuery(Y_Perfil);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

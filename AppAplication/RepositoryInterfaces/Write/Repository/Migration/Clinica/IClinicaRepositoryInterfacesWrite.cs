@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Clinica
 {
     public partial interface IClinicaWriteRepository
     {
-        void Insert(ClinicaEntity clinica);
-        void Update(ClinicaEntity clinica);
-        void Delete(ClinicaEntity clinica);
+        void Insert(IClinicaEntity clinica);
+        void Update(IClinicaEntity clinica);
+        void Delete(IClinicaEntity clinica);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

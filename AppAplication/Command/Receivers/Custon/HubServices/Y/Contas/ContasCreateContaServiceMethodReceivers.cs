@@ -32,14 +32,14 @@ namespace Command.Receivers.HubServiceMethod
         {
             try
             {
-                _unitOfWork.BeginTran();
-                State<Y_UserEntity> userState = new InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });
-                var usuario = userState.Data;
+                //_unitOfWork.BeginTran();
+                //State<Y_UserEntity> userState = new InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });
+                //var usuario = userState.Data;
 
-                Command.Commands.Y_TenantCrudCommand companyCommand = new Commands.Y_TenantCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };
-                new Command.Receivers.Write.InsertY_TenantReceiver(_repositoryTanetWrite).Execute(companyCommand);
+                //Command.Commands.Y_TenantCrudCommand companyCommand = new Commands.Y_TenantCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };
+                //new Command.Receivers.Write.InsertY_TenantReceiver(_repositoryTanetWrite).Execute(companyCommand);
 
-                _unitOfWork.Commit();
+                //_unitOfWork.Commit();
             }
             catch (ReceiverException<object> rex)
             {

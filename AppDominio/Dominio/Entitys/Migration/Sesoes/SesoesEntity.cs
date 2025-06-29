@@ -8,9 +8,9 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class SesoesEntity
-                    {
-                public int? Id { get; set; }
+                    public partial class SesoesEntity : ISesoesEntity
+{
+    public int? Id { get; set; }
     public int? PacienteId { get; set; }
     public int? ProfissionalId { get; set; }
     public int? ServicoId { get; set; }
@@ -37,7 +37,7 @@
     public string InformacoesRelevantesFuturasConsultas { get; set; }
     public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
     private List<string> _erroMensagem = null;
- public SesoesEntity(int? id, int? pacienteid, int? profissionalid, int? servicoid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
+ internal SesoesEntity(int? id, int? pacienteid, int? profissionalid, int? servicoid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
  Id = id; 
  PacienteId = pacienteid; 
  ProfissionalId = profissionalid; 
@@ -75,21 +75,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Y_User;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteY_UserReceiver : ReciverBase <Y_UserEntity>
+    public class DeleteY_UserReceiver : ReciverBase <IY_UserEntity>
     {
         private readonly IY_UserWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public DeleteY_UserReceiver(IY_UserWriteRepository repository)
+        public DeleteY_UserReceiver(IY_UserWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<Y_UserEntity> Action(ICommand comand)
+        protected override State<IY_UserEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.Y_UserCrudCommand c) 
              {    
-                 var y_user = new Y_UserEntity(c.Id, c.Nome, c.Email, c.Senha, c.TenantID);
+                 var y_user = new Y_UserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha, c.TenantID);
                  if (!y_user.isValidDelete())
                      return ValidationError(y_user.getErroMensagens(), comand);
 

@@ -1,6 +1,5 @@
 ﻿using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
-using RepositoryInterfaces.Services;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS
@@ -58,7 +57,7 @@ namespace Dominio.Schemas.CQRS
             }
 
             sb.AppendLine();
-            sb.AppendLine($"        public void Insert({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine($"        public void Insert(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
@@ -73,14 +72,14 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        public void Update({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine($"        public void Update(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{_entity.EntityName}Query({_entity.EntityName});");
             sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
-            sb.AppendLine($"        public void Delete({_entity.EntityName}Entity {_entity.EntityName})");
+            sb.AppendLine($"        public void Delete(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");

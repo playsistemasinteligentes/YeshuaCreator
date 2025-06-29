@@ -23,18 +23,18 @@ namespace Input.Repository.Y_PerfilPermitions
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(Y_PerfilPermitionsEntity Y_PerfilPermitions)
+        public void Insert(IY_PerfilPermitionsEntity Y_PerfilPermitions)
         {
             var query = new Y_PerfilPermitionsWriteQuery().InserirY_PerfilPermitionsQuery(Y_PerfilPermitions);
                 _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(Y_PerfilPermitionsEntity Y_PerfilPermitions)
+        public void Update(IY_PerfilPermitionsEntity Y_PerfilPermitions)
         {
             var query = new Y_PerfilPermitionsWriteQuery().UpdateY_PerfilPermitionsQuery(Y_PerfilPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(Y_PerfilPermitionsEntity Y_PerfilPermitions)
+        public void Delete(IY_PerfilPermitionsEntity Y_PerfilPermitions)
         {
             var query = new Y_PerfilPermitionsWriteQuery().DeleteY_PerfilPermitionsQuery(Y_PerfilPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

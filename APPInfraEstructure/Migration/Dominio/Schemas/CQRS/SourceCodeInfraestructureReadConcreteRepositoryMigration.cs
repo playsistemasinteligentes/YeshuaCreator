@@ -1,9 +1,5 @@
-﻿using Azure;
-using Migration.Dominio;
+﻿using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
-using Repositorio.Outputs.DTOs.Y_Tenant_Configuration;
-using RepositoryInterfaces.Patterns.Repository;
-using RepositoryInterfaces.Services;
 using System.Data.Common;
 using System.Text;
 

@@ -10,7 +10,7 @@ namespace Input.Querys.MovimentacaoFinanceira
 {
     public class MovimentacaoFinanceiraWriteQuery : QueryBase
     {
-        public QueryModel InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public QueryModel InserirMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             this.Query = $@" INSERT INTO MovimentacaoFinanceira (PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual) OUTPUT INSERTED.Id VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual) ";
             this.Parameters = new
@@ -24,7 +24,7 @@ namespace Input.Querys.MovimentacaoFinanceira
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public QueryModel UpdateMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId, ServicoId = @ServicoId, Valor = @Valor, TipoMovimentacao = @TipoMovimentacao, DataMovimentacao = @DataMovimentacao, SaldoAtual = @SaldoAtual WHERE Id = @Id ";
             this.Parameters = new
@@ -39,7 +39,7 @@ namespace Input.Querys.MovimentacaoFinanceira
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceiraEntity MovimentacaoFinanceira)
+        public QueryModel DeleteMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             this.Query = $@" DELETE FROM MovimentacaoFinanceira WHERE Id = @Id ";
             this.Parameters = new

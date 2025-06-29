@@ -10,7 +10,7 @@ namespace Input.Querys.Servico
 {
     public class ServicoWriteQuery : QueryBase
     {
-        public QueryModel InserirServicoQuery(ServicoEntity Servico)
+        public QueryModel InserirServicoQuery(IServicoEntity Servico)
         {
             this.Query = $@" INSERT INTO Servico (GrupoServicoId, Nome, Valor) OUTPUT INSERTED.Id VALUES(@GrupoServicoId, @Nome, @Valor) ";
             this.Parameters = new
@@ -21,7 +21,7 @@ namespace Input.Querys.Servico
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateServicoQuery(ServicoEntity Servico)
+        public QueryModel UpdateServicoQuery(IServicoEntity Servico)
         {
             this.Query = $@" UPDATE Servico SET GrupoServicoId = @GrupoServicoId, Nome = @Nome, Valor = @Valor WHERE Id = @Id ";
             this.Parameters = new
@@ -33,7 +33,7 @@ namespace Input.Querys.Servico
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteServicoQuery(ServicoEntity Servico)
+        public QueryModel DeleteServicoQuery(IServicoEntity Servico)
         {
             this.Query = $@" DELETE FROM Servico WHERE Id = @Id ";
             this.Parameters = new

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.IO;
 using System.Text;
 
@@ -36,8 +37,28 @@ namespace Migration.Dominio
         protected abstract StringBuilder GenerateCode();
         protected abstract StringBuilder GenerateCustonCode();
 
+        public void WriteContexto(string content)
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string projectDir = Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
+                string filePath = Path.Combine(projectDir, "Contexto.txt");
+
+                // Abre ou cria o arquivo com compartilhamento liberado para leitura
+                using (var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                using (var writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {content}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao escrever no arquivo: " + ex.Message);
+            }
+        }
         // Método público para gerar e salvar o código
-        public void WriteCode(string filePathMigration, string filePathCuston)
+        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston)
         {
             StringBuilder code = GenerateCode();
             code.Append("");
@@ -46,6 +67,12 @@ namespace Migration.Dominio
 
             WriteToFile(code, filePathMigration);
 
+            if (entity != null && entity.EntityName == "Y_Tenant")
+            {
+                WriteContexto(filePathMigration);
+                WriteContexto(this.GetType().ToString());
+                WriteContexto(code.ToString());
+            }
             if (!File.Exists(filePathCuston))
             {
                 code = GenerateCustonCode();

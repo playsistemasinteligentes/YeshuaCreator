@@ -1,10 +1,5 @@
-﻿using Dapper;
-using Interfaces.Schemas;
-using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
+﻿using Interfaces.Schemas;
 using Migration.Dominio.Migration;
-using RepositoryInterfaces.Patterns.UnitOfWork;
-using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
@@ -14,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using Migration.Interfaces;
 
 namespace Dominio.Migration
 {

@@ -10,7 +10,7 @@ namespace Input.Querys.GrupoServico
 {
     public class GrupoServicoWriteQuery : QueryBase
     {
-        public QueryModel InserirGrupoServicoQuery(GrupoServicoEntity GrupoServico)
+        public QueryModel InserirGrupoServicoQuery(IGrupoServicoEntity GrupoServico)
         {
             this.Query = $@" INSERT INTO GrupoServico (Descricao) OUTPUT INSERTED.Id VALUES(@Descricao) ";
             this.Parameters = new
@@ -19,7 +19,7 @@ namespace Input.Querys.GrupoServico
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateGrupoServicoQuery(GrupoServicoEntity GrupoServico)
+        public QueryModel UpdateGrupoServicoQuery(IGrupoServicoEntity GrupoServico)
         {
             this.Query = $@" UPDATE GrupoServico SET Descricao = @Descricao WHERE Id = @Id ";
             this.Parameters = new
@@ -29,7 +29,7 @@ namespace Input.Querys.GrupoServico
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteGrupoServicoQuery(GrupoServicoEntity GrupoServico)
+        public QueryModel DeleteGrupoServicoQuery(IGrupoServicoEntity GrupoServico)
         {
             this.Query = $@" DELETE FROM GrupoServico WHERE Id = @Id ";
             this.Parameters = new

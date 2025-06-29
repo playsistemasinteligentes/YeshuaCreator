@@ -23,18 +23,18 @@ namespace Input.Repository.GrupoServico
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(GrupoServicoEntity GrupoServico)
+        public void Insert(IGrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().InserirGrupoServicoQuery(GrupoServico);
         GrupoServico.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(GrupoServicoEntity GrupoServico)
+        public void Update(IGrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().UpdateGrupoServicoQuery(GrupoServico);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(GrupoServicoEntity GrupoServico)
+        public void Delete(IGrupoServicoEntity GrupoServico)
         {
             var query = new GrupoServicoWriteQuery().DeleteGrupoServicoQuery(GrupoServico);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

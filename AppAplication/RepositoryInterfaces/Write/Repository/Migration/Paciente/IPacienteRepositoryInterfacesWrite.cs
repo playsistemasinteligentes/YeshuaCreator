@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Paciente
 {
     public partial interface IPacienteWriteRepository
     {
-        void Insert(PacienteEntity paciente);
-        void Update(PacienteEntity paciente);
-        void Delete(PacienteEntity paciente);
+        void Insert(IPacienteEntity paciente);
+        void Update(IPacienteEntity paciente);
+        void Delete(IPacienteEntity paciente);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.MovimentacaoFinanceira
 {
     public partial interface IMovimentacaoFinanceiraWriteRepository
     {
-        void Insert(MovimentacaoFinanceiraEntity movimentacaofinanceira);
-        void Update(MovimentacaoFinanceiraEntity movimentacaofinanceira);
-        void Delete(MovimentacaoFinanceiraEntity movimentacaofinanceira);
+        void Insert(IMovimentacaoFinanceiraEntity movimentacaofinanceira);
+        void Update(IMovimentacaoFinanceiraEntity movimentacaofinanceira);
+        void Delete(IMovimentacaoFinanceiraEntity movimentacaofinanceira);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

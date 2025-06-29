@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Clinica;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertClinicaReceiver : ReciverBase <ClinicaEntity>
+    public class InsertClinicaReceiver : ReciverBase <IClinicaEntity>
     {
         private readonly IClinicaWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public InsertClinicaReceiver(IClinicaWriteRepository repository)
+        public InsertClinicaReceiver(IClinicaWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<ClinicaEntity> Action(ICommand comand)
+        protected override State<IClinicaEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.ClinicaCrudCommand c) 
              {    
-                 var clinica = new ClinicaEntity(c.Id, c.Nome, c.Endereco, c.Telefone);
+                 var clinica = new ClinicaFactory(_logger).Create(c.Id, c.Nome, c.Endereco, c.Telefone);
                  if (!clinica.isValidInsert())
                      return ValidationError(clinica.getErroMensagens(), comand);
 

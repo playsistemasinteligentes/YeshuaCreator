@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Sesoes;
 using RepositoryInterfaces.Read.Repository.Sesoes;
 using Repositorio.Outputs.DTOs.Sesoes;

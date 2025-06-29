@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Servico;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertServicoReceiver : ReciverBase <ServicoEntity>
+    public class InsertServicoReceiver : ReciverBase <IServicoEntity>
     {
         private readonly IServicoWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public InsertServicoReceiver(IServicoWriteRepository repository)
+        public InsertServicoReceiver(IServicoWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<ServicoEntity> Action(ICommand comand)
+        protected override State<IServicoEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.ServicoCrudCommand c) 
              {    
-                 var servico = new ServicoEntity(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
+                 var servico = new ServicoFactory(_logger).Create(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
                  if (!servico.isValidInsert())
                      return ValidationError(servico.getErroMensagens(), comand);
 

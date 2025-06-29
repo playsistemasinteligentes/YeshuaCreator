@@ -8,12 +8,12 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class Y_UserPermitionsEntity
-                    {
-                public int? UserId { get; set; }
+                    public partial class Y_UserPermitionsEntity : IY_UserPermitionsEntity
+{
+    public int? UserId { get; set; }
     public string PermitionsId { get; set; }
     private List<string> _erroMensagem = null;
- public Y_UserPermitionsEntity(int? userid, string permitionsid ){
+ internal Y_UserPermitionsEntity(int? userid, string permitionsid ){
  UserId = userid; 
  PermitionsId = permitionsid; 
 }
@@ -23,21 +23,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

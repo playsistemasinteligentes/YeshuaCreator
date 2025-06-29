@@ -9,9 +9,9 @@ namespace Repositorio.Inputs.Repositorio.Servico
 {
     public partial interface IServicoWriteRepository
     {
-        void Insert(ServicoEntity servico);
-        void Update(ServicoEntity servico);
-        void Delete(ServicoEntity servico);
+        void Insert(IServicoEntity servico);
+        void Update(IServicoEntity servico);
+        void Delete(IServicoEntity servico);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

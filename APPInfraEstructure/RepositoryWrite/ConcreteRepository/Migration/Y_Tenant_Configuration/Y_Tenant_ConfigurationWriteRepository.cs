@@ -25,20 +25,20 @@ namespace Input.Repository.Y_Tenant_Configuration
              _cacheService = cacheService;
         }
 
-        public void Insert(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        public void Insert(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             _cacheService.RemoveByPrefix("Y_Tenant_Configuration");
             var query = new Y_Tenant_ConfigurationWriteQuery().InserirY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);
                 _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        public void Update(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             _cacheService.RemoveByPrefix("Y_Tenant_Configuration");
             var query = new Y_Tenant_ConfigurationWriteQuery().UpdateY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(Y_Tenant_ConfigurationEntity Y_Tenant_Configuration)
+        public void Delete(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             _cacheService.RemoveByPrefix("Y_Tenant_Configuration");
             var query = new Y_Tenant_ConfigurationWriteQuery().DeleteY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);

@@ -1,6 +1,5 @@
 ﻿using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
-using Shered.DB;
 using System.Collections.Specialized;
 using System.Data.Common;
 using System.Diagnostics;

@@ -1,13 +1,10 @@
 ﻿using Dominio.Migration;
 using Dominio.Schemas.CQRS;
 using Interfaces.Schemas;
-using Microsoft.IdentityModel.Tokens;
-using RepositoryInterfaces.Patterns.UnitOfWork;
-using Shered.DB.Connection;
+using Migration.Interfaces;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.Metrics;
-using static Dapper.SqlMapper;
 
 namespace Dominio.Schemas
 {

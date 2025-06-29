@@ -2,6 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Paciente;
 using Repositorio.Outputs.DTOs.Paciente;
 using RepositoryInterfaces.Read.Repository.Paciente;
@@ -11,10 +12,12 @@ namespace Command.Receivers.Read
     public class PacienteReadReceiver : ReciverBase<DataPagination<PacienteDTO>>
     {
         private readonly IPacienteReadRepository _repository;
+        private readonly ILogger _logger;
 
-        public PacienteReadReceiver(IPacienteReadRepository repository)
+        public PacienteReadReceiver(IPacienteReadRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         protected override State<DataPagination<PacienteDTO>> Action(ICommand comand)

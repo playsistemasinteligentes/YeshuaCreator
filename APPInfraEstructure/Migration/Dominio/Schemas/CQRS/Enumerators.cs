@@ -17,7 +17,11 @@ namespace Migration.Dominio.Schemas.CQRS
         ReadFK = 5,
         Hub = 6,
         ServiceMethod = 7,
-        Agent = 8
+        Agent = 8,
+        Entity = 9,
+        IEntity = 10,
+        EntityDecorator = 11,
+        Factory = 12
     }
 
 

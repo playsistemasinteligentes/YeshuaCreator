@@ -10,7 +10,7 @@ namespace Input.Querys.Especialidade
 {
     public class EspecialidadeWriteQuery : QueryBase
     {
-        public QueryModel InserirEspecialidadeQuery(EspecialidadeEntity Especialidade)
+        public QueryModel InserirEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
             this.Query = $@" INSERT INTO Especialidade (Descricao) OUTPUT INSERTED.Id VALUES(@Descricao) ";
             this.Parameters = new
@@ -19,7 +19,7 @@ namespace Input.Querys.Especialidade
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEspecialidadeQuery(EspecialidadeEntity Especialidade)
+        public QueryModel UpdateEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
             this.Query = $@" UPDATE Especialidade SET Descricao = @Descricao WHERE Id = @Id ";
             this.Parameters = new
@@ -29,7 +29,7 @@ namespace Input.Querys.Especialidade
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteEspecialidadeQuery(EspecialidadeEntity Especialidade)
+        public QueryModel DeleteEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
             this.Query = $@" DELETE FROM Especialidade WHERE Id = @Id ";
             this.Parameters = new

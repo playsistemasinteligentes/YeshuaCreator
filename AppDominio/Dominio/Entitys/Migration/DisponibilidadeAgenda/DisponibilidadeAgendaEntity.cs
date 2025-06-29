@@ -8,13 +8,13 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class DisponibilidadeAgendaEntity
-                    {
-                public int? Id { get; set; }
+                    public partial class DisponibilidadeAgendaEntity : IDisponibilidadeAgendaEntity
+{
+    public int? Id { get; set; }
     public int? ProfissionalId { get; set; }
     public DateTime DataHora { get; set; }
     private List<string> _erroMensagem = null;
- public DisponibilidadeAgendaEntity(int? id, int? profissionalid, DateTime datahora ){
+ internal DisponibilidadeAgendaEntity(int? id, int? profissionalid, DateTime datahora ){
  Id = id; 
  ProfissionalId = profissionalid; 
  DataHora = (datahora < (new DateTime(1800, 1, 1))) ? DateTime.Now : datahora; 
@@ -27,21 +27,10 @@ _erroMensagem = new List<string>();
 return _erroMensagem.Count() <= 0;
 }
 
-                public bool isValidInsert()
-                {
-                    return isValidData();
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
                 }
-                public bool isValidUpdate()
-                {
-                    return isValidData();
-                }
-                public bool isValidDelete()
-                {
-                    return true;
-                }
-                public List<string> getErroMensagens()
-                {
-                    return this._erroMensagem;
-                }
-            }
-        }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

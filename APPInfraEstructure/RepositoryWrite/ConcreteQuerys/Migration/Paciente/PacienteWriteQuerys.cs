@@ -10,7 +10,7 @@ namespace Input.Querys.Paciente
 {
     public class PacienteWriteQuery : QueryBase
     {
-        public QueryModel InserirPacienteQuery(PacienteEntity Paciente)
+        public QueryModel InserirPacienteQuery(IPacienteEntity Paciente)
         {
             this.Query = $@" INSERT INTO Paciente (Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional) OUTPUT INSERTED.Id VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @PrincipaisQueixas, @ObservacaoAdicional) ";
             this.Parameters = new
@@ -29,7 +29,7 @@ namespace Input.Querys.Paciente
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdatePacienteQuery(PacienteEntity Paciente)
+        public QueryModel UpdatePacienteQuery(IPacienteEntity Paciente)
         {
             this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone, DataNascimento = @DataNascimento, Genero = @Genero, Escolaridade = @Escolaridade, Profissao = @Profissao, Endereco = @Endereco, NomeResponsavel = @NomeResponsavel, TelefoneResponsavel = @TelefoneResponsavel, PrincipaisQueixas = @PrincipaisQueixas, ObservacaoAdicional = @ObservacaoAdicional WHERE Id = @Id ";
             this.Parameters = new
@@ -49,7 +49,7 @@ namespace Input.Querys.Paciente
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeletePacienteQuery(PacienteEntity Paciente)
+        public QueryModel DeletePacienteQuery(IPacienteEntity Paciente)
         {
             this.Query = $@" DELETE FROM Paciente WHERE Id = @Id ";
             this.Parameters = new

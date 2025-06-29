@@ -10,7 +10,7 @@ namespace Input.Querys.Y_Tenant
 {
     public class Y_TenantWriteQuery : QueryBase
     {
-        public QueryModel InserirY_TenantQuery(Y_TenantEntity Y_Tenant)
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
         {
             this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
             this.Parameters = new
@@ -21,7 +21,7 @@ namespace Input.Querys.Y_Tenant
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateY_TenantQuery(Y_TenantEntity Y_Tenant)
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
         {
             this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
             this.Parameters = new
@@ -33,7 +33,7 @@ namespace Input.Querys.Y_Tenant
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteY_TenantQuery(Y_TenantEntity Y_Tenant)
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
         {
             this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
             this.Parameters = new

@@ -22,6 +22,7 @@ namespace Migration.Dominio.Schemas.CQRS
         public string NameSpaceCommandReceiversWrite { get; set; } = "Command.Receivers.Write";
         public List<string> ColumnsDescriptions { get; set; } = new List<string> { "nome", "descricao" };
         public object NameSpaceEntitys { get; set; } = "Dominio.Entitys";
+        public object NameSpaceDominioInterface { get; set; } = "Dominio.Interfaces";
         public object NameSpaceCommandsPartners { get; set; } = "Command.Patterns.Command";
         public object NameSpaceInterfaceCommandsPartners { get; set; } = "RepositoryInterfaces.Patterns.Command";
         public object NameSpaceInterfaceRepositoryPartners { get; set; } = "RepositoryInterfaces.Patterns.Repository";

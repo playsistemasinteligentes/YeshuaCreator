@@ -747,7 +747,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Shered": "1.0.0"
+          "Dapper": "2.1.35",
+          "Microsoft.Data.SqlClient": "5.2.1"
         },
         "compile": {
           "bin/placeholder/Migration.dll": {}

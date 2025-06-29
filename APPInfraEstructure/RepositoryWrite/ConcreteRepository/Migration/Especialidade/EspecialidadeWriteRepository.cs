@@ -23,18 +23,18 @@ namespace Input.Repository.Especialidade
              _UnitOfWork= unitOfWork;
         }
 
-        public void Insert(EspecialidadeEntity Especialidade)
+        public void Insert(IEspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().InserirEspecialidadeQuery(Especialidade);
         Especialidade.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(EspecialidadeEntity Especialidade)
+        public void Update(IEspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().UpdateEspecialidadeQuery(Especialidade);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(EspecialidadeEntity Especialidade)
+        public void Delete(IEspecialidadeEntity Especialidade)
         {
             var query = new EspecialidadeWriteQuery().DeleteEspecialidadeQuery(Especialidade);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);

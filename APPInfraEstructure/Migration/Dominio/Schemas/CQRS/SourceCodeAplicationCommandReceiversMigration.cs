@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Migration.Dominio;
+﻿using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data;
 using System.Text;
@@ -57,6 +56,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
@@ -68,21 +69,23 @@ namespace Dominio.Schemas.CQRS
                 // Adiciona o namespace e a classe
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase <{_entity.EntityName}Entity>");
+                sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase <I{_entity.EntityName}Entity>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
+                sb.AppendLine($"        private readonly ILogger _logger;");
                 sb.AppendLine();
-                sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(I{_entity.EntityName}WriteRepository repository)");
+                sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(I{_entity.EntityName}WriteRepository repository,ILogger logger)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
+                sb.AppendLine("            _logger = logger;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<{_entity.EntityName}Entity> Action(ICommand comand)");
+                sb.AppendLine($"        protected override State<I{_entity.EntityName}Entity> Action(ICommand comand)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommands}.{_entity.EntityName}CrudCommand c) ");
                 sb.AppendLine("             {    ");
-                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
+                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
                 sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
                 sb.AppendLine($"                     return ValidationError({_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
                 sb.AppendLine();
@@ -111,6 +114,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
                 sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
@@ -120,10 +124,13 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<DataPagination<{_entity.EntityName}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
+                sb.AppendLine($"        private readonly ILogger _logger;");
+
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(I{_entity.EntityName}ReadRepository repository)");
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(I{_entity.EntityName}ReadRepository repository,ILogger logger)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
+                sb.AppendLine("            _logger = logger;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}DTO>> Action(ICommand comand)");
@@ -149,6 +156,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
                 sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");

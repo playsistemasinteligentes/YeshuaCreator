@@ -1,7 +1,4 @@
 ﻿using Dominio.TiposPrimitivos;
-using Migration.Dominio.Schemas;
-using System.Runtime.CompilerServices;
-using static Dapper.SqlMapper;
 
 namespace Dominio
 {

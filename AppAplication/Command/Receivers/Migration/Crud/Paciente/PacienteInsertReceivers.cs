@@ -1,6 +1,7 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Repositorio.Inputs.Repositorio.Paciente;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertPacienteReceiver : ReciverBase <PacienteEntity>
+    public class InsertPacienteReceiver : ReciverBase <IPacienteEntity>
     {
         private readonly IPacienteWriteRepository _repository;
+        private readonly ILogger _logger;
 
-        public InsertPacienteReceiver(IPacienteWriteRepository repository)
+        public InsertPacienteReceiver(IPacienteWriteRepository repository,ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        protected override State<PacienteEntity> Action(ICommand comand)
+        protected override State<IPacienteEntity> Action(ICommand comand)
         {
              if(comand is Command.Commands.PacienteCrudCommand c) 
              {    
-                 var paciente = new PacienteEntity(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
+                 var paciente = new PacienteFactory(_logger).Create(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
                  if (!paciente.isValidInsert())
                      return ValidationError(paciente.getErroMensagens(), comand);
 
