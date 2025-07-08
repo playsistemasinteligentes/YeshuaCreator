@@ -14,9 +14,9 @@ namespace Dominio.Migration
     public abstract class MigrationBase
     {
         public List<Entity> Entitys = new List<Entity>();
-        public List<Hub> Hubs = new List<Hub>();
+        public List<UseCaseGroup> UseCaseGroup = new List<UseCaseGroup>();
         private Entity _entity;
-        private Hub _hub;
+        private UseCaseGroup _hub;
         public int ID { get; set; }
         public string MigrationName { get; set; }
 
@@ -41,13 +41,13 @@ namespace Dominio.Migration
             }
             return _entity;
         }
-        public Hub AddToListHub(string hubName)
+        public UseCaseGroup AddToListHub(string hubName)
         {
-            _hub = Hubs.Where(x => x.Name._value == hubName).FirstOrDefault();
+            _hub = UseCaseGroup.Where(x => x.Name._value == hubName).FirstOrDefault();
             if (_hub == null)
             {
-                _hub = new Hub(hubName);
-                Hubs.Add(_hub);
+                _hub = new UseCaseGroup(hubName);
+                UseCaseGroup.Add(_hub);
             }
             return _hub;
         }
@@ -62,11 +62,11 @@ namespace Dominio.Migration
             AddToListEntity(EntityName, true);
             return this;
         }
-        public Hub AddHub(string hubName)
+        public UseCaseGroup AddUsecaseGroup(string hubName)
         {
             Descricao descricao = new Descricao().Normalize(hubName);
             AddToListHub(hubName);
-            return this.Hubs.Last();
+            return this.UseCaseGroup.Last();
         }
         public Entity AddColumn(string columnName, string descrition)
         {

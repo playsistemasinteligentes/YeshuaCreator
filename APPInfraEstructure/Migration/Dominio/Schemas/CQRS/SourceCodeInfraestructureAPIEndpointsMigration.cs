@@ -250,18 +250,18 @@ namespace Dominio.Schemas.CQRS
 
             #region ServicesMethod
             sb.AppendLine("#region ServicesMethod");
-            foreach (var hub in _migration.Hubs)
+            foreach (var group in _migration.UseCaseGroup)
             {
-                foreach (var service in hub.Services)
+                foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var method in service.Methods)
+                    foreach (var useCase in subGroup.UseCases)
                     {
-                        sb.AppendLine($"app.MapPost(\"/{hub.Name}/{service.Name}{method.Name}{CommandType.ServiceMethod}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversHubServiceMethod}.{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsHubServiceMethod}.{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Command command) =>");
+                        sb.AppendLine($"app.MapPost(\"/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Command command) =>");
                         sb.AppendLine("{");
 
                         setResultHttp(sb, "result.Data");
 
-                        if (method.Authorization == Authorization.Free)
+                        if (useCase.Authorization == Authorization.Free)
                             sb.AppendLine("});");
                         else
                             sb.AppendLine("}).RequireAuthorization();");

@@ -8,20 +8,19 @@
 
   <ItemGroup>
     <Compile Remove="Enum\**" />
+    <Compile Remove="Especificacoes\**" />
     <EmbeddedResource Remove="Enum\**" />
+    <EmbeddedResource Remove="Especificacoes\**" />
     <None Remove="Enum\**" />
+    <None Remove="Especificacoes\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Entitys\" />
-    <Folder Include="Especificacoes\Agenda\" />
-    <Folder Include="Especificacoes\Clinica\" />
-    <Folder Include="Especificacoes\Paciente\" />
-    <Folder Include="Especificacoes\Proficional\" />
-    <Folder Include="Validation\Agenda\" />
-    <Folder Include="Validation\Clinica\" />
-    <Folder Include="Validation\Paciente\" />
-    <Folder Include="Validation\Proficional\" />
+    <Folder Include="Specification\Agenda\" />
+    <Folder Include="Specification\Clinica\" />
+    <Folder Include="Specification\Paciente\" />
+    <Folder Include="Specification\Proficional\" />
   </ItemGroup>
 
 </Project>

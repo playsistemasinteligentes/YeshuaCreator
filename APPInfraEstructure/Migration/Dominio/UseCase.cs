@@ -7,30 +7,31 @@ using System.Text;
 
 namespace Dominio
 {
-    public class Method
+    public class UseCase
     {
-        public Method(string name)
+        public UseCase(string name)
         {
             Name = name;
         }
 
-        public Method(Hub hub, string name, string description)
+        public UseCase(UseCaseGroup group, string name, string description)
         {
-            Hub = hub;
+            UseCaseGroup = group;
             Name = name;
             Description = description;
         }
 
-        public Hub Hub { get; set; }
+        public UseCaseGroup UseCaseGroup { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }
         public object[] Inputs { get; set; }
         public object[] Outputs { get; set; }
         public StringBuilder VersaoAtualCodigo { get; set; }
         public StringBuilder VersaoAlterada { get; set; }
-        public Service Service { get; set; }
+        public UseCaseSubGroup UseCaseSubGroup { get; set; }
         public Authorization Authorization { get; set; }
         public List<string> Scopes = new List<string>();
+        public List<Entity> Entitys = new List<Entity>();
 
         public void AddScope(string scope)
         {

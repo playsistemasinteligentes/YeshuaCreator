@@ -116,9 +116,9 @@ namespace Dominio.Migration
         }
         private void SanitizeMigrationEndHubAgentsToCodeGenerete(MigrationBase migration)
         {
-            foreach (var hub in migration.Hubs)
+            foreach (var hub in migration.UseCaseGroup)
             {
-                _migrationConcriteBase.Hubs.Add(hub);
+                _migrationConcriteBase.UseCaseGroup.Add(hub);
             }
         }
         private void AplyQuerys(List<MigrationQuery> migrationQueries, IUnitOfWork unitOfWork, MigrationBase migration)

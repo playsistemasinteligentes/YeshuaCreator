@@ -2,7 +2,7 @@ using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 namespace Command.Commands
 {
-    public partial struct ContasCreateContaServiceMethodCommand : ICommand
+    public partial struct ContasCreateContaUseCaseCommand : ICommand
     {
     public string idcompany { get; set; }
     public string email { get; set; }
@@ -11,4 +11,4 @@ namespace Command.Commands
     public string confirmpassword { get; set; }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsHub
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

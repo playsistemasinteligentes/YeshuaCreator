@@ -1,0 +1,13 @@
+﻿Assunto fabrica de software.
+                Criei uma meta linguagem para definições dos modelos 
+                Criei um motor para gerar codigo baseado na meta linguagem 
+                O motor implementa uma arquitetura com artefatos conhecidos respeitando alguns principios DDD e SOLID
+                Tenho principios tais como? O codigo gerado pelo motor deve evitar reflection para entregar o maximo de performance posivel.
+                Enviarei os artefatos da arquitetura em duas partes.
+                Pedirei para voce me ajudar a implementar usecases
+                
+                
+                
+                
+                
+                Enviarei meus modelos em tres partes, Modelo de Meta linguagem, artefatos da arquitetura divididos em duas etapas  

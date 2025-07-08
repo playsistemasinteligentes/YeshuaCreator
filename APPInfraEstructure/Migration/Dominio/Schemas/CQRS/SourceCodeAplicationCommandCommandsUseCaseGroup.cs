@@ -8,29 +8,29 @@ using System.Reflection;
 
 namespace Dominio.Schemas.CQRS
 {
-    public class SourceCodeAplicationCommandCommandsHub : SourceCodeBase
+    public class SourceCodeAplicationCommandCommandsUseCaseGroup : SourceCodeBase
     {
-        private Hub _hub;
+        private UseCaseGroup _hub;
         private CommandType _commandType;
-        private Service _service;
-        private Method _method;
+        private UseCaseSubGroup _service;
+        private UseCase _method;
         private string _classe;
         private string _nameSpace;
 
-        public SourceCodeAplicationCommandCommandsHub(Hub hub)
+        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseGroup hub)
             : base()
         {
             _hub = hub;
-            _commandType = CommandType.Hub;
+            _commandType = CommandType.UseCaseGroup;
             _nameSpace = CQRSParam.I.NameSpaceCommands;
         }
-        public SourceCodeAplicationCommandCommandsHub(Method method)
+        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCase method)
                     : base()
         {
-            _hub = method.Hub;
-            _service = method.Service;
-            _commandType = CommandType.ServiceMethod;
-            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsHubServiceMethod;
+            _hub = method.UseCaseGroup;
+            _service = method.UseCaseSubGroup;
+            _commandType = CommandType.UseCase;
+            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsUseCases;
             _method = method;
             _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
         }
@@ -47,7 +47,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
 
-            if (_commandType == CommandType.ServiceMethod)
+            if (_commandType == CommandType.UseCase)
             {
                 foreach (var param in _method.Inputs)
                 {
@@ -64,7 +64,7 @@ namespace Dominio.Schemas.CQRS
                     }
                 }
             }
-            else if (_commandType == CommandType.Hub)
+            else if (_commandType == CommandType.UseCaseGroup)
             {
                 sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubCommand : ICommand");
                 sb.AppendLine("    {");

@@ -58,14 +58,14 @@ namespace Migration.Dominio.Migration
         public override void Up()
         {
 
-            AlterEntity("Y_Tenant")
-            .AddColumn("UserIDAdmin", "Administrador").FK("Y_User", "Id").Int();
+            AlterEntity("Y_Tenant").AddColumn("UserIDAdmin", "Administrador").FK("Y_User", "Id").Int();
 
 
-            AddHub("Y").AddService("Contas").AddMethod("createConta", new Account("", "", "", "", "")).Authorization(Authorization.Free);
-            AddHub("Y").AddService("Contas").AddMethod("Login", new LoginUserEndPassword("", ""))
-                .AddScope("")
-                ;
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account("", "", "", "", "")).Authorization(Authorization.Free)
+                .AddEntity("Y_Tenant").AddEntity("Y_User").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
+
+
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginUserEndPassword("", ""));
         }
         public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
         public record LoginUserEndPassword(string email, string password);

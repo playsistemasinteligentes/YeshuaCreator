@@ -15,9 +15,9 @@ namespace Migration.Dominio.Schemas.CQRS
         public string NameSpaceCommandsRead { get; set; } = "Command.Commands.Read";
         public string NameSpaceCommands { get; internal set; } = "Command.Commands";
         public string NameSpaceCommandsPatterns { get; internal set; } = "Command.Patterns.Command";
-        public string NameSpaceCommandCommandsHubServiceMethod { get; set; } = "Command.Commands";
+        public string NameSpaceCommandCommandsUseCases { get; set; } = "Command.Commands";
         public string NameSpaceCommandReceiversHub { get; set; } = "Command.Receivers";
-        public string NameSpaceCommandReceiversHubServiceMethod { get; set; } = "Command.Receivers.HubServiceMethod";
+        public string NameSpaceCommandReceiversUseCase { get; set; } = "Command.Receivers.UseCase";
         public string NameSpaceCommandReceiversRead { get; set; } = "Command.Receivers.Read";
         public string NameSpaceCommandReceiversWrite { get; set; } = "Command.Receivers.Write";
         public List<string> ColumnsDescriptions { get; set; } = new List<string> { "nome", "descricao" };
@@ -26,7 +26,9 @@ namespace Migration.Dominio.Schemas.CQRS
         public object NameSpaceCommandsPartners { get; set; } = "Command.Patterns.Command";
         public object NameSpaceInterfaceCommandsPartners { get; set; } = "RepositoryInterfaces.Patterns.Command";
         public object NameSpaceInterfaceRepositoryPartners { get; set; } = "RepositoryInterfaces.Patterns.Repository";
-
+        public object NameSpaceRepositorioInputsRepositorio { get; set; } = "Repositorio.Inputs.Repositorio"; // trocar mais pra frente padronozar com o de baixo 
+        public object NameSpaceReadRepository { get; set; } = "RepositoryInterfaces.Read.Repository";
+        public object NameSpaceUnitOfWork { get; set; } = "RepositoryInterfaces.Patterns.UnitOfWork";
 
         public void AddExeptionReceiver(StringBuilder sb, string classe)
         {

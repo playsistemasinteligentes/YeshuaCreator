@@ -6,15 +6,15 @@ using System.Text;
 
 namespace Dominio
 {
-    public class Service
+    public class UseCaseSubGroup
     {
-        public Service(string name)
+        public UseCaseSubGroup(string name)
         {
             Name = name;
         }
-        public Hub Hub { get; set; }
+        public UseCaseGroup UseCaseGroup { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }
-        public List<Method> Methods = new List<Method>();
+        public List<UseCase> UseCases = new List<UseCase>();
     }
 }

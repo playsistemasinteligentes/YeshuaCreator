@@ -45,11 +45,39 @@ namespace Migration.Dominio
                 string projectDir = Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
                 string filePath = Path.Combine(projectDir, "Contexto.txt");
 
+                var novoSB = new StringBuilder();
+
+                //novoSB.AppendLine("Assunto fabrica de software.");
+                //novoSB.AppendLine("Criei uma meta linguagem para definições dos modelos ");
+                //novoSB.AppendLine("Criei um motor para gerar codigo baseado na meta linguagem ");
+                //novoSB.AppendLine("O motor implementa uma arquitetura com artefatos conhecidos respeitando alguns principios DDD e SOLID");
+                //novoSB.AppendLine("Tenho principios tais como? O codigo gerado pelo motor deve evitar reflection para entregar o maximo de performance posivel.");
+                ////novoSB.AppendLine("Enviarei meus modelos em tres partes, Modelo de Meta linguagem, artefatos da arquitetura divididos em duas etapas  ");
+                //novoSB.AppendLine("Enviarei os artefatos da arquitetura em duas partes.");
+                //novoSB.AppendLine("Pedirei para voce me ajudar a implementar usecases");
+
+                //novoSB.AppendLine("");
+                //novoSB.AppendLine("");
+                //novoSB.AppendLine("");
+
                 // Abre ou cria o arquivo com compartilhamento liberado para leitura
                 using (var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
                 using (var writer = new StreamWriter(stream))
                 {
-                    writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {content}");
+
+                    string[] linhas = content.Split(Environment.NewLine);
+                    string prefixoParaRemover = "using";
+                    foreach (var linha in linhas)
+                    {
+                        var linhaTrimmed = linha.Trim();
+
+                        // Ignora linhas em branco ou que comecem com o prefixo
+                        if (string.IsNullOrWhiteSpace(linhaTrimmed)) continue;
+                        if (linhaTrimmed.StartsWith(prefixoParaRemover)) continue;
+
+                        novoSB.AppendLine(linha);
+                    }
+                    writer.WriteLine(novoSB);
                 }
             }
             catch (Exception ex)
@@ -58,7 +86,7 @@ namespace Migration.Dominio
             }
         }
         // Método público para gerar e salvar o código
-        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston)
+        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCase useCase = null)
         {
             StringBuilder code = GenerateCode();
             code.Append("");
@@ -67,12 +95,13 @@ namespace Migration.Dominio
 
             WriteToFile(code, filePathMigration);
 
-            if (entity != null && entity.EntityName == "Y_Tenant")
+            if ((entity != null && entity.EntityName == "Y_Tenant") || (useCase != null && useCase.Name._value == "createConta"))
             {
-                WriteContexto(filePathMigration);
-                WriteContexto(this.GetType().ToString());
+                //WriteContexto(filePathMigration);
+                //WriteContexto(this.GetType().ToString());
                 WriteContexto(code.ToString());
             }
+
             if (!File.Exists(filePathCuston))
             {
                 code = GenerateCustonCode();

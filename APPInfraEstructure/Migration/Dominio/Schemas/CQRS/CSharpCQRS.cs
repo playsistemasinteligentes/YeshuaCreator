@@ -65,30 +65,30 @@ namespace Dominio.Schemas.CQRS
 
             #endregion  
 
-            foreach (var hub in migration.Hubs)
+            foreach (var group in migration.UseCaseGroup)
             {
                 string funcaoAtual = new StackTrace().GetFrame(1).GetMethod().Name;
 
-                var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Migration"), $"{hub.Name}\\{hub.Name.SourceType()}HubCommands.cs");
-                var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Custon"), $"{hub.Name}\\{hub.Name.SourceType()}HubCommands.cs");
-                var sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsHub(hub);
+                var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Migration"), $"{group.Name}\\{group.Name.SourceType()}HubCommands.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Custon"), $"{group.Name}\\{group.Name.SourceType()}HubCommands.cs");
+                var sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(group);
                 //sourceCodeMigrationHub.WriteCode(filePath, filePathCuston);
 
-                foreach (var service in hub.Services)
+                foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var method in service.Methods)
+                    foreach (var method in subGroup.UseCases)
                     {
-                        filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubServices("Migration"), $"{hub.Name}\\{service.Name}\\{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Commands.cs");
-                        filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubServices("Custon"), $"{hub.Name}\\{service.Name}\\{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Commands.cs");
-                        sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsHub(method);
+                        filePath = Path.Combine(GetPathAppAplicationCommandCommandsUseCases("Migration"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{method.Name.SourceType()}{CommandType.UseCase}Commands.cs");
+                        filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsUseCases("Custon"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{method.Name.SourceType()}{CommandType.UseCase}Commands.cs");
+                        sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(method);
                         sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
                     }
                 }
 
-                foreach (var agent in hub.Agents)
+                foreach (var agent in group.Agents)
                 {
-                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Migration"), $"{hub.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentCommands.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Custon"), $"{hub.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentCommands.cs");
+                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Migration"), $"{group.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentCommands.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Custon"), $"{group.Name}\\{agent.Name.SourceType()}\\{agent.Name.SourceType()}HubAgentCommands.cs");
                     var sourceCodeMigrationAgent = new SourceCodeAplicationCommandCommandsHubAgents(agent);
                     sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
 
@@ -140,28 +140,28 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-            foreach (var hub in migration.Hubs)
+            foreach (var group in migration.UseCaseGroup)
             {
-                var filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Migration"), $"{hub.Name.SourceType()}\\{hub.Name.SourceType()}HubReceivers.cs");
-                var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Custon"), $"{hub.Name.SourceType()}\\{hub.Name.SourceType()}HubReceivers.cs");
-                var sourceCodeMigration = new SourceCodeAplicationCommandReceiversHub(hub);
+                var filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Migration"), $"{group.Name.SourceType()}\\{group.Name.SourceType()}HubReceivers.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Custon"), $"{group.Name.SourceType()}\\{group.Name.SourceType()}HubReceivers.cs");
+                var sourceCodeMigration = new SourceCodeAplicationCommandReceiversUseCase(group);
                 //sourceCodeMigration.WriteCode(filePath, filePathCuston);
 
-                foreach (var service in hub.Services)
+                foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var method in service.Methods)
+                    foreach (var useCase in subGroup.UseCases)
                     {
-                        filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubServices("Migration"), $"{hub.Name}\\{service.Name}\\{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Receivers.cs");
-                        filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubServices("Custon"), $"{hub.Name}\\{service.Name}\\{service.Name.SourceType()}{method.Name.SourceType()}{CommandType.ServiceMethod}Receivers.cs");
-                        var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversHub(method);
-                        sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
+                        filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Migration"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receivers.cs");
+                        filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Custon"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receivers.cs");
+                        var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(useCase);
+                        sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, useCase);
                     }
                 }
 
-                foreach (var agent in hub.Agents)
+                foreach (var agent in group.Agents)
                 {
-                    filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Migration"), $"{hub.Name}\\{agent.Name}\\{agent.Name.SourceType()}{CommandType.Agent}Receivers.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Custon"), $"{hub.Name}\\{agent.Name}\\{agent.Name.SourceType()}{CommandType.Agent}Receivers.cs");
+                    filePath = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Migration"), $"{group.Name}\\{agent.Name}\\{agent.Name.SourceType()}{CommandType.Agent}Receivers.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversHubAgents("Custon"), $"{group.Name}\\{agent.Name}\\{agent.Name.SourceType()}{CommandType.Agent}Receivers.cs");
                     var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversHubAgents(agent);
                     sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
                 }
@@ -173,9 +173,9 @@ namespace Dominio.Schemas.CQRS
         {
             return Path.Combine(Path.Combine(GetPathAppAplicationCommandCommands(), diretorioAnterior), "HubAgents");
         }
-        private string GetPathAppAplicationCommandCommandsHubServices(string diretorioAnterior)
+        private string GetPathAppAplicationCommandCommandsUseCases(string diretorioAnterior)
         {
-            return Path.Combine(Path.Combine(GetPathAppAplicationCommandCommands(), diretorioAnterior), "HubServices");
+            return Path.Combine(Path.Combine(GetPathAppAplicationCommandCommands(), diretorioAnterior), "UseCases");
         }
 
         private string GetPathAppAplicationCommandCommands()
@@ -223,9 +223,9 @@ namespace Dominio.Schemas.CQRS
         {
             return Path.Combine(Path.Combine(GetPathAppAplicationCommandReceivers(), diretorioAnterior), "HubAgents");
         }
-        private string GetPathAppAplicationCommandReceiversHubServices(string diretorioAnterior)
+        private string GetPathAppAplicationCommandReceiversUseCases(string diretorioAnterior)
         {
-            return Path.Combine(Path.Combine(GetPathAppAplicationCommandReceivers(), diretorioAnterior), "HubServices");
+            return Path.Combine(Path.Combine(GetPathAppAplicationCommandReceivers(), diretorioAnterior), "UseCases");
         }
 
 

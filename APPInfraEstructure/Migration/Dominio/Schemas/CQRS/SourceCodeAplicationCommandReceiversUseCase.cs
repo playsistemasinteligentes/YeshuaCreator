@@ -2,46 +2,59 @@
 using Migration.Dominio;
 using System.Text;
 using Migration.Dominio.Schemas.CQRS;
+using static Dapper.SqlMapper;
 
 namespace Dominio.Schemas.CQRS
 {
-    public class SourceCodeAplicationCommandReceiversHub : SourceCodeBase
+    public class SourceCodeAplicationCommandReceiversUseCase : SourceCodeBase
     {
-        private Hub _hub;
+        private UseCaseGroup _useCaseGroup;
         private CommandType _commandType;
-        private Service _service;
-        private Method _method;
+        private UseCaseSubGroup _useCaseSubGroup;
+        private UseCase _useCase;
         private string _nameSpace;
         private string _nameSpaceCommand;
         private string _classeReceiver;
         private string _classeCommand;
 
-        public SourceCodeAplicationCommandReceiversHub(Hub hub)
+        public SourceCodeAplicationCommandReceiversUseCase(UseCaseGroup hub)
             : base()
         {
-            _hub = hub;
+            _useCaseGroup = hub;
             _nameSpace = CQRSParam.I.NameSpaceCommandReceiversHub;
-            _commandType = CommandType.Hub;
+            _commandType = CommandType.UseCaseGroup;
         }
-        public SourceCodeAplicationCommandReceiversHub(Method method)
+        public SourceCodeAplicationCommandReceiversUseCase(UseCase useCase)
             : base()
         {
-            _hub = method.Hub;
-            _service = method.Service;
-            _commandType = CommandType.ServiceMethod;
-            _method = method;
-            _nameSpace = CQRSParam.I.NameSpaceCommandReceiversHubServiceMethod;
-            _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsHubServiceMethod;
-            _classeReceiver = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Receiver";
-            _classeCommand = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
+            _useCaseGroup = useCase.UseCaseGroup;
+            _useCaseSubGroup = useCase.UseCaseSubGroup;
+            _commandType = CommandType.UseCase;
+            _useCase = useCase;
+            _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
+            _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsUseCases;
+            _classeReceiver = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Receiver";
+            _classeCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Command";
         }
         protected override StringBuilder GenerateCode()
         {
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
+
+            sb.AppendLine($"// Escopo: {string.Join(",", _useCase.Scopes)}");
+
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+
+            foreach (var entity in _useCase.Entitys)
+            {
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioInputsRepositorio}.{entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName};");
+            }
+
             sb.AppendLine($"using System;");
             sb.AppendLine($"using System.Collections.Generic;");
             sb.AppendLine($"using System.Linq;");
@@ -52,9 +65,44 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
+
             sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase<object>");
             sb.AppendLine("    {");
             sb.AppendLine();
+
+            if (_useCase != null && _useCase.Entitys.Count > 0)
+            {
+                sb.AppendLine("        private readonly IUnitOfWork _unitOfWork;");
+                sb.AppendLine($"        private readonly ILogger _logger;");
+                foreach (var entity in _useCase.Entitys)
+                {
+                    sb.AppendLine($"        private readonly I{entity.EntityName}ReadRepository _repRead{entity.EntityName};");
+                    sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName};");
+                }
+
+                sb.Append($"        public {_classeReceiver}(IUnitOfWork unitOfWork,ILogger logger");
+                for (int i = 0; i < _useCase.Entitys.Count; i++)
+                {
+                    var entity = _useCase.Entitys[i];
+                    sb.Append($",I{entity.EntityName}ReadRepository repRead{entity.EntityName}, I{entity.EntityName}WriteRepository repWrite{entity.EntityName}");
+                }
+                sb.AppendLine(")");
+                sb.AppendLine("        {");
+
+                sb.AppendLine($"           _unitOfWork = unitOfWork;");
+                sb.AppendLine($"           _logger = logger;");
+
+
+                foreach (var entity in _useCase.Entitys)
+                {
+                    sb.AppendLine($"            _repRead{entity.EntityName} = repRead{entity.EntityName};");
+                    sb.AppendLine($"            _repWrite{entity.EntityName} = repWrite{entity.EntityName};");
+                }
+                sb.AppendLine("        }");
+            }
+
+
+
             //sb.AppendLine($"        private readonly object _menssage;");
             //sb.AppendLine();
             //sb.AppendLine($"        public {_classe}(object menssage)");
@@ -143,9 +191,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
 
-            sb.AppendLine("using RepositoryInterfaces.Patterns.UnitOfWork;");
-            foreach (var scope in _method.Scopes)
+            foreach (var scope in _useCase.Scopes)
                 sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");
 
             sb.AppendLine();
@@ -160,7 +208,7 @@ namespace Dominio.Schemas.CQRS
 
 
             sb.AppendLine("private readonly IUnitOfWork _unitOfWork;");
-            foreach (var scope in _method.Scopes)
+            foreach (var scope in _useCase.Scopes)
                 sb.AppendLine($"private readonly I{scope} _{scope};");
 
             sb.AppendLine("" +

@@ -5,7 +5,7 @@ namespace Dominio
 {
     public class Menu
     {
-        public Menu(Hub hub, string name)
+        public Menu(UseCaseGroup hub, string name)
         {
             Hub = hub;
             Name = name;
@@ -13,7 +13,7 @@ namespace Dominio
             SubMenus = new List<Menu>();
         }
 
-        public Hub Hub { get; set; }
+        public UseCaseGroup Hub { get; set; }
         public Descricao Name { get; set; }
         public Dictionary<int, Descricao> Options { get; set; }
         public List<Menu> SubMenus { get; set; }

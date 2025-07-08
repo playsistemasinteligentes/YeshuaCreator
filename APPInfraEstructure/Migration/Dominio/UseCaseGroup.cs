@@ -4,35 +4,36 @@ using Migration.Dominio.Schemas;
 using Migration.Dominio.Schemas.CQRS;
 using System.Reflection;
 using System.Text;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Dominio
 {
-    public class Hub
+    public class UseCaseGroup
     {
-        public Hub(string name)
+        public UseCaseGroup(string name)
         {
             Name = name;
         }
         public List<Agent> Agents = new List<Agent>();
 
-        public List<Service> Services = new List<Service>();
+        public List<UseCaseSubGroup> UseCaseSubGroup = new List<UseCaseSubGroup>();
 
         public Descricao Name { get; set; }
 
-        public Hub AddAgents(string agente)
+        public UseCaseGroup AddAgents(string agente)
         {
             return AddAgent(agente);
         }
-        public Hub AddService(string serviceName)
+        public UseCaseGroup AddUseCaseSubGrup(string name)
         {
-            this.Services.Add(new Service(serviceName));
+            this.UseCaseSubGroup.Add(new UseCaseSubGroup(name));
             return this;
         }
-        public Hub AddMethod(string method, params object[] parametros)
+        public UseCaseGroup AddUseCase(string method, params object[] parametros)
         {
-            Method _Method = new Method(method);
-            _Method.Hub = this;
-            _Method.Service = this.Services.Last();
+            UseCase _Method = new UseCase(method);
+            _Method.UseCaseGroup = this;
+            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
             foreach (var param in parametros)
             {
                 if (_Method.Inputs == null)
@@ -60,49 +61,55 @@ namespace Dominio
                 }
 
             }
-            this.Services.Last().Methods.Add(_Method);
+            this.UseCaseSubGroup.Last().UseCases.Add(_Method);
             return this;
         }
 
-        public Hub AddAgent(string name)
+        public UseCaseGroup AddAgent(string name)
         {
             var col = new Agent(name, "", this);
             Agents.Add(col);
             return this;
         }
 
-        public Hub AddAgentMetod(string name, string description)
+        public UseCaseGroup AddAgentMetod(string name, string description)
         {
-            var method = new Method(this, name, description);
+            var method = new UseCase(this, name, description);
             return this.Agents.Last().AddMethod(method);
         }
-        public Hub AddMenu(string name)
+        public UseCaseGroup AddMenu(string name)
         {
             var menu = new Menu(this, name);
             return this.Agents.Last().AddMenu(menu);
         }
-        public Hub AddSubMenu(string name)
+        public UseCaseGroup AddSubMenu(string name)
         {
             var menu = new Menu(this, name);
             return this.Agents.Last().Menus.Last().AddSubMenu(menu).Hub;
         }
-        public Hub AddMenuOption(int id, string name)
+        public UseCaseGroup AddMenuOption(int id, string name)
         {
             return this.Agents.Last().Menus.Last().AddOption(id, name).Hub;
         }
-        public Hub AddSubMenuOption(int id, string name)
+        public UseCaseGroup AddSubMenuOption(int id, string name)
         {
             return this.Agents.Last().Menus.Last().SubMenus.Last().AddOption(id, name).Hub;
         }
 
-        public Hub Authorization(Authorization autorization)
+        public UseCaseGroup Authorization(Authorization autorization)
         {
-            this.Services.Last().Methods.Last().Authorization = autorization;
+            this.UseCaseSubGroup.Last().UseCases.Last().Authorization = autorization;
             return this;
         }
-        public Hub AddScope(string scope)
+        public UseCaseGroup AddScope(string scope)
         {
-            this.Services.Last().Methods.Last().AddScope(scope);
+            this.UseCaseSubGroup.Last().UseCases.Last().AddScope(scope);
+            return this;
+        }
+
+        public UseCaseGroup AddEntity(string entityName)
+        {
+            this.UseCaseSubGroup.Last().UseCases.Last().Entitys.Add(new Entity(entityName));
             return this;
         }
     }

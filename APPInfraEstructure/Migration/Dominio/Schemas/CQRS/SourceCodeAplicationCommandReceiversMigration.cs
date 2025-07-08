@@ -58,7 +58,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
 
-                sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioInputsRepositorio}.{_entity.EntityName};");
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
                 sb.AppendLine($"using System.Linq;");
@@ -117,7 +117,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
                 sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
-                sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository}.{_entity.EntityName};");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");

@@ -117,9 +117,9 @@ builder.Services.AddTransient<Command.Receivers.Write.DeleteY_Tenant_Configurati
 builder.Services.AddTransient<Command.Receivers.Read.Y_Tenant_ConfigurationReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.Y_Tenant_ConfigurationReadFKTenantIDReceiver>();
 
-builder.Services.AddTransient<Command.Receivers.HubServiceMethod.ContasCreateContaServiceMethodReceiver>();
+builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 
-builder.Services.AddTransient<Command.Receivers.HubServiceMethod.ContasLoginServiceMethodReceiver>();
+builder.Services.AddTransient<Command.Receivers.UseCase.ContasLoginUseCaseReceiver>();
 }
 }
 }

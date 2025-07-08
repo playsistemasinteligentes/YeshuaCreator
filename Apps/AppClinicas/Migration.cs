@@ -139,7 +139,7 @@ namespace AppClinicas
                 .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(500);
 
             // Agente para interação de agendamento de pacientes via WhatsApp
-            AddHub("ClinicaPaciente")
+            AddUsecaseGroup("ClinicaPaciente")
                 .AddAgents("Agente de Agendamento de Paciente")
                     .AddMenu("Menu de Agendamento")
                     .AddMenuOption(1, "Consultar agendamentos existentes")
@@ -168,10 +168,6 @@ namespace AppClinicas
                     .AddMenuOption(2, "Verificar transações financeiras")
                     .AddMenuOption(3, "Emitir relatório financeiro")
                 .AddAgents("createConta");
-
-
-
-
         }
     }
 }

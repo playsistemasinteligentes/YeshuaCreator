@@ -1,0 +1,10 @@
+﻿Dica prática para começar:
+Use Ubuntu Server (ex: 22.04 LTS) em suas VMs.
+
+Instale Docker CE com as instruções oficiais.
+
+Depois instale Docker Compose (binário ou via apt).
+
+Teste seus containers com Compose.
+
+Se for para Swarm, rode docker swarm init no manager e junte os nodes workers.

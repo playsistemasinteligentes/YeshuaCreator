@@ -1,0 +1,294 @@
+﻿ Regra prática para decidir:
+
+> 📌 Se a lógica responde à pergunta “como deve ser uma carga de transbordo válida?”, ela vai no domínio.
+📌 Se responde a “quando aplicar a lógica de transbordo?”, ela vai no use case.
+
+
+Sim, estratégias vivem no domínio como blocos de conhecimento sobre o negócio.
+Use Cases vivem na application e decidem quais desses blocos aplicar e quando.
+
+
+
+
+Checklist para separar responsabilidades (Domain vs Application)
+
+Com suporte explícito ao princípio do Open/Closed
+
+
+
+🔹 1. VALIDAÇÕES
+
+Item	Domínio	Application (Use Case)
+
+Regras que validam consistência interna da entidade	✅ Sim. Ex: "email é obrigatório", "data não pode ser no passado"	❌ Não. A entity deve garantir isso sempre
+Regras que dependem de dados externos (ex: repositório)	❌ Não. Domínio não deve depender de infraestrutura	✅ Sim. Ex: "já existe esse e-mail", "nome do tenant é único"
+Regras específicas de um único caso de uso	❌ Não. São contextuais e não reutilizáveis	✅ Sim. Ex: “Ao criar conta, não pode ser um domínio público”
+
+
+✅ Open/Closed aplicado:
+
+Você adiciona uma nova validação implementando uma nova classe que implementa IValidador<UseCaseX>, sem tocar nas existentes.
+
+O UseCaseHandler chama todos os validadores via injeção de dependência ou registrador automático.
+
+
+
+---
+
+🔹 2. ESTRATÉGIAS (comportamento condicional e extensível)
+
+Item	Domínio	Application (Use Case)
+
+Comportamento que modifica o estado de uma entidade	✅ Sim. Ex: AplicarDesconto, AtivarPlanoTrial	❌ Não. Não deve modificar diretamente entidades
+Comportamento que orquestra múltiplas entidades ou serviços externos	❌ Não. É uso do domínio, mas não é lógica do domínio	✅ Sim. Ex: "criar tenant e enviar e-mail", "agendar notificação"
+Comportamento condicional por tipo ou contexto	✅ Sim, com polimorfismo. Ex: estratégias baseadas em tipo de carga	✅ Sim, se contexto de processo. Ex: se tipo = transbordo, aplicar X
+
+
+✅ Open/Closed aplicado:
+
+Adicionar nova estratégia = implementar novo IAplicarRegraX ou IEstrategiaUseCaseY.
+
+Fábricas e handlers apenas chamam as registradas. Sem alterar código existente.
+
+
+
+---
+
+🔹 3. FÁBRICAS
+
+Tipo de criação	Domínio	Application
+
+Criação de uma entidade válida e autoconsistente	✅ Sim. Ex: UsuarioFactory.Create(...)	❌ Não. Application chama a fábrica, mas não constrói ela
+Criação de várias entidades ao mesmo tempo	❌ Não. Domínio só conhece ele mesmo	✅ Sim. Use case orquestra 2+ fábricas (ex: criar conta → tenant + usuário)
+
+
+✅ Open/Closed aplicado:
+
+Fábricas recebem listas de decorações, estratégias, validações — tudo via DI ou composição.
+
+Você extende o processo de criação configurando qual "pipeline" aplicar. Nenhuma lógica precisa ser reescrita.
+
+
+
+---
+
+🔹 4. DECORADORES
+
+Função	Domínio	Application
+
+Decorar uma entidade com comportamento interno (ex: log, auditoria de campo)	✅ Sim. Ex: UsuarioComAuditoria, CargaComLog	❌ Não. Application apenas decide se usa o decorador
+Decorar serviços com side-effects externos (ex: envio de eventos, notificação)	❌ Não. Isso é infraestrutura	✅ Sim. Usado na Application ou Infra para orquestrar efeitos
+
+
+✅ Open/Closed aplicado:
+
+Decoradores são plugáveis sem alterar o objeto original.
+
+Você pode compor objetos decorados via pipeline configurável.
+
+
+
+---
+
+📦 Sugestão de estrutura de código orientada a Open/Closed
+
+/Domain
+  /Entities
+    Usuario.cs
+    Tenant.cs
+    Carga.cs
+  /Factories
+    UsuarioFactory.cs
+    CargaFactory.cs
+  /Strategies
+    AplicarPlanoGratuito.cs
+    CalcularCustoTransbordo.cs
+  /Validations
+    EmailValido.cs
+    NomeNaoNulo.cs
+  /Decorators
+    UsuarioComAuditoria.cs
+
+/Application
+  /UseCases
+    /CriarConta
+      CriarContaHandler.cs
+      CriarContaCommand.cs
+      IValidadorCriarConta.cs
+      IEstrategiaCriarConta.cs
+      EnviarEmailBoasVindas.cs
+      ValidarTenantUnico.cs
+
+
+---
+
+🔚 Conclusão
+
+O Open/Closed fica suportado assim:
+
+Cada novo comportamento, validação ou estratégia é adicionado como nova classe, nunca modificando código anterior.
+
+As fábricas, handlers e pipelines operam via listas de interfaces, permitindo que a orquestração seja extensível e testável.
+
+A meta-linguagem pode gerar a “estrutura esquelética” e os pontos de extensão ficam claros via interfaces e parciais.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🛠️ Como padronizar com flexibilidade?
+Você pode adotar uma arquitetura híbrida com base em um padrão interno seu:
+
+Use Cases + Pipeline: Para lógica de negócio pura e regrada.
+
+State Machine: Para entidades com status claro.
+
+Workflow Engine: Só quando realmente necessário (start small).
+
+🚀 Sugestão final
+Se você quer um único modelo base, que seja evolutivo e aplicável no início:
+
+Comece com UseCases + Pipeline + State Enum, e vá desacoplando os fluxos mais complexos com StateMachine ou Workflow Engine conforme necessário.
+
+
+
+
+
+
+Validação e Especificação 
+
+Validações	                                Especificações
+Avaliam coerência do dado bruto	            Avaliam regras de negócio / contexto
+Costumam ser imutáveis	                    Podem mudar conforme o cenário de uso
+Executadas no momento de criação	        Executadas no momento de decisão
+Ex: campo obrigatório, e-mail válido	    Ex: "pode agendar?", "pode cancelar agora?"
+
+
+
+
+
+
+qual diferença da Specification para  Strategy Pattern
+
+
+O ChatGPT disse:
+Ótima pergunta. Specification e Strategy são dois padrões de projeto muito usados — e que às vezes se parecem — mas eles têm propósitos diferentes.
+
+Vamos direto ao ponto:
+
+🔍 Specification Pattern
+Objetivo:
+Descrever regras de negócio reutilizáveis e combináveis, geralmente em forma de filtros ou validações.
+
+Quando usar:
+Quando você quer testar se um objeto atende a uma condição.
+
+Quando precisa combinar lógicas de negócio (AND, OR, NOT) sem criar uma explosão de ifs ou classes.
+
+Exemplo:
+csharp
+Copiar
+Editar
+public interface ISpecification<T>
+{
+    bool IsSatisfiedBy(T entity);
+}
+csharp
+Copiar
+Editar
+public class ConsultaAgendadaSpecification : ISpecification<Consulta>
+{
+    public bool IsSatisfiedBy(Consulta consulta)
+        => consulta.Status == ConsultaStatus.Agendada;
+}
+Uso:
+Filtrar uma lista.
+
+Validar se uma entidade pode realizar uma operação.
+
+Compor especificações dinamicamente:
+
+csharp
+Copiar
+Editar
+var spec = new ConsultaAgendadaSpec().And(new DataProximaSpec());
+🔧 Strategy Pattern
+Objetivo:
+Encapsular comportamentos intercambiáveis, ou seja, "como fazer algo" de formas diferentes, definidas por algoritmos substituíveis.
+
+Quando usar:
+Quando há várias formas de realizar a mesma tarefa.
+
+Para evitar switch/case ou muitos ifs com lógica de "tipo".
+
+Exemplo:
+csharp
+Copiar
+Editar
+public interface IEnvioMensagemStrategy
+{
+    void Enviar(Mensagem mensagem);
+}
+csharp
+Copiar
+Editar
+public class EnvioPorSms : IEnvioMensagemStrategy
+{
+    public void Enviar(Mensagem mensagem) => // envia por SMS
+}
+
+public class EnvioPorWhatsapp : IEnvioMensagemStrategy
+{
+    public void Enviar(Mensagem mensagem) => // envia por WhatsApp
+}
+Uso:
+Substituir algoritmos.
+
+Delegar decisões de "como fazer".
+
+Injetar o comportamento em tempo de execução:
+
+csharp
+Copiar
+Editar
+IEnvioMensagemStrategy estrategia = new EnvioPorSms();
+estrategia.Enviar(mensagem);
+✅ Resumo das Diferenças
+Característica	Specification	Strategy
+Propósito	Avaliar regras ou condições	Encapsular algoritmos ou ações
+Representa	"Se isso pode ser feito..."	"Como isso será feito..."
+Foco	Regras de negócio e validações	Comportamentos intercambiáveis
+Combinável (AND/OR)	Sim (facilmente)	Não (normalmente 1 por vez)
+Usado em	Filtros, validações, permissões, etc.	Algoritmos, estratégias de envio, cálculos
+
+🧠 Analogia prática
+Imagine um sistema de envio de mensagens:
+
+Specification:
+
+"Essa mensagem pode ser enviada?" → regra de negócio
+
+"O paciente tem telefone válido?" → filtro
+
+Strategy:
+
+"Como enviar essa mensagem?" → WhatsApp, SMS, Email, etc.
+
+Pode usar os dois juntos?
+Sim, e é comum:
+
+Use Specification para verificar se uma ação pode ser feita.
+
+Use Strategy para definir como ela será feita.
+
+
+

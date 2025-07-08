@@ -24,7 +24,7 @@ export function buildRegister() {
         }
 
         try {
-            const response = await fetch(`${environments.urlApi}/Y/ContascreateContaServiceMethod`, {
+            const response = await fetch(`${environments.urlApi}/Y/ContascreateContaUseCase`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idCompany, email, phone, password, confirmPassword })
