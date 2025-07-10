@@ -120,6 +120,8 @@ builder.Services.AddTransient<Command.Receivers.Read.Y_Tenant_ConfigurationReadF
 builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ContasLoginUseCaseReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver>();
 }
 }
 }

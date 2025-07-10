@@ -535,6 +535,9 @@
             "projectReferences": {
               "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
                 "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
+              },
+              "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
+                "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
               }
             }
           }

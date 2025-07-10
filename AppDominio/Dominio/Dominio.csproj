@@ -7,16 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Enum\**" />
     <Compile Remove="Especificacoes\**" />
-    <EmbeddedResource Remove="Enum\**" />
     <EmbeddedResource Remove="Especificacoes\**" />
-    <None Remove="Enum\**" />
     <None Remove="Especificacoes\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Entitys\" />
+    <Folder Include="Enum\" />
     <Folder Include="Specification\Agenda\" />
     <Folder Include="Specification\Clinica\" />
     <Folder Include="Specification\Paciente\" />

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
+    <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1891,6 +1891,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Dapper >= 2.1.35",
+      "Dominio >= 1.0.0",
       "Microsoft.Data.SqlClient >= 5.2.1",
       "Microsoft.Extensions.Caching.Abstractions >= 9.0.6",
       "Newtonsoft.Json >= 13.0.1",
@@ -1931,6 +1932,9 @@
           "projectReferences": {
             "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
               "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
+            },
+            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
+              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
             }
           }
         }

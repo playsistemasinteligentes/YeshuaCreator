@@ -32,6 +32,7 @@ namespace Dominio
         public Authorization Authorization { get; set; }
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();
+        public List<Type> Estrategys = new List<Type>();
 
         public void AddScope(string scope)
         {

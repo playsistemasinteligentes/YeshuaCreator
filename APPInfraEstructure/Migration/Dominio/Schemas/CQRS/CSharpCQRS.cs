@@ -151,10 +151,15 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var useCase in subGroup.UseCases)
                     {
+                        // use cases 
                         filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Migration"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receivers.cs");
                         filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Custon"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receivers.cs");
                         var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(useCase);
                         sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, useCase);
+
+                        //strategy 
+                        foreach (var item in useCase.Estrategys)
+                            new SourceCodeAplicationCommandReceiversUseCase(useCase, item);
                     }
                 }
 

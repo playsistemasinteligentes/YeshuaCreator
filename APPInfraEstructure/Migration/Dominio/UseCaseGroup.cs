@@ -112,5 +112,11 @@ namespace Dominio
             this.UseCaseSubGroup.Last().UseCases.Last().Entitys.Add(new Entity(entityName));
             return this;
         }
+
+        public UseCaseGroup Strategy(Type type)
+        {
+            this.UseCaseSubGroup.Last().UseCases.Last().Estrategys.Add(type);
+            return this;
+        }
     }
 }
