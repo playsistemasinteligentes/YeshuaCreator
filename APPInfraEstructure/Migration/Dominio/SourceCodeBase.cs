@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using static Dapper.SqlMapper;
 
 namespace Migration.Dominio
 {
@@ -85,30 +86,35 @@ namespace Migration.Dominio
                 Console.WriteLine("Erro ao escrever no arquivo: " + ex.Message);
             }
         }
-        // Método público para gerar e salvar o código
-        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCase useCase = null)
+
+
+        public void WriteCode(StringBuilder code, string path, bool custon, bool context)
         {
-            StringBuilder code = GenerateCode();
             code.Append("");
             code.Append("");
             code.Append($"//{this.GetType()}");
 
-            WriteToFile(code, filePathMigration);
+            if (custon && File.Exists(path))
+                return;
 
-            if ((entity != null && entity.EntityName == "Y_Tenant") || (useCase != null && useCase.Name._value == "createConta"))
-            {
-                //WriteContexto(filePathMigration);
-                //WriteContexto(this.GetType().ToString());
+            WriteToFile(code, path);
+
+            if (context)
                 WriteContexto(code.ToString());
-            }
+        }
+        // Método público para gerar e salvar o código
+        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCase useCase = null)
+        {
+            StringBuilder code = GenerateCode();
+            bool context = false;
+            if ((entity != null && entity.EntityName == "Y_Tenant") || (useCase != null && useCase.Name._value == "createConta"))
+                context = true;
+            WriteCode(code, filePathMigration, false, context);
 
             if (!File.Exists(filePathCuston))
             {
                 code = GenerateCustonCode();
-                code.Append("");
-                code.Append("");
-                code.Append($"//{this.GetType()}");
-                WriteToFile(code, filePathCuston);
+                WriteCode(code, filePathCuston, true, context);
             }
         }
     }

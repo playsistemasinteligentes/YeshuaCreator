@@ -76,10 +76,9 @@ namespace Migration.Dominio.Migration
         public record RecoveryAccount(string email, TypeNotification typeNotification);
         public enum TypeNotification
         {
-            Email,
-            SMS,
-            Whatsapp,
-            tuwter
+            Email = 1,
+            SMS = 2,
+            Whatsapp = 3
         }
 
         public interface INotification
@@ -89,6 +88,13 @@ namespace Migration.Dominio.Migration
         }
         public interface IMessage
         {
+        }
+        public class Message : IMessage
+        {
+            public string Destination { get; set; }
+            public string Body { get; set; }
+            public string? Subject { get; set; } = null;
+            public byte[]? Attachment { get; set; } = null;
         }
     }
 }

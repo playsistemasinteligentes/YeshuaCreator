@@ -18,6 +18,7 @@ namespace Dominio.Schemas.CQRS
         private string _classeReceiver;
         private string _classeCommand;
         private Type _type;
+        private ExportPathsSourceCodeAplicationCommandReceiversUseCase _exportPath;
 
         public SourceCodeAplicationCommandReceiversUseCase(UseCaseGroup hub)
             : base()
@@ -38,7 +39,7 @@ namespace Dominio.Schemas.CQRS
             _classeReceiver = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Receiver";
             _classeCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Command";
         }
-        public SourceCodeAplicationCommandReceiversUseCase(UseCase useCase, Type type)
+        public SourceCodeAplicationCommandReceiversUseCase(UseCase useCase, Type type, ExportPathsSourceCodeAplicationCommandReceiversUseCase exportPath, ref List<CodigoGerado> CodigoGerado)
             : base()
         {
             _type = type;
@@ -50,29 +51,10 @@ namespace Dominio.Schemas.CQRS
             _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsUseCases;
             _classeReceiver = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Receiver";
             _classeCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Command";
+            _exportPath = exportPath;
 
-
-
-            var paths = new ExportPaths
-            {
-                EnumPath = "c:\\temp\\temp\\",
-                InterfacePath = "c:\\temp\\temp\\",
-                ClassPath = "c:\\temp\\temp\\",
-                CustomClassPath = @"c:\\temp\\temp\\cu\\",
-                FactoryInterfacePath = "c:\\temp\\temp\\",
-                FactoryClassPath = "c:\\temp\\temp\\",
-                DependencyInjectionPath = "c:\\temp\\temp\\"
-
-            };
-
-            TypeExporter.ExportFromRootInterface(_type, paths);
-
-
+            CodigoGerado = TypeExporter.ExportFromRootInterface(_type, _exportPath);
         }
-
-
-
-
 
 
         protected override StringBuilder GenerateCode()
@@ -269,7 +251,11 @@ namespace Dominio.Schemas.CQRS
         }
 
 
-        public class ExportPaths
+
+
+
+
+        public class ExportPathsSourceCodeAplicationCommandReceiversUseCase
         {
             public string EnumPath { get; set; } = "";
             public string InterfacePath { get; set; } = "";
@@ -277,22 +263,39 @@ namespace Dominio.Schemas.CQRS
             public string CustomClassPath { get; set; } = "";
             public string FactoryInterfacePath { get; set; } = "";
             public string FactoryClassPath { get; set; } = "";
-            public string DependencyInjectionPath { get; set; } = ""; // Novo path para DI
+            public string DependencyInjectionPath { get; set; } = "";
+
+            public string EnumNamespace { get; set; } = "MyProject.Enums";
+            public string InterfaceNamespace { get; set; } = "MyProject.Interfaces";
+            public string ClassNamespace { get; set; } = "MyProject.Classes";
+            public string CustomClassNamespace { get; set; } = "MyProject.CustomClasses";
+            public string FactoryInterfaceNamespace { get; set; } = "MyProject.Factories.Interfaces";
+            public string FactoryClassNamespace { get; set; } = "MyProject.Factories";
+            public string DependencyInjectionNamespace { get; set; } = "MyProject.DependencyInjection";
+        }
+
+        public class CodigoGerado
+        {
+            public string CaminhoArquivo { get; set; } = string.Empty;
+            public StringBuilder Conteudo { get; set; } = new StringBuilder();
+            public bool Custom { get; set; } = false;
         }
 
         public static class TypeExporter
         {
             private static readonly HashSet<Type> ProcessedTypes = new();
 
-            public static void ExportFromRootInterface(Type rootInterface, ExportPaths paths)
+            public static List<CodigoGerado> ExportFromRootInterface(Type rootInterface, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 if (!rootInterface.IsInterface)
                     throw new InvalidOperationException("O tipo inicial deve ser uma interface.");
 
-                ExportTypeRecursive(rootInterface, paths);
+                List<CodigoGerado> codigos = new();
+                ExportTypeRecursive(rootInterface, paths, codigos);
+                return codigos;
             }
 
-            private static void ExportTypeRecursive(Type type, ExportPaths paths)
+            private static void ExportTypeRecursive(Type type, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths, List<CodigoGerado> codigos)
             {
                 if (ProcessedTypes.Contains(type) || type.Namespace?.StartsWith("System") == true)
                     return;
@@ -302,55 +305,111 @@ namespace Dominio.Schemas.CQRS
                 string folderPath = type.IsEnum ? paths.EnumPath :
                                     type.IsInterface ? paths.InterfacePath :
                                     paths.ClassPath;
-
-                Directory.CreateDirectory(folderPath);
                 string filePath = Path.Combine(folderPath, $"{type.Name}.cs");
 
-                using var writer = new StreamWriter(filePath);
+                StringBuilder sb = new();
+
+                HashSet<string> dependencies = CollectDependencies(type, paths);
+                foreach (var dep in dependencies)
+                {
+                    sb.AppendLine($"using {dep};");
+                }
+
+                sb.AppendLine();
+                string ns = type.IsEnum ? paths.EnumNamespace :
+                             type.IsInterface ? paths.InterfaceNamespace :
+                             paths.ClassNamespace;
+                sb.AppendLine($"namespace {ns};");
+                sb.AppendLine();
+
                 if (type.IsEnum)
                 {
-                    writer.WriteLine($"public enum {type.Name}");
-                    writer.WriteLine("{");
-                    foreach (var name in Enum.GetNames(type))
-                        writer.WriteLine($"    {name},");
-                    writer.WriteLine("}");
+                    sb.AppendLine($"public enum {type.Name}");
+                    sb.AppendLine("{");
+                    foreach (var value in Enum.GetValues(type))
+                    {
+                        int intValue = (int)value!;
+                        string name = Enum.GetName(type, value)!;
+                        sb.AppendLine($"    {name} = {intValue},");
+                    }
+                    sb.AppendLine("}");
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
+
                 }
                 else if (type.IsInterface)
                 {
-                    writer.WriteLine($"public interface {type.Name}");
-                    writer.WriteLine("{");
+                    incluir aqui o name space pra ficar abaixo
+                    writer.WriteLine($"using {paths.EnumNamespace};");
+                    sb.AppendLine($"public interface {type.Name}");
+                    sb.AppendLine("{");
 
                     foreach (var prop in type.GetProperties())
                     {
-                        writer.WriteLine($"    {prop.PropertyType.Name} {prop.Name} {{ get; }}");
-                        ExportTypeRecursive(prop.PropertyType, paths);
+                        sb.AppendLine($"    {prop.PropertyType.Name} {prop.Name} {{ get; }}");
+                        ExportTypeRecursive(prop.PropertyType, paths, codigos);
                     }
 
-                    foreach (var method in type.GetMethods().Where(m => m.DeclaringType == type))
+                    foreach (var method in type.GetMethods().Where(m => m.DeclaringType == type && !m.IsSpecialName))
                     {
                         foreach (var param in method.GetParameters())
-                            ExportTypeRecursive(param.ParameterType, paths);
+                            ExportTypeRecursive(param.ParameterType, paths, codigos);
 
-                        ExportTypeRecursive(method.ReturnType, paths);
+                        ExportTypeRecursive(method.ReturnType, paths, codigos);
 
                         string parameters = string.Join(", ",
                             method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
-                        writer.WriteLine($"    {method.ReturnType.Name} {method.Name}({parameters});");
+                        string returnType = method.ReturnType == typeof(void) ? "void" : method.ReturnType.Name;
+                        sb.AppendLine($"    {returnType} {method.Name}({parameters});");
                     }
 
-                    writer.WriteLine("}");
+                    sb.AppendLine("}");
 
-                    GenerateConcreteClassesForEnum(type, paths);
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
+                    codigos.AddRange(GenerateConcreteClassesForEnum(type, paths));
+                }
+                else
+                {
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
                 }
             }
 
-            private static void GenerateConcreteClassesForEnum(Type interfaceType, ExportPaths paths)
+            private static HashSet<string> CollectDependencies(Type type, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
+                HashSet<string> namespaces = new();
+
+                void AddNamespace(Type t)
+                {
+                    if (t.Namespace != null &&
+                        !t.Namespace.StartsWith("System") &&
+                        t.Namespace != type.Namespace)
+                    {
+                        namespaces.Add(t.Namespace);
+                    }
+                }
+
+                if (type.IsEnum) return namespaces;
+
+                foreach (var prop in type.GetProperties())
+                    AddNamespace(prop.PropertyType);
+
+                foreach (var method in type.GetMethods().Where(m => m.DeclaringType == type && !m.IsSpecialName))
+                {
+                    AddNamespace(method.ReturnType);
+                    foreach (var param in method.GetParameters())
+                        AddNamespace(param.ParameterType);
+                }
+
+                return namespaces;
+            }
+
+            private static List<CodigoGerado> GenerateConcreteClassesForEnum(Type interfaceType, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
+            {
+                List<CodigoGerado> codigos = new();
                 var enumProp = interfaceType.GetProperties()
                     .FirstOrDefault(p => p.PropertyType.IsEnum);
 
                 if (enumProp == null)
-                    return;
+                    return codigos;
 
                 Type enumType = enumProp.PropertyType;
                 List<string> classNames = new();
@@ -360,136 +419,140 @@ namespace Dominio.Schemas.CQRS
                     string className = $"{enumValue}Notification";
                     classNames.Add(className);
 
-                    // Gera Classe Base (Sempre)
-                    Directory.CreateDirectory(paths.ClassPath);
-                    string basePath = Path.Combine(paths.ClassPath, $"{className}.cs");
-                    using (var writer = new StreamWriter(basePath))
+                    string classFilePath = Path.Combine(paths.ClassPath, $"{className}.cs");
+                    StringBuilder sbClass = new();
+                    sbClass.AppendLine($"using {paths.InterfaceNamespace};");
+                    sbClass.AppendLine($"using {paths.EnumNamespace};");
+                    sbClass.AppendLine();
+                    sbClass.AppendLine($"namespace {paths.ClassNamespace};");
+                    sbClass.AppendLine();
+                    sbClass.AppendLine($"public partial class {className} : {interfaceType.Name}");
+                    sbClass.AppendLine("{");
+                    sbClass.AppendLine($"    public {enumType.Name} Type => {enumType.Name}.{enumValue};");
+                    sbClass.AppendLine();
+
+                    foreach (var method in interfaceType.GetMethods().Where(m => !m.IsSpecialName))
                     {
-                        writer.WriteLine($"public partial class {className} : {interfaceType.Name}");
-                        writer.WriteLine("{");
-                        writer.WriteLine($"    public {enumType.Name} Type => {enumType.Name}.{enumValue};");
-                        writer.WriteLine();
+                        string parameters = string.Join(", ",
+                            method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
+                        string returnType = method.ReturnType == typeof(void) ? "void" : method.ReturnType.Name;
 
-                        foreach (var method in interfaceType.GetMethods())
-                        {
-                            string parameters = string.Join(", ",
-                                method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
-                            writer.WriteLine($"    public partial {method.ReturnType.Name} {method.Name}({parameters});");
-                        }
-
-                        writer.WriteLine("}");
+                        sbClass.AppendLine($"    public partial {returnType} {method.Name}({parameters});");
                     }
 
-                    // Gera Classe Custom (Somente 1x)
-                    Directory.CreateDirectory(paths.CustomClassPath);
-                    string customPath = Path.Combine(paths.CustomClassPath, $"{className}.cs");
-                    if (!File.Exists(customPath))
+                    sbClass.AppendLine("}");
+
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = classFilePath, Conteudo = sbClass });
+
+                    string customFilePath = Path.Combine(paths.CustomClassPath, $"{className}.cs");
+                    StringBuilder sbCustom = new();
+                    sbCustom.AppendLine($"namespace {paths.CustomClassNamespace};");
+                    sbCustom.AppendLine();
+                    sbCustom.AppendLine($"public partial class {className}");
+                    sbCustom.AppendLine("{");
+                    foreach (var method in interfaceType.GetMethods().Where(m => !m.IsSpecialName))
                     {
-                        using (var writer = new StreamWriter(customPath))
-                        {
-                            writer.WriteLine($"public partial class {className}");
-                            writer.WriteLine("{");
-                            foreach (var method in interfaceType.GetMethods())
-                            {
-                                string parameters = string.Join(", ",
-                                    method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
-                                writer.WriteLine($"    public partial {method.ReturnType.Name} {method.Name}({parameters})");
-                                writer.WriteLine("    {");
-                                writer.WriteLine("        throw new NotImplementedException();");
-                                writer.WriteLine("    }");
-                            }
-                            writer.WriteLine("}");
-                        }
+                        string parameters = string.Join(", ",
+                            method.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"));
+                        string returnType = method.ReturnType == typeof(void) ? "void" : method.ReturnType.Name;
+
+                        sbCustom.AppendLine($"    public partial {returnType} {method.Name}({parameters})");
+                        sbCustom.AppendLine("    {");
+                        sbCustom.AppendLine("        throw new NotImplementedException();");
+                        sbCustom.AppendLine("    }");
                     }
+                    sbCustom.AppendLine("}");
+
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = customFilePath, Conteudo = sbCustom, Custom = true });
                 }
 
-                // Gera Factory Interface e Concreta
-                GenerateFactory(interfaceType, enumType, classNames, paths);
+                codigos.AddRange(GenerateFactory(interfaceType, enumType, classNames, paths));
+                return codigos;
             }
 
-            private static void GenerateFactory(Type interfaceType, Type enumType, List<string> classNames, ExportPaths paths)
+            private static List<CodigoGerado> GenerateFactory(Type interfaceType, Type enumType, List<string> classNames, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
+                List<CodigoGerado> codigos = new();
+
                 string factoryInterfaceName = $"I{interfaceType.Name}Factory";
                 string factoryClassName = $"{interfaceType.Name.TrimStart('I')}Factory";
 
-                // Interface da Factory
-                Directory.CreateDirectory(paths.FactoryInterfacePath);
-                string interfacePath = Path.Combine(paths.FactoryInterfacePath, $"{factoryInterfaceName}.cs");
-                using (var writer = new StreamWriter(interfacePath))
-                {
-                    writer.WriteLine($"public interface {factoryInterfaceName}");
-                    writer.WriteLine("{");
-                    writer.WriteLine($"    {interfaceType.Name} GetType({enumType.Name} type);");
-                    writer.WriteLine("}");
-                }
+                string interfaceFilePath = Path.Combine(paths.FactoryInterfacePath, $"{factoryInterfaceName}.cs");
+                StringBuilder sbInterface = new();
+                sbInterface.AppendLine($"using {paths.InterfaceNamespace};");
+                sbInterface.AppendLine($"using {paths.EnumNamespace};");
+                sbInterface.AppendLine();
+                sbInterface.AppendLine($"namespace {paths.FactoryInterfaceNamespace};");
+                sbInterface.AppendLine();
+                sbInterface.AppendLine($"public interface {factoryInterfaceName}");
+                sbInterface.AppendLine("{");
+                sbInterface.AppendLine($"    {interfaceType.Name} GetType({enumType.Name} type);");
+                sbInterface.AppendLine("}");
 
-                // Factory Concreta
-                Directory.CreateDirectory(paths.FactoryClassPath);
-                string classPath = Path.Combine(paths.FactoryClassPath, $"{factoryClassName}.cs");
-                using (var writer = new StreamWriter(classPath))
-                {
-                    writer.WriteLine($"public class {factoryClassName} : {factoryInterfaceName}");
-                    writer.WriteLine("{");
-                    foreach (var className in classNames)
-                        writer.WriteLine($"    private readonly {className} _{className.ToLower()};");
-                    writer.WriteLine();
-                    writer.WriteLine($"    public {factoryClassName}(");
-                    writer.WriteLine(string.Join(",\n", classNames.Select(c => $"        {c} {c.ToLower()}")));
-                    writer.WriteLine("    )");
-                    writer.WriteLine("    {");
-                    foreach (var className in classNames)
-                        writer.WriteLine($"        _{className.ToLower()} = {className.ToLower()};");
-                    writer.WriteLine("    }");
-                    writer.WriteLine();
-                    writer.WriteLine($"    public {interfaceType.Name} GetType({enumType.Name} type)");
-                    writer.WriteLine("    {");
-                    writer.WriteLine("        return type switch");
-                    writer.WriteLine("        {");
-                    foreach (var className in classNames)
-                    {
-                        string enumValue = className.Replace("Notification", "");
-                        writer.WriteLine($"            {enumType.Name}.{enumValue} => _{className.ToLower()},");
-                    }
-                    writer.WriteLine("            _ => throw new ArgumentException(\"Invalid Type\")");
-                    writer.WriteLine("        };");
-                    writer.WriteLine("    }");
-                    writer.WriteLine("}");
-                }
-                GenerateDependencyInjectionFile(interfaceType, classNames, paths);
+                codigos.Add(new CodigoGerado { CaminhoArquivo = interfaceFilePath, Conteudo = sbInterface });
 
+                string classFilePath = Path.Combine(paths.FactoryClassPath, $"{factoryClassName}.cs");
+                StringBuilder sbClass = new();
+                sbClass.AppendLine($"using {paths.InterfaceNamespace};");
+                sbClass.AppendLine($"using {paths.EnumNamespace};");
+                sbClass.AppendLine($"using {paths.ClassNamespace};");
+                sbClass.AppendLine();
+                sbClass.AppendLine($"namespace {paths.FactoryClassNamespace};");
+                sbClass.AppendLine();
+                sbClass.AppendLine($"public class {factoryClassName} : {factoryInterfaceName}");
+                sbClass.AppendLine("{");
+                foreach (var className in classNames)
+                    sbClass.AppendLine($"    private readonly {className} _{className.ToLower()};");
+                sbClass.AppendLine();
+                sbClass.AppendLine($"    public {factoryClassName}(");
+                sbClass.AppendLine(string.Join(",\n", classNames.Select(c => $"        {c} {c.ToLower()}")));
+                sbClass.AppendLine("    )");
+                sbClass.AppendLine("    {");
+                foreach (var className in classNames)
+                    sbClass.AppendLine($"        _{className.ToLower()} = {className.ToLower()};");
+                sbClass.AppendLine("    }");
+                sbClass.AppendLine();
+                sbClass.AppendLine($"    public {interfaceType.Name} GetType({enumType.Name} type)");
+                sbClass.AppendLine("    {");
+                sbClass.AppendLine("        return type switch");
+                sbClass.AppendLine("        {");
+                foreach (var className in classNames)
+                {
+                    string enumValue = className.Replace("Notification", "");
+                    sbClass.AppendLine($"            {enumType.Name}.{enumValue} => _{className.ToLower()},");
+                }
+                sbClass.AppendLine("            _ => throw new ArgumentException(\"Invalid Type\")");
+                sbClass.AppendLine("        };\n    }\n}");
+
+                codigos.Add(new CodigoGerado { CaminhoArquivo = classFilePath, Conteudo = sbClass });
+
+                codigos.AddRange(GenerateDependencyInjectionFile(interfaceType, classNames, paths));
+                return codigos;
             }
 
-            private static void GenerateDependencyInjectionFile(Type interfaceType, List<string> classNames, ExportPaths paths)
+            private static List<CodigoGerado> GenerateDependencyInjectionFile(Type interfaceType, List<string> classNames, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
+                List<CodigoGerado> codigos = new();
+
                 string fileName = $"{interfaceType.Name.TrimStart('I')}DependencyInjection.cs";
                 string filePath = Path.Combine(paths.DependencyInjectionPath, fileName);
-                Directory.CreateDirectory(paths.DependencyInjectionPath);
 
                 string factoryInterfaceName = $"I{interfaceType.Name}Factory";
                 string factoryClassName = $"{interfaceType.Name.TrimStart('I')}Factory";
 
-                using var writer = new StreamWriter(filePath);
-                writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
-                writer.WriteLine();
-                writer.WriteLine($"public static class {interfaceType.Name.TrimStart('I')}DependencyInjection");
-                writer.WriteLine("{");
-                writer.WriteLine($"    public static IServiceCollection Add{interfaceType.Name.TrimStart('I')}Services(this IServiceCollection services)");
-                writer.WriteLine("    {");
+                StringBuilder sb = new();
+                sb.AppendLine($"/*");
 
                 foreach (var className in classNames)
-                    writer.WriteLine($"        services.AddScoped<{className}>();");
+                    sb.AppendLine($"        services.AddScoped<{className}>();");
 
-                writer.WriteLine();
-                writer.WriteLine($"        services.AddScoped<{factoryInterfaceName}, {factoryClassName}>();");
-                writer.WriteLine();
-                writer.WriteLine("        return services;");
-                writer.WriteLine("    }");
-                writer.WriteLine("}");
+                sb.AppendLine($"        services.AddScoped<{factoryInterfaceName}, {factoryClassName}>();");
+                sb.AppendLine($"*/");
+
+                codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
+                return codigos;
             }
-
-
         }
-
 
 
 

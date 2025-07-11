@@ -25,4 +25,8 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Patterns\Strategy\Migration\" />
+  </ItemGroup>
+
 </Project>

@@ -14,8 +14,6 @@
   <ItemGroup>
     <Folder Include="Commands\Custon\HubAgents\" />
     <Folder Include="Patterns\Command\Interface\" />
-    <Folder Include="Strategy\Custon\" />
-    <Folder Include="Strategy\Migration\" />
   </ItemGroup>
 
 </Project>

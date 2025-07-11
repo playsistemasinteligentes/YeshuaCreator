@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase;
 using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
 
 namespace Dominio.Schemas.CQRS
@@ -158,8 +159,30 @@ namespace Dominio.Schemas.CQRS
                         sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, useCase);
 
                         //strategy 
-                        foreach (var item in useCase.Estrategys)
-                            new SourceCodeAplicationCommandReceiversUseCase(useCase, item);
+                        foreach (var strategy in useCase.Estrategys)
+                        {
+                            var paths = new ExportPathsSourceCodeAplicationCommandReceiversUseCase
+                            {
+                                EnumPath = GetPathAppDominioStrategyEnum($"Migration\\{strategy.Name}"),
+                                InterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Name}"),
+                                ClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Name}"),
+                                CustomClassPath = GetPathAppInfraestructureSheredStrategy($"Custon\\{strategy.Name}"),
+                                FactoryInterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Name}"), // candidato a aplication
+                                FactoryClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Name}"),
+                                DependencyInjectionPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Name}"),
+                                EnumNamespace = "Dominio.Enum.Strategy",
+                                InterfaceNamespace = "Dominio.Interfaces.Strategy",
+                                ClassNamespace = "Shered.Patterns.Strategy",
+                                CustomClassNamespace = "Shered.Patterns.Strategy",
+                                FactoryInterfaceNamespace = "Dominio.Interfaces.Strategy",
+                                FactoryClassNamespace = "Shered.Patterns.Strategy",
+                                DependencyInjectionNamespace = "Shered.Patterns.Strategy"
+                            };
+                            List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
+                            SourceCodeAplicationCommandReceiversUseCase strategys = new SourceCodeAplicationCommandReceiversUseCase(useCase, strategy, paths, ref CodigoGerado);
+                            foreach (var code in CodigoGerado)
+                                strategys.WriteCode(code.Conteudo, code.CaminhoArquivo, code.Custom, false);
+                        }
                     }
                 }
 
@@ -295,9 +318,17 @@ namespace Dominio.Schemas.CQRS
 
         }
 
-        private string GetPathAppDominioDominio()
+        private string GetPathAppDominioEntitys()
         {
             return Path.Combine(GetPathAppDominio(), "Entitys");
+        }
+        private string GetPathAppDominioStrategyEnum(string diretorio)
+        {
+            return Path.Combine(Path.Combine(GetPathAppDominio(), "Enum\\Strategy"), diretorio);
+        }
+        private string GetPathAppDominioStrategyInterfaces(string diretorio)
+        {
+            return Path.Combine(Path.Combine(GetPathAppDominio(), "Interfaces\\Strategy"), diretorio);
         }
 
         private string GetPathAppDominio()
@@ -314,23 +345,23 @@ namespace Dominio.Schemas.CQRS
         {
             foreach (var entity in migration.Entitys)
             {
-                var filePath = Path.Combine(GetPathAppDominioDominio(), $"Migration\\{entity.EntityName}\\I{entity.EntityName}Entity.cs");
-                var filePathCuston = Path.Combine(GetPathAppDominioDominio(), $"Custon\\{entity.EntityName}\\I{entity.EntityName}Entity.cs");
+                var filePath = Path.Combine(GetPathAppDominioEntitys(), $"Migration\\{entity.EntityName}\\I{entity.EntityName}Entity.cs");
+                var filePathCuston = Path.Combine(GetPathAppDominioEntitys(), $"Custon\\{entity.EntityName}\\I{entity.EntityName}Entity.cs");
                 var sourceCodeMigration = new SourceCodeEntityMigration(entity, CommandType.IEntity);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                filePath = Path.Combine(GetPathAppDominioDominio(), $"Migration\\{entity.EntityName}\\{entity.EntityName}Entity.cs");
-                filePathCuston = Path.Combine(GetPathAppDominioDominio(), $"Custon\\{entity.EntityName}\\{entity.EntityName}Entity.cs");
+                filePath = Path.Combine(GetPathAppDominioEntitys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}Entity.cs");
+                filePathCuston = Path.Combine(GetPathAppDominioEntitys(), $"Custon\\{entity.EntityName}\\{entity.EntityName}Entity.cs");
                 sourceCodeMigration = new SourceCodeEntityMigration(entity, CommandType.Entity);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                filePath = Path.Combine(GetPathAppDominioDominio(), $"Migration\\{entity.EntityName}\\{entity.EntityName}EntityDecorator.cs");
-                filePathCuston = Path.Combine(GetPathAppDominioDominio(), $"Custon\\{entity.EntityName}\\{entity.EntityName}EntityDecorator.cs");
+                filePath = Path.Combine(GetPathAppDominioEntitys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}EntityDecorator.cs");
+                filePathCuston = Path.Combine(GetPathAppDominioEntitys(), $"Custon\\{entity.EntityName}\\{entity.EntityName}EntityDecorator.cs");
                 sourceCodeMigration = new SourceCodeEntityMigration(entity, CommandType.EntityDecorator);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                filePath = Path.Combine(GetPathAppDominioDominio(), $"Migration\\{entity.EntityName}\\{entity.EntityName}Factory.cs");
-                filePathCuston = Path.Combine(GetPathAppDominioDominio(), $"Custon\\{entity.EntityName}\\{entity.EntityName}Factory.cs");
+                filePath = Path.Combine(GetPathAppDominioEntitys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}Factory.cs");
+                filePathCuston = Path.Combine(GetPathAppDominioEntitys(), $"Custon\\{entity.EntityName}\\{entity.EntityName}Factory.cs");
                 sourceCodeMigration = new SourceCodeEntityMigration(entity, CommandType.Factory);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
@@ -418,9 +449,19 @@ namespace Dominio.Schemas.CQRS
             return Path.Combine(GetPathAppInfraestructureRead(), "ConcreteRepository");
         }
 
+
+
         private string GetPathAppInfraestructureRead()
         {
             return Path.Combine(GetPathAppInfraestructure(), "RepositoryRead");
+        }
+        private string GetPathAppInfraestructureShered()
+        {
+            return Path.Combine(GetPathAppInfraestructure(), "Shered");
+        }
+        private string GetPathAppInfraestructureSheredStrategy(string directory)
+        {
+            return Path.Combine(Path.Combine(GetPathAppInfraestructureShered(), "Patterns\\Strategy"), directory);
         }
 
         private string GetPathAppInfraestructure()
