@@ -1,12 +1,10 @@
+using Dominio.Interfaces.Strategy;
+using Dominio.Enum.Strategy;
 namespace Shered.Patterns.Strategy;
 
 public partial class SMSNotification
 {
-    public partial TypeNotification get_Type()
-    {
-        throw new NotImplementedException();
-    }
-    public partial Void SendNotification(IMessage menssege)
+    public partial void SendNotification(IMessage menssege)
     {
         throw new NotImplementedException();
     }

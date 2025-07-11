@@ -319,11 +319,12 @@ namespace Dominio.Schemas.CQRS
                 string ns = type.IsEnum ? paths.EnumNamespace :
                              type.IsInterface ? paths.InterfaceNamespace :
                              paths.ClassNamespace;
-                sb.AppendLine($"namespace {ns};");
-                sb.AppendLine();
 
                 if (type.IsEnum)
                 {
+                    sb.AppendLine($"namespace {ns};");
+                    sb.AppendLine();
+
                     sb.AppendLine($"public enum {type.Name}");
                     sb.AppendLine("{");
                     foreach (var value in Enum.GetValues(type))
@@ -338,8 +339,10 @@ namespace Dominio.Schemas.CQRS
                 }
                 else if (type.IsInterface)
                 {
-                    incluir aqui o name space pra ficar abaixo
-                    writer.WriteLine($"using {paths.EnumNamespace};");
+                    sb.AppendLine($"using {paths.EnumNamespace};");
+                    sb.AppendLine($"namespace {ns};");
+                    sb.AppendLine();
+
                     sb.AppendLine($"public interface {type.Name}");
                     sb.AppendLine("{");
 
@@ -446,6 +449,9 @@ namespace Dominio.Schemas.CQRS
 
                     string customFilePath = Path.Combine(paths.CustomClassPath, $"{className}.cs");
                     StringBuilder sbCustom = new();
+                    sbCustom.AppendLine($"using {paths.InterfaceNamespace};");
+                    sbCustom.AppendLine($"using {paths.EnumNamespace};");
+
                     sbCustom.AppendLine($"namespace {paths.CustomClassNamespace};");
                     sbCustom.AppendLine();
                     sbCustom.AppendLine($"public partial class {className}");

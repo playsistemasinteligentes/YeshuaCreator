@@ -434,6 +434,7 @@
       "Shered/1.0.0": {
         "dependencies": {
           "Dapper": "2.1.35",
+          "Dominio": "1.0.0",
           "Microsoft.Data.SqlClient": "5.2.1",
           "Microsoft.Extensions.Caching.Abstractions": "9.0.6",
           "Newtonsoft.Json": "13.0.1",

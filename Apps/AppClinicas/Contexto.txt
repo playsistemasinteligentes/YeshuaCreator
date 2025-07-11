@@ -38241,3 +38241,4747 @@ return _erroMensagem.Count() <= 0;
                             }
 //Dominio.Schemas.CQRS.SourceCodeEntityMigration
 
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+namespace Read.ConcreteRepository.Y_Tenant
+{
+    public class Y_TenantReadRepository : IY_TenantReadRepository
+    {
+        protected readonly IDbConnection _connection;
+        public Y_TenantReadRepository(SqlFactory factory)
+        {
+            _connection = factory.SqlConnection();
+        }
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command)
+         {
+            if (command is Command.Commands.Read.Y_TenantReadCommand c)
+                return getY_Tenant(c);
+            throw new NotImplementedException();
+        }
+        private DataPagination<Y_TenantDTO> getY_Tenant(Command.Commands.Read.Y_TenantReadCommand command)
+        {
+            var query = new Y_TenantReadQuery().Y_TenantQuery(command);
+            {
+                var itens = _connection.Query<Y_TenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<Y_TenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+            }
+        }
+        private IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<Y_TenantUserIDAdminDTO> lista;
+            var query = new Y_TenantReadQuery().Y_TenantUserIDAdminQuery(command);
+            {
+                lista = _connection.Query<Y_TenantUserIDAdminDTO>(query.Query,query.Parameters) as List<Y_TenantUserIDAdminDTO>;
+            }
+            return lista;
+        }
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getY_TenantReadFKUserIDAdmin(c);
+            }
+            throw new NotImplementedException();
+        }
+        public Y_TenantDTO getById()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Output.Querys.Y_Tenant
+{
+    public class Y_TenantReadQuery : QueryBase
+    {
+        public QueryModel Y_TenantQuery(Command.Commands.Read.Y_TenantReadCommand Command)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
+if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
+if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
+if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            parametersDict["Offset"] = offset;
+            parametersDict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel Y_TenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
+        {
+            this.Query = $@" select Id, Nome from Y_User ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      this.Parameters = new { Id = numero}; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      this.Parameters = new { 
+                       Id = $"%{Command.searchFK}%", 
+                       Nome = $"%{Command.searchFK}%", 
+                      }; 
+                      whereClauses.Add($" Id like @Id "); 
+                      whereClauses.Add($" Nome like @Nome "); 
+                 }
+            }
+            if (whereClauses.Any()) 
+            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+
+namespace Input.Repository.Y_Tenant
+{
+    public class Y_TenantWriteRepository : IY_TenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+        public Y_TenantWriteRepository(IUnitOfWork unitOfWork)
+        {
+             _UnitOfWork= unitOfWork;
+        }
+        public void Insert(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().InserirY_TenantQuery(Y_Tenant);
+        Y_Tenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Update(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().UpdateY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void Delete(IY_TenantEntity Y_Tenant)
+        {
+            var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Input.Querys.Y_Tenant
+{
+    public class Y_TenantWriteQuery : QueryBase
+    {
+        public QueryModel InserirY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" INSERT INTO Y_Tenant (Nome, ProxyServer, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@Nome, @ProxyServer, @UserIDAdmin) ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" UPDATE Y_Tenant SET Nome = @Nome, ProxyServer = @ProxyServer, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = Y_Tenant.Nome,
+                ProxyServer = Y_Tenant.ProxyServer,
+                UserIDAdmin = Y_Tenant.UserIDAdmin,
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteY_TenantQuery(IY_TenantEntity Y_Tenant)
+        {
+            this.Query = $@" DELETE FROM Y_Tenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = Y_Tenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public InsertY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidInsert())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Insert(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public UpdateY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidUpdate())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Update(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteY_TenantReceiver : ReciverBase <IY_TenantEntity>
+    {
+        private readonly IY_TenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        public DeleteY_TenantReceiver(IY_TenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<IY_TenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.Y_TenantCrudCommand c) 
+             {    
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 if (!y_tenant.isValidDelete())
+                     return ValidationError(y_tenant.getErroMensagens(), comand);
+                 try
+                 {
+                     _repository.Delete(y_tenant);
+                     return Success("OK", y_tenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, y_tenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadReceiver : ReciverBase<DataPagination<Y_TenantDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        private readonly ILogger _logger;
+        public Y_TenantReadReceiver(IY_TenantReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+        protected override State<DataPagination<Y_TenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Commands.Read.Y_TenantReadCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_Tenant(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class Y_TenantReadFKUserIDAdminReceiver : ReciverBase<IEnumerable<Y_TenantUserIDAdminDTO>>
+    {
+        private readonly IY_TenantReadRepository _repository;
+        public Y_TenantReadFKUserIDAdminReceiver(IY_TenantReadRepository repository)
+        {
+            _repository = repository;
+        }
+        protected override State <IEnumerable<Y_TenantUserIDAdminDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var Y_TenantReadRepository = _repository.getY_TenantReadFKUserIDAdmin(c);
+                return Success("OK", Y_TenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<object>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant,IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+           _unitOfWork = unitOfWork;
+           _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+        protected override State<object> Action(ICommand comand)
+        {
+            try
+            {
+                 State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
+                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<object> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Command.Commands
+{
+    public struct Y_TenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string ProxyServer { get; set; }
+        public int? UserIDAdmin { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Commands.Read
+{
+    public struct Y_TenantReadFKUserIDAdminCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace RepositoryInterfaces.Read.Repository.Y_Tenant
+{
+    public interface IY_TenantReadRepository
+    {
+        public DataPagination<Y_TenantDTO> getY_Tenant(ICommandRead command);
+        public Y_TenantDTO getById();
+        public IEnumerable<Y_TenantUserIDAdminDTO> getY_TenantReadFKUserIDAdmin(object command);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    public string proxyserver { get; set; }
+    public int useridadmin { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Outputs.DTOs.Y_Tenant
+{
+    public struct Y_TenantUserIDAdminDTO
+    {
+    public int id { get; set; }
+    public string nome { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace Repositorio.Inputs.Repositorio.Y_Tenant
+{
+    public partial interface IY_TenantWriteRepository
+    {
+        void Insert(IY_TenantEntity y_tenant);
+        void Update(IY_TenantEntity y_tenant);
+        void Delete(IY_TenantEntity y_tenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IY_TenantEntity
+{
+    int? Id { get; set; }
+    string Nome { get; set; }
+    string ProxyServer { get; set; }
+    int? UserIDAdmin { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantEntity : IY_TenantEntity
+{
+    public int? Id { get; set; }
+    public string Nome { get; set; }
+    public string ProxyServer { get; set; }
+    public int? UserIDAdmin { get; set; }
+    private List<string> _erroMensagem = null;
+ internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ Id = id; 
+ Nome = nome; 
+ ProxyServer = proxyserver; 
+ UserIDAdmin = useridadmin; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class Y_TenantDecorator : IY_TenantEntity
+{
+                        private readonly IY_TenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public Y_TenantDecorator(IY_TenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public string ProxyServer
+                                    {
+                                        get => _inner.ProxyServer;
+                                        set
+                                        {
+                                            if (_inner.ProxyServer != value)
+                                            {
+                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
+                                                _inner.ProxyServer = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserIDAdmin
+                                    {
+                                        get => _inner.UserIDAdmin;
+                                        set
+                                        {
+                                            if (_inner.UserIDAdmin != value)
+                                            {
+                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
+                                                _inner.UserIDAdmin = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class Y_TenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                            {
+                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var decoratedEntity = new Y_TenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+

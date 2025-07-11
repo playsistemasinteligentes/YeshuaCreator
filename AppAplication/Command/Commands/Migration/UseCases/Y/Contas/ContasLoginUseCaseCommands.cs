@@ -1,5 +1,6 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
+using Dominio.Enum.Strategy;
 namespace Command.Commands
 {
     public partial struct ContasLoginUseCaseCommand : ICommand

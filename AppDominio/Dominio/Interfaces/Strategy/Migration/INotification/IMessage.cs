@@ -1,4 +1,5 @@
 
+using Dominio.Enum.Strategy;
 namespace Dominio.Interfaces.Strategy;
 
 public interface IMessage

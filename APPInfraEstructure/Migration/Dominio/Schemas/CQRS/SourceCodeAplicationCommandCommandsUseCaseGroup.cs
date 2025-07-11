@@ -41,6 +41,8 @@ namespace Dominio.Schemas.CQRS
             var sb = new StringBuilder();
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceEnumStrategy};");
+
 
 
             // Adiciona a declaração do namespace
@@ -58,7 +60,11 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("    {");
                         foreach (PropertyInfo prop in type.GetProperties())
                         {
-                            sb.AppendLine($"    public {prop.PropertyType.Name.ToLower()} {prop.Name} {{ get; set; }}");
+                            if (prop.PropertyType.IsEnum)
+                                sb.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
+                            else
+                                sb.AppendLine($"    public {prop.PropertyType.Name.ToLower()} {prop.Name} {{ get; set; }}");
+
                         }
                         sb.AppendLine("    }");
                     }

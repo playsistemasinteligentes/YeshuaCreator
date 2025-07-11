@@ -86,4 +86,3 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\bin\Debug\net8.0\Migration.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\API\obj\Debug\net8.0\API.MvcApplicationPartsAssemblyInfo.cs
