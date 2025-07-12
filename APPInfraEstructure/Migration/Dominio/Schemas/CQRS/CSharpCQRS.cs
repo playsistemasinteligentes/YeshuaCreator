@@ -163,13 +163,13 @@ namespace Dominio.Schemas.CQRS
                         {
                             var paths = new ExportPathsSourceCodeAplicationCommandReceiversUseCase
                             {
-                                EnumPath = GetPathAppDominioStrategyEnum($"Migration\\{strategy.Name}"),
-                                InterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Name}"),
-                                ClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Name}"),
-                                CustomClassPath = GetPathAppInfraestructureSheredStrategy($"Custon\\{strategy.Name}"),
-                                FactoryInterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Name}"), // candidato a aplication
-                                FactoryClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Name}"),
-                                DependencyInjectionPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Name}"),
+                                EnumPath = GetPathAppDominioStrategyEnum($"Migration\\{strategy.Type.Name}"),
+                                InterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Type.Name}"),
+                                ClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Type.Name}"),
+                                CustomClassPath = GetPathAppInfraestructureSheredStrategy($"Custon\\{strategy.Type.Name}"),
+                                FactoryInterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Type.Name}"), // candidato a aplication
+                                FactoryClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Type.Name}"),
+                                DependencyInjectionPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Type.Name}"),
                                 EnumNamespace = "Dominio.Enum.Strategy",
                                 InterfaceNamespace = "Dominio.Interfaces.Strategy",
                                 ClassNamespace = "Shered.Patterns.Strategy",
@@ -180,8 +180,11 @@ namespace Dominio.Schemas.CQRS
                             };
                             List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
                             SourceCodeAplicationCommandReceiversUseCase strategys = new SourceCodeAplicationCommandReceiversUseCase(useCase, strategy, paths, ref CodigoGerado);
+                            bool contexto = false;
+                            if (strategy.Type.Name == "INotification")
+                                contexto = true;
                             foreach (var code in CodigoGerado)
-                                strategys.WriteCode(code.Conteudo, code.CaminhoArquivo, code.Custom, false);
+                                strategys.WriteCode(code.Conteudo, code.CaminhoArquivo, code.Custom, contexto);
                         }
                     }
                 }

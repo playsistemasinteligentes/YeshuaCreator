@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using static Dapper.SqlMapper;
+using static Migration.Dominio.Migration.S000002;
 
 namespace Migration.Dominio
 {
@@ -107,7 +108,7 @@ namespace Migration.Dominio
         {
             StringBuilder code = GenerateCode();
             bool context = false;
-            if ((entity != null && entity.EntityName == "Y_Tenant") || (useCase != null && useCase.Name._value == "createConta"))
+            if ((entity != null && entity.EntityName == "Y_Tenant") || (useCase != null && (useCase.Name._value == "createConta" || useCase.Name._value == "RecoveryAccount")))
                 context = true;
             WriteCode(code, filePathMigration, false, context);
 

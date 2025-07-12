@@ -17,6 +17,7 @@ namespace Dominio.Schemas.CQRS
         private string _nameSpaceCommand;
         private string _classeReceiver;
         private string _classeCommand;
+        private Strategy _strategy;
         private Type _type;
         private ExportPathsSourceCodeAplicationCommandReceiversUseCase _exportPath;
 
@@ -39,10 +40,11 @@ namespace Dominio.Schemas.CQRS
             _classeReceiver = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Receiver";
             _classeCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Command";
         }
-        public SourceCodeAplicationCommandReceiversUseCase(UseCase useCase, Type type, ExportPathsSourceCodeAplicationCommandReceiversUseCase exportPath, ref List<CodigoGerado> CodigoGerado)
+        public SourceCodeAplicationCommandReceiversUseCase(UseCase useCase, Strategy strategy, ExportPathsSourceCodeAplicationCommandReceiversUseCase exportPath, ref List<CodigoGerado> CodigoGerado)
             : base()
         {
-            _type = type;
+            _strategy = strategy;
+            _type = strategy.Type;
             _useCaseGroup = useCase.UseCaseGroup;
             _useCaseSubGroup = useCase.UseCaseSubGroup;
             _commandType = CommandType.UseCase;

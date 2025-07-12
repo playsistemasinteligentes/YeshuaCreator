@@ -56,6 +56,8 @@ namespace Migration.Dominio.Migration
     [Migration(000002)]
     public class S000002 : MigrationBase
     {
+        public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
+        public record LoginUserEndPassword(string email, string password);
         public override void Up()
         {
 
@@ -68,11 +70,10 @@ namespace Migration.Dominio.Migration
             AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginUserEndPassword("", ""));
 
             AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("RecoveryAccount", new RecoveryAccount("", TypeNotification.Email))
+                .AddEntity("Y_User")
                 .AddScope("Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook")
-                .Strategy(typeof(INotification));
+                .Strategy(typeof(INotification)).AddAgregateStrategy(typeof(Message));
         }
-        public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
-        public record LoginUserEndPassword(string email, string password);
         public record RecoveryAccount(string email, TypeNotification typeNotification);
         public enum TypeNotification
         {

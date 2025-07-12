@@ -1,9 +1,12 @@
 import { loadDataMenu, buildMenu } from './menu.js';
 import { buildCrud } from './crud.js';
-import { buildRegister } from './register/register.js';
+import { buildRegister } from './viewsScripts/register.js';
+import { buildForgot } from './viewsScripts/forgot.js';
 
 
 export async function handleRouting(hash) {
+
+    console.log('eee');
     const token = localStorage.getItem('token');
     const app = document.getElementById('app');
 
@@ -68,7 +71,7 @@ function attachEvents(route) {
     }
 
     if (route === '#forgot') {
-        // Eventos para recuperação de senha
+        buildForgot();
     }
 
 

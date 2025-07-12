@@ -115,7 +115,12 @@ namespace Dominio
 
         public UseCaseGroup Strategy(Type type)
         {
-            this.UseCaseSubGroup.Last().UseCases.Last().Estrategys.Add(type);
+            this.UseCaseSubGroup.Last().UseCases.Last().Estrategys.Add(new Dominio.Strategy(type));
+            return this;
+        }
+        public UseCaseGroup AddAgregateStrategy(Type type)
+        {
+            this.UseCaseSubGroup.Last().UseCases.Last().Estrategys.Last().StrategyAgregate.Add(type);
             return this;
         }
     }

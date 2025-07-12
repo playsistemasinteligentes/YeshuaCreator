@@ -153,12 +153,16 @@
       "PackagePath": "staticwebassets\\spa\\scripts\\menu.js"
     },
     {
-      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\register\\register.js",
-      "PackagePath": "staticwebassets\\spa\\scripts\\register\\register.js"
-    },
-    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\router.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\router.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\viewsScripts\\forgot.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\viewsScripts\\forgot.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\viewsScripts\\register.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\viewsScripts\\register.js"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\dashboard.html",
