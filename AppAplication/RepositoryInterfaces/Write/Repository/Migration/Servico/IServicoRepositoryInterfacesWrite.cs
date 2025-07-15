@@ -12,6 +12,9 @@ namespace Repositorio.Inputs.Repositorio.Servico
         void Insert(IServicoEntity servico);
         void Update(IServicoEntity servico);
         void Delete(IServicoEntity servico);
+        public void UpdateGrupoServicoId(IServicoEntity entity);
+        public void UpdateNome(IServicoEntity entity);
+        public void UpdateValor(IServicoEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

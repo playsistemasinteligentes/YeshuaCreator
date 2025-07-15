@@ -3,7 +3,7 @@ using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
 namespace Command.Commands
 {
-    public partial struct ContasLoginUseCaseCommand : ICommand
+    public partial record ContasLoginUseCaseCommand : ICommand
     {
     public string email { get; set; }
     public string password { get; set; }

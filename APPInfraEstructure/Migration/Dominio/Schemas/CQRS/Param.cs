@@ -27,9 +27,11 @@ namespace Migration.Dominio.Schemas.CQRS
         public object NameSpaceInterfaceCommandsPartners { get; set; } = "RepositoryInterfaces.Patterns.Command";
         public object NameSpaceInterfaceRepositoryPartners { get; set; } = "RepositoryInterfaces.Patterns.Repository";
         public object NameSpaceRepositorioInputsRepositorio { get; set; } = "Repositorio.Inputs.Repositorio"; // trocar mais pra frente padronozar com o de baixo 
-        public object NameSpaceReadRepository { get; set; } = "RepositoryInterfaces.Read.Repository";
+        public object NameSpaceReadRepositoryInterface { get; set; } = "Read.RepositoryInterfaces";
         public object NameSpaceUnitOfWork { get; set; } = "RepositoryInterfaces.Patterns.UnitOfWork";
         public object NameSpaceEnumStrategy { get; set; } = "Dominio.Enum.Strategy";
+        public string NameSpaceClassesConcretasStrategy { get; set; } = "Shered.Patterns.Strategy";
+        public object NameSpaceReadRepository { get; set; } = "Read.Repository";
 
         public void AddExeptionReceiver(StringBuilder sb, string classe)
         {

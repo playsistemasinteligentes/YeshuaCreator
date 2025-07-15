@@ -39,6 +39,21 @@ namespace Input.Repository.Profissional
             var query = new ProfissionalWriteQuery().DeleteProfissionalQuery(Profissional);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateNome(IProfissionalEntity entity)
+        {
+            var query = new ProfissionalWriteQuery().UpdateNome(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateEspecialidadeId(IProfissionalEntity entity)
+        {
+            var query = new ProfissionalWriteQuery().UpdateEspecialidadeId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateTelefone(IProfissionalEntity entity)
+        {
+            var query = new ProfissionalWriteQuery().UpdateTelefone(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

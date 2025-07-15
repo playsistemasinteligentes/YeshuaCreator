@@ -33,6 +33,30 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel ExistsByIdQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_Permtions WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDescriptionQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_Permtions WHERE Description = @Description";
+            var parameters = new { Description = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_Permtions WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDescriptionQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_Permtions WHERE Description = @Description";
+            var parameters = new { Description = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

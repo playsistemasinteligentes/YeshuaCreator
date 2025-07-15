@@ -12,6 +12,8 @@ namespace Repositorio.Inputs.Repositorio.Y_UserPermitions
         void Insert(IY_UserPermitionsEntity y_userpermitions);
         void Update(IY_UserPermitionsEntity y_userpermitions);
         void Delete(IY_UserPermitionsEntity y_userpermitions);
+        public void UpdateUserId(IY_UserPermitionsEntity entity);
+        public void UpdatePermitionsId(IY_UserPermitionsEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

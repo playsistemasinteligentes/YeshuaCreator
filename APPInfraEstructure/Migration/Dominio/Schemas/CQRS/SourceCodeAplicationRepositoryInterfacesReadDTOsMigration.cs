@@ -32,9 +32,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a struct
-            sb.AppendLine($"namespace Repositorio.Outputs.DTOs.{_entity.EntityName}");
+            sb.AppendLine($"namespace Repositorio.Outputs");
             sb.AppendLine("{");
-            sb.AppendLine($"    public struct {_entity.EntityName}{_column}DTO");
+            sb.AppendLine($"    public record {_entity.EntityName}{_column}DTO");
             sb.AppendLine("    {");
 
             switch (_commandType)

@@ -56,12 +56,14 @@ namespace Dominio.Schemas.CQRS
                     Type type = param.GetType();
                     if (type.IsClass || type.IsValueType)
                     {
-                        sb.AppendLine($"    public partial struct {_classe} : ICommand");
+                        sb.AppendLine($"    public partial record {_classe} : ICommand");
                         sb.AppendLine("    {");
                         foreach (PropertyInfo prop in type.GetProperties())
                         {
                             if (prop.PropertyType.IsEnum)
                                 sb.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
+                            else if (prop.PropertyType == typeof(Int32))
+                                sb.AppendLine($"    public int {prop.Name} {{ get; set; }}");
                             else
                                 sb.AppendLine($"    public {prop.PropertyType.Name.ToLower()} {prop.Name} {{ get; set; }}");
 

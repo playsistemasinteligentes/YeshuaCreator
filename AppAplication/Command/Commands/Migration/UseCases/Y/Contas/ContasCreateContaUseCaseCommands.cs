@@ -3,9 +3,10 @@ using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
 namespace Command.Commands
 {
-    public partial struct ContasCreateContaUseCaseCommand : ICommand
+    public partial record ContasCreateContaUseCaseCommand : ICommand
     {
-    public string idcompany { get; set; }
+    public int CpfCnpj { get; set; }
+    public string nome { get; set; }
     public string email { get; set; }
     public string phone { get; set; }
     public string password { get; set; }

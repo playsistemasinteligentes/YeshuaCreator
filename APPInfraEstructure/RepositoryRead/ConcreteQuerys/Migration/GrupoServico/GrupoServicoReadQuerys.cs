@@ -33,6 +33,30 @@ if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM GrupoServico WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDescricaoQuery(string value)
+        {
+            var sql = "SELECT 1 FROM GrupoServico WHERE Descricao = @Descricao";
+            var parameters = new { Descricao = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM GrupoServico WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDescricaoQuery(string value)
+        {
+            var sql = "SELECT * FROM GrupoServico WHERE Descricao = @Descricao";
+            var parameters = new { Descricao = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

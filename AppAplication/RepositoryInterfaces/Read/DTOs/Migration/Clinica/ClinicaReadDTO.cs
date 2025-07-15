@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Outputs.DTOs.Clinica
+namespace Repositorio.Outputs
 {
-    public struct ClinicaDTO
+    public record ClinicaDTO
     {
     public int id { get; set; }
     public string nome { get; set; }

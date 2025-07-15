@@ -70,6 +70,25 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
 
 
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey))
+            {
+                sb.AppendLine($"        public QueryModel Update{column.Name}(I{_entity.EntityName}Entity entity)");
+                sb.AppendLine("        {");
+                parametersWhere = string.Join(", ", _entity.AddColumns.Where(x => x.IsKey).Select(c => $"{c.Name} = @{c.Name}"));
+                sb.AppendLine($"            this.Query = $@\" UPDATE {_entity.EntityName} SET {column.Name} = @{column.Name} WHERE {parametersWhere} \";");
+
+                sb.AppendLine("            this.Parameters = new");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                {column.Name} = entity.{column.Name},");
+                foreach (var col in _entity.AddColumns.Where(x => x.IsKey))
+                    sb.AppendLine($"                {col.Name} = entity.{col.Name},");
+                sb.AppendLine("            };");
+                sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
+                sb.AppendLine("        }");
+            }
+
+
+
             //delete 
             sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");

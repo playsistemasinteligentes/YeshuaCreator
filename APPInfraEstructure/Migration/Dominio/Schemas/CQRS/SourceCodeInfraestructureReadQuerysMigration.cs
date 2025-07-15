@@ -115,6 +115,35 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            return new QueryModel(this.Query, this.Parameters); ");
                 sb.AppendLine("        }");
             }
+
+
+
+
+            // exist retorno bool 
+            foreach (var column in _entity.AddColumns)
+            {
+                string csharpType = column.getCsharpType();
+                sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            var sql = \"SELECT 1 FROM {_entity.EntityName} WHERE {column.Name} = @{column.Name}\";");
+                sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
+                sb.AppendLine("            return new QueryModel(sql, parameters);");
+                sb.AppendLine("        }");
+            }
+
+            // firt by 
+            foreach (var column in _entity.AddColumns)
+            {
+                string csharpType = column.getCsharpType();
+                sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            var sql = \"SELECT * FROM {_entity.EntityName} WHERE {column.Name} = @{column.Name}\";");
+                sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
+                sb.AppendLine("            return new QueryModel(sql, parameters);");
+                sb.AppendLine("        }");
+            }
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

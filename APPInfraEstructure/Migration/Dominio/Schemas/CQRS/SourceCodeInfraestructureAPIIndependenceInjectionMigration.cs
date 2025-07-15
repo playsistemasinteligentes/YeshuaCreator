@@ -3,6 +3,7 @@ using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Net.Http;
 using System.Text;
+using static Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Dominio.Schemas.CQRS
@@ -64,23 +65,23 @@ namespace Dominio.Schemas.CQRS
                     //sb.AppendLine($"builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository, Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
 
                     // clase concreta 
-                    sb.AppendLine($"builder.Services.AddTransient<Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
 
                     // decorator 
 
                     // Registra o decorador como implementação da interface
-                    sb.AppendLine($"    builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository>(sp =>");
+                    sb.AppendLine($"    builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepositoryInterface}.I{entity.EntityName}ReadRepository>(sp =>");
                     sb.AppendLine($"    {{");
                     // fixos
-                    sb.AppendLine($"    var inner = sp.GetRequiredService<Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
-                    sb.AppendLine($"    var cacheById = sp.GetRequiredService<ICacheService<Repositorio.Outputs.DTOs.{entity.EntityName}.{entity.EntityName}DTO >>();");
-                    sb.AppendLine($"    var cacheAll = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.DTOs.{entity.EntityName}.{entity.EntityName}DTO>>>();");
+                    sb.AppendLine($"    var inner = sp.GetRequiredService<{CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
+                    sb.AppendLine($"    var cacheById = sp.GetRequiredService<ICacheService<Repositorio.Outputs.{entity.EntityName}DTO >>();");
+                    sb.AppendLine($"    var cacheAll = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.{entity.EntityName}DTO>>>();");
 
                     foreach (var column in entity.AddColumns.Where(x => x.IsFK))
-                        sb.AppendLine($"        var cacheFK{column.Name} = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.DTOs.{entity.EntityName}.{entity.EntityName}{column.Name}DTO>>>();");
+                        sb.AppendLine($"        var cacheFK{column.Name} = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.{entity.EntityName}{column.Name}DTO>>>();");
 
                     // fixo acrecentar quando tiver mais consultas
-                    sb.Append($"    return new Read.ConcreteRepository.Y_Tenant_Configuration.Y_Tenant_ConfigurationReadRepositoryCacheDecorator(inner,cacheById,cacheAll");
+                    sb.Append($"    return new {CQRSParam.I.NameSpaceReadRepository}.Ytenant_ConfigurationReadRepositoryCacheDecorator(inner,cacheById,cacheAll");
 
                     foreach (var column in entity.AddColumns.Where(x => x.IsFK))
                         sb.Append($",cacheFK{column.Name}");
@@ -103,7 +104,7 @@ namespace Dominio.Schemas.CQRS
 
 
                 sb.AppendLine($"builder.Services.AddTransient<Repositorio.Inputs.Repositorio.{entity.EntityName}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
-                sb.AppendLine($"builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository, Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepositoryInterface}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
@@ -117,10 +118,30 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var method in subGroup.UseCases)
+                    foreach (var useCase in subGroup.UseCases)
                     {
                         sb.AppendLine("");
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{method.Name.SourceType()}{CommandType.UseCase}Receiver>();");
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver>();");
+
+                        //strategy 
+                        foreach (var strategy in useCase.Estrategys)
+                        {
+                            var paths = new ExportPathsSourceCodeAplicationCommandReceiversUseCase();
+
+
+
+                            List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
+                            SourceCodeAplicationCommandReceiversUseCase strategys = new SourceCodeAplicationCommandReceiversUseCase(useCase, strategy, paths, ref CodigoGerado);
+                            bool contexto = false;
+                            if (strategy.Type.Name == "INotification")
+                                contexto = true;
+                            foreach (var code in CodigoGerado.Where(x => x.CommandType == CommandType.DependencyIngection))
+                            {
+                                var linhas = code.Conteudo.ToString().Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var linha in linhas)
+                                    sb.AppendLine($"builder.Services.AddTransient<{linha}>();");
+                            }
+                        }
                     }
                 }
             }

@@ -55,9 +55,13 @@ namespace Dominio.Schemas.CQRS
             _classeCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Command";
             _exportPath = exportPath;
 
-            CodigoGerado = TypeExporter.ExportFromRootInterface(_type, _exportPath);
-        }
+            CodigoGerado = new List<CodigoGerado>();
 
+            CodigoGerado.AddRange(TypeExporter.ExportFromRootInterface(_strategy.Type, _exportPath));
+
+            CodigoGerado.AddRange(TypeExporter.ExportTypes(_strategy.StrategyAgregate, _exportPath));
+
+        }
 
         protected override StringBuilder GenerateCode()
         {
@@ -79,12 +83,6 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
 
-                foreach (var entity in _useCase.Entitys)
-                {
-                    sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioInputsRepositorio}.{entity.EntityName};");
-                    sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName};");
-                }
-
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
                 sb.AppendLine($"using System.Linq;");
@@ -99,39 +97,6 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase<object>");
                 sb.AppendLine("    {");
                 sb.AppendLine();
-
-                if (_useCase != null && _useCase.Entitys.Count > 0)
-                {
-                    sb.AppendLine("        private readonly IUnitOfWork _unitOfWork;");
-                    sb.AppendLine($"        private readonly ILogger _logger;");
-                    foreach (var entity in _useCase.Entitys)
-                    {
-                        sb.AppendLine($"        private readonly I{entity.EntityName}ReadRepository _repRead{entity.EntityName};");
-                        sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName};");
-                    }
-
-                    sb.Append($"        public {_classeReceiver}(IUnitOfWork unitOfWork,ILogger logger");
-                    for (int i = 0; i < _useCase.Entitys.Count; i++)
-                    {
-                        var entity = _useCase.Entitys[i];
-                        sb.Append($",I{entity.EntityName}ReadRepository repRead{entity.EntityName}, I{entity.EntityName}WriteRepository repWrite{entity.EntityName}");
-                    }
-                    sb.AppendLine(")");
-                    sb.AppendLine("        {");
-
-                    sb.AppendLine($"           _unitOfWork = unitOfWork;");
-                    sb.AppendLine($"           _logger = logger;");
-
-
-                    foreach (var entity in _useCase.Entitys)
-                    {
-                        sb.AppendLine($"            _repRead{entity.EntityName} = repRead{entity.EntityName};");
-                        sb.AppendLine($"            _repWrite{entity.EntityName} = repWrite{entity.EntityName};");
-                    }
-                    sb.AppendLine("        }");
-                }
-
-
 
                 //sb.AppendLine($"        private readonly object _menssage;");
                 //sb.AppendLine();
@@ -209,9 +174,6 @@ namespace Dominio.Schemas.CQRS
                 // name space
                 sb.AppendLine("}");
 
-
-
-
                 return sb;
             }
         }
@@ -219,13 +181,22 @@ namespace Dominio.Schemas.CQRS
         {
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
+            foreach (var scope in _useCase.Scopes)
+                sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");
+
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository};");
 
-            foreach (var scope in _useCase.Scopes)
-                sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");
+            foreach (var entity in _useCase.Entitys)
+            {
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioInputsRepositorio}.{entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository};");
+            }
+
 
             sb.AppendLine();
 
@@ -235,18 +206,49 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public partial class {_classeReceiver}");
             sb.AppendLine("    {");
 
-            sb.AppendLine("/*");
-
-
-            sb.AppendLine("private readonly IUnitOfWork _unitOfWork;");
             foreach (var scope in _useCase.Scopes)
                 sb.AppendLine($"private readonly I{scope} _{scope};");
+            if (_useCase != null && _useCase.Entitys.Count > 0)
+            {
+                sb.AppendLine("        private readonly IUnitOfWork _unitOfWork;");
+                sb.AppendLine($"        private readonly ILogger _logger;");
+                foreach (var entity in _useCase.Entitys)
+                {
+                    sb.AppendLine($"        private readonly I{entity.EntityName}ReadRepository _repRead{entity.EntityName};");
+                    sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName};");
+                }
 
-            sb.AppendLine("" +
-                "partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaServiceMethodCommand comand)\r\n        {\r\n            try\r\n            {\r\n                _unitOfWork.BeginTran();\r\n                State userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });\r\n                var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;\r\n\r\n                Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };\r\n                new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);\r\n\r\n                _unitOfWork.Commit();\r\n            }\r\n            catch (ReceiverException rex)\r\n            {\r\n                _unitOfWork.Rollback();\r\n                state = rex.State;\r\n            }\r\n            catch (Exception e)\r\n            {\r\n                Error(e, comand);\r\n            }\r\n        }" +
-                "");
+                sb.Append($"        public {_classeReceiver}(IUnitOfWork unitOfWork,ILogger logger");
+                for (int i = 0; i < _useCase.Entitys.Count; i++)
+                {
+                    var entity = _useCase.Entitys[i];
+                    sb.Append($",I{entity.EntityName}ReadRepository repRead{entity.EntityName}, I{entity.EntityName}WriteRepository repWrite{entity.EntityName}");
+                }
+                sb.AppendLine(")");
+                sb.AppendLine("        {");
 
-            sb.AppendLine("*/");
+                sb.AppendLine($"           _unitOfWork = unitOfWork;");
+                sb.AppendLine($"           _logger = logger;");
+
+
+                foreach (var entity in _useCase.Entitys)
+                {
+                    sb.AppendLine($"            _repRead{entity.EntityName} = repRead{entity.EntityName};");
+                    sb.AppendLine($"            _repWrite{entity.EntityName} = repWrite{entity.EntityName};");
+                }
+                sb.AppendLine("        }");
+            }
+
+
+            sb.AppendLine($"partial void CustomActionHook(ref State<object> state, {_classeCommand} comand)");
+            sb.AppendLine("{");
+            sb.AppendLine("}");
+
+
+
+
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
             return sb;
@@ -259,6 +261,7 @@ namespace Dominio.Schemas.CQRS
 
         public class ExportPathsSourceCodeAplicationCommandReceiversUseCase
         {
+
             public string EnumPath { get; set; } = "";
             public string InterfacePath { get; set; } = "";
             public string ClassPath { get; set; } = "";
@@ -267,13 +270,14 @@ namespace Dominio.Schemas.CQRS
             public string FactoryClassPath { get; set; } = "";
             public string DependencyInjectionPath { get; set; } = "";
 
-            public string EnumNamespace { get; set; } = "MyProject.Enums";
-            public string InterfaceNamespace { get; set; } = "MyProject.Interfaces";
-            public string ClassNamespace { get; set; } = "MyProject.Classes";
-            public string CustomClassNamespace { get; set; } = "MyProject.CustomClasses";
-            public string FactoryInterfaceNamespace { get; set; } = "MyProject.Factories.Interfaces";
-            public string FactoryClassNamespace { get; set; } = "MyProject.Factories";
-            public string DependencyInjectionNamespace { get; set; } = "MyProject.DependencyInjection";
+            public string EnumNamespace { get; set; } = "Dominio.Enum.Strategy";
+            public string InterfaceNamespace { get; set; } = "Dominio.Interfaces.Strategy";
+            public string ClassNamespace { get; set; } = CQRSParam.I.NameSpaceClassesConcretasStrategy;
+            public string CustomClassNamespace { get; set; } = "Shered.Patterns.Strategy";
+            public string FactoryInterfaceNamespace { get; set; } = "Dominio.Interfaces.Strategy";
+            public string FactoryClassNamespace { get; set; } = "Shered.Patterns.Strategy";
+            public string DependencyInjectionNamespace { get; set; } = "Shered.Patterns.Strategy";
+
         }
 
         public class CodigoGerado
@@ -281,11 +285,14 @@ namespace Dominio.Schemas.CQRS
             public string CaminhoArquivo { get; set; } = string.Empty;
             public StringBuilder Conteudo { get; set; } = new StringBuilder();
             public bool Custom { get; set; } = false;
+            public CommandType CommandType { get; set; }
+
         }
 
         public static class TypeExporter
         {
             private static readonly HashSet<Type> ProcessedTypes = new();
+            private static readonly List<string> AggregatedClassNames = new();
 
             public static List<CodigoGerado> ExportFromRootInterface(Type rootInterface, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
@@ -294,6 +301,24 @@ namespace Dominio.Schemas.CQRS
 
                 List<CodigoGerado> codigos = new();
                 ExportTypeRecursive(rootInterface, paths, codigos);
+
+                codigos.AddRange(GenerateDependencyInjectionFile(rootInterface, paths));
+                return codigos;
+            }
+
+            public static List<CodigoGerado> ExportTypes(IEnumerable<Type> types, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
+            {
+                ProcessedTypes.Clear();
+                AggregatedClassNames.Clear();
+
+                List<CodigoGerado> codigos = new();
+
+                foreach (var type in types)
+                {
+                    ExportTypeRecursive(type, paths, codigos);
+                }
+
+                codigos.AddRange(GenerateDependencyInjectionFile(types.First(), paths));
                 return codigos;
             }
 
@@ -305,8 +330,9 @@ namespace Dominio.Schemas.CQRS
                 ProcessedTypes.Add(type);
 
                 string folderPath = type.IsEnum ? paths.EnumPath :
-                                    type.IsInterface ? paths.InterfacePath :
-                                    paths.ClassPath;
+                                     type.IsInterface ? paths.InterfacePath :
+                                     paths.ClassPath;
+
                 string filePath = Path.Combine(folderPath, $"{type.Name}.cs");
 
                 StringBuilder sb = new();
@@ -319,14 +345,13 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine();
                 string ns = type.IsEnum ? paths.EnumNamespace :
-                             type.IsInterface ? paths.InterfaceNamespace :
-                             paths.ClassNamespace;
+                              type.IsInterface ? paths.InterfaceNamespace :
+                              paths.ClassNamespace;
 
                 if (type.IsEnum)
                 {
                     sb.AppendLine($"namespace {ns};");
                     sb.AppendLine();
-
                     sb.AppendLine($"public enum {type.Name}");
                     sb.AppendLine("{");
                     foreach (var value in Enum.GetValues(type))
@@ -336,21 +361,21 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine($"    {name} = {intValue},");
                     }
                     sb.AppendLine("}");
-                    codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
 
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
                 }
                 else if (type.IsInterface)
                 {
                     sb.AppendLine($"using {paths.EnumNamespace};");
                     sb.AppendLine($"namespace {ns};");
                     sb.AppendLine();
-
                     sb.AppendLine($"public interface {type.Name}");
                     sb.AppendLine("{");
 
                     foreach (var prop in type.GetProperties())
                     {
-                        sb.AppendLine($"    {prop.PropertyType.Name} {prop.Name} {{ get; }}");
+                        string accessors = string.Join(" ", prop.GetAccessors().Select(a => a.Name.StartsWith("get_") ? "get;" : "set;"));
+                        sb.AppendLine($"    {prop.PropertyType.Name} {prop.Name} {{ {accessors} }}");
                         ExportTypeRecursive(prop.PropertyType, paths, codigos);
                     }
 
@@ -372,9 +397,50 @@ namespace Dominio.Schemas.CQRS
                     codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
                     codigos.AddRange(GenerateConcreteClassesForEnum(type, paths));
                 }
-                else
+                else if (type.IsClass)
                 {
+                    sb.AppendLine($"namespace {ns};");
+                    sb.AppendLine();
+
+                    var interfaces = type.GetInterfaces()
+                                         .Where(i => !i.Namespace?.StartsWith("System") == true)
+                                         .Select(i => i.Name)
+                                         .ToList();
+
+                    string interfaceList = interfaces.Count > 0
+                        ? " : " + string.Join(", ", interfaces)
+                        : "";
+
+                    if (!string.IsNullOrEmpty(interfaceList))
+                    {
+                        sb.AppendLine($"using {paths.InterfaceNamespace};");
+                        AggregatedClassNames.Add($"{paths.InterfaceNamespace}.{interfaces.FirstOrDefault()},{ns}.{type.Name}");
+                    }
+                    else
+                        AggregatedClassNames.Add($"{ns}.{type.Name}");
+
+                    sb.AppendLine($"public partial class {type.Name}{interfaceList}");
+                    sb.AppendLine("{");
+                    foreach (var prop in type.GetProperties())
+                    {
+                        sb.AppendLine($"    public {prop.PropertyType.Name.ToLower()} {prop.Name} {{ get; set; }}");
+                        ExportTypeRecursive(prop.PropertyType, paths, codigos);
+                    }
+                    sb.AppendLine("}");
+
                     codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
+
+                    string customFilePath = Path.Combine(paths.CustomClassPath, $"{type.Name}.cs");
+                    StringBuilder sbCustom = new();
+                    sbCustom.AppendLine($"namespace {paths.CustomClassNamespace};");
+                    sbCustom.AppendLine();
+                    sbCustom.AppendLine($"public partial class {type.Name}");
+                    sbCustom.AppendLine("{");
+                    sbCustom.AppendLine("    // Adicione sua implementação personalizada aqui");
+                    sbCustom.AppendLine("}");
+
+                    codigos.Add(new CodigoGerado { CaminhoArquivo = customFilePath, Conteudo = sbCustom, Custom = true });
+
                 }
             }
 
@@ -410,8 +476,7 @@ namespace Dominio.Schemas.CQRS
             private static List<CodigoGerado> GenerateConcreteClassesForEnum(Type interfaceType, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 List<CodigoGerado> codigos = new();
-                var enumProp = interfaceType.GetProperties()
-                    .FirstOrDefault(p => p.PropertyType.IsEnum);
+                var enumProp = interfaceType.GetProperties().FirstOrDefault(p => p.PropertyType.IsEnum);
 
                 if (enumProp == null)
                     return codigos;
@@ -453,7 +518,6 @@ namespace Dominio.Schemas.CQRS
                     StringBuilder sbCustom = new();
                     sbCustom.AppendLine($"using {paths.InterfaceNamespace};");
                     sbCustom.AppendLine($"using {paths.EnumNamespace};");
-
                     sbCustom.AppendLine($"namespace {paths.CustomClassNamespace};");
                     sbCustom.AppendLine();
                     sbCustom.AppendLine($"public partial class {className}");
@@ -472,12 +536,12 @@ namespace Dominio.Schemas.CQRS
                     sbCustom.AppendLine("}");
 
                     codigos.Add(new CodigoGerado { CaminhoArquivo = customFilePath, Conteudo = sbCustom, Custom = true });
-                }
 
+                    AggregatedClassNames.Add($"{paths.ClassNamespace}.{className}");
+                }
                 codigos.AddRange(GenerateFactory(interfaceType, enumType, classNames, paths));
                 return codigos;
             }
-
             private static List<CodigoGerado> GenerateFactory(Type interfaceType, Type enumType, List<string> classNames, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 List<CodigoGerado> codigos = new();
@@ -534,36 +598,28 @@ namespace Dominio.Schemas.CQRS
 
                 codigos.Add(new CodigoGerado { CaminhoArquivo = classFilePath, Conteudo = sbClass });
 
-                codigos.AddRange(GenerateDependencyInjectionFile(interfaceType, classNames, paths));
+                AggregatedClassNames.Add($"{paths.InterfaceNamespace}.{factoryInterfaceName},{paths.FactoryClassNamespace}.{factoryClassName}");
+
                 return codigos;
             }
 
-            private static List<CodigoGerado> GenerateDependencyInjectionFile(Type interfaceType, List<string> classNames, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
+
+
+            private static List<CodigoGerado> GenerateDependencyInjectionFile(Type interfaceType, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 List<CodigoGerado> codigos = new();
 
                 string fileName = $"{interfaceType.Name.TrimStart('I')}DependencyInjection.cs";
                 string filePath = Path.Combine(paths.DependencyInjectionPath, fileName);
 
-                string factoryInterfaceName = $"I{interfaceType.Name}Factory";
-                string factoryClassName = $"{interfaceType.Name.TrimStart('I')}Factory";
-
                 StringBuilder sb = new();
-                sb.AppendLine($"/*");
+                foreach (var className in AggregatedClassNames.Distinct())
+                    sb.AppendLine(className);
 
-                foreach (var className in classNames)
-                    sb.AppendLine($"        services.AddScoped<{className}>();");
-
-                sb.AppendLine($"        services.AddScoped<{factoryInterfaceName}, {factoryClassName}>();");
-                sb.AppendLine($"*/");
-
-                codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb });
+                codigos.Add(new CodigoGerado { CaminhoArquivo = filePath, Conteudo = sb, CommandType = CommandType.DependencyIngection });
                 return codigos;
             }
         }
-
-
-
 
 
 

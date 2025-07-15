@@ -39,6 +39,36 @@ namespace Input.Repository.MovimentacaoFinanceira
             var query = new MovimentacaoFinanceiraWriteQuery().DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdatePacienteId(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdatePacienteId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateServicoId(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdateServicoId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateValor(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdateValor(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdateTipoMovimentacao(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdateDataMovimentacao(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = new MovimentacaoFinanceiraWriteQuery().UpdateSaldoAtual(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

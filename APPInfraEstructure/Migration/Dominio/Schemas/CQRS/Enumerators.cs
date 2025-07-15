@@ -21,7 +21,8 @@ namespace Migration.Dominio.Schemas.CQRS
         Entity = 9,
         IEntity = 10,
         EntityDecorator = 11,
-        Factory = 12
+        Factory = 12,
+        DependencyIngection = 13
     }
 
 

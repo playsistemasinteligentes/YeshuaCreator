@@ -11,19 +11,21 @@
                     public partial class Y_TenantEntity : IY_TenantEntity
 {
     public int? Id { get; set; }
+    public int CnpjCpf { get; set; }
     public string Nome { get; set; }
-    public string ProxyServer { get; set; }
     public int? UserIDAdmin { get; set; }
     private List<string> _erroMensagem = null;
- internal Y_TenantEntity(int? id, string nome, string proxyserver, int? useridadmin ){
+ internal Y_TenantEntity(int? id, int cnpjcpf, string nome, int? useridadmin ){
  Id = id; 
+ CnpjCpf = cnpjcpf; 
  Nome = nome; 
- ProxyServer = proxyserver; 
  UserIDAdmin = useridadmin; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
+   if (CnpjCpf == null)
+   this._erroMensagem.Add("Cnpj/Cpf deve ser informado.");
    if(string.IsNullOrEmpty(Nome))
    this._erroMensagem.Add("Nome deve ser informado.");
 return _erroMensagem.Count() <= 0;

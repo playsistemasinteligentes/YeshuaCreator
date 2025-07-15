@@ -61,6 +61,54 @@ if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Servico WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByGrupoServicoIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Servico WHERE GrupoServicoId = @GrupoServicoId";
+            var parameters = new { GrupoServicoId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByNomeQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Servico WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByValorQuery(Decimal value)
+        {
+            var sql = "SELECT 1 FROM Servico WHERE Valor = @Valor";
+            var parameters = new { Valor = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Servico WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByGrupoServicoIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Servico WHERE GrupoServicoId = @GrupoServicoId";
+            var parameters = new { GrupoServicoId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByNomeQuery(string value)
+        {
+            var sql = "SELECT * FROM Servico WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByValorQuery(Decimal value)
+        {
+            var sql = "SELECT * FROM Servico WHERE Valor = @Valor";
+            var parameters = new { Valor = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

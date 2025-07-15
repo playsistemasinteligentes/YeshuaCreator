@@ -39,6 +39,11 @@ namespace Input.Repository.Y_Perfil
             var query = new Y_PerfilWriteQuery().DeleteY_PerfilQuery(Y_Perfil);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateDescription(IY_PerfilEntity entity)
+        {
+            var query = new Y_PerfilWriteQuery().UpdateDescription(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

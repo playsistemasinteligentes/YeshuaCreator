@@ -33,6 +33,36 @@ namespace Input.Querys.Clinica
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateNome(IClinicaEntity entity)
+        {
+            this.Query = $@" UPDATE Clinica SET Nome = @Nome WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = entity.Nome,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateEndereco(IClinicaEntity entity)
+        {
+            this.Query = $@" UPDATE Clinica SET Endereco = @Endereco WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Endereco = entity.Endereco,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTelefone(IClinicaEntity entity)
+        {
+            this.Query = $@" UPDATE Clinica SET Telefone = @Telefone WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Telefone = entity.Telefone,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteClinicaQuery(IClinicaEntity Clinica)
         {
             this.Query = $@" DELETE FROM Clinica WHERE Id = @Id ";

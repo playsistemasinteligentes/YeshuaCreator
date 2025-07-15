@@ -17,13 +17,13 @@ namespace Output.Querys.Y_Tenant
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Nome, ProxyServer, UserIDAdmin from Y_Tenant ";
+            this.Query = $@" select Id, CnpjCpf, Nome, UserIDAdmin from Y_Tenant ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (Command.CnpjCpf.HasValue) parametersDict["CnpjCpf"] = Command.CnpjCpf.Value;
+if (Command.CnpjCpf.HasValue) whereClauses.Add($"CnpjCpf = @CnpjCpf");
 if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
 if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
-if (!string.IsNullOrEmpty(Command.ProxyServer)) parametersDict["ProxyServer"] = $"%{Command.ProxyServer}%";
-if (!string.IsNullOrEmpty(Command.ProxyServer)) whereClauses.Add($"ProxyServer like @ProxyServer");
 if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
 if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
             if (whereClauses.Any()) 
@@ -62,6 +62,54 @@ if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin"
             if (whereClauses.Any()) 
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
+        }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByCnpjCpfQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant WHERE CnpjCpf = @CnpjCpf";
+            var parameters = new { CnpjCpf = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByNomeQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByUserIDAdminQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant WHERE UserIDAdmin = @UserIDAdmin";
+            var parameters = new { UserIDAdmin = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByCnpjCpfQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant WHERE CnpjCpf = @CnpjCpf";
+            var parameters = new { CnpjCpf = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByNomeQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_Tenant WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByUserIDAdminQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant WHERE UserIDAdmin = @UserIDAdmin";
+            var parameters = new { UserIDAdmin = value };
+            return new QueryModel(sql, parameters);
         }
     }
 }

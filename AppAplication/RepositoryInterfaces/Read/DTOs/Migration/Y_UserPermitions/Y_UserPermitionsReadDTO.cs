@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Outputs.DTOs.Y_UserPermitions
+namespace Repositorio.Outputs
 {
-    public struct Y_UserPermitionsDTO
+    public record Y_UserPermitionsDTO
     {
     public int userid { get; set; }
     public string permitionsid { get; set; }

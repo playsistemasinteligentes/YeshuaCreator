@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Outputs.DTOs.DisponibilidadeAgenda
+namespace Repositorio.Outputs
 {
-    public struct DisponibilidadeAgendaDTO
+    public record DisponibilidadeAgendaDTO
     {
     public int id { get; set; }
     public int profissionalid { get; set; }

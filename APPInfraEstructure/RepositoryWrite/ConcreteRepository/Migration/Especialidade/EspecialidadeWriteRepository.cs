@@ -39,6 +39,11 @@ namespace Input.Repository.Especialidade
             var query = new EspecialidadeWriteQuery().DeleteEspecialidadeQuery(Especialidade);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateDescricao(IEspecialidadeEntity entity)
+        {
+            var query = new EspecialidadeWriteQuery().UpdateDescricao(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

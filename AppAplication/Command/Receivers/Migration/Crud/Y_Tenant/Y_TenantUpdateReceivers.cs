@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Commands.Y_TenantCrudCommand c) 
              {    
-                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.Nome, c.ProxyServer, c.UserIDAdmin);
+                 var y_tenant = new Y_TenantFactory(_logger).Create(c.Id, c.CnpjCpf, c.Nome, c.UserIDAdmin);
                  if (!y_tenant.isValidUpdate())
                      return ValidationError(y_tenant.getErroMensagens(), comand);
 

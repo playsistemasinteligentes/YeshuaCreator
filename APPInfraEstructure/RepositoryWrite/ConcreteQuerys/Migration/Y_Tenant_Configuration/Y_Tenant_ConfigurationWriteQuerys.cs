@@ -34,6 +34,36 @@ namespace Input.Querys.Y_Tenant_Configuration
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateAuditTrackerActived(IY_Tenant_ConfigurationEntity entity)
+        {
+            this.Query = $@" UPDATE Y_Tenant_Configuration SET AuditTrackerActived = @AuditTrackerActived WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                AuditTrackerActived = entity.AuditTrackerActived,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateAuditCRUDActived(IY_Tenant_ConfigurationEntity entity)
+        {
+            this.Query = $@" UPDATE Y_Tenant_Configuration SET AuditCRUDActived = @AuditCRUDActived WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                AuditCRUDActived = entity.AuditCRUDActived,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTenantID(IY_Tenant_ConfigurationEntity entity)
+        {
+            this.Query = $@" UPDATE Y_Tenant_Configuration SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TenantID = entity.TenantID,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteY_Tenant_ConfigurationQuery(IY_Tenant_ConfigurationEntity Y_Tenant_Configuration)
         {
             this.Query = $@" DELETE FROM Y_Tenant_Configuration WHERE Id = @Id ";

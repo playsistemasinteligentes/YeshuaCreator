@@ -171,43 +171,13 @@ app.Use(async (context, next) =>
 
 
 Endpoints.MapEndpoints(app);
-
-app.MapPost("/login", (UserLogin user, JwtSettings jwtSettings) =>
-{
-    if (true) // Substitua pelo seu critério de validação
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
-
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Login),
-            new Claim(ClaimTypes.Email, "admin@email.com"), // E-mail do usuário
-            new Claim(ClaimTypes.Role, "Admin"), // Permissão
-            new Claim("CompanyId", "123"), // ID da empresa, por exemplo
-            new Claim("CustomClaim", "MeuValorPersonalizado") // Qualquer outra informação
-        };
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddSeconds(jwtSettings.ExpirationMinutes),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return Results.Ok(new { token = tokenHandler.WriteToken(token) });
-    }
-
-    return Results.Unauthorized();
-});
+EndpointsCuston.MapEndpoints(app);
 
 
 
 
 app.MapPost("/CreateAccount", (Account company) =>
 {
-
 });
 
 

@@ -179,6 +179,318 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByPacienteIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE PacienteId = @PacienteId";
+            var parameters = new { PacienteId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByProfissionalIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE ProfissionalId = @ProfissionalId";
+            var parameters = new { ProfissionalId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByServicoIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE ServicoId = @ServicoId";
+            var parameters = new { ServicoId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDataInicioQuery(DateTime value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE DataInicio = @DataInicio";
+            var parameters = new { DataInicio = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDataFimQuery(DateTime value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE DataFim = @DataFim";
+            var parameters = new { DataFim = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByStatusQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE Status = @Status";
+            var parameters = new { Status = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByMovimentacaoFinanceiraIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId";
+            var parameters = new { MovimentacaoFinanceiraId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsBySinteseProntuarioQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE SinteseProntuario = @SinteseProntuario";
+            var parameters = new { SinteseProntuario = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByQueixaPrincipalQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE QueixaPrincipal = @QueixaPrincipal";
+            var parameters = new { QueixaPrincipal = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByMotivoConsultaAtualQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE MotivoConsultaAtual = @MotivoConsultaAtual";
+            var parameters = new { MotivoConsultaAtual = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsBySintomasRelatadosQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE SintomasRelatados = @SintomasRelatados";
+            var parameters = new { SintomasRelatados = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByMudancasDesdeUltimaSessaaoQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao";
+            var parameters = new { MudancasDesdeUltimaSessaao = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByComportamentoObservadoQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE ComportamentoObservado = @ComportamentoObservado";
+            var parameters = new { ComportamentoObservado = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByEstadoEmocionalGeralQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE EstadoEmocionalGeral = @EstadoEmocionalGeral";
+            var parameters = new { EstadoEmocionalGeral = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDiscursoPensamentosQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE DiscursoPensamentos = @DiscursoPensamentos";
+            var parameters = new { DiscursoPensamentos = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByTecnicasUtilizadasQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE TecnicasUtilizadas = @TecnicasUtilizadas";
+            var parameters = new { TecnicasUtilizadas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByQuestionamentosReflexoesAbordadasQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas";
+            var parameters = new { QuestionamentosReflexoesAbordadas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByExerciciosTarefasSugeridasQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas";
+            var parameters = new { ExerciciosTarefasSugeridas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDiagnoosticoHipoteseDiagnoosticaQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica";
+            var parameters = new { DiagnoosticoHipoteseDiagnoostica = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByObjetivosCurtoPrazoQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo";
+            var parameters = new { ObjetivosCurtoPrazo = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByObjetivosLongoPrazoQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE ObjetivosLongoPrazo = @ObjetivosLongoPrazo";
+            var parameters = new { ObjetivosLongoPrazo = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByFrequenciaSugeridaSessooesQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes";
+            var parameters = new { FrequenciaSugeridaSessooes = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByEncaminhamentoOutrosProfissionaisQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais";
+            var parameters = new { EncaminhamentoOutrosProfissionais = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByInformacoesRelevantesFuturasConsultasQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas";
+            var parameters = new { InformacoesRelevantesFuturasConsultas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Sesoes WHERE FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico";
+            var parameters = new { FeedbackPacienteSobreProcessoTerapeeutico = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByPacienteIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE PacienteId = @PacienteId";
+            var parameters = new { PacienteId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByProfissionalIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE ProfissionalId = @ProfissionalId";
+            var parameters = new { ProfissionalId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByServicoIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE ServicoId = @ServicoId";
+            var parameters = new { ServicoId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDataInicioQuery(DateTime value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE DataInicio = @DataInicio";
+            var parameters = new { DataInicio = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDataFimQuery(DateTime value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE DataFim = @DataFim";
+            var parameters = new { DataFim = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByStatusQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE Status = @Status";
+            var parameters = new { Status = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByMovimentacaoFinanceiraIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId";
+            var parameters = new { MovimentacaoFinanceiraId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstBySinteseProntuarioQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE SinteseProntuario = @SinteseProntuario";
+            var parameters = new { SinteseProntuario = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByQueixaPrincipalQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE QueixaPrincipal = @QueixaPrincipal";
+            var parameters = new { QueixaPrincipal = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByMotivoConsultaAtualQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE MotivoConsultaAtual = @MotivoConsultaAtual";
+            var parameters = new { MotivoConsultaAtual = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstBySintomasRelatadosQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE SintomasRelatados = @SintomasRelatados";
+            var parameters = new { SintomasRelatados = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByMudancasDesdeUltimaSessaaoQuery(int value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao";
+            var parameters = new { MudancasDesdeUltimaSessaao = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByComportamentoObservadoQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE ComportamentoObservado = @ComportamentoObservado";
+            var parameters = new { ComportamentoObservado = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByEstadoEmocionalGeralQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE EstadoEmocionalGeral = @EstadoEmocionalGeral";
+            var parameters = new { EstadoEmocionalGeral = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDiscursoPensamentosQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE DiscursoPensamentos = @DiscursoPensamentos";
+            var parameters = new { DiscursoPensamentos = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByTecnicasUtilizadasQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE TecnicasUtilizadas = @TecnicasUtilizadas";
+            var parameters = new { TecnicasUtilizadas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByQuestionamentosReflexoesAbordadasQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas";
+            var parameters = new { QuestionamentosReflexoesAbordadas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByExerciciosTarefasSugeridasQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas";
+            var parameters = new { ExerciciosTarefasSugeridas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDiagnoosticoHipoteseDiagnoosticaQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica";
+            var parameters = new { DiagnoosticoHipoteseDiagnoostica = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByObjetivosCurtoPrazoQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo";
+            var parameters = new { ObjetivosCurtoPrazo = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByObjetivosLongoPrazoQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE ObjetivosLongoPrazo = @ObjetivosLongoPrazo";
+            var parameters = new { ObjetivosLongoPrazo = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByFrequenciaSugeridaSessooesQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes";
+            var parameters = new { FrequenciaSugeridaSessooes = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByEncaminhamentoOutrosProfissionaisQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais";
+            var parameters = new { EncaminhamentoOutrosProfissionais = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByInformacoesRelevantesFuturasConsultasQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas";
+            var parameters = new { InformacoesRelevantesFuturasConsultas = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value)
+        {
+            var sql = "SELECT * FROM Sesoes WHERE FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico";
+            var parameters = new { FeedbackPacienteSobreProcessoTerapeeutico = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

@@ -33,6 +33,36 @@ namespace Input.Querys.Profissional
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateNome(IProfissionalEntity entity)
+        {
+            this.Query = $@" UPDATE Profissional SET Nome = @Nome WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = entity.Nome,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateEspecialidadeId(IProfissionalEntity entity)
+        {
+            this.Query = $@" UPDATE Profissional SET EspecialidadeId = @EspecialidadeId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                EspecialidadeId = entity.EspecialidadeId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTelefone(IProfissionalEntity entity)
+        {
+            this.Query = $@" UPDATE Profissional SET Telefone = @Telefone WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Telefone = entity.Telefone,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteProfissionalQuery(IProfissionalEntity Profissional)
         {
             this.Query = $@" DELETE FROM Profissional WHERE Id = @Id ";

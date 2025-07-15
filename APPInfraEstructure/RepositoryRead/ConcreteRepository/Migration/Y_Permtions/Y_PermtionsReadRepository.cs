@@ -1,9 +1,10 @@
 using Dapper;
 using Output.Querys.Y_Permtions;
-using Repositorio.Outputs.DTOs.Y_Permtions;
-using RepositoryInterfaces.Read.Repository.Y_Permtions;
+using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
+using Read.Repository;
+using Read.RepositoryInterfaces;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Read.ConcreteRepository.Y_Permtions
+namespace Read.Repository
 {
     public class Y_PermtionsReadRepository : IY_PermtionsReadRepository
     {
@@ -33,15 +34,44 @@ namespace Read.ConcreteRepository.Y_Permtions
         {
             var query = new Y_PermtionsReadQuery().Y_PermtionsQuery(command);
 
-            using (_connection)
-            {
                 var itens = _connection.Query<Y_PermtionsDTO>(query.Query,query.Parameters);
                 return new DataPagination<Y_PermtionsDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
-            }
+        }
+
+        public bool ExistsById(string value)
+        {
+            var query = new Y_PermtionsReadQuery().ExistsByIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDescription(string value)
+        {
+            var query = new Y_PermtionsReadQuery().ExistsByDescriptionQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public Y_PermtionsDTO FirstById(string value)
+        {
+            var query = new Y_PermtionsReadQuery().FirstByIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<Y_PermtionsDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public Y_PermtionsDTO FirstByDescription(string value)
+        {
+            var query = new Y_PermtionsReadQuery().FirstByDescriptionQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<Y_PermtionsDTO>(query.Query, query.Parameters);
+                return result;
         }
 
         public Y_PermtionsDTO getById()

@@ -39,6 +39,21 @@ namespace Input.Repository.Clinica
             var query = new ClinicaWriteQuery().DeleteClinicaQuery(Clinica);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateNome(IClinicaEntity entity)
+        {
+            var query = new ClinicaWriteQuery().UpdateNome(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateEndereco(IClinicaEntity entity)
+        {
+            var query = new ClinicaWriteQuery().UpdateEndereco(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateTelefone(IClinicaEntity entity)
+        {
+            var query = new ClinicaWriteQuery().UpdateTelefone(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

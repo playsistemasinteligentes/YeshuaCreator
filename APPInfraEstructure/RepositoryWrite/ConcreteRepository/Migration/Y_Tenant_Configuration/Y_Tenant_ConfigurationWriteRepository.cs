@@ -44,6 +44,24 @@ namespace Input.Repository.Y_Tenant_Configuration
             var query = new Y_Tenant_ConfigurationWriteQuery().DeleteY_Tenant_ConfigurationQuery(Y_Tenant_Configuration);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateAuditTrackerActived(IY_Tenant_ConfigurationEntity entity)
+        {
+            _cacheService.RemoveByPrefix("Y_Tenant_Configuration");
+            var query = new Y_Tenant_ConfigurationWriteQuery().UpdateAuditTrackerActived(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateAuditCRUDActived(IY_Tenant_ConfigurationEntity entity)
+        {
+            _cacheService.RemoveByPrefix("Y_Tenant_Configuration");
+            var query = new Y_Tenant_ConfigurationWriteQuery().UpdateAuditCRUDActived(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateTenantID(IY_Tenant_ConfigurationEntity entity)
+        {
+            _cacheService.RemoveByPrefix("Y_Tenant_Configuration");
+            var query = new Y_Tenant_ConfigurationWriteQuery().UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

@@ -1,9 +1,10 @@
 using Dapper;
 using Output.Querys.Y_PerfilPermitions;
-using Repositorio.Outputs.DTOs.Y_PerfilPermitions;
-using RepositoryInterfaces.Read.Repository.Y_PerfilPermitions;
+using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
+using Read.Repository;
+using Read.RepositoryInterfaces;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Read.ConcreteRepository.Y_PerfilPermitions
+namespace Read.Repository
 {
     public class Y_PerfilPermitionsReadRepository : IY_PerfilPermitionsReadRepository
     {
@@ -33,15 +34,12 @@ namespace Read.ConcreteRepository.Y_PerfilPermitions
         {
             var query = new Y_PerfilPermitionsReadQuery().Y_PerfilPermitionsQuery(command);
 
-            using (_connection)
-            {
                 var itens = _connection.Query<Y_PerfilPermitionsDTO>(query.Query,query.Parameters);
                 return new DataPagination<Y_PerfilPermitionsDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
-            }
         }
 
         private IEnumerable<Y_PerfilPermitionsPerfilIdDTO> getY_PerfilPermitionsReadFKPerfilId(Command.Patterns.Command.SearchFKCommand command)
@@ -49,10 +47,7 @@ namespace Read.ConcreteRepository.Y_PerfilPermitions
             List<Y_PerfilPermitionsPerfilIdDTO> lista;
             var query = new Y_PerfilPermitionsReadQuery().Y_PerfilPermitionsPerfilIdQuery(command);
 
-            using (_connection)
-            {
                 lista = _connection.Query<Y_PerfilPermitionsPerfilIdDTO>(query.Query,query.Parameters) as List<Y_PerfilPermitionsPerfilIdDTO>;
-            }
             return lista;
         }
 
@@ -70,10 +65,7 @@ namespace Read.ConcreteRepository.Y_PerfilPermitions
             List<Y_PerfilPermitionsPermitionsIdDTO> lista;
             var query = new Y_PerfilPermitionsReadQuery().Y_PerfilPermitionsPermitionsIdQuery(command);
 
-            using (_connection)
-            {
                 lista = _connection.Query<Y_PerfilPermitionsPermitionsIdDTO>(query.Query,query.Parameters) as List<Y_PerfilPermitionsPermitionsIdDTO>;
-            }
             return lista;
         }
 
@@ -84,6 +76,38 @@ namespace Read.ConcreteRepository.Y_PerfilPermitions
                 return getY_PerfilPermitionsReadFKPermitionsId(c);
             }
             throw new NotImplementedException();
+        }
+
+        public bool ExistsByPerfilId(int value)
+        {
+            var query = new Y_PerfilPermitionsReadQuery().ExistsByPerfilIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByPermitionsId(string value)
+        {
+            var query = new Y_PerfilPermitionsReadQuery().ExistsByPermitionsIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public Y_PerfilPermitionsDTO FirstByPerfilId(int value)
+        {
+            var query = new Y_PerfilPermitionsReadQuery().FirstByPerfilIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<Y_PerfilPermitionsDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public Y_PerfilPermitionsDTO FirstByPermitionsId(string value)
+        {
+            var query = new Y_PerfilPermitionsReadQuery().FirstByPermitionsIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<Y_PerfilPermitionsDTO>(query.Query, query.Parameters);
+                return result;
         }
 
         public Y_PerfilPermitionsDTO getById()

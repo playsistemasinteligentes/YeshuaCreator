@@ -33,6 +33,36 @@ namespace Input.Querys.Servico
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateGrupoServicoId(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET GrupoServicoId = @GrupoServicoId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                GrupoServicoId = entity.GrupoServicoId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET Nome = @Nome WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = entity.Nome,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateValor(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET Valor = @Valor WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Valor = entity.Valor,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteServicoQuery(IServicoEntity Servico)
         {
             this.Query = $@" DELETE FROM Servico WHERE Id = @Id ";

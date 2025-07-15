@@ -63,6 +63,54 @@ if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant_Configuration WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByAuditTrackerActivedQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant_Configuration WHERE AuditTrackerActived = @AuditTrackerActived";
+            var parameters = new { AuditTrackerActived = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByAuditCRUDActivedQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant_Configuration WHERE AuditCRUDActived = @AuditCRUDActived";
+            var parameters = new { AuditCRUDActived = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByTenantIDQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_Tenant_Configuration WHERE TenantID = @TenantID";
+            var parameters = new { TenantID = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant_Configuration WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByAuditTrackerActivedQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant_Configuration WHERE AuditTrackerActived = @AuditTrackerActived";
+            var parameters = new { AuditTrackerActived = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByAuditCRUDActivedQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant_Configuration WHERE AuditCRUDActived = @AuditCRUDActived";
+            var parameters = new { AuditCRUDActived = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByTenantIDQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_Tenant_Configuration WHERE TenantID = @TenantID";
+            var parameters = new { TenantID = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

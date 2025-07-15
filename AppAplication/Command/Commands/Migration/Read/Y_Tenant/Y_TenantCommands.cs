@@ -5,8 +5,8 @@ namespace Command.Commands.Read
     public struct Y_TenantReadCommand : ICommandRead
     {
         public int? Id { get; set; }
+        public int? CnpjCpf { get; set; }
         public string Nome { get; set; }
-        public string ProxyServer { get; set; }
         public int? UserIDAdmin { get; set; }
  public Pagination Paginacao { get; set; }
     }

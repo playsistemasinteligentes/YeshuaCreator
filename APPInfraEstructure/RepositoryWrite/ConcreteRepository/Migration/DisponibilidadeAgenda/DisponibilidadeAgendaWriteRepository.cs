@@ -39,6 +39,16 @@ namespace Input.Repository.DisponibilidadeAgenda
             var query = new DisponibilidadeAgendaWriteQuery().DeleteDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateProfissionalId(IDisponibilidadeAgendaEntity entity)
+        {
+            var query = new DisponibilidadeAgendaWriteQuery().UpdateProfissionalId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDataHora(IDisponibilidadeAgendaEntity entity)
+        {
+            var query = new DisponibilidadeAgendaWriteQuery().UpdateDataHora(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

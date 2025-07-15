@@ -23,14 +23,14 @@ namespace Dominio.Schemas.CQRS
             if (_cacheDecorator)
             {
                 sb.AppendLine($"using Output.Querys.{_entity.EntityName};");
-                sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
-                sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
+                sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
                 sb.AppendLine($"using RepositoryInterfaces.Services;");
 
                 sb.AppendLine();
-                sb.AppendLine($"namespace Read.ConcreteRepository.{_entity.EntityName}");
+                sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepository}");
                 sb.AppendLine("{");
                 sb.AppendLine($"    public class {_entity.EntityName}ReadRepositoryCacheDecorator : I{_entity.EntityName}ReadRepository");
                 sb.AppendLine("    {");
@@ -138,10 +138,34 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("        return result;");
                 //sb.AppendLine("    }");
 
+
                 sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
                 sb.AppendLine("        {");
                 sb.AppendLine("            throw new NotImplementedException();");
                 sb.AppendLine("        }");
+
+
+                //Exist
+                foreach (var column in _entity.AddColumns)
+                {
+                    sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value)");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"                return _inner.ExistsBy{column.Name}(value);");
+                    sb.AppendLine("        }");
+                    sb.AppendLine();
+                }
+
+                //FirstBy
+                foreach (var column in _entity.AddColumns)
+                {
+                    sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value)");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"                return _inner.FirstBy{column.Name}(value);");
+                    sb.AppendLine("        }");
+                    sb.AppendLine();
+                }
+
+
 
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
@@ -149,10 +173,12 @@ namespace Dominio.Schemas.CQRS
             }
             sb.AppendLine("using Dapper;");
             sb.AppendLine($"using Output.Querys.{_entity.EntityName};");
-            sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
-            sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
+            sb.AppendLine($"using Repositorio.Outputs;");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
+
 
             sb.AppendLine("using Shered.DB.Connection;");
             sb.AppendLine("using System;");
@@ -162,7 +188,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using System.Text;");
             sb.AppendLine("using System.Threading.Tasks;");
             sb.AppendLine();
-            sb.AppendLine($"namespace Read.ConcreteRepository.{_entity.EntityName}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepository}");
             sb.AppendLine("{");
             sb.AppendLine($"    public class {_entity.EntityName}ReadRepository : I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
@@ -184,9 +210,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().{_entity.EntityName}Query(command);");
             sb.AppendLine();
-            sb.AppendLine("            using (_connection)");
-            sb.AppendLine("            {");
-
             sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters);");
             //var itens = _connection.Query<GrupoServicoDTO>(query.Query, query.Parameters);
             sb.AppendLine($"                return new DataPagination<{_entity.EntityName}DTO>(");
@@ -194,7 +217,6 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
             sb.AppendLine($"                command.Paginacao?.PageSize ?? 0,");
             sb.AppendLine($"                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);");
-            sb.AppendLine("            }");
             sb.AppendLine("        }");
             sb.AppendLine();
 
@@ -206,10 +228,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            List<{_entity.EntityName}{column.Name}DTO> lista;");
                 sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().{_entity.EntityName}{column.Name}Query(command);");
                 sb.AppendLine();
-                sb.AppendLine("            using (_connection)");
-                sb.AppendLine("            {");
                 sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{column.Name}DTO>;");
-                sb.AppendLine("            }");
                 sb.AppendLine("            return lista;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -227,12 +246,35 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
 
 
-
-
-
-
-
             }
+
+            //Exist
+            foreach (var column in _entity.AddColumns)
+            {
+                sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().ExistsBy{column.Name}Query(value);");
+                sb.AppendLine();
+                sb.AppendLine("                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);");
+                sb.AppendLine("                return result == 1;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+            }
+
+            //FirstBy
+            foreach (var column in _entity.AddColumns)
+            {
+                sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            var query = new {_entity.EntityName}ReadQuery().FirstBy{column.Name}Query(value);");
+                sb.AppendLine();
+                sb.AppendLine($"                var result = _connection.QueryFirstOrDefault<{_entity.EntityName}DTO>(query.Query, query.Parameters);");
+                sb.AppendLine("                return result;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+            }
+
+
 
 
             sb.AppendLine($"        public {_entity.EntityName}DTO getById()");

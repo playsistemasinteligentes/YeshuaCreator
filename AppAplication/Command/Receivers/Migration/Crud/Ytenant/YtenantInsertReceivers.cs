@@ -1,0 +1,50 @@
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using Dominio.Entitys;
+using Dominio.Interfaces;
+using Repositorio.Inputs.Repositorio.Ytenant;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Command.Receivers.Write
+{
+    public class InsertYtenantReceiver : ReciverBase <IYtenantEntity>
+    {
+        private readonly IYtenantWriteRepository _repository;
+        private readonly ILogger _logger;
+
+        public InsertYtenantReceiver(IYtenantWriteRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+
+        protected override State<IYtenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Commands.YtenantCrudCommand c) 
+             {    
+                 var ytenant = new YtenantFactory(_logger).Create(c.Id, c.CnpjCpf, c.Nome, c.UserIDAdmin);
+                 if (!ytenant.isValidInsert())
+                     return ValidationError(ytenant.getErroMensagens(), comand);
+
+                 try
+                 {
+                     _repository.Insert(ytenant);
+                     return Success("OK", ytenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, ytenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

@@ -1,6 +1,10 @@
 using Command.Commands;
 using Command.Patterns.Command;
 using Dominio.Entitys;
+using Dominio.Interfaces;
+using Read.RepositoryInterfaces;
+using Repositorio.Inputs.Repositorio.Y_Tenant;
+using Repositorio.Inputs.Repositorio.Y_User;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 
@@ -8,34 +12,59 @@ namespace Command.Receivers.UseCase
 {
     public partial class ContasCreateContaUseCaseReceiver
     {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger _logger;
+        private readonly IY_TenantReadRepository _repReadY_Tenant;
+        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
+        private readonly IY_UserReadRepository _repReadY_User;
+        private readonly IY_UserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant, IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        {
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+            _repReadY_Tenant = repReadY_Tenant;
+            _repWriteY_Tenant = repWriteY_Tenant;
+            _repReadY_User = repReadY_User;
+            _repWriteY_User = repWriteY_User;
+        }
+
         partial void CustomActionHook(ref State<object> state, ContasCreateContaUseCaseCommand comand)
         {
             try
             {
-                _unitOfWork.BeginTran();
 
                 // Validação básica
-                if (string.IsNullOrWhiteSpace(comand.idcompany))
-                    throw new ReceiverException<object>(Error("IdCompany é obrigatório", default));
+                if (comand.CpfCnpj == 0)
+                    throw new ReceiverException<object>(Error("Cpf / Cnpj é obrigatório", default));
 
                 if (string.IsNullOrWhiteSpace(comand.email))
                     throw new ReceiverException<object>(Error("Email é obrigatório", default));
 
+                if (string.IsNullOrWhiteSpace(comand.nome))
+                    throw new ReceiverException<object>(Error("Nome é obrigatório", default));
+
                 if (comand.password != comand.confirmpassword)
                     throw new ReceiverException<object>(Error("Senhas não conferem", default));
 
-                // Criação do Tenant usando Factory
+                if (_repReadY_Tenant.ExistsByCnpjCpf(comand.CpfCnpj))
+                    throw new ReceiverException<object>(Error("Conta já existente.", default));
+
+                if (_repReadY_User.ExistsByEmail(comand.email))
+                    if (_repReadY_Tenant.ExistsByUserIDAdmin(_repReadY_User.FirstByEmail(comand.email).id))
+                        throw new ReceiverException<object>(Error("Conta existente.", default));
+
+                _unitOfWork.BeginTran();
+
                 var tenant = new Y_TenantFactory(_logger).Create(
                     null,
-                    comand.idcompany,
-                    null,
+                    comand.CpfCnpj,
+                    comand.nome,
                     null
                 );
+                _repWriteY_Tenant.Insert(tenant);
 
                 if (!tenant.isValidInsert())
                     throw new ReceiverException<object>(Error(string.Join("; ", tenant.getErroMensagens()), default));
-
-                _repWriteY_Tenant.Insert(tenant);
 
                 if (!tenant.Id.HasValue)
                     throw new ReceiverException<object>(Error("Erro ao criar Tenant, Id não gerado", default));
@@ -54,6 +83,9 @@ namespace Command.Receivers.UseCase
 
                 _repWriteY_User.Insert(user);
 
+                tenant.UserIDAdmin = user.Id.Value;
+                _repWriteY_Tenant.UpdateUserIDAdmin(tenant);
+
                 _unitOfWork.Commit();
 
                 state = Success("Conta criada com sucesso", new { TenantId = tenant.Id, UserId = user.Id });
@@ -70,34 +102,6 @@ namespace Command.Receivers.UseCase
             }
         }
 
-
-
-        /*
-        private readonly IUnitOfWork _unitOfWork;
-        partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaServiceMethodCommand comand)
-                {
-                    try
-                    {
-                        _unitOfWork.BeginTran();
-                        State userState = new Command.Receivers.Write.InsertY_UserReceiver(_repositoryUserWrite).Execute(new Commands.Y_UserCrudCommand() { Nome = comand.email, Email = comand.email, Senha = comand.password });
-                        var usuario = userState.Data as Dominio.Entitys.Y_User.Y_UserEntity;
-
-                        Command.Commands.Y_CompanyCrudCommand companyCommand = new Commands.Y_CompanyCrudCommand() { Nome = comand.email, UserIDAdmin = usuario.Id };
-                        new Command.Receivers.Write.InsertY_CompanyReceiver(_repositoryCompanyWrite).Execute(companyCommand);
-
-                        _unitOfWork.Commit();
-                    }
-                    catch (ReceiverException rex)
-                    {
-                        _unitOfWork.Rollback();
-                        state = rex.State;
-                    }
-                    catch (Exception e)
-                    {
-                        Error(e, comand);
-                    }
-                }
-        */
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

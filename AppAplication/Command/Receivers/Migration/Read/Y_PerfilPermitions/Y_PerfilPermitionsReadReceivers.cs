@@ -3,9 +3,8 @@ using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Y_PerfilPermitions;
-using Repositorio.Outputs.DTOs.Y_PerfilPermitions;
-using RepositoryInterfaces.Read.Repository.Y_PerfilPermitions;
+using Repositorio.Outputs;
+using Read.RepositoryInterfaces;
 
 namespace Command.Receivers.Read
 {

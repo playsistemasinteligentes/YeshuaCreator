@@ -30,6 +30,24 @@ namespace Input.Querys.Y_PerfilPermitions
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdatePerfilId(IY_PerfilPermitionsEntity entity)
+        {
+            this.Query = $@" UPDATE Y_PerfilPermitions SET PerfilId = @PerfilId WHERE  ";
+            this.Parameters = new
+            {
+                PerfilId = entity.PerfilId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdatePermitionsId(IY_PerfilPermitionsEntity entity)
+        {
+            this.Query = $@" UPDATE Y_PerfilPermitions SET PermitionsId = @PermitionsId WHERE  ";
+            this.Parameters = new
+            {
+                PermitionsId = entity.PermitionsId,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteY_PerfilPermitionsQuery(IY_PerfilPermitionsEntity Y_PerfilPermitions)
         {
             this.Query = $@" DELETE FROM Y_PerfilPermitions WHERE  ";

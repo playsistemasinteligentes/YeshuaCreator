@@ -16,61 +16,63 @@ namespace Migration.Dominio.Migration
     {
         public override void Up()
         {
-            AddEntity("Y_Tenant")
+            AddEntity("Ytenant")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("Nome", "Nome").Varchar(150).NotNull()
-            .AddColumn("ProxyServer", "ProxyServer").Varchar(150).BackEndField();
+            .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
+            .AddColumn("Nome", "Nome").Varchar(150).NotNull();
 
-            AddEntity("Y_User")
+            AddEntity("Yuser")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
-            .AddColumn("TenantID", "Administrador").FK("Y_Tenant", "Id").Int();
+            .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
 
 
-            AddEntity("Y_Tenant_Configuration").Cached()
+            AddEntity("Ytenant_Configuration").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("AuditTrackerActived", "AuditTrackerActived").Int()
             .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int()
-            .AddColumn("TenantID", "Administrador").FK("Y_Tenant", "Id").Int();
+            .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
 
-            AddEntity("Y_Perfil")
+            AddEntity("Yperfil")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Description", "Descrição").Varchar(150).NotNull();
 
-            AddEntity("Y_Permtions")
+            AddEntity("Ypermtions")
             .AddColumn("Id", "ID").Varchar(100).Key()
             .AddColumn("Description", "Descrição").Varchar(1000);
 
-            AddEntity("Y_PerfilPermitions")
-            .AddColumn("PerfilId", "ID Perfil").FK("Y_Perfil", "Id").Int()
-            .AddColumn("PermitionsId", "ID Permição").FK("Y_Permtions", "Id").Varchar(100);
+            AddEntity("YperfilPermitions")
+            .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
+            .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
 
-            AddEntity("Y_UserPermitions")
-            .AddColumn("UserId", "User ID").FK("Y_User", "Id").Int()
-            .AddColumn("PermitionsId", "ID Permição").FK("Y_Permtions", "Id").Varchar(100);
+            AddEntity("YpserPermitions")
+            .AddColumn("UserId", "User ID").FK("Yuser", "Id").Int()
+            .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
         }
     }
 
     [Migration(000002)]
     public class S000002 : MigrationBase
     {
-        public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
+        public record Account(int CpfCnpj, string nome, string email, string phone, string password, string confirmpassword);
         public record LoginUserEndPassword(string email, string password);
         public override void Up()
         {
 
-            AlterEntity("Y_Tenant").AddColumn("UserIDAdmin", "Administrador").FK("Y_User", "Id").Int();
+            AlterEntity("Ytenant").AddColumn("UserIDAdmin", "Administrador").FK("Yuser", "Id").Int();
 
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account("", "", "", "", "")).Authorization(Authorization.Free)
-            .AddEntity("Y_Tenant").AddEntity("Y_User").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account(0, "", "", "", "", "")).Authorization(Authorization.Free)
+            .AddEntity("Ytenant").AddEntity("Yuser").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginUserEndPassword("", ""));
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginUserEndPassword("", ""))
+                .AddEntity("Yuser");
+
+
 
             AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("RecoveryAccount", new RecoveryAccount("", TypeNotification.Email))
-                .AddEntity("Y_User")
                 .AddScope("Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook")
                 .Strategy(typeof(INotification)).AddAgregateStrategy(typeof(Message));
         }
@@ -89,6 +91,10 @@ namespace Migration.Dominio.Migration
         }
         public interface IMessage
         {
+            public string Destination { get; set; }
+            public string Body { get; set; }
+            public string? Subject { get; set; }
+            public byte[]? Attachment { get; set; }
         }
         public class Message : IMessage
         {

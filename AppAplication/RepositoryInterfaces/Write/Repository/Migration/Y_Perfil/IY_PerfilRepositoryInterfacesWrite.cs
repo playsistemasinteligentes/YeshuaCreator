@@ -12,6 +12,7 @@ namespace Repositorio.Inputs.Repositorio.Y_Perfil
         void Insert(IY_PerfilEntity y_perfil);
         void Update(IY_PerfilEntity y_perfil);
         void Delete(IY_PerfilEntity y_perfil);
+        public void UpdateDescription(IY_PerfilEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

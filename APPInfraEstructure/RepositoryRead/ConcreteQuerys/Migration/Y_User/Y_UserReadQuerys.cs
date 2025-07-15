@@ -65,6 +65,66 @@ if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_User WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByNomeQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_User WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByEmailQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_User WHERE Email = @Email";
+            var parameters = new { Email = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsBySenhaQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_User WHERE Senha = @Senha";
+            var parameters = new { Senha = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByTenantIDQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_User WHERE TenantID = @TenantID";
+            var parameters = new { TenantID = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_User WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByNomeQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_User WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByEmailQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_User WHERE Email = @Email";
+            var parameters = new { Email = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstBySenhaQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_User WHERE Senha = @Senha";
+            var parameters = new { Senha = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByTenantIDQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_User WHERE TenantID = @TenantID";
+            var parameters = new { TenantID = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

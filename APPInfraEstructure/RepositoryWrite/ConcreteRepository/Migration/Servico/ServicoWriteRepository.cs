@@ -39,6 +39,21 @@ namespace Input.Repository.Servico
             var query = new ServicoWriteQuery().DeleteServicoQuery(Servico);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateGrupoServicoId(IServicoEntity entity)
+        {
+            var query = new ServicoWriteQuery().UpdateGrupoServicoId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateNome(IServicoEntity entity)
+        {
+            var query = new ServicoWriteQuery().UpdateNome(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateValor(IServicoEntity entity)
+        {
+            var query = new ServicoWriteQuery().UpdateValor(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

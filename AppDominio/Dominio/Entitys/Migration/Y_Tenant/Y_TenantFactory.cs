@@ -9,9 +9,9 @@
                                     public Y_TenantFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IY_TenantEntity Create(int? id, string nome, string proxyserver, int? useridadmin )
+                                    } public IY_TenantEntity Create(int? id, int cnpjcpf, string nome, int? useridadmin )
                             {
-                            var entity = new Y_TenantEntity(id, nome, proxyserver, useridadmin );
+                            var entity = new Y_TenantEntity(id, cnpjcpf, nome, useridadmin );
 
 
                             var decoratedEntity = new Y_TenantDecorator(entity, _logger);

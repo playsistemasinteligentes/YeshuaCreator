@@ -35,6 +35,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        void Insert(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void Update(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void Delete(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
+
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey))
+                sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity);");
+
+
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

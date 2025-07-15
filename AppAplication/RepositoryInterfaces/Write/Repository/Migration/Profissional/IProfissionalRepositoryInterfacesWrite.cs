@@ -12,6 +12,9 @@ namespace Repositorio.Inputs.Repositorio.Profissional
         void Insert(IProfissionalEntity profissional);
         void Update(IProfissionalEntity profissional);
         void Delete(IProfissionalEntity profissional);
+        public void UpdateNome(IProfissionalEntity entity);
+        public void UpdateEspecialidadeId(IProfissionalEntity entity);
+        public void UpdateTelefone(IProfissionalEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

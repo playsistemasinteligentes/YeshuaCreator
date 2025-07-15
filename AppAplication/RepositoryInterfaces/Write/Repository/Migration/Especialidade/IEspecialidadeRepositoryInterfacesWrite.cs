@@ -12,6 +12,7 @@ namespace Repositorio.Inputs.Repositorio.Especialidade
         void Insert(IEspecialidadeEntity especialidade);
         void Update(IEspecialidadeEntity especialidade);
         void Delete(IEspecialidadeEntity especialidade);
+        public void UpdateDescricao(IEspecialidadeEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

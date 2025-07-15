@@ -108,7 +108,7 @@ namespace Migration.Dominio
         {
             StringBuilder code = GenerateCode();
             bool context = false;
-            if ((entity != null && entity.EntityName == "Y_Tenant") || (useCase != null && (useCase.Name._value == "createConta" || useCase.Name._value == "RecoveryAccount")))
+            if ((entity != null && entity.EntityName == "Ytenant") || (useCase != null && (useCase.Name._value == "createConta" || useCase.Name._value == "RecoveryAccount")))
                 context = true;
             WriteCode(code, filePathMigration, false, context);
 

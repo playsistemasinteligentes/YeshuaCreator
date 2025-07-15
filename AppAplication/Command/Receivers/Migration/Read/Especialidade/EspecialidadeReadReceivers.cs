@@ -3,9 +3,8 @@ using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Especialidade;
-using Repositorio.Outputs.DTOs.Especialidade;
-using RepositoryInterfaces.Read.Repository.Especialidade;
+using Repositorio.Outputs;
+using Read.RepositoryInterfaces;
 
 namespace Command.Receivers.Read
 {

@@ -39,6 +39,11 @@ namespace Input.Repository.GrupoServico
             var query = new GrupoServicoWriteQuery().DeleteGrupoServicoQuery(GrupoServico);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateDescricao(IGrupoServicoEntity entity)
+        {
+            var query = new GrupoServicoWriteQuery().UpdateDescricao(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

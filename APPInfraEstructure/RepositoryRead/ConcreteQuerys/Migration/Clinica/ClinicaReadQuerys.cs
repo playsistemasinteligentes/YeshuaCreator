@@ -37,6 +37,54 @@ if (!string.IsNullOrEmpty(Command.Telefone)) whereClauses.Add($"Telefone like @T
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Clinica WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByNomeQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Clinica WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByEnderecoQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Clinica WHERE Endereco = @Endereco";
+            var parameters = new { Endereco = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByTelefoneQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Clinica WHERE Telefone = @Telefone";
+            var parameters = new { Telefone = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Clinica WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByNomeQuery(string value)
+        {
+            var sql = "SELECT * FROM Clinica WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByEnderecoQuery(string value)
+        {
+            var sql = "SELECT * FROM Clinica WHERE Endereco = @Endereco";
+            var parameters = new { Endereco = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByTelefoneQuery(string value)
+        {
+            var sql = "SELECT * FROM Clinica WHERE Telefone = @Telefone";
+            var parameters = new { Telefone = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

@@ -7,19 +7,27 @@ export function buildRegister() {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const idCompany = document.getElementById('create-account-idcompany').value.trim();
-        const email = document.getElementById('create-account-email').value.trim();
-        const phone = document.getElementById('create-account-phone').value.trim();
-        const password = document.getElementById('create-account-password-create').value.trim();
-        const confirmPassword = document.getElementById('create-account-confirm-password').value.trim();
+        const cpfCnpjValue = document.getElementById('cpfCnpj').value.trim();
+        const nome = document.getElementById('nome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirmpassword = document.getElementById('confirmpassword').value.trim();
 
-        if (!idCompany || !email || !phone || !password || !confirmPassword) {
+        if (!cpfCnpjValue || !nome || !email || !phone || !password || !confirmpassword) {
             showAlert("Todos os campos são obrigatórios!", "Alert");
             return;
         }
 
-        if (password !== confirmPassword) {
+        if (password !== confirmpassword) {
             showAlert("As senhas não coincidem!", "Alert");
+            return;
+        }
+
+        // Convert CPF/CNPJ para número inteiro, se necessário
+        const cpfCnpj = parseInt(cpfCnpjValue, 10);
+        if (isNaN(cpfCnpj)) {
+            showAlert("CPF/CNPJ deve ser um número válido.", "Alert");
             return;
         }
 
@@ -27,7 +35,7 @@ export function buildRegister() {
             const response = await fetch(`${environments.urlApi}/Y/ContascreateContaUseCase`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idCompany, email, phone, password, confirmPassword })
+                body: JSON.stringify({ cpfCnpj, nome, email, phone, password, confirmpassword })
             });
 
             const data = await response.json();

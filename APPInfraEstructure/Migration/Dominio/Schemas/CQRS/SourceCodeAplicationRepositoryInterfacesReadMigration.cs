@@ -20,7 +20,7 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
 
             // Adiciona os usings
-            sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
+            sb.AppendLine($"using Repositorio.Outputs;");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
 
@@ -32,7 +32,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a interface
-            sb.AppendLine($"namespace RepositoryInterfaces.Read.Repository.{_entity.EntityName}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepositoryInterface}");
             sb.AppendLine("{");
             sb.AppendLine($"    public interface I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
@@ -45,6 +45,14 @@ namespace Dominio.Schemas.CQRS
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
                 sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command);");
 
+
+            foreach (var column in _entity.AddColumns)
+                sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value);");
+
+            foreach (var column in _entity.AddColumns)
+                sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value);");
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
@@ -55,7 +63,7 @@ namespace Dominio.Schemas.CQRS
             var sb = new StringBuilder();
             return new StringBuilder();
 
-            sb.AppendLine($"namespace RepositoryInterfaces.Read.Repository.{_entity.EntityName}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepositoryInterface}");
             sb.AppendLine("{");
 
             // Define a classe

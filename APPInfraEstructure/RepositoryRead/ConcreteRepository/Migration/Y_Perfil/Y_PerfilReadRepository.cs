@@ -1,9 +1,10 @@
 using Dapper;
 using Output.Querys.Y_Perfil;
-using Repositorio.Outputs.DTOs.Y_Perfil;
-using RepositoryInterfaces.Read.Repository.Y_Perfil;
+using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
+using Read.Repository;
+using Read.RepositoryInterfaces;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Read.ConcreteRepository.Y_Perfil
+namespace Read.Repository
 {
     public class Y_PerfilReadRepository : IY_PerfilReadRepository
     {
@@ -33,15 +34,44 @@ namespace Read.ConcreteRepository.Y_Perfil
         {
             var query = new Y_PerfilReadQuery().Y_PerfilQuery(command);
 
-            using (_connection)
-            {
                 var itens = _connection.Query<Y_PerfilDTO>(query.Query,query.Parameters);
                 return new DataPagination<Y_PerfilDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
-            }
+        }
+
+        public bool ExistsById(int value)
+        {
+            var query = new Y_PerfilReadQuery().ExistsByIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDescription(string value)
+        {
+            var query = new Y_PerfilReadQuery().ExistsByDescriptionQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public Y_PerfilDTO FirstById(int value)
+        {
+            var query = new Y_PerfilReadQuery().FirstByIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<Y_PerfilDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public Y_PerfilDTO FirstByDescription(string value)
+        {
+            var query = new Y_PerfilReadQuery().FirstByDescriptionQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<Y_PerfilDTO>(query.Query, query.Parameters);
+                return result;
         }
 
         public Y_PerfilDTO getById()

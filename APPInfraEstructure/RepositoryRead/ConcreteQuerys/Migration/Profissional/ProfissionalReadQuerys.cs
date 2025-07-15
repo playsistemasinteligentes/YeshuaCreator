@@ -63,6 +63,54 @@ if (!string.IsNullOrEmpty(Command.Telefone)) whereClauses.Add($"Telefone like @T
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Profissional WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByNomeQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Profissional WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByEspecialidadeIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Profissional WHERE EspecialidadeId = @EspecialidadeId";
+            var parameters = new { EspecialidadeId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByTelefoneQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Profissional WHERE Telefone = @Telefone";
+            var parameters = new { Telefone = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Profissional WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByNomeQuery(string value)
+        {
+            var sql = "SELECT * FROM Profissional WHERE Nome = @Nome";
+            var parameters = new { Nome = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByEspecialidadeIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Profissional WHERE EspecialidadeId = @EspecialidadeId";
+            var parameters = new { EspecialidadeId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByTelefoneQuery(string value)
+        {
+            var sql = "SELECT * FROM Profissional WHERE Telefone = @Telefone";
+            var parameters = new { Telefone = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

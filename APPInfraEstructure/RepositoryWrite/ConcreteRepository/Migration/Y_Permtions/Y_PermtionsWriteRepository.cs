@@ -39,6 +39,11 @@ namespace Input.Repository.Y_Permtions
             var query = new Y_PermtionsWriteQuery().DeleteY_PermtionsQuery(Y_Permtions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateDescription(IY_PermtionsEntity entity)
+        {
+            var query = new Y_PermtionsWriteQuery().UpdateDescription(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

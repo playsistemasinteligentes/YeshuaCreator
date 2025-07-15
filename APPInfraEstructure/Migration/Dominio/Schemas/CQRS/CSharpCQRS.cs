@@ -170,20 +170,13 @@ namespace Dominio.Schemas.CQRS
                                 FactoryInterfacePath = GetPathAppDominioStrategyInterfaces($"Migration\\{strategy.Type.Name}"), // candidato a aplication
                                 FactoryClassPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Type.Name}"),
                                 DependencyInjectionPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Type.Name}"),
-                                EnumNamespace = "Dominio.Enum.Strategy",
-                                InterfaceNamespace = "Dominio.Interfaces.Strategy",
-                                ClassNamespace = "Shered.Patterns.Strategy",
-                                CustomClassNamespace = "Shered.Patterns.Strategy",
-                                FactoryInterfaceNamespace = "Dominio.Interfaces.Strategy",
-                                FactoryClassNamespace = "Shered.Patterns.Strategy",
-                                DependencyInjectionNamespace = "Shered.Patterns.Strategy"
                             };
                             List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
                             SourceCodeAplicationCommandReceiversUseCase strategys = new SourceCodeAplicationCommandReceiversUseCase(useCase, strategy, paths, ref CodigoGerado);
                             bool contexto = false;
                             if (strategy.Type.Name == "INotification")
                                 contexto = true;
-                            foreach (var code in CodigoGerado)
+                            foreach (var code in CodigoGerado.Where(x => x.CommandType != CommandType.DependencyIngection))
                                 strategys.WriteCode(code.Conteudo, code.CaminhoArquivo, code.Custom, contexto);
                         }
                     }

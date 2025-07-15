@@ -12,6 +12,8 @@ namespace Repositorio.Inputs.Repositorio.DisponibilidadeAgenda
         void Insert(IDisponibilidadeAgendaEntity disponibilidadeagenda);
         void Update(IDisponibilidadeAgendaEntity disponibilidadeagenda);
         void Delete(IDisponibilidadeAgendaEntity disponibilidadeagenda);
+        public void UpdateProfissionalId(IDisponibilidadeAgendaEntity entity);
+        public void UpdateDataHora(IDisponibilidadeAgendaEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

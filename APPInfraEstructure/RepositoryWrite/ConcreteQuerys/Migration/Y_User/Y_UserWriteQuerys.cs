@@ -35,6 +35,46 @@ namespace Input.Querys.Y_User
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateNome(IY_UserEntity entity)
+        {
+            this.Query = $@" UPDATE Y_User SET Nome = @Nome WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = entity.Nome,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateEmail(IY_UserEntity entity)
+        {
+            this.Query = $@" UPDATE Y_User SET Email = @Email WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Email = entity.Email,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateSenha(IY_UserEntity entity)
+        {
+            this.Query = $@" UPDATE Y_User SET Senha = @Senha WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Senha = entity.Senha,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTenantID(IY_UserEntity entity)
+        {
+            this.Query = $@" UPDATE Y_User SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TenantID = entity.TenantID,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteY_UserQuery(IY_UserEntity Y_User)
         {
             this.Query = $@" DELETE FROM Y_User WHERE Id = @Id ";

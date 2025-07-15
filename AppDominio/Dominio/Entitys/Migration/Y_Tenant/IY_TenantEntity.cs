@@ -11,8 +11,8 @@
                     public interface IY_TenantEntity
 {
     int? Id { get; set; }
+    int CnpjCpf { get; set; }
     string Nome { get; set; }
-    string ProxyServer { get; set; }
     int? UserIDAdmin { get; set; }
     
                     bool isValidInsert();

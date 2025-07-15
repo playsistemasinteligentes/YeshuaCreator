@@ -31,6 +31,26 @@ namespace Input.Querys.DisponibilidadeAgenda
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateProfissionalId(IDisponibilidadeAgendaEntity entity)
+        {
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                ProfissionalId = entity.ProfissionalId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDataHora(IDisponibilidadeAgendaEntity entity)
+        {
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET DataHora = @DataHora WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                DataHora = entity.DataHora,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             this.Query = $@" DELETE FROM DisponibilidadeAgenda WHERE Id = @Id ";

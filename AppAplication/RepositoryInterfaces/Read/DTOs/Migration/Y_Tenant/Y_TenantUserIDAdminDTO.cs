@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Outputs.DTOs.Y_Tenant
+namespace Repositorio.Outputs
 {
-    public struct Y_TenantUserIDAdminDTO
+    public record Y_TenantUserIDAdminDTO
     {
     public int id { get; set; }
     public string nome { get; set; }

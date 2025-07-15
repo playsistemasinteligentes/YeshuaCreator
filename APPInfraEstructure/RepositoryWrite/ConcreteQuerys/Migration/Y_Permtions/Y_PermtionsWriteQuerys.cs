@@ -30,6 +30,16 @@ namespace Input.Querys.Y_Permtions
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateDescription(IY_PermtionsEntity entity)
+        {
+            this.Query = $@" UPDATE Y_Permtions SET Description = @Description WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Description = entity.Description,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteY_PermtionsQuery(IY_PermtionsEntity Y_Permtions)
         {
             this.Query = $@" DELETE FROM Y_Permtions WHERE Id = @Id ";

@@ -59,6 +59,42 @@ if (Command.ProfissionalId.HasValue) whereClauses.Add($"ProfissionalId = @Profis
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM DisponibilidadeAgenda WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByProfissionalIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM DisponibilidadeAgenda WHERE ProfissionalId = @ProfissionalId";
+            var parameters = new { ProfissionalId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByDataHoraQuery(DateTime value)
+        {
+            var sql = "SELECT 1 FROM DisponibilidadeAgenda WHERE DataHora = @DataHora";
+            var parameters = new { DataHora = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value)
+        {
+            var sql = "SELECT * FROM DisponibilidadeAgenda WHERE Id = @Id";
+            var parameters = new { Id = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByProfissionalIdQuery(int value)
+        {
+            var sql = "SELECT * FROM DisponibilidadeAgenda WHERE ProfissionalId = @ProfissionalId";
+            var parameters = new { ProfissionalId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByDataHoraQuery(DateTime value)
+        {
+            var sql = "SELECT * FROM DisponibilidadeAgenda WHERE DataHora = @DataHora";
+            var parameters = new { DataHora = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

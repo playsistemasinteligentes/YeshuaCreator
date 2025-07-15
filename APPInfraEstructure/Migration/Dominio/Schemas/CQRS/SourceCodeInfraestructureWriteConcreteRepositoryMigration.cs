@@ -86,6 +86,21 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Delete{_entity.EntityName}Query({_entity.EntityName});");
             sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
+
+
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey))
+            {
+                sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity)");
+                sb.AppendLine("        {");
+                if (_entity.CachedTable)
+                    sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
+                sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{column.Name}(entity);");
+                sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
+                sb.AppendLine("        }");
+            }
+
+
+
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

@@ -39,6 +39,16 @@ namespace Input.Repository.Y_PerfilPermitions
             var query = new Y_PerfilPermitionsWriteQuery().DeleteY_PerfilPermitionsQuery(Y_PerfilPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdatePerfilId(IY_PerfilPermitionsEntity entity)
+        {
+            var query = new Y_PerfilPermitionsWriteQuery().UpdatePerfilId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdatePermitionsId(IY_PerfilPermitionsEntity entity)
+        {
+            var query = new Y_PerfilPermitionsWriteQuery().UpdatePermitionsId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

@@ -31,6 +31,19 @@
                                         }
                                     }
 
+                                    public int CnpjCpf
+                                    {
+                                        get => _inner.CnpjCpf;
+                                        set
+                                        {
+                                            if (_inner.CnpjCpf != value)
+                                            {
+                                                _logger.Info($"Propriedade CnpjCpf: antes={_inner.CnpjCpf}, depois={value}");
+                                                _inner.CnpjCpf = value;
+                                            }
+                                        }
+                                    }
+
                                     public string Nome
                                     {
                                         get => _inner.Nome;
@@ -40,19 +53,6 @@
                                             {
                                                 _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
                                                 _inner.Nome = value;
-                                            }
-                                        }
-                                    }
-
-                                    public string ProxyServer
-                                    {
-                                        get => _inner.ProxyServer;
-                                        set
-                                        {
-                                            if (_inner.ProxyServer != value)
-                                            {
-                                                _logger.Info($"Propriedade ProxyServer: antes={_inner.ProxyServer}, depois={value}");
-                                                _inner.ProxyServer = value;
                                             }
                                         }
                                     }

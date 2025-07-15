@@ -29,6 +29,16 @@ namespace Input.Querys.Y_Perfil
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateDescription(IY_PerfilEntity entity)
+        {
+            this.Query = $@" UPDATE Y_Perfil SET Description = @Description WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Description = entity.Description,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteY_PerfilQuery(IY_PerfilEntity Y_Perfil)
         {
             this.Query = $@" DELETE FROM Y_Perfil WHERE Id = @Id ";

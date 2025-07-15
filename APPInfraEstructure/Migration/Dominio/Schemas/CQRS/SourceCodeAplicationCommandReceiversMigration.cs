@@ -115,9 +115,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
-                sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
-                sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository}.{_entity.EntityName};");
+                sb.AppendLine($"using Repositorio.Outputs;");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
@@ -157,9 +156,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
                 sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
-                sb.AppendLine($"using RepositoryInterfaces.Read.Repository.{_entity.EntityName};");
-                sb.AppendLine($"using Repositorio.Outputs.DTOs.{_entity.EntityName};");
+                sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");

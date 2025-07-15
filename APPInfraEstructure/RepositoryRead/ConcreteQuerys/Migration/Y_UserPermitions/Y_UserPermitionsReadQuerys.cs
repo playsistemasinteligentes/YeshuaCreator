@@ -83,6 +83,30 @@ if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId
             this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
             return new QueryModel(this.Query, this.Parameters); 
         }
+        public QueryModel ExistsByUserIdQuery(int value)
+        {
+            var sql = "SELECT 1 FROM Y_UserPermitions WHERE UserId = @UserId";
+            var parameters = new { UserId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByPermitionsIdQuery(string value)
+        {
+            var sql = "SELECT 1 FROM Y_UserPermitions WHERE PermitionsId = @PermitionsId";
+            var parameters = new { PermitionsId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByUserIdQuery(int value)
+        {
+            var sql = "SELECT * FROM Y_UserPermitions WHERE UserId = @UserId";
+            var parameters = new { UserId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByPermitionsIdQuery(string value)
+        {
+            var sql = "SELECT * FROM Y_UserPermitions WHERE PermitionsId = @PermitionsId";
+            var parameters = new { PermitionsId = value };
+            return new QueryModel(sql, parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration

@@ -39,6 +39,21 @@ namespace Input.Repository.Y_Tenant
             var query = new Y_TenantWriteQuery().DeleteY_TenantQuery(Y_Tenant);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateCnpjCpf(IY_TenantEntity entity)
+        {
+            var query = new Y_TenantWriteQuery().UpdateCnpjCpf(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateNome(IY_TenantEntity entity)
+        {
+            var query = new Y_TenantWriteQuery().UpdateNome(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUserIDAdmin(IY_TenantEntity entity)
+        {
+            var query = new Y_TenantWriteQuery().UpdateUserIDAdmin(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

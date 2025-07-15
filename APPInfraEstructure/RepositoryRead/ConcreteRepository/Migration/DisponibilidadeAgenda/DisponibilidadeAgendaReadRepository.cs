@@ -1,9 +1,10 @@
 using Dapper;
 using Output.Querys.DisponibilidadeAgenda;
-using Repositorio.Outputs.DTOs.DisponibilidadeAgenda;
-using RepositoryInterfaces.Read.Repository.DisponibilidadeAgenda;
+using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
+using Read.Repository;
+using Read.RepositoryInterfaces;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Read.ConcreteRepository.DisponibilidadeAgenda
+namespace Read.Repository
 {
     public class DisponibilidadeAgendaReadRepository : IDisponibilidadeAgendaReadRepository
     {
@@ -33,15 +34,12 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
         {
             var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaQuery(command);
 
-            using (_connection)
-            {
                 var itens = _connection.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters);
                 return new DataPagination<DisponibilidadeAgendaDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
-            }
         }
 
         private IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command)
@@ -49,10 +47,7 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
             List<DisponibilidadeAgendaProfissionalIdDTO> lista;
             var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaProfissionalIdQuery(command);
 
-            using (_connection)
-            {
                 lista = _connection.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaProfissionalIdDTO>;
-            }
             return lista;
         }
 
@@ -63,6 +58,54 @@ namespace Read.ConcreteRepository.DisponibilidadeAgenda
                 return getDisponibilidadeAgendaReadFKProfissionalId(c);
             }
             throw new NotImplementedException();
+        }
+
+        public bool ExistsById(int value)
+        {
+            var query = new DisponibilidadeAgendaReadQuery().ExistsByIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByProfissionalId(int value)
+        {
+            var query = new DisponibilidadeAgendaReadQuery().ExistsByProfissionalIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDataHora(DateTime value)
+        {
+            var query = new DisponibilidadeAgendaReadQuery().ExistsByDataHoraQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public DisponibilidadeAgendaDTO FirstById(int value)
+        {
+            var query = new DisponibilidadeAgendaReadQuery().FirstByIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public DisponibilidadeAgendaDTO FirstByProfissionalId(int value)
+        {
+            var query = new DisponibilidadeAgendaReadQuery().FirstByProfissionalIdQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public DisponibilidadeAgendaDTO FirstByDataHora(DateTime value)
+        {
+            var query = new DisponibilidadeAgendaReadQuery().FirstByDataHoraQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
+                return result;
         }
 
         public DisponibilidadeAgendaDTO getById()

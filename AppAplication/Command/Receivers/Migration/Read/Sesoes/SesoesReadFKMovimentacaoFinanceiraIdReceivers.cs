@@ -2,9 +2,9 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Read.RepositoryInterfaces;
 using Repositorio.Inputs.Repositorio.Sesoes;
-using RepositoryInterfaces.Read.Repository.Sesoes;
-using Repositorio.Outputs.DTOs.Sesoes;
+using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {

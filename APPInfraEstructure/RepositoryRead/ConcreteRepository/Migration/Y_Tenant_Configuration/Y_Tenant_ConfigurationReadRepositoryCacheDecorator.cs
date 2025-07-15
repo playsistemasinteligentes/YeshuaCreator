@@ -1,11 +1,11 @@
 using Output.Querys.Y_Tenant_Configuration;
-using Repositorio.Outputs.DTOs.Y_Tenant_Configuration;
-using RepositoryInterfaces.Read.Repository.Y_Tenant_Configuration;
+using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
+using Read.RepositoryInterfaces;
 using RepositoryInterfaces.Services;
 
-namespace Read.ConcreteRepository.Y_Tenant_Configuration
+namespace Read.Repository
 {
     public class Y_Tenant_ConfigurationReadRepositoryCacheDecorator : IY_Tenant_ConfigurationReadRepository
     {
@@ -61,6 +61,46 @@ namespace Read.ConcreteRepository.Y_Tenant_Configuration
         {
             throw new NotImplementedException();
         }
+        public bool ExistsById(int value)
+        {
+                return _inner.ExistsById(value);
+        }
+
+        public bool ExistsByAuditTrackerActived(int value)
+        {
+                return _inner.ExistsByAuditTrackerActived(value);
+        }
+
+        public bool ExistsByAuditCRUDActived(int value)
+        {
+                return _inner.ExistsByAuditCRUDActived(value);
+        }
+
+        public bool ExistsByTenantID(int value)
+        {
+                return _inner.ExistsByTenantID(value);
+        }
+
+        public Y_Tenant_ConfigurationDTO FirstById(int value)
+        {
+                return _inner.FirstById(value);
+        }
+
+        public Y_Tenant_ConfigurationDTO FirstByAuditTrackerActived(int value)
+        {
+                return _inner.FirstByAuditTrackerActived(value);
+        }
+
+        public Y_Tenant_ConfigurationDTO FirstByAuditCRUDActived(int value)
+        {
+                return _inner.FirstByAuditCRUDActived(value);
+        }
+
+        public Y_Tenant_ConfigurationDTO FirstByTenantID(int value)
+        {
+                return _inner.FirstByTenantID(value);
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

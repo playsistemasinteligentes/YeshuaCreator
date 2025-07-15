@@ -39,6 +39,66 @@ namespace Input.Querys.MovimentacaoFinanceira
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdatePacienteId(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                PacienteId = entity.PacienteId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateServicoId(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET ServicoId = @ServicoId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                ServicoId = entity.ServicoId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateValor(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET Valor = @Valor WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Valor = entity.Valor,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET TipoMovimentacao = @TipoMovimentacao WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TipoMovimentacao = entity.TipoMovimentacao,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET DataMovimentacao = @DataMovimentacao WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                DataMovimentacao = entity.DataMovimentacao,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET SaldoAtual = @SaldoAtual WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                SaldoAtual = entity.SaldoAtual,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel DeleteMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             this.Query = $@" DELETE FROM MovimentacaoFinanceira WHERE Id = @Id ";
