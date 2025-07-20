@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.Especialidade;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,31 +17,33 @@ namespace Input.Repository.Especialidade
     public class EspecialidadeWriteRepository : IEspecialidadeWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IEspecialidadeQueryWrite _query; 
 
-        public EspecialidadeWriteRepository(IUnitOfWork unitOfWork)
+        public EspecialidadeWriteRepository(IUnitOfWork unitOfWork,IEspecialidadeQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IEspecialidadeEntity Especialidade)
         {
-            var query = new EspecialidadeWriteQuery().InserirEspecialidadeQuery(Especialidade);
+            var query = _query.InserirEspecialidadeQuery(Especialidade);
         Especialidade.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IEspecialidadeEntity Especialidade)
         {
-            var query = new EspecialidadeWriteQuery().UpdateEspecialidadeQuery(Especialidade);
+            var query = _query.UpdateEspecialidadeQuery(Especialidade);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IEspecialidadeEntity Especialidade)
         {
-            var query = new EspecialidadeWriteQuery().DeleteEspecialidadeQuery(Especialidade);
+            var query = _query.DeleteEspecialidadeQuery(Especialidade);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDescricao(IEspecialidadeEntity entity)
         {
-            var query = new EspecialidadeWriteQuery().UpdateDescricao(entity);
+            var query = _query.UpdateDescricao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

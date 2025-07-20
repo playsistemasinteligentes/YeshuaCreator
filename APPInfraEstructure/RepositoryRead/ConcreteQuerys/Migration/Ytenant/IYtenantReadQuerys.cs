@@ -15,4 +15,4 @@ namespace IQuery.Read
         public QueryModel FirstByUserIDAdminQuery(int value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

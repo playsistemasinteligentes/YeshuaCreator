@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.Clinica
+namespace Query.Write
 {
-    public class ClinicaWriteQuery : QueryBase
+    public class ClinicaQueryWrite : QueryBase, IClinicaQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public ClinicaQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirClinicaQuery(IClinicaEntity Clinica)
         {
             this.Query = $@" INSERT INTO Clinica (Nome, Endereco, Telefone) OUTPUT INSERTED.Id VALUES(@Nome, @Endereco, @Telefone) ";
@@ -74,4 +82,4 @@ namespace Input.Querys.Clinica
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

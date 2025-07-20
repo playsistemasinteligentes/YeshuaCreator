@@ -1,4 +1,3 @@
-using Dominio.Entitys.Ytenant;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -131,4 +130,4 @@ if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin"
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

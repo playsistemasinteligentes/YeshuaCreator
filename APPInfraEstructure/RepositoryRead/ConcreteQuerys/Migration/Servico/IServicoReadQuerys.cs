@@ -15,4 +15,4 @@ namespace IQuery.Read
         public QueryModel FirstByValorQuery(Decimal value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

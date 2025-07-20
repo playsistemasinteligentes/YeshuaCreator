@@ -103,6 +103,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepositoryInterface}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryRead}.I{entity.EntityName}QueryRead, {CQRSParam.I.NameSpaceQueryRead}.{entity.EntityName}QueryRead>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryWrite}.I{entity.EntityName}QueryWrite, {CQRSParam.I.NameSpaceQueryWrite}.{entity.EntityName}QueryWrite>();");
 
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");

@@ -1,4 +1,3 @@
-using Dominio.Entitys.Paciente;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -211,4 +210,4 @@ if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) whereClauses.Add($"Obser
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

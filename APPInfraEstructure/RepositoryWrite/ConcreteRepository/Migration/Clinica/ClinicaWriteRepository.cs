@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.Clinica;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,41 +17,43 @@ namespace Input.Repository.Clinica
     public class ClinicaWriteRepository : IClinicaWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IClinicaQueryWrite _query; 
 
-        public ClinicaWriteRepository(IUnitOfWork unitOfWork)
+        public ClinicaWriteRepository(IUnitOfWork unitOfWork,IClinicaQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IClinicaEntity Clinica)
         {
-            var query = new ClinicaWriteQuery().InserirClinicaQuery(Clinica);
+            var query = _query.InserirClinicaQuery(Clinica);
         Clinica.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IClinicaEntity Clinica)
         {
-            var query = new ClinicaWriteQuery().UpdateClinicaQuery(Clinica);
+            var query = _query.UpdateClinicaQuery(Clinica);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IClinicaEntity Clinica)
         {
-            var query = new ClinicaWriteQuery().DeleteClinicaQuery(Clinica);
+            var query = _query.DeleteClinicaQuery(Clinica);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateNome(IClinicaEntity entity)
         {
-            var query = new ClinicaWriteQuery().UpdateNome(entity);
+            var query = _query.UpdateNome(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEndereco(IClinicaEntity entity)
         {
-            var query = new ClinicaWriteQuery().UpdateEndereco(entity);
+            var query = _query.UpdateEndereco(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTelefone(IClinicaEntity entity)
         {
-            var query = new ClinicaWriteQuery().UpdateTelefone(entity);
+            var query = _query.UpdateTelefone(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

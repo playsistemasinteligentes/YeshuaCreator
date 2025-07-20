@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.MovimentacaoFinanceira
+namespace Query.Write
 {
-    public class MovimentacaoFinanceiraWriteQuery : QueryBase
+    public class MovimentacaoFinanceiraQueryWrite : QueryBase, IMovimentacaoFinanceiraQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public MovimentacaoFinanceiraQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             this.Query = $@" INSERT INTO MovimentacaoFinanceira (PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual) OUTPUT INSERTED.Id VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual) ";
@@ -110,4 +118,4 @@ namespace Input.Querys.MovimentacaoFinanceira
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

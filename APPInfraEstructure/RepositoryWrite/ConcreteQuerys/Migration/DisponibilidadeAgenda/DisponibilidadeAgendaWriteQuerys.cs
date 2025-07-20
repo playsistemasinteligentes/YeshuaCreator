@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.DisponibilidadeAgenda
+namespace Query.Write
 {
-    public class DisponibilidadeAgendaWriteQuery : QueryBase
+    public class DisponibilidadeAgendaQueryWrite : QueryBase, IDisponibilidadeAgendaQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public DisponibilidadeAgendaQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
             this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora) OUTPUT INSERTED.Id VALUES(@ProfissionalId, @DataHora) ";
@@ -62,4 +70,4 @@ namespace Input.Querys.DisponibilidadeAgenda
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

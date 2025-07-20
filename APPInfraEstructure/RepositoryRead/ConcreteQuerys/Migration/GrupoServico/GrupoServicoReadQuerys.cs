@@ -1,4 +1,3 @@
-using Dominio.Entitys.GrupoServico;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -73,4 +72,4 @@ if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like 
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

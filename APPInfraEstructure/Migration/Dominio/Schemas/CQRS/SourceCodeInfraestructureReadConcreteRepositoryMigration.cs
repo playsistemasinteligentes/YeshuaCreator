@@ -205,12 +205,12 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command)");
             sb.AppendLine("         {");
-            sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command c)");
+            sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command c)");
             sb.AppendLine($"                return get{_entity.EntityName}(c);");
             sb.AppendLine("            throw new NotImplementedException();");
             sb.AppendLine("        }");
 
-            sb.AppendLine($"        private DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command command)");
+            sb.AppendLine($"        private DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command command)");
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = _query.{_entity.EntityName}Query(command);");
             sb.AppendLine();
@@ -240,7 +240,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
                 sb.AppendLine("        {");
 
-                sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand c)");
+                sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand c)");
                 sb.AppendLine("            {");
                 sb.AppendLine($"                return get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(c);");
                 sb.AppendLine("            }");

@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.Especialidade
+namespace Query.Write
 {
-    public class EspecialidadeWriteQuery : QueryBase
+    public class EspecialidadeQueryWrite : QueryBase, IEspecialidadeQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public EspecialidadeQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
             this.Query = $@" INSERT INTO Especialidade (Descricao) OUTPUT INSERTED.Id VALUES(@Descricao) ";
@@ -50,4 +58,4 @@ namespace Input.Querys.Especialidade
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

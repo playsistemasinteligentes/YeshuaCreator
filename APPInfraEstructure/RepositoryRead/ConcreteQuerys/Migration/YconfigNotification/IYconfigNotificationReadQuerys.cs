@@ -15,4 +15,4 @@ namespace IQuery.Read
         public QueryModel FirstByTenantIDQuery(int value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

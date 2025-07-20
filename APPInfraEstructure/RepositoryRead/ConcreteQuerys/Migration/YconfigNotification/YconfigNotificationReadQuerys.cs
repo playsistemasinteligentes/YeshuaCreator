@@ -1,4 +1,3 @@
-using Dominio.Entitys.YconfigNotification;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -131,4 +130,4 @@ if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

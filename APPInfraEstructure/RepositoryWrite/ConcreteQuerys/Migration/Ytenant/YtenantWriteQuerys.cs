@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.Ytenant
+namespace Query.Write
 {
-    public class YtenantWriteQuery : QueryBase
+    public class YtenantQueryWrite : QueryBase, IYtenantQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public YtenantQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirYtenantQuery(IYtenantEntity Ytenant)
         {
             this.Query = $@" INSERT INTO Ytenant (CnpjCpf, Nome, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@CnpjCpf, @Nome, @UserIDAdmin) ";
@@ -74,4 +82,4 @@ namespace Input.Querys.Ytenant
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

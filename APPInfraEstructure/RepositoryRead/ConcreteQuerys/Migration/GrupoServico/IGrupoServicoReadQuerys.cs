@@ -10,4 +10,4 @@ namespace IQuery.Read
         public QueryModel FirstByDescricaoQuery(string value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

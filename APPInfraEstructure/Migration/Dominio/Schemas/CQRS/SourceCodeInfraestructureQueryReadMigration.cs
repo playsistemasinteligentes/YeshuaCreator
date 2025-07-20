@@ -8,11 +8,11 @@ using System.Text;
 
 namespace Dominio.Schemas.CQRS
 {
-    public class SourceCodeInfraestructureReadQuerysMigration : SourceCodeBase
+    public class SourceCodeInfraestructureQueryReadMigration : SourceCodeBase
     {
         private readonly Entity _entity;
         private readonly bool _isInterface;
-        public SourceCodeInfraestructureReadQuerysMigration(Entity entity, bool isInterface)
+        public SourceCodeInfraestructureQueryReadMigration(Entity entity, bool isInterface)
             : base()
         {
             _entity = entity;
@@ -23,7 +23,6 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-
             if (_isInterface)
             {
                 sb.AppendLine($"using Shered.DB;");
@@ -32,10 +31,10 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public interface I{_entity.EntityName}QueryRead ");
                 sb.AppendLine("    {");
 
-                sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command Command);");
+                sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command Command);");
                 foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
                 {
-                    sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand Command);");
+                    sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand Command);");
                 }
                 // exist retorno bool 
                 foreach (var column in _entity.AddColumns)
@@ -56,10 +55,8 @@ namespace Dominio.Schemas.CQRS
             }
             else
             {
-
-                sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
                 sb.AppendLine("using Shered.DB;");
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsRead};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandRead};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIQueryRead};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
 
@@ -85,7 +82,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            _correntUser = correntUser;");
                 sb.AppendLine("        }");
 
-                sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command Command)");
+                sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command Command)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            this.Parameters = null;");
                 sb.AppendLine($"            var whereClauses = new List<string>();");
@@ -131,7 +128,7 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
                 {
-                    sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand Command)");
+                    sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand Command)");
                     sb.AppendLine("        {");
 
                     columnsString = string.Join(", ", column.EntityFK.AddColumns.Where(x => x.DisplayFK).Select(x => x.Name));

@@ -1,4 +1,3 @@
-using Dominio.Entitys.YpserPermitions;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -131,4 +130,4 @@ if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

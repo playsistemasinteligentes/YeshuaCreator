@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.Paciente;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,81 +17,83 @@ namespace Input.Repository.Paciente
     public class PacienteWriteRepository : IPacienteWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IPacienteQueryWrite _query; 
 
-        public PacienteWriteRepository(IUnitOfWork unitOfWork)
+        public PacienteWriteRepository(IUnitOfWork unitOfWork,IPacienteQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IPacienteEntity Paciente)
         {
-            var query = new PacienteWriteQuery().InserirPacienteQuery(Paciente);
+            var query = _query.InserirPacienteQuery(Paciente);
         Paciente.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IPacienteEntity Paciente)
         {
-            var query = new PacienteWriteQuery().UpdatePacienteQuery(Paciente);
+            var query = _query.UpdatePacienteQuery(Paciente);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IPacienteEntity Paciente)
         {
-            var query = new PacienteWriteQuery().DeletePacienteQuery(Paciente);
+            var query = _query.DeletePacienteQuery(Paciente);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateNome(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateNome(entity);
+            var query = _query.UpdateNome(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTelefone(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateTelefone(entity);
+            var query = _query.UpdateTelefone(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDataNascimento(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateDataNascimento(entity);
+            var query = _query.UpdateDataNascimento(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateGenero(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateGenero(entity);
+            var query = _query.UpdateGenero(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEscolaridade(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateEscolaridade(entity);
+            var query = _query.UpdateEscolaridade(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateProfissao(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateProfissao(entity);
+            var query = _query.UpdateProfissao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEndereco(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateEndereco(entity);
+            var query = _query.UpdateEndereco(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateNomeResponsavel(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateNomeResponsavel(entity);
+            var query = _query.UpdateNomeResponsavel(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTelefoneResponsavel(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateTelefoneResponsavel(entity);
+            var query = _query.UpdateTelefoneResponsavel(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdatePrincipaisQueixas(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdatePrincipaisQueixas(entity);
+            var query = _query.UpdatePrincipaisQueixas(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateObservacaoAdicional(IPacienteEntity entity)
         {
-            var query = new PacienteWriteQuery().UpdateObservacaoAdicional(entity);
+            var query = _query.UpdateObservacaoAdicional(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

@@ -62,4 +62,4 @@ namespace IQuery.Read
         public QueryModel FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

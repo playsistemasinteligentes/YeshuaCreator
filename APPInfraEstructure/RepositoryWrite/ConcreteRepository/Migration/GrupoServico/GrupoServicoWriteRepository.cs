@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.GrupoServico;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,31 +17,33 @@ namespace Input.Repository.GrupoServico
     public class GrupoServicoWriteRepository : IGrupoServicoWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IGrupoServicoQueryWrite _query; 
 
-        public GrupoServicoWriteRepository(IUnitOfWork unitOfWork)
+        public GrupoServicoWriteRepository(IUnitOfWork unitOfWork,IGrupoServicoQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IGrupoServicoEntity GrupoServico)
         {
-            var query = new GrupoServicoWriteQuery().InserirGrupoServicoQuery(GrupoServico);
+            var query = _query.InserirGrupoServicoQuery(GrupoServico);
         GrupoServico.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IGrupoServicoEntity GrupoServico)
         {
-            var query = new GrupoServicoWriteQuery().UpdateGrupoServicoQuery(GrupoServico);
+            var query = _query.UpdateGrupoServicoQuery(GrupoServico);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IGrupoServicoEntity GrupoServico)
         {
-            var query = new GrupoServicoWriteQuery().DeleteGrupoServicoQuery(GrupoServico);
+            var query = _query.DeleteGrupoServicoQuery(GrupoServico);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDescricao(IGrupoServicoEntity entity)
         {
-            var query = new GrupoServicoWriteQuery().UpdateDescricao(entity);
+            var query = _query.UpdateDescricao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

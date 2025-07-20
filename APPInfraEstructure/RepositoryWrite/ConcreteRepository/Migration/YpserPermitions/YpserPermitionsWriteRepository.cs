@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.YpserPermitions;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,36 +17,38 @@ namespace Input.Repository.YpserPermitions
     public class YpserPermitionsWriteRepository : IYpserPermitionsWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IYpserPermitionsQueryWrite _query; 
 
-        public YpserPermitionsWriteRepository(IUnitOfWork unitOfWork)
+        public YpserPermitionsWriteRepository(IUnitOfWork unitOfWork,IYpserPermitionsQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IYpserPermitionsEntity YpserPermitions)
         {
-            var query = new YpserPermitionsWriteQuery().InserirYpserPermitionsQuery(YpserPermitions);
+            var query = _query.InserirYpserPermitionsQuery(YpserPermitions);
                 _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IYpserPermitionsEntity YpserPermitions)
         {
-            var query = new YpserPermitionsWriteQuery().UpdateYpserPermitionsQuery(YpserPermitions);
+            var query = _query.UpdateYpserPermitionsQuery(YpserPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IYpserPermitionsEntity YpserPermitions)
         {
-            var query = new YpserPermitionsWriteQuery().DeleteYpserPermitionsQuery(YpserPermitions);
+            var query = _query.DeleteYpserPermitionsQuery(YpserPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateUserId(IYpserPermitionsEntity entity)
         {
-            var query = new YpserPermitionsWriteQuery().UpdateUserId(entity);
+            var query = _query.UpdateUserId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdatePermitionsId(IYpserPermitionsEntity entity)
         {
-            var query = new YpserPermitionsWriteQuery().UpdatePermitionsId(entity);
+            var query = _query.UpdatePermitionsId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

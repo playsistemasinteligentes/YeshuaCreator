@@ -1,4 +1,3 @@
-using Dominio.Entitys.Clinica;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -101,4 +100,4 @@ if (!string.IsNullOrEmpty(Command.Telefone)) whereClauses.Add($"Telefone like @T
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

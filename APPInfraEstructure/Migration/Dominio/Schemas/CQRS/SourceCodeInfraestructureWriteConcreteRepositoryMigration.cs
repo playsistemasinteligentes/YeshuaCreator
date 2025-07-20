@@ -20,8 +20,9 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("using Dapper;");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
-            sb.AppendLine($"using Input.Querys.{_entity.EntityName};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceIQueryWrite};");
+
             sb.AppendLine($"using RepositoryInterfaces.Services;");
             sb.AppendLine($"using RepositoryInterfaces.Patterns.UnitOfWork;");
             sb.AppendLine("using Shered.DB.Connection;");
@@ -37,22 +38,26 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public class {_entity.EntityName}WriteRepository : I{_entity.EntityName}WriteRepository");
             sb.AppendLine("    {");
             sb.AppendLine("        private readonly IUnitOfWork _UnitOfWork;");
+            sb.AppendLine($"       private readonly I{_entity.EntityName}QueryWrite _query; ");
+
             if (_entity.CachedTable)
             {
                 sb.AppendLine($"        private readonly ICacheService<object> _cacheService;");
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork, ICacheService<object> cacheService)");
+                sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork, I{_entity.EntityName}QueryWrite query,ICacheService<object> cacheService)");
                 sb.AppendLine("        {");
                 sb.AppendLine("             _UnitOfWork= unitOfWork;");
                 sb.AppendLine("             _cacheService = cacheService;");
+                sb.AppendLine("             _query = query;");
                 sb.AppendLine("        }");
             }
             else
             {
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork)");
+                sb.AppendLine($"        public {_entity.EntityName}WriteRepository(IUnitOfWork unitOfWork,I{_entity.EntityName}QueryWrite query)");
                 sb.AppendLine("        {");
                 sb.AppendLine("             _UnitOfWork= unitOfWork;");
+                sb.AppendLine("             _query = query;");
                 sb.AppendLine("        }");
             }
 
@@ -62,7 +67,7 @@ namespace Dominio.Schemas.CQRS
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
 
-            sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Inserir{_entity.EntityName}Query({_entity.EntityName});");
+            sb.AppendLine($"            var query = _query.Inserir{_entity.EntityName}Query({_entity.EntityName});");
 
             var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
             if (incremento != null)
@@ -76,14 +81,14 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        {");
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
-            sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{_entity.EntityName}Query({_entity.EntityName});");
+            sb.AppendLine($"            var query = _query.Update{_entity.EntityName}Query({_entity.EntityName});");
             sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
             sb.AppendLine($"        public void Delete(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
-            sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Delete{_entity.EntityName}Query({_entity.EntityName});");
+            sb.AppendLine($"            var query = _query.Delete{_entity.EntityName}Query({_entity.EntityName});");
             sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
             sb.AppendLine("        }");
 
@@ -94,7 +99,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 if (_entity.CachedTable)
                     sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
-                sb.AppendLine($"            var query = new {_entity.EntityName}WriteQuery().Update{column.Name}(entity);");
+                sb.AppendLine($"            var query = _query.Update{column.Name}(entity);");
                 sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
                 sb.AppendLine("        }");
             }

@@ -1,4 +1,3 @@
-using Dominio.Entitys.Sesoes;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -523,4 +522,4 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

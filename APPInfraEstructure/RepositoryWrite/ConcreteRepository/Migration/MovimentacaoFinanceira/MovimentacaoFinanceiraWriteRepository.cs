@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.MovimentacaoFinanceira;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,56 +17,58 @@ namespace Input.Repository.MovimentacaoFinanceira
     public class MovimentacaoFinanceiraWriteRepository : IMovimentacaoFinanceiraWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IMovimentacaoFinanceiraQueryWrite _query; 
 
-        public MovimentacaoFinanceiraWriteRepository(IUnitOfWork unitOfWork)
+        public MovimentacaoFinanceiraWriteRepository(IUnitOfWork unitOfWork,IMovimentacaoFinanceiraQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
+            var query = _query.InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
         MovimentacaoFinanceira.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
+            var query = _query.UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
+            var query = _query.DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdatePacienteId(IMovimentacaoFinanceiraEntity entity)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdatePacienteId(entity);
+            var query = _query.UpdatePacienteId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateServicoId(IMovimentacaoFinanceiraEntity entity)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdateServicoId(entity);
+            var query = _query.UpdateServicoId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateValor(IMovimentacaoFinanceiraEntity entity)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdateValor(entity);
+            var query = _query.UpdateValor(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdateTipoMovimentacao(entity);
+            var query = _query.UpdateTipoMovimentacao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdateDataMovimentacao(entity);
+            var query = _query.UpdateDataMovimentacao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity)
         {
-            var query = new MovimentacaoFinanceiraWriteQuery().UpdateSaldoAtual(entity);
+            var query = _query.UpdateSaldoAtual(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

@@ -110,6 +110,9 @@ namespace Dominio
                     return "Float" + nulable;
                 case "decimal":
                     return "Decimal" + nulable;
+                case "bool":
+                    return "bool" + nulable;
+
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
@@ -201,7 +204,7 @@ namespace Dominio
 
         public Entity Boolean()
         {
-            Type = "boolean";
+            Type = "bool";
             return this.Entity;
         }
 

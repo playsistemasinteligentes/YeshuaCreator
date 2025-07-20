@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.Yperfil
+namespace Query.Write
 {
-    public class YperfilWriteQuery : QueryBase
+    public class YperfilQueryWrite : QueryBase, IYperfilQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public YperfilQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirYperfilQuery(IYperfilEntity Yperfil)
         {
             this.Query = $@" INSERT INTO Yperfil (Description) OUTPUT INSERTED.Id VALUES(@Description) ";
@@ -50,4 +58,4 @@ namespace Input.Querys.Yperfil
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

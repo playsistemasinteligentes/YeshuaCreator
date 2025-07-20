@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.Profissional;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,41 +17,43 @@ namespace Input.Repository.Profissional
     public class ProfissionalWriteRepository : IProfissionalWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IProfissionalQueryWrite _query; 
 
-        public ProfissionalWriteRepository(IUnitOfWork unitOfWork)
+        public ProfissionalWriteRepository(IUnitOfWork unitOfWork,IProfissionalQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IProfissionalEntity Profissional)
         {
-            var query = new ProfissionalWriteQuery().InserirProfissionalQuery(Profissional);
+            var query = _query.InserirProfissionalQuery(Profissional);
         Profissional.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IProfissionalEntity Profissional)
         {
-            var query = new ProfissionalWriteQuery().UpdateProfissionalQuery(Profissional);
+            var query = _query.UpdateProfissionalQuery(Profissional);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IProfissionalEntity Profissional)
         {
-            var query = new ProfissionalWriteQuery().DeleteProfissionalQuery(Profissional);
+            var query = _query.DeleteProfissionalQuery(Profissional);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateNome(IProfissionalEntity entity)
         {
-            var query = new ProfissionalWriteQuery().UpdateNome(entity);
+            var query = _query.UpdateNome(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEspecialidadeId(IProfissionalEntity entity)
         {
-            var query = new ProfissionalWriteQuery().UpdateEspecialidadeId(entity);
+            var query = _query.UpdateEspecialidadeId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTelefone(IProfissionalEntity entity)
         {
-            var query = new ProfissionalWriteQuery().UpdateTelefone(entity);
+            var query = _query.UpdateTelefone(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

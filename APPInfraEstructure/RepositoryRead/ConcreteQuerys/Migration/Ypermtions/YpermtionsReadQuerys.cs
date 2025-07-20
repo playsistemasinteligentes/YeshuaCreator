@@ -1,4 +1,3 @@
-using Dominio.Entitys.Ypermtions;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -73,4 +72,4 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

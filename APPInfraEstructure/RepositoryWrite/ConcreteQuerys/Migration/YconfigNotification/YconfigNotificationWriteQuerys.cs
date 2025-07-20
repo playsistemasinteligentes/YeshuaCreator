@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.YconfigNotification
+namespace Query.Write
 {
-    public class YconfigNotificationWriteQuery : QueryBase
+    public class YconfigNotificationQueryWrite : QueryBase, IYconfigNotificationQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public YconfigNotificationQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification)
         {
             this.Query = $@" INSERT INTO YconfigNotification (Id, EmailAdress, EmailPassword, TenantID) OUTPUT INSERTED.ID VALUES(@Id, @EmailAdress, @EmailPassword, @TenantID) ";
@@ -18,7 +26,7 @@ namespace Input.Querys.YconfigNotification
                 Id = YconfigNotification.Id,
                 EmailAdress = YconfigNotification.EmailAdress,
                 EmailPassword = YconfigNotification.EmailPassword,
-                TenantID = YconfigNotification.TenantID,
+                TenantID = _correntUser.TenentID,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -75,4 +83,4 @@ namespace Input.Querys.YconfigNotification
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

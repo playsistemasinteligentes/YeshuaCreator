@@ -134,7 +134,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}DTO>> Action(ICommand comand)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
+                sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}(c);");
                 sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");

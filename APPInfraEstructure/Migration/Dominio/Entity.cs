@@ -107,13 +107,19 @@ namespace Dominio
         }
         public Entity KeyStandardField()
         {
-            return this.AlterColumns.Last().StandardField();
+            Key();
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().StandardField();
+            else
+                return this.AlterColumns.Last().StandardField();
         }
 
         public Entity StandardField()
         {
-            this.AlterColumns.Last().StandardField();
-            return this.Key();
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().StandardField();
+            else
+                return this.AlterColumns.Last().StandardField();
         }
 
         public Entity Incremento()

@@ -98,6 +98,15 @@ app.MapPost("/Ytenant/PostYtenant", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
+app.MapPost("/YStandardFields/PostYStandardFields", async ([FromServices] Command.Receivers.Write.InsertYStandardFieldsReceiver receiver, [FromBody] Command.Write.YStandardFieldsCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/Yuser/PostYuser", async ([FromServices] Command.Receivers.Write.InsertYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -247,6 +256,15 @@ app.MapPut("/Ytenant/PutYtenant", async ([FromServices] Command.Receivers.Write.
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/YStandardFields/PutYStandardFields", async ([FromServices] Command.Receivers.Write.UpdateYStandardFieldsReceiver receiver, [FromBody] Command.Write.YStandardFieldsCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -404,6 +422,15 @@ app.MapDelete("/Ytenant/DeleteYtenant", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
+app.MapDelete("/YStandardFields/DeleteYStandardFields", async ([FromServices] Command.Receivers.Write.DeleteYStandardFieldsReceiver receiver, [FromBody] Command.Write.YStandardFieldsCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapDelete("/Yuser/DeleteYuser", async ([FromServices] Command.Receivers.Write.DeleteYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -546,6 +573,13 @@ type = "crud"
 }
 ,
 new{
+id="YStandardFields",
+description="YStandardFields",
+endpoint="/getMetaDataYStandardFields",
+type = "crud"
+}
+,
+new{
 id="Yuser",
 description="Yuser",
 endpoint="/getMetaDataYuser",
@@ -682,6 +716,15 @@ app.MapPost("/Ytenant/ReadYtenant", async ([FromServices] Command.Receivers.Read
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/YStandardFields/ReadYStandardFields", async ([FromServices] Command.Receivers.Read.YStandardFieldsReadReceiver receiver, [FromBody] Command.Read.YStandardFieldsReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1592,6 +1635,34 @@ formFields = new[]
                  read = "/Ytenant/ReadYtenant",
                  update = "/Ytenant/PutYtenant",
                  delete = "/Ytenant/DeleteYtenant"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataYStandardFields", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "YStandardFields",
+searchFields = new[]
+{
+ new { id = "deleted", label = "Deleted", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "deleted", label = "Deleted", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 create = "/YStandardFields/PostYStandardFields",
+                 read = "/YStandardFields/ReadYStandardFields",
+                 update = "/YStandardFields/PutYStandardFields",
+                 delete = "/YStandardFields/DeleteYStandardFields"
              }
          };
          return Results.Ok(metadatacrud);

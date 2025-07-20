@@ -1,4 +1,3 @@
-using Dominio.Entitys.Especialidade;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -10,7 +9,7 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Query.Read
+namespace Query.Read 
 {
     public class EspecialidadeQueryRead : QueryBase, IEspecialidadeQueryRead
     {
@@ -26,20 +25,20 @@ namespace Query.Read
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $@" select Id, Descricao from Especialidade ";
-            if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
-            if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
-            if (!string.IsNullOrEmpty(Command.Descricao)) parametersDict["Descricao"] = $"%{Command.Descricao}%";
-            if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
-            if (whereClauses.Any())
-                this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}";
-            else if (!string.IsNullOrEmpty(getTenant()))
-                this.Query += $" WHERE {getTenant()}";
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.Descricao)) parametersDict["Descricao"] = $"%{Command.Descricao}%";
+if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
+            if (whereClauses.Any()) 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
             parametersDict["Offset"] = offset;
             parametersDict["PageSize"] = pageSize;
-            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -69,8 +68,8 @@ namespace Query.Read
         }
         private string getTenant()
         {
-            return "";
+ return "";
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

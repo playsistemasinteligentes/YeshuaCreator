@@ -22,4 +22,4 @@ namespace IQuery.Read
         public QueryModel FirstBySaldoAtualQuery(Decimal value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

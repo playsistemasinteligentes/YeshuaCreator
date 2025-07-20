@@ -1,4 +1,3 @@
-using Dominio.Entitys.MovimentacaoFinanceira;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -197,4 +196,4 @@ if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @Ti
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

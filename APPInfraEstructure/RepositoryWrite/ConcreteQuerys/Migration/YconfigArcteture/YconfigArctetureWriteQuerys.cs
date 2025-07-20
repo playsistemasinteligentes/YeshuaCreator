@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.YconfigArcteture
+namespace Query.Write
 {
-    public class YconfigArctetureWriteQuery : QueryBase
+    public class YconfigArctetureQueryWrite : QueryBase, IYconfigArctetureQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public YconfigArctetureQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture)
         {
             this.Query = $@" INSERT INTO YconfigArcteture (Id, AuditTrackerActived, AuditCRUDActived, TenantID) OUTPUT INSERTED.ID VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID) ";
@@ -18,7 +26,7 @@ namespace Input.Querys.YconfigArcteture
                 Id = YconfigArcteture.Id,
                 AuditTrackerActived = YconfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = YconfigArcteture.AuditCRUDActived,
-                TenantID = YconfigArcteture.TenantID,
+                TenantID = _correntUser.TenentID,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -75,4 +83,4 @@ namespace Input.Querys.YconfigArcteture
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

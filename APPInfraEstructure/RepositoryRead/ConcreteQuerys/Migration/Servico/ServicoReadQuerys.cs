@@ -1,4 +1,3 @@
-using Dominio.Entitys.Servico;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -129,4 +128,4 @@ if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

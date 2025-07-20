@@ -1,15 +1,23 @@
 using Dominio.Entitys;
 using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Querys.Profissional
+namespace Query.Write
 {
-    public class ProfissionalWriteQuery : QueryBase
+    public class ProfissionalQueryWrite : QueryBase, IProfissionalQueryWrite
     {
+        protected readonly ICurrentUser _correntUser;
+        public ProfissionalQueryWrite(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
         public QueryModel InserirProfissionalQuery(IProfissionalEntity Profissional)
         {
             this.Query = $@" INSERT INTO Profissional (Nome, EspecialidadeId, Telefone) OUTPUT INSERTED.Id VALUES(@Nome, @EspecialidadeId, @Telefone) ";
@@ -74,4 +82,4 @@ namespace Input.Querys.Profissional
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

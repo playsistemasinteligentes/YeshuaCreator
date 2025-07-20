@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.Sesoes;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,151 +17,153 @@ namespace Input.Repository.Sesoes
     public class SesoesWriteRepository : ISesoesWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly ISesoesQueryWrite _query; 
 
-        public SesoesWriteRepository(IUnitOfWork unitOfWork)
+        public SesoesWriteRepository(IUnitOfWork unitOfWork,ISesoesQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(ISesoesEntity Sesoes)
         {
-            var query = new SesoesWriteQuery().InserirSesoesQuery(Sesoes);
+            var query = _query.InserirSesoesQuery(Sesoes);
         Sesoes.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(ISesoesEntity Sesoes)
         {
-            var query = new SesoesWriteQuery().UpdateSesoesQuery(Sesoes);
+            var query = _query.UpdateSesoesQuery(Sesoes);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(ISesoesEntity Sesoes)
         {
-            var query = new SesoesWriteQuery().DeleteSesoesQuery(Sesoes);
+            var query = _query.DeleteSesoesQuery(Sesoes);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdatePacienteId(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdatePacienteId(entity);
+            var query = _query.UpdatePacienteId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateProfissionalId(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateProfissionalId(entity);
+            var query = _query.UpdateProfissionalId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateServicoId(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateServicoId(entity);
+            var query = _query.UpdateServicoId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDataInicio(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateDataInicio(entity);
+            var query = _query.UpdateDataInicio(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDataFim(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateDataFim(entity);
+            var query = _query.UpdateDataFim(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateStatus(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateStatus(entity);
+            var query = _query.UpdateStatus(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateMovimentacaoFinanceiraId(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateMovimentacaoFinanceiraId(entity);
+            var query = _query.UpdateMovimentacaoFinanceiraId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateSinteseProntuario(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateSinteseProntuario(entity);
+            var query = _query.UpdateSinteseProntuario(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateQueixaPrincipal(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateQueixaPrincipal(entity);
+            var query = _query.UpdateQueixaPrincipal(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateMotivoConsultaAtual(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateMotivoConsultaAtual(entity);
+            var query = _query.UpdateMotivoConsultaAtual(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateSintomasRelatados(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateSintomasRelatados(entity);
+            var query = _query.UpdateSintomasRelatados(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateMudancasDesdeUltimaSessaao(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateMudancasDesdeUltimaSessaao(entity);
+            var query = _query.UpdateMudancasDesdeUltimaSessaao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateComportamentoObservado(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateComportamentoObservado(entity);
+            var query = _query.UpdateComportamentoObservado(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEstadoEmocionalGeral(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateEstadoEmocionalGeral(entity);
+            var query = _query.UpdateEstadoEmocionalGeral(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDiscursoPensamentos(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateDiscursoPensamentos(entity);
+            var query = _query.UpdateDiscursoPensamentos(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTecnicasUtilizadas(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateTecnicasUtilizadas(entity);
+            var query = _query.UpdateTecnicasUtilizadas(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateQuestionamentosReflexoesAbordadas(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateQuestionamentosReflexoesAbordadas(entity);
+            var query = _query.UpdateQuestionamentosReflexoesAbordadas(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateExerciciosTarefasSugeridas(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateExerciciosTarefasSugeridas(entity);
+            var query = _query.UpdateExerciciosTarefasSugeridas(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDiagnoosticoHipoteseDiagnoostica(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateDiagnoosticoHipoteseDiagnoostica(entity);
+            var query = _query.UpdateDiagnoosticoHipoteseDiagnoostica(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateObjetivosCurtoPrazo(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateObjetivosCurtoPrazo(entity);
+            var query = _query.UpdateObjetivosCurtoPrazo(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateObjetivosLongoPrazo(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateObjetivosLongoPrazo(entity);
+            var query = _query.UpdateObjetivosLongoPrazo(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateFrequenciaSugeridaSessooes(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateFrequenciaSugeridaSessooes(entity);
+            var query = _query.UpdateFrequenciaSugeridaSessooes(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEncaminhamentoOutrosProfissionais(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateEncaminhamentoOutrosProfissionais(entity);
+            var query = _query.UpdateEncaminhamentoOutrosProfissionais(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateInformacoesRelevantesFuturasConsultas(entity);
+            var query = _query.UpdateInformacoesRelevantesFuturasConsultas(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity)
         {
-            var query = new SesoesWriteQuery().UpdateFeedbackPacienteSobreProcessoTerapeeutico(entity);
+            var query = _query.UpdateFeedbackPacienteSobreProcessoTerapeeutico(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

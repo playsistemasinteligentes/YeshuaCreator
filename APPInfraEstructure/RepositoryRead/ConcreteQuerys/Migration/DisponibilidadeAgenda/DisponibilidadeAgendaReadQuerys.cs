@@ -1,4 +1,3 @@
-using Dominio.Entitys.DisponibilidadeAgenda;
 using Shered.DB;
 using Command.Read;
 using IQuery.Read;
@@ -115,4 +114,4 @@ if (Command.ProfissionalId.HasValue) whereClauses.Add($"ProfissionalId = @Profis
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -13,4 +13,4 @@ namespace IQuery.Read
         public QueryModel FirstByDataHoraQuery(DateTime value);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadQuerysMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

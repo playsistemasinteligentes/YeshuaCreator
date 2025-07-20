@@ -119,7 +119,7 @@ namespace Dominio.Schemas.CQRS
             #region Read  
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandsRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
+                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
                 sb.AppendLine("{");
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");

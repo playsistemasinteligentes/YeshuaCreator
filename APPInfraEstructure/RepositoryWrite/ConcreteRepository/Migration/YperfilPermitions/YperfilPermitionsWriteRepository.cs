@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
-using Input.Querys.YperfilPermitions;
 using IRepository.Write;
+using IQuery.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -17,36 +17,38 @@ namespace Input.Repository.YperfilPermitions
     public class YperfilPermitionsWriteRepository : IYperfilPermitionsWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
+       private readonly IYperfilPermitionsQueryWrite _query; 
 
-        public YperfilPermitionsWriteRepository(IUnitOfWork unitOfWork)
+        public YperfilPermitionsWriteRepository(IUnitOfWork unitOfWork,IYperfilPermitionsQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
+             _query = query;
         }
 
         public void Insert(IYperfilPermitionsEntity YperfilPermitions)
         {
-            var query = new YperfilPermitionsWriteQuery().InserirYperfilPermitionsQuery(YperfilPermitions);
+            var query = _query.InserirYperfilPermitionsQuery(YperfilPermitions);
                 _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
         public void Update(IYperfilPermitionsEntity YperfilPermitions)
         {
-            var query = new YperfilPermitionsWriteQuery().UpdateYperfilPermitionsQuery(YperfilPermitions);
+            var query = _query.UpdateYperfilPermitionsQuery(YperfilPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void Delete(IYperfilPermitionsEntity YperfilPermitions)
         {
-            var query = new YperfilPermitionsWriteQuery().DeleteYperfilPermitionsQuery(YperfilPermitions);
+            var query = _query.DeleteYperfilPermitionsQuery(YperfilPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdatePerfilId(IYperfilPermitionsEntity entity)
         {
-            var query = new YperfilPermitionsWriteQuery().UpdatePerfilId(entity);
+            var query = _query.UpdatePerfilId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdatePermitionsId(IYperfilPermitionsEntity entity)
         {
-            var query = new YperfilPermitionsWriteQuery().UpdatePermitionsId(entity);
+            var query = _query.UpdatePermitionsId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }
