@@ -1,9 +1,10 @@
 // Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
-using Command.Commands;
+using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Dominio.Interfaces;
+using Command.UseCase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Command.Receivers.UseCase
             try
             {
                  State<object> retorno = Success("OK", (ContasCreateContaUseCaseCommand)comand);
-                 if (comand is Command.Commands.ContasCreateContaUseCaseCommand specificCommand)
+                 if (comand is Command.UseCase.ContasCreateContaUseCaseCommand specificCommand)
                  CustomActionHook(ref retorno, specificCommand);
                  return retorno;
             }
@@ -34,7 +35,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<object> state, Command.Commands.ContasCreateContaUseCaseCommand comand);
+partial void CustomActionHook(ref State<object> state, Command.UseCase.ContasCreateContaUseCaseCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

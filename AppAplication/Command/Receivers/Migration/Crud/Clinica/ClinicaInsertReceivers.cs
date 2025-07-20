@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Clinica;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IClinicaEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.ClinicaCrudCommand c) 
+             if(comand is Command.Write.ClinicaCrudCommand c) 
              {    
                  var clinica = new ClinicaFactory(_logger).Create(c.Id, c.Nome, c.Endereco, c.Telefone);
                  if (!clinica.isValidInsert())

@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Ytenant;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IYtenantEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.YtenantCrudCommand c) 
+             if(comand is Command.Write.YtenantCrudCommand c) 
              {    
                  var ytenant = new YtenantFactory(_logger).Create(c.Id, c.CnpjCpf, c.Nome, c.UserIDAdmin);
                  if (!ytenant.isValidInsert())

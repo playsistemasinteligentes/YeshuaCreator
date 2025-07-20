@@ -1,5 +1,8 @@
 using Dominio.Entitys.Ypermtions;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.Ypermtions
+namespace Query.Read 
 {
-    public class YpermtionsReadQuery : QueryBase
+    public class YpermtionsQueryRead : QueryBase, IYpermtionsQueryRead
     {
-        public QueryModel YpermtionsQuery(Command.Commands.Read.YpermtionsReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public YpermtionsQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel YpermtionsQuery(Command.Read.YpermtionsReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -23,7 +31,9 @@ if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"Id like @Id");
 if (!string.IsNullOrEmpty(Command.Description)) parametersDict["Description"] = $"%{Command.Description}%";
 if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description like @Description");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -35,27 +45,31 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
         }
         public QueryModel ExistsByIdQuery(string value)
         {
-            var sql = "SELECT 1 FROM Ypermtions WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM Ypermtions WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDescriptionQuery(string value)
         {
-            var sql = "SELECT 1 FROM Ypermtions WHERE Description = @Description";
+            var sql = $"SELECT 1 FROM Ypermtions WHERE {getTenant()} Description = @Description";
             var parameters = new { Description = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(string value)
         {
-            var sql = "SELECT * FROM Ypermtions WHERE Id = @Id";
+            var sql = $"SELECT * FROM Ypermtions WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDescriptionQuery(string value)
         {
-            var sql = "SELECT * FROM Ypermtions WHERE Description = @Description";
+            var sql = $"SELECT * FROM Ypermtions WHERE {getTenant()} Description = @Description";
             var parameters = new { Description = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

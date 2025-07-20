@@ -4,7 +4,7 @@ using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
 using Dominio.Interfaces;
 using Repositorio.Outputs;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
@@ -21,7 +21,7 @@ namespace Command.Receivers.Read
 
         protected override State<DataPagination<ClinicaDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Commands.Read.ClinicaReadCommand c) 
+            if(comand is Command.Read.ClinicaReadCommand c) 
              {    
                 var ClinicaReadRepository = _repository.getClinica(c);
                 return Success("OK", ClinicaReadRepository);

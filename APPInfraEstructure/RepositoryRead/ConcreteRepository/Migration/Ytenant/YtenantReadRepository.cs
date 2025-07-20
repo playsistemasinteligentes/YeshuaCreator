@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Ytenant;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class YtenantReadRepository : IYtenantReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IYtenantQueryRead _query;
 
-        public YtenantReadRepository(SqlFactory factory)
+        public YtenantReadRepository(SqlFactory factory, ICurrentUser correntUser,IYtenantQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<YtenantDTO> getYtenant(ICommandRead command)
          {
-            if (command is Command.Commands.Read.YtenantReadCommand c)
+            if (command is Command.Read.YtenantReadCommand c)
                 return getYtenant(c);
             throw new NotImplementedException();
         }
-        private DataPagination<YtenantDTO> getYtenant(Command.Commands.Read.YtenantReadCommand command)
+        private DataPagination<YtenantDTO> getYtenant(Command.Read.YtenantReadCommand command)
         {
-            var query = new YtenantReadQuery().YtenantQuery(command);
+            var query = _query.YtenantQuery(command);
 
                 var itens = _connection.Query<YtenantDTO>(query.Query,query.Parameters);
                 return new DataPagination<YtenantDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<YtenantUserIDAdminDTO> getYtenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YtenantUserIDAdminDTO> lista;
-            var query = new YtenantReadQuery().YtenantUserIDAdminQuery(command);
+            var query = _query.YtenantUserIDAdminQuery(command);
 
                 lista = _connection.Query<YtenantUserIDAdminDTO>(query.Query,query.Parameters) as List<YtenantUserIDAdminDTO>;
             return lista;
@@ -62,7 +67,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new YtenantReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -70,7 +75,7 @@ namespace Read.Repository
 
         public bool ExistsByCnpjCpf(int value)
         {
-            var query = new YtenantReadQuery().ExistsByCnpjCpfQuery(value);
+            var query = _query.ExistsByCnpjCpfQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -78,7 +83,7 @@ namespace Read.Repository
 
         public bool ExistsByNome(string value)
         {
-            var query = new YtenantReadQuery().ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -86,7 +91,7 @@ namespace Read.Repository
 
         public bool ExistsByUserIDAdmin(int value)
         {
-            var query = new YtenantReadQuery().ExistsByUserIDAdminQuery(value);
+            var query = _query.ExistsByUserIDAdminQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -94,7 +99,7 @@ namespace Read.Repository
 
         public YtenantDTO FirstById(int value)
         {
-            var query = new YtenantReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
                 return result;
@@ -102,7 +107,7 @@ namespace Read.Repository
 
         public YtenantDTO FirstByCnpjCpf(int value)
         {
-            var query = new YtenantReadQuery().FirstByCnpjCpfQuery(value);
+            var query = _query.FirstByCnpjCpfQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
                 return result;
@@ -110,7 +115,7 @@ namespace Read.Repository
 
         public YtenantDTO FirstByNome(string value)
         {
-            var query = new YtenantReadQuery().FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
                 return result;
@@ -118,7 +123,7 @@ namespace Read.Repository
 
         public YtenantDTO FirstByUserIDAdmin(int value)
         {
-            var query = new YtenantReadQuery().FirstByUserIDAdminQuery(value);
+            var query = _query.FirstByUserIDAdminQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
                 return result;

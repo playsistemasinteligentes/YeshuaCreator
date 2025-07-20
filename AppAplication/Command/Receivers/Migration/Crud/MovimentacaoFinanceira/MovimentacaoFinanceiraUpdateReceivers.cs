@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.MovimentacaoFinanceira;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IMovimentacaoFinanceiraEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.MovimentacaoFinanceiraCrudCommand c) 
+             if(comand is Command.Write.MovimentacaoFinanceiraCrudCommand c) 
              {    
                  var movimentacaofinanceira = new MovimentacaoFinanceiraFactory(_logger).Create(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
                  if (!movimentacaofinanceira.isValidUpdate())

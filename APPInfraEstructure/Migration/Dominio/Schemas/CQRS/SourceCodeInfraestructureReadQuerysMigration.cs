@@ -11,142 +11,215 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeInfraestructureReadQuerysMigration : SourceCodeBase
     {
         private readonly Entity _entity;
-
-        public SourceCodeInfraestructureReadQuerysMigration(Entity entity)
+        private readonly bool _isInterface;
+        public SourceCodeInfraestructureReadQuerysMigration(Entity entity, bool isInterface)
             : base()
         {
             _entity = entity;
+            _isInterface = isInterface;
         }
 
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
-            sb.AppendLine("using Shered.DB;");
-            sb.AppendLine("using System;");
-            sb.AppendLine("using System.Collections.Generic;");
-            sb.AppendLine("using System.Linq;");
-            sb.AppendLine("using System.Text;");
-            sb.AppendLine("using System.Dynamic;");
-            sb.AppendLine("using System.Threading.Tasks;");
-            sb.AppendLine();
-            sb.AppendLine($"namespace Output.Querys.{_entity.EntityName}");
-            sb.AppendLine("{");
-            sb.AppendLine($"    public class {_entity.EntityName}ReadQuery : QueryBase");
-            sb.AppendLine("    {");
-
-            sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command Command)");
-            sb.AppendLine("        {");
-            sb.AppendLine($"            this.Parameters = null;");
-            sb.AppendLine($"            var whereClauses = new List<string>();");
-            sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
-            sb.AppendLine($"            var parametersDict = (IDictionary<string, object>)parameters;");
 
 
-            var columnsString = string.Join(", ", _entity.AddColumns.Select(x => x.Name));
-            sb.AppendLine($"            this.Query = $@\" select {columnsString} from {_entity.EntityName} \";");
-
-
-            foreach (var item in _entity.AddColumns)
+            if (_isInterface)
             {
-                if (item.getCsharpType() == "string")
+                sb.AppendLine($"using Shered.DB;");
+                sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIQueryRead}");
+                sb.AppendLine("{");
+                sb.AppendLine($"    public interface I{_entity.EntityName}QueryRead ");
+                sb.AppendLine("    {");
+
+                sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command Command);");
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
                 {
-                    sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{item.Name})) parametersDict[\"{item.Name}\"] = $\"%{{Command.{item.Name}}}%\";");
-                    sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{item.Name})) whereClauses.Add($\"{item.Name} like @{item.Name}\");");
+                    sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand Command);");
                 }
-                else if (item.getCsharpType() == "int")
+                // exist retorno bool 
+                foreach (var column in _entity.AddColumns)
                 {
-                    sb.AppendLine($"if (Command.{item.Name}.HasValue) parametersDict[\"{item.Name}\"] = Command.{item.Name}.Value;");
-                    sb.AppendLine($"if (Command.{item.Name}.HasValue) whereClauses.Add($\"{item.Name} = @{item.Name}\");");
+                    string csharpType = column.getCsharpType();
+                    sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value);");
                 }
+                // firt by 
+                foreach (var column in _entity.AddColumns)
+                {
+                    string csharpType = column.getCsharpType();
+                    sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value);");
+                }
+
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+
             }
-
-            sb.AppendLine("            if (whereClauses.Any()) ");
-            sb.AppendLine("            this.Query += \" WHERE \" + string.Join(\" AND \", whereClauses); ");
-
-            // Paginação
-            sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
-            sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
-            sb.AppendLine("            int offset = (page - 1) * pageSize;");
-            sb.AppendLine("            parametersDict[\"Offset\"] = offset;");
-            sb.AppendLine("            parametersDict[\"PageSize\"] = pageSize;");
-            sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
-
-            sb.AppendLine($"            this.Parameters = parameters;");
-            sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
-            sb.AppendLine("        }");
-
-
-            foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+            else
             {
-                sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand Command)");
-                sb.AppendLine("        {");
 
-                columnsString = string.Join(", ", column.EntityFK.AddColumns.Where(x => x.DisplayFK).Select(x => x.Name));
-                sb.AppendLine($"            this.Query = $@\" select {columnsString} from {column.EntityFK.EntityName} \";");
+                sb.AppendLine($"using Dominio.Entitys.{_entity.EntityName};");
+                sb.AppendLine("using Shered.DB;");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsRead};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIQueryRead};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
+
+
+                sb.AppendLine("using System;");
+                sb.AppendLine("using System.Collections.Generic;");
+                sb.AppendLine("using System.Linq;");
+                sb.AppendLine("using System.Text;");
+                sb.AppendLine("using System.Dynamic;");
+                sb.AppendLine("using System.Threading.Tasks;");
+
+                sb.AppendLine();
+                sb.AppendLine($"namespace {CQRSParam.I.NameSpaceQueryRead} ");
+                sb.AppendLine("{");
+
+                sb.AppendLine($"    public class {_entity.EntityName}QueryRead : QueryBase, I{_entity.EntityName}QueryRead");
+                sb.AppendLine("    {");
+
+                sb.AppendLine($"        protected readonly ICurrentUser _correntUser;");
+
+                sb.AppendLine($"        public {_entity.EntityName}QueryRead(ICurrentUser correntUser)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            _correntUser = correntUser;");
+                sb.AppendLine("        }");
+
+                sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandsRead}.{_entity.EntityName}{CommandType.Read}Command Command)");
+                sb.AppendLine("        {");
                 sb.AppendLine($"            this.Parameters = null;");
                 sb.AppendLine($"            var whereClauses = new List<string>();");
+                sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
+                sb.AppendLine($"            var parametersDict = (IDictionary<string, object>)parameters;");
 
-                sb.AppendLine("            if (!string.IsNullOrEmpty(Command.searchFK)) ");
-                sb.AppendLine("            {");
-                sb.AppendLine("                 if (int.TryParse(Command.searchFK, out int numero)) ");
-                sb.AppendLine("                 {");
 
-                sb.AppendLine($"                      this.Parameters = new {{ {column.ColumnReference} = numero}}; ");
-                sb.AppendLine($"                      whereClauses.Add($\" {column.ColumnReference} = @{column.ColumnReference}\"); ");
-                sb.AppendLine("                 }");
-                sb.AppendLine("                 else ");
-                sb.AppendLine("                 {");
+                var columnsString = string.Join(", ", _entity.AddColumns.Select(x => x.Name));
+                sb.AppendLine($"            this.Query = $@\" select {columnsString} from {_entity.EntityName} \";");
 
-                sb.AppendLine("                      this.Parameters = new { ");
-                foreach (var item in column.EntityFK.AddColumns.Where(x => x.DisplayFK))
-                    sb.AppendLine($"                       {item.Name} = $\"%{{Command.searchFK}}%\", ");
-                sb.AppendLine("                      }; ");
 
-                foreach (var item in column.EntityFK.AddColumns.Where(x => x.DisplayFK))
-                    sb.AppendLine($"                      whereClauses.Add($\" {item.Name} like @{item.Name} \"); ");
-
-                sb.AppendLine("                 }");
-                sb.AppendLine("            }");
+                foreach (var item in _entity.AddColumns)
+                {
+                    if (item.getCsharpType() == "string")
+                    {
+                        sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{item.Name})) parametersDict[\"{item.Name}\"] = $\"%{{Command.{item.Name}}}%\";");
+                        sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{item.Name})) whereClauses.Add($\"{item.Name} like @{item.Name}\");");
+                    }
+                    else if (item.getCsharpType() == "int")
+                    {
+                        sb.AppendLine($"if (Command.{item.Name}.HasValue) parametersDict[\"{item.Name}\"] = Command.{item.Name}.Value;");
+                        sb.AppendLine($"if (Command.{item.Name}.HasValue) whereClauses.Add($\"{item.Name} = @{item.Name}\");");
+                    }
+                }
 
                 sb.AppendLine("            if (whereClauses.Any()) ");
-                sb.AppendLine("            this.Query += \" WHERE \" + string.Join(\" OR \", whereClauses); ");
+                sb.AppendLine("                 this.Query += $\" WHERE {getTenant()} {string.Join(\" AND \", whereClauses)}\"; ");
+                sb.AppendLine("            else if (!string.IsNullOrEmpty(getTenant())) ");
+                sb.AppendLine("                 this.Query += $\" WHERE {getTenant()}\"; ");
 
-                sb.AppendLine("            return new QueryModel(this.Query, this.Parameters); ");
+                // Paginação
+                sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
+                sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
+                sb.AppendLine("            int offset = (page - 1) * pageSize;");
+                sb.AppendLine("            parametersDict[\"Offset\"] = offset;");
+                sb.AppendLine("            parametersDict[\"PageSize\"] = pageSize;");
+                sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
+
+                sb.AppendLine($"            this.Parameters = parameters;");
+                sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
                 sb.AppendLine("        }");
-            }
+
+
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                {
+                    sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandsPatterns}.SearchFKCommand Command)");
+                    sb.AppendLine("        {");
+
+                    columnsString = string.Join(", ", column.EntityFK.AddColumns.Where(x => x.DisplayFK).Select(x => x.Name));
+                    sb.AppendLine($"            this.Query = $@\" select {columnsString} from {column.EntityFK.EntityName} \";");
+                    sb.AppendLine($"            this.Parameters = null;");
+                    sb.AppendLine($"            var whereClauses = new List<string>();");
+
+                    sb.AppendLine("            if (!string.IsNullOrEmpty(Command.searchFK)) ");
+                    sb.AppendLine("            {");
+                    sb.AppendLine("                 if (int.TryParse(Command.searchFK, out int numero)) ");
+                    sb.AppendLine("                 {");
+
+                    sb.AppendLine($"                      this.Parameters = new {{ {column.ColumnReference} = numero}}; ");
+                    sb.AppendLine($"                      whereClauses.Add($\" {column.ColumnReference} = @{column.ColumnReference}\"); ");
+                    sb.AppendLine("                 }");
+                    sb.AppendLine("                 else ");
+                    sb.AppendLine("                 {");
+
+                    sb.AppendLine("                      this.Parameters = new { ");
+                    foreach (var item in column.EntityFK.AddColumns.Where(x => x.DisplayFK))
+                        sb.AppendLine($"                       {item.Name} = $\"%{{Command.searchFK}}%\", ");
+                    sb.AppendLine("                      }; ");
+
+                    foreach (var item in column.EntityFK.AddColumns.Where(x => x.DisplayFK))
+                        sb.AppendLine($"                      whereClauses.Add($\" {item.Name} like @{item.Name} \"); ");
+
+                    sb.AppendLine("                 }");
+                    sb.AppendLine("            }");
+
+                    sb.AppendLine("            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) ");
+                    sb.AppendLine("            this.Query += $\" WHERE {getTenant()} ({string.Join(\" OR \", whereClauses)})\"; ");
+                    sb.AppendLine("            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) ");
+                    sb.AppendLine("            this.Query += $\" WHERE {string.Join(\" OR \", whereClauses)}\"; ");
+                    sb.AppendLine("            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) ");
+                    sb.AppendLine("            this.Query += $\" WHERE {getTenant()}\"; ");
+
+                    sb.AppendLine("            return new QueryModel(this.Query, this.Parameters); ");
+                    sb.AppendLine("        }");
+                }
 
 
 
 
-            // exist retorno bool 
-            foreach (var column in _entity.AddColumns)
-            {
-                string csharpType = column.getCsharpType();
-                sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value)");
+                // exist retorno bool 
+                foreach (var column in _entity.AddColumns)
+                {
+                    string csharpType = column.getCsharpType();
+                    sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value)");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"            var sql = $\"SELECT 1 FROM {_entity.EntityName} WHERE {{getTenant()}} {column.Name} = @{column.Name}\";");
+                    sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
+                    sb.AppendLine("            return new QueryModel(sql, parameters);");
+                    sb.AppendLine("        }");
+                }
+
+
+                // firt by 
+                foreach (var column in _entity.AddColumns)
+                {
+                    string csharpType = column.getCsharpType();
+                    sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value)");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"            var sql = $\"SELECT * FROM {_entity.EntityName} WHERE {{getTenant()}} {column.Name} = @{column.Name}\";");
+                    sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
+                    sb.AppendLine("            return new QueryModel(sql, parameters);");
+                    sb.AppendLine("        }");
+                }
+
+                var tenantWhere = _entity.AddColumns.Any(x => x.Name == "TenantID") ? "         return $\" TenantID = {_correntUser.TenentID} AND \";" : " return \"\";";
+
+
+                sb.AppendLine($"        private string getTenant()");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            var sql = \"SELECT 1 FROM {_entity.EntityName} WHERE {column.Name} = @{column.Name}\";");
-                sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
-                sb.AppendLine("            return new QueryModel(sql, parameters);");
+                if (_entity.EntityName == "Yuser")
+                {
+                    sb.AppendLine("     if (_correntUser.TenentID == 0 && _correntUser.UserId == 0)");
+                    sb.AppendLine("         return string.Empty;");
+                }
+                sb.AppendLine(tenantWhere);
                 sb.AppendLine("        }");
+
+
+
+
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+
             }
-
-            // firt by 
-            foreach (var column in _entity.AddColumns)
-            {
-                string csharpType = column.getCsharpType();
-                sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value)");
-                sb.AppendLine("        {");
-                sb.AppendLine($"            var sql = \"SELECT * FROM {_entity.EntityName} WHERE {column.Name} = @{column.Name}\";");
-                sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
-                sb.AppendLine("            return new QueryModel(sql, parameters);");
-                sb.AppendLine("        }");
-            }
-
-
-            sb.AppendLine("    }");
-            sb.AppendLine("}");
-
             return sb;
 
         }

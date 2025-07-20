@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Especialidade;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IEspecialidadeEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.EspecialidadeCrudCommand c) 
+             if(comand is Command.Write.EspecialidadeCrudCommand c) 
              {    
                  var especialidade = new EspecialidadeFactory(_logger).Create(c.Id, c.Descricao);
                  if (!especialidade.isValidInsert())

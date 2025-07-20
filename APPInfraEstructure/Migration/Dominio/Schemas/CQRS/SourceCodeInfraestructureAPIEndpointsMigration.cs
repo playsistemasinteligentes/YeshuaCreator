@@ -41,7 +41,7 @@ namespace Dominio.Schemas.CQRS
             #region Insert 
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
+                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
                 //setResultHttp(sb, "result");
@@ -58,7 +58,7 @@ namespace Dominio.Schemas.CQRS
             // update 
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPut(\"/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
+                sb.AppendLine($"app.MapPut(\"/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
@@ -74,7 +74,7 @@ namespace Dominio.Schemas.CQRS
             // Delete
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapDelete(\"/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommands}.{entity.EntityName}CrudCommand command) =>");
+                sb.AppendLine($"app.MapDelete(\"/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");

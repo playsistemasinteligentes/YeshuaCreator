@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
 using Input.Querys.DisponibilidadeAgenda;
-using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
+using IRepository.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;

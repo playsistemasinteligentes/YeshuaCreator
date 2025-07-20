@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Profissional;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class ProfissionalReadRepository : IProfissionalReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IProfissionalQueryRead _query;
 
-        public ProfissionalReadRepository(SqlFactory factory)
+        public ProfissionalReadRepository(SqlFactory factory, ICurrentUser correntUser,IProfissionalQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<ProfissionalDTO> getProfissional(ICommandRead command)
          {
-            if (command is Command.Commands.Read.ProfissionalReadCommand c)
+            if (command is Command.Read.ProfissionalReadCommand c)
                 return getProfissional(c);
             throw new NotImplementedException();
         }
-        private DataPagination<ProfissionalDTO> getProfissional(Command.Commands.Read.ProfissionalReadCommand command)
+        private DataPagination<ProfissionalDTO> getProfissional(Command.Read.ProfissionalReadCommand command)
         {
-            var query = new ProfissionalReadQuery().ProfissionalQuery(command);
+            var query = _query.ProfissionalQuery(command);
 
                 var itens = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters);
                 return new DataPagination<ProfissionalDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<ProfissionalEspecialidadeIdDTO> lista;
-            var query = new ProfissionalReadQuery().ProfissionalEspecialidadeIdQuery(command);
+            var query = _query.ProfissionalEspecialidadeIdQuery(command);
 
                 lista = _connection.Query<ProfissionalEspecialidadeIdDTO>(query.Query,query.Parameters) as List<ProfissionalEspecialidadeIdDTO>;
             return lista;
@@ -62,7 +67,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new ProfissionalReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -70,7 +75,7 @@ namespace Read.Repository
 
         public bool ExistsByNome(string value)
         {
-            var query = new ProfissionalReadQuery().ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -78,7 +83,7 @@ namespace Read.Repository
 
         public bool ExistsByEspecialidadeId(int value)
         {
-            var query = new ProfissionalReadQuery().ExistsByEspecialidadeIdQuery(value);
+            var query = _query.ExistsByEspecialidadeIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -86,7 +91,7 @@ namespace Read.Repository
 
         public bool ExistsByTelefone(string value)
         {
-            var query = new ProfissionalReadQuery().ExistsByTelefoneQuery(value);
+            var query = _query.ExistsByTelefoneQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -94,7 +99,7 @@ namespace Read.Repository
 
         public ProfissionalDTO FirstById(int value)
         {
-            var query = new ProfissionalReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
                 return result;
@@ -102,7 +107,7 @@ namespace Read.Repository
 
         public ProfissionalDTO FirstByNome(string value)
         {
-            var query = new ProfissionalReadQuery().FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
                 return result;
@@ -110,7 +115,7 @@ namespace Read.Repository
 
         public ProfissionalDTO FirstByEspecialidadeId(int value)
         {
-            var query = new ProfissionalReadQuery().FirstByEspecialidadeIdQuery(value);
+            var query = _query.FirstByEspecialidadeIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
                 return result;
@@ -118,7 +123,7 @@ namespace Read.Repository
 
         public ProfissionalDTO FirstByTelefone(string value)
         {
-            var query = new ProfissionalReadQuery().FirstByTelefoneQuery(value);
+            var query = _query.FirstByTelefoneQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
                 return result;

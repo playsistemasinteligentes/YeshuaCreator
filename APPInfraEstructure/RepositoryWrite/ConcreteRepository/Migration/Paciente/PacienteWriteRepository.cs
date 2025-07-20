@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
 using Input.Querys.Paciente;
-using Repositorio.Inputs.Repositorio.Paciente;
+using IRepository.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;

@@ -12,10 +12,10 @@ namespace Migration.Dominio.Schemas.CQRS
 
         public static CQRSParam I => _instance.Value;
 
-        public string NameSpaceCommandsRead { get; set; } = "Command.Commands.Read";
-        public string NameSpaceCommands { get; internal set; } = "Command.Commands";
+        public string NameSpaceCommandsRead { get; set; } = "Command.Read";
+        public string NameSpaceCommandWrite { get; internal set; } = "Command.Write";
         public string NameSpaceCommandsPatterns { get; internal set; } = "Command.Patterns.Command";
-        public string NameSpaceCommandCommandsUseCases { get; set; } = "Command.Commands";
+        public string NameSpaceCommandCommandsUseCases { get; set; } = "Command.UseCase";
         public string NameSpaceCommandReceiversHub { get; set; } = "Command.Receivers";
         public string NameSpaceCommandReceiversUseCase { get; set; } = "Command.Receivers.UseCase";
         public string NameSpaceCommandReceiversRead { get; set; } = "Command.Receivers.Read";
@@ -26,8 +26,12 @@ namespace Migration.Dominio.Schemas.CQRS
         public object NameSpaceCommandsPartners { get; set; } = "Command.Patterns.Command";
         public object NameSpaceInterfaceCommandsPartners { get; set; } = "RepositoryInterfaces.Patterns.Command";
         public object NameSpaceInterfaceRepositoryPartners { get; set; } = "RepositoryInterfaces.Patterns.Repository";
-        public object NameSpaceRepositorioInputsRepositorio { get; set; } = "Repositorio.Inputs.Repositorio"; // trocar mais pra frente padronozar com o de baixo 
-        public object NameSpaceReadRepositoryInterface { get; set; } = "Read.RepositoryInterfaces";
+        public object NameSpaceReadRepositoryInterface { get; set; } = "IRepository.Read";
+        public object NameSpaceIRepositoryWrite { get; set; } = "IRepository.Write";
+        public object NameSpaceIQueryWrite { get; set; } = "IQuery.Write";
+        public object NameSpaceIQueryRead { get; set; } = "IQuery.Read";
+        public object NameSpaceQueryRead { get; set; } = "Query.Read";
+        public object NameSpaceIterfaceAplicationServices { get; set; } = "Aplication.Interfaces.Services";
         public object NameSpaceUnitOfWork { get; set; } = "RepositoryInterfaces.Patterns.UnitOfWork";
         public object NameSpaceEnumStrategy { get; set; } = "Dominio.Enum.Strategy";
         public string NameSpaceClassesConcretasStrategy { get; set; } = "Shered.Patterns.Strategy";

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Read.RepositoryInterfaces
+namespace IRepository.Read
 {
     public interface IYpermtionsReadRepository
     {

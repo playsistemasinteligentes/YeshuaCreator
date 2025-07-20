@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Inputs.Repositorio.Servico
+namespace IRepository.Write
 {
     public partial interface IServicoWriteRepository
     {

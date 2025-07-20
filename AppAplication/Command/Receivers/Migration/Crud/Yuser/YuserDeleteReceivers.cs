@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Yuser;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IYuserEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.YuserCrudCommand c) 
+             if(comand is Command.Write.YuserCrudCommand c) 
              {    
                  var yuser = new YuserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha, c.TenantID);
                  if (!yuser.isValidDelete())

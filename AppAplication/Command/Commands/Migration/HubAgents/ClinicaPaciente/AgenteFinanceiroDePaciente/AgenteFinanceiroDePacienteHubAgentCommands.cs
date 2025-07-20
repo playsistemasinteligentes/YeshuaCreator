@@ -1,6 +1,6 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
-namespace Command.Commands
+namespace Command.Write
 {
     public partial class AgenteFinanceiroDePacienteHubAgentCommand : ICommand
     {

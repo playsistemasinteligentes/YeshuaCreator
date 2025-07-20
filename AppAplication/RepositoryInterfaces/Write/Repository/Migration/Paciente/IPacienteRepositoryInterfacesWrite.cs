@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Inputs.Repositorio.Paciente
+namespace IRepository.Write
 {
     public partial interface IPacienteWriteRepository
     {

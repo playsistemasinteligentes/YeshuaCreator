@@ -40,6 +40,8 @@ namespace Dominio
         public bool IsBackEndField { get; private set; }
         public bool IsUserEncryptedField { get; private set; }
         public bool IsPassword { get; private set; }
+        public bool IsStandardField { get; set; } = false;
+
 
         public Entity Int()
         {
@@ -203,5 +205,10 @@ namespace Dominio
             return this.Entity;
         }
 
+        public Entity StandardField()
+        {
+            this.IsStandardField = true;
+            return this.Entity;
+        }
     }
 }

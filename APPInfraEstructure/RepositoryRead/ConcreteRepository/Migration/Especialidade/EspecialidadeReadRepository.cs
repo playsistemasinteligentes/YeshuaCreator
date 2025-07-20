@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Especialidade;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class EspecialidadeReadRepository : IEspecialidadeReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IEspecialidadeQueryRead _query;
 
-        public EspecialidadeReadRepository(SqlFactory factory)
+        public EspecialidadeReadRepository(SqlFactory factory, ICurrentUser correntUser,IEspecialidadeQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<EspecialidadeDTO> getEspecialidade(ICommandRead command)
          {
-            if (command is Command.Commands.Read.EspecialidadeReadCommand c)
+            if (command is Command.Read.EspecialidadeReadCommand c)
                 return getEspecialidade(c);
             throw new NotImplementedException();
         }
-        private DataPagination<EspecialidadeDTO> getEspecialidade(Command.Commands.Read.EspecialidadeReadCommand command)
+        private DataPagination<EspecialidadeDTO> getEspecialidade(Command.Read.EspecialidadeReadCommand command)
         {
-            var query = new EspecialidadeReadQuery().EspecialidadeQuery(command);
+            var query = _query.EspecialidadeQuery(command);
 
                 var itens = _connection.Query<EspecialidadeDTO>(query.Query,query.Parameters);
                 return new DataPagination<EspecialidadeDTO>(
@@ -44,7 +49,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new EspecialidadeReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -52,7 +57,7 @@ namespace Read.Repository
 
         public bool ExistsByDescricao(string value)
         {
-            var query = new EspecialidadeReadQuery().ExistsByDescricaoQuery(value);
+            var query = _query.ExistsByDescricaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -60,7 +65,7 @@ namespace Read.Repository
 
         public EspecialidadeDTO FirstById(int value)
         {
-            var query = new EspecialidadeReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<EspecialidadeDTO>(query.Query, query.Parameters);
                 return result;
@@ -68,7 +73,7 @@ namespace Read.Repository
 
         public EspecialidadeDTO FirstByDescricao(string value)
         {
-            var query = new EspecialidadeReadQuery().FirstByDescricaoQuery(value);
+            var query = _query.FirstByDescricaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<EspecialidadeDTO>(query.Query, query.Parameters);
                 return result;

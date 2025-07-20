@@ -77,11 +77,12 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"// Escopo: {string.Join(",", _useCase.Scopes)}");
 
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandWrite};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsUseCases};");
 
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
@@ -185,7 +186,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");
 
             sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
-            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommands};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandWrite};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
@@ -193,7 +194,7 @@ namespace Dominio.Schemas.CQRS
 
             foreach (var entity in _useCase.Entitys)
             {
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioInputsRepositorio}.{entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository};");
             }
 

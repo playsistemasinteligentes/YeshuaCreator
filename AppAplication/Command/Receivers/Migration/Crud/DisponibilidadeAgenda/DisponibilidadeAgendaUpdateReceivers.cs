@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.DisponibilidadeAgenda;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IDisponibilidadeAgendaEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.DisponibilidadeAgendaCrudCommand c) 
+             if(comand is Command.Write.DisponibilidadeAgendaCrudCommand c) 
              {    
                  var disponibilidadeagenda = new DisponibilidadeAgendaFactory(_logger).Create(c.Id, c.ProfissionalId, c.DataHora);
                  if (!disponibilidadeagenda.isValidUpdate())

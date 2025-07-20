@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Servico;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class ServicoReadRepository : IServicoReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IServicoQueryRead _query;
 
-        public ServicoReadRepository(SqlFactory factory)
+        public ServicoReadRepository(SqlFactory factory, ICurrentUser correntUser,IServicoQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<ServicoDTO> getServico(ICommandRead command)
          {
-            if (command is Command.Commands.Read.ServicoReadCommand c)
+            if (command is Command.Read.ServicoReadCommand c)
                 return getServico(c);
             throw new NotImplementedException();
         }
-        private DataPagination<ServicoDTO> getServico(Command.Commands.Read.ServicoReadCommand command)
+        private DataPagination<ServicoDTO> getServico(Command.Read.ServicoReadCommand command)
         {
-            var query = new ServicoReadQuery().ServicoQuery(command);
+            var query = _query.ServicoQuery(command);
 
                 var itens = _connection.Query<ServicoDTO>(query.Query,query.Parameters);
                 return new DataPagination<ServicoDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<ServicoGrupoServicoIdDTO> getServicoReadFKGrupoServicoId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<ServicoGrupoServicoIdDTO> lista;
-            var query = new ServicoReadQuery().ServicoGrupoServicoIdQuery(command);
+            var query = _query.ServicoGrupoServicoIdQuery(command);
 
                 lista = _connection.Query<ServicoGrupoServicoIdDTO>(query.Query,query.Parameters) as List<ServicoGrupoServicoIdDTO>;
             return lista;
@@ -62,7 +67,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new ServicoReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -70,7 +75,7 @@ namespace Read.Repository
 
         public bool ExistsByGrupoServicoId(int value)
         {
-            var query = new ServicoReadQuery().ExistsByGrupoServicoIdQuery(value);
+            var query = _query.ExistsByGrupoServicoIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -78,7 +83,7 @@ namespace Read.Repository
 
         public bool ExistsByNome(string value)
         {
-            var query = new ServicoReadQuery().ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -86,7 +91,7 @@ namespace Read.Repository
 
         public bool ExistsByValor(Decimal value)
         {
-            var query = new ServicoReadQuery().ExistsByValorQuery(value);
+            var query = _query.ExistsByValorQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -94,7 +99,7 @@ namespace Read.Repository
 
         public ServicoDTO FirstById(int value)
         {
-            var query = new ServicoReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
@@ -102,7 +107,7 @@ namespace Read.Repository
 
         public ServicoDTO FirstByGrupoServicoId(int value)
         {
-            var query = new ServicoReadQuery().FirstByGrupoServicoIdQuery(value);
+            var query = _query.FirstByGrupoServicoIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
@@ -110,7 +115,7 @@ namespace Read.Repository
 
         public ServicoDTO FirstByNome(string value)
         {
-            var query = new ServicoReadQuery().FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
@@ -118,7 +123,7 @@ namespace Read.Repository
 
         public ServicoDTO FirstByValor(Decimal value)
         {
-            var query = new ServicoReadQuery().FirstByValorQuery(value);
+            var query = _query.FirstByValorQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;

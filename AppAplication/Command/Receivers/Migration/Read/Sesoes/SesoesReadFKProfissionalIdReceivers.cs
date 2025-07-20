@@ -2,8 +2,8 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Read.RepositoryInterfaces;
-using Repositorio.Inputs.Repositorio.Sesoes;
+using IRepository.Read;
+using IRepository.Write;
 using Repositorio.Outputs;
 
 namespace Command.Receivers.Read

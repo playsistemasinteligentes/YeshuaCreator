@@ -1,5 +1,8 @@
 using Dominio.Entitys.Yuser;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.Yuser
+namespace Query.Read 
 {
-    public class YuserReadQuery : QueryBase
+    public class YuserQueryRead : QueryBase, IYuserQueryRead
     {
-        public QueryModel YuserQuery(Command.Commands.Read.YuserReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public YuserQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel YuserQuery(Command.Read.YuserReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -29,7 +37,9 @@ if (!string.IsNullOrEmpty(Command.Senha)) whereClauses.Add($"Senha like @Senha")
 if (Command.TenantID.HasValue) parametersDict["TenantID"] = Command.TenantID.Value;
 if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -61,69 +71,79 @@ if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
                       whereClauses.Add($" Nome like @Nome "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM Yuser WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM Yuser WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeQuery(string value)
         {
-            var sql = "SELECT 1 FROM Yuser WHERE Nome = @Nome";
+            var sql = $"SELECT 1 FROM Yuser WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEmailQuery(string value)
         {
-            var sql = "SELECT 1 FROM Yuser WHERE Email = @Email";
+            var sql = $"SELECT 1 FROM Yuser WHERE {getTenant()} Email = @Email";
             var parameters = new { Email = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsBySenhaQuery(string value)
         {
-            var sql = "SELECT 1 FROM Yuser WHERE Senha = @Senha";
+            var sql = $"SELECT 1 FROM Yuser WHERE {getTenant()} Senha = @Senha";
             var parameters = new { Senha = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTenantIDQuery(int value)
         {
-            var sql = "SELECT 1 FROM Yuser WHERE TenantID = @TenantID";
+            var sql = $"SELECT 1 FROM Yuser WHERE {getTenant()} TenantID = @TenantID";
             var parameters = new { TenantID = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = "SELECT * FROM Yuser WHERE Id = @Id";
+            var sql = $"SELECT * FROM Yuser WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeQuery(string value)
         {
-            var sql = "SELECT * FROM Yuser WHERE Nome = @Nome";
+            var sql = $"SELECT * FROM Yuser WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEmailQuery(string value)
         {
-            var sql = "SELECT * FROM Yuser WHERE Email = @Email";
+            var sql = $"SELECT * FROM Yuser WHERE {getTenant()} Email = @Email";
             var parameters = new { Email = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstBySenhaQuery(string value)
         {
-            var sql = "SELECT * FROM Yuser WHERE Senha = @Senha";
+            var sql = $"SELECT * FROM Yuser WHERE {getTenant()} Senha = @Senha";
             var parameters = new { Senha = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTenantIDQuery(int value)
         {
-            var sql = "SELECT * FROM Yuser WHERE TenantID = @TenantID";
+            var sql = $"SELECT * FROM Yuser WHERE {getTenant()} TenantID = @TenantID";
             var parameters = new { TenantID = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+     if (_correntUser.TenentID == 0 && _correntUser.UserId == 0)
+         return string.Empty;
+         return $" TenantID = {_correntUser.TenentID} AND ";
         }
     }
 }

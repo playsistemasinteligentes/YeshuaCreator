@@ -1,10 +1,9 @@
 using Dominio.Interfaces;
-using Command.Commands;
-using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
-using Repositorio.Inputs.Repositorio.Y_User;
-using Read.RepositoryInterfaces;
+using Command.UseCase;
+using IRepository.Read;
+using IRepository.Write;
 
 namespace Command.Receivers.UseCase
 {
@@ -12,9 +11,9 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly IY_UserReadRepository _repReadY_User;
-        private readonly IY_UserWriteRepository _repWriteY_User;
-        public ContasLoginUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        private readonly IYuserReadRepository _repReadY_User;
+        private readonly IYuserWriteRepository _repWriteY_User;
+        public ContasLoginUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IYuserReadRepository repReadY_User, IYuserWriteRepository repWriteY_User)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;

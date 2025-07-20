@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Inputs.Repositorio.Ytenant
+namespace IRepository.Write
 {
     public partial interface IYtenantWriteRepository
     {

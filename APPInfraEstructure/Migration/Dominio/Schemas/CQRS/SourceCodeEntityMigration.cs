@@ -195,7 +195,7 @@ namespace Dominio.Schemas.CQRS
             var sb = new StringBuilder();
 
             sb.Append($@"
-                namespace Dominio.Entitys.{_entity.EntityName}
+                namespace {CQRSParam.I.NameSpaceEntitys}
                 {{
             ");
 

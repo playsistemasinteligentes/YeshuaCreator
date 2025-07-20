@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.YpserPermitions;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class YpserPermitionsReadRepository : IYpserPermitionsReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IYpserPermitionsQueryRead _query;
 
-        public YpserPermitionsReadRepository(SqlFactory factory)
+        public YpserPermitionsReadRepository(SqlFactory factory, ICurrentUser correntUser,IYpserPermitionsQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<YpserPermitionsDTO> getYpserPermitions(ICommandRead command)
          {
-            if (command is Command.Commands.Read.YpserPermitionsReadCommand c)
+            if (command is Command.Read.YpserPermitionsReadCommand c)
                 return getYpserPermitions(c);
             throw new NotImplementedException();
         }
-        private DataPagination<YpserPermitionsDTO> getYpserPermitions(Command.Commands.Read.YpserPermitionsReadCommand command)
+        private DataPagination<YpserPermitionsDTO> getYpserPermitions(Command.Read.YpserPermitionsReadCommand command)
         {
-            var query = new YpserPermitionsReadQuery().YpserPermitionsQuery(command);
+            var query = _query.YpserPermitionsQuery(command);
 
                 var itens = _connection.Query<YpserPermitionsDTO>(query.Query,query.Parameters);
                 return new DataPagination<YpserPermitionsDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<YpserPermitionsUserIdDTO> getYpserPermitionsReadFKUserId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YpserPermitionsUserIdDTO> lista;
-            var query = new YpserPermitionsReadQuery().YpserPermitionsUserIdQuery(command);
+            var query = _query.YpserPermitionsUserIdQuery(command);
 
                 lista = _connection.Query<YpserPermitionsUserIdDTO>(query.Query,query.Parameters) as List<YpserPermitionsUserIdDTO>;
             return lista;
@@ -63,7 +68,7 @@ namespace Read.Repository
         private IEnumerable<YpserPermitionsPermitionsIdDTO> getYpserPermitionsReadFKPermitionsId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YpserPermitionsPermitionsIdDTO> lista;
-            var query = new YpserPermitionsReadQuery().YpserPermitionsPermitionsIdQuery(command);
+            var query = _query.YpserPermitionsPermitionsIdQuery(command);
 
                 lista = _connection.Query<YpserPermitionsPermitionsIdDTO>(query.Query,query.Parameters) as List<YpserPermitionsPermitionsIdDTO>;
             return lista;
@@ -80,7 +85,7 @@ namespace Read.Repository
 
         public bool ExistsByUserId(int value)
         {
-            var query = new YpserPermitionsReadQuery().ExistsByUserIdQuery(value);
+            var query = _query.ExistsByUserIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -88,7 +93,7 @@ namespace Read.Repository
 
         public bool ExistsByPermitionsId(string value)
         {
-            var query = new YpserPermitionsReadQuery().ExistsByPermitionsIdQuery(value);
+            var query = _query.ExistsByPermitionsIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -96,7 +101,7 @@ namespace Read.Repository
 
         public YpserPermitionsDTO FirstByUserId(int value)
         {
-            var query = new YpserPermitionsReadQuery().FirstByUserIdQuery(value);
+            var query = _query.FirstByUserIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YpserPermitionsDTO>(query.Query, query.Parameters);
                 return result;
@@ -104,7 +109,7 @@ namespace Read.Repository
 
         public YpserPermitionsDTO FirstByPermitionsId(string value)
         {
-            var query = new YpserPermitionsReadQuery().FirstByPermitionsIdQuery(value);
+            var query = _query.FirstByPermitionsIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YpserPermitionsDTO>(query.Query, query.Parameters);
                 return result;

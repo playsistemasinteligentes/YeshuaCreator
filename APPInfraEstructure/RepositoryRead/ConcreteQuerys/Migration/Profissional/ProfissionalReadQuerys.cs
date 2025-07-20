@@ -1,5 +1,8 @@
 using Dominio.Entitys.Profissional;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.Profissional
+namespace Query.Read 
 {
-    public class ProfissionalReadQuery : QueryBase
+    public class ProfissionalQueryRead : QueryBase, IProfissionalQueryRead
     {
-        public QueryModel ProfissionalQuery(Command.Commands.Read.ProfissionalReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public ProfissionalQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel ProfissionalQuery(Command.Read.ProfissionalReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -27,7 +35,9 @@ if (Command.EspecialidadeId.HasValue) whereClauses.Add($"EspecialidadeId = @Espe
 if (!string.IsNullOrEmpty(Command.Telefone)) parametersDict["Telefone"] = $"%{Command.Telefone}%";
 if (!string.IsNullOrEmpty(Command.Telefone)) whereClauses.Add($"Telefone like @Telefone");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -59,57 +69,65 @@ if (!string.IsNullOrEmpty(Command.Telefone)) whereClauses.Add($"Telefone like @T
                       whereClauses.Add($" Descricao like @Descricao "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM Profissional WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM Profissional WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeQuery(string value)
         {
-            var sql = "SELECT 1 FROM Profissional WHERE Nome = @Nome";
+            var sql = $"SELECT 1 FROM Profissional WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEspecialidadeIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM Profissional WHERE EspecialidadeId = @EspecialidadeId";
+            var sql = $"SELECT 1 FROM Profissional WHERE {getTenant()} EspecialidadeId = @EspecialidadeId";
             var parameters = new { EspecialidadeId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTelefoneQuery(string value)
         {
-            var sql = "SELECT 1 FROM Profissional WHERE Telefone = @Telefone";
+            var sql = $"SELECT 1 FROM Profissional WHERE {getTenant()} Telefone = @Telefone";
             var parameters = new { Telefone = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = "SELECT * FROM Profissional WHERE Id = @Id";
+            var sql = $"SELECT * FROM Profissional WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeQuery(string value)
         {
-            var sql = "SELECT * FROM Profissional WHERE Nome = @Nome";
+            var sql = $"SELECT * FROM Profissional WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEspecialidadeIdQuery(int value)
         {
-            var sql = "SELECT * FROM Profissional WHERE EspecialidadeId = @EspecialidadeId";
+            var sql = $"SELECT * FROM Profissional WHERE {getTenant()} EspecialidadeId = @EspecialidadeId";
             var parameters = new { EspecialidadeId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTelefoneQuery(string value)
         {
-            var sql = "SELECT * FROM Profissional WHERE Telefone = @Telefone";
+            var sql = $"SELECT * FROM Profissional WHERE {getTenant()} Telefone = @Telefone";
             var parameters = new { Telefone = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

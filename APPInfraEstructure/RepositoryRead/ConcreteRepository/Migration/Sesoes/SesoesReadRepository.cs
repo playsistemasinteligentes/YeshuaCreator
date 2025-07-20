@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Sesoes;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class SesoesReadRepository : ISesoesReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly ISesoesQueryRead _query;
 
-        public SesoesReadRepository(SqlFactory factory)
+        public SesoesReadRepository(SqlFactory factory, ICurrentUser correntUser,ISesoesQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<SesoesDTO> getSesoes(ICommandRead command)
          {
-            if (command is Command.Commands.Read.SesoesReadCommand c)
+            if (command is Command.Read.SesoesReadCommand c)
                 return getSesoes(c);
             throw new NotImplementedException();
         }
-        private DataPagination<SesoesDTO> getSesoes(Command.Commands.Read.SesoesReadCommand command)
+        private DataPagination<SesoesDTO> getSesoes(Command.Read.SesoesReadCommand command)
         {
-            var query = new SesoesReadQuery().SesoesQuery(command);
+            var query = _query.SesoesQuery(command);
 
                 var itens = _connection.Query<SesoesDTO>(query.Query,query.Parameters);
                 return new DataPagination<SesoesDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<SesoesPacienteIdDTO> lista;
-            var query = new SesoesReadQuery().SesoesPacienteIdQuery(command);
+            var query = _query.SesoesPacienteIdQuery(command);
 
                 lista = _connection.Query<SesoesPacienteIdDTO>(query.Query,query.Parameters) as List<SesoesPacienteIdDTO>;
             return lista;
@@ -63,7 +68,7 @@ namespace Read.Repository
         private IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<SesoesProfissionalIdDTO> lista;
-            var query = new SesoesReadQuery().SesoesProfissionalIdQuery(command);
+            var query = _query.SesoesProfissionalIdQuery(command);
 
                 lista = _connection.Query<SesoesProfissionalIdDTO>(query.Query,query.Parameters) as List<SesoesProfissionalIdDTO>;
             return lista;
@@ -81,7 +86,7 @@ namespace Read.Repository
         private IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<SesoesServicoIdDTO> lista;
-            var query = new SesoesReadQuery().SesoesServicoIdQuery(command);
+            var query = _query.SesoesServicoIdQuery(command);
 
                 lista = _connection.Query<SesoesServicoIdDTO>(query.Query,query.Parameters) as List<SesoesServicoIdDTO>;
             return lista;
@@ -99,7 +104,7 @@ namespace Read.Repository
         private IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<SesoesMovimentacaoFinanceiraIdDTO> lista;
-            var query = new SesoesReadQuery().SesoesMovimentacaoFinanceiraIdQuery(command);
+            var query = _query.SesoesMovimentacaoFinanceiraIdQuery(command);
 
                 lista = _connection.Query<SesoesMovimentacaoFinanceiraIdDTO>(query.Query,query.Parameters) as List<SesoesMovimentacaoFinanceiraIdDTO>;
             return lista;
@@ -116,7 +121,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new SesoesReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -124,7 +129,7 @@ namespace Read.Repository
 
         public bool ExistsByPacienteId(int value)
         {
-            var query = new SesoesReadQuery().ExistsByPacienteIdQuery(value);
+            var query = _query.ExistsByPacienteIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -132,7 +137,7 @@ namespace Read.Repository
 
         public bool ExistsByProfissionalId(int value)
         {
-            var query = new SesoesReadQuery().ExistsByProfissionalIdQuery(value);
+            var query = _query.ExistsByProfissionalIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -140,7 +145,7 @@ namespace Read.Repository
 
         public bool ExistsByServicoId(int value)
         {
-            var query = new SesoesReadQuery().ExistsByServicoIdQuery(value);
+            var query = _query.ExistsByServicoIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -148,7 +153,7 @@ namespace Read.Repository
 
         public bool ExistsByDataInicio(DateTime value)
         {
-            var query = new SesoesReadQuery().ExistsByDataInicioQuery(value);
+            var query = _query.ExistsByDataInicioQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -156,7 +161,7 @@ namespace Read.Repository
 
         public bool ExistsByDataFim(DateTime value)
         {
-            var query = new SesoesReadQuery().ExistsByDataFimQuery(value);
+            var query = _query.ExistsByDataFimQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -164,7 +169,7 @@ namespace Read.Repository
 
         public bool ExistsByStatus(int value)
         {
-            var query = new SesoesReadQuery().ExistsByStatusQuery(value);
+            var query = _query.ExistsByStatusQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -172,7 +177,7 @@ namespace Read.Repository
 
         public bool ExistsByMovimentacaoFinanceiraId(int value)
         {
-            var query = new SesoesReadQuery().ExistsByMovimentacaoFinanceiraIdQuery(value);
+            var query = _query.ExistsByMovimentacaoFinanceiraIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -180,7 +185,7 @@ namespace Read.Repository
 
         public bool ExistsBySinteseProntuario(string value)
         {
-            var query = new SesoesReadQuery().ExistsBySinteseProntuarioQuery(value);
+            var query = _query.ExistsBySinteseProntuarioQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -188,7 +193,7 @@ namespace Read.Repository
 
         public bool ExistsByQueixaPrincipal(string value)
         {
-            var query = new SesoesReadQuery().ExistsByQueixaPrincipalQuery(value);
+            var query = _query.ExistsByQueixaPrincipalQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -196,7 +201,7 @@ namespace Read.Repository
 
         public bool ExistsByMotivoConsultaAtual(string value)
         {
-            var query = new SesoesReadQuery().ExistsByMotivoConsultaAtualQuery(value);
+            var query = _query.ExistsByMotivoConsultaAtualQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -204,7 +209,7 @@ namespace Read.Repository
 
         public bool ExistsBySintomasRelatados(string value)
         {
-            var query = new SesoesReadQuery().ExistsBySintomasRelatadosQuery(value);
+            var query = _query.ExistsBySintomasRelatadosQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -212,7 +217,7 @@ namespace Read.Repository
 
         public bool ExistsByMudancasDesdeUltimaSessaao(int value)
         {
-            var query = new SesoesReadQuery().ExistsByMudancasDesdeUltimaSessaaoQuery(value);
+            var query = _query.ExistsByMudancasDesdeUltimaSessaaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -220,7 +225,7 @@ namespace Read.Repository
 
         public bool ExistsByComportamentoObservado(string value)
         {
-            var query = new SesoesReadQuery().ExistsByComportamentoObservadoQuery(value);
+            var query = _query.ExistsByComportamentoObservadoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -228,7 +233,7 @@ namespace Read.Repository
 
         public bool ExistsByEstadoEmocionalGeral(string value)
         {
-            var query = new SesoesReadQuery().ExistsByEstadoEmocionalGeralQuery(value);
+            var query = _query.ExistsByEstadoEmocionalGeralQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -236,7 +241,7 @@ namespace Read.Repository
 
         public bool ExistsByDiscursoPensamentos(string value)
         {
-            var query = new SesoesReadQuery().ExistsByDiscursoPensamentosQuery(value);
+            var query = _query.ExistsByDiscursoPensamentosQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -244,7 +249,7 @@ namespace Read.Repository
 
         public bool ExistsByTecnicasUtilizadas(string value)
         {
-            var query = new SesoesReadQuery().ExistsByTecnicasUtilizadasQuery(value);
+            var query = _query.ExistsByTecnicasUtilizadasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -252,7 +257,7 @@ namespace Read.Repository
 
         public bool ExistsByQuestionamentosReflexoesAbordadas(string value)
         {
-            var query = new SesoesReadQuery().ExistsByQuestionamentosReflexoesAbordadasQuery(value);
+            var query = _query.ExistsByQuestionamentosReflexoesAbordadasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -260,7 +265,7 @@ namespace Read.Repository
 
         public bool ExistsByExerciciosTarefasSugeridas(string value)
         {
-            var query = new SesoesReadQuery().ExistsByExerciciosTarefasSugeridasQuery(value);
+            var query = _query.ExistsByExerciciosTarefasSugeridasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -268,7 +273,7 @@ namespace Read.Repository
 
         public bool ExistsByDiagnoosticoHipoteseDiagnoostica(string value)
         {
-            var query = new SesoesReadQuery().ExistsByDiagnoosticoHipoteseDiagnoosticaQuery(value);
+            var query = _query.ExistsByDiagnoosticoHipoteseDiagnoosticaQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -276,7 +281,7 @@ namespace Read.Repository
 
         public bool ExistsByObjetivosCurtoPrazo(string value)
         {
-            var query = new SesoesReadQuery().ExistsByObjetivosCurtoPrazoQuery(value);
+            var query = _query.ExistsByObjetivosCurtoPrazoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -284,7 +289,7 @@ namespace Read.Repository
 
         public bool ExistsByObjetivosLongoPrazo(string value)
         {
-            var query = new SesoesReadQuery().ExistsByObjetivosLongoPrazoQuery(value);
+            var query = _query.ExistsByObjetivosLongoPrazoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -292,7 +297,7 @@ namespace Read.Repository
 
         public bool ExistsByFrequenciaSugeridaSessooes(string value)
         {
-            var query = new SesoesReadQuery().ExistsByFrequenciaSugeridaSessooesQuery(value);
+            var query = _query.ExistsByFrequenciaSugeridaSessooesQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -300,7 +305,7 @@ namespace Read.Repository
 
         public bool ExistsByEncaminhamentoOutrosProfissionais(string value)
         {
-            var query = new SesoesReadQuery().ExistsByEncaminhamentoOutrosProfissionaisQuery(value);
+            var query = _query.ExistsByEncaminhamentoOutrosProfissionaisQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -308,7 +313,7 @@ namespace Read.Repository
 
         public bool ExistsByInformacoesRelevantesFuturasConsultas(string value)
         {
-            var query = new SesoesReadQuery().ExistsByInformacoesRelevantesFuturasConsultasQuery(value);
+            var query = _query.ExistsByInformacoesRelevantesFuturasConsultasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -316,7 +321,7 @@ namespace Read.Repository
 
         public bool ExistsByFeedbackPacienteSobreProcessoTerapeeutico(string value)
         {
-            var query = new SesoesReadQuery().ExistsByFeedbackPacienteSobreProcessoTerapeeuticoQuery(value);
+            var query = _query.ExistsByFeedbackPacienteSobreProcessoTerapeeuticoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -324,7 +329,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstById(int value)
         {
-            var query = new SesoesReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -332,7 +337,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByPacienteId(int value)
         {
-            var query = new SesoesReadQuery().FirstByPacienteIdQuery(value);
+            var query = _query.FirstByPacienteIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -340,7 +345,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByProfissionalId(int value)
         {
-            var query = new SesoesReadQuery().FirstByProfissionalIdQuery(value);
+            var query = _query.FirstByProfissionalIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -348,7 +353,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByServicoId(int value)
         {
-            var query = new SesoesReadQuery().FirstByServicoIdQuery(value);
+            var query = _query.FirstByServicoIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -356,7 +361,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByDataInicio(DateTime value)
         {
-            var query = new SesoesReadQuery().FirstByDataInicioQuery(value);
+            var query = _query.FirstByDataInicioQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -364,7 +369,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByDataFim(DateTime value)
         {
-            var query = new SesoesReadQuery().FirstByDataFimQuery(value);
+            var query = _query.FirstByDataFimQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -372,7 +377,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByStatus(int value)
         {
-            var query = new SesoesReadQuery().FirstByStatusQuery(value);
+            var query = _query.FirstByStatusQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -380,7 +385,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByMovimentacaoFinanceiraId(int value)
         {
-            var query = new SesoesReadQuery().FirstByMovimentacaoFinanceiraIdQuery(value);
+            var query = _query.FirstByMovimentacaoFinanceiraIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -388,7 +393,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstBySinteseProntuario(string value)
         {
-            var query = new SesoesReadQuery().FirstBySinteseProntuarioQuery(value);
+            var query = _query.FirstBySinteseProntuarioQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -396,7 +401,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByQueixaPrincipal(string value)
         {
-            var query = new SesoesReadQuery().FirstByQueixaPrincipalQuery(value);
+            var query = _query.FirstByQueixaPrincipalQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -404,7 +409,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByMotivoConsultaAtual(string value)
         {
-            var query = new SesoesReadQuery().FirstByMotivoConsultaAtualQuery(value);
+            var query = _query.FirstByMotivoConsultaAtualQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -412,7 +417,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstBySintomasRelatados(string value)
         {
-            var query = new SesoesReadQuery().FirstBySintomasRelatadosQuery(value);
+            var query = _query.FirstBySintomasRelatadosQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -420,7 +425,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByMudancasDesdeUltimaSessaao(int value)
         {
-            var query = new SesoesReadQuery().FirstByMudancasDesdeUltimaSessaaoQuery(value);
+            var query = _query.FirstByMudancasDesdeUltimaSessaaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -428,7 +433,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByComportamentoObservado(string value)
         {
-            var query = new SesoesReadQuery().FirstByComportamentoObservadoQuery(value);
+            var query = _query.FirstByComportamentoObservadoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -436,7 +441,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByEstadoEmocionalGeral(string value)
         {
-            var query = new SesoesReadQuery().FirstByEstadoEmocionalGeralQuery(value);
+            var query = _query.FirstByEstadoEmocionalGeralQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -444,7 +449,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByDiscursoPensamentos(string value)
         {
-            var query = new SesoesReadQuery().FirstByDiscursoPensamentosQuery(value);
+            var query = _query.FirstByDiscursoPensamentosQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -452,7 +457,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByTecnicasUtilizadas(string value)
         {
-            var query = new SesoesReadQuery().FirstByTecnicasUtilizadasQuery(value);
+            var query = _query.FirstByTecnicasUtilizadasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -460,7 +465,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByQuestionamentosReflexoesAbordadas(string value)
         {
-            var query = new SesoesReadQuery().FirstByQuestionamentosReflexoesAbordadasQuery(value);
+            var query = _query.FirstByQuestionamentosReflexoesAbordadasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -468,7 +473,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByExerciciosTarefasSugeridas(string value)
         {
-            var query = new SesoesReadQuery().FirstByExerciciosTarefasSugeridasQuery(value);
+            var query = _query.FirstByExerciciosTarefasSugeridasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -476,7 +481,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByDiagnoosticoHipoteseDiagnoostica(string value)
         {
-            var query = new SesoesReadQuery().FirstByDiagnoosticoHipoteseDiagnoosticaQuery(value);
+            var query = _query.FirstByDiagnoosticoHipoteseDiagnoosticaQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -484,7 +489,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByObjetivosCurtoPrazo(string value)
         {
-            var query = new SesoesReadQuery().FirstByObjetivosCurtoPrazoQuery(value);
+            var query = _query.FirstByObjetivosCurtoPrazoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -492,7 +497,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByObjetivosLongoPrazo(string value)
         {
-            var query = new SesoesReadQuery().FirstByObjetivosLongoPrazoQuery(value);
+            var query = _query.FirstByObjetivosLongoPrazoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -500,7 +505,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByFrequenciaSugeridaSessooes(string value)
         {
-            var query = new SesoesReadQuery().FirstByFrequenciaSugeridaSessooesQuery(value);
+            var query = _query.FirstByFrequenciaSugeridaSessooesQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -508,7 +513,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByEncaminhamentoOutrosProfissionais(string value)
         {
-            var query = new SesoesReadQuery().FirstByEncaminhamentoOutrosProfissionaisQuery(value);
+            var query = _query.FirstByEncaminhamentoOutrosProfissionaisQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -516,7 +521,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByInformacoesRelevantesFuturasConsultas(string value)
         {
-            var query = new SesoesReadQuery().FirstByInformacoesRelevantesFuturasConsultasQuery(value);
+            var query = _query.FirstByInformacoesRelevantesFuturasConsultasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;
@@ -524,7 +529,7 @@ namespace Read.Repository
 
         public SesoesDTO FirstByFeedbackPacienteSobreProcessoTerapeeutico(string value)
         {
-            var query = new SesoesReadQuery().FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(value);
+            var query = _query.FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
                 return result;

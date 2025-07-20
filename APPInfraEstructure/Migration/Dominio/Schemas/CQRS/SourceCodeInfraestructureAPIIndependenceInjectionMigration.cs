@@ -61,7 +61,7 @@ namespace Dominio.Schemas.CQRS
                     //builder.Services.AddSingleton<ICacheService<IEnumerable<Y_Tenant_ConfigurationTenantIDDTO>>, MemoryCacheService<IEnumerable<Y_Tenant_ConfigurationTenantIDDTO>>>();
 
 
-                    sb.AppendLine($"builder.Services.AddTransient<Repositorio.Inputs.Repositorio.{entity.EntityName}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                     //sb.AppendLine($"builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository, Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
 
                     // clase concreta 
@@ -81,7 +81,7 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine($"        var cacheFK{column.Name} = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.{entity.EntityName}{column.Name}DTO>>>();");
 
                     // fixo acrecentar quando tiver mais consultas
-                    sb.Append($"    return new {CQRSParam.I.NameSpaceReadRepository}.Ytenant_ConfigurationReadRepositoryCacheDecorator(inner,cacheById,cacheAll");
+                    sb.Append($"    return new {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepositoryCacheDecorator(inner,cacheById,cacheAll");
 
                     foreach (var column in entity.AddColumns.Where(x => x.IsFK))
                         sb.Append($",cacheFK{column.Name}");
@@ -98,13 +98,12 @@ namespace Dominio.Schemas.CQRS
                     {
                         sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver>();");
                     }
-
-                    break;
                 }
 
-
-                sb.AppendLine($"builder.Services.AddTransient<Repositorio.Inputs.Repositorio.{entity.EntityName}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepositoryInterface}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryRead}.I{entity.EntityName}QueryRead, {CQRSParam.I.NameSpaceQueryRead}.{entity.EntityName}QueryRead>();");
+
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");

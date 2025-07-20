@@ -1,5 +1,8 @@
 using Dominio.Entitys.Paciente;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.Paciente
+namespace Query.Read 
 {
-    public class PacienteReadQuery : QueryBase
+    public class PacienteQueryRead : QueryBase, IPacienteQueryRead
     {
-        public QueryModel PacienteQuery(Command.Commands.Read.PacienteReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public PacienteQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel PacienteQuery(Command.Read.PacienteReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -41,7 +49,9 @@ if (!string.IsNullOrEmpty(Command.PrincipaisQueixas)) whereClauses.Add($"Princip
 if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) parametersDict["ObservacaoAdicional"] = $"%{Command.ObservacaoAdicional}%";
 if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) whereClauses.Add($"ObservacaoAdicional like @ObservacaoAdicional");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -53,147 +63,151 @@ if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) whereClauses.Add($"Obser
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Nome = @Nome";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTelefoneQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Telefone = @Telefone";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Telefone = @Telefone";
             var parameters = new { Telefone = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDataNascimentoQuery(DateTime value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE DataNascimento = @DataNascimento";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} DataNascimento = @DataNascimento";
             var parameters = new { DataNascimento = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByGeneroQuery(int value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Genero = @Genero";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Genero = @Genero";
             var parameters = new { Genero = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEscolaridadeQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Escolaridade = @Escolaridade";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Escolaridade = @Escolaridade";
             var parameters = new { Escolaridade = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByProfissaoQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Profissao = @Profissao";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Profissao = @Profissao";
             var parameters = new { Profissao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEnderecoQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE Endereco = @Endereco";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Endereco = @Endereco";
             var parameters = new { Endereco = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeResponsavelQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE NomeResponsavel = @NomeResponsavel";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} NomeResponsavel = @NomeResponsavel";
             var parameters = new { NomeResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTelefoneResponsavelQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE TelefoneResponsavel = @TelefoneResponsavel";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} TelefoneResponsavel = @TelefoneResponsavel";
             var parameters = new { TelefoneResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPrincipaisQueixasQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE PrincipaisQueixas = @PrincipaisQueixas";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} PrincipaisQueixas = @PrincipaisQueixas";
             var parameters = new { PrincipaisQueixas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByObservacaoAdicionalQuery(string value)
         {
-            var sql = "SELECT 1 FROM Paciente WHERE ObservacaoAdicional = @ObservacaoAdicional";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} ObservacaoAdicional = @ObservacaoAdicional";
             var parameters = new { ObservacaoAdicional = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Id = @Id";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Nome = @Nome";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTelefoneQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Telefone = @Telefone";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Telefone = @Telefone";
             var parameters = new { Telefone = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDataNascimentoQuery(DateTime value)
         {
-            var sql = "SELECT * FROM Paciente WHERE DataNascimento = @DataNascimento";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} DataNascimento = @DataNascimento";
             var parameters = new { DataNascimento = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByGeneroQuery(int value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Genero = @Genero";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Genero = @Genero";
             var parameters = new { Genero = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEscolaridadeQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Escolaridade = @Escolaridade";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Escolaridade = @Escolaridade";
             var parameters = new { Escolaridade = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByProfissaoQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Profissao = @Profissao";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Profissao = @Profissao";
             var parameters = new { Profissao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEnderecoQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE Endereco = @Endereco";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Endereco = @Endereco";
             var parameters = new { Endereco = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeResponsavelQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE NomeResponsavel = @NomeResponsavel";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} NomeResponsavel = @NomeResponsavel";
             var parameters = new { NomeResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTelefoneResponsavelQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE TelefoneResponsavel = @TelefoneResponsavel";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} TelefoneResponsavel = @TelefoneResponsavel";
             var parameters = new { TelefoneResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPrincipaisQueixasQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE PrincipaisQueixas = @PrincipaisQueixas";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} PrincipaisQueixas = @PrincipaisQueixas";
             var parameters = new { PrincipaisQueixas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByObservacaoAdicionalQuery(string value)
         {
-            var sql = "SELECT * FROM Paciente WHERE ObservacaoAdicional = @ObservacaoAdicional";
+            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} ObservacaoAdicional = @ObservacaoAdicional";
             var parameters = new { ObservacaoAdicional = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

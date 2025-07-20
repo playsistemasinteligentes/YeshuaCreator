@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Yuser;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class YuserReadRepository : IYuserReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IYuserQueryRead _query;
 
-        public YuserReadRepository(SqlFactory factory)
+        public YuserReadRepository(SqlFactory factory, ICurrentUser correntUser,IYuserQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<YuserDTO> getYuser(ICommandRead command)
          {
-            if (command is Command.Commands.Read.YuserReadCommand c)
+            if (command is Command.Read.YuserReadCommand c)
                 return getYuser(c);
             throw new NotImplementedException();
         }
-        private DataPagination<YuserDTO> getYuser(Command.Commands.Read.YuserReadCommand command)
+        private DataPagination<YuserDTO> getYuser(Command.Read.YuserReadCommand command)
         {
-            var query = new YuserReadQuery().YuserQuery(command);
+            var query = _query.YuserQuery(command);
 
                 var itens = _connection.Query<YuserDTO>(query.Query,query.Parameters);
                 return new DataPagination<YuserDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<YuserTenantIDDTO> getYuserReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YuserTenantIDDTO> lista;
-            var query = new YuserReadQuery().YuserTenantIDQuery(command);
+            var query = _query.YuserTenantIDQuery(command);
 
                 lista = _connection.Query<YuserTenantIDDTO>(query.Query,query.Parameters) as List<YuserTenantIDDTO>;
             return lista;
@@ -62,7 +67,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new YuserReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -70,7 +75,7 @@ namespace Read.Repository
 
         public bool ExistsByNome(string value)
         {
-            var query = new YuserReadQuery().ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -78,7 +83,7 @@ namespace Read.Repository
 
         public bool ExistsByEmail(string value)
         {
-            var query = new YuserReadQuery().ExistsByEmailQuery(value);
+            var query = _query.ExistsByEmailQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -86,7 +91,7 @@ namespace Read.Repository
 
         public bool ExistsBySenha(string value)
         {
-            var query = new YuserReadQuery().ExistsBySenhaQuery(value);
+            var query = _query.ExistsBySenhaQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -94,7 +99,7 @@ namespace Read.Repository
 
         public bool ExistsByTenantID(int value)
         {
-            var query = new YuserReadQuery().ExistsByTenantIDQuery(value);
+            var query = _query.ExistsByTenantIDQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -102,7 +107,7 @@ namespace Read.Repository
 
         public YuserDTO FirstById(int value)
         {
-            var query = new YuserReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
                 return result;
@@ -110,7 +115,7 @@ namespace Read.Repository
 
         public YuserDTO FirstByNome(string value)
         {
-            var query = new YuserReadQuery().FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
                 return result;
@@ -118,7 +123,7 @@ namespace Read.Repository
 
         public YuserDTO FirstByEmail(string value)
         {
-            var query = new YuserReadQuery().FirstByEmailQuery(value);
+            var query = _query.FirstByEmailQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
                 return result;
@@ -126,7 +131,7 @@ namespace Read.Repository
 
         public YuserDTO FirstBySenha(string value)
         {
-            var query = new YuserReadQuery().FirstBySenhaQuery(value);
+            var query = _query.FirstBySenhaQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
                 return result;
@@ -134,7 +139,7 @@ namespace Read.Repository
 
         public YuserDTO FirstByTenantID(int value)
         {
-            var query = new YuserReadQuery().FirstByTenantIDQuery(value);
+            var query = _query.FirstByTenantIDQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
                 return result;

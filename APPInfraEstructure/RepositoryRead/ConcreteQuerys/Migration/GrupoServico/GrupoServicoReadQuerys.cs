@@ -1,5 +1,8 @@
 using Dominio.Entitys.GrupoServico;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.GrupoServico
+namespace Query.Read 
 {
-    public class GrupoServicoReadQuery : QueryBase
+    public class GrupoServicoQueryRead : QueryBase, IGrupoServicoQueryRead
     {
-        public QueryModel GrupoServicoQuery(Command.Commands.Read.GrupoServicoReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public GrupoServicoQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel GrupoServicoQuery(Command.Read.GrupoServicoReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -23,7 +31,9 @@ if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.Descricao)) parametersDict["Descricao"] = $"%{Command.Descricao}%";
 if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -35,27 +45,31 @@ if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like 
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM GrupoServico WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM GrupoServico WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDescricaoQuery(string value)
         {
-            var sql = "SELECT 1 FROM GrupoServico WHERE Descricao = @Descricao";
+            var sql = $"SELECT 1 FROM GrupoServico WHERE {getTenant()} Descricao = @Descricao";
             var parameters = new { Descricao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = "SELECT * FROM GrupoServico WHERE Id = @Id";
+            var sql = $"SELECT * FROM GrupoServico WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDescricaoQuery(string value)
         {
-            var sql = "SELECT * FROM GrupoServico WHERE Descricao = @Descricao";
+            var sql = $"SELECT * FROM GrupoServico WHERE {getTenant()} Descricao = @Descricao";
             var parameters = new { Descricao = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

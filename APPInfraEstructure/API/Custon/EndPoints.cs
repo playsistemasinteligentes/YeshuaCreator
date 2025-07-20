@@ -19,7 +19,7 @@ namespace API.Migrations
                 [FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver) =>
             {
 
-                var command = new Command.Commands.ContasLoginUseCaseCommand();
+                var command = new Command.UseCase.ContasLoginUseCaseCommand();
                 command.email = user.Login;
                 command.password = user.Password;
                 var result = StateResults.Try(() => receiver.Execute(command));
@@ -28,7 +28,7 @@ namespace API.Migrations
                 {
                     var statObj = okResult.Value;
 
-                    if (statObj.Data is Repositorio.Outputs.Y_UserDTO _user)
+                    if (statObj.Data is Repositorio.Outputs.YuserDTO _user)
                     {
 
                         var tokenHandler = new JwtSecurityTokenHandler();
@@ -37,9 +37,9 @@ namespace API.Migrations
                         var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, _user.id.ToString()),
-                        new Claim(ClaimTypes.Email, "admin@email.com"), // E-mail do usuário
+                        new Claim(ClaimTypes.Email, _user.email), // E-mail do usuário
                         new Claim(ClaimTypes.Role, "Admin"), // Permissão
-                        new Claim("CompanyId", _user.tenantid.ToString()), // ID da empresa, por exemplo
+                        new Claim("tenantId", _user.tenantid.ToString()), // ID da empresa, por exemplo
                         new Claim("CustomClaim", "MeuValorPersonalizado") // Qualquer outra informação
                     };
 

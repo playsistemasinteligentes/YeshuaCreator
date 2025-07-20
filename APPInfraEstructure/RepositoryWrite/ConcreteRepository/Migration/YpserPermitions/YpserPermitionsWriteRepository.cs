@@ -1,7 +1,7 @@
 using Dapper;
 using Dominio.Entitys;
 using Input.Querys.YpserPermitions;
-using Repositorio.Inputs.Repositorio.YpserPermitions;
+using IRepository.Write;
 using RepositoryInterfaces.Services;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;

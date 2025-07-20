@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Yperfil;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class YperfilReadRepository : IYperfilReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IYperfilQueryRead _query;
 
-        public YperfilReadRepository(SqlFactory factory)
+        public YperfilReadRepository(SqlFactory factory, ICurrentUser correntUser,IYperfilQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<YperfilDTO> getYperfil(ICommandRead command)
          {
-            if (command is Command.Commands.Read.YperfilReadCommand c)
+            if (command is Command.Read.YperfilReadCommand c)
                 return getYperfil(c);
             throw new NotImplementedException();
         }
-        private DataPagination<YperfilDTO> getYperfil(Command.Commands.Read.YperfilReadCommand command)
+        private DataPagination<YperfilDTO> getYperfil(Command.Read.YperfilReadCommand command)
         {
-            var query = new YperfilReadQuery().YperfilQuery(command);
+            var query = _query.YperfilQuery(command);
 
                 var itens = _connection.Query<YperfilDTO>(query.Query,query.Parameters);
                 return new DataPagination<YperfilDTO>(
@@ -44,7 +49,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new YperfilReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -52,7 +57,7 @@ namespace Read.Repository
 
         public bool ExistsByDescription(string value)
         {
-            var query = new YperfilReadQuery().ExistsByDescriptionQuery(value);
+            var query = _query.ExistsByDescriptionQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -60,7 +65,7 @@ namespace Read.Repository
 
         public YperfilDTO FirstById(int value)
         {
-            var query = new YperfilReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YperfilDTO>(query.Query, query.Parameters);
                 return result;
@@ -68,7 +73,7 @@ namespace Read.Repository
 
         public YperfilDTO FirstByDescription(string value)
         {
-            var query = new YperfilReadQuery().FirstByDescriptionQuery(value);
+            var query = _query.FirstByDescriptionQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YperfilDTO>(query.Query, query.Parameters);
                 return result;

@@ -1,5 +1,8 @@
 using Dominio.Entitys.Servico;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.Servico
+namespace Query.Read 
 {
-    public class ServicoReadQuery : QueryBase
+    public class ServicoQueryRead : QueryBase, IServicoQueryRead
     {
-        public QueryModel ServicoQuery(Command.Commands.Read.ServicoReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public ServicoQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel ServicoQuery(Command.Read.ServicoReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -25,7 +33,9 @@ if (Command.GrupoServicoId.HasValue) whereClauses.Add($"GrupoServicoId = @GrupoS
 if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
 if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -57,57 +67,65 @@ if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
                       whereClauses.Add($" Descricao like @Descricao "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM Servico WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM Servico WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByGrupoServicoIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM Servico WHERE GrupoServicoId = @GrupoServicoId";
+            var sql = $"SELECT 1 FROM Servico WHERE {getTenant()} GrupoServicoId = @GrupoServicoId";
             var parameters = new { GrupoServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeQuery(string value)
         {
-            var sql = "SELECT 1 FROM Servico WHERE Nome = @Nome";
+            var sql = $"SELECT 1 FROM Servico WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByValorQuery(Decimal value)
         {
-            var sql = "SELECT 1 FROM Servico WHERE Valor = @Valor";
+            var sql = $"SELECT 1 FROM Servico WHERE {getTenant()} Valor = @Valor";
             var parameters = new { Valor = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = "SELECT * FROM Servico WHERE Id = @Id";
+            var sql = $"SELECT * FROM Servico WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByGrupoServicoIdQuery(int value)
         {
-            var sql = "SELECT * FROM Servico WHERE GrupoServicoId = @GrupoServicoId";
+            var sql = $"SELECT * FROM Servico WHERE {getTenant()} GrupoServicoId = @GrupoServicoId";
             var parameters = new { GrupoServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeQuery(string value)
         {
-            var sql = "SELECT * FROM Servico WHERE Nome = @Nome";
+            var sql = $"SELECT * FROM Servico WHERE {getTenant()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByValorQuery(Decimal value)
         {
-            var sql = "SELECT * FROM Servico WHERE Valor = @Valor";
+            var sql = $"SELECT * FROM Servico WHERE {getTenant()} Valor = @Valor";
             var parameters = new { Valor = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

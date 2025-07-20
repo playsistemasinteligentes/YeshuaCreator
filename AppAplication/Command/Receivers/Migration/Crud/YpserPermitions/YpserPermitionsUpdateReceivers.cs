@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.YpserPermitions;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IYpserPermitionsEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.YpserPermitionsCrudCommand c) 
+             if(comand is Command.Write.YpserPermitionsCrudCommand c) 
              {    
                  var ypserpermitions = new YpserPermitionsFactory(_logger).Create(c.UserId, c.PermitionsId);
                  if (!ypserpermitions.isValidUpdate())

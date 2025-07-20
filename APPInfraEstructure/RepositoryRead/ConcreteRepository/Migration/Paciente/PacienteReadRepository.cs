@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Paciente;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class PacienteReadRepository : IPacienteReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IPacienteQueryRead _query;
 
-        public PacienteReadRepository(SqlFactory factory)
+        public PacienteReadRepository(SqlFactory factory, ICurrentUser correntUser,IPacienteQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<PacienteDTO> getPaciente(ICommandRead command)
          {
-            if (command is Command.Commands.Read.PacienteReadCommand c)
+            if (command is Command.Read.PacienteReadCommand c)
                 return getPaciente(c);
             throw new NotImplementedException();
         }
-        private DataPagination<PacienteDTO> getPaciente(Command.Commands.Read.PacienteReadCommand command)
+        private DataPagination<PacienteDTO> getPaciente(Command.Read.PacienteReadCommand command)
         {
-            var query = new PacienteReadQuery().PacienteQuery(command);
+            var query = _query.PacienteQuery(command);
 
                 var itens = _connection.Query<PacienteDTO>(query.Query,query.Parameters);
                 return new DataPagination<PacienteDTO>(
@@ -44,7 +49,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new PacienteReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -52,7 +57,7 @@ namespace Read.Repository
 
         public bool ExistsByNome(string value)
         {
-            var query = new PacienteReadQuery().ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -60,7 +65,7 @@ namespace Read.Repository
 
         public bool ExistsByTelefone(string value)
         {
-            var query = new PacienteReadQuery().ExistsByTelefoneQuery(value);
+            var query = _query.ExistsByTelefoneQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -68,7 +73,7 @@ namespace Read.Repository
 
         public bool ExistsByDataNascimento(DateTime value)
         {
-            var query = new PacienteReadQuery().ExistsByDataNascimentoQuery(value);
+            var query = _query.ExistsByDataNascimentoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -76,7 +81,7 @@ namespace Read.Repository
 
         public bool ExistsByGenero(int value)
         {
-            var query = new PacienteReadQuery().ExistsByGeneroQuery(value);
+            var query = _query.ExistsByGeneroQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -84,7 +89,7 @@ namespace Read.Repository
 
         public bool ExistsByEscolaridade(string value)
         {
-            var query = new PacienteReadQuery().ExistsByEscolaridadeQuery(value);
+            var query = _query.ExistsByEscolaridadeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -92,7 +97,7 @@ namespace Read.Repository
 
         public bool ExistsByProfissao(string value)
         {
-            var query = new PacienteReadQuery().ExistsByProfissaoQuery(value);
+            var query = _query.ExistsByProfissaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -100,7 +105,7 @@ namespace Read.Repository
 
         public bool ExistsByEndereco(string value)
         {
-            var query = new PacienteReadQuery().ExistsByEnderecoQuery(value);
+            var query = _query.ExistsByEnderecoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -108,7 +113,7 @@ namespace Read.Repository
 
         public bool ExistsByNomeResponsavel(string value)
         {
-            var query = new PacienteReadQuery().ExistsByNomeResponsavelQuery(value);
+            var query = _query.ExistsByNomeResponsavelQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -116,7 +121,7 @@ namespace Read.Repository
 
         public bool ExistsByTelefoneResponsavel(string value)
         {
-            var query = new PacienteReadQuery().ExistsByTelefoneResponsavelQuery(value);
+            var query = _query.ExistsByTelefoneResponsavelQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -124,7 +129,7 @@ namespace Read.Repository
 
         public bool ExistsByPrincipaisQueixas(string value)
         {
-            var query = new PacienteReadQuery().ExistsByPrincipaisQueixasQuery(value);
+            var query = _query.ExistsByPrincipaisQueixasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -132,7 +137,7 @@ namespace Read.Repository
 
         public bool ExistsByObservacaoAdicional(string value)
         {
-            var query = new PacienteReadQuery().ExistsByObservacaoAdicionalQuery(value);
+            var query = _query.ExistsByObservacaoAdicionalQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -140,7 +145,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstById(int value)
         {
-            var query = new PacienteReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -148,7 +153,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByNome(string value)
         {
-            var query = new PacienteReadQuery().FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -156,7 +161,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByTelefone(string value)
         {
-            var query = new PacienteReadQuery().FirstByTelefoneQuery(value);
+            var query = _query.FirstByTelefoneQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -164,7 +169,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByDataNascimento(DateTime value)
         {
-            var query = new PacienteReadQuery().FirstByDataNascimentoQuery(value);
+            var query = _query.FirstByDataNascimentoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -172,7 +177,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByGenero(int value)
         {
-            var query = new PacienteReadQuery().FirstByGeneroQuery(value);
+            var query = _query.FirstByGeneroQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -180,7 +185,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByEscolaridade(string value)
         {
-            var query = new PacienteReadQuery().FirstByEscolaridadeQuery(value);
+            var query = _query.FirstByEscolaridadeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -188,7 +193,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByProfissao(string value)
         {
-            var query = new PacienteReadQuery().FirstByProfissaoQuery(value);
+            var query = _query.FirstByProfissaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -196,7 +201,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByEndereco(string value)
         {
-            var query = new PacienteReadQuery().FirstByEnderecoQuery(value);
+            var query = _query.FirstByEnderecoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -204,7 +209,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByNomeResponsavel(string value)
         {
-            var query = new PacienteReadQuery().FirstByNomeResponsavelQuery(value);
+            var query = _query.FirstByNomeResponsavelQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -212,7 +217,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByTelefoneResponsavel(string value)
         {
-            var query = new PacienteReadQuery().FirstByTelefoneResponsavelQuery(value);
+            var query = _query.FirstByTelefoneResponsavelQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -220,7 +225,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByPrincipaisQueixas(string value)
         {
-            var query = new PacienteReadQuery().FirstByPrincipaisQueixasQuery(value);
+            var query = _query.FirstByPrincipaisQueixasQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -228,7 +233,7 @@ namespace Read.Repository
 
         public PacienteDTO FirstByObservacaoAdicional(string value)
         {
-            var query = new PacienteReadQuery().FirstByObservacaoAdicionalQuery(value);
+            var query = _query.FirstByObservacaoAdicionalQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;

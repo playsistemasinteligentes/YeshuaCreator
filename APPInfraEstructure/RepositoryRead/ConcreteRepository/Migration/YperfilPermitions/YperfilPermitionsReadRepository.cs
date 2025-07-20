@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.YperfilPermitions;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class YperfilPermitionsReadRepository : IYperfilPermitionsReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IYperfilPermitionsQueryRead _query;
 
-        public YperfilPermitionsReadRepository(SqlFactory factory)
+        public YperfilPermitionsReadRepository(SqlFactory factory, ICurrentUser correntUser,IYperfilPermitionsQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<YperfilPermitionsDTO> getYperfilPermitions(ICommandRead command)
          {
-            if (command is Command.Commands.Read.YperfilPermitionsReadCommand c)
+            if (command is Command.Read.YperfilPermitionsReadCommand c)
                 return getYperfilPermitions(c);
             throw new NotImplementedException();
         }
-        private DataPagination<YperfilPermitionsDTO> getYperfilPermitions(Command.Commands.Read.YperfilPermitionsReadCommand command)
+        private DataPagination<YperfilPermitionsDTO> getYperfilPermitions(Command.Read.YperfilPermitionsReadCommand command)
         {
-            var query = new YperfilPermitionsReadQuery().YperfilPermitionsQuery(command);
+            var query = _query.YperfilPermitionsQuery(command);
 
                 var itens = _connection.Query<YperfilPermitionsDTO>(query.Query,query.Parameters);
                 return new DataPagination<YperfilPermitionsDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<YperfilPermitionsPerfilIdDTO> getYperfilPermitionsReadFKPerfilId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YperfilPermitionsPerfilIdDTO> lista;
-            var query = new YperfilPermitionsReadQuery().YperfilPermitionsPerfilIdQuery(command);
+            var query = _query.YperfilPermitionsPerfilIdQuery(command);
 
                 lista = _connection.Query<YperfilPermitionsPerfilIdDTO>(query.Query,query.Parameters) as List<YperfilPermitionsPerfilIdDTO>;
             return lista;
@@ -63,7 +68,7 @@ namespace Read.Repository
         private IEnumerable<YperfilPermitionsPermitionsIdDTO> getYperfilPermitionsReadFKPermitionsId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YperfilPermitionsPermitionsIdDTO> lista;
-            var query = new YperfilPermitionsReadQuery().YperfilPermitionsPermitionsIdQuery(command);
+            var query = _query.YperfilPermitionsPermitionsIdQuery(command);
 
                 lista = _connection.Query<YperfilPermitionsPermitionsIdDTO>(query.Query,query.Parameters) as List<YperfilPermitionsPermitionsIdDTO>;
             return lista;
@@ -80,7 +85,7 @@ namespace Read.Repository
 
         public bool ExistsByPerfilId(int value)
         {
-            var query = new YperfilPermitionsReadQuery().ExistsByPerfilIdQuery(value);
+            var query = _query.ExistsByPerfilIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -88,7 +93,7 @@ namespace Read.Repository
 
         public bool ExistsByPermitionsId(string value)
         {
-            var query = new YperfilPermitionsReadQuery().ExistsByPermitionsIdQuery(value);
+            var query = _query.ExistsByPermitionsIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -96,7 +101,7 @@ namespace Read.Repository
 
         public YperfilPermitionsDTO FirstByPerfilId(int value)
         {
-            var query = new YperfilPermitionsReadQuery().FirstByPerfilIdQuery(value);
+            var query = _query.FirstByPerfilIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YperfilPermitionsDTO>(query.Query, query.Parameters);
                 return result;
@@ -104,7 +109,7 @@ namespace Read.Repository
 
         public YperfilPermitionsDTO FirstByPermitionsId(string value)
         {
-            var query = new YperfilPermitionsReadQuery().FirstByPermitionsIdQuery(value);
+            var query = _query.FirstByPermitionsIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YperfilPermitionsDTO>(query.Query, query.Parameters);
                 return result;

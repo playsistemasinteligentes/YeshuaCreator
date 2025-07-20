@@ -8,7 +8,7 @@ public static class Endpoints
 {
 public static void MapEndpoints(this WebApplication app)
 {
-app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Receivers.Write.InsertEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
+app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Receivers.Write.InsertEspecialidadeReceiver receiver, [FromBody] Command.Write.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
@@ -17,7 +17,7 @@ app.MapPost("/Especialidade/PostEspecialidade", async ([FromServices] Command.Re
 .RequireAuthorization();
 
 
-app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Receivers.Write.InsertProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
+app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Receivers.Write.InsertProfissionalReceiver receiver, [FromBody] Command.Write.ProfissionalCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
@@ -26,7 +26,7 @@ app.MapPost("/Profissional/PostProfissional", async ([FromServices] Command.Rece
 .RequireAuthorization();
 
 
-app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.InsertDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
+app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.InsertDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Write.DisponibilidadeAgendaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
@@ -35,7 +35,7 @@ app.MapPost("/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServ
 .RequireAuthorization();
 
 
-app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Receivers.Write.InsertGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
+app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Receivers.Write.InsertGrupoServicoReceiver receiver, [FromBody] Command.Write.GrupoServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
@@ -44,7 +44,7 @@ app.MapPost("/GrupoServico/PostGrupoServico", async ([FromServices] Command.Rece
 .RequireAuthorization();
 
 
-app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Write.InsertServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
+app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Write.InsertServicoReceiver receiver, [FromBody] Command.Write.ServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
@@ -53,7 +53,7 @@ app.MapPost("/Servico/PostServico", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Write.InsertPacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
+app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Write.InsertPacienteReceiver receiver, [FromBody] Command.Write.PacienteCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
@@ -62,7 +62,7 @@ app.MapPost("/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Wr
 .RequireAuthorization();
 
 
-app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Write.MovimentacaoFinanceiraCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
@@ -71,7 +71,7 @@ app.MapPost("/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromSe
 .RequireAuthorization();
 
 
-app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Write.SesoesCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
@@ -80,7 +80,7 @@ app.MapPost("/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
-app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
@@ -89,7 +89,7 @@ app.MapPost("/Clinica/PostClinica", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapPost("/Ytenant/PostYtenant", async ([FromServices] Command.Receivers.Write.InsertYtenantReceiver receiver, [FromBody] Command.Commands.YtenantCrudCommand command) =>
+app.MapPost("/Ytenant/PostYtenant", async ([FromServices] Command.Receivers.Write.InsertYtenantReceiver receiver, [FromBody] Command.Write.YtenantCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
@@ -98,7 +98,7 @@ app.MapPost("/Ytenant/PostYtenant", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapPost("/Yuser/PostYuser", async ([FromServices] Command.Receivers.Write.InsertYuserReceiver receiver, [FromBody] Command.Commands.YuserCrudCommand command) =>
+app.MapPost("/Yuser/PostYuser", async ([FromServices] Command.Receivers.Write.InsertYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YuserEntity>>(StatusCodes.Status200OK)
@@ -107,16 +107,25 @@ app.MapPost("/Yuser/PostYuser", async ([FromServices] Command.Receivers.Write.In
 .RequireAuthorization();
 
 
-app.MapPost("/Ytenant_Configuration/PostYtenant_Configuration", async ([FromServices] Command.Receivers.Write.InsertYtenant_ConfigurationReceiver receiver, [FromBody] Command.Commands.Ytenant_ConfigurationCrudCommand command) =>
+app.MapPost("/YconfigArcteture/PostYconfigArcteture", async ([FromServices] Command.Receivers.Write.InsertYconfigArctetureReceiver receiver, [FromBody] Command.Write.YconfigArctetureCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapPost("/Yperfil/PostYperfil", async ([FromServices] Command.Receivers.Write.InsertYperfilReceiver receiver, [FromBody] Command.Commands.YperfilCrudCommand command) =>
+app.MapPost("/YconfigNotification/PostYconfigNotification", async ([FromServices] Command.Receivers.Write.InsertYconfigNotificationReceiver receiver, [FromBody] Command.Write.YconfigNotificationCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/Yperfil/PostYperfil", async ([FromServices] Command.Receivers.Write.InsertYperfilReceiver receiver, [FromBody] Command.Write.YperfilCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilEntity>>(StatusCodes.Status200OK)
@@ -125,7 +134,7 @@ app.MapPost("/Yperfil/PostYperfil", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapPost("/Ypermtions/PostYpermtions", async ([FromServices] Command.Receivers.Write.InsertYpermtionsReceiver receiver, [FromBody] Command.Commands.YpermtionsCrudCommand command) =>
+app.MapPost("/Ypermtions/PostYpermtions", async ([FromServices] Command.Receivers.Write.InsertYpermtionsReceiver receiver, [FromBody] Command.Write.YpermtionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
@@ -134,7 +143,7 @@ app.MapPost("/Ypermtions/PostYpermtions", async ([FromServices] Command.Receiver
 .RequireAuthorization();
 
 
-app.MapPost("/YperfilPermitions/PostYperfilPermitions", async ([FromServices] Command.Receivers.Write.InsertYperfilPermitionsReceiver receiver, [FromBody] Command.Commands.YperfilPermitionsCrudCommand command) =>
+app.MapPost("/YperfilPermitions/PostYperfilPermitions", async ([FromServices] Command.Receivers.Write.InsertYperfilPermitionsReceiver receiver, [FromBody] Command.Write.YperfilPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
@@ -143,7 +152,7 @@ app.MapPost("/YperfilPermitions/PostYperfilPermitions", async ([FromServices] Co
 .RequireAuthorization();
 
 
-app.MapPost("/YpserPermitions/PostYpserPermitions", async ([FromServices] Command.Receivers.Write.InsertYpserPermitionsReceiver receiver, [FromBody] Command.Commands.YpserPermitionsCrudCommand command) =>
+app.MapPost("/YpserPermitions/PostYpserPermitions", async ([FromServices] Command.Receivers.Write.InsertYpserPermitionsReceiver receiver, [FromBody] Command.Write.YpserPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpserPermitionsEntity>>(StatusCodes.Status200OK)
@@ -152,7 +161,7 @@ app.MapPost("/YpserPermitions/PostYpserPermitions", async ([FromServices] Comman
 .RequireAuthorization();
 
 
-app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Receivers.Write.UpdateEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
+app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Receivers.Write.UpdateEspecialidadeReceiver receiver, [FromBody] Command.Write.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
@@ -161,7 +170,7 @@ app.MapPut("/Especialidade/PutEspecialidade", async ([FromServices] Command.Rece
 .RequireAuthorization();
 
 
-app.MapPut("/Profissional/PutProfissional", async ([FromServices] Command.Receivers.Write.UpdateProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
+app.MapPut("/Profissional/PutProfissional", async ([FromServices] Command.Receivers.Write.UpdateProfissionalReceiver receiver, [FromBody] Command.Write.ProfissionalCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
@@ -170,7 +179,7 @@ app.MapPut("/Profissional/PutProfissional", async ([FromServices] Command.Receiv
 .RequireAuthorization();
 
 
-app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.UpdateDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
+app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.UpdateDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Write.DisponibilidadeAgendaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
@@ -179,7 +188,7 @@ app.MapPut("/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServic
 .RequireAuthorization();
 
 
-app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receivers.Write.UpdateGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
+app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receivers.Write.UpdateGrupoServicoReceiver receiver, [FromBody] Command.Write.GrupoServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
@@ -188,7 +197,7 @@ app.MapPut("/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receiv
 .RequireAuthorization();
 
 
-app.MapPut("/Servico/PutServico", async ([FromServices] Command.Receivers.Write.UpdateServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
+app.MapPut("/Servico/PutServico", async ([FromServices] Command.Receivers.Write.UpdateServicoReceiver receiver, [FromBody] Command.Write.ServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
@@ -197,7 +206,7 @@ app.MapPut("/Servico/PutServico", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
-app.MapPut("/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Write.UpdatePacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
+app.MapPut("/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Write.UpdatePacienteReceiver receiver, [FromBody] Command.Write.PacienteCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
@@ -206,7 +215,7 @@ app.MapPut("/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Write.MovimentacaoFinanceiraCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
@@ -215,7 +224,7 @@ app.MapPut("/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServ
 .RequireAuthorization();
 
 
-app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Write.SesoesCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
@@ -224,7 +233,7 @@ app.MapPut("/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.Up
 .RequireAuthorization();
 
 
-app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
@@ -233,7 +242,7 @@ app.MapPut("/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
-app.MapPut("/Ytenant/PutYtenant", async ([FromServices] Command.Receivers.Write.UpdateYtenantReceiver receiver, [FromBody] Command.Commands.YtenantCrudCommand command) =>
+app.MapPut("/Ytenant/PutYtenant", async ([FromServices] Command.Receivers.Write.UpdateYtenantReceiver receiver, [FromBody] Command.Write.YtenantCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
@@ -242,7 +251,7 @@ app.MapPut("/Ytenant/PutYtenant", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
-app.MapPut("/Yuser/PutYuser", async ([FromServices] Command.Receivers.Write.UpdateYuserReceiver receiver, [FromBody] Command.Commands.YuserCrudCommand command) =>
+app.MapPut("/Yuser/PutYuser", async ([FromServices] Command.Receivers.Write.UpdateYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YuserEntity>>(StatusCodes.Status200OK)
@@ -251,16 +260,25 @@ app.MapPut("/Yuser/PutYuser", async ([FromServices] Command.Receivers.Write.Upda
 .RequireAuthorization();
 
 
-app.MapPut("/Ytenant_Configuration/PutYtenant_Configuration", async ([FromServices] Command.Receivers.Write.UpdateYtenant_ConfigurationReceiver receiver, [FromBody] Command.Commands.Ytenant_ConfigurationCrudCommand command) =>
+app.MapPut("/YconfigArcteture/PutYconfigArcteture", async ([FromServices] Command.Receivers.Write.UpdateYconfigArctetureReceiver receiver, [FromBody] Command.Write.YconfigArctetureCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapPut("/Yperfil/PutYperfil", async ([FromServices] Command.Receivers.Write.UpdateYperfilReceiver receiver, [FromBody] Command.Commands.YperfilCrudCommand command) =>
+app.MapPut("/YconfigNotification/PutYconfigNotification", async ([FromServices] Command.Receivers.Write.UpdateYconfigNotificationReceiver receiver, [FromBody] Command.Write.YconfigNotificationCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/Yperfil/PutYperfil", async ([FromServices] Command.Receivers.Write.UpdateYperfilReceiver receiver, [FromBody] Command.Write.YperfilCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilEntity>>(StatusCodes.Status200OK)
@@ -269,7 +287,7 @@ app.MapPut("/Yperfil/PutYperfil", async ([FromServices] Command.Receivers.Write.
 .RequireAuthorization();
 
 
-app.MapPut("/Ypermtions/PutYpermtions", async ([FromServices] Command.Receivers.Write.UpdateYpermtionsReceiver receiver, [FromBody] Command.Commands.YpermtionsCrudCommand command) =>
+app.MapPut("/Ypermtions/PutYpermtions", async ([FromServices] Command.Receivers.Write.UpdateYpermtionsReceiver receiver, [FromBody] Command.Write.YpermtionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
@@ -278,7 +296,7 @@ app.MapPut("/Ypermtions/PutYpermtions", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
-app.MapPut("/YperfilPermitions/PutYperfilPermitions", async ([FromServices] Command.Receivers.Write.UpdateYperfilPermitionsReceiver receiver, [FromBody] Command.Commands.YperfilPermitionsCrudCommand command) =>
+app.MapPut("/YperfilPermitions/PutYperfilPermitions", async ([FromServices] Command.Receivers.Write.UpdateYperfilPermitionsReceiver receiver, [FromBody] Command.Write.YperfilPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
@@ -287,7 +305,7 @@ app.MapPut("/YperfilPermitions/PutYperfilPermitions", async ([FromServices] Comm
 .RequireAuthorization();
 
 
-app.MapPut("/YpserPermitions/PutYpserPermitions", async ([FromServices] Command.Receivers.Write.UpdateYpserPermitionsReceiver receiver, [FromBody] Command.Commands.YpserPermitionsCrudCommand command) =>
+app.MapPut("/YpserPermitions/PutYpserPermitions", async ([FromServices] Command.Receivers.Write.UpdateYpserPermitionsReceiver receiver, [FromBody] Command.Write.YpserPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpserPermitionsEntity>>(StatusCodes.Status200OK)
@@ -296,7 +314,7 @@ app.MapPut("/YpserPermitions/PutYpserPermitions", async ([FromServices] Command.
 .RequireAuthorization();
 
 
-app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Command.Receivers.Write.DeleteEspecialidadeReceiver receiver, [FromBody] Command.Commands.EspecialidadeCrudCommand command) =>
+app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Command.Receivers.Write.DeleteEspecialidadeReceiver receiver, [FromBody] Command.Write.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
@@ -305,7 +323,7 @@ app.MapDelete("/Especialidade/DeleteEspecialidade", async ([FromServices] Comman
 .RequireAuthorization();
 
 
-app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.Receivers.Write.DeleteProfissionalReceiver receiver, [FromBody] Command.Commands.ProfissionalCrudCommand command) =>
+app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.Receivers.Write.DeleteProfissionalReceiver receiver, [FromBody] Command.Write.ProfissionalCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
@@ -314,7 +332,7 @@ app.MapDelete("/Profissional/DeleteProfissional", async ([FromServices] Command.
 .RequireAuthorization();
 
 
-app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.DeleteDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Commands.DisponibilidadeAgendaCrudCommand command) =>
+app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.DeleteDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Write.DisponibilidadeAgendaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
@@ -323,7 +341,7 @@ app.MapDelete("/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([From
 .RequireAuthorization();
 
 
-app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.Receivers.Write.DeleteGrupoServicoReceiver receiver, [FromBody] Command.Commands.GrupoServicoCrudCommand command) =>
+app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.Receivers.Write.DeleteGrupoServicoReceiver receiver, [FromBody] Command.Write.GrupoServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
@@ -332,7 +350,7 @@ app.MapDelete("/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.
 .RequireAuthorization();
 
 
-app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.Write.DeleteServicoReceiver receiver, [FromBody] Command.Commands.ServicoCrudCommand command) =>
+app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.Write.DeleteServicoReceiver receiver, [FromBody] Command.Write.ServicoCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
@@ -341,7 +359,7 @@ app.MapDelete("/Servico/DeleteServico", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
-app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receivers.Write.DeletePacienteReceiver receiver, [FromBody] Command.Commands.PacienteCrudCommand command) =>
+app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receivers.Write.DeletePacienteReceiver receiver, [FromBody] Command.Write.PacienteCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
@@ -350,7 +368,7 @@ app.MapDelete("/Paciente/DeletePaciente", async ([FromServices] Command.Receiver
 .RequireAuthorization();
 
 
-app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.DeleteMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Commands.MovimentacaoFinanceiraCrudCommand command) =>
+app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.DeleteMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Write.MovimentacaoFinanceiraCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
@@ -359,7 +377,7 @@ app.MapDelete("/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([Fr
 .RequireAuthorization();
 
 
-app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Commands.SesoesCrudCommand command) =>
+app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Write.SesoesCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
@@ -368,7 +386,7 @@ app.MapDelete("/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Wr
 .RequireAuthorization();
 
 
-app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Commands.ClinicaCrudCommand command) =>
+app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
@@ -377,7 +395,7 @@ app.MapDelete("/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
-app.MapDelete("/Ytenant/DeleteYtenant", async ([FromServices] Command.Receivers.Write.DeleteYtenantReceiver receiver, [FromBody] Command.Commands.YtenantCrudCommand command) =>
+app.MapDelete("/Ytenant/DeleteYtenant", async ([FromServices] Command.Receivers.Write.DeleteYtenantReceiver receiver, [FromBody] Command.Write.YtenantCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
@@ -386,7 +404,7 @@ app.MapDelete("/Ytenant/DeleteYtenant", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
-app.MapDelete("/Yuser/DeleteYuser", async ([FromServices] Command.Receivers.Write.DeleteYuserReceiver receiver, [FromBody] Command.Commands.YuserCrudCommand command) =>
+app.MapDelete("/Yuser/DeleteYuser", async ([FromServices] Command.Receivers.Write.DeleteYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YuserEntity>>(StatusCodes.Status200OK)
@@ -395,16 +413,25 @@ app.MapDelete("/Yuser/DeleteYuser", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapDelete("/Ytenant_Configuration/DeleteYtenant_Configuration", async ([FromServices] Command.Receivers.Write.DeleteYtenant_ConfigurationReceiver receiver, [FromBody] Command.Commands.Ytenant_ConfigurationCrudCommand command) =>
+app.MapDelete("/YconfigArcteture/DeleteYconfigArcteture", async ([FromServices] Command.Receivers.Write.DeleteYconfigArctetureReceiver receiver, [FromBody] Command.Write.YconfigArctetureCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapDelete("/Yperfil/DeleteYperfil", async ([FromServices] Command.Receivers.Write.DeleteYperfilReceiver receiver, [FromBody] Command.Commands.YperfilCrudCommand command) =>
+app.MapDelete("/YconfigNotification/DeleteYconfigNotification", async ([FromServices] Command.Receivers.Write.DeleteYconfigNotificationReceiver receiver, [FromBody] Command.Write.YconfigNotificationCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/Yperfil/DeleteYperfil", async ([FromServices] Command.Receivers.Write.DeleteYperfilReceiver receiver, [FromBody] Command.Write.YperfilCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilEntity>>(StatusCodes.Status200OK)
@@ -413,7 +440,7 @@ app.MapDelete("/Yperfil/DeleteYperfil", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
-app.MapDelete("/Ypermtions/DeleteYpermtions", async ([FromServices] Command.Receivers.Write.DeleteYpermtionsReceiver receiver, [FromBody] Command.Commands.YpermtionsCrudCommand command) =>
+app.MapDelete("/Ypermtions/DeleteYpermtions", async ([FromServices] Command.Receivers.Write.DeleteYpermtionsReceiver receiver, [FromBody] Command.Write.YpermtionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
@@ -422,7 +449,7 @@ app.MapDelete("/Ypermtions/DeleteYpermtions", async ([FromServices] Command.Rece
 .RequireAuthorization();
 
 
-app.MapDelete("/YperfilPermitions/DeleteYperfilPermitions", async ([FromServices] Command.Receivers.Write.DeleteYperfilPermitionsReceiver receiver, [FromBody] Command.Commands.YperfilPermitionsCrudCommand command) =>
+app.MapDelete("/YperfilPermitions/DeleteYperfilPermitions", async ([FromServices] Command.Receivers.Write.DeleteYperfilPermitionsReceiver receiver, [FromBody] Command.Write.YperfilPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
@@ -431,7 +458,7 @@ app.MapDelete("/YperfilPermitions/DeleteYperfilPermitions", async ([FromServices
 .RequireAuthorization();
 
 
-app.MapDelete("/YpserPermitions/DeleteYpserPermitions", async ([FromServices] Command.Receivers.Write.DeleteYpserPermitionsReceiver receiver, [FromBody] Command.Commands.YpserPermitionsCrudCommand command) =>
+app.MapDelete("/YpserPermitions/DeleteYpserPermitions", async ([FromServices] Command.Receivers.Write.DeleteYpserPermitionsReceiver receiver, [FromBody] Command.Write.YpserPermitionsCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpserPermitionsEntity>>(StatusCodes.Status200OK)
@@ -526,9 +553,16 @@ type = "crud"
 }
 ,
 new{
-id="Ytenant_Configuration",
-description="Ytenant_Configuration",
-endpoint="/getMetaDataYtenant_Configuration",
+id="YconfigArcteture",
+description="YconfigArcteture",
+endpoint="/getMetaDataYconfigArcteture",
+type = "crud"
+}
+,
+new{
+id="YconfigNotification",
+description="YconfigNotification",
+endpoint="/getMetaDataYconfigNotification",
 type = "crud"
 }
 ,
@@ -562,7 +596,7 @@ type = "crud"
 };
 return Results.Ok(menu);
 }).RequireAuthorization();
-app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Receivers.Read.EspecialidadeReadReceiver receiver, [FromBody] Command.Commands.Read.EspecialidadeReadCommand command) =>
+app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Receivers.Read.EspecialidadeReadReceiver receiver, [FromBody] Command.Read.EspecialidadeReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
@@ -571,7 +605,7 @@ app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Re
 .RequireAuthorization();
 
 
-app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Receivers.Read.ProfissionalReadReceiver receiver, [FromBody] Command.Commands.Read.ProfissionalReadCommand command) =>
+app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Receivers.Read.ProfissionalReadReceiver receiver, [FromBody] Command.Read.ProfissionalReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
@@ -580,7 +614,7 @@ app.MapPost("/Profissional/ReadProfissional", async ([FromServices] Command.Rece
 .RequireAuthorization();
 
 
-app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadReceiver receiver, [FromBody] Command.Commands.Read.DisponibilidadeAgendaReadCommand command) =>
+app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadReceiver receiver, [FromBody] Command.Read.DisponibilidadeAgendaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
@@ -589,7 +623,7 @@ app.MapPost("/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServ
 .RequireAuthorization();
 
 
-app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Receivers.Read.GrupoServicoReadReceiver receiver, [FromBody] Command.Commands.Read.GrupoServicoReadCommand command) =>
+app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Receivers.Read.GrupoServicoReadReceiver receiver, [FromBody] Command.Read.GrupoServicoReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
@@ -598,7 +632,7 @@ app.MapPost("/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Rece
 .RequireAuthorization();
 
 
-app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read.ServicoReadReceiver receiver, [FromBody] Command.Commands.Read.ServicoReadCommand command) =>
+app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read.ServicoReadReceiver receiver, [FromBody] Command.Read.ServicoReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
@@ -607,7 +641,7 @@ app.MapPost("/Servico/ReadServico", async ([FromServices] Command.Receivers.Read
 .RequireAuthorization();
 
 
-app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Read.PacienteReadReceiver receiver, [FromBody] Command.Commands.Read.PacienteReadCommand command) =>
+app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Read.PacienteReadReceiver receiver, [FromBody] Command.Read.PacienteReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
@@ -616,7 +650,7 @@ app.MapPost("/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Re
 .RequireAuthorization();
 
 
-app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadReceiver receiver, [FromBody] Command.Commands.Read.MovimentacaoFinanceiraReadCommand command) =>
+app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadReceiver receiver, [FromBody] Command.Read.MovimentacaoFinanceiraReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
@@ -625,7 +659,7 @@ app.MapPost("/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromSe
 .RequireAuthorization();
 
 
-app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Commands.Read.SesoesReadCommand command) =>
+app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Read.SesoesReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
@@ -634,7 +668,7 @@ app.MapPost("/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.S
 .RequireAuthorization();
 
 
-app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Commands.Read.ClinicaReadCommand command) =>
+app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Read.ClinicaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
@@ -643,7 +677,7 @@ app.MapPost("/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read
 .RequireAuthorization();
 
 
-app.MapPost("/Ytenant/ReadYtenant", async ([FromServices] Command.Receivers.Read.YtenantReadReceiver receiver, [FromBody] Command.Commands.Read.YtenantReadCommand command) =>
+app.MapPost("/Ytenant/ReadYtenant", async ([FromServices] Command.Receivers.Read.YtenantReadReceiver receiver, [FromBody] Command.Read.YtenantReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
@@ -652,7 +686,7 @@ app.MapPost("/Ytenant/ReadYtenant", async ([FromServices] Command.Receivers.Read
 .RequireAuthorization();
 
 
-app.MapPost("/Yuser/ReadYuser", async ([FromServices] Command.Receivers.Read.YuserReadReceiver receiver, [FromBody] Command.Commands.Read.YuserReadCommand command) =>
+app.MapPost("/Yuser/ReadYuser", async ([FromServices] Command.Receivers.Read.YuserReadReceiver receiver, [FromBody] Command.Read.YuserReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YuserEntity>>(StatusCodes.Status200OK)
@@ -661,16 +695,25 @@ app.MapPost("/Yuser/ReadYuser", async ([FromServices] Command.Receivers.Read.Yus
 .RequireAuthorization();
 
 
-app.MapPost("/Ytenant_Configuration/ReadYtenant_Configuration", async ([FromServices] Command.Receivers.Read.Ytenant_ConfigurationReadReceiver receiver, [FromBody] Command.Commands.Read.Ytenant_ConfigurationReadCommand command) =>
+app.MapPost("/YconfigArcteture/ReadYconfigArcteture", async ([FromServices] Command.Receivers.Read.YconfigArctetureReadReceiver receiver, [FromBody] Command.Read.YconfigArctetureReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.Ytenant_ConfigurationEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapPost("/Yperfil/ReadYperfil", async ([FromServices] Command.Receivers.Read.YperfilReadReceiver receiver, [FromBody] Command.Commands.Read.YperfilReadCommand command) =>
+app.MapPost("/YconfigNotification/ReadYconfigNotification", async ([FromServices] Command.Receivers.Read.YconfigNotificationReadReceiver receiver, [FromBody] Command.Read.YconfigNotificationReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.YconfigNotificationEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/Yperfil/ReadYperfil", async ([FromServices] Command.Receivers.Read.YperfilReadReceiver receiver, [FromBody] Command.Read.YperfilReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilEntity>>(StatusCodes.Status200OK)
@@ -679,7 +722,7 @@ app.MapPost("/Yperfil/ReadYperfil", async ([FromServices] Command.Receivers.Read
 .RequireAuthorization();
 
 
-app.MapPost("/Ypermtions/ReadYpermtions", async ([FromServices] Command.Receivers.Read.YpermtionsReadReceiver receiver, [FromBody] Command.Commands.Read.YpermtionsReadCommand command) =>
+app.MapPost("/Ypermtions/ReadYpermtions", async ([FromServices] Command.Receivers.Read.YpermtionsReadReceiver receiver, [FromBody] Command.Read.YpermtionsReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
@@ -688,7 +731,7 @@ app.MapPost("/Ypermtions/ReadYpermtions", async ([FromServices] Command.Receiver
 .RequireAuthorization();
 
 
-app.MapPost("/YperfilPermitions/ReadYperfilPermitions", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadReceiver receiver, [FromBody] Command.Commands.Read.YperfilPermitionsReadCommand command) =>
+app.MapPost("/YperfilPermitions/ReadYperfilPermitions", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadReceiver receiver, [FromBody] Command.Read.YperfilPermitionsReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
@@ -697,7 +740,7 @@ app.MapPost("/YperfilPermitions/ReadYperfilPermitions", async ([FromServices] Co
 .RequireAuthorization();
 
 
-app.MapPost("/YpserPermitions/ReadYpserPermitions", async ([FromServices] Command.Receivers.Read.YpserPermitionsReadReceiver receiver, [FromBody] Command.Commands.Read.YpserPermitionsReadCommand command) =>
+app.MapPost("/YpserPermitions/ReadYpserPermitions", async ([FromServices] Command.Receivers.Read.YpserPermitionsReadReceiver receiver, [FromBody] Command.Read.YpserPermitionsReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YpserPermitionsEntity>>(StatusCodes.Status200OK)
@@ -893,7 +936,24 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Ytenant_Configuration/Ytenant_ConfigurationReadFKTenantID", async ([FromServices] Command.Receivers.Read.Ytenant_ConfigurationReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/YconfigArcteture/YconfigArctetureReadFKTenantID", async ([FromServices] Command.Receivers.Read.YconfigArctetureReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/YconfigNotification/YconfigNotificationReadFKTenantID", async ([FromServices] Command.Receivers.Read.YconfigNotificationReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1581,14 +1641,14 @@ formFields = new[]
          };
          return Results.Ok(metadatacrud);
      }).RequireAuthorization();
-app.MapGet("/getMetaDataYtenant_Configuration", (HttpContext context) =>
+app.MapGet("/getMetaDataYconfigArcteture", (HttpContext context) =>
 {
 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 if (string.IsNullOrEmpty(userId))
 return Results.Unauthorized();
 var metadatacrud = new
 {
-entityDescription = "Ytenant_Configuration",
+entityDescription = "YconfigArcteture",
 searchFields = new[]
 {
  new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
@@ -1613,11 +1673,52 @@ formFields = new[]
 },
              endpoints = new
              {
-                 tenantid = "/Ytenant_Configuration/Ytenant_ConfigurationReadFKTenantID",
-                 create = "/Ytenant_Configuration/PostYtenant_Configuration",
-                 read = "/Ytenant_Configuration/ReadYtenant_Configuration",
-                 update = "/Ytenant_Configuration/PutYtenant_Configuration",
-                 delete = "/Ytenant_Configuration/DeleteYtenant_Configuration"
+                 tenantid = "/YconfigArcteture/YconfigArctetureReadFKTenantID",
+                 create = "/YconfigArcteture/PostYconfigArcteture",
+                 read = "/YconfigArcteture/ReadYconfigArcteture",
+                 update = "/YconfigArcteture/PutYconfigArcteture",
+                 delete = "/YconfigArcteture/DeleteYconfigArcteture"
+             }
+         };
+         return Results.Ok(metadatacrud);
+     }).RequireAuthorization();
+app.MapGet("/getMetaDataYconfigNotification", (HttpContext context) =>
+{
+var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+if (string.IsNullOrEmpty(userId))
+return Results.Unauthorized();
+var metadatacrud = new
+{
+entityDescription = "YconfigNotification",
+searchFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "emailadress", label = "EmailAdress", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "emailpassword", label = "EmailPassword", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "tenantid", label = "Administrador", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+},
+formFields = new[]
+{
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "emailadress", label = "EmailAdress", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "emailpassword", label = "EmailPassword", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "tenantid", label = "Administrador", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+},
+             endpoints = new
+             {
+                 tenantid = "/YconfigNotification/YconfigNotificationReadFKTenantID",
+                 create = "/YconfigNotification/PostYconfigNotification",
+                 read = "/YconfigNotification/ReadYconfigNotification",
+                 update = "/YconfigNotification/PutYconfigNotification",
+                 delete = "/YconfigNotification/DeleteYconfigNotification"
              }
          };
          return Results.Ok(metadatacrud);
@@ -1755,7 +1856,7 @@ formFields = new[]
          return Results.Ok(metadatacrud);
      }).RequireAuthorization();
 #region ServicesMethod
-app.MapPost("/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.Commands.ContasCreateContaUseCaseCommand command) =>
+app.MapPost("/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseCommand command) =>
 {
 try
 {
@@ -1772,7 +1873,7 @@ return Results.Problem(ex.Message);
 });
 
 
-app.MapPost("/Y/ContasLoginUseCase", async ([FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver, [FromBody] Command.Commands.ContasLoginUseCaseCommand command) =>
+app.MapPost("/Y/ContasLoginUseCase", async ([FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasLoginUseCaseCommand command) =>
 {
 try
 {
@@ -1789,7 +1890,7 @@ return Results.Problem(ex.Message);
 });
 
 
-app.MapPost("/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver receiver, [FromBody] Command.Commands.ContasRecoveryAccountUseCaseCommand command) =>
+app.MapPost("/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasRecoveryAccountUseCaseCommand command) =>
 {
 try
 {

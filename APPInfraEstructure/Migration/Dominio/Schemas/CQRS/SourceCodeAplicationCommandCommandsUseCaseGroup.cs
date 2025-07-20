@@ -22,7 +22,7 @@ namespace Dominio.Schemas.CQRS
         {
             _hub = hub;
             _commandType = CommandType.UseCaseGroup;
-            _nameSpace = CQRSParam.I.NameSpaceCommands;
+            _nameSpace = CQRSParam.I.NameSpaceCommandWrite;
         }
         public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCase method)
                     : base()

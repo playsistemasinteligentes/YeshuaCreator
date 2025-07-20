@@ -2,26 +2,26 @@ using System;
 using System.Net.Mail;
 using Dominio.Interfaces.Strategy;
 using Dominio.Enum.Strategy;
+using Read.RepositoryInterfaces;
+using IRepository.Read;
 
 namespace Shered.Patterns.Strategy
 {
     public partial class EmailNotification : INotification
     {
-        //private readonly SmtpClient _smtpClient;
-        //private readonly string _fromAddress;
 
-        //public EmailNotification(SmtpClient smtpClient, string fromAddress)
-        //{
-        //    _smtpClient = smtpClient ?? throw new ArgumentNullException(nameof(smtpClient));
-        //    _fromAddress = !string.IsNullOrWhiteSpace(fromAddress)
-        //        ? fromAddress
-        //        : throw new ArgumentException("Endereço de remetente inválido.", nameof(fromAddress));
-        //}
+        private readonly IYconfigNotificationReadRepository _repReadYConfig;
+
+        public EmailNotification(IYconfigNotificationReadRepository repReadYConfig)
+        {
+            _repReadYConfig = repReadYConfig;
+        }
 
         public partial void SendNotification(IMessage message)
         {
-            string _fromAddress = "angeo@gmail.com";
+            //Read.Repository.YuserReadRepository.
 
+            string _fromAddress = "angeo@gmail.com";
 
             if (message == null) throw new ArgumentNullException(nameof(message));
             if (string.IsNullOrWhiteSpace(message.Destination))

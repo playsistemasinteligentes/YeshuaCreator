@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Sesoes;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<ISesoesEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.SesoesCrudCommand c) 
+             if(comand is Command.Write.SesoesCrudCommand c) 
              {    
                  var sesoes = new SesoesFactory(_logger).Create(c.Id, c.PacienteId, c.ProfissionalId, c.ServicoId, c.DataInicio, c.DataFim, c.Status, c.MovimentacaoFinanceiraId, c.SinteseProntuario, c.QueixaPrincipal, c.MotivoConsultaAtual, c.SintomasRelatados, c.MudancasDesdeUltimaSessaao, c.ComportamentoObservado, c.EstadoEmocionalGeral, c.DiscursoPensamentos, c.TecnicasUtilizadas, c.QuestionamentosReflexoesAbordadas, c.ExerciciosTarefasSugeridas, c.DiagnoosticoHipoteseDiagnoostica, c.ObjetivosCurtoPrazo, c.ObjetivosLongoPrazo, c.FrequenciaSugeridaSessooes, c.EncaminhamentoOutrosProfissionais, c.InformacoesRelevantesFuturasConsultas, c.FeedbackPacienteSobreProcessoTerapeeutico);
                  if (!sesoes.isValidInsert())

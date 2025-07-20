@@ -21,7 +21,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using Dapper;");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
             sb.AppendLine($"using Input.Querys.{_entity.EntityName};");
-            sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
             sb.AppendLine($"using RepositoryInterfaces.Services;");
             sb.AppendLine($"using RepositoryInterfaces.Patterns.UnitOfWork;");
             sb.AppendLine("using Shered.DB.Connection;");

@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Ypermtions;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class YpermtionsReadRepository : IYpermtionsReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IYpermtionsQueryRead _query;
 
-        public YpermtionsReadRepository(SqlFactory factory)
+        public YpermtionsReadRepository(SqlFactory factory, ICurrentUser correntUser,IYpermtionsQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<YpermtionsDTO> getYpermtions(ICommandRead command)
          {
-            if (command is Command.Commands.Read.YpermtionsReadCommand c)
+            if (command is Command.Read.YpermtionsReadCommand c)
                 return getYpermtions(c);
             throw new NotImplementedException();
         }
-        private DataPagination<YpermtionsDTO> getYpermtions(Command.Commands.Read.YpermtionsReadCommand command)
+        private DataPagination<YpermtionsDTO> getYpermtions(Command.Read.YpermtionsReadCommand command)
         {
-            var query = new YpermtionsReadQuery().YpermtionsQuery(command);
+            var query = _query.YpermtionsQuery(command);
 
                 var itens = _connection.Query<YpermtionsDTO>(query.Query,query.Parameters);
                 return new DataPagination<YpermtionsDTO>(
@@ -44,7 +49,7 @@ namespace Read.Repository
 
         public bool ExistsById(string value)
         {
-            var query = new YpermtionsReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -52,7 +57,7 @@ namespace Read.Repository
 
         public bool ExistsByDescription(string value)
         {
-            var query = new YpermtionsReadQuery().ExistsByDescriptionQuery(value);
+            var query = _query.ExistsByDescriptionQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -60,7 +65,7 @@ namespace Read.Repository
 
         public YpermtionsDTO FirstById(string value)
         {
-            var query = new YpermtionsReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YpermtionsDTO>(query.Query, query.Parameters);
                 return result;
@@ -68,7 +73,7 @@ namespace Read.Repository
 
         public YpermtionsDTO FirstByDescription(string value)
         {
-            var query = new YpermtionsReadQuery().FirstByDescriptionQuery(value);
+            var query = _query.FirstByDescriptionQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YpermtionsDTO>(query.Query, query.Parameters);
                 return result;

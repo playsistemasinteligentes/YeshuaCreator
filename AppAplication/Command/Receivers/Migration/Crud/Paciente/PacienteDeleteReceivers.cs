@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.Paciente;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IPacienteEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.PacienteCrudCommand c) 
+             if(comand is Command.Write.PacienteCrudCommand c) 
              {    
                  var paciente = new PacienteFactory(_logger).Create(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
                  if (!paciente.isValidDelete())

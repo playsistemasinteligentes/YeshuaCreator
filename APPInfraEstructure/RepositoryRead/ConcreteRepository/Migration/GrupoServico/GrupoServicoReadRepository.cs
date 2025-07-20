@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.GrupoServico;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class GrupoServicoReadRepository : IGrupoServicoReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IGrupoServicoQueryRead _query;
 
-        public GrupoServicoReadRepository(SqlFactory factory)
+        public GrupoServicoReadRepository(SqlFactory factory, ICurrentUser correntUser,IGrupoServicoQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<GrupoServicoDTO> getGrupoServico(ICommandRead command)
          {
-            if (command is Command.Commands.Read.GrupoServicoReadCommand c)
+            if (command is Command.Read.GrupoServicoReadCommand c)
                 return getGrupoServico(c);
             throw new NotImplementedException();
         }
-        private DataPagination<GrupoServicoDTO> getGrupoServico(Command.Commands.Read.GrupoServicoReadCommand command)
+        private DataPagination<GrupoServicoDTO> getGrupoServico(Command.Read.GrupoServicoReadCommand command)
         {
-            var query = new GrupoServicoReadQuery().GrupoServicoQuery(command);
+            var query = _query.GrupoServicoQuery(command);
 
                 var itens = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters);
                 return new DataPagination<GrupoServicoDTO>(
@@ -44,7 +49,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new GrupoServicoReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -52,7 +57,7 @@ namespace Read.Repository
 
         public bool ExistsByDescricao(string value)
         {
-            var query = new GrupoServicoReadQuery().ExistsByDescricaoQuery(value);
+            var query = _query.ExistsByDescricaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -60,7 +65,7 @@ namespace Read.Repository
 
         public GrupoServicoDTO FirstById(int value)
         {
-            var query = new GrupoServicoReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
                 return result;
@@ -68,7 +73,7 @@ namespace Read.Repository
 
         public GrupoServicoDTO FirstByDescricao(string value)
         {
-            var query = new GrupoServicoReadQuery().FirstByDescricaoQuery(value);
+            var query = _query.FirstByDescricaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
                 return result;

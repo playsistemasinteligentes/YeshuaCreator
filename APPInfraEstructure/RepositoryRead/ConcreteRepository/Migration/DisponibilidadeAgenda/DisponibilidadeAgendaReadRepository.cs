@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.DisponibilidadeAgenda;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class DisponibilidadeAgendaReadRepository : IDisponibilidadeAgendaReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IDisponibilidadeAgendaQueryRead _query;
 
-        public DisponibilidadeAgendaReadRepository(SqlFactory factory)
+        public DisponibilidadeAgendaReadRepository(SqlFactory factory, ICurrentUser correntUser,IDisponibilidadeAgendaQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(ICommandRead command)
          {
-            if (command is Command.Commands.Read.DisponibilidadeAgendaReadCommand c)
+            if (command is Command.Read.DisponibilidadeAgendaReadCommand c)
                 return getDisponibilidadeAgenda(c);
             throw new NotImplementedException();
         }
-        private DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(Command.Commands.Read.DisponibilidadeAgendaReadCommand command)
+        private DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(Command.Read.DisponibilidadeAgendaReadCommand command)
         {
-            var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaQuery(command);
+            var query = _query.DisponibilidadeAgendaQuery(command);
 
                 var itens = _connection.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters);
                 return new DataPagination<DisponibilidadeAgendaDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<DisponibilidadeAgendaProfissionalIdDTO> lista;
-            var query = new DisponibilidadeAgendaReadQuery().DisponibilidadeAgendaProfissionalIdQuery(command);
+            var query = _query.DisponibilidadeAgendaProfissionalIdQuery(command);
 
                 lista = _connection.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaProfissionalIdDTO>;
             return lista;
@@ -62,7 +67,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new DisponibilidadeAgendaReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -70,7 +75,7 @@ namespace Read.Repository
 
         public bool ExistsByProfissionalId(int value)
         {
-            var query = new DisponibilidadeAgendaReadQuery().ExistsByProfissionalIdQuery(value);
+            var query = _query.ExistsByProfissionalIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -78,7 +83,7 @@ namespace Read.Repository
 
         public bool ExistsByDataHora(DateTime value)
         {
-            var query = new DisponibilidadeAgendaReadQuery().ExistsByDataHoraQuery(value);
+            var query = _query.ExistsByDataHoraQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -86,7 +91,7 @@ namespace Read.Repository
 
         public DisponibilidadeAgendaDTO FirstById(int value)
         {
-            var query = new DisponibilidadeAgendaReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
                 return result;
@@ -94,7 +99,7 @@ namespace Read.Repository
 
         public DisponibilidadeAgendaDTO FirstByProfissionalId(int value)
         {
-            var query = new DisponibilidadeAgendaReadQuery().FirstByProfissionalIdQuery(value);
+            var query = _query.FirstByProfissionalIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
                 return result;
@@ -102,7 +107,7 @@ namespace Read.Repository
 
         public DisponibilidadeAgendaDTO FirstByDataHora(DateTime value)
         {
-            var query = new DisponibilidadeAgendaReadQuery().FirstByDataHoraQuery(value);
+            var query = _query.FirstByDataHoraQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<DisponibilidadeAgendaDTO>(query.Query, query.Parameters);
                 return result;

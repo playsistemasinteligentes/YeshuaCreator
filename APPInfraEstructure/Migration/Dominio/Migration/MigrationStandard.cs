@@ -17,22 +17,31 @@ namespace Migration.Dominio.Migration
         public override void Up()
         {
             AddEntity("Ytenant")
-            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("Id", "ID").Int().Incremento().KeyStandardField()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull();
 
+            AddEntity("YStandardFields")
+            .AddColumn("Deleted", "Deleted").Boolean().KeyStandardField();
+
             AddEntity("Yuser")
-            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("Id", "ID").Int().Incremento().KeyStandardField()
             .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
             .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
 
 
-            AddEntity("Ytenant_Configuration").Cached()
+            AddEntity("YconfigArcteture").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("AuditTrackerActived", "AuditTrackerActived").Int()
             .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int()
+            .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
+
+            AddEntity("YconfigNotification").Cached()
+            .AddColumn("Id", "ID").Int().Key()
+            .AddColumn("EmailAdress", "EmailAdress").Varchar(100)
+            .AddColumn("EmailPassword", "EmailPassword").Varchar(60)
             .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
 
             AddEntity("Yperfil")

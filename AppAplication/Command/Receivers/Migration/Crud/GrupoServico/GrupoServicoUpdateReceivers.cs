@@ -2,7 +2,7 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Repositorio.Inputs.Repositorio.GrupoServico;
+using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Command.Receivers.Write
 
         protected override State<IGrupoServicoEntity> Action(ICommand comand)
         {
-             if(comand is Command.Commands.GrupoServicoCrudCommand c) 
+             if(comand is Command.Write.GrupoServicoCrudCommand c) 
              {    
                  var gruposervico = new GrupoServicoFactory(_logger).Create(c.Id, c.Descricao);
                  if (!gruposervico.isValidUpdate())

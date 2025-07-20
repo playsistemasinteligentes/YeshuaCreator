@@ -41,7 +41,7 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(GetPathAppAplicationCommandCommandsCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
-                var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(entity, CommandType.Crud, CQRSParam.I.NameSpaceCommands, string.Empty);
+                var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(entity, CommandType.Crud, CQRSParam.I.NameSpaceCommandWrite, string.Empty);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
             // Read form sorche
@@ -471,7 +471,13 @@ namespace Dominio.Schemas.CQRS
             {
                 var filePath = Path.Combine(GetPathAppInfraestructureReadConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}ReadQuerys.cs");
                 var filePathCuston = Path.Combine(GetPathAppInfraestructureReadConcreteQuerys(), $"Custon\\{entity.EntityName}\\{entity.EntityName}ReadQuerys.cs");
-                var sourceCodeMigration = new SourceCodeInfraestructureReadQuerysMigration(entity);
+                var sourceCodeMigration = new SourceCodeInfraestructureReadQuerysMigration(entity, false);
+                sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+
+
+                filePath = Path.Combine(GetPathAppInfraestructureReadConcreteQuerys(), $"Migration\\{entity.EntityName}\\I{entity.EntityName}ReadQuerys.cs");
+                filePathCuston = Path.Combine(GetPathAppInfraestructureReadConcreteQuerys(), $"Custon\\{entity.EntityName}\\I{entity.EntityName}ReadQuerys.cs");
+                sourceCodeMigration = new SourceCodeInfraestructureReadQuerysMigration(entity, true);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
         }

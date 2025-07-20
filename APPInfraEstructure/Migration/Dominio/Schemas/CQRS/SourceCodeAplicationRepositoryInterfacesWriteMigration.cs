@@ -28,7 +28,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a interface
-            sb.AppendLine($"namespace Repositorio.Inputs.Repositorio.{_entity.EntityName}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIRepositoryWrite}");
             sb.AppendLine("{");
             sb.AppendLine($"    public partial interface I{_entity.EntityName}WriteRepository");
             sb.AppendLine("    {");
@@ -51,7 +51,7 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
             return new StringBuilder();
-            sb.AppendLine($"namespace Repositorio.Inputs.Repositorio.{_entity.EntityName}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIRepositoryWrite}");
             sb.AppendLine("{");
 
             // Define a classe

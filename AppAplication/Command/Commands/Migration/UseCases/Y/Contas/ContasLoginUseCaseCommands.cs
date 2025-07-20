@@ -1,7 +1,7 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
-namespace Command.Commands
+namespace Command.UseCase
 {
     public partial record ContasLoginUseCaseCommand : ICommand
     {

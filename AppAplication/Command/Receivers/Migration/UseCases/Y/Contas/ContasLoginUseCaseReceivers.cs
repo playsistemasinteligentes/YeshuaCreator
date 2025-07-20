@@ -1,9 +1,10 @@
 // Escopo: 
-using Command.Commands;
+using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Dominio.Interfaces;
+using Command.UseCase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Command.Receivers.UseCase
             try
             {
                  State<object> retorno = Success("OK", (ContasLoginUseCaseCommand)comand);
-                 if (comand is Command.Commands.ContasLoginUseCaseCommand specificCommand)
+                 if (comand is Command.UseCase.ContasLoginUseCaseCommand specificCommand)
                  CustomActionHook(ref retorno, specificCommand);
                  return retorno;
             }
@@ -34,7 +35,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<object> state, Command.Commands.ContasLoginUseCaseCommand comand);
+partial void CustomActionHook(ref State<object> state, Command.UseCase.ContasLoginUseCaseCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

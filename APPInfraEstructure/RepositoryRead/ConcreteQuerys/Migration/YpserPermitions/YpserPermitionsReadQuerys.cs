@@ -1,5 +1,8 @@
 using Dominio.Entitys.YpserPermitions;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.YpserPermitions
+namespace Query.Read 
 {
-    public class YpserPermitionsReadQuery : QueryBase
+    public class YpserPermitionsQueryRead : QueryBase, IYpserPermitionsQueryRead
     {
-        public QueryModel YpserPermitionsQuery(Command.Commands.Read.YpserPermitionsReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public YpserPermitionsQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel YpserPermitionsQuery(Command.Read.YpserPermitionsReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -23,7 +31,9 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
 if (!string.IsNullOrEmpty(Command.PermitionsId)) parametersDict["PermitionsId"] = $"%{Command.PermitionsId}%";
 if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId like @PermitionsId");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -55,8 +65,12 @@ if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId
                       whereClauses.Add($" Nome like @Nome "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel YpserPermitionsPermitionsIdQuery(Command.Patterns.Command.SearchFKCommand Command)
@@ -79,33 +93,41 @@ if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId
                       whereClauses.Add($" Id like @Id "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM YpserPermitions WHERE UserId = @UserId";
+            var sql = $"SELECT 1 FROM YpserPermitions WHERE {getTenant()} UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPermitionsIdQuery(string value)
         {
-            var sql = "SELECT 1 FROM YpserPermitions WHERE PermitionsId = @PermitionsId";
+            var sql = $"SELECT 1 FROM YpserPermitions WHERE {getTenant()} PermitionsId = @PermitionsId";
             var parameters = new { PermitionsId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = "SELECT * FROM YpserPermitions WHERE UserId = @UserId";
+            var sql = $"SELECT * FROM YpserPermitions WHERE {getTenant()} UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPermitionsIdQuery(string value)
         {
-            var sql = "SELECT * FROM YpserPermitions WHERE PermitionsId = @PermitionsId";
+            var sql = $"SELECT * FROM YpserPermitions WHERE {getTenant()} PermitionsId = @PermitionsId";
             var parameters = new { PermitionsId = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

@@ -1,6 +1,5 @@
-using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
-namespace Command.Commands.Read
+namespace Command.Read
 {
     public struct YtenantReadFKUserIDAdminCommand : ICommand
     {

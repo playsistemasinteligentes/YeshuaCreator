@@ -58,7 +58,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
 
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioInputsRepositorio}.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
                 sb.AppendLine($"using System.Linq;");
@@ -83,7 +83,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        protected override State<I{_entity.EntityName}Entity> Action(ICommand comand)");
                 sb.AppendLine("        {");
 
-                sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommands}.{_entity.EntityName}CrudCommand c) ");
+                sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
                 sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
@@ -157,7 +157,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
-                sb.AppendLine($"using Repositorio.Inputs.Repositorio.{_entity.EntityName};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");

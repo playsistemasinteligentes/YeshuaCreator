@@ -4,7 +4,7 @@ using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
 using Dominio.Interfaces;
 using Repositorio.Outputs;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
@@ -21,7 +21,7 @@ namespace Command.Receivers.Read
 
         protected override State<DataPagination<EspecialidadeDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Commands.Read.EspecialidadeReadCommand c) 
+            if(comand is Command.Read.EspecialidadeReadCommand c) 
              {    
                 var EspecialidadeReadRepository = _repository.getEspecialidade(c);
                 return Success("OK", EspecialidadeReadRepository);

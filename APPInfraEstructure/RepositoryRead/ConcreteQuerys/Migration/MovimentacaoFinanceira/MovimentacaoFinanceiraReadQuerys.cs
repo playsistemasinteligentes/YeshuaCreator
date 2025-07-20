@@ -1,5 +1,8 @@
 using Dominio.Entitys.MovimentacaoFinanceira;
 using Shered.DB;
+using Command.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +10,16 @@ using System.Text;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace Output.Querys.MovimentacaoFinanceira
+namespace Query.Read 
 {
-    public class MovimentacaoFinanceiraReadQuery : QueryBase
+    public class MovimentacaoFinanceiraQueryRead : QueryBase, IMovimentacaoFinanceiraQueryRead
     {
-        public QueryModel MovimentacaoFinanceiraQuery(Command.Commands.Read.MovimentacaoFinanceiraReadCommand Command)
+        protected readonly ICurrentUser _correntUser;
+        public MovimentacaoFinanceiraQueryRead(ICurrentUser correntUser)
+        {
+            _correntUser = correntUser;
+        }
+        public QueryModel MovimentacaoFinanceiraQuery(Command.Read.MovimentacaoFinanceiraReadCommand Command)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -27,7 +35,9 @@ if (Command.ServicoId.HasValue) whereClauses.Add($"ServicoId = @ServicoId");
 if (Command.TipoMovimentacao.HasValue) parametersDict["TipoMovimentacao"] = Command.TipoMovimentacao.Value;
 if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @TipoMovimentacao");
             if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" AND ", whereClauses); 
+                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getTenant())) 
+                 this.Query += $" WHERE {getTenant()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -59,8 +69,12 @@ if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @Ti
                       whereClauses.Add($" Nome like @Nome "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel MovimentacaoFinanceiraServicoIdQuery(Command.Patterns.Command.SearchFKCommand Command)
@@ -85,93 +99,101 @@ if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @Ti
                       whereClauses.Add($" Nome like @Nome "); 
                  }
             }
-            if (whereClauses.Any()) 
-            this.Query += " WHERE " + string.Join(" OR ", whereClauses); 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
+            this.Query += $" WHERE {getTenant()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE Id = @Id";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPacienteIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE PacienteId = @PacienteId";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} PacienteId = @PacienteId";
             var parameters = new { PacienteId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByServicoIdQuery(int value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE ServicoId = @ServicoId";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} ServicoId = @ServicoId";
             var parameters = new { ServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByValorQuery(Decimal value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE Valor = @Valor";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} Valor = @Valor";
             var parameters = new { Valor = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTipoMovimentacaoQuery(int value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE TipoMovimentacao = @TipoMovimentacao";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} TipoMovimentacao = @TipoMovimentacao";
             var parameters = new { TipoMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDataMovimentacaoQuery(DateTime value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE DataMovimentacao = @DataMovimentacao";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} DataMovimentacao = @DataMovimentacao";
             var parameters = new { DataMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsBySaldoAtualQuery(Decimal value)
         {
-            var sql = "SELECT 1 FROM MovimentacaoFinanceira WHERE SaldoAtual = @SaldoAtual";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getTenant()} SaldoAtual = @SaldoAtual";
             var parameters = new { SaldoAtual = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE Id = @Id";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPacienteIdQuery(int value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE PacienteId = @PacienteId";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} PacienteId = @PacienteId";
             var parameters = new { PacienteId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByServicoIdQuery(int value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE ServicoId = @ServicoId";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} ServicoId = @ServicoId";
             var parameters = new { ServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByValorQuery(Decimal value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE Valor = @Valor";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} Valor = @Valor";
             var parameters = new { Valor = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTipoMovimentacaoQuery(int value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE TipoMovimentacao = @TipoMovimentacao";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} TipoMovimentacao = @TipoMovimentacao";
             var parameters = new { TipoMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDataMovimentacaoQuery(DateTime value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE DataMovimentacao = @DataMovimentacao";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} DataMovimentacao = @DataMovimentacao";
             var parameters = new { DataMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstBySaldoAtualQuery(Decimal value)
         {
-            var sql = "SELECT * FROM MovimentacaoFinanceira WHERE SaldoAtual = @SaldoAtual";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getTenant()} SaldoAtual = @SaldoAtual";
             var parameters = new { SaldoAtual = value };
             return new QueryModel(sql, parameters);
+        }
+        private string getTenant()
+        {
+ return "";
         }
     }
 }

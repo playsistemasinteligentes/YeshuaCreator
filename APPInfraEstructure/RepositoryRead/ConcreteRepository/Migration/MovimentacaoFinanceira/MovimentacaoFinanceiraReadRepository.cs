@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.MovimentacaoFinanceira;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class MovimentacaoFinanceiraReadRepository : IMovimentacaoFinanceiraReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IMovimentacaoFinanceiraQueryRead _query;
 
-        public MovimentacaoFinanceiraReadRepository(SqlFactory factory)
+        public MovimentacaoFinanceiraReadRepository(SqlFactory factory, ICurrentUser correntUser,IMovimentacaoFinanceiraQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(ICommandRead command)
          {
-            if (command is Command.Commands.Read.MovimentacaoFinanceiraReadCommand c)
+            if (command is Command.Read.MovimentacaoFinanceiraReadCommand c)
                 return getMovimentacaoFinanceira(c);
             throw new NotImplementedException();
         }
-        private DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(Command.Commands.Read.MovimentacaoFinanceiraReadCommand command)
+        private DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(Command.Read.MovimentacaoFinanceiraReadCommand command)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraQuery(command);
+            var query = _query.MovimentacaoFinanceiraQuery(command);
 
                 var itens = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters);
                 return new DataPagination<MovimentacaoFinanceiraDTO>(
@@ -45,7 +50,7 @@ namespace Read.Repository
         private IEnumerable<MovimentacaoFinanceiraPacienteIdDTO> getMovimentacaoFinanceiraReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<MovimentacaoFinanceiraPacienteIdDTO> lista;
-            var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraPacienteIdQuery(command);
+            var query = _query.MovimentacaoFinanceiraPacienteIdQuery(command);
 
                 lista = _connection.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraPacienteIdDTO>;
             return lista;
@@ -63,7 +68,7 @@ namespace Read.Repository
         private IEnumerable<MovimentacaoFinanceiraServicoIdDTO> getMovimentacaoFinanceiraReadFKServicoId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<MovimentacaoFinanceiraServicoIdDTO> lista;
-            var query = new MovimentacaoFinanceiraReadQuery().MovimentacaoFinanceiraServicoIdQuery(command);
+            var query = _query.MovimentacaoFinanceiraServicoIdQuery(command);
 
                 lista = _connection.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraServicoIdDTO>;
             return lista;
@@ -80,7 +85,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -88,7 +93,7 @@ namespace Read.Repository
 
         public bool ExistsByPacienteId(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsByPacienteIdQuery(value);
+            var query = _query.ExistsByPacienteIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -96,7 +101,7 @@ namespace Read.Repository
 
         public bool ExistsByServicoId(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsByServicoIdQuery(value);
+            var query = _query.ExistsByServicoIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -104,7 +109,7 @@ namespace Read.Repository
 
         public bool ExistsByValor(Decimal value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsByValorQuery(value);
+            var query = _query.ExistsByValorQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -112,7 +117,7 @@ namespace Read.Repository
 
         public bool ExistsByTipoMovimentacao(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsByTipoMovimentacaoQuery(value);
+            var query = _query.ExistsByTipoMovimentacaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -120,7 +125,7 @@ namespace Read.Repository
 
         public bool ExistsByDataMovimentacao(DateTime value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsByDataMovimentacaoQuery(value);
+            var query = _query.ExistsByDataMovimentacaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -128,7 +133,7 @@ namespace Read.Repository
 
         public bool ExistsBySaldoAtual(Decimal value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().ExistsBySaldoAtualQuery(value);
+            var query = _query.ExistsBySaldoAtualQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -136,7 +141,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstById(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -144,7 +149,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstByPacienteId(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstByPacienteIdQuery(value);
+            var query = _query.FirstByPacienteIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -152,7 +157,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstByServicoId(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstByServicoIdQuery(value);
+            var query = _query.FirstByServicoIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -160,7 +165,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstByValor(Decimal value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstByValorQuery(value);
+            var query = _query.FirstByValorQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -168,7 +173,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstByTipoMovimentacao(int value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstByTipoMovimentacaoQuery(value);
+            var query = _query.FirstByTipoMovimentacaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -176,7 +181,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstByDataMovimentacao(DateTime value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstByDataMovimentacaoQuery(value);
+            var query = _query.FirstByDataMovimentacaoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
@@ -184,7 +189,7 @@ namespace Read.Repository
 
         public MovimentacaoFinanceiraDTO FirstBySaldoAtual(Decimal value)
         {
-            var query = new MovimentacaoFinanceiraReadQuery().FirstBySaldoAtualQuery(value);
+            var query = _query.FirstBySaldoAtualQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;

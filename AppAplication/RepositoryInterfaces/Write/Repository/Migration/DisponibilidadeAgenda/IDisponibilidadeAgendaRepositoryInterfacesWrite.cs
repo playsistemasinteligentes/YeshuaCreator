@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositorio.Inputs.Repositorio.DisponibilidadeAgenda
+namespace IRepository.Write
 {
     public partial interface IDisponibilidadeAgendaWriteRepository
     {

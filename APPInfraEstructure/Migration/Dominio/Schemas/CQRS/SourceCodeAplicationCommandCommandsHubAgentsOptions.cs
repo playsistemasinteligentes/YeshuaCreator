@@ -27,7 +27,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
             // Adiciona a declaração do namespace
-            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceCommands}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceCommandWrite}");
             sb.AppendLine("{");
 
             // Define a classe
@@ -49,7 +49,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
             // Adiciona a declaração do namespace
-            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceCommands}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceCommandWrite}");
 
             sb.AppendLine("{");
 

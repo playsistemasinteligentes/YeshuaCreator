@@ -1,10 +1,9 @@
-using Command.Commands;
-using Command.Patterns.Command;
+
+using Command.UseCase;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Read.RepositoryInterfaces;
-using Repositorio.Inputs.Repositorio.Y_Tenant;
-using Repositorio.Inputs.Repositorio.Y_User;
+using IRepository.Read;
+using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 
@@ -14,11 +13,11 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly IY_TenantReadRepository _repReadY_Tenant;
-        private readonly IY_TenantWriteRepository _repWriteY_Tenant;
-        private readonly IY_UserReadRepository _repReadY_User;
-        private readonly IY_UserWriteRepository _repWriteY_User;
-        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IY_TenantReadRepository repReadY_Tenant, IY_TenantWriteRepository repWriteY_Tenant, IY_UserReadRepository repReadY_User, IY_UserWriteRepository repWriteY_User)
+        private readonly IYtenantReadRepository _repReadY_Tenant;
+        private readonly IYtenantWriteRepository _repWriteY_Tenant;
+        private readonly IYuserReadRepository _repReadY_User;
+        private readonly IYuserWriteRepository _repWriteY_User;
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IYtenantReadRepository repReadY_Tenant, IYtenantWriteRepository repWriteY_Tenant, IYuserReadRepository repReadY_User, IYuserWriteRepository repWriteY_User)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
@@ -55,7 +54,7 @@ namespace Command.Receivers.UseCase
 
                 _unitOfWork.BeginTran();
 
-                var tenant = new Y_TenantFactory(_logger).Create(
+                var tenant = new YtenantFactory(_logger).Create(
                     null,
                     comand.CpfCnpj,
                     comand.nome,
@@ -70,7 +69,7 @@ namespace Command.Receivers.UseCase
                     throw new ReceiverException<object>(Error("Erro ao criar Tenant, Id não gerado", default));
 
                 // Criação do User usando Factory (padrão seu)
-                var user = new Y_UserFactory(_logger).Create(
+                var user = new YuserFactory(_logger).Create(
                     null,
                     comand.email,
                     comand.email, // Nome: Aqui você decide o valor real, coloquei email como exemplo

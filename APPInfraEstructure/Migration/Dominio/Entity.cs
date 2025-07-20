@@ -105,6 +105,17 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Key();
         }
+        public Entity KeyStandardField()
+        {
+            return this.AlterColumns.Last().StandardField();
+        }
+
+        public Entity StandardField()
+        {
+            this.AlterColumns.Last().StandardField();
+            return this.Key();
+        }
+
         public Entity Incremento()
         {
             if (this.StatusColuns == 1)

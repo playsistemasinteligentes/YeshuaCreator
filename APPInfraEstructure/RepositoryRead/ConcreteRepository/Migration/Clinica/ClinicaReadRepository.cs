@@ -1,10 +1,11 @@
 using Dapper;
-using Output.Querys.Clinica;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Read.Repository;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
+using IQuery.Read;
+using Aplication.Interfaces.Services;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,25 @@ namespace Read.Repository
     public class ClinicaReadRepository : IClinicaReadRepository
     {
         protected readonly IDbConnection _connection;
+        protected readonly ICurrentUser _correntUser;
+       protected readonly IClinicaQueryRead _query;
 
-        public ClinicaReadRepository(SqlFactory factory)
+        public ClinicaReadRepository(SqlFactory factory, ICurrentUser correntUser,IClinicaQueryRead query)
         {
             _connection = factory.SqlConnection();
+            _correntUser = correntUser;
+            _query = query;
         }
 
         public DataPagination<ClinicaDTO> getClinica(ICommandRead command)
          {
-            if (command is Command.Commands.Read.ClinicaReadCommand c)
+            if (command is Command.Read.ClinicaReadCommand c)
                 return getClinica(c);
             throw new NotImplementedException();
         }
-        private DataPagination<ClinicaDTO> getClinica(Command.Commands.Read.ClinicaReadCommand command)
+        private DataPagination<ClinicaDTO> getClinica(Command.Read.ClinicaReadCommand command)
         {
-            var query = new ClinicaReadQuery().ClinicaQuery(command);
+            var query = _query.ClinicaQuery(command);
 
                 var itens = _connection.Query<ClinicaDTO>(query.Query,query.Parameters);
                 return new DataPagination<ClinicaDTO>(
@@ -44,7 +49,7 @@ namespace Read.Repository
 
         public bool ExistsById(int value)
         {
-            var query = new ClinicaReadQuery().ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -52,7 +57,7 @@ namespace Read.Repository
 
         public bool ExistsByNome(string value)
         {
-            var query = new ClinicaReadQuery().ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -60,7 +65,7 @@ namespace Read.Repository
 
         public bool ExistsByEndereco(string value)
         {
-            var query = new ClinicaReadQuery().ExistsByEnderecoQuery(value);
+            var query = _query.ExistsByEnderecoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -68,7 +73,7 @@ namespace Read.Repository
 
         public bool ExistsByTelefone(string value)
         {
-            var query = new ClinicaReadQuery().ExistsByTelefoneQuery(value);
+            var query = _query.ExistsByTelefoneQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -76,7 +81,7 @@ namespace Read.Repository
 
         public ClinicaDTO FirstById(int value)
         {
-            var query = new ClinicaReadQuery().FirstByIdQuery(value);
+            var query = _query.FirstByIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ClinicaDTO>(query.Query, query.Parameters);
                 return result;
@@ -84,7 +89,7 @@ namespace Read.Repository
 
         public ClinicaDTO FirstByNome(string value)
         {
-            var query = new ClinicaReadQuery().FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ClinicaDTO>(query.Query, query.Parameters);
                 return result;
@@ -92,7 +97,7 @@ namespace Read.Repository
 
         public ClinicaDTO FirstByEndereco(string value)
         {
-            var query = new ClinicaReadQuery().FirstByEnderecoQuery(value);
+            var query = _query.FirstByEnderecoQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ClinicaDTO>(query.Query, query.Parameters);
                 return result;
@@ -100,7 +105,7 @@ namespace Read.Repository
 
         public ClinicaDTO FirstByTelefone(string value)
         {
-            var query = new ClinicaReadQuery().FirstByTelefoneQuery(value);
+            var query = _query.FirstByTelefoneQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<ClinicaDTO>(query.Query, query.Parameters);
                 return result;

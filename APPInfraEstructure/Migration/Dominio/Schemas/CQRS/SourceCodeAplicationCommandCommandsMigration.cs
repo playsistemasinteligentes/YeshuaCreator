@@ -26,7 +26,6 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
 
             // Adiciona a declaração do namespace

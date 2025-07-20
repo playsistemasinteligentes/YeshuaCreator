@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RepositoryInterfaces.Services;
+using Shered.Services;
 
 
 
@@ -101,6 +103,8 @@ builder.Services.AddScoped<IDbConnection>(provader =>
 });
 
 IndependenceInjection.MapIndependenceInjection(builder);
+IndependenceInjectionCuston.MapIndependenceInjection(builder);
+
 
 // Configurações do JWT
 var jwtSettings = new JwtSettings();

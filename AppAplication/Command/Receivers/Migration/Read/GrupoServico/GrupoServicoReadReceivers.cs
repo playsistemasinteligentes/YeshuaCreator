@@ -4,7 +4,7 @@ using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
 using Dominio.Interfaces;
 using Repositorio.Outputs;
-using Read.RepositoryInterfaces;
+using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
@@ -21,7 +21,7 @@ namespace Command.Receivers.Read
 
         protected override State<DataPagination<GrupoServicoDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Commands.Read.GrupoServicoReadCommand c) 
+            if(comand is Command.Read.GrupoServicoReadCommand c) 
              {    
                 var GrupoServicoReadRepository = _repository.getGrupoServico(c);
                 return Success("OK", GrupoServicoReadRepository);

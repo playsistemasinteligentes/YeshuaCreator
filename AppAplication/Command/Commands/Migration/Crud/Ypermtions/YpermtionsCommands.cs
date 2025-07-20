@@ -1,6 +1,5 @@
-using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
-namespace Command.Commands
+namespace Command.Write
 {
     public struct YpermtionsCrudCommand : ICommand
     {
