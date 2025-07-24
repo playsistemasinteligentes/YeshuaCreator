@@ -55,7 +55,7 @@ namespace Dominio.Schemas.CQRS
             // Read FKs
             foreach (var entity in migration.Entitys)
             {
-                foreach (var colunm in entity.AddColumns.Where(x => x.IsFK))
+                foreach (var colunm in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}{colunm.Name}Commands.cs");
                     var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}{colunm.Name}Commands.cs");
@@ -131,7 +131,7 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Read, CQRSParam.I.NameSpaceCommandReceiversRead, string.Empty);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     filePath = Path.Combine(GetPathAppAplicationCommandReceiversRead("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}{column.Name}Receivers.cs");
                     filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}{column.Name}Receivers.cs");
@@ -273,7 +273,7 @@ namespace Dominio.Schemas.CQRS
                 var sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(entity, CommandType.Read, string.Empty);
                 sourceCodeDTOMigration.WriteCode(entity, filePath, filePathCuston);
 
-                foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{entity.EntityName}{column.Name}DTO.cs");
                     filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\I{entity.EntityName}{column.Name}DTO.cs");

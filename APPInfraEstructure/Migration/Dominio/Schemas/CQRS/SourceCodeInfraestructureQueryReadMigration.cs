@@ -32,18 +32,18 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
 
                 sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command Command);");
-                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand Command);");
                 }
                 // exist retorno bool 
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value);");
                 }
                 // firt by 
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value);");
@@ -94,7 +94,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            this.Query = $@\" select {columnsString} from {_entity.EntityName} \";");
 
 
-                foreach (var item in _entity.AddColumns)
+                foreach (var item in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     if (item.getCsharpType() == "string")
                     {
@@ -109,9 +109,9 @@ namespace Dominio.Schemas.CQRS
                 }
 
                 sb.AppendLine("            if (whereClauses.Any()) ");
-                sb.AppendLine("                 this.Query += $\" WHERE {getTenant()} {string.Join(\" AND \", whereClauses)}\"; ");
-                sb.AppendLine("            else if (!string.IsNullOrEmpty(getTenant())) ");
-                sb.AppendLine("                 this.Query += $\" WHERE {getTenant()}\"; ");
+                sb.AppendLine("                 this.Query += $\" WHERE {getBackEndFieldWitchWhere()} {string.Join(\" AND \", whereClauses)}\"; ");
+                sb.AppendLine("            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) ");
+                sb.AppendLine("                 this.Query += $\" WHERE {getBackEndFieldWitchWhere()}\"; ");
 
                 // Paginação
                 sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
@@ -126,7 +126,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        }");
 
 
-                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand Command)");
                     sb.AppendLine("        {");
@@ -158,12 +158,12 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("                 }");
                     sb.AppendLine("            }");
 
-                    sb.AppendLine("            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) ");
-                    sb.AppendLine("            this.Query += $\" WHERE {getTenant()} ({string.Join(\" OR \", whereClauses)})\"; ");
-                    sb.AppendLine("            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) ");
+                    sb.AppendLine("            if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) ");
+                    sb.AppendLine("            this.Query += $\" WHERE {getBackEndFieldWitchWhere()} ({string.Join(\" OR \", whereClauses)})\"; ");
+                    sb.AppendLine("            else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) ");
                     sb.AppendLine("            this.Query += $\" WHERE {string.Join(\" OR \", whereClauses)}\"; ");
-                    sb.AppendLine("            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) ");
-                    sb.AppendLine("            this.Query += $\" WHERE {getTenant()}\"; ");
+                    sb.AppendLine("            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) ");
+                    sb.AppendLine("            this.Query += $\" WHERE {getBackEndFieldWitchWhere()}\"; ");
 
                     sb.AppendLine("            return new QueryModel(this.Query, this.Parameters); ");
                     sb.AppendLine("        }");
@@ -173,12 +173,12 @@ namespace Dominio.Schemas.CQRS
 
 
                 // exist retorno bool 
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsWhereBackEndField))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value)");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"            var sql = $\"SELECT 1 FROM {_entity.EntityName} WHERE {{getTenant()}} {column.Name} = @{column.Name}\";");
+                    sb.AppendLine($"            var sql = $\"SELECT 1 FROM {_entity.EntityName} WHERE {{getBackEndFieldWitchWhere()}} {column.Name} = @{column.Name}\";");
                     sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
                     sb.AppendLine("            return new QueryModel(sql, parameters);");
                     sb.AppendLine("        }");
@@ -186,28 +186,37 @@ namespace Dominio.Schemas.CQRS
 
 
                 // firt by 
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsWhereBackEndField))
                 {
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value)");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"            var sql = $\"SELECT * FROM {_entity.EntityName} WHERE {{getTenant()}} {column.Name} = @{column.Name}\";");
+                    sb.AppendLine($"            var sql = $\"SELECT * FROM {_entity.EntityName} WHERE {{getBackEndFieldWitchWhere()}} {column.Name} = @{column.Name}\";");
                     sb.AppendLine($"            var parameters = new {{ {column.Name} = value }};");
                     sb.AppendLine("            return new QueryModel(sql, parameters);");
                     sb.AppendLine("        }");
                 }
 
-                var tenantWhere = _entity.AddColumns.Any(x => x.Name == "TenantID") ? "         return $\" TenantID = {_correntUser.TenentID} AND \";" : " return \"\";";
 
+                var baenfieldWhere = string.Join(" AND ", _entity.AddColumns.Where(x => x.IsWhereBackEndField).Select(x =>
+                    x.StandardFieldValue.StartsWith("_") || x.StandardFieldValue.Contains(".")
+                        ? $"{x.Name} = {{{x.StandardFieldValue}}}"    // trata como interpolação
+                        : $"{x.Name} = {x.StandardFieldValue}"        // trata como valor fixo (ex: '')
+                    ));
 
-                sb.AppendLine($"        private string getTenant()");
+                if (string.IsNullOrEmpty(baenfieldWhere))
+                    baenfieldWhere = "         return string.Empty;";
+                else
+                    baenfieldWhere = "         return $\" (" + baenfieldWhere + ") AND \";";
+
+                sb.AppendLine($"        private string getBackEndFieldWitchWhere()");
                 sb.AppendLine("        {");
                 if (_entity.EntityName == "Yuser")
                 {
-                    sb.AppendLine("     if (_correntUser.TenentID == 0 && _correntUser.UserId == 0)");
+                    sb.AppendLine("     if (_correntUser.TenantID == 0 && _correntUser.UserId == 0)");
                     sb.AppendLine("         return string.Empty;");
                 }
-                sb.AppendLine(tenantWhere);
+                sb.AppendLine(baenfieldWhere);
                 sb.AppendLine("        }");
 
 

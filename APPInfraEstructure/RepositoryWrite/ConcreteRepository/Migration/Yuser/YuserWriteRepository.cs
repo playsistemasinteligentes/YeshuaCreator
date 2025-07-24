@@ -56,11 +56,6 @@ namespace Input.Repository.Yuser
             var query = _query.UpdateSenha(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateTenantID(IYuserEntity entity)
-        {
-            var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

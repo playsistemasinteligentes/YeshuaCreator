@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.YconfigArctetureCrudCommand c) 
              {    
-                 var yconfigarcteture = new YconfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived, c.TenantID);
+                 var yconfigarcteture = new YconfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
                  if (!yconfigarcteture.isValidUpdate())
                      return ValidationError(yconfigarcteture.getErroMensagens(), comand);
 

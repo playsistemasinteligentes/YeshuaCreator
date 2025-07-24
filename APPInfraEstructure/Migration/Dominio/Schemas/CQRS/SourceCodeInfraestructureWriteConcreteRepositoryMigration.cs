@@ -93,7 +93,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
 
 
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey))
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
             {
                 sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity)");
                 sb.AppendLine("        {");

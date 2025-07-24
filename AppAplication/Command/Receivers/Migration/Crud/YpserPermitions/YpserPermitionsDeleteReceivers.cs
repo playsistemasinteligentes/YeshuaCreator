@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.YpserPermitionsCrudCommand c) 
              {    
-                 var ypserpermitions = new YpserPermitionsFactory(_logger).Create(c.UserId, c.PermitionsId);
+                 var ypserpermitions = new YpserPermitionsFactory(_logger).Create(c.PermitionsId);
                  if (!ypserpermitions.isValidDelete())
                      return ValidationError(ypserpermitions.getErroMensagens(), comand);
 

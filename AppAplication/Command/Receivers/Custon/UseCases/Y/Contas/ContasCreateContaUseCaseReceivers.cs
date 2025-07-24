@@ -73,8 +73,7 @@ namespace Command.Receivers.UseCase
                     null,
                     comand.email,
                     comand.email, // Nome: Aqui você decide o valor real, coloquei email como exemplo
-                    comand.password,
-                    tenant.Id.Value
+                    comand.password
                 );
 
                 if (!user.isValidInsert())
@@ -84,6 +83,7 @@ namespace Command.Receivers.UseCase
 
                 tenant.UserIDAdmin = user.Id.Value;
                 _repWriteY_Tenant.UpdateUserIDAdmin(tenant);
+                _repWriteY_User.Update(tenant);
 
                 _unitOfWork.Commit();
 

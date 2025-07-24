@@ -57,19 +57,6 @@
                                         }
                                     }
 
-                                    public int? TenantID
-                                    {
-                                        get => _inner.TenantID;
-                                        set
-                                        {
-                                            if (_inner.TenantID != value)
-                                            {
-                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
-                                                _inner.TenantID = value;
-                                            }
-                                        }
-                                    }
-
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();
                         public bool isValidDelete() => _inner.isValidDelete();

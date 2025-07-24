@@ -105,21 +105,12 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Key();
         }
-        public Entity KeyStandardField()
-        {
-            Key();
-            if (this.StatusColuns == 1)
-                return this.AddColumns.Last().StandardField();
-            else
-                return this.AlterColumns.Last().StandardField();
-        }
-
-        public Entity StandardField()
+        public Entity StandardField(string value)
         {
             if (this.StatusColuns == 1)
-                return this.AddColumns.Last().StandardField();
+                return this.AddColumns.Last().StandardField(value);
             else
-                return this.AlterColumns.Last().StandardField();
+                return this.AlterColumns.Last().StandardField(value);
         }
 
         public Entity Incremento()
@@ -163,12 +154,12 @@ namespace Dominio
                 return this.EntityDescription;
         }
 
-        public Entity BackEndField()
+        public Entity BackEndField(bool where)
         {
             if (this.StatusColuns == 1)
-                return this.AddColumns.Last().BackEndField();
+                return this.AddColumns.Last().BackEndField(where);
             else
-                return this.AlterColumns.Last().BackEndField();
+                return this.AlterColumns.Last().BackEndField(where);
         }
 
         public Entity Password()

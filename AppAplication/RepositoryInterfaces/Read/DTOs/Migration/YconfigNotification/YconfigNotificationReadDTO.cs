@@ -11,7 +11,6 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public string emailadress { get; set; }
     public string emailpassword { get; set; }
-    public int tenantid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

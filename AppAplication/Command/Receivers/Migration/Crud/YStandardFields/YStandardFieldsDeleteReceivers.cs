@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.YStandardFieldsCrudCommand c) 
              {    
-                 var ystandardfields = new YStandardFieldsFactory(_logger).Create(c.Deleted);
+                 var ystandardfields = new YStandardFieldsFactory(_logger).Create();
                  if (!ystandardfields.isValidDelete())
                      return ValidationError(ystandardfields.getErroMensagens(), comand);
 

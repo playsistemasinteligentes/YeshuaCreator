@@ -14,20 +14,18 @@
     public string Nome { get; set; }
     public string Email { get; set; }
     public string Senha { get; set; }
-    public int? TenantID { get; set; }
     private List<string> _erroMensagem = null;
- internal YuserEntity(int? id, string nome, string email, string senha, int? tenantid ){
+ internal YuserEntity(int? id, string nome, string email, string senha ){
  Id = id; 
  Nome = nome; 
  Email = email; 
  Senha = senha; 
- TenantID = tenantid; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(Nome))
-   this._erroMensagem.Add("Nome da Clínica deve ser informado.");
+   this._erroMensagem.Add("Nome Usuario deve ser informado.");
    if(string.IsNullOrEmpty(Email))
    this._erroMensagem.Add("Email deve ser informado.");
 return _erroMensagem.Count() <= 0;

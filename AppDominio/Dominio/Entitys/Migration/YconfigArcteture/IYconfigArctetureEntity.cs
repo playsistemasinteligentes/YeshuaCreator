@@ -13,7 +13,6 @@
     int? Id { get; set; }
     int? AuditTrackerActived { get; set; }
     int? AuditCRUDActived { get; set; }
-    int? TenantID { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

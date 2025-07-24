@@ -9,7 +9,6 @@ namespace IQuery.Write
         public QueryModel UpdateYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification);
         public QueryModel UpdateEmailAdress(IYconfigNotificationEntity entity);
         public QueryModel UpdateEmailPassword(IYconfigNotificationEntity entity);
-        public QueryModel UpdateTenantID(IYconfigNotificationEntity entity);
         public QueryModel DeleteYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification);
     }
 }

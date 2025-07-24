@@ -9,9 +9,9 @@
                                     public YconfigArctetureFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYconfigArctetureEntity Create(int? id, int? audittrackeractived, int? auditcrudactived, int? tenantid )
+                                    } public IYconfigArctetureEntity Create(int? id, int? audittrackeractived, int? auditcrudactived )
                             {
-                            var entity = new YconfigArctetureEntity(id, audittrackeractived, auditcrudactived, tenantid );
+                            var entity = new YconfigArctetureEntity(id, audittrackeractived, auditcrudactived );
 
 
                             var decoratedEntity = new YconfigArctetureDecorator(entity, _logger);

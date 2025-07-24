@@ -9,9 +9,9 @@
                                     public YpserPermitionsFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYpserPermitionsEntity Create(int? userid, string permitionsid )
+                                    } public IYpserPermitionsEntity Create(string permitionsid )
                             {
-                            var entity = new YpserPermitionsEntity(userid, permitionsid );
+                            var entity = new YpserPermitionsEntity(permitionsid );
 
 
                             var decoratedEntity = new YpserPermitionsDecorator(entity, _logger);

@@ -36,13 +36,13 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    private readonly I{_entity.EntityName}ReadRepository _inner;");
                 sb.AppendLine($"    private readonly ICacheService<{_entity.EntityName}DTO> _cacheById;");
                 sb.AppendLine($"    private readonly ICacheService<IEnumerable<{_entity.EntityName}DTO>> _cacheAll;");
-                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                     sb.AppendLine($"    private readonly ICacheService<IEnumerable<{_entity.EntityName}{column.Name}DTO>> _cacheFK{column.Name};");
 
                 sb.AppendLine();
                 // Construtor
                 // Define as FKs
-                var fkColumns = _entity.AddColumns.Where(x => x.IsFK).ToList();
+                var fkColumns = _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField).ToList();
 
                 // Início do construtor
                 sb.AppendLine($"    public {_entity.EntityName}ReadRepositoryCacheDecorator(");
@@ -70,7 +70,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        _cacheById = cacheById;");
                 sb.AppendLine("        _cacheAll = cacheAll;");
 
-                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                     sb.AppendLine($"    _cacheFK{column.Name}=cacheFK{column.Name};");
 
                 sb.AppendLine("    }");
@@ -99,7 +99,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    }");
 
 
-                foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
 
 
@@ -145,7 +145,7 @@ namespace Dominio.Schemas.CQRS
 
 
                 //Exist
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value)");
                     sb.AppendLine("        {");
@@ -155,7 +155,7 @@ namespace Dominio.Schemas.CQRS
                 }
 
                 //FirstBy
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value)");
                     sb.AppendLine("        {");
@@ -224,7 +224,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
             sb.AppendLine();
 
-            foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+            foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
             {
 
                 sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command)");
@@ -253,7 +253,7 @@ namespace Dominio.Schemas.CQRS
             }
 
             //Exist
-            foreach (var column in _entity.AddColumns)
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
             {
                 sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value)");
                 sb.AppendLine("        {");
@@ -266,7 +266,7 @@ namespace Dominio.Schemas.CQRS
             }
 
             //FirstBy
-            foreach (var column in _entity.AddColumns)
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
             {
                 sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value)");
                 sb.AppendLine("        {");
@@ -304,7 +304,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
             // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns)
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
             {
                 sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
             }

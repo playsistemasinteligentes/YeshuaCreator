@@ -47,24 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<YuserTenantIDDTO> getYuserReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
-        {
-            List<YuserTenantIDDTO> lista;
-            var query = _query.YuserTenantIDQuery(command);
-
-                lista = _connection.Query<YuserTenantIDDTO>(query.Query,query.Parameters) as List<YuserTenantIDDTO>;
-            return lista;
-        }
-
-        public IEnumerable<YuserTenantIDDTO> getYuserReadFKTenantID(object command)
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getYuserReadFKTenantID(c);
-            }
-            throw new NotImplementedException();
-        }
-
         public bool ExistsById(int value)
         {
             var query = _query.ExistsByIdQuery(value);
@@ -97,14 +79,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByTenantID(int value)
-        {
-            var query = _query.ExistsByTenantIDQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public YuserDTO FirstById(int value)
         {
             var query = _query.FirstByIdQuery(value);
@@ -132,14 +106,6 @@ namespace Read.Repository
         public YuserDTO FirstBySenha(string value)
         {
             var query = _query.FirstBySenhaQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YuserDTO FirstByTenantID(int value)
-        {
-            var query = _query.FirstByTenantIDQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YuserDTO>(query.Query, query.Parameters);
                 return result;

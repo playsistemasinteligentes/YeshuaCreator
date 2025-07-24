@@ -55,7 +55,7 @@ namespace Dominio.Schemas.CQRS
             }
             else
             {
-                foreach (var column in _entity.AddColumns)
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
                         throw new InvalidOperationException("Column type or name cannot be null or empty.");

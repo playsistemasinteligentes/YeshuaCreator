@@ -85,7 +85,7 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand c) ");
                 sb.AppendLine("             {    ");
-                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Select(c => "c." + c.Name))});");
+                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => "c." + c.Name))});");
                 sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
                 sb.AppendLine($"                     return ValidationError({_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
                 sb.AppendLine();

@@ -58,12 +58,6 @@ namespace Input.Repository.YconfigNotification
             var query = _query.UpdateEmailPassword(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateTenantID(IYconfigNotificationEntity entity)
-        {
-            _cacheService.RemoveByPrefix("YconfigNotification");
-            var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

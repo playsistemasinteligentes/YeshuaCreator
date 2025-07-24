@@ -1,4 +1,5 @@
-﻿using Dominio.Migration;
+﻿using Dominio;
+using Dominio.Migration;
 using Migration.Dominio.Schemas.CQRS;
 using System;
 using System.Collections.Generic;
@@ -17,32 +18,31 @@ namespace Migration.Dominio.Migration
         public override void Up()
         {
             AddEntity("Ytenant")
-            .AddColumn("Id", "ID").Int().Incremento().KeyStandardField()
+            .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull();
 
-            AddEntity("YStandardFields")
-            .AddColumn("Deleted", "Deleted").Boolean().KeyStandardField();
-
             AddEntity("Yuser")
-            .AddColumn("Id", "ID").Int().Incremento().KeyStandardField()
-            .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
-            .AddColumn("Senha", "Senha").Varchar(60).Password()
-            .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
+            .AddColumn("Senha", "Senha").Varchar(60).Password();
+
+            AddEntity("YStandardFields")
+            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardField("_correntUser.TenantID").BackEndField(true)
+            .AddColumn("Deleted", "Deleted").Boolean().StandardField("''").BackEndField(true)
+            .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id").StandardField("_correntUser.UserId").BackEndField(false);
 
 
             AddEntity("YconfigArcteture").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("AuditTrackerActived", "AuditTrackerActived").Int()
-            .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int()
-            .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
+            .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int();
 
             AddEntity("YconfigNotification").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("EmailAdress", "EmailAdress").Varchar(100)
-            .AddColumn("EmailPassword", "EmailPassword").Varchar(60)
-            .AddColumn("TenantID", "Administrador").FK("Ytenant", "Id").Int();
+            .AddColumn("EmailPassword", "EmailPassword").Varchar(60);
 
             AddEntity("Yperfil")
             .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -57,7 +57,6 @@ namespace Migration.Dominio.Migration
             .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
 
             AddEntity("YpserPermitions")
-            .AddColumn("UserId", "User ID").FK("Yuser", "Id").Int()
             .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
         }
     }

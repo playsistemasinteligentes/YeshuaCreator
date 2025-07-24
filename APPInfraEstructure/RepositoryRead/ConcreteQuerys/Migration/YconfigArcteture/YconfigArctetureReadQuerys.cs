@@ -24,19 +24,17 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, AuditTrackerActived, AuditCRUDActived, TenantID from YconfigArcteture ";
+            this.Query = $@" select Id, AuditTrackerActived, AuditCRUDActived, TenantID, Deleted, UserId from YconfigArcteture ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.AuditTrackerActived.HasValue) parametersDict["AuditTrackerActived"] = Command.AuditTrackerActived.Value;
 if (Command.AuditTrackerActived.HasValue) whereClauses.Add($"AuditTrackerActived = @AuditTrackerActived");
 if (Command.AuditCRUDActived.HasValue) parametersDict["AuditCRUDActived"] = Command.AuditCRUDActived.Value;
 if (Command.AuditCRUDActived.HasValue) whereClauses.Add($"AuditCRUDActived = @AuditCRUDActived");
-if (Command.TenantID.HasValue) parametersDict["TenantID"] = Command.TenantID.Value;
-if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
-            else if (!string.IsNullOrEmpty(getTenant())) 
-                 this.Query += $" WHERE {getTenant()}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -46,87 +44,57 @@ if (Command.TenantID.HasValue) whereClauses.Add($"TenantID = @TenantID");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel YconfigArctetureTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command)
-        {
-            this.Query = $@" select Id, Nome from Ytenant ";
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            if (!string.IsNullOrEmpty(Command.searchFK)) 
-            {
-                 if (int.TryParse(Command.searchFK, out int numero)) 
-                 {
-                      this.Parameters = new { Id = numero}; 
-                      whereClauses.Add($" Id = @Id"); 
-                 }
-                 else 
-                 {
-                      this.Parameters = new { 
-                       Id = $"%{Command.searchFK}%", 
-                       Nome = $"%{Command.searchFK}%", 
-                      }; 
-                      whereClauses.Add($" Id like @Id "); 
-                      whereClauses.Add($" Nome like @Nome "); 
-                 }
-            }
-            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
-            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
-            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {getTenant()}"; 
-            return new QueryModel(this.Query, this.Parameters); 
-        }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getTenant()} Id = @Id";
+            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByAuditTrackerActivedQuery(int value)
         {
-            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getTenant()} AuditTrackerActived = @AuditTrackerActived";
+            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} AuditTrackerActived = @AuditTrackerActived";
             var parameters = new { AuditTrackerActived = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByAuditCRUDActivedQuery(int value)
         {
-            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getTenant()} AuditCRUDActived = @AuditCRUDActived";
+            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} AuditCRUDActived = @AuditCRUDActived";
             var parameters = new { AuditCRUDActived = value };
             return new QueryModel(sql, parameters);
         }
-        public QueryModel ExistsByTenantIDQuery(int value)
+        public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getTenant()} TenantID = @TenantID";
-            var parameters = new { TenantID = value };
+            var sql = $"SELECT 1 FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = $"SELECT * FROM YconfigArcteture WHERE {getTenant()} Id = @Id";
+            var sql = $"SELECT * FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByAuditTrackerActivedQuery(int value)
         {
-            var sql = $"SELECT * FROM YconfigArcteture WHERE {getTenant()} AuditTrackerActived = @AuditTrackerActived";
+            var sql = $"SELECT * FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} AuditTrackerActived = @AuditTrackerActived";
             var parameters = new { AuditTrackerActived = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByAuditCRUDActivedQuery(int value)
         {
-            var sql = $"SELECT * FROM YconfigArcteture WHERE {getTenant()} AuditCRUDActived = @AuditCRUDActived";
+            var sql = $"SELECT * FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} AuditCRUDActived = @AuditCRUDActived";
             var parameters = new { AuditCRUDActived = value };
             return new QueryModel(sql, parameters);
         }
-        public QueryModel FirstByTenantIDQuery(int value)
+        public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = $"SELECT * FROM YconfigArcteture WHERE {getTenant()} TenantID = @TenantID";
-            var parameters = new { TenantID = value };
+            var sql = $"SELECT * FROM YconfigArcteture WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getTenant()
+        private string getBackEndFieldWitchWhere()
         {
-         return $" TenantID = {_correntUser.TenentID} AND ";
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
         }
     }
 }

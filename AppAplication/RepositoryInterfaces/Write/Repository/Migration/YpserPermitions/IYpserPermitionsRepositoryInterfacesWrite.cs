@@ -12,7 +12,6 @@ namespace IRepository.Write
         void Insert(IYpserPermitionsEntity ypserpermitions);
         void Update(IYpserPermitionsEntity ypserpermitions);
         void Delete(IYpserPermitionsEntity ypserpermitions);
-        public void UpdateUserId(IYpserPermitionsEntity entity);
         public void UpdatePermitionsId(IYpserPermitionsEntity entity);
     }
 }

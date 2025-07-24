@@ -39,9 +39,9 @@ namespace Dominio.Schemas.CQRS
                                     }}");
 
 
-                sb.AppendLine(@$" public I{_entity.EntityName}Entity Create({string.Join(", ", _entity.AddColumns.Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} )
+                sb.AppendLine(@$" public I{_entity.EntityName}Entity Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} )
                             {{
-                            var entity = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => c.getParameterConstructor()))} );
+                            var entity = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => c.getParameterConstructor()))} );
 
 
                             var decoratedEntity = new {_entity.EntityName}Decorator(entity, _logger);
@@ -93,7 +93,7 @@ namespace Dominio.Schemas.CQRS
 
 
             // atributos
-            foreach (var column in _entity.AddColumns)
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
             {
                 if (_commandType == CommandType.IEntity)
                     sb.AppendLine($"    {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
@@ -137,8 +137,8 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine("    private List<string> _erroMensagem = null;");
                 // construtor 
-                sb.AppendLine(@$" internal {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} ){{");
-                foreach (var column in _entity.AddColumns)
+                sb.AppendLine(@$" internal {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} ){{");
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                     if (column.getCsharpType() == "DateTime")
                         sb.AppendLine($" {column.Name} = ({column.getParameterConstructor()} < (new DateTime(1800, 1, 1))) ? DateTime.Now : {column.getParameterConstructor()}; ");
                     else
@@ -150,7 +150,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
                 sb.AppendLine("_erroMensagem = new List<string>();");
 
-                foreach (var column in _entity.AddColumns.Where(x => x.IsNotNull))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsNotNull && !x.IsBackEndField))
                 {
                     if (column.getCsharpType() == "string")
                         sb.AppendLine($"   if(string.IsNullOrEmpty({column.Name}))");

@@ -13,7 +13,6 @@
     int? Id { get; set; }
     string EmailAdress { get; set; }
     string EmailPassword { get; set; }
-    int? TenantID { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

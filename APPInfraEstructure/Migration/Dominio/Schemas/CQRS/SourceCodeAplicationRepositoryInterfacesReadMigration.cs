@@ -42,14 +42,14 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command);");
             sb.AppendLine($"        public {_entity.EntityName}DTO getById();");
 
-            foreach (var column in _entity.AddColumns.Where(x => x.IsFK))
+            foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command);");
 
 
-            foreach (var column in _entity.AddColumns)
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value);");
 
-            foreach (var column in _entity.AddColumns)
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value);");
 
 

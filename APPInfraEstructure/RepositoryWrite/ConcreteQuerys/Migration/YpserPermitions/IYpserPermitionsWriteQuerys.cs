@@ -7,7 +7,6 @@ namespace IQuery.Write
      {
         public QueryModel InserirYpserPermitionsQuery(IYpserPermitionsEntity YpserPermitions);
         public QueryModel UpdateYpserPermitionsQuery(IYpserPermitionsEntity YpserPermitions);
-        public QueryModel UpdateUserId(IYpserPermitionsEntity entity);
         public QueryModel UpdatePermitionsId(IYpserPermitionsEntity entity);
         public QueryModel DeleteYpserPermitionsQuery(IYpserPermitionsEntity YpserPermitions);
     }

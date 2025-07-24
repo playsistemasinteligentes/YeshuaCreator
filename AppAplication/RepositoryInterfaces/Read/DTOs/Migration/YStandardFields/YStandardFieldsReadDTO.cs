@@ -8,7 +8,6 @@ namespace Repositorio.Outputs
 {
     public record YStandardFieldsDTO
     {
-    public bool deleted { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

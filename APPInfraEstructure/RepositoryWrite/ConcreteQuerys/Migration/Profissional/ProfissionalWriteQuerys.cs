@@ -20,12 +20,15 @@ namespace Query.Write
         }
         public QueryModel InserirProfissionalQuery(IProfissionalEntity Profissional)
         {
-            this.Query = $@" INSERT INTO Profissional (Nome, EspecialidadeId, Telefone) OUTPUT INSERTED.Id VALUES(@Nome, @EspecialidadeId, @Telefone) ";
+            this.Query = $@" INSERT INTO Profissional (Nome, EspecialidadeId, Telefone, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @EspecialidadeId, @Telefone, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
                 Nome = Profissional.Nome,
                 EspecialidadeId = Profissional.EspecialidadeId,
                 Telefone = Profissional.Telefone,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

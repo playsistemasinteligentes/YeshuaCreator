@@ -10,7 +10,6 @@
                 {
                     public interface IYStandardFieldsEntity
 {
-    bool? Deleted { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

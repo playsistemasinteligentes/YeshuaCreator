@@ -10,7 +10,7 @@ namespace Aplication.Interfaces.Services
     public interface ICurrentUser
     {
         int UserId { get; }
-        int TenentID { get; }
+        int TenantID { get; }
         IEnumerable<Claim> Claims { get; }
     }
 }

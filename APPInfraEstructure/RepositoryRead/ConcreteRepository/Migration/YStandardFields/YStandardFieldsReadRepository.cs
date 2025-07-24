@@ -47,22 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        public bool ExistsByDeleted(bool value)
-        {
-            var query = _query.ExistsByDeletedQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public YStandardFieldsDTO FirstByDeleted(bool value)
-        {
-            var query = _query.FirstByDeletedQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YStandardFieldsDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public YStandardFieldsDTO getById()
         {
             throw new NotImplementedException();

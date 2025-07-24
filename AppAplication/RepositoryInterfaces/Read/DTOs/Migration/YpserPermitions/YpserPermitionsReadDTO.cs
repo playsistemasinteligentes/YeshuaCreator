@@ -8,7 +8,6 @@ namespace Repositorio.Outputs
 {
     public record YpserPermitionsDTO
     {
-    public int userid { get; set; }
     public string permitionsid { get; set; }
     }
 }

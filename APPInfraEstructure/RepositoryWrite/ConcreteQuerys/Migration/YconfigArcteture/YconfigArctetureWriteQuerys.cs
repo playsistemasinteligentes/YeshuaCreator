@@ -20,24 +20,25 @@ namespace Query.Write
         }
         public QueryModel InserirYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture)
         {
-            this.Query = $@" INSERT INTO YconfigArcteture (Id, AuditTrackerActived, AuditCRUDActived, TenantID) OUTPUT INSERTED.ID VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID) ";
+            this.Query = $@" INSERT INTO YconfigArcteture (Id, AuditTrackerActived, AuditCRUDActived, TenantID, Deleted, UserId) OUTPUT INSERTED.ID VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
                 Id = YconfigArcteture.Id,
                 AuditTrackerActived = YconfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = YconfigArcteture.AuditCRUDActived,
-                TenantID = _correntUser.TenentID,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture)
         {
-            this.Query = $@" UPDATE YconfigArcteture SET AuditTrackerActived = @AuditTrackerActived, AuditCRUDActived = @AuditCRUDActived, TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE YconfigArcteture SET AuditTrackerActived = @AuditTrackerActived, AuditCRUDActived = @AuditCRUDActived WHERE Id = @Id ";
             this.Parameters = new
             {
                 AuditTrackerActived = YconfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = YconfigArcteture.AuditCRUDActived,
-                TenantID = YconfigArcteture.TenantID,
                 Id = YconfigArcteture.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -58,16 +59,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 AuditCRUDActived = entity.AuditCRUDActived,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateTenantID(IYconfigArctetureEntity entity)
-        {
-            this.Query = $@" UPDATE YconfigArcteture SET TenantID = @TenantID WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                TenantID = entity.TenantID,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -8,7 +8,7 @@ namespace Shered.Services
         private readonly IHttpContextAccessor _http;
         public CurrentUserHttp(IHttpContextAccessor http) => _http = http;
 
-        public int TenentID => GetTenantId();
+        public int TenantID => GetTenantId();
 
         public int UserId => int.Parse(_http.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         public IEnumerable<Claim> Claims => _http.HttpContext?.User?.Claims ?? Enumerable.Empty<Claim>();

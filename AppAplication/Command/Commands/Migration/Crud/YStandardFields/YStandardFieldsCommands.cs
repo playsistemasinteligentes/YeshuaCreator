@@ -3,7 +3,6 @@ namespace Command.Write
 {
     public struct YStandardFieldsCrudCommand : ICommand
     {
-        public bool? Deleted { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

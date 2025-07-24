@@ -14,7 +14,6 @@ namespace IRepository.Write
         void Delete(IYconfigNotificationEntity yconfignotification);
         public void UpdateEmailAdress(IYconfigNotificationEntity entity);
         public void UpdateEmailPassword(IYconfigNotificationEntity entity);
-        public void UpdateTenantID(IYconfigNotificationEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

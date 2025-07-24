@@ -11,7 +11,6 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public int audittrackeractived { get; set; }
     public int auditcrudactived { get; set; }
-    public int tenantid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

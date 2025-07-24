@@ -47,24 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<YpserPermitionsUserIdDTO> getYpserPermitionsReadFKUserId(Command.Patterns.Command.SearchFKCommand command)
-        {
-            List<YpserPermitionsUserIdDTO> lista;
-            var query = _query.YpserPermitionsUserIdQuery(command);
-
-                lista = _connection.Query<YpserPermitionsUserIdDTO>(query.Query,query.Parameters) as List<YpserPermitionsUserIdDTO>;
-            return lista;
-        }
-
-        public IEnumerable<YpserPermitionsUserIdDTO> getYpserPermitionsReadFKUserId(object command)
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getYpserPermitionsReadFKUserId(c);
-            }
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<YpserPermitionsPermitionsIdDTO> getYpserPermitionsReadFKPermitionsId(Command.Patterns.Command.SearchFKCommand command)
         {
             List<YpserPermitionsPermitionsIdDTO> lista;
@@ -83,28 +65,12 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
-        public bool ExistsByUserId(int value)
-        {
-            var query = _query.ExistsByUserIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByPermitionsId(string value)
         {
             var query = _query.ExistsByPermitionsIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
-        }
-
-        public YpserPermitionsDTO FirstByUserId(int value)
-        {
-            var query = _query.FirstByUserIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YpserPermitionsDTO>(query.Query, query.Parameters);
-                return result;
         }
 
         public YpserPermitionsDTO FirstByPermitionsId(string value)

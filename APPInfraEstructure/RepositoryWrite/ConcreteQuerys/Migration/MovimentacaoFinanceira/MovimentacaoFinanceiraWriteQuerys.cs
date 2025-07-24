@@ -20,7 +20,7 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            this.Query = $@" INSERT INTO MovimentacaoFinanceira (PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual) OUTPUT INSERTED.Id VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual) ";
+            this.Query = $@" INSERT INTO MovimentacaoFinanceira (PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@PacienteId, @ServicoId, @Valor, @TipoMovimentacao, @DataMovimentacao, @SaldoAtual, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
                 PacienteId = MovimentacaoFinanceira.PacienteId,
@@ -29,6 +29,9 @@ namespace Query.Write
                 TipoMovimentacao = MovimentacaoFinanceira.TipoMovimentacao,
                 DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
                 SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

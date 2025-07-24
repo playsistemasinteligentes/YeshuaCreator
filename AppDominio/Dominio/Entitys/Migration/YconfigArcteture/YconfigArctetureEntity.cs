@@ -13,13 +13,11 @@
     public int? Id { get; set; }
     public int? AuditTrackerActived { get; set; }
     public int? AuditCRUDActived { get; set; }
-    public int? TenantID { get; set; }
     private List<string> _erroMensagem = null;
- internal YconfigArctetureEntity(int? id, int? audittrackeractived, int? auditcrudactived, int? tenantid ){
+ internal YconfigArctetureEntity(int? id, int? audittrackeractived, int? auditcrudactived ){
  Id = id; 
  AuditTrackerActived = audittrackeractived; 
  AuditCRUDActived = auditcrudactived; 
- TenantID = tenantid; 
 }
 public bool isValidData()
 {

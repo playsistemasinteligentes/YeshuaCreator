@@ -10,7 +10,6 @@ namespace IQuery.Write
         public QueryModel UpdateNome(IYuserEntity entity);
         public QueryModel UpdateEmail(IYuserEntity entity);
         public QueryModel UpdateSenha(IYuserEntity entity);
-        public QueryModel UpdateTenantID(IYuserEntity entity);
         public QueryModel DeleteYuserQuery(IYuserEntity Yuser);
     }
 }

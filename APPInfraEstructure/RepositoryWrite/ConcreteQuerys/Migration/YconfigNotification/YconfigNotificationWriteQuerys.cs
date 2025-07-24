@@ -20,24 +20,25 @@ namespace Query.Write
         }
         public QueryModel InserirYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification)
         {
-            this.Query = $@" INSERT INTO YconfigNotification (Id, EmailAdress, EmailPassword, TenantID) OUTPUT INSERTED.ID VALUES(@Id, @EmailAdress, @EmailPassword, @TenantID) ";
+            this.Query = $@" INSERT INTO YconfigNotification (Id, EmailAdress, EmailPassword, TenantID, Deleted, UserId) OUTPUT INSERTED.ID VALUES(@Id, @EmailAdress, @EmailPassword, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
                 Id = YconfigNotification.Id,
                 EmailAdress = YconfigNotification.EmailAdress,
                 EmailPassword = YconfigNotification.EmailPassword,
-                TenantID = _correntUser.TenentID,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification)
         {
-            this.Query = $@" UPDATE YconfigNotification SET EmailAdress = @EmailAdress, EmailPassword = @EmailPassword, TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE YconfigNotification SET EmailAdress = @EmailAdress, EmailPassword = @EmailPassword WHERE Id = @Id ";
             this.Parameters = new
             {
                 EmailAdress = YconfigNotification.EmailAdress,
                 EmailPassword = YconfigNotification.EmailPassword,
-                TenantID = YconfigNotification.TenantID,
                 Id = YconfigNotification.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -58,16 +59,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 EmailPassword = entity.EmailPassword,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateTenantID(IYconfigNotificationEntity entity)
-        {
-            this.Query = $@" UPDATE YconfigNotification SET TenantID = @TenantID WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                TenantID = entity.TenantID,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

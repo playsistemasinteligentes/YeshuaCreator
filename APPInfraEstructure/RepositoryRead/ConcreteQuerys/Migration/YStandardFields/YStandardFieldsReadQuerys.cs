@@ -24,11 +24,11 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Deleted from YStandardFields ";
+            this.Query = $@" select TenantID, Deleted, UserId from YStandardFields ";
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
-            else if (!string.IsNullOrEmpty(getTenant())) 
-                 this.Query += $" WHERE {getTenant()}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -38,21 +38,21 @@ namespace Query.Read
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel ExistsByDeletedQuery(bool value)
+        public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM YStandardFields WHERE {getTenant()} Deleted = @Deleted";
-            var parameters = new { Deleted = value };
+            var sql = $"SELECT 1 FROM YStandardFields WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        public QueryModel FirstByDeletedQuery(bool value)
+        public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = $"SELECT * FROM YStandardFields WHERE {getTenant()} Deleted = @Deleted";
-            var parameters = new { Deleted = value };
+            var sql = $"SELECT * FROM YStandardFields WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getTenant()
+        private string getBackEndFieldWitchWhere()
         {
- return "";
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
         }
     }
 }

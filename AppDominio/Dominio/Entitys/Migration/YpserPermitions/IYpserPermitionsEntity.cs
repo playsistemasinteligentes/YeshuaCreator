@@ -10,7 +10,6 @@
                 {
                     public interface IYpserPermitionsEntity
 {
-    int? UserId { get; set; }
     string PermitionsId { get; set; }
     
                     bool isValidInsert();

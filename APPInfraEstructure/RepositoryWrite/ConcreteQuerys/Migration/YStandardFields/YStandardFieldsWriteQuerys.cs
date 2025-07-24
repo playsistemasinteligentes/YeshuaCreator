@@ -20,28 +20,28 @@ namespace Query.Write
         }
         public QueryModel InserirYStandardFieldsQuery(IYStandardFieldsEntity YStandardFields)
         {
-            this.Query = $@" INSERT INTO YStandardFields (Deleted) OUTPUT INSERTED.ID VALUES(@Deleted) ";
+            this.Query = $@" INSERT INTO YStandardFields (TenantID, Deleted, UserId) OUTPUT INSERTED.ID VALUES(@TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
-                Deleted = YStandardFields.Deleted,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateYStandardFieldsQuery(IYStandardFieldsEntity YStandardFields)
         {
-            this.Query = $@" UPDATE YStandardFields SET  WHERE Deleted = @Deleted ";
+            this.Query = $@" UPDATE YStandardFields SET  WHERE  ";
             this.Parameters = new
             {
-                Deleted = YStandardFields.Deleted,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel DeleteYStandardFieldsQuery(IYStandardFieldsEntity YStandardFields)
         {
-            this.Query = $@" DELETE FROM YStandardFields WHERE Deleted = @Deleted ";
+            this.Query = $@" DELETE FROM YStandardFields WHERE  ";
             this.Parameters = new
             {
-                Deleted = YStandardFields.Deleted,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

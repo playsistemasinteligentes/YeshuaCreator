@@ -20,25 +20,25 @@ namespace Query.Write
         }
         public QueryModel InserirYuserQuery(IYuserEntity Yuser)
         {
-            this.Query = $@" INSERT INTO Yuser (Nome, Email, Senha, TenantID) OUTPUT INSERTED.Id VALUES(@Nome, @Email, @Senha, @TenantID) ";
+            this.Query = $@" INSERT INTO Yuser (Nome, Email, Senha, TenantID, Deleted) OUTPUT INSERTED.Id VALUES(@Nome, @Email, @Senha, @TenantID, @Deleted) ";
             this.Parameters = new
             {
                 Nome = Yuser.Nome,
                 Email = Yuser.Email,
                 Senha = Yuser.Senha,
-                TenantID = _correntUser.TenentID,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateYuserQuery(IYuserEntity Yuser)
         {
-            this.Query = $@" UPDATE Yuser SET Nome = @Nome, Email = @Email, Senha = @Senha, TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE Yuser SET Nome = @Nome, Email = @Email, Senha = @Senha WHERE Id = @Id ";
             this.Parameters = new
             {
                 Nome = Yuser.Nome,
                 Email = Yuser.Email,
                 Senha = Yuser.Senha,
-                TenantID = Yuser.TenantID,
                 Id = Yuser.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -69,16 +69,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 Senha = entity.Senha,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateTenantID(IYuserEntity entity)
-        {
-            this.Query = $@" UPDATE Yuser SET TenantID = @TenantID WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                TenantID = entity.TenantID,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

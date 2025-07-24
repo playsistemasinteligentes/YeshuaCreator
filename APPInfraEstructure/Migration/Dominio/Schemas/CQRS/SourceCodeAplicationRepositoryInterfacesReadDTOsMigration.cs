@@ -41,7 +41,7 @@ namespace Dominio.Schemas.CQRS
             {
                 case CommandType.Read:
 
-                    foreach (var column in _entity.AddColumns)
+                    foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                         sb.AppendLine($"    public {column.getCsharpType()} {column.Name.ToLower()} {{ get; set; }}");
 
                     break;

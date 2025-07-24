@@ -13,8 +13,6 @@ namespace IRepository.Read
     {
         public DataPagination<YStandardFieldsDTO> getYStandardFields(ICommandRead command);
         public YStandardFieldsDTO getById();
-        public bool ExistsByDeleted(bool value);
-        public YStandardFieldsDTO FirstByDeleted(bool value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

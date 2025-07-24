@@ -10,11 +10,9 @@
                 {
                     public partial class YpserPermitionsEntity : IYpserPermitionsEntity
 {
-    public int? UserId { get; set; }
     public string PermitionsId { get; set; }
     private List<string> _erroMensagem = null;
- internal YpserPermitionsEntity(int? userid, string permitionsid ){
- UserId = userid; 
+ internal YpserPermitionsEntity(string permitionsid ){
  PermitionsId = permitionsid; 
 }
 public bool isValidData()

@@ -15,7 +15,6 @@ namespace IRepository.Write
         public void UpdateNome(IYuserEntity entity);
         public void UpdateEmail(IYuserEntity entity);
         public void UpdateSenha(IYuserEntity entity);
-        public void UpdateTenantID(IYuserEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

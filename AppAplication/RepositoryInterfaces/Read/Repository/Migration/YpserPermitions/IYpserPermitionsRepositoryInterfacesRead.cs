@@ -13,11 +13,8 @@ namespace IRepository.Read
     {
         public DataPagination<YpserPermitionsDTO> getYpserPermitions(ICommandRead command);
         public YpserPermitionsDTO getById();
-        public IEnumerable<YpserPermitionsUserIdDTO> getYpserPermitionsReadFKUserId(object command);
         public IEnumerable<YpserPermitionsPermitionsIdDTO> getYpserPermitionsReadFKPermitionsId(object command);
-        public bool ExistsByUserId(int value);
         public bool ExistsByPermitionsId(string value);
-        public YpserPermitionsDTO FirstByUserId(int value);
         public YpserPermitionsDTO FirstByPermitionsId(string value);
     }
 }

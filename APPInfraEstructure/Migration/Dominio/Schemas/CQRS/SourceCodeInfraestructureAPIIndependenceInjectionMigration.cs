@@ -77,13 +77,13 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"    var cacheById = sp.GetRequiredService<ICacheService<Repositorio.Outputs.{entity.EntityName}DTO >>();");
                     sb.AppendLine($"    var cacheAll = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.{entity.EntityName}DTO>>>();");
 
-                    foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                    foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                         sb.AppendLine($"        var cacheFK{column.Name} = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.{entity.EntityName}{column.Name}DTO>>>();");
 
                     // fixo acrecentar quando tiver mais consultas
                     sb.Append($"    return new {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepositoryCacheDecorator(inner,cacheById,cacheAll");
 
-                    foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                    foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                         sb.Append($",cacheFK{column.Name}");
                     sb.AppendLine("    );");
 
@@ -94,7 +94,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver>();");
-                    foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                    foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                     {
                         sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver>();");
                     }
@@ -109,7 +109,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver>();");
-                foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver>();");
                 }

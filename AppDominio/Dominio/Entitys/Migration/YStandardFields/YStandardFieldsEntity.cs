@@ -10,10 +10,8 @@
                 {
                     public partial class YStandardFieldsEntity : IYStandardFieldsEntity
 {
-    public bool? Deleted { get; set; }
     private List<string> _erroMensagem = null;
- internal YStandardFieldsEntity(bool? deleted ){
- Deleted = deleted; 
+ internal YStandardFieldsEntity( ){
 }
 public bool isValidData()
 {

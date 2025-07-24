@@ -98,15 +98,6 @@ app.MapPost("/Ytenant/PostYtenant", async ([FromServices] Command.Receivers.Writ
 .RequireAuthorization();
 
 
-app.MapPost("/YStandardFields/PostYStandardFields", async ([FromServices] Command.Receivers.Write.InsertYStandardFieldsReceiver receiver, [FromBody] Command.Write.YStandardFieldsCrudCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
 app.MapPost("/Yuser/PostYuser", async ([FromServices] Command.Receivers.Write.InsertYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -256,15 +247,6 @@ app.MapPut("/Ytenant/PutYtenant", async ([FromServices] Command.Receivers.Write.
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPut("/YStandardFields/PutYStandardFields", async ([FromServices] Command.Receivers.Write.UpdateYStandardFieldsReceiver receiver, [FromBody] Command.Write.YStandardFieldsCrudCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -422,15 +404,6 @@ app.MapDelete("/Ytenant/DeleteYtenant", async ([FromServices] Command.Receivers.
 .RequireAuthorization();
 
 
-app.MapDelete("/YStandardFields/DeleteYStandardFields", async ([FromServices] Command.Receivers.Write.DeleteYStandardFieldsReceiver receiver, [FromBody] Command.Write.YStandardFieldsCrudCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
 app.MapDelete("/Yuser/DeleteYuser", async ([FromServices] Command.Receivers.Write.DeleteYuserReceiver receiver, [FromBody] Command.Write.YuserCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -573,13 +546,6 @@ type = "crud"
 }
 ,
 new{
-id="YStandardFields",
-description="YStandardFields",
-endpoint="/getMetaDataYStandardFields",
-type = "crud"
-}
-,
-new{
 id="Yuser",
 description="Yuser",
 endpoint="/getMetaDataYuser",
@@ -716,15 +682,6 @@ app.MapPost("/Ytenant/ReadYtenant", async ([FromServices] Command.Receivers.Read
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
 }).Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.YtenantEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPost("/YStandardFields/ReadYStandardFields", async ([FromServices] Command.Receivers.Read.YStandardFieldsReadReceiver receiver, [FromBody] Command.Read.YStandardFieldsReadCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.YStandardFieldsEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -962,57 +919,6 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Yuser/YuserReadFKTenantID", async ([FromServices] Command.Receivers.Read.YuserReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/YconfigArcteture/YconfigArctetureReadFKTenantID", async ([FromServices] Command.Receivers.Read.YconfigArctetureReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/YconfigNotification/YconfigNotificationReadFKTenantID", async ([FromServices] Command.Receivers.Read.YconfigNotificationReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
 app.MapPost("/YperfilPermitions/YperfilPermitionsReadFKPerfilId", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadFKPerfilIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -1031,23 +937,6 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/YperfilPermitions/YperfilPermitionsReadFKPermitionsId", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadFKPermitionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/YpserPermitions/YpserPermitionsReadFKUserId", async ([FromServices] Command.Receivers.Read.YpserPermitionsReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1639,34 +1528,6 @@ formFields = new[]
          };
          return Results.Ok(metadatacrud);
      }).RequireAuthorization();
-app.MapGet("/getMetaDataYStandardFields", (HttpContext context) =>
-{
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "YStandardFields",
-searchFields = new[]
-{
- new { id = "deleted", label = "Deleted", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "deleted", label = "Deleted", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/YStandardFields/PostYStandardFields",
-                 read = "/YStandardFields/ReadYStandardFields",
-                 update = "/YStandardFields/PutYStandardFields",
-                 delete = "/YStandardFields/DeleteYStandardFields"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
 app.MapGet("/getMetaDataYuser", (HttpContext context) =>
 {
 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -1679,31 +1540,26 @@ searchFields = new[]
 {
  new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome Usuario", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "email", label = "Email", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "senha", label = "Senha", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "tenantid", label = "Administrador", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
  },
 },
 formFields = new[]
 {
  new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome Usuario", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
  new { id = "email", label = "Email", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
  new { id = "senha", label = "Senha", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tenantid", label = "Administrador", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
 },
              endpoints = new
              {
-                 tenantid = "/Yuser/YuserReadFKTenantID",
                  create = "/Yuser/PostYuser",
                  read = "/Yuser/ReadYuser",
                  update = "/Yuser/PutYuser",
@@ -1728,8 +1584,6 @@ searchFields = new[]
  },
  new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "tenantid", label = "Administrador", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
 },
 formFields = new[]
 {
@@ -1739,12 +1593,9 @@ formFields = new[]
   },
  new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tenantid", label = "Administrador", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
 },
              endpoints = new
              {
-                 tenantid = "/YconfigArcteture/YconfigArctetureReadFKTenantID",
                  create = "/YconfigArcteture/PostYconfigArcteture",
                  read = "/YconfigArcteture/ReadYconfigArcteture",
                  update = "/YconfigArcteture/PutYconfigArcteture",
@@ -1769,8 +1620,6 @@ searchFields = new[]
  },
  new { id = "emailpassword", label = "EmailPassword", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "tenantid", label = "Administrador", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
 },
 formFields = new[]
 {
@@ -1780,12 +1629,9 @@ formFields = new[]
   },
  new { id = "emailpassword", label = "EmailPassword", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tenantid", label = "Administrador", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
 },
              endpoints = new
              {
-                 tenantid = "/YconfigNotification/YconfigNotificationReadFKTenantID",
                  create = "/YconfigNotification/PostYconfigNotification",
                  read = "/YconfigNotification/ReadYconfigNotification",
                  update = "/YconfigNotification/PutYconfigNotification",
@@ -1902,21 +1748,16 @@ var metadatacrud = new
 entityDescription = "YpserPermitions",
 searchFields = new[]
 {
- new { id = "userid", label = "User ID", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYuser", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
  new { id = "permitionsid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDataYpermtions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
  },
 },
 formFields = new[]
 {
- new { id = "userid", label = "User ID", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYuser", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
  new { id = "permitionsid", label = "ID Permição", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYpermtions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
              {
-                 userid = "/YpserPermitions/YpserPermitionsReadFKUserId",
                  permitionsid = "/YpserPermitions/YpserPermitionsReadFKPermitionsId",
                  create = "/YpserPermitions/PostYpserPermitions",
                  read = "/YpserPermitions/ReadYpserPermitions",

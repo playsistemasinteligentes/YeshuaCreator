@@ -38,10 +38,11 @@ namespace Dominio
         public string ColumnReference { get; private set; }
         public bool required { get; internal set; }
         public bool IsBackEndField { get; private set; }
+        public bool IsWhereBackEndField { get; private set; }
         public bool IsUserEncryptedField { get; private set; }
         public bool IsPassword { get; private set; }
         public bool IsStandardField { get; set; } = false;
-
+        public string StandardFieldValue { get; internal set; }
 
         public Entity Int()
         {
@@ -185,9 +186,10 @@ namespace Dominio
             return this.Entity;
         }
 
-        internal Entity BackEndField()
+        internal Entity BackEndField(bool where)
         {
             this.IsBackEndField = true;
+            this.IsWhereBackEndField = where;
             return this.Entity;
         }
 
@@ -208,10 +210,51 @@ namespace Dominio
             return this.Entity;
         }
 
-        public Entity StandardField()
+        public Entity StandardField(string value)
         {
+            this.StandardFieldValue = value;
             this.IsStandardField = true;
             return this.Entity;
         }
+
+
+        public Column DeepCopy(Entity entity)
+        {
+            var copy = new Column(this.Name, this.Description, entity, this.Helper)
+            {
+                AutoIncremento = this.AutoIncremento,
+                DisplayFK = this.DisplayFK,
+                FkEntityName = this.FkEntityName,
+                EntityFK = this.EntityFK, // Se precisar de DeepCopy de Entity também, clone aqui
+                IsNotNull = this.IsNotNull,
+                required = this.required,
+                IsBackEndField = this.IsBackEndField,
+                IsWhereBackEndField = this.IsWhereBackEndField,
+                IsUserEncryptedField = this.IsUserEncryptedField,
+                IsPassword = this.IsPassword,
+                IsStandardField = this.IsStandardField,
+                StandardFieldValue = this.StandardFieldValue,
+                IsFK = this.IsFK,
+                IsKey = this.IsKey,
+                ColumnReference = this.ColumnReference,
+                Length = this.Length,
+                Precision = this.Precision
+            };
+
+            if (this.Enum != null)
+            {
+                copy.Enum = new Dictionary<int, string>(this.Enum);
+            }
+
+            // Copia manual do tipo SQL (propriedade privada)
+            typeof(Column)
+                .GetProperty("Type", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(copy, this.GetSqlType());
+
+            return copy;
+        }
+
+
+
     }
 }

@@ -18,19 +18,6 @@
                             _inner = inner;
                             _logger = logger;
                         }
-                                    public bool? Deleted
-                                    {
-                                        get => _inner.Deleted;
-                                        set
-                                        {
-                                            if (_inner.Deleted != value)
-                                            {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
-                                                _inner.Deleted = value;
-                                            }
-                                        }
-                                    }
-
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();
                         public bool isValidDelete() => _inner.isValidDelete();

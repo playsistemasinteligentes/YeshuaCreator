@@ -138,7 +138,7 @@ namespace Dominio.Schemas.CQRS
             #region FKs  
             foreach (var entity in _migration.Entitys)
             {
-                foreach (var column in entity.AddColumns.Where(x => x.IsFK))
+                foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
                     sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}{column.Name}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>");
                     sb.AppendLine("{");
@@ -170,7 +170,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("searchFields = new[]");
                 sb.AppendLine("{");
 
-                foreach (var item in entidade.AddColumns)
+                foreach (var item in entidade.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     string endPontGetMetadata = string.Empty;
@@ -201,7 +201,7 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("formFields = new[]");
                 sb.AppendLine("{");
-                foreach (var item in entidade.AddColumns)
+                foreach (var item in entidade.AddColumns.Where(x => !x.IsBackEndField))
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     string endPontGetMetadata = string.Empty;
@@ -232,7 +232,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("             endpoints = new");
                 sb.AppendLine("             {");
 
-                foreach (var column in entidade.AddColumns.Where(x => x.IsFK))
+                foreach (var column in entidade.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                     sb.AppendLine($"                 {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
 
 

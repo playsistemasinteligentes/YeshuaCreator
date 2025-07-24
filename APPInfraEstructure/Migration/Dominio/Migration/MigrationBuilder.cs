@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Migration.Interfaces;
+using System.Data.Common;
 
 namespace Dominio.Migration
 {
@@ -40,6 +41,40 @@ namespace Dominio.Migration
 
             foreach (var item in migration)
                 item.Up();
+
+
+            // aplay standard fiels 
+            List<Column> columns = migration
+                            .SelectMany(m => m.Entitys)
+                            .SelectMany(e => e.AddColumns)
+                            .Where(c => c.IsStandardField)
+                            .Distinct()
+                            .ToList();
+
+            var chavesIncluidas = new HashSet<string>();
+
+            foreach (var m in migration)
+            {
+                foreach (var entity in m.Entitys.Where(x => x.EntityName != "YStandardFields"))
+                {
+                    foreach (var col in columns)
+                    {
+                        if (entity.EntityName == "Ytenant" && !string.IsNullOrEmpty(col.FkEntityName))
+                            continue;
+                        if (entity.EntityName == col.FkEntityName)
+                            continue;
+                        var chave = col.Name + entity.EntityName;
+                        if (!chavesIncluidas.Contains(chave))
+                        {
+                            entity.AddColumns.Add(col.DeepCopy(entity));
+                            chavesIncluidas.Add(chave);
+                        }
+                    }
+                }
+            }
+
+            foreach (var m in migration)
+                m.Entitys.RemoveAll(x => x.EntityName == "YStandardFields");
 
             foreach (var schema in _schemas.OfType<ISchemaDataBase>())
             {

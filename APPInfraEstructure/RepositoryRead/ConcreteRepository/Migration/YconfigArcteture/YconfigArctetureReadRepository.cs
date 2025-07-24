@@ -47,24 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<YconfigArctetureTenantIDDTO> getYconfigArctetureReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
-        {
-            List<YconfigArctetureTenantIDDTO> lista;
-            var query = _query.YconfigArctetureTenantIDQuery(command);
-
-                lista = _connection.Query<YconfigArctetureTenantIDDTO>(query.Query,query.Parameters) as List<YconfigArctetureTenantIDDTO>;
-            return lista;
-        }
-
-        public IEnumerable<YconfigArctetureTenantIDDTO> getYconfigArctetureReadFKTenantID(object command)
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getYconfigArctetureReadFKTenantID(c);
-            }
-            throw new NotImplementedException();
-        }
-
         public bool ExistsById(int value)
         {
             var query = _query.ExistsByIdQuery(value);
@@ -89,14 +71,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByTenantID(int value)
-        {
-            var query = _query.ExistsByTenantIDQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public YconfigArctetureDTO FirstById(int value)
         {
             var query = _query.FirstByIdQuery(value);
@@ -116,14 +90,6 @@ namespace Read.Repository
         public YconfigArctetureDTO FirstByAuditCRUDActived(int value)
         {
             var query = _query.FirstByAuditCRUDActivedQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigArctetureDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigArctetureDTO FirstByTenantID(int value)
-        {
-            var query = _query.FirstByTenantIDQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YconfigArctetureDTO>(query.Query, query.Parameters);
                 return result;

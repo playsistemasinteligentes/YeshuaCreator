@@ -20,10 +20,13 @@ namespace Query.Write
         }
         public QueryModel InserirEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
-            this.Query = $@" INSERT INTO Especialidade (Descricao) OUTPUT INSERTED.Id VALUES(@Descricao) ";
+            this.Query = $@" INSERT INTO Especialidade (Descricao, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@Descricao, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
                 Descricao = Especialidade.Descricao,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

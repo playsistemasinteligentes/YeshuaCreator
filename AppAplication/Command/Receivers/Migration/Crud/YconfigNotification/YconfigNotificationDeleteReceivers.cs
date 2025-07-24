@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.YconfigNotificationCrudCommand c) 
              {    
-                 var yconfignotification = new YconfigNotificationFactory(_logger).Create(c.Id, c.EmailAdress, c.EmailPassword, c.TenantID);
+                 var yconfignotification = new YconfigNotificationFactory(_logger).Create(c.Id, c.EmailAdress, c.EmailPassword);
                  if (!yconfignotification.isValidDelete())
                      return ValidationError(yconfignotification.getErroMensagens(), comand);
 

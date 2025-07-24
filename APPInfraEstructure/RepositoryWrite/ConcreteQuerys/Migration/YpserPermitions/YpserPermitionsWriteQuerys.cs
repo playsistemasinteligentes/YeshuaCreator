@@ -20,30 +20,22 @@ namespace Query.Write
         }
         public QueryModel InserirYpserPermitionsQuery(IYpserPermitionsEntity YpserPermitions)
         {
-            this.Query = $@" INSERT INTO YpserPermitions (UserId, PermitionsId) OUTPUT INSERTED.ID VALUES(@UserId, @PermitionsId) ";
+            this.Query = $@" INSERT INTO YpserPermitions (PermitionsId, TenantID, Deleted, UserId) OUTPUT INSERTED.ID VALUES(@PermitionsId, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
-                UserId = _correntUser.UserId,
                 PermitionsId = YpserPermitions.PermitionsId,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateYpserPermitionsQuery(IYpserPermitionsEntity YpserPermitions)
         {
-            this.Query = $@" UPDATE YpserPermitions SET UserId = @UserId, PermitionsId = @PermitionsId WHERE  ";
+            this.Query = $@" UPDATE YpserPermitions SET PermitionsId = @PermitionsId WHERE  ";
             this.Parameters = new
             {
-                UserId = YpserPermitions.UserId,
                 PermitionsId = YpserPermitions.PermitionsId,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateUserId(IYpserPermitionsEntity entity)
-        {
-            this.Query = $@" UPDATE YpserPermitions SET UserId = @UserId WHERE  ";
-            this.Parameters = new
-            {
-                UserId = entity.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

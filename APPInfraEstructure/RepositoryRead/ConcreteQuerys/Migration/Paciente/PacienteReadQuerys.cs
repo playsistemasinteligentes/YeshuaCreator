@@ -24,7 +24,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional from Paciente ";
+            this.Query = $@" select Id, Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional, TenantID, Deleted, UserId from Paciente ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
@@ -48,9 +48,9 @@ if (!string.IsNullOrEmpty(Command.PrincipaisQueixas)) whereClauses.Add($"Princip
 if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) parametersDict["ObservacaoAdicional"] = $"%{Command.ObservacaoAdicional}%";
 if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) whereClauses.Add($"ObservacaoAdicional like @ObservacaoAdicional");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
-            else if (!string.IsNullOrEmpty(getTenant())) 
-                 this.Query += $" WHERE {getTenant()}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -62,151 +62,163 @@ if (!string.IsNullOrEmpty(Command.ObservacaoAdicional)) whereClauses.Add($"Obser
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Id = @Id";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Nome = @Nome";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTelefoneQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Telefone = @Telefone";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Telefone = @Telefone";
             var parameters = new { Telefone = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDataNascimentoQuery(DateTime value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} DataNascimento = @DataNascimento";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} DataNascimento = @DataNascimento";
             var parameters = new { DataNascimento = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByGeneroQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Genero = @Genero";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Genero = @Genero";
             var parameters = new { Genero = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEscolaridadeQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Escolaridade = @Escolaridade";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Escolaridade = @Escolaridade";
             var parameters = new { Escolaridade = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByProfissaoQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Profissao = @Profissao";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Profissao = @Profissao";
             var parameters = new { Profissao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEnderecoQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} Endereco = @Endereco";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} Endereco = @Endereco";
             var parameters = new { Endereco = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeResponsavelQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} NomeResponsavel = @NomeResponsavel";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} NomeResponsavel = @NomeResponsavel";
             var parameters = new { NomeResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTelefoneResponsavelQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} TelefoneResponsavel = @TelefoneResponsavel";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} TelefoneResponsavel = @TelefoneResponsavel";
             var parameters = new { TelefoneResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPrincipaisQueixasQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} PrincipaisQueixas = @PrincipaisQueixas";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} PrincipaisQueixas = @PrincipaisQueixas";
             var parameters = new { PrincipaisQueixas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByObservacaoAdicionalQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Paciente WHERE {getTenant()} ObservacaoAdicional = @ObservacaoAdicional";
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} ObservacaoAdicional = @ObservacaoAdicional";
             var parameters = new { ObservacaoAdicional = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByUserIdQuery(int value)
+        {
+            var sql = $"SELECT 1 FROM Paciente WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Id = @Id";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Nome = @Nome";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTelefoneQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Telefone = @Telefone";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Telefone = @Telefone";
             var parameters = new { Telefone = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDataNascimentoQuery(DateTime value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} DataNascimento = @DataNascimento";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} DataNascimento = @DataNascimento";
             var parameters = new { DataNascimento = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByGeneroQuery(int value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Genero = @Genero";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Genero = @Genero";
             var parameters = new { Genero = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEscolaridadeQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Escolaridade = @Escolaridade";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Escolaridade = @Escolaridade";
             var parameters = new { Escolaridade = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByProfissaoQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Profissao = @Profissao";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Profissao = @Profissao";
             var parameters = new { Profissao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEnderecoQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} Endereco = @Endereco";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} Endereco = @Endereco";
             var parameters = new { Endereco = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeResponsavelQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} NomeResponsavel = @NomeResponsavel";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} NomeResponsavel = @NomeResponsavel";
             var parameters = new { NomeResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTelefoneResponsavelQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} TelefoneResponsavel = @TelefoneResponsavel";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} TelefoneResponsavel = @TelefoneResponsavel";
             var parameters = new { TelefoneResponsavel = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPrincipaisQueixasQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} PrincipaisQueixas = @PrincipaisQueixas";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} PrincipaisQueixas = @PrincipaisQueixas";
             var parameters = new { PrincipaisQueixas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByObservacaoAdicionalQuery(string value)
         {
-            var sql = $"SELECT * FROM Paciente WHERE {getTenant()} ObservacaoAdicional = @ObservacaoAdicional";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} ObservacaoAdicional = @ObservacaoAdicional";
             var parameters = new { ObservacaoAdicional = value };
             return new QueryModel(sql, parameters);
         }
-        private string getTenant()
+        public QueryModel FirstByUserIdQuery(int value)
         {
- return "";
+            var sql = $"SELECT * FROM Paciente WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
+            return new QueryModel(sql, parameters);
+        }
+        private string getBackEndFieldWitchWhere()
+        {
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
         }
     }
 }

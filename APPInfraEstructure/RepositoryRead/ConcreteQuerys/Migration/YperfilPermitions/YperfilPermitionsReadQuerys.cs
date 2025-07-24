@@ -24,15 +24,15 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select PerfilId, PermitionsId from YperfilPermitions ";
+            this.Query = $@" select PerfilId, PermitionsId, TenantID, Deleted, UserId from YperfilPermitions ";
 if (Command.PerfilId.HasValue) parametersDict["PerfilId"] = Command.PerfilId.Value;
 if (Command.PerfilId.HasValue) whereClauses.Add($"PerfilId = @PerfilId");
 if (!string.IsNullOrEmpty(Command.PermitionsId)) parametersDict["PermitionsId"] = $"%{Command.PermitionsId}%";
 if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId like @PermitionsId");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getTenant()} {string.Join(" AND ", whereClauses)}"; 
-            else if (!string.IsNullOrEmpty(getTenant())) 
-                 this.Query += $" WHERE {getTenant()}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -62,12 +62,12 @@ if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId
                       whereClauses.Add($" Id like @Id "); 
                  }
             }
-            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
-            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
-            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {getTenant()}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel YperfilPermitionsPermitionsIdQuery(Command.Patterns.Command.SearchFKCommand Command)
@@ -90,41 +90,53 @@ if (!string.IsNullOrEmpty(Command.PermitionsId)) whereClauses.Add($"PermitionsId
                       whereClauses.Add($" Id like @Id "); 
                  }
             }
-            if (whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {getTenant()} ({string.Join(" OR ", whereClauses)})"; 
-            else if (whereClauses.Any() && string.IsNullOrEmpty(getTenant())) 
+            if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
-            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getTenant())) 
-            this.Query += $" WHERE {getTenant()}"; 
+            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel ExistsByPerfilIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM YperfilPermitions WHERE {getTenant()} PerfilId = @PerfilId";
+            var sql = $"SELECT 1 FROM YperfilPermitions WHERE {getBackEndFieldWitchWhere()} PerfilId = @PerfilId";
             var parameters = new { PerfilId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPermitionsIdQuery(string value)
         {
-            var sql = $"SELECT 1 FROM YperfilPermitions WHERE {getTenant()} PermitionsId = @PermitionsId";
+            var sql = $"SELECT 1 FROM YperfilPermitions WHERE {getBackEndFieldWitchWhere()} PermitionsId = @PermitionsId";
             var parameters = new { PermitionsId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByUserIdQuery(int value)
+        {
+            var sql = $"SELECT 1 FROM YperfilPermitions WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPerfilIdQuery(int value)
         {
-            var sql = $"SELECT * FROM YperfilPermitions WHERE {getTenant()} PerfilId = @PerfilId";
+            var sql = $"SELECT * FROM YperfilPermitions WHERE {getBackEndFieldWitchWhere()} PerfilId = @PerfilId";
             var parameters = new { PerfilId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPermitionsIdQuery(string value)
         {
-            var sql = $"SELECT * FROM YperfilPermitions WHERE {getTenant()} PermitionsId = @PermitionsId";
+            var sql = $"SELECT * FROM YperfilPermitions WHERE {getBackEndFieldWitchWhere()} PermitionsId = @PermitionsId";
             var parameters = new { PermitionsId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getTenant()
+        public QueryModel FirstByUserIdQuery(int value)
         {
- return "";
+            var sql = $"SELECT * FROM YperfilPermitions WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var parameters = new { UserId = value };
+            return new QueryModel(sql, parameters);
+        }
+        private string getBackEndFieldWitchWhere()
+        {
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
         }
     }
 }

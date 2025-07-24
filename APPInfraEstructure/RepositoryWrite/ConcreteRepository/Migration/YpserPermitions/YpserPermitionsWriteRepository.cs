@@ -41,11 +41,6 @@ namespace Input.Repository.YpserPermitions
             var query = _query.DeleteYpserPermitionsQuery(YpserPermitions);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateUserId(IYpserPermitionsEntity entity)
-        {
-            var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
         public void UpdatePermitionsId(IYpserPermitionsEntity entity)
         {
             var query = _query.UpdatePermitionsId(entity);

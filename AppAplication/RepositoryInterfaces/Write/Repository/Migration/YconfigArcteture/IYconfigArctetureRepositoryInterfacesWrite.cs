@@ -14,7 +14,6 @@ namespace IRepository.Write
         void Delete(IYconfigArctetureEntity yconfigarcteture);
         public void UpdateAuditTrackerActived(IYconfigArctetureEntity entity);
         public void UpdateAuditCRUDActived(IYconfigArctetureEntity entity);
-        public void UpdateTenantID(IYconfigArctetureEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

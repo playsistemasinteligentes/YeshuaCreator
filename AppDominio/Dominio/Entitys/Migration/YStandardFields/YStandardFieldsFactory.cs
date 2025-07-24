@@ -9,9 +9,9 @@
                                     public YStandardFieldsFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYStandardFieldsEntity Create(bool? deleted )
+                                    } public IYStandardFieldsEntity Create( )
                             {
-                            var entity = new YStandardFieldsEntity(deleted );
+                            var entity = new YStandardFieldsEntity( );
 
 
                             var decoratedEntity = new YStandardFieldsDecorator(entity, _logger);

@@ -36,7 +36,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        void Update(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void Delete(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
 
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey))
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
                 sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity);");
 
 

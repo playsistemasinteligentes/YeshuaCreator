@@ -58,12 +58,6 @@ namespace Input.Repository.YconfigArcteture
             var query = _query.UpdateAuditCRUDActived(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateTenantID(IYconfigArctetureEntity entity)
-        {
-            _cacheService.RemoveByPrefix("YconfigArcteture");
-            var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

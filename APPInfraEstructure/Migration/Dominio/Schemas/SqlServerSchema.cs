@@ -19,7 +19,7 @@ namespace Dominio.Schemas
         public List<MigrationQuery> ApplyMigration(Dominio.Migration.MigrationBase migration)
         {
             List<MigrationQuery> querys = new List<MigrationQuery>();
-            foreach (var e in migration.Entitys)
+            foreach (var e in migration.Entitys.Where(x => x.EntityName != "YStandardFields"))
             {
                 if (e.create)
                     querys.Add(CreateTable(e));
@@ -113,7 +113,7 @@ namespace Dominio.Schemas
                     return "REAL";
                 case "DECIMAL":
                     return $"DECIMAL({column.Length}, {column.Precision})";
-                case "BOOLEAN":
+                case "BOOL":
                     return "BIT"; // Tipo para SQL Server; use "BOOLEAN" para PostgreSQL e MySQL
                 default:
                     throw new ArgumentException($"Tipo de dado '{column.GetSqlType()}' não suportado.");

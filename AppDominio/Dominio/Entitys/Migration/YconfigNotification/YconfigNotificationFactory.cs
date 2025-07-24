@@ -9,9 +9,9 @@
                                     public YconfigNotificationFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYconfigNotificationEntity Create(int? id, string emailadress, string emailpassword, int? tenantid )
+                                    } public IYconfigNotificationEntity Create(int? id, string emailadress, string emailpassword )
                             {
-                            var entity = new YconfigNotificationEntity(id, emailadress, emailpassword, tenantid );
+                            var entity = new YconfigNotificationEntity(id, emailadress, emailpassword );
 
 
                             var decoratedEntity = new YconfigNotificationDecorator(entity, _logger);

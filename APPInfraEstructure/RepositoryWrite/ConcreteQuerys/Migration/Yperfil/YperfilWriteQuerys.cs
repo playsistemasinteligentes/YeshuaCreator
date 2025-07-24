@@ -20,10 +20,13 @@ namespace Query.Write
         }
         public QueryModel InserirYperfilQuery(IYperfilEntity Yperfil)
         {
-            this.Query = $@" INSERT INTO Yperfil (Description) OUTPUT INSERTED.Id VALUES(@Description) ";
+            this.Query = $@" INSERT INTO Yperfil (Description, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@Description, @TenantID, @Deleted, @UserId) ";
             this.Parameters = new
             {
                 Description = Yperfil.Description,
+                TenantID = _correntUser.TenantID,
+                Deleted = "",
+                UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

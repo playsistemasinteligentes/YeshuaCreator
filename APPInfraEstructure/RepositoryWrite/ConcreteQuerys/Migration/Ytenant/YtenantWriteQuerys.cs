@@ -20,11 +20,12 @@ namespace Query.Write
         }
         public QueryModel InserirYtenantQuery(IYtenantEntity Ytenant)
         {
-            this.Query = $@" INSERT INTO Ytenant (CnpjCpf, Nome, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@CnpjCpf, @Nome, @UserIDAdmin) ";
+            this.Query = $@" INSERT INTO Ytenant (CnpjCpf, Nome, Deleted, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@CnpjCpf, @Nome, @Deleted, @UserIDAdmin) ";
             this.Parameters = new
             {
                 CnpjCpf = Ytenant.CnpjCpf,
                 Nome = Ytenant.Nome,
+                Deleted = "",
                 UserIDAdmin = Ytenant.UserIDAdmin,
             };
             return new QueryModel(this.Query, this.Parameters);

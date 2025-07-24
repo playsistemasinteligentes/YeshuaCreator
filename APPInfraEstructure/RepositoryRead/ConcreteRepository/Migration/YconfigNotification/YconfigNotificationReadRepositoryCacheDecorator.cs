@@ -11,18 +11,15 @@ namespace Read.Repository
     private readonly IYconfigNotificationReadRepository _inner;
     private readonly ICacheService<YconfigNotificationDTO> _cacheById;
     private readonly ICacheService<IEnumerable<YconfigNotificationDTO>> _cacheAll;
-    private readonly ICacheService<IEnumerable<YconfigNotificationTenantIDDTO>> _cacheFKTenantID;
 
     public YconfigNotificationReadRepositoryCacheDecorator(
         IYconfigNotificationReadRepository inner,
         ICacheService<YconfigNotificationDTO> cacheById,
-        ICacheService<IEnumerable<YconfigNotificationDTO>> cacheAll,
-        ICacheService<IEnumerable<YconfigNotificationTenantIDDTO>> cacheFKTenantID
+        ICacheService<IEnumerable<YconfigNotificationDTO>> cacheAll
     )    {
         _inner = inner;
         _cacheById = cacheById;
         _cacheAll = cacheAll;
-    _cacheFKTenantID=cacheFKTenantID;
     }
 
     public DataPagination<YconfigNotificationDTO> getYconfigNotification(ICommandRead command)
@@ -41,21 +38,6 @@ namespace Read.Repository
         }
         return _inner.getYconfigNotification(command);
     }
-        public IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(object command)
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-                return getYconfigNotificationReadFKTenantID(c);
-            throw new NotImplementedException();
-        }
-        private IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
-        {
-            string key = $"YconfigNotification:FK:TenantID:{command.searchFK}";
-            var cached = _cacheFKTenantID.Get(key);
-            if (cached != null) return cached;
-            var result = _inner.getYconfigNotificationReadFKTenantID(command);
-            if (result != null) _cacheFKTenantID.Set(key, result,"YconfigNotification");
-            return result;
-        }
         public YconfigNotificationDTO getById()
         {
             throw new NotImplementedException();
@@ -75,11 +57,6 @@ namespace Read.Repository
                 return _inner.ExistsByEmailPassword(value);
         }
 
-        public bool ExistsByTenantID(int value)
-        {
-                return _inner.ExistsByTenantID(value);
-        }
-
         public YconfigNotificationDTO FirstById(int value)
         {
                 return _inner.FirstById(value);
@@ -93,11 +70,6 @@ namespace Read.Repository
         public YconfigNotificationDTO FirstByEmailPassword(string value)
         {
                 return _inner.FirstByEmailPassword(value);
-        }
-
-        public YconfigNotificationDTO FirstByTenantID(int value)
-        {
-                return _inner.FirstByTenantID(value);
         }
 
     }
