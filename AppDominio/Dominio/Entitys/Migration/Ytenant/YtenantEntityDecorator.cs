@@ -57,15 +57,15 @@
                                         }
                                     }
 
-                                    public int? UserIDAdmin
+                                    public int? UserId
                                     {
-                                        get => _inner.UserIDAdmin;
+                                        get => _inner.UserId;
                                         set
                                         {
-                                            if (_inner.UserIDAdmin != value)
+                                            if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserIDAdmin: antes={_inner.UserIDAdmin}, depois={value}");
-                                                _inner.UserIDAdmin = value;
+                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
+                                                _inner.UserId = value;
                                             }
                                         }
                                     }

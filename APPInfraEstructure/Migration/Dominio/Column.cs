@@ -216,6 +216,13 @@ namespace Dominio
             this.IsStandardField = true;
             return this.Entity;
         }
+        public Entity StandardValue(string value)
+        {
+            this.StandardFieldValue = value;
+            return this.Entity;
+        }
+
+
 
 
         public Column DeepCopy(Entity entity)

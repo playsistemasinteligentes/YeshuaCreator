@@ -9,7 +9,7 @@ namespace IQuery.Write
         public QueryModel UpdateYtenantQuery(IYtenantEntity Ytenant);
         public QueryModel UpdateCnpjCpf(IYtenantEntity entity);
         public QueryModel UpdateNome(IYtenantEntity entity);
-        public QueryModel UpdateUserIDAdmin(IYtenantEntity entity);
+        public QueryModel UpdateUserId(IYtenantEntity entity);
         public QueryModel DeleteYtenantQuery(IYtenantEntity Ytenant);
     }
 }

@@ -51,9 +51,9 @@ namespace Input.Repository.Ytenant
             var query = _query.UpdateNome(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateUserIDAdmin(IYtenantEntity entity)
+        public void UpdateUserId(IYtenantEntity entity)
         {
-            var query = _query.UpdateUserIDAdmin(entity);
+            var query = _query.UpdateUserId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

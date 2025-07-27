@@ -20,7 +20,7 @@ namespace Query.Write
         }
         public QueryModel InserirPacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" INSERT INTO Paciente (Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @PrincipaisQueixas, @ObservacaoAdicional, @TenantID, @Deleted, @UserId) ";
+            this.Query = $@" INSERT INTO Paciente (Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @PrincipaisQueixas, @ObservacaoAdicional, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Nome = Paciente.Nome,
@@ -35,7 +35,8 @@ namespace Query.Write
                 PrincipaisQueixas = Paciente.PrincipaisQueixas,
                 ObservacaoAdicional = Paciente.ObservacaoAdicional,
                 TenantID = _correntUser.TenantID,
-                Deleted = "",
+                Deleted = 0,
+                Changed = DateTime.Now,
                 UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -47,6 +47,24 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
+        private IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
+        {
+            List<YconfigNotificationTenantIDDTO> lista;
+            var query = _query.YconfigNotificationTenantIDQuery(command);
+
+                lista = _connection.Query<YconfigNotificationTenantIDDTO>(query.Query,query.Parameters) as List<YconfigNotificationTenantIDDTO>;
+            return lista;
+        }
+
+        public IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getYconfigNotificationReadFKTenantID(c);
+            }
+            throw new NotImplementedException();
+        }
+
         public bool ExistsById(int value)
         {
             var query = _query.ExistsByIdQuery(value);
@@ -55,9 +73,33 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByEmailAdress(string value)
+        public bool ExistsByTenantID(int value)
         {
-            var query = _query.ExistsByEmailAdressQuery(value);
+            var query = _query.ExistsByTenantIDQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailSmtpClient(string value)
+        {
+            var query = _query.ExistsByEmailSmtpClientQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailPort(int value)
+        {
+            var query = _query.ExistsByEmailPortQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailUserName(string value)
+        {
+            var query = _query.ExistsByEmailUserNameQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -79,9 +121,33 @@ namespace Read.Repository
                 return result;
         }
 
-        public YconfigNotificationDTO FirstByEmailAdress(string value)
+        public YconfigNotificationDTO FirstByTenantID(int value)
         {
-            var query = _query.FirstByEmailAdressQuery(value);
+            var query = _query.FirstByTenantIDQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public YconfigNotificationDTO FirstByEmailSmtpClient(string value)
+        {
+            var query = _query.FirstByEmailSmtpClientQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public YconfigNotificationDTO FirstByEmailPort(int value)
+        {
+            var query = _query.FirstByEmailPortQuery(value);
+
+                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public YconfigNotificationDTO FirstByEmailUserName(string value)
+        {
+            var query = _query.FirstByEmailUserNameQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
                 return result;

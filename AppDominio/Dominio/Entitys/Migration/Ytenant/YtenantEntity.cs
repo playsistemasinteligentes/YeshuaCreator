@@ -13,13 +13,13 @@
     public int? Id { get; set; }
     public int CnpjCpf { get; set; }
     public string Nome { get; set; }
-    public int? UserIDAdmin { get; set; }
+    public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal YtenantEntity(int? id, int cnpjcpf, string nome, int? useridadmin ){
+ internal YtenantEntity(int? id, int cnpjcpf, string nome, int? userid ){
  Id = id; 
  CnpjCpf = cnpjcpf; 
  Nome = nome; 
- UserIDAdmin = useridadmin; 
+ UserId = userid; 
 }
 public bool isValidData()
 {

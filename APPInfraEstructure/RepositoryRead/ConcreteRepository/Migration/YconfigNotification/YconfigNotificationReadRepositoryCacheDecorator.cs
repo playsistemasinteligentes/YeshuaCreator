@@ -11,15 +11,18 @@ namespace Read.Repository
     private readonly IYconfigNotificationReadRepository _inner;
     private readonly ICacheService<YconfigNotificationDTO> _cacheById;
     private readonly ICacheService<IEnumerable<YconfigNotificationDTO>> _cacheAll;
+    private readonly ICacheService<IEnumerable<YconfigNotificationTenantIDDTO>> _cacheFKTenantID;
 
     public YconfigNotificationReadRepositoryCacheDecorator(
         IYconfigNotificationReadRepository inner,
         ICacheService<YconfigNotificationDTO> cacheById,
-        ICacheService<IEnumerable<YconfigNotificationDTO>> cacheAll
+        ICacheService<IEnumerable<YconfigNotificationDTO>> cacheAll,
+        ICacheService<IEnumerable<YconfigNotificationTenantIDDTO>> cacheFKTenantID
     )    {
         _inner = inner;
         _cacheById = cacheById;
         _cacheAll = cacheAll;
+    _cacheFKTenantID=cacheFKTenantID;
     }
 
     public DataPagination<YconfigNotificationDTO> getYconfigNotification(ICommandRead command)
@@ -38,6 +41,21 @@ namespace Read.Repository
         }
         return _inner.getYconfigNotification(command);
     }
+        public IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(object command)
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+                return getYconfigNotificationReadFKTenantID(c);
+            throw new NotImplementedException();
+        }
+        private IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
+        {
+            string key = $"YconfigNotification:FK:TenantID:{command.searchFK}";
+            var cached = _cacheFKTenantID.Get(key);
+            if (cached != null) return cached;
+            var result = _inner.getYconfigNotificationReadFKTenantID(command);
+            if (result != null) _cacheFKTenantID.Set(key, result,"YconfigNotification");
+            return result;
+        }
         public YconfigNotificationDTO getById()
         {
             throw new NotImplementedException();
@@ -47,9 +65,24 @@ namespace Read.Repository
                 return _inner.ExistsById(value);
         }
 
-        public bool ExistsByEmailAdress(string value)
+        public bool ExistsByTenantID(int value)
         {
-                return _inner.ExistsByEmailAdress(value);
+                return _inner.ExistsByTenantID(value);
+        }
+
+        public bool ExistsByEmailSmtpClient(string value)
+        {
+                return _inner.ExistsByEmailSmtpClient(value);
+        }
+
+        public bool ExistsByEmailPort(int value)
+        {
+                return _inner.ExistsByEmailPort(value);
+        }
+
+        public bool ExistsByEmailUserName(string value)
+        {
+                return _inner.ExistsByEmailUserName(value);
         }
 
         public bool ExistsByEmailPassword(string value)
@@ -62,9 +95,24 @@ namespace Read.Repository
                 return _inner.FirstById(value);
         }
 
-        public YconfigNotificationDTO FirstByEmailAdress(string value)
+        public YconfigNotificationDTO FirstByTenantID(int value)
         {
-                return _inner.FirstByEmailAdress(value);
+                return _inner.FirstByTenantID(value);
+        }
+
+        public YconfigNotificationDTO FirstByEmailSmtpClient(string value)
+        {
+                return _inner.FirstByEmailSmtpClient(value);
+        }
+
+        public YconfigNotificationDTO FirstByEmailPort(int value)
+        {
+                return _inner.FirstByEmailPort(value);
+        }
+
+        public YconfigNotificationDTO FirstByEmailUserName(string value)
+        {
+                return _inner.FirstByEmailUserName(value);
         }
 
         public YconfigNotificationDTO FirstByEmailPassword(string value)

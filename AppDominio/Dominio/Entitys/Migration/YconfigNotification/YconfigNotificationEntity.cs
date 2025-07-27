@@ -11,12 +11,18 @@
                     public partial class YconfigNotificationEntity : IYconfigNotificationEntity
 {
     public int? Id { get; set; }
-    public string EmailAdress { get; set; }
+    public int? TenantID { get; set; }
+    public string EmailSmtpClient { get; set; }
+    public int? EmailPort { get; set; }
+    public string EmailUserName { get; set; }
     public string EmailPassword { get; set; }
     private List<string> _erroMensagem = null;
- internal YconfigNotificationEntity(int? id, string emailadress, string emailpassword ){
+ internal YconfigNotificationEntity(int? id, int? tenantid, string emailsmtpclient, int? emailport, string emailusername, string emailpassword ){
  Id = id; 
- EmailAdress = emailadress; 
+ TenantID = tenantid; 
+ EmailSmtpClient = emailsmtpclient; 
+ EmailPort = emailport; 
+ EmailUserName = emailusername; 
  EmailPassword = emailpassword; 
 }
 public bool isValidData()

@@ -49,7 +49,7 @@ namespace Command.Receivers.UseCase
                     throw new ReceiverException<object>(Error("Conta já existente.", default));
 
                 if (_repReadY_User.ExistsByEmail(comand.email))
-                    if (_repReadY_Tenant.ExistsByUserIDAdmin(_repReadY_User.FirstByEmail(comand.email).id))
+                    if (_repReadY_Tenant.ExistsByUserId(_repReadY_User.FirstByEmail(comand.email).id))
                         throw new ReceiverException<object>(Error("Conta existente.", default));
 
                 _unitOfWork.BeginTran();
@@ -73,7 +73,8 @@ namespace Command.Receivers.UseCase
                     null,
                     comand.email,
                     comand.email, // Nome: Aqui você decide o valor real, coloquei email como exemplo
-                    comand.password
+                    comand.password,
+                    tenant.Id
                 );
 
                 if (!user.isValidInsert())
@@ -81,9 +82,8 @@ namespace Command.Receivers.UseCase
 
                 _repWriteY_User.Insert(user);
 
-                tenant.UserIDAdmin = user.Id.Value;
-                _repWriteY_Tenant.UpdateUserIDAdmin(tenant);
-                _repWriteY_User.Update(tenant);
+                tenant.UserId = user.Id.Value;
+                _repWriteY_Tenant.UpdateUserId(tenant);
 
                 _unitOfWork.Commit();
 

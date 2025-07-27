@@ -112,6 +112,13 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().StandardField(value);
         }
+        public Entity StandardValue(string value)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().StandardValue(value);
+            else
+                return this.AlterColumns.Last().StandardValue(value);
+        }
 
         public Entity Incremento()
         {

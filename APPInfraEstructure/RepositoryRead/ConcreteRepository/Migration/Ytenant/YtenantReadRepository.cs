@@ -47,24 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<YtenantUserIDAdminDTO> getYtenantReadFKUserIDAdmin(Command.Patterns.Command.SearchFKCommand command)
-        {
-            List<YtenantUserIDAdminDTO> lista;
-            var query = _query.YtenantUserIDAdminQuery(command);
-
-                lista = _connection.Query<YtenantUserIDAdminDTO>(query.Query,query.Parameters) as List<YtenantUserIDAdminDTO>;
-            return lista;
-        }
-
-        public IEnumerable<YtenantUserIDAdminDTO> getYtenantReadFKUserIDAdmin(object command)
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getYtenantReadFKUserIDAdmin(c);
-            }
-            throw new NotImplementedException();
-        }
-
         public bool ExistsById(int value)
         {
             var query = _query.ExistsByIdQuery(value);
@@ -89,9 +71,9 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByUserIDAdmin(int value)
+        public bool ExistsByUserId(int value)
         {
-            var query = _query.ExistsByUserIDAdminQuery(value);
+            var query = _query.ExistsByUserIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -121,9 +103,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public YtenantDTO FirstByUserIDAdmin(int value)
+        public YtenantDTO FirstByUserId(int value)
         {
-            var query = _query.FirstByUserIDAdminQuery(value);
+            var query = _query.FirstByUserIdQuery(value);
 
                 var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
                 return result;

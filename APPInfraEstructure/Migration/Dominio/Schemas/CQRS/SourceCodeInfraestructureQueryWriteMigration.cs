@@ -85,7 +85,12 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            {");
                 foreach (var column in _entity.AddColumns.Where(x => !x.AutoIncremento))
                     if (column.IsStandardField)
-                        sb.AppendLine($"                {column.Name} = {(column.StandardFieldValue == "''" ? "\"\"" : column.StandardFieldValue)},");
+                    {
+                        if (column.StandardFieldValue.StartsWith("#"))
+                            sb.AppendLine($"                {column.Name} = {(column.StandardFieldValue.Substring(1))},");
+                        else
+                            sb.AppendLine($"                {column.Name} = {(column.StandardFieldValue == "''" ? "\"\"" : column.StandardFieldValue)},");
+                    }
                     else
                         sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
 

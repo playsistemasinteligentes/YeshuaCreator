@@ -9,9 +9,9 @@
                                     public YuserFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYuserEntity Create(int? id, string nome, string email, string senha )
+                                    } public IYuserEntity Create(int? id, string nome, string email, string senha, int? tenantid )
                             {
-                            var entity = new YuserEntity(id, nome, email, senha );
+                            var entity = new YuserEntity(id, nome, email, senha, tenantid );
 
 
                             var decoratedEntity = new YuserDecorator(entity, _logger);

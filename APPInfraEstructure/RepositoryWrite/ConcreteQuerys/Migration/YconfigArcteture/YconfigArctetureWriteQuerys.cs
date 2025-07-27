@@ -20,14 +20,15 @@ namespace Query.Write
         }
         public QueryModel InserirYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture)
         {
-            this.Query = $@" INSERT INTO YconfigArcteture (Id, AuditTrackerActived, AuditCRUDActived, TenantID, Deleted, UserId) OUTPUT INSERTED.ID VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @UserId) ";
+            this.Query = $@" INSERT INTO YconfigArcteture (Id, AuditTrackerActived, AuditCRUDActived, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ID VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = YconfigArcteture.Id,
                 AuditTrackerActived = YconfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = YconfigArcteture.AuditCRUDActived,
                 TenantID = _correntUser.TenantID,
-                Deleted = "",
+                Deleted = 0,
+                Changed = DateTime.Now,
                 UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);

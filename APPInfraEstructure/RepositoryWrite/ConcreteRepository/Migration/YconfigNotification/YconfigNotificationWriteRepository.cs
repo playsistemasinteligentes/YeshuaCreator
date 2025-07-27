@@ -46,10 +46,28 @@ namespace Input.Repository.YconfigNotification
             var query = _query.DeleteYconfigNotificationQuery(YconfigNotification);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateEmailAdress(IYconfigNotificationEntity entity)
+        public void UpdateTenantID(IYconfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("YconfigNotification");
-            var query = _query.UpdateEmailAdress(entity);
+            var query = _query.UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateEmailSmtpClient(IYconfigNotificationEntity entity)
+        {
+            _cacheService.RemoveByPrefix("YconfigNotification");
+            var query = _query.UpdateEmailSmtpClient(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateEmailPort(IYconfigNotificationEntity entity)
+        {
+            _cacheService.RemoveByPrefix("YconfigNotification");
+            var query = _query.UpdateEmailPort(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateEmailUserName(IYconfigNotificationEntity entity)
+        {
+            _cacheService.RemoveByPrefix("YconfigNotification");
+            var query = _query.UpdateEmailUserName(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateEmailPassword(IYconfigNotificationEntity entity)

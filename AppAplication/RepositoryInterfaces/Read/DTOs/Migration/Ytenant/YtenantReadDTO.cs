@@ -11,7 +11,7 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public int cnpjcpf { get; set; }
     public string nome { get; set; }
-    public int useridadmin { get; set; }
+    public int userid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

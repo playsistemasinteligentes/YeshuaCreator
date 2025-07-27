@@ -9,7 +9,10 @@ namespace Repositorio.Outputs
     public record YconfigNotificationDTO
     {
     public int id { get; set; }
-    public string emailadress { get; set; }
+    public int tenantid { get; set; }
+    public string emailsmtpclient { get; set; }
+    public int emailport { get; set; }
+    public string emailusername { get; set; }
     public string emailpassword { get; set; }
     }
 }

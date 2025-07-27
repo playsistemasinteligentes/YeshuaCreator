@@ -12,7 +12,10 @@ namespace IRepository.Write
         void Insert(IYconfigNotificationEntity yconfignotification);
         void Update(IYconfigNotificationEntity yconfignotification);
         void Delete(IYconfigNotificationEntity yconfignotification);
-        public void UpdateEmailAdress(IYconfigNotificationEntity entity);
+        public void UpdateTenantID(IYconfigNotificationEntity entity);
+        public void UpdateEmailSmtpClient(IYconfigNotificationEntity entity);
+        public void UpdateEmailPort(IYconfigNotificationEntity entity);
+        public void UpdateEmailUserName(IYconfigNotificationEntity entity);
         public void UpdateEmailPassword(IYconfigNotificationEntity entity);
     }
 }

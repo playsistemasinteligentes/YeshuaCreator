@@ -13,15 +13,14 @@ namespace IRepository.Read
     {
         public DataPagination<YtenantDTO> getYtenant(ICommandRead command);
         public YtenantDTO getById();
-        public IEnumerable<YtenantUserIDAdminDTO> getYtenantReadFKUserIDAdmin(object command);
         public bool ExistsById(int value);
         public bool ExistsByCnpjCpf(int value);
         public bool ExistsByNome(string value);
-        public bool ExistsByUserIDAdmin(int value);
+        public bool ExistsByUserId(int value);
         public YtenantDTO FirstById(int value);
         public YtenantDTO FirstByCnpjCpf(int value);
         public YtenantDTO FirstByNome(string value);
-        public YtenantDTO FirstByUserIDAdmin(int value);
+        public YtenantDTO FirstByUserId(int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -59,8 +59,9 @@ namespace Dominio.Migration
                 {
                     foreach (var col in columns)
                     {
-                        if (entity.EntityName == "Ytenant" && !string.IsNullOrEmpty(col.FkEntityName))
+                        if (entity.AddColumns.Where(x => x.Name == col.Name).Count() > 0)
                             continue;
+
                         if (entity.EntityName == col.FkEntityName)
                             continue;
                         var chave = col.Name + entity.EntityName;

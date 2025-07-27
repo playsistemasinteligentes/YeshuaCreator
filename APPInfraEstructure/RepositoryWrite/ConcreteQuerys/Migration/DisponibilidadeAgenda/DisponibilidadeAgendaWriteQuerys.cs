@@ -20,13 +20,14 @@ namespace Query.Write
         }
         public QueryModel InserirDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@ProfissionalId, @DataHora, @TenantID, @Deleted, @UserId) ";
+            this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ProfissionalId, @DataHora, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,
                 DataHora = DisponibilidadeAgenda.DataHora,
                 TenantID = _correntUser.TenantID,
-                Deleted = "",
+                Deleted = 0,
+                Changed = DateTime.Now,
                 UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);

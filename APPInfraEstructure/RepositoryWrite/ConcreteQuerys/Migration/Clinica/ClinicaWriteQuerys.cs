@@ -20,14 +20,15 @@ namespace Query.Write
         }
         public QueryModel InserirClinicaQuery(IClinicaEntity Clinica)
         {
-            this.Query = $@" INSERT INTO Clinica (Nome, Endereco, Telefone, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Endereco, @Telefone, @TenantID, @Deleted, @UserId) ";
+            this.Query = $@" INSERT INTO Clinica (Nome, Endereco, Telefone, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Endereco, @Telefone, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Nome = Clinica.Nome,
                 Endereco = Clinica.Endereco,
                 Telefone = Clinica.Telefone,
                 TenantID = _correntUser.TenantID,
-                Deleted = "",
+                Deleted = 0,
+                Changed = DateTime.Now,
                 UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);

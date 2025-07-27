@@ -11,7 +11,10 @@
                     public interface IYconfigNotificationEntity
 {
     int? Id { get; set; }
-    string EmailAdress { get; set; }
+    int? TenantID { get; set; }
+    string EmailSmtpClient { get; set; }
+    int? EmailPort { get; set; }
+    string EmailUserName { get; set; }
     string EmailPassword { get; set; }
     
                     bool isValidInsert();

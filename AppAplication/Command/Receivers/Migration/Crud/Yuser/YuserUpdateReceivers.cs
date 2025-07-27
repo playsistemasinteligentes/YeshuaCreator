@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.YuserCrudCommand c) 
              {    
-                 var yuser = new YuserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha);
+                 var yuser = new YuserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha, c.TenantID);
                  if (!yuser.isValidUpdate())
                      return ValidationError(yuser.getErroMensagens(), comand);
 

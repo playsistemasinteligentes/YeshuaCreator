@@ -20,14 +20,15 @@ namespace Query.Write
         }
         public QueryModel InserirServicoQuery(IServicoEntity Servico)
         {
-            this.Query = $@" INSERT INTO Servico (GrupoServicoId, Nome, Valor, TenantID, Deleted, UserId) OUTPUT INSERTED.Id VALUES(@GrupoServicoId, @Nome, @Valor, @TenantID, @Deleted, @UserId) ";
+            this.Query = $@" INSERT INTO Servico (GrupoServicoId, Nome, Valor, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@GrupoServicoId, @Nome, @Valor, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 GrupoServicoId = Servico.GrupoServicoId,
                 Nome = Servico.Nome,
                 Valor = Servico.Valor,
                 TenantID = _correntUser.TenantID,
-                Deleted = "",
+                Deleted = 0,
+                Changed = DateTime.Now,
                 UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);

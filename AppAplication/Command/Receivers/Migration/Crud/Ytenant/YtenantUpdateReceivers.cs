@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.YtenantCrudCommand c) 
              {    
-                 var ytenant = new YtenantFactory(_logger).Create(c.Id, c.CnpjCpf, c.Nome, c.UserIDAdmin);
+                 var ytenant = new YtenantFactory(_logger).Create(c.Id, c.CnpjCpf, c.Nome, c.UserId);
                  if (!ytenant.isValidUpdate())
                      return ValidationError(ytenant.getErroMensagens(), comand);
 

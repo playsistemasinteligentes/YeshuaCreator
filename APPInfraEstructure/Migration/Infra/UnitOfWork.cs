@@ -98,7 +98,16 @@ namespace Infra
 
         public void ExecuteCommand(string sql, object parameters = null)
         {
-            _connection.Execute(sql, parameters, _transaction);
+            try
+            {
+                _connection.Execute(sql, parameters, _transaction);
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
         public T QuerySingle<T>(string sql, object parameters = null)

@@ -24,7 +24,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, PacienteId, ProfissionalId, ServicoId, DataInicio, DataFim, Status, MovimentacaoFinanceiraId, SinteseProntuario, QueixaPrincipal, MotivoConsultaAtual, SintomasRelatados, MudancasDesdeUltimaSessaao, ComportamentoObservado, EstadoEmocionalGeral, DiscursoPensamentos, TecnicasUtilizadas, QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo, ObjetivosLongoPrazo, FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico, TenantID, Deleted, UserId from Sesoes ";
+            this.Query = $@" select Id, PacienteId, ProfissionalId, ServicoId, DataInicio, DataFim, Status, MovimentacaoFinanceiraId, SinteseProntuario, QueixaPrincipal, MotivoConsultaAtual, SintomasRelatados, MudancasDesdeUltimaSessaao, ComportamentoObservado, EstadoEmocionalGeral, DiscursoPensamentos, TecnicasUtilizadas, QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo, ObjetivosLongoPrazo, FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico, TenantID, Deleted, Changed, UserId from Sesoes ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.PacienteId.HasValue) parametersDict["PacienteId"] = Command.PacienteId.Value;
@@ -74,7 +74,7 @@ if (!string.IsNullOrEmpty(Command.InformacoesRelevantesFuturasConsultas)) whereC
 if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) parametersDict["FeedbackPacienteSobreProcessoTerapeeutico"] = $"%{Command.FeedbackPacienteSobreProcessoTerapeeutico}%";
 if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) whereClauses.Add($"FeedbackPacienteSobreProcessoTerapeeutico like @FeedbackPacienteSobreProcessoTerapeeutico");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere(" AND ")} {string.Join(" AND ", whereClauses)}"; 
             else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
                  this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -109,7 +109,7 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
                  }
             }
             if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
             else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
             else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
@@ -139,7 +139,7 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
                  }
             }
             if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
             else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
             else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
@@ -169,7 +169,7 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
                  }
             }
             if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
             else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
             else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
@@ -197,7 +197,7 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
                  }
             }
             if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
             else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
             else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
@@ -206,331 +206,343 @@ if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) wh
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPacienteIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} PacienteId = @PacienteId";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} PacienteId = @PacienteId";
             var parameters = new { PacienteId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByProfissionalIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ProfissionalId = @ProfissionalId";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} ProfissionalId = @ProfissionalId";
             var parameters = new { ProfissionalId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByServicoIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ServicoId = @ServicoId";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} ServicoId = @ServicoId";
             var parameters = new { ServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDataInicioQuery(DateTime value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DataInicio = @DataInicio";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} DataInicio = @DataInicio";
             var parameters = new { DataInicio = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDataFimQuery(DateTime value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DataFim = @DataFim";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} DataFim = @DataFim";
             var parameters = new { DataFim = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByStatusQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} Status = @Status";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} Status = @Status";
             var parameters = new { Status = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByMovimentacaoFinanceiraIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId";
             var parameters = new { MovimentacaoFinanceiraId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsBySinteseProntuarioQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} SinteseProntuario = @SinteseProntuario";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} SinteseProntuario = @SinteseProntuario";
             var parameters = new { SinteseProntuario = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByQueixaPrincipalQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} QueixaPrincipal = @QueixaPrincipal";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} QueixaPrincipal = @QueixaPrincipal";
             var parameters = new { QueixaPrincipal = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByMotivoConsultaAtualQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} MotivoConsultaAtual = @MotivoConsultaAtual";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} MotivoConsultaAtual = @MotivoConsultaAtual";
             var parameters = new { MotivoConsultaAtual = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsBySintomasRelatadosQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} SintomasRelatados = @SintomasRelatados";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} SintomasRelatados = @SintomasRelatados";
             var parameters = new { SintomasRelatados = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByMudancasDesdeUltimaSessaaoQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao";
             var parameters = new { MudancasDesdeUltimaSessaao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByComportamentoObservadoQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ComportamentoObservado = @ComportamentoObservado";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} ComportamentoObservado = @ComportamentoObservado";
             var parameters = new { ComportamentoObservado = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEstadoEmocionalGeralQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} EstadoEmocionalGeral = @EstadoEmocionalGeral";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} EstadoEmocionalGeral = @EstadoEmocionalGeral";
             var parameters = new { EstadoEmocionalGeral = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDiscursoPensamentosQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DiscursoPensamentos = @DiscursoPensamentos";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} DiscursoPensamentos = @DiscursoPensamentos";
             var parameters = new { DiscursoPensamentos = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTecnicasUtilizadasQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} TecnicasUtilizadas = @TecnicasUtilizadas";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} TecnicasUtilizadas = @TecnicasUtilizadas";
             var parameters = new { TecnicasUtilizadas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByQuestionamentosReflexoesAbordadasQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas";
             var parameters = new { QuestionamentosReflexoesAbordadas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByExerciciosTarefasSugeridasQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas";
             var parameters = new { ExerciciosTarefasSugeridas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDiagnoosticoHipoteseDiagnoosticaQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica";
             var parameters = new { DiagnoosticoHipoteseDiagnoostica = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByObjetivosCurtoPrazoQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo";
             var parameters = new { ObjetivosCurtoPrazo = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByObjetivosLongoPrazoQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ObjetivosLongoPrazo = @ObjetivosLongoPrazo";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} ObjetivosLongoPrazo = @ObjetivosLongoPrazo";
             var parameters = new { ObjetivosLongoPrazo = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByFrequenciaSugeridaSessooesQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes";
             var parameters = new { FrequenciaSugeridaSessooes = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByEncaminhamentoOutrosProfissionaisQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais";
             var parameters = new { EncaminhamentoOutrosProfissionais = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByInformacoesRelevantesFuturasConsultasQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas";
             var parameters = new { InformacoesRelevantesFuturasConsultas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico";
             var parameters = new { FeedbackPacienteSobreProcessoTerapeeutico = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var sql = $"SELECT 1 FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")} UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPacienteIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} PacienteId = @PacienteId";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  PacienteId = @PacienteId";
             var parameters = new { PacienteId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByProfissionalIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ProfissionalId = @ProfissionalId";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  ProfissionalId = @ProfissionalId";
             var parameters = new { ProfissionalId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByServicoIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ServicoId = @ServicoId";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  ServicoId = @ServicoId";
             var parameters = new { ServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDataInicioQuery(DateTime value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DataInicio = @DataInicio";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  DataInicio = @DataInicio";
             var parameters = new { DataInicio = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDataFimQuery(DateTime value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DataFim = @DataFim";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  DataFim = @DataFim";
             var parameters = new { DataFim = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByStatusQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} Status = @Status";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  Status = @Status";
             var parameters = new { Status = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByMovimentacaoFinanceiraIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId";
             var parameters = new { MovimentacaoFinanceiraId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstBySinteseProntuarioQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} SinteseProntuario = @SinteseProntuario";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  SinteseProntuario = @SinteseProntuario";
             var parameters = new { SinteseProntuario = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByQueixaPrincipalQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} QueixaPrincipal = @QueixaPrincipal";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  QueixaPrincipal = @QueixaPrincipal";
             var parameters = new { QueixaPrincipal = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByMotivoConsultaAtualQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} MotivoConsultaAtual = @MotivoConsultaAtual";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  MotivoConsultaAtual = @MotivoConsultaAtual";
             var parameters = new { MotivoConsultaAtual = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstBySintomasRelatadosQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} SintomasRelatados = @SintomasRelatados";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  SintomasRelatados = @SintomasRelatados";
             var parameters = new { SintomasRelatados = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByMudancasDesdeUltimaSessaaoQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao";
             var parameters = new { MudancasDesdeUltimaSessaao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByComportamentoObservadoQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ComportamentoObservado = @ComportamentoObservado";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  ComportamentoObservado = @ComportamentoObservado";
             var parameters = new { ComportamentoObservado = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEstadoEmocionalGeralQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} EstadoEmocionalGeral = @EstadoEmocionalGeral";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  EstadoEmocionalGeral = @EstadoEmocionalGeral";
             var parameters = new { EstadoEmocionalGeral = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDiscursoPensamentosQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DiscursoPensamentos = @DiscursoPensamentos";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  DiscursoPensamentos = @DiscursoPensamentos";
             var parameters = new { DiscursoPensamentos = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTecnicasUtilizadasQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} TecnicasUtilizadas = @TecnicasUtilizadas";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  TecnicasUtilizadas = @TecnicasUtilizadas";
             var parameters = new { TecnicasUtilizadas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByQuestionamentosReflexoesAbordadasQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas";
             var parameters = new { QuestionamentosReflexoesAbordadas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByExerciciosTarefasSugeridasQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas";
             var parameters = new { ExerciciosTarefasSugeridas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDiagnoosticoHipoteseDiagnoosticaQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica";
             var parameters = new { DiagnoosticoHipoteseDiagnoostica = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByObjetivosCurtoPrazoQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo";
             var parameters = new { ObjetivosCurtoPrazo = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByObjetivosLongoPrazoQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} ObjetivosLongoPrazo = @ObjetivosLongoPrazo";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  ObjetivosLongoPrazo = @ObjetivosLongoPrazo";
             var parameters = new { ObjetivosLongoPrazo = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByFrequenciaSugeridaSessooesQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes";
             var parameters = new { FrequenciaSugeridaSessooes = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByEncaminhamentoOutrosProfissionaisQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais";
             var parameters = new { EncaminhamentoOutrosProfissionais = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByInformacoesRelevantesFuturasConsultasQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas";
             var parameters = new { InformacoesRelevantesFuturasConsultas = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico";
             var parameters = new { FeedbackPacienteSobreProcessoTerapeeutico = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var sql = $"SELECT * FROM Sesoes WHERE {getBackEndFieldWitchWhere(" AND ")}  UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getBackEndFieldWitchWhere()
+        private string getBackEndFieldWitchWhere(string sql = "")
         {
-         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = 0) "+sql;
         }
     }
 }

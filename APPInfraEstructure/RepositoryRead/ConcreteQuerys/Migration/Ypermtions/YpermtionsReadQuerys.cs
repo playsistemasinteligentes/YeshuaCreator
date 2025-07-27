@@ -24,13 +24,13 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Description, TenantID, Deleted, UserId from Ypermtions ";
+            this.Query = $@" select Id, Description, TenantID, Deleted, Changed, UserId from Ypermtions ";
 if (!string.IsNullOrEmpty(Command.Id)) parametersDict["Id"] = $"%{Command.Id}%";
 if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"Id like @Id");
 if (!string.IsNullOrEmpty(Command.Description)) parametersDict["Description"] = $"%{Command.Description}%";
 if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description like @Description");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere(" AND ")} {string.Join(" AND ", whereClauses)}"; 
             else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
                  this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -44,43 +44,55 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
         }
         public QueryModel ExistsByIdQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDescriptionQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere()} Description = @Description";
+            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")} Description = @Description";
             var parameters = new { Description = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")} Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var sql = $"SELECT 1 FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")} UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(string value)
         {
-            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")}  Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDescriptionQuery(string value)
         {
-            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere()} Description = @Description";
+            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")}  Description = @Description";
             var parameters = new { Description = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")}  Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var sql = $"SELECT * FROM Ypermtions WHERE {getBackEndFieldWitchWhere(" AND ")}  UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getBackEndFieldWitchWhere()
+        private string getBackEndFieldWitchWhere(string sql = "")
         {
-         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = 0) "+sql;
         }
     }
 }

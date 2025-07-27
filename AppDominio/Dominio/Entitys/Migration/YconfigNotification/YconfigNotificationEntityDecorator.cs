@@ -31,15 +31,54 @@
                                         }
                                     }
 
-                                    public string EmailAdress
+                                    public int? TenantID
                                     {
-                                        get => _inner.EmailAdress;
+                                        get => _inner.TenantID;
                                         set
                                         {
-                                            if (_inner.EmailAdress != value)
+                                            if (_inner.TenantID != value)
                                             {
-                                                _logger.Info($"Propriedade EmailAdress: antes={_inner.EmailAdress}, depois={value}");
-                                                _inner.EmailAdress = value;
+                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
+                                                _inner.TenantID = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string EmailSmtpClient
+                                    {
+                                        get => _inner.EmailSmtpClient;
+                                        set
+                                        {
+                                            if (_inner.EmailSmtpClient != value)
+                                            {
+                                                _logger.Info($"Propriedade EmailSmtpClient: antes={_inner.EmailSmtpClient}, depois={value}");
+                                                _inner.EmailSmtpClient = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? EmailPort
+                                    {
+                                        get => _inner.EmailPort;
+                                        set
+                                        {
+                                            if (_inner.EmailPort != value)
+                                            {
+                                                _logger.Info($"Propriedade EmailPort: antes={_inner.EmailPort}, depois={value}");
+                                                _inner.EmailPort = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string EmailUserName
+                                    {
+                                        get => _inner.EmailUserName;
+                                        set
+                                        {
+                                            if (_inner.EmailUserName != value)
+                                            {
+                                                _logger.Info($"Propriedade EmailUserName: antes={_inner.EmailUserName}, depois={value}");
+                                                _inner.EmailUserName = value;
                                             }
                                         }
                                     }

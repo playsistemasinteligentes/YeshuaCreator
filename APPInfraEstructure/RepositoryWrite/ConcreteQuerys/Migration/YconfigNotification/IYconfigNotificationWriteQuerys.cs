@@ -7,7 +7,10 @@ namespace IQuery.Write
      {
         public QueryModel InserirYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification);
         public QueryModel UpdateYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification);
-        public QueryModel UpdateEmailAdress(IYconfigNotificationEntity entity);
+        public QueryModel UpdateTenantID(IYconfigNotificationEntity entity);
+        public QueryModel UpdateEmailSmtpClient(IYconfigNotificationEntity entity);
+        public QueryModel UpdateEmailPort(IYconfigNotificationEntity entity);
+        public QueryModel UpdateEmailUserName(IYconfigNotificationEntity entity);
         public QueryModel UpdateEmailPassword(IYconfigNotificationEntity entity);
         public QueryModel DeleteYconfigNotificationQuery(IYconfigNotificationEntity YconfigNotification);
     }

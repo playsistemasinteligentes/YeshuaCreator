@@ -14,6 +14,7 @@
     string Nome { get; set; }
     string Email { get; set; }
     string Senha { get; set; }
+    int? TenantID { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

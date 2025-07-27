@@ -24,17 +24,17 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, CnpjCpf, Nome, Deleted, UserIDAdmin from Ytenant ";
+            this.Query = $@" select Id, CnpjCpf, Nome, UserId, Deleted, Changed from Ytenant ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.CnpjCpf.HasValue) parametersDict["CnpjCpf"] = Command.CnpjCpf.Value;
 if (Command.CnpjCpf.HasValue) whereClauses.Add($"CnpjCpf = @CnpjCpf");
 if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
 if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
-if (Command.UserIDAdmin.HasValue) parametersDict["UserIDAdmin"] = Command.UserIDAdmin.Value;
-if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin");
+if (Command.UserId.HasValue) parametersDict["UserId"] = Command.UserId.Value;
+if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere(" AND ")} {string.Join(" AND ", whereClauses)}"; 
             else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
                  this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -46,87 +46,69 @@ if (Command.UserIDAdmin.HasValue) whereClauses.Add($"UserIDAdmin = @UserIDAdmin"
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel YtenantUserIDAdminQuery(Command.Patterns.Command.SearchFKCommand Command)
-        {
-            this.Query = $@" select Id, Nome from Yuser ";
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            if (!string.IsNullOrEmpty(Command.searchFK)) 
-            {
-                 if (int.TryParse(Command.searchFK, out int numero)) 
-                 {
-                      this.Parameters = new { Id = numero}; 
-                      whereClauses.Add($" Id = @Id"); 
-                 }
-                 else 
-                 {
-                      this.Parameters = new { 
-                       Id = $"%{Command.searchFK}%", 
-                       Nome = $"%{Command.searchFK}%", 
-                      }; 
-                      whereClauses.Add($" Id like @Id "); 
-                      whereClauses.Add($" Nome like @Nome "); 
-                 }
-            }
-            if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
-            else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
-            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
-            return new QueryModel(this.Query, this.Parameters); 
-        }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByCnpjCpfQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere()} CnpjCpf = @CnpjCpf";
+            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} CnpjCpf = @CnpjCpf";
             var parameters = new { CnpjCpf = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByNomeQuery(string value)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere()} Nome = @Nome";
+            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
-        public QueryModel ExistsByUserIDAdminQuery(int value)
+        public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere()} UserIDAdmin = @UserIDAdmin";
-            var parameters = new { UserIDAdmin = value };
+            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} UserId = @UserId";
+            var parameters = new { UserId = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByCnpjCpfQuery(int value)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere()} CnpjCpf = @CnpjCpf";
+            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  CnpjCpf = @CnpjCpf";
             var parameters = new { CnpjCpf = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByNomeQuery(string value)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere()} Nome = @Nome";
+            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  Nome = @Nome";
             var parameters = new { Nome = value };
             return new QueryModel(sql, parameters);
         }
-        public QueryModel FirstByUserIDAdminQuery(int value)
+        public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere()} UserIDAdmin = @UserIDAdmin";
-            var parameters = new { UserIDAdmin = value };
+            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  UserId = @UserId";
+            var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getBackEndFieldWitchWhere()
+        public QueryModel FirstByChangedQuery(DateTime value)
         {
-         return $" (Deleted = '') AND ";
+            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  Changed = @Changed";
+            var parameters = new { Changed = value };
+            return new QueryModel(sql, parameters);
+        }
+        private string getBackEndFieldWitchWhere(string sql = "")
+        {
+         return $" (Deleted = 0) "+sql;
         }
     }
 }

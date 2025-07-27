@@ -111,7 +111,6 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertYtenantReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateYtenantReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteYtenantReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.YtenantReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.YtenantReadFKUserIDAdminReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IYuserWriteRepository, Input.Repository.Yuser.YuserWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IYuserReadRepository, Read.Repository.YuserReadRepository>();
@@ -121,6 +120,7 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertYuserReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateYuserReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteYuserReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.YuserReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.YuserReadFKTenantIDReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IYconfigArctetureWriteRepository, Input.Repository.YconfigArcteture.YconfigArctetureWriteRepository>();
 builder.Services.AddTransient<Read.Repository.YconfigArctetureReadRepository>();
@@ -151,12 +151,14 @@ builder.Services.AddTransient<Read.Repository.YconfigNotificationReadRepository>
     var inner = sp.GetRequiredService<Read.Repository.YconfigNotificationReadRepository>();
     var cacheById = sp.GetRequiredService<ICacheService<Repositorio.Outputs.YconfigNotificationDTO >>();
     var cacheAll = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.YconfigNotificationDTO>>>();
-    return new Read.Repository.YconfigNotificationReadRepositoryCacheDecorator(inner,cacheById,cacheAll    );
+        var cacheFKTenantID = sp.GetRequiredService<ICacheService<IEnumerable<Repositorio.Outputs.YconfigNotificationTenantIDDTO>>>();
+    return new Read.Repository.YconfigNotificationReadRepositoryCacheDecorator(inner,cacheById,cacheAll,cacheFKTenantID    );
 });
 builder.Services.AddTransient<Command.Receivers.Write.InsertYconfigNotificationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateYconfigNotificationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteYconfigNotificationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.YconfigNotificationReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.YconfigNotificationReadFKTenantIDReceiver>();
 builder.Services.AddTransient<IRepository.Write.IYconfigNotificationWriteRepository, Input.Repository.YconfigNotification.YconfigNotificationWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IYconfigNotificationReadRepository, Read.Repository.YconfigNotificationReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IYconfigNotificationQueryRead, Query.Read.YconfigNotificationQueryRead>();
@@ -165,6 +167,7 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertYconfigNotificationR
 builder.Services.AddTransient<Command.Receivers.Write.UpdateYconfigNotificationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteYconfigNotificationReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.YconfigNotificationReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.YconfigNotificationReadFKTenantIDReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IYperfilWriteRepository, Input.Repository.Yperfil.YperfilWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IYperfilReadRepository, Read.Repository.YperfilReadRepository>();
@@ -195,15 +198,16 @@ builder.Services.AddTransient<Command.Receivers.Read.YperfilPermitionsReadReceiv
 builder.Services.AddTransient<Command.Receivers.Read.YperfilPermitionsReadFKPerfilIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.YperfilPermitionsReadFKPermitionsIdReceiver>();
 
-builder.Services.AddTransient<IRepository.Write.IYpserPermitionsWriteRepository, Input.Repository.YpserPermitions.YpserPermitionsWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IYpserPermitionsReadRepository, Read.Repository.YpserPermitionsReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IYpserPermitionsQueryRead, Query.Read.YpserPermitionsQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IYpserPermitionsQueryWrite, Query.Write.YpserPermitionsQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertYpserPermitionsReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateYpserPermitionsReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteYpserPermitionsReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.YpserPermitionsReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.YpserPermitionsReadFKPermitionsIdReceiver>();
+builder.Services.AddTransient<IRepository.Write.IYuserPermitionsWriteRepository, Input.Repository.YuserPermitions.YuserPermitionsWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IYuserPermitionsReadRepository, Read.Repository.YuserPermitionsReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IYuserPermitionsQueryRead, Query.Read.YuserPermitionsQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IYuserPermitionsQueryWrite, Query.Write.YuserPermitionsQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertYuserPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateYuserPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteYuserPermitionsReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.YuserPermitionsReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.YuserPermitionsReadFKPermitionsIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.YuserPermitionsReadFKUserIdReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 

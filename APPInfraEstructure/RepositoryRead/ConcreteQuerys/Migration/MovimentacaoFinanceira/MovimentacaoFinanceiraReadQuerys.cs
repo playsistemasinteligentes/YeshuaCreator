@@ -24,7 +24,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual, TenantID, Deleted, UserId from MovimentacaoFinanceira ";
+            this.Query = $@" select Id, PacienteId, ServicoId, Valor, TipoMovimentacao, DataMovimentacao, SaldoAtual, TenantID, Deleted, Changed, UserId from MovimentacaoFinanceira ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.PacienteId.HasValue) parametersDict["PacienteId"] = Command.PacienteId.Value;
@@ -34,7 +34,7 @@ if (Command.ServicoId.HasValue) whereClauses.Add($"ServicoId = @ServicoId");
 if (Command.TipoMovimentacao.HasValue) parametersDict["TipoMovimentacao"] = Command.TipoMovimentacao.Value;
 if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @TipoMovimentacao");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere()} {string.Join(" AND ", whereClauses)}"; 
+                 this.Query += $" WHERE {getBackEndFieldWitchWhere(" AND ")} {string.Join(" AND ", whereClauses)}"; 
             else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
                  this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -69,7 +69,7 @@ if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @Ti
                  }
             }
             if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
             else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
             else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
@@ -99,7 +99,7 @@ if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @Ti
                  }
             }
             if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} ({string.Join(" OR ", whereClauses)})"; 
+            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
             else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
             this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
             else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
@@ -108,103 +108,115 @@ if (Command.TipoMovimentacao.HasValue) whereClauses.Add($"TipoMovimentacao = @Ti
         }
         public QueryModel ExistsByIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByPacienteIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} PacienteId = @PacienteId";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} PacienteId = @PacienteId";
             var parameters = new { PacienteId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByServicoIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} ServicoId = @ServicoId";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} ServicoId = @ServicoId";
             var parameters = new { ServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByValorQuery(Decimal value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} Valor = @Valor";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} Valor = @Valor";
             var parameters = new { Valor = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByTipoMovimentacaoQuery(int value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} TipoMovimentacao = @TipoMovimentacao";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} TipoMovimentacao = @TipoMovimentacao";
             var parameters = new { TipoMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByDataMovimentacaoQuery(DateTime value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} DataMovimentacao = @DataMovimentacao";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} DataMovimentacao = @DataMovimentacao";
             var parameters = new { DataMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsBySaldoAtualQuery(Decimal value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} SaldoAtual = @SaldoAtual";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} SaldoAtual = @SaldoAtual";
             var parameters = new { SaldoAtual = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel ExistsByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel ExistsByUserIdQuery(int value)
         {
-            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var sql = $"SELECT 1 FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")} UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByIdQuery(int value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} Id = @Id";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  Id = @Id";
             var parameters = new { Id = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByPacienteIdQuery(int value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} PacienteId = @PacienteId";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  PacienteId = @PacienteId";
             var parameters = new { PacienteId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByServicoIdQuery(int value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} ServicoId = @ServicoId";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  ServicoId = @ServicoId";
             var parameters = new { ServicoId = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByValorQuery(Decimal value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} Valor = @Valor";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  Valor = @Valor";
             var parameters = new { Valor = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByTipoMovimentacaoQuery(int value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} TipoMovimentacao = @TipoMovimentacao";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  TipoMovimentacao = @TipoMovimentacao";
             var parameters = new { TipoMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByDataMovimentacaoQuery(DateTime value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} DataMovimentacao = @DataMovimentacao";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  DataMovimentacao = @DataMovimentacao";
             var parameters = new { DataMovimentacao = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstBySaldoAtualQuery(Decimal value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} SaldoAtual = @SaldoAtual";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  SaldoAtual = @SaldoAtual";
             var parameters = new { SaldoAtual = value };
+            return new QueryModel(sql, parameters);
+        }
+        public QueryModel FirstByChangedQuery(DateTime value)
+        {
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  Changed = @Changed";
+            var parameters = new { Changed = value };
             return new QueryModel(sql, parameters);
         }
         public QueryModel FirstByUserIdQuery(int value)
         {
-            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere()} UserId = @UserId";
+            var sql = $"SELECT * FROM MovimentacaoFinanceira WHERE {getBackEndFieldWitchWhere(" AND ")}  UserId = @UserId";
             var parameters = new { UserId = value };
             return new QueryModel(sql, parameters);
         }
-        private string getBackEndFieldWitchWhere()
+        private string getBackEndFieldWitchWhere(string sql = "")
         {
-         return $" (TenantID = {_correntUser.TenantID} AND Deleted = '') AND ";
+         return $" (TenantID = {_correntUser.TenantID} AND Deleted = 0) "+sql;
         }
     }
 }

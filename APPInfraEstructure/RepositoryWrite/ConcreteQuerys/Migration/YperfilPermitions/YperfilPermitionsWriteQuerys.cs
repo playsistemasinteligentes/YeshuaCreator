@@ -20,13 +20,14 @@ namespace Query.Write
         }
         public QueryModel InserirYperfilPermitionsQuery(IYperfilPermitionsEntity YperfilPermitions)
         {
-            this.Query = $@" INSERT INTO YperfilPermitions (PerfilId, PermitionsId, TenantID, Deleted, UserId) OUTPUT INSERTED.ID VALUES(@PerfilId, @PermitionsId, @TenantID, @Deleted, @UserId) ";
+            this.Query = $@" INSERT INTO YperfilPermitions (PerfilId, PermitionsId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ID VALUES(@PerfilId, @PermitionsId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PerfilId = YperfilPermitions.PerfilId,
                 PermitionsId = YperfilPermitions.PermitionsId,
                 TenantID = _correntUser.TenantID,
-                Deleted = "",
+                Deleted = 0,
+                Changed = DateTime.Now,
                 UserId = _correntUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);

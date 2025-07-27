@@ -20,24 +20,25 @@ namespace Query.Write
         }
         public QueryModel InserirYtenantQuery(IYtenantEntity Ytenant)
         {
-            this.Query = $@" INSERT INTO Ytenant (CnpjCpf, Nome, Deleted, UserIDAdmin) OUTPUT INSERTED.Id VALUES(@CnpjCpf, @Nome, @Deleted, @UserIDAdmin) ";
+            this.Query = $@" INSERT INTO Ytenant (CnpjCpf, Nome, UserId, Deleted, Changed) OUTPUT INSERTED.Id VALUES(@CnpjCpf, @Nome, @UserId, @Deleted, @Changed) ";
             this.Parameters = new
             {
                 CnpjCpf = Ytenant.CnpjCpf,
                 Nome = Ytenant.Nome,
-                Deleted = "",
-                UserIDAdmin = Ytenant.UserIDAdmin,
+                UserId = Ytenant.UserId,
+                Deleted = 0,
+                Changed = DateTime.Now,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateYtenantQuery(IYtenantEntity Ytenant)
         {
-            this.Query = $@" UPDATE Ytenant SET CnpjCpf = @CnpjCpf, Nome = @Nome, UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Query = $@" UPDATE Ytenant SET CnpjCpf = @CnpjCpf, Nome = @Nome, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 CnpjCpf = Ytenant.CnpjCpf,
                 Nome = Ytenant.Nome,
-                UserIDAdmin = Ytenant.UserIDAdmin,
+                UserId = Ytenant.UserId,
                 Id = Ytenant.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -62,12 +63,12 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserIDAdmin(IYtenantEntity entity)
+        public QueryModel UpdateUserId(IYtenantEntity entity)
         {
-            this.Query = $@" UPDATE Ytenant SET UserIDAdmin = @UserIDAdmin WHERE Id = @Id ";
+            this.Query = $@" UPDATE Ytenant SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserIDAdmin = entity.UserIDAdmin,
+                UserId = entity.UserId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

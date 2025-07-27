@@ -20,18 +20,22 @@ namespace Migration.Dominio.Migration
             AddEntity("Ytenant")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
-            .AddColumn("Nome", "Nome").Varchar(150).NotNull();
+            .AddColumn("Nome", "Nome").Varchar(150).NotNull()
+            .AddColumn("UserId", "User ID").Int();
 
             AddEntity("Yuser")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
-            .AddColumn("Senha", "Senha").Varchar(60).Password();
+            .AddColumn("Senha", "Senha").Varchar(60).Password()
+            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID");
+
 
             AddEntity("YStandardFields")
-            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardField("_correntUser.TenantID").BackEndField(true)
-            .AddColumn("Deleted", "Deleted").Boolean().StandardField("''").BackEndField(true)
-            .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id").StandardField("_correntUser.UserId").BackEndField(false);
+            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardField("#_correntUser.TenantID").BackEndField(true)
+            .AddColumn("Deleted", "Deleted").Boolean().StandardField("0").BackEndField(true)
+            .AddColumn("Changed", "Changed").DateTime().StandardField("#DateTime.Now").BackEndField(false)
+            .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id").StandardField("#_correntUser.UserId").BackEndField(false);
 
 
             AddEntity("YconfigArcteture").Cached()
@@ -41,7 +45,10 @@ namespace Migration.Dominio.Migration
 
             AddEntity("YconfigNotification").Cached()
             .AddColumn("Id", "ID").Int().Key()
-            .AddColumn("EmailAdress", "EmailAdress").Varchar(100)
+            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID")
+            .AddColumn("EmailSmtpClient", "EmailSmtpClient").Varchar(100)
+            .AddColumn("EmailPort", "EmailPort").Int()
+            .AddColumn("EmailUserName", "EmailUserName").Varchar(100)
             .AddColumn("EmailPassword", "EmailPassword").Varchar(60);
 
             AddEntity("Yperfil")
@@ -56,8 +63,9 @@ namespace Migration.Dominio.Migration
             .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
             .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
 
-            AddEntity("YpserPermitions")
-            .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
+            AddEntity("YuserPermitions")
+            .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100)
+            .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id");
         }
     }
 
@@ -69,7 +77,7 @@ namespace Migration.Dominio.Migration
         public override void Up()
         {
 
-            AlterEntity("Ytenant").AddColumn("UserIDAdmin", "Administrador").FK("Yuser", "Id").Int();
+            //AlterEntity("Ytenant").AddColumn("UserIDAdmin", "Administrador").FK("Yuser", "Id").Int();
 
 
             AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account(0, "", "", "", "", "")).Authorization(Authorization.Free)
@@ -112,4 +120,8 @@ namespace Migration.Dominio.Migration
             public byte[]? Attachment { get; set; } = null;
         }
     }
+
+
+
+
 }

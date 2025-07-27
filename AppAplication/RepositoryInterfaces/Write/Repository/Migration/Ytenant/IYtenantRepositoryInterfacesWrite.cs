@@ -14,7 +14,7 @@ namespace IRepository.Write
         void Delete(IYtenantEntity ytenant);
         public void UpdateCnpjCpf(IYtenantEntity entity);
         public void UpdateNome(IYtenantEntity entity);
-        public void UpdateUserIDAdmin(IYtenantEntity entity);
+        public void UpdateUserId(IYtenantEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

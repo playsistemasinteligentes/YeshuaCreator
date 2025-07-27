@@ -13,7 +13,7 @@
     int? Id { get; set; }
     int CnpjCpf { get; set; }
     string Nome { get; set; }
-    int? UserIDAdmin { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();
