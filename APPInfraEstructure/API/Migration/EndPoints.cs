@@ -1,5 +1,6 @@
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Modules;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 namespace API.Migrations
@@ -134,29 +135,47 @@ namespace API.Migrations
             .RequireAuthorization();
 
 
-            app.MapPost("/Ypermtions/PostYpermtions", async ([FromServices] Command.Receivers.Write.InsertYpermtionsReceiver receiver, [FromBody] Command.Write.YpermtionsCrudCommand command) =>
+            app.MapPost("/YpermissionModules/PostYpermissionModules", async ([FromServices] Command.Receivers.Write.InsertYpermissionModulesReceiver receiver, [FromBody] Command.Write.YpermissionModulesCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapPost("/YperfilPermitions/PostYperfilPermitions", async ([FromServices] Command.Receivers.Write.InsertYperfilPermitionsReceiver receiver, [FromBody] Command.Write.YperfilPermitionsCrudCommand command) =>
+            app.MapPost("/YtenantPermissionMudules/PostYtenantPermissionMudules", async ([FromServices] Command.Receivers.Write.InsertYtenantPermissionMudulesReceiver receiver, [FromBody] Command.Write.YtenantPermissionMudulesCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapPost("/YuserPermitions/PostYuserPermitions", async ([FromServices] Command.Receivers.Write.InsertYuserPermitionsReceiver receiver, [FromBody] Command.Write.YuserPermitionsCrudCommand command) =>
+            app.MapPost("/YpermissionActions/PostYpermissionActions", async ([FromServices] Command.Receivers.Write.InsertYpermissionActionsReceiver receiver, [FromBody] Command.Write.YpermissionActionsCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapPost("/YperfilPermissionActions/PostYperfilPermissionActions", async ([FromServices] Command.Receivers.Write.InsertYperfilPermissionActionsReceiver receiver, [FromBody] Command.Write.YperfilPermissionActionsCrudCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapPost("/YuserPermissionActions/PostYuserPermissionActions", async ([FromServices] Command.Receivers.Write.InsertYuserPermissionActionsReceiver receiver, [FromBody] Command.Write.YuserPermissionActionsCrudCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
@@ -287,29 +306,47 @@ namespace API.Migrations
             .RequireAuthorization();
 
 
-            app.MapPut("/Ypermtions/PutYpermtions", async ([FromServices] Command.Receivers.Write.UpdateYpermtionsReceiver receiver, [FromBody] Command.Write.YpermtionsCrudCommand command) =>
+            app.MapPut("/YpermissionModules/PutYpermissionModules", async ([FromServices] Command.Receivers.Write.UpdateYpermissionModulesReceiver receiver, [FromBody] Command.Write.YpermissionModulesCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapPut("/YperfilPermitions/PutYperfilPermitions", async ([FromServices] Command.Receivers.Write.UpdateYperfilPermitionsReceiver receiver, [FromBody] Command.Write.YperfilPermitionsCrudCommand command) =>
+            app.MapPut("/YtenantPermissionMudules/PutYtenantPermissionMudules", async ([FromServices] Command.Receivers.Write.UpdateYtenantPermissionMudulesReceiver receiver, [FromBody] Command.Write.YtenantPermissionMudulesCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapPut("/YuserPermitions/PutYuserPermitions", async ([FromServices] Command.Receivers.Write.UpdateYuserPermitionsReceiver receiver, [FromBody] Command.Write.YuserPermitionsCrudCommand command) =>
+            app.MapPut("/YpermissionActions/PutYpermissionActions", async ([FromServices] Command.Receivers.Write.UpdateYpermissionActionsReceiver receiver, [FromBody] Command.Write.YpermissionActionsCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapPut("/YperfilPermissionActions/PutYperfilPermissionActions", async ([FromServices] Command.Receivers.Write.UpdateYperfilPermissionActionsReceiver receiver, [FromBody] Command.Write.YperfilPermissionActionsCrudCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapPut("/YuserPermissionActions/PutYuserPermissionActions", async ([FromServices] Command.Receivers.Write.UpdateYuserPermissionActionsReceiver receiver, [FromBody] Command.Write.YuserPermissionActionsCrudCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
@@ -440,160 +477,74 @@ namespace API.Migrations
             .RequireAuthorization();
 
 
-            app.MapDelete("/Ypermtions/DeleteYpermtions", async ([FromServices] Command.Receivers.Write.DeleteYpermtionsReceiver receiver, [FromBody] Command.Write.YpermtionsCrudCommand command) =>
+            app.MapDelete("/YpermissionModules/DeleteYpermissionModules", async ([FromServices] Command.Receivers.Write.DeleteYpermissionModulesReceiver receiver, [FromBody] Command.Write.YpermissionModulesCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapDelete("/YperfilPermitions/DeleteYperfilPermitions", async ([FromServices] Command.Receivers.Write.DeleteYperfilPermitionsReceiver receiver, [FromBody] Command.Write.YperfilPermitionsCrudCommand command) =>
+            app.MapDelete("/YtenantPermissionMudules/DeleteYtenantPermissionMudules", async ([FromServices] Command.Receivers.Write.DeleteYtenantPermissionMudulesReceiver receiver, [FromBody] Command.Write.YtenantPermissionMudulesCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapDelete("/YuserPermitions/DeleteYuserPermitions", async ([FromServices] Command.Receivers.Write.DeleteYuserPermitionsReceiver receiver, [FromBody] Command.Write.YuserPermitionsCrudCommand command) =>
+            app.MapDelete("/YpermissionActions/DeleteYpermissionActions", async ([FromServices] Command.Receivers.Write.DeleteYpermissionActionsReceiver receiver, [FromBody] Command.Write.YpermissionActionsCrudCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapDelete("/YperfilPermissionActions/DeleteYperfilPermissionActions", async ([FromServices] Command.Receivers.Write.DeleteYperfilPermissionActionsReceiver receiver, [FromBody] Command.Write.YperfilPermissionActionsCrudCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapDelete("/YuserPermissionActions/DeleteYuserPermissionActions", async ([FromServices] Command.Receivers.Write.DeleteYuserPermissionActionsReceiver receiver, [FromBody] Command.Write.YuserPermissionActionsCrudCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
             app.MapGet("/getMenu", (HttpContext context) =>
             {
-                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(userId))
+                var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;
+                if (modulesClaim == null)
                     return Results.Unauthorized();
-                var menu = new[]
-    {
 
-new{
-id="Especialidade",
-description="Especialidade",
-endpoint="/getMetaDataEspecialidade",
-type = "crud"
-}
-,
-new{
-id="Profissional",
-description="Profissional",
-endpoint="/getMetaDataProfissional",
-type = "crud"
-}
-,
-new{
-id="DisponibilidadeAgenda",
-description="DisponibilidadeAgenda",
-endpoint="/getMetaDataDisponibilidadeAgenda",
-type = "crud"
-}
-,
-new{
-id="GrupoServico",
-description="GrupoServico",
-endpoint="/getMetaDataGrupoServico",
-type = "crud"
-}
-,
-new{
-id="Servico",
-description="Servico",
-endpoint="/getMetaDataServico",
-type = "crud"
-}
-,
-new{
-id="Paciente",
-description="Paciente",
-endpoint="/getMetaDataPaciente",
-type = "crud"
-}
-,
-new{
-id="MovimentacaoFinanceira",
-description="MovimentacaoFinanceira",
-endpoint="/getMetaDataMovimentacaoFinanceira",
-type = "crud"
-}
-,
-new{
-id="Sesoes",
-description="Sesoes",
-endpoint="/getMetaDataSesoes",
-type = "crud"
-}
-,
-new{
-id="Clinica",
-description="Clinica",
-endpoint="/getMetaDataClinica",
-type = "crud"
-}
-,
-new{
-id="Ytenant",
-description="Ytenant",
-endpoint="/getMetaDataYtenant",
-type = "crud"
-}
-,
-new{
-id="Yuser",
-description="Yuser",
-endpoint="/getMetaDataYuser",
-type = "crud"
-}
-,
-new{
-id="YconfigArcteture",
-description="YconfigArcteture",
-endpoint="/getMetaDataYconfigArcteture",
-type = "crud"
-}
-,
-new{
-id="YconfigNotification",
-description="YconfigNotification",
-endpoint="/getMetaDataYconfigNotification",
-type = "crud"
-}
-,
-new{
-id="Yperfil",
-description="Yperfil",
-endpoint="/getMetaDataYperfil",
-type = "crud"
-}
-,
-new{
-id="Ypermtions",
-description="Ypermtions",
-endpoint="/getMetaDataYpermtions",
-type = "crud"
-}
-,
-new{
-id="YperfilPermitions",
-description="YperfilPermitions",
-endpoint="/getMetaDataYperfilPermitions",
-type = "crud"
-}
-,
-new{
-id="YuserPermitions",
-description="YuserPermitions",
-endpoint="/getMetaDataYuserPermitions",
-type = "crud"
-}
-            };
+                var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                var userModules = StaticModules.Modules.Where(m => moduleKeys.Contains(m.Key)).ToList();
+                var result = new List<object>();
+                foreach (var mol in userModules)
+                {
+                    foreach (var men in mol.Menus)
+                    {
+                        result.Add(new
+                        {
+                            id = men.Title,
+                            description = men.Title,
+                            endpoint = $"/getMetaData{men.Title}",
+                            type = "crud"
+                        });
+                    }
+                }
+                var menu = result.ToArray();
                 return Results.Ok(menu);
             }).RequireAuthorization();
             app.MapPost("/Especialidade/ReadEspecialidade", async ([FromServices] Command.Receivers.Read.EspecialidadeReadReceiver receiver, [FromBody] Command.Read.EspecialidadeReadCommand command) =>
@@ -722,29 +673,47 @@ type = "crud"
             .RequireAuthorization();
 
 
-            app.MapPost("/Ypermtions/ReadYpermtions", async ([FromServices] Command.Receivers.Read.YpermtionsReadReceiver receiver, [FromBody] Command.Read.YpermtionsReadCommand command) =>
+            app.MapPost("/YpermissionModules/ReadYpermissionModules", async ([FromServices] Command.Receivers.Read.YpermissionModulesReadReceiver receiver, [FromBody] Command.Read.YpermissionModulesReadCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YpermtionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionModulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapPost("/YperfilPermitions/ReadYperfilPermitions", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadReceiver receiver, [FromBody] Command.Read.YperfilPermitionsReadCommand command) =>
+            app.MapPost("/YtenantPermissionMudules/ReadYtenantPermissionMudules", async ([FromServices] Command.Receivers.Read.YtenantPermissionMudulesReadReceiver receiver, [FromBody] Command.Read.YtenantPermissionMudulesReadCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YperfilPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YtenantPermissionMudulesEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
 
-            app.MapPost("/YuserPermitions/ReadYuserPermitions", async ([FromServices] Command.Receivers.Read.YuserPermitionsReadReceiver receiver, [FromBody] Command.Read.YuserPermitionsReadCommand command) =>
+            app.MapPost("/YpermissionActions/ReadYpermissionActions", async ([FromServices] Command.Receivers.Read.YpermissionActionsReadReceiver receiver, [FromBody] Command.Read.YpermissionActionsReadCommand command) =>
             {
                 return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-            }).Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status200OK)
-            .Produces<State<Dominio.Entitys.YuserPermitionsEntity>>(StatusCodes.Status400BadRequest)
+            }).Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YpermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapPost("/YperfilPermissionActions/ReadYperfilPermissionActions", async ([FromServices] Command.Receivers.Read.YperfilPermissionActionsReadReceiver receiver, [FromBody] Command.Read.YperfilPermissionActionsReadCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YperfilPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
+
+
+            app.MapPost("/YuserPermissionActions/ReadYuserPermissionActions", async ([FromServices] Command.Receivers.Read.YuserPermissionActionsReadReceiver receiver, [FromBody] Command.Read.YuserPermissionActionsReadCommand command) =>
+            {
+                return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+            }).Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status200OK)
+            .Produces<State<Dominio.Entitys.YuserPermissionActionsEntity>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .RequireAuthorization();
 
@@ -936,7 +905,7 @@ type = "crud"
             }).RequireAuthorization();
 
 
-            app.MapPost("/YperfilPermitions/YperfilPermitionsReadFKPerfilId", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadFKPerfilIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+            app.MapPost("/YtenantPermissionMudules/YtenantPermissionMudulesReadFKpermissionModulesId", async ([FromServices] Command.Receivers.Read.YtenantPermissionMudulesReadFKpermissionModulesIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
             {
                 try
                 {
@@ -953,7 +922,7 @@ type = "crud"
             }).RequireAuthorization();
 
 
-            app.MapPost("/YperfilPermitions/YperfilPermitionsReadFKPermitionsId", async ([FromServices] Command.Receivers.Read.YperfilPermitionsReadFKPermitionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+            app.MapPost("/YtenantPermissionMudules/YtenantPermissionMudulesReadFKTenantID", async ([FromServices] Command.Receivers.Read.YtenantPermissionMudulesReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
             {
                 try
                 {
@@ -970,7 +939,7 @@ type = "crud"
             }).RequireAuthorization();
 
 
-            app.MapPost("/YuserPermitions/YuserPermitionsReadFKPermitionsId", async ([FromServices] Command.Receivers.Read.YuserPermitionsReadFKPermitionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+            app.MapPost("/YperfilPermissionActions/YperfilPermissionActionsReadFKPerfilId", async ([FromServices] Command.Receivers.Read.YperfilPermissionActionsReadFKPerfilIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
             {
                 try
                 {
@@ -987,7 +956,41 @@ type = "crud"
             }).RequireAuthorization();
 
 
-            app.MapPost("/YuserPermitions/YuserPermitionsReadFKUserId", async ([FromServices] Command.Receivers.Read.YuserPermitionsReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+            app.MapPost("/YperfilPermissionActions/YperfilPermissionActionsReadFKpermissionActionsId", async ([FromServices] Command.Receivers.Read.YperfilPermissionActionsReadFKpermissionActionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+            {
+                try
+                {
+                    var result = receiver.Execute(command);
+                    if (result.StatusCode == 200)
+                        return Results.Ok(result.Data);
+                    else
+                        return Results.BadRequest(result);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            }).RequireAuthorization();
+
+
+            app.MapPost("/YuserPermissionActions/YuserPermissionActionsReadFKPerfilId", async ([FromServices] Command.Receivers.Read.YuserPermissionActionsReadFKPerfilIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+            {
+                try
+                {
+                    var result = receiver.Execute(command);
+                    if (result.StatusCode == 200)
+                        return Results.Ok(result.Data);
+                    else
+                        return Results.BadRequest(result);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            }).RequireAuthorization();
+
+
+            app.MapPost("/YuserPermissionActions/YuserPermissionActionsReadFKpermissionActionsId", async ([FromServices] Command.Receivers.Read.YuserPermissionActionsReadFKpermissionActionsIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
             {
                 try
                 {
@@ -1502,13 +1505,13 @@ new {value = 4,display = "Eventos novos"},
             },
                     formFields = new[]
     {
- new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" } } ,tabId = "basicas1"
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }},tabId = "basicas1"
+ new { id = "nome", label = "Nome da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "endereco", label = "Endereço da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }},tabId = "basicas"
+ new { id = "endereco", label = "Endereço da Clínica", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }},tabId = "basicas"
+ new { id = "telefone", label = "Telefone de Contato", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
             },
                     endpoints = new
@@ -1723,14 +1726,14 @@ new {value = 4,display = "Eventos novos"},
                 };
                 return Results.Ok(metadatacrud);
             }).RequireAuthorization();
-            app.MapGet("/getMetaDataYpermtions", (HttpContext context) =>
+            app.MapGet("/getMetaDataYpermissionModules", (HttpContext context) =>
             {
                 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                     return Results.Unauthorized();
                 var metadatacrud = new
                 {
-                    entityDescription = "Ypermtions",
+                    entityDescription = "YpermissionModules",
                     searchFields = new[]
     {
  new { id = "id", label = "ID", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
@@ -1747,78 +1750,200 @@ new {value = 4,display = "Eventos novos"},
             },
                     endpoints = new
                     {
-                        create = "/Ypermtions/PostYpermtions",
-                        read = "/Ypermtions/ReadYpermtions",
-                        update = "/Ypermtions/PutYpermtions",
-                        delete = "/Ypermtions/DeleteYpermtions"
+                        create = "/YpermissionModules/PostYpermissionModules",
+                        read = "/YpermissionModules/ReadYpermissionModules",
+                        update = "/YpermissionModules/PutYpermissionModules",
+                        delete = "/YpermissionModules/DeleteYpermissionModules"
                     }
                 };
                 return Results.Ok(metadatacrud);
             }).RequireAuthorization();
-            app.MapGet("/getMetaDataYperfilPermitions", (HttpContext context) =>
+            app.MapGet("/getMetaDataYtenantPermissionMudules", (HttpContext context) =>
             {
                 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                     return Results.Unauthorized();
                 var metadatacrud = new
                 {
-                    entityDescription = "YperfilPermitions",
+                    entityDescription = "YtenantPermissionMudules",
+                    searchFields = new[]
+    {
+ new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "permissionmodulesid", label = "ID Modulo", type = "string", isFk = true ,endPontGetMetadata="/getMetaDataYpermissionModules", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "tenantid", label = "TenantID", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+            },
+                    formFields = new[]
+    {
+ new { id = "id", label = "ID", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "permissionmodulesid", label = "ID Modulo", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYpermissionModules", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "tenantid", label = "TenantID", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYtenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "validuntil", label = "Valido ate", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+            },
+                    endpoints = new
+                    {
+                        permissionmodulesid = "/YtenantPermissionMudules/YtenantPermissionMudulesReadFKpermissionModulesId",
+                        tenantid = "/YtenantPermissionMudules/YtenantPermissionMudulesReadFKTenantID",
+                        create = "/YtenantPermissionMudules/PostYtenantPermissionMudules",
+                        read = "/YtenantPermissionMudules/ReadYtenantPermissionMudules",
+                        update = "/YtenantPermissionMudules/PutYtenantPermissionMudules",
+                        delete = "/YtenantPermissionMudules/DeleteYtenantPermissionMudules"
+                    }
+                };
+                return Results.Ok(metadatacrud);
+            }).RequireAuthorization();
+            app.MapGet("/getMetaDataYpermissionActions", (HttpContext context) =>
+            {
+                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Results.Unauthorized();
+                var metadatacrud = new
+                {
+                    entityDescription = "YpermissionActions",
+                    searchFields = new[]
+    {
+ new { id = "id", label = "ID", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "description", label = "Descrição", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+            },
+                    formFields = new[]
+    {
+ new { id = "id", label = "ID", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "description", label = "Descrição", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+            },
+                    endpoints = new
+                    {
+                        create = "/YpermissionActions/PostYpermissionActions",
+                        read = "/YpermissionActions/ReadYpermissionActions",
+                        update = "/YpermissionActions/PutYpermissionActions",
+                        delete = "/YpermissionActions/DeleteYpermissionActions"
+                    }
+                };
+                return Results.Ok(metadatacrud);
+            }).RequireAuthorization();
+            app.MapGet("/getMetaDataYperfilPermissionActions", (HttpContext context) =>
+            {
+                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Results.Unauthorized();
+                var metadatacrud = new
+                {
+                    entityDescription = "YperfilPermissionActions",
                     searchFields = new[]
     {
  new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYperfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "permitionsid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDataYpermtions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "permissionactionsid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDataYpermissionActions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "grant", label = "Permite acessar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "create", label = "Permite Criar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "read", label = "Permite  Ler", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "update", label = "Permite Atualizar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "delete", label = "Permite Deletar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
             },
                     formFields = new[]
     {
  new { id = "perfilid", label = "ID Perfil", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYperfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "permitionsid", label = "ID Permição", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYpermtions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "permissionactionsid", label = "ID Permição", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYpermissionActions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "grant", label = "Permite acessar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "create", label = "Permite Criar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "read", label = "Permite  Ler", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "update", label = "Permite Atualizar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "delete", label = "Permite Deletar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "validuntil", label = "Valido ate", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
             },
                     endpoints = new
                     {
-                        perfilid = "/YperfilPermitions/YperfilPermitionsReadFKPerfilId",
-                        permitionsid = "/YperfilPermitions/YperfilPermitionsReadFKPermitionsId",
-                        create = "/YperfilPermitions/PostYperfilPermitions",
-                        read = "/YperfilPermitions/ReadYperfilPermitions",
-                        update = "/YperfilPermitions/PutYperfilPermitions",
-                        delete = "/YperfilPermitions/DeleteYperfilPermitions"
+                        perfilid = "/YperfilPermissionActions/YperfilPermissionActionsReadFKPerfilId",
+                        permissionactionsid = "/YperfilPermissionActions/YperfilPermissionActionsReadFKpermissionActionsId",
+                        create = "/YperfilPermissionActions/PostYperfilPermissionActions",
+                        read = "/YperfilPermissionActions/ReadYperfilPermissionActions",
+                        update = "/YperfilPermissionActions/PutYperfilPermissionActions",
+                        delete = "/YperfilPermissionActions/DeleteYperfilPermissionActions"
                     }
                 };
                 return Results.Ok(metadatacrud);
             }).RequireAuthorization();
-            app.MapGet("/getMetaDataYuserPermitions", (HttpContext context) =>
+            app.MapGet("/getMetaDataYuserPermissionActions", (HttpContext context) =>
             {
                 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                     return Results.Unauthorized();
                 var metadatacrud = new
                 {
-                    entityDescription = "YuserPermitions",
+                    entityDescription = "YuserPermissionActions",
                     searchFields = new[]
     {
- new { id = "permitionsid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDataYpermtions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYperfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "userid", label = "User ID", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataYuser", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "permissionactionsid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDataYpermissionActions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "grant", label = "Permite acessar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "create", label = "Permite Criar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "read", label = "Permite  Ler", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "update", label = "Permite Atualizar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "delete", label = "Permite Deletar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
             },
                     formFields = new[]
     {
- new { id = "permitionsid", label = "ID Permição", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYpermtions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "perfilid", label = "ID Perfil", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYperfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "userid", label = "User ID", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYuser", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "permissionactionsid", label = "ID Permição", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataYpermissionActions", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "grant", label = "Permite acessar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "create", label = "Permite Criar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "read", label = "Permite  Ler", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "update", label = "Permite Atualizar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "delete", label = "Permite Deletar", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "validuntil", label = "Valido ate", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
             },
                     endpoints = new
                     {
-                        permitionsid = "/YuserPermitions/YuserPermitionsReadFKPermitionsId",
-                        userid = "/YuserPermitions/YuserPermitionsReadFKUserId",
-                        create = "/YuserPermitions/PostYuserPermitions",
-                        read = "/YuserPermitions/ReadYuserPermitions",
-                        update = "/YuserPermitions/PutYuserPermitions",
-                        delete = "/YuserPermitions/DeleteYuserPermitions"
+                        perfilid = "/YuserPermissionActions/YuserPermissionActionsReadFKPerfilId",
+                        permissionactionsid = "/YuserPermissionActions/YuserPermissionActionsReadFKpermissionActionsId",
+                        create = "/YuserPermissionActions/PostYuserPermissionActions",
+                        read = "/YuserPermissionActions/ReadYuserPermissionActions",
+                        update = "/YuserPermissionActions/PutYuserPermissionActions",
+                        delete = "/YuserPermissionActions/DeleteYuserPermissionActions"
                     }
                 };
                 return Results.Ok(metadatacrud);

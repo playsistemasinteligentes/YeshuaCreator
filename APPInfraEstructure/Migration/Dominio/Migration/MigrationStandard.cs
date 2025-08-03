@@ -17,13 +17,15 @@ namespace Migration.Dominio.Migration
     {
         public override void Up()
         {
-            AddEntity("Ytenant")
+            AddModule("ADM", "Administrativo");
+
+            AddEntity("Ytenant").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull()
             .AddColumn("UserId", "User ID").Int();
 
-            AddEntity("Yuser")
+            AddEntity("Yuser").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
@@ -38,12 +40,12 @@ namespace Migration.Dominio.Migration
             .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id").StandardField("#_correntUser.UserId").BackEndField(false);
 
 
-            AddEntity("YconfigArcteture").Cached()
+            AddEntity("YconfigArcteture").AddModule("ADM").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("AuditTrackerActived", "AuditTrackerActived").Int()
             .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int();
 
-            AddEntity("YconfigNotification").Cached()
+            AddEntity("YconfigNotification").AddModule("ADM").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID")
             .AddColumn("EmailSmtpClient", "EmailSmtpClient").Varchar(100)
@@ -51,21 +53,48 @@ namespace Migration.Dominio.Migration
             .AddColumn("EmailUserName", "EmailUserName").Varchar(100)
             .AddColumn("EmailPassword", "EmailPassword").Varchar(60);
 
-            AddEntity("Yperfil")
+            AddEntity("Yperfil").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Description", "Descrição").Varchar(150).NotNull();
 
-            AddEntity("Ypermtions")
+            AddEntity("YpermissionModules")
             .AddColumn("Id", "ID").Varchar(100).Key()
             .AddColumn("Description", "Descrição").Varchar(1000);
 
-            AddEntity("YperfilPermitions")
-            .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
-            .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100);
+            AddEntity("YtenantPermissionMudules").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("permissionModulesId", "ID Modulo").FK("YpermissionModules", "Id").Varchar(100)
+            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID")
+            .AddColumn("ValidUntil", "Valido ate").DateTime();
 
-            AddEntity("YuserPermitions")
-            .AddColumn("PermitionsId", "ID Permição").FK("Ypermtions", "Id").Varchar(100)
-            .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id");
+
+            AddEntity("YpermissionActions")
+            .AddColumn("Id", "ID").Varchar(100).Key()
+            .AddColumn("Description", "Descrição").Varchar(1000);
+
+            /*AddEntity("YpermissionAuthorityLevel") // modelo de allada
+            .AddColumn("Id", "ID").Varchar(100).Key()
+            .AddColumn("Description", "Descrição").Varchar(1000);*/
+
+            AddEntity("YperfilPermissionActions").AddModule("ADM")
+            .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
+            .AddColumn("permissionActionsId", "ID Permição").FK("YpermissionActions", "Id").Varchar(100)
+            .AddColumn("Grant", "Permite acessar").Boolean()
+            .AddColumn("Create", "Permite Criar").Boolean()
+            .AddColumn("Read", "Permite  Ler").Boolean()
+            .AddColumn("Update", "Permite Atualizar").Boolean()
+            .AddColumn("Delete", "Permite Deletar").Boolean()
+            .AddColumn("ValidUntil", "Valido ate").DateTime();
+
+            AddEntity("YuserPermissionActions").AddModule("ADM")
+            .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
+            .AddColumn("permissionActionsId", "ID Permição").FK("YpermissionActions", "Id").Varchar(100)
+            .AddColumn("Grant", "Permite acessar").Boolean()
+            .AddColumn("Create", "Permite Criar").Boolean()
+            .AddColumn("Read", "Permite  Ler").Boolean()
+            .AddColumn("Update", "Permite Atualizar").Boolean()
+            .AddColumn("Delete", "Permite Deletar").Boolean()
+            .AddColumn("ValidUntil", "Valido ate").DateTime();
         }
     }
 

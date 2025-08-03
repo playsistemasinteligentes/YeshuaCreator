@@ -397,7 +397,22 @@ namespace Dominio.Schemas.CQRS
             sourceCodeMigrationIndependenceInjection.WriteCode(null, filePath, filePathCuston);
         }
 
+        public void ModulesGenerate(Migration.MigrationBase migration)
+        {
+
+            var filePath = Path.Combine(GetPathAppInfraestructureGenerateModules(), $"Migration\\Modules{migration.MigrationName}.cs");
+            var filePathCuston = Path.Combine(GetPathAppInfraestructureGenerateModules(), $"Custon\\Modules{migration.MigrationName}.cs");
+            var sourceCodeMigration = new SourceCodeInfraestructureModulesMigration(migration);
+            sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
+
+        }
+
+
         private string GetPathAppInfraestructureGenerateAPI()
+        {
+            return Path.Combine(GetPathAppInfraestructure(), "API");
+        }
+        private string GetPathAppInfraestructureGenerateModules()
         {
             return Path.Combine(GetPathAppInfraestructure(), "API");
         }
@@ -556,6 +571,7 @@ namespace Dominio.Schemas.CQRS
             ///////////AppSolutionGenerate(migration);
 
             AppInfraestructureGenerateAPI(migration);
+            ModulesGenerate(migration);
 
             ///////////AppInfraestructureGenerateMigration(migration);
 
@@ -586,6 +602,7 @@ namespace Dominio.Schemas.CQRS
             //AppDominioGenerateDominioPrimitiveTypes(migration);
             //AppDominioGenerateDominioSpecifications(migration);
             //AppDominioGenerateDominioValidation(migration);
+
         }
     }
 }

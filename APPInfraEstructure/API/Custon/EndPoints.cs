@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Command.Commands;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace API.Migrations
 {
     public static class EndpointsCuston
@@ -26,6 +27,14 @@ namespace API.Migrations
 
                 if (result.Result is Ok<State<object>> okResult)
                 {
+
+                    var userModuleKeys = new List<string> { "ADM", "mod3", "mod7" };
+
+                    // Junta os módulos em uma string única
+                    var modulesClaim = string.Join(",", userModuleKeys);
+
+
+
                     var statObj = okResult.Value;
 
                     if (statObj.Data is Repositorio.Outputs.YuserDTO _user)
@@ -37,10 +46,10 @@ namespace API.Migrations
                         var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, _user.id.ToString()),
-                        new Claim(ClaimTypes.Email, _user.email), // E-mail do usuário
-                        new Claim(ClaimTypes.Role, "Admin"), // Permissão
-                        new Claim("tenantId", _user.tenantid.ToString()), // ID da empresa, por exemplo
-                        new Claim("CustomClaim", "MeuValorPersonalizado") // Qualquer outra informação
+                        new Claim(ClaimTypes.Email, _user.email),
+                        new Claim(ClaimTypes.Role, "Admin"),
+                        new Claim("tenantId", _user.tenantid.ToString()),
+                        new Claim("userModules", modulesClaim)
                     };
 
                         var tokenDescriptor = new SecurityTokenDescriptor

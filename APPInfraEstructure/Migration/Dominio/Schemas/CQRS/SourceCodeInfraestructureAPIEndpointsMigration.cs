@@ -28,6 +28,7 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceModules};");
 
             sb.AppendLine("using Microsoft.AspNetCore.Mvc;");
             sb.AppendLine("using System.Security.Claims;");
@@ -92,26 +93,40 @@ namespace Dominio.Schemas.CQRS
             // menus 
             sb.AppendLine("app.MapGet(\"/getMenu\", (HttpContext context) =>");
             sb.AppendLine("{");
-            sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;");
-            sb.AppendLine("if (string.IsNullOrEmpty(userId))");
-            sb.AppendLine("return Results.Unauthorized();");
-            sb.AppendLine("var menu = new[]");
 
+
+            sb.AppendLine("var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == \"userModules\")?.Value;");
+            sb.AppendLine("if (modulesClaim == null)");
+            sb.AppendLine("    return Results.Unauthorized();");
+            sb.AppendLine();
+            sb.AppendLine("var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);");
+            sb.AppendLine("var userModules = StaticModules.Modules.Where(m => moduleKeys.Contains(m.Key)).ToList();");
+            sb.AppendLine("var result = new List<object>();");
+            sb.AppendLine("foreach (var mol in userModules)");
             sb.AppendLine("{");
-            string virgula = "";
-            foreach (var entidade in _migration.Entitys)
-            {
-                sb.AppendLine(virgula);
-                virgula = ",";
-                sb.AppendLine("new{");
-                sb.AppendLine($"id=\"{entidade.EntityName}\",");
-                sb.AppendLine($"description=\"{entidade.EntityName}\",");
-                sb.AppendLine($"endpoint=\"/getMetaData{entidade.EntityName}\",");
-                sb.AppendLine($"type = \"crud\"");
-                sb.AppendLine("}");
-            }
-            sb.AppendLine("};");
+            sb.AppendLine("    foreach (var men in mol.Menus)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        result.Add(new");
+            sb.AppendLine("        {");
+            sb.AppendLine("            id = men.Title,");
+            sb.AppendLine("            description = men.Title,");
+            sb.AppendLine("            endpoint = $\"/getMetaData{men.Title}\",");
+            sb.AppendLine("            type = \"crud\"");
+            sb.AppendLine("        });");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+            sb.AppendLine("var menu = result.ToArray();");
             sb.AppendLine("return Results.Ok(menu);");
+
+            /*
+                                    sb.AppendLine("new{");
+                            sb.AppendLine($"id=\"{entidade.EntityName}\",");
+                            sb.AppendLine($"description=\"{entidade.EntityName}\",");
+                            sb.AppendLine($"endpoint=\"/getMetaData{entidade.EntityName}\",");
+                            sb.AppendLine($"type = \"crud\"");
+                            sb.AppendLine("}");
+
+                     */
             sb.AppendLine("}).RequireAuthorization();");
 
 

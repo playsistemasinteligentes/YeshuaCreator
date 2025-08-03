@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Migration.Interfaces;
 using System.Data.Common;
+using Migration.Dominio;
+using Module = Migration.Dominio.Module;
+using static Dapper.SqlMapper;
 
 namespace Dominio.Migration
 {
@@ -20,6 +23,7 @@ namespace Dominio.Migration
         private IEnumerable<MigrationBase> _migrations = new List<MigrationBase>();
         private MigrationDiscovery _migrationDiscovery;
         private List<Entity> sanitizedEntities = new List<Entity>();
+        private List<Module> sanitizedMedules = new List<Module>();
         private MigrationBase _migrationConcriteBase = new M000000();
         public MigrationBuilder()
         {
@@ -87,12 +91,10 @@ namespace Dominio.Migration
                     AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
             }
 
-
             PreparMigrationsToCodeGenerete(migration);
+
             foreach (var schema in _schemas.OfType<ISchemaCodeGeneration>())
-            {
                 schema.CodeGenaration(_migrationConcriteBase);
-            }
         }
         private void PreparMigrationsToCodeGenerete(IEnumerable<MigrationBase> migrations)
         {
@@ -105,8 +107,20 @@ namespace Dominio.Migration
         private void SanitizeMigrationEndEntityToCodeGenerete(MigrationBase migration)
         {
             // Cria um dicionário para acesso rápido às entidades já sanitizadas
-            var entityDictionary = sanitizedEntities.ToDictionary(e => e.EntityName, e => e);
+            var moduleDictionary = sanitizedMedules.ToDictionary(e => e.Key, e => e);
+            foreach (var mol in migration.Modules)
+            {
+                if (!moduleDictionary.TryGetValue(mol.Key, out var sanitizedModule))
+                {
+                    sanitizedMedules.Add(mol);
+                    moduleDictionary[mol.Key] = mol;
+                    _migrationConcriteBase.AddModule(mol);
+                }
+            }
 
+
+
+            var entityDictionary = sanitizedEntities.ToDictionary(e => e.EntityName, e => e);
             foreach (var entity in migration.Entitys)
             {
                 // Verifica se a entidade já existe na lista de sanitizadas

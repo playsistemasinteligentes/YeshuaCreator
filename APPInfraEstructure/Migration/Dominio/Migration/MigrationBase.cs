@@ -14,11 +14,14 @@ namespace Dominio.Migration
     public abstract class MigrationBase
     {
         public List<Entity> Entitys = new List<Entity>();
+        public List<Module> Modules = new List<Module>();
         public List<UseCaseGroup> UseCaseGroup = new List<UseCaseGroup>();
         private Entity _entity;
+        private Module _module;
         private UseCaseGroup _hub;
         public int ID { get; set; }
         public string MigrationName { get; set; }
+
 
         public MigrationBase AlterEntity(string entityName)
         {
@@ -28,6 +31,11 @@ namespace Dominio.Migration
         public MigrationBase AddEntity(Entity entity)
         {
             Entitys.Add(entity);
+            return this;
+        }
+        public MigrationBase AddModule(Module module)
+        {
+            Modules.Add(module);
             return this;
         }
         public Entity AddToListEntity(string EntityName, bool create)
@@ -62,6 +70,16 @@ namespace Dominio.Migration
             AddToListEntity(EntityName, true);
             return this;
         }
+        public MigrationBase AddModule(string key, string moduleDescription)
+        {
+            _module = Modules.Where(x => x.Key == key).FirstOrDefault();
+            if (_module == null)
+            {
+                _module = new Module(key, Descricao.normalise(moduleDescription));
+                Modules.Add(_module);
+            }
+            return this;
+        }
         public UseCaseGroup AddUsecaseGroup(string hubName)
         {
             Descricao descricao = new Descricao().Normalize(hubName);
@@ -73,12 +91,14 @@ namespace Dominio.Migration
             _entity.StatusColuns = 1;
             return _entity.AddColumn(columnName, descrition);
         }
-        public Entity Cached()
+        public Entity AddModule(string key)
         {
-            _entity.CachedTable = true;
-            return _entity;
+            Module modulo = Modules.Where(x => x.Key == key).FirstOrDefault();
+            if (modulo == null)
+                modulo = new Module(key);
+            modulo.Entities.Add(_entity);
+            return _entity.AddModule(modulo);
         }
-
 
         public Entity AddColumn(string columnName)
         {
@@ -106,5 +126,10 @@ namespace Dominio.Migration
             MigrationName = name;
         }
 
+        public Entity Cached()
+        {
+            _entity.CachedTable = true;
+            return _entity;
+        }
     }
 }

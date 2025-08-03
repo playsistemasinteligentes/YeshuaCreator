@@ -38,6 +38,9 @@ namespace Migration.Dominio.Schemas.CQRS
         public object NameSpaceEnumStrategy { get; set; } = "Dominio.Enum.Strategy";
         public string NameSpaceClassesConcretasStrategy { get; set; } = "Shered.Patterns.Strategy";
         public object NameSpaceReadRepository { get; set; } = "Read.Repository";
+        public object NameSpaceModules { get; set; } = "Modules";
+
+
 
         public void AddExeptionReceiver(StringBuilder sb, string classe)
         {

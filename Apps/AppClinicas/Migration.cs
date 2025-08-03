@@ -17,7 +17,10 @@ namespace AppClinicas
         {
             public override void Up()
             {
-                AddEntity("Clinica")
+                AddModule("PSI", "Clinica Psicologia");
+
+
+                AddEntity("Clinica").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
                 .AddColumn("Endereco", "Endereço da Clínica").Varchar(250).NotNull()
@@ -33,34 +36,34 @@ namespace AppClinicas
     {
         public override void Up()
         {
-            AddEntity("Especialidade")
+            AddEntity("Especialidade").AddModule("PSI")
                     .AddColumn("Id", "ID").Int().Incremento().Key()
                     .AddColumn("Descricao", "Descrição da Especialidade").Varchar(100).NotNull();
 
-            AddEntity("Profissional")
+            AddEntity("Profissional").AddModule("PSI")
                  .AddColumn("Id", "ID").Int().Incremento().Key()
                  .AddColumn("Nome", "Nome do Profissional").Varchar(150).NotNull()
                  .AddColumn("EspecialidadeId", "Especialidade do Profissional").FK("Especialidade", "Id").Int()
                  .AddColumn("Telefone", "Telefone do Profissional").Varchar(20).NotNull();
 
-            AddEntity("DisponibilidadeAgenda")
+            AddEntity("DisponibilidadeAgenda").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int()
                 .AddColumn("DataHora", "Horário Disponível").DateTime().NotNull();
 
             // recursos 
 
-            AddEntity("GrupoServico")
+            AddEntity("GrupoServico").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Descricao", "Descrição do Grupo de Serviços").Varchar(150).NotNull();
 
-            AddEntity("Servico")
+            AddEntity("Servico").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("GrupoServicoId", "Grupo de Serviço").FK("GrupoServico", "Id").Int()
                 .AddColumn("Nome", "Nome do Serviço").Varchar(150).NotNull()
                 .AddColumn("Valor", "Valor do Serviço").Decimal(10, 2).NotNull();
 
-            AddEntity("Paciente")
+            AddEntity("Paciente").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Nome", "Nome do Paciente").Varchar(150).NotNull()
                 .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull()
@@ -78,7 +81,7 @@ namespace AppClinicas
                 .AddColumn("PrincipaisQueixas", "PrincipaisQueixas").Varchar(4000)
                 .AddColumn("ObservacaoAdicional", "ObservacaoAdicional").Varchar(2000);
 
-            AddEntity("MovimentacaoFinanceira")
+            AddEntity("MovimentacaoFinanceira").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
                 .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int()
@@ -90,7 +93,7 @@ namespace AppClinicas
                 .AddColumn("SaldoAtual", "Saldo Atual").Decimal(10, 2).NotNull();
 
 
-            AddEntity("Sesoes")
+            AddEntity("Sesoes").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int()

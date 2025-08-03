@@ -1,4 +1,6 @@
 ﻿using Dominio.TiposPrimitivos;
+using Migration.Dominio;
+using static Dapper.SqlMapper;
 
 namespace Dominio
 {
@@ -11,6 +13,8 @@ namespace Dominio
         public List<Column> AlterColumns = new List<Column>();
         public List<string> GPTFunction = new List<string>();
         public List<string> IndexDB = new List<string>();
+        public List<Module> AddModules = new List<Module>();
+
         public bool create { get; set; }
         public int StatusColuns { get; set; }
 
@@ -30,9 +34,19 @@ namespace Dominio
 
         public Entity AddColumn(string columnName)
         {
-            Descricao description = new Descricao();
             var col = new Column(columnName, Descricao.normalise(columnName), this);
             AddColumns.Add(col);
+            return this;
+        }
+        public Entity AddModule(Module module)
+        {
+            AddModules.Add(module);
+            return this;
+        }
+
+        public Entity Cached()
+        {
+            this.CachedTable = true;
             return this;
         }
 
