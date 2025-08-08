@@ -8,21 +8,21 @@ using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {
-    public class YuserReadFKTenantIDReceiver : ReciverBase<IEnumerable<YuserTenantIDDTO>>
+    public class yUserReadFKTenantIDReceiver : ReciverBase<IEnumerable<yUserTenantIDDTO>>
     {
-        private readonly IYuserReadRepository _repository;
+        private readonly IyUserReadRepository _repository;
 
-        public YuserReadFKTenantIDReceiver(IYuserReadRepository repository)
+        public yUserReadFKTenantIDReceiver(IyUserReadRepository repository)
         {
             _repository = repository;
         }
 
-        protected override State <IEnumerable<YuserTenantIDDTO>> Action(ICommand comand)
+        protected override State <IEnumerable<yUserTenantIDDTO>> Action(ICommand comand)
         {
             if(comand is SearchFKCommand c) 
              {    
-                var YuserReadRepository = _repository.getYuserReadFKTenantID(c);
-                return Success("OK", YuserReadRepository);
+                var yUserReadRepository = _repository.getyUserReadFKTenantID(c);
+                return Success("OK", yUserReadRepository);
             }
             else 
             {

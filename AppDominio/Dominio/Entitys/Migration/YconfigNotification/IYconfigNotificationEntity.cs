@@ -8,7 +8,7 @@
 
                 namespace Dominio.Entitys
                 {
-                    public interface IYconfigNotificationEntity
+                    public interface IyConfigNotificationEntity
 {
     int? Id { get; set; }
     int? TenantID { get; set; }
@@ -16,6 +16,9 @@
     int? EmailPort { get; set; }
     string EmailUserName { get; set; }
     string EmailPassword { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

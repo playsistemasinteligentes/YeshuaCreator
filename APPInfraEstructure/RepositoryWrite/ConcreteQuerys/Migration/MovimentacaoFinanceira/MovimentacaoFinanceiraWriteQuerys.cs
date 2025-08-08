@@ -38,7 +38,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId, ServicoId = @ServicoId, Valor = @Valor, TipoMovimentacao = @TipoMovimentacao, DataMovimentacao = @DataMovimentacao, SaldoAtual = @SaldoAtual WHERE Id = @Id ";
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId, ServicoId = @ServicoId, Valor = @Valor, TipoMovimentacao = @TipoMovimentacao, DataMovimentacao = @DataMovimentacao, SaldoAtual = @SaldoAtual, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 PacienteId = MovimentacaoFinanceira.PacienteId,
@@ -47,6 +47,10 @@ namespace Query.Write
                 TipoMovimentacao = MovimentacaoFinanceira.TipoMovimentacao,
                 DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
                 SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
+                TenantID = MovimentacaoFinanceira.TenantID,
+                Deleted = MovimentacaoFinanceira.Deleted,
+                Changed = MovimentacaoFinanceira.Changed,
+                UserId = MovimentacaoFinanceira.UserId,
                 Id = MovimentacaoFinanceira.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -107,6 +111,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 SaldoAtual = entity.SaldoAtual,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTenantID(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TenantID = entity.TenantID,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDeleted(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Deleted = entity.Deleted,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateChanged(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET Changed = @Changed WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Changed = entity.Changed,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(IMovimentacaoFinanceiraEntity entity)
+        {
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET UserId = @UserId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                UserId = entity.UserId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

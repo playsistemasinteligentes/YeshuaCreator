@@ -38,6 +38,7 @@ namespace Dominio.Migration
             Modules.Add(module);
             return this;
         }
+
         public Entity AddToListEntity(string EntityName, bool create)
         {
             _entity = Entitys.Where(x => x.EntityName == EntityName).FirstOrDefault();
@@ -70,6 +71,8 @@ namespace Dominio.Migration
             AddToListEntity(EntityName, true);
             return this;
         }
+
+
         public MigrationBase AddModule(string key, string moduleDescription)
         {
             _module = Modules.Where(x => x.Key == key).FirstOrDefault();

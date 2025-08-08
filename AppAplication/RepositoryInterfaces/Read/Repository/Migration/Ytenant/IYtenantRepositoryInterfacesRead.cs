@@ -9,18 +9,27 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IYtenantReadRepository
+    public interface IyTenantReadRepository
     {
-        public DataPagination<YtenantDTO> getYtenant(ICommandRead command);
-        public YtenantDTO getById();
-        public bool ExistsById(int value);
-        public bool ExistsByCnpjCpf(int value);
-        public bool ExistsByNome(string value);
-        public bool ExistsByUserId(int value);
-        public YtenantDTO FirstById(int value);
-        public YtenantDTO FirstByCnpjCpf(int value);
-        public YtenantDTO FirstByNome(string value);
-        public YtenantDTO FirstByUserId(int value);
+        public DataPagination<yTenantDTO> getyTenant(ICommandRead command , bool TakeOffId = false);
+        public bool ExistsById(int value , bool TakeOffId = false);
+        public bool ExistsByCnpjCpf(int value , bool TakeOffId = false);
+        public bool ExistsByNome(string value , bool TakeOffId = false);
+        public bool ExistsByUserId(int value , bool TakeOffId = false);
+        public bool ExistsByDeleted(bool value , bool TakeOffId = false);
+        public bool ExistsByChanged(DateTime value , bool TakeOffId = false);
+        public yTenantDTO FirstById(int value , bool TakeOffId = false);
+        public yTenantDTO FirstByCnpjCpf(int value , bool TakeOffId = false);
+        public yTenantDTO FirstByNome(string value , bool TakeOffId = false);
+        public yTenantDTO FirstByUserId(int value , bool TakeOffId = false);
+        public yTenantDTO FirstByDeleted(bool value , bool TakeOffId = false);
+        public yTenantDTO FirstByChanged(DateTime value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllById(int value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByCnpjCpf(int value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByNome(string value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByUserId(int value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByDeleted(bool value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByChanged(DateTime value , bool TakeOffId = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

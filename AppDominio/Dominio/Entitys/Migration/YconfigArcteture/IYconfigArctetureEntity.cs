@@ -8,11 +8,15 @@
 
                 namespace Dominio.Entitys
                 {
-                    public interface IYconfigArctetureEntity
+                    public interface IyConfigArctetureEntity
 {
     int? Id { get; set; }
     int? AuditTrackerActived { get; set; }
     int? AuditCRUDActived { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

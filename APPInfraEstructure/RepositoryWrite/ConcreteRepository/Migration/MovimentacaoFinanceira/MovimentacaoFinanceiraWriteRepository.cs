@@ -71,6 +71,26 @@ namespace Input.Repository.MovimentacaoFinanceira
             var query = _query.UpdateSaldoAtual(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateTenantID(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = _query.UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDeleted(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = _query.UpdateDeleted(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateChanged(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = _query.UpdateChanged(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUserId(IMovimentacaoFinanceiraEntity entity)
+        {
+            var query = _query.UpdateUserId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

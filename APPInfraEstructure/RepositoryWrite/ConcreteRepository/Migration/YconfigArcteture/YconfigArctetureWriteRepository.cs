@@ -12,50 +12,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Repository.YconfigArcteture
+namespace Input.Repository.yConfigArcteture
 {
-    public class YconfigArctetureWriteRepository : IYconfigArctetureWriteRepository
+    public class yConfigArctetureWriteRepository : IyConfigArctetureWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
-       private readonly IYconfigArctetureQueryWrite _query; 
+       private readonly IyConfigArctetureQueryWrite _query; 
         private readonly ICacheService<object> _cacheService;
 
-        public YconfigArctetureWriteRepository(IUnitOfWork unitOfWork, IYconfigArctetureQueryWrite query,ICacheService<object> cacheService)
+        public yConfigArctetureWriteRepository(IUnitOfWork unitOfWork, IyConfigArctetureQueryWrite query,ICacheService<object> cacheService)
         {
              _UnitOfWork= unitOfWork;
              _cacheService = cacheService;
              _query = query;
         }
 
-        public void Insert(IYconfigArctetureEntity YconfigArcteture)
+        public void Insert(IyConfigArctetureEntity yConfigArcteture)
         {
-            _cacheService.RemoveByPrefix("YconfigArcteture");
-            var query = _query.InserirYconfigArctetureQuery(YconfigArcteture);
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.InseriryConfigArctetureQuery(yConfigArcteture);
                 _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(IYconfigArctetureEntity YconfigArcteture)
+        public void Update(IyConfigArctetureEntity yConfigArcteture)
         {
-            _cacheService.RemoveByPrefix("YconfigArcteture");
-            var query = _query.UpdateYconfigArctetureQuery(YconfigArcteture);
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.UpdateyConfigArctetureQuery(yConfigArcteture);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(IYconfigArctetureEntity YconfigArcteture)
+        public void Delete(IyConfigArctetureEntity yConfigArcteture)
         {
-            _cacheService.RemoveByPrefix("YconfigArcteture");
-            var query = _query.DeleteYconfigArctetureQuery(YconfigArcteture);
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.DeleteyConfigArctetureQuery(yConfigArcteture);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateAuditTrackerActived(IYconfigArctetureEntity entity)
+        public void UpdateAuditTrackerActived(IyConfigArctetureEntity entity)
         {
-            _cacheService.RemoveByPrefix("YconfigArcteture");
+            _cacheService.RemoveByPrefix("yConfigArcteture");
             var query = _query.UpdateAuditTrackerActived(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateAuditCRUDActived(IYconfigArctetureEntity entity)
+        public void UpdateAuditCRUDActived(IyConfigArctetureEntity entity)
         {
-            _cacheService.RemoveByPrefix("YconfigArcteture");
+            _cacheService.RemoveByPrefix("yConfigArcteture");
             var query = _query.UpdateAuditCRUDActived(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateTenantID(IyConfigArctetureEntity entity)
+        {
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDeleted(IyConfigArctetureEntity entity)
+        {
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.UpdateDeleted(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateChanged(IyConfigArctetureEntity entity)
+        {
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.UpdateChanged(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUserId(IyConfigArctetureEntity entity)
+        {
+            _cacheService.RemoveByPrefix("yConfigArcteture");
+            var query = _query.UpdateUserId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

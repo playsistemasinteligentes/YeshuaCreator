@@ -14,6 +14,10 @@ namespace IRepository.Write
         void Delete(IDisponibilidadeAgendaEntity disponibilidadeagenda);
         public void UpdateProfissionalId(IDisponibilidadeAgendaEntity entity);
         public void UpdateDataHora(IDisponibilidadeAgendaEntity entity);
+        public void UpdateTenantID(IDisponibilidadeAgendaEntity entity);
+        public void UpdateDeleted(IDisponibilidadeAgendaEntity entity);
+        public void UpdateChanged(IDisponibilidadeAgendaEntity entity);
+        public void UpdateUserId(IDisponibilidadeAgendaEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

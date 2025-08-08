@@ -16,6 +16,7 @@ namespace Dominio.Schemas.CQRS
         private UseCase _method;
         private string _classe;
         private string _nameSpace;
+        private HashSet<string> _generatedTypes = new HashSet<string>();
 
         public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseGroup hub)
             : base()
@@ -32,7 +33,8 @@ namespace Dominio.Schemas.CQRS
             _commandType = CommandType.UseCase;
             _nameSpace = CQRSParam.I.NameSpaceCommandCommandsUseCases;
             _method = method;
-            _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
+            //_classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
+            _generatedTypes = new HashSet<string>();
         }
 
 
@@ -51,25 +53,39 @@ namespace Dominio.Schemas.CQRS
 
             if (_commandType == CommandType.UseCase)
             {
+                //foreach (var param in _method.Inputs)
+                //{
+                //    Type type = param.GetType();
+                //    if (type.IsClass || type.IsValueType)
+                //    {
+                //        sb.AppendLine($"    public partial record {_classe} : ICommand");
+                //        sb.AppendLine("    {");
+                //        foreach (PropertyInfo prop in type.GetProperties())
+                //        {
+                //            if (prop.PropertyType.IsEnum)
+                //                sb.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
+                //            else if (prop.PropertyType == typeof(Int32))
+                //                sb.AppendLine($"    public int {prop.Name} {{ get; set; }}");
+                //            else
+                //                sb.AppendLine($"    public {prop.PropertyType.Name.ToLower()} {prop.Name} {{ get; set; }}");
+
+                //        }
+                //        sb.AppendLine("    }");
+                //    }
+                //}
+
                 foreach (var param in _method.Inputs)
                 {
-                    Type type = param.GetType();
-                    if (type.IsClass || type.IsValueType)
-                    {
-                        sb.AppendLine($"    public partial record {_classe} : ICommand");
-                        sb.AppendLine("    {");
-                        foreach (PropertyInfo prop in type.GetProperties())
-                        {
-                            if (prop.PropertyType.IsEnum)
-                                sb.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
-                            else if (prop.PropertyType == typeof(Int32))
-                                sb.AppendLine($"    public int {prop.Name} {{ get; set; }}");
-                            else
-                                sb.AppendLine($"    public {prop.PropertyType.Name.ToLower()} {prop.Name} {{ get; set; }}");
+                    _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}InputCommand";
+                    if (param == null) continue;
+                    GenerateClass(param.GetType(), sb, _classe);
+                }
 
-                        }
-                        sb.AppendLine("    }");
-                    }
+                foreach (var param in _method.Outputs)
+                {
+                    _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}OutputCommand";
+                    if (param == null) continue;
+                    GenerateClass(param.GetType(), sb, _classe);
                 }
             }
             else if (_commandType == CommandType.UseCaseGroup)
@@ -89,5 +105,88 @@ namespace Dominio.Schemas.CQRS
             var sb = new StringBuilder();
             return sb;
         }
+
+
+        private void GenerateClass(Type type, StringBuilder sb, string className = "")
+        {
+            if (className == "")
+                className = type.Name;
+
+            // Evita gerar tipos repetidos
+            if (_generatedTypes.Contains(className))
+                return;
+
+            // Ignorar tipos do .NET padrão, incluindo genéricos como List<>
+            if (type.Namespace != null && type.Namespace.StartsWith("System"))
+                return;
+
+            _generatedTypes.Add(className);
+
+            // Começa a geração da classe record
+            sb.AppendLine($"public partial record {className} : ICommand");
+            sb.AppendLine("{");
+
+            foreach (PropertyInfo prop in type.GetProperties())
+            {
+                string propTypeName = GetFriendlyTypeName(prop.PropertyType);
+                sb.AppendLine($"    public {propTypeName} {prop.Name} {{ get; set; }}");
+            }
+
+            sb.AppendLine("}");
+            sb.AppendLine();
+
+            // Agora, fora da classe, geramos os tipos complexos das propriedades recursivamente
+            foreach (PropertyInfo prop in type.GetProperties())
+            {
+                Type propType = prop.PropertyType;
+
+                // Se for um tipo complexo (classe customizada) e não string
+                if (propType.IsClass && propType != typeof(string))
+                {
+                    if (!propType.Namespace.StartsWith("System"))
+                        GenerateClass(propType, sb);
+
+                    if (propType.IsGenericType)
+                    {
+                        foreach (var arg in propType.GetGenericArguments())
+                        {
+                            if (!arg.Namespace.StartsWith("System"))
+                                GenerateClass(arg, sb);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Função auxiliar para nome de tipos amigável permanece igual
+        private string GetFriendlyTypeName(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                string typeName = type.Name.Substring(0, type.Name.IndexOf('`'));
+                var genericArgs = type.GetGenericArguments()
+                                      .Select(t => GetFriendlyTypeName(t));
+                return $"{typeName}<{string.Join(", ", genericArgs)}>";
+            }
+            else if (type.IsArray)
+            {
+                return $"{GetFriendlyTypeName(type.GetElementType())}[]";
+            }
+            else
+            {
+                return type switch
+                {
+                    _ when type == typeof(int) => "int",
+                    _ when type == typeof(string) => "string",
+                    _ when type == typeof(bool) => "bool",
+                    _ when type == typeof(double) => "double",
+                    _ when type == typeof(float) => "float",
+                    _ when type == typeof(long) => "long",
+                    _ when type == typeof(decimal) => "decimal",
+                    _ => type.Name
+                };
+            }
+        }
+
     }
 }

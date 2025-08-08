@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace Query.Read 
 {
-    public class YconfigNotificationQueryRead : QueryBase, IYconfigNotificationQueryRead
+    public class yConfigNotificationQueryRead : QueryBase, IyConfigNotificationQueryRead
     {
         protected readonly ICurrentUser _correntUser;
-        public YconfigNotificationQueryRead(ICurrentUser correntUser)
+        public yConfigNotificationQueryRead(ICurrentUser correntUser)
         {
             _correntUser = correntUser;
         }
-        public QueryModel YconfigNotificationQuery(Command.Read.YconfigNotificationReadCommand Command)
+        public QueryModel yConfigNotificationQuery(Command.Read.yConfigNotificationReadCommand Command )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId from YconfigNotification ";
+            this.Query = $@" select Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId from yConfigNotification ";
 if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.TenantID.HasValue) parametersDict["TenantID"] = Command.TenantID.Value;
@@ -37,10 +37,12 @@ if (!string.IsNullOrEmpty(Command.EmailUserName)) parametersDict["EmailUserName"
 if (!string.IsNullOrEmpty(Command.EmailUserName)) whereClauses.Add($"EmailUserName like @EmailUserName");
 if (!string.IsNullOrEmpty(Command.EmailPassword)) parametersDict["EmailPassword"] = $"%{Command.EmailPassword}%";
 if (!string.IsNullOrEmpty(Command.EmailPassword)) whereClauses.Add($"EmailPassword like @EmailPassword");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+if (Command.UserId.HasValue) parametersDict["UserId"] = Command.UserId.Value;
+if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere(" AND ")} {string.Join(" AND ", whereClauses)}"; 
-            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
+                 this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -50,135 +52,355 @@ if (!string.IsNullOrEmpty(Command.EmailPassword)) whereClauses.Add($"EmailPasswo
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel YconfigNotificationTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command)
+        public QueryModel yConfigNotificationTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
-            this.Query = $@" select Id, Nome from Ytenant ";
+            this.Query = $@" select Id, Nome from yTenant ";
             this.Parameters = null;
             var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
             if (!string.IsNullOrEmpty(Command.searchFK)) 
             {
                  if (int.TryParse(Command.searchFK, out int numero)) 
                  {
-                      this.Parameters = new { Id = numero}; 
+                      parametersDict["Id"] = numero; 
                       whereClauses.Add($" Id = @Id"); 
                  }
                  else 
                  {
-                      this.Parameters = new { 
-                       Id = $"%{Command.searchFK}%", 
-                       Nome = $"%{Command.searchFK}%", 
-                      }; 
-                      whereClauses.Add($" Id like @Id "); 
-                      whereClauses.Add($" Nome like @Nome "); 
+                      parametersDict["Id"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Id like @Id ");
+                      parametersDict["Nome"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Nome like @Nome ");
                  }
-            }
-            if (whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()} AND ({string.Join(" OR ", whereClauses)})"; 
-            else if (whereClauses.Any() && string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {string.Join(" OR ", whereClauses)}"; 
-            else if (!whereClauses.Any() && !string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-            this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
+           }
+ parametersDict["Id"] = _correntUser.TenantID;
+ whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
         }
-        public QueryModel ExistsByIdQuery(int value)
+        public QueryModel yConfigNotificationUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} Id = @Id";
-            var parameters = new { Id = value };
-            return new QueryModel(sql, parameters);
+            this.Query = $@" select Id, Nome from yUser ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      parametersDict["Id"] = numero; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      parametersDict["Id"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Id like @Id ");
+                      parametersDict["Nome"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Nome like @Nome ");
+                 }
+           }
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters); 
         }
-        public QueryModel ExistsByTenantIDQuery(int value)
+        public QueryModel ExistsByIdQuery(int value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} TenantID = @TenantID";
-            var parameters = new { TenantID = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Id"] = value; 
+                      whereClauses.Add($" Id = @Id ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByEmailSmtpClientQuery(string value)
+        public QueryModel ExistsByTenantIDQuery(int value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} EmailSmtpClient = @EmailSmtpClient";
-            var parameters = new { EmailSmtpClient = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["TenantID"] = value; 
+                      whereClauses.Add($" TenantID = @TenantID ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByEmailPortQuery(int value)
+        public QueryModel ExistsByEmailSmtpClientQuery(string value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} EmailPort = @EmailPort";
-            var parameters = new { EmailPort = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailSmtpClient"] = value; 
+                      whereClauses.Add($" EmailSmtpClient = @EmailSmtpClient ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByEmailUserNameQuery(string value)
+        public QueryModel ExistsByEmailPortQuery(int value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} EmailUserName = @EmailUserName";
-            var parameters = new { EmailUserName = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailPort"] = value; 
+                      whereClauses.Add($" EmailPort = @EmailPort ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByEmailPasswordQuery(string value)
+        public QueryModel ExistsByEmailUserNameQuery(string value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} EmailPassword = @EmailPassword";
-            var parameters = new { EmailPassword = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailUserName"] = value; 
+                      whereClauses.Add($" EmailUserName = @EmailUserName ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByChangedQuery(DateTime value)
+        public QueryModel ExistsByEmailPasswordQuery(string value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} Changed = @Changed";
-            var parameters = new { Changed = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailPassword"] = value; 
+                      whereClauses.Add($" EmailPassword = @EmailPassword ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByUserIdQuery(int value)
+        public QueryModel ExistsByDeletedQuery(bool value )
         {
-            var sql = $"SELECT 1 FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")} UserId = @UserId";
-            var parameters = new { UserId = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Deleted"] = value; 
+                      whereClauses.Add($" Deleted = @Deleted ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByIdQuery(int value)
+        public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  Id = @Id";
-            var parameters = new { Id = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Changed"] = value; 
+                      whereClauses.Add($" Changed = @Changed ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByTenantIDQuery(int value)
+        public QueryModel ExistsByUserIdQuery(int value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  TenantID = @TenantID";
-            var parameters = new { TenantID = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["UserId"] = value; 
+                      whereClauses.Add($" UserId = @UserId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByEmailSmtpClientQuery(string value)
+        public QueryModel FirstByIdQuery(int value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  EmailSmtpClient = @EmailSmtpClient";
-            var parameters = new { EmailSmtpClient = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Id"] = value; 
+                      whereClauses.Add($" Id = @Id ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByEmailPortQuery(int value)
+        public QueryModel FirstByTenantIDQuery(int value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  EmailPort = @EmailPort";
-            var parameters = new { EmailPort = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["TenantID"] = value; 
+                      whereClauses.Add($" TenantID = @TenantID ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByEmailUserNameQuery(string value)
+        public QueryModel FirstByEmailSmtpClientQuery(string value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  EmailUserName = @EmailUserName";
-            var parameters = new { EmailUserName = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailSmtpClient"] = value; 
+                      whereClauses.Add($" EmailSmtpClient = @EmailSmtpClient ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByEmailPasswordQuery(string value)
+        public QueryModel FirstByEmailPortQuery(int value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  EmailPassword = @EmailPassword";
-            var parameters = new { EmailPassword = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailPort"] = value; 
+                      whereClauses.Add($" EmailPort = @EmailPort ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByChangedQuery(DateTime value)
+        public QueryModel FirstByEmailUserNameQuery(string value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  Changed = @Changed";
-            var parameters = new { Changed = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailUserName"] = value; 
+                      whereClauses.Add($" EmailUserName = @EmailUserName ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByUserIdQuery(int value)
+        public QueryModel FirstByEmailPasswordQuery(string value )
         {
-            var sql = $"SELECT * FROM YconfigNotification WHERE {getBackEndFieldWitchWhere(" AND ")}  UserId = @UserId";
-            var parameters = new { UserId = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["EmailPassword"] = value; 
+                      whereClauses.Add($" EmailPassword = @EmailPassword ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        private string getBackEndFieldWitchWhere(string sql = "")
+        public QueryModel FirstByDeletedQuery(bool value )
         {
-         return $" (Deleted = 0) "+sql;
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Deleted"] = value; 
+                      whereClauses.Add($" Deleted = @Deleted ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByChangedQuery(DateTime value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Changed"] = value; 
+                      whereClauses.Add($" Changed = @Changed ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByUserIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yConfigNotification ";
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["UserId"] = value; 
+                      whereClauses.Add($" UserId = @UserId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
     }
 }

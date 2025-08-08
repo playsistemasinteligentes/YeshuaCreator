@@ -1,20 +1,24 @@
 using Shered.DB;
 namespace IQuery.Read
 {
-    public interface IYuserQueryRead 
+    public interface IyUserQueryRead 
     {
-        public QueryModel YuserQuery(Command.Read.YuserReadCommand Command);
-        public QueryModel YuserTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command);
-        public QueryModel ExistsByIdQuery(int value);
-        public QueryModel ExistsByNomeQuery(string value);
-        public QueryModel ExistsByEmailQuery(string value);
-        public QueryModel ExistsBySenhaQuery(string value);
-        public QueryModel ExistsByTenantIDQuery(int value);
-        public QueryModel FirstByIdQuery(int value);
-        public QueryModel FirstByNomeQuery(string value);
-        public QueryModel FirstByEmailQuery(string value);
-        public QueryModel FirstBySenhaQuery(string value);
-        public QueryModel FirstByTenantIDQuery(int value);
+        public QueryModel yUserQuery(Command.Read.yUserReadCommand Command , bool TakeOffTenantID = false);
+        public QueryModel yUserTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false);
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByNomeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByEmailQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsBySenhaQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByNomeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByEmailQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstBySenhaQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

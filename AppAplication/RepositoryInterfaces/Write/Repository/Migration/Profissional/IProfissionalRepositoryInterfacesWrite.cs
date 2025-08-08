@@ -15,6 +15,10 @@ namespace IRepository.Write
         public void UpdateNome(IProfissionalEntity entity);
         public void UpdateEspecialidadeId(IProfissionalEntity entity);
         public void UpdateTelefone(IProfissionalEntity entity);
+        public void UpdateTenantID(IProfissionalEntity entity);
+        public void UpdateDeleted(IProfissionalEntity entity);
+        public void UpdateChanged(IProfissionalEntity entity);
+        public void UpdateUserId(IProfissionalEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -8,12 +8,16 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class YperfilEntity : IYperfilEntity
+                    public partial class yPerfilEntity : IyPerfilEntity
 {
     public int? Id { get; set; }
     public string Description { get; set; }
+    public int? TenantID { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
+    public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal YperfilEntity(int? id, string description ){
+ internal yPerfilEntity(int? id, string description ){
  Id = id; 
  Description = description; 
 }

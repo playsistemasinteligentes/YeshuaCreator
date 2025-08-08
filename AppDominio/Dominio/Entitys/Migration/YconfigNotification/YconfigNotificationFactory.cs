@@ -2,19 +2,19 @@
 
                             namespace Dominio.Entitys
                             {
-                                public class YconfigNotificationFactory
+                                public class yConfigNotificationFactory
                                 {
                                     private readonly Dominio.Interfaces.ILogger _logger;
 
-                                    public YconfigNotificationFactory(Dominio.Interfaces.ILogger logger)
+                                    public yConfigNotificationFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYconfigNotificationEntity Create(int? id, int? tenantid, string emailsmtpclient, int? emailport, string emailusername, string emailpassword )
+                                    } public IyConfigNotificationEntity Create(int? id, string emailsmtpclient, int? emailport, string emailusername, string emailpassword )
                             {
-                            var entity = new YconfigNotificationEntity(id, tenantid, emailsmtpclient, emailport, emailusername, emailpassword );
+                            var entity = new yConfigNotificationEntity(id, emailsmtpclient, emailport, emailusername, emailpassword );
 
 
-                            var decoratedEntity = new YconfigNotificationDecorator(entity, _logger);
+                            var decoratedEntity = new yConfigNotificationDecorator(entity, _logger);
                             return decoratedEntity;
                                     }
                                 }

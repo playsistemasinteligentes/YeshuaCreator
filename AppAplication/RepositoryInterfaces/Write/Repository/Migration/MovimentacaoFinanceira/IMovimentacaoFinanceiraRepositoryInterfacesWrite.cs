@@ -18,6 +18,10 @@ namespace IRepository.Write
         public void UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity);
         public void UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity);
         public void UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity);
+        public void UpdateTenantID(IMovimentacaoFinanceiraEntity entity);
+        public void UpdateDeleted(IMovimentacaoFinanceiraEntity entity);
+        public void UpdateChanged(IMovimentacaoFinanceiraEntity entity);
+        public void UpdateUserId(IMovimentacaoFinanceiraEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

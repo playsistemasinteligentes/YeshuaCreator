@@ -2,19 +2,19 @@
 
                             namespace Dominio.Entitys
                             {
-                                public class YconfigArctetureFactory
+                                public class yConfigArctetureFactory
                                 {
                                     private readonly Dominio.Interfaces.ILogger _logger;
 
-                                    public YconfigArctetureFactory(Dominio.Interfaces.ILogger logger)
+                                    public yConfigArctetureFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYconfigArctetureEntity Create(int? id, int? audittrackeractived, int? auditcrudactived )
+                                    } public IyConfigArctetureEntity Create(int? id, int? audittrackeractived, int? auditcrudactived )
                             {
-                            var entity = new YconfigArctetureEntity(id, audittrackeractived, auditcrudactived );
+                            var entity = new yConfigArctetureEntity(id, audittrackeractived, auditcrudactived );
 
 
-                            var decoratedEntity = new YconfigArctetureDecorator(entity, _logger);
+                            var decoratedEntity = new yConfigArctetureDecorator(entity, _logger);
                             return decoratedEntity;
                                     }
                                 }

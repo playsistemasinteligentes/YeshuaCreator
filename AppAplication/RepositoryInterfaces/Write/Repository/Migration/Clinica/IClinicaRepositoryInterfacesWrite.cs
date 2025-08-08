@@ -15,6 +15,10 @@ namespace IRepository.Write
         public void UpdateNome(IClinicaEntity entity);
         public void UpdateEndereco(IClinicaEntity entity);
         public void UpdateTelefone(IClinicaEntity entity);
+        public void UpdateTenantID(IClinicaEntity entity);
+        public void UpdateDeleted(IClinicaEntity entity);
+        public void UpdateChanged(IClinicaEntity entity);
+        public void UpdateUserId(IClinicaEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

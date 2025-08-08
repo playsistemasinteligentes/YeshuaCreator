@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertYconfigArctetureReceiver : ReciverBase <IYconfigArctetureEntity>
+    public class InsertyConfigArctetureReceiver : ReciverBase <IyConfigArctetureEntity>
     {
-        private readonly IYconfigArctetureWriteRepository _repository;
+        private readonly IyConfigArctetureWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertYconfigArctetureReceiver(IYconfigArctetureWriteRepository repository,ILogger logger)
+        public InsertyConfigArctetureReceiver(IyConfigArctetureWriteRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<IYconfigArctetureEntity> Action(ICommand comand)
+        protected override State<IyConfigArctetureEntity> Action(ICommand comand)
         {
-             if(comand is Command.Write.YconfigArctetureCrudCommand c) 
+             if(comand is Command.Write.yConfigArctetureCrudCommand c) 
              {    
-                 var yconfigarcteture = new YconfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
+                 var yconfigarcteture = new yConfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
                  if (!yconfigarcteture.isValidInsert())
                      return ValidationError(yconfigarcteture.getErroMensagens(), comand);
 

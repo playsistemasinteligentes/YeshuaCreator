@@ -36,6 +36,10 @@
     string EncaminhamentoOutrosProfissionais { get; set; }
     string InformacoesRelevantesFuturasConsultas { get; set; }
     string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

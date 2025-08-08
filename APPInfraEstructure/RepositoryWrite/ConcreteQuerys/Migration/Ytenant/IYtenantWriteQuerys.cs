@@ -3,14 +3,16 @@ using Dominio.Entitys;
 namespace IQuery.Write
 {
 
-    public interface IYtenantQueryWrite 
+    public interface IyTenantQueryWrite 
      {
-        public QueryModel InserirYtenantQuery(IYtenantEntity Ytenant);
-        public QueryModel UpdateYtenantQuery(IYtenantEntity Ytenant);
-        public QueryModel UpdateCnpjCpf(IYtenantEntity entity);
-        public QueryModel UpdateNome(IYtenantEntity entity);
-        public QueryModel UpdateUserId(IYtenantEntity entity);
-        public QueryModel DeleteYtenantQuery(IYtenantEntity Ytenant);
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant);
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant);
+        public QueryModel UpdateCnpjCpf(IyTenantEntity entity);
+        public QueryModel UpdateNome(IyTenantEntity entity);
+        public QueryModel UpdateUserId(IyTenantEntity entity);
+        public QueryModel UpdateDeleted(IyTenantEntity entity);
+        public QueryModel UpdateChanged(IyTenantEntity entity);
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

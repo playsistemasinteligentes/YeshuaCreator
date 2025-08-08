@@ -96,6 +96,26 @@ namespace Input.Repository.Paciente
             var query = _query.UpdateObservacaoAdicional(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateTenantID(IPacienteEntity entity)
+        {
+            var query = _query.UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDeleted(IPacienteEntity entity)
+        {
+            var query = _query.UpdateDeleted(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateChanged(IPacienteEntity entity)
+        {
+            var query = _query.UpdateChanged(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUserId(IPacienteEntity entity)
+        {
+            var query = _query.UpdateUserId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

@@ -16,105 +16,181 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class YtenantReadRepository : IYtenantReadRepository
+    public class yTenantReadRepository : IyTenantReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _correntUser;
-       protected readonly IYtenantQueryRead _query;
+       protected readonly IyTenantQueryRead _query;
 
-        public YtenantReadRepository(SqlFactory factory, ICurrentUser correntUser,IYtenantQueryRead query)
+        public yTenantReadRepository(SqlFactory factory, ICurrentUser correntUser,IyTenantQueryRead query)
         {
             _connection = factory.SqlConnection();
             _correntUser = correntUser;
             _query = query;
         }
 
-        public DataPagination<YtenantDTO> getYtenant(ICommandRead command)
+        public DataPagination<yTenantDTO> getyTenant(ICommandRead command , bool TakeOffId = false)
          {
-            if (command is Command.Read.YtenantReadCommand c)
-                return getYtenant(c);
+            if (command is Command.Read.yTenantReadCommand c)
+                return getyTenant(c , TakeOffId);
             throw new NotImplementedException();
         }
-        private DataPagination<YtenantDTO> getYtenant(Command.Read.YtenantReadCommand command)
+        private DataPagination<yTenantDTO> getyTenant(Command.Read.yTenantReadCommand command , bool TakeOffId = false)
         {
-            var query = _query.YtenantQuery(command);
+            var query = _query.yTenantQuery(command , TakeOffId);
 
-                var itens = _connection.Query<YtenantDTO>(query.Query,query.Parameters);
-                return new DataPagination<YtenantDTO>(
+                var itens = _connection.Query<yTenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<yTenantDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        public bool ExistsById(int value)
+        public bool ExistsById(int value , bool TakeOffId = false)
         {
-            var query = _query.ExistsByIdQuery(value);
+            var query = _query.ExistsByIdQuery(value , TakeOffId);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByCnpjCpf(int value)
+        public bool ExistsByCnpjCpf(int value , bool TakeOffId = false)
         {
-            var query = _query.ExistsByCnpjCpfQuery(value);
+            var query = _query.ExistsByCnpjCpfQuery(value , TakeOffId);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByNome(string value)
+        public bool ExistsByNome(string value , bool TakeOffId = false)
         {
-            var query = _query.ExistsByNomeQuery(value);
+            var query = _query.ExistsByNomeQuery(value , TakeOffId);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByUserId(int value)
+        public bool ExistsByUserId(int value , bool TakeOffId = false)
         {
-            var query = _query.ExistsByUserIdQuery(value);
+            var query = _query.ExistsByUserIdQuery(value , TakeOffId);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public YtenantDTO FirstById(int value)
+        public bool ExistsByDeleted(bool value , bool TakeOffId = false)
         {
-            var query = _query.FirstByIdQuery(value);
+            var query = _query.ExistsByDeletedQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByChanged(DateTime value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByChangedQuery(value , TakeOffId);
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public yTenantDTO FirstById(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByIdQuery(value , TakeOffId);
+
+                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public YtenantDTO FirstByCnpjCpf(int value)
+        public yTenantDTO FirstByCnpjCpf(int value , bool TakeOffId = false)
         {
-            var query = _query.FirstByCnpjCpfQuery(value);
+            var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
+                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public YtenantDTO FirstByNome(string value)
+        public yTenantDTO FirstByNome(string value , bool TakeOffId = false)
         {
-            var query = _query.FirstByNomeQuery(value);
+            var query = _query.FirstByNomeQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
+                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public YtenantDTO FirstByUserId(int value)
+        public yTenantDTO FirstByUserId(int value , bool TakeOffId = false)
         {
-            var query = _query.FirstByUserIdQuery(value);
+            var query = _query.FirstByUserIdQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<YtenantDTO>(query.Query, query.Parameters);
+                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public YtenantDTO getById()
+        public yTenantDTO FirstByDeleted(bool value , bool TakeOffId = false)
         {
-            throw new NotImplementedException();
+            var query = _query.FirstByDeletedQuery(value , TakeOffId);
+
+                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
         }
+
+        public yTenantDTO FirstByChanged(DateTime value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByChangedQuery(value , TakeOffId);
+
+                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public IEnumerable<yTenantDTO> GetAllById(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByIdQuery(value , TakeOffId);
+
+                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+
+        public IEnumerable<yTenantDTO> GetAllByCnpjCpf(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
+
+                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+
+        public IEnumerable<yTenantDTO> GetAllByNome(string value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByNomeQuery(value , TakeOffId);
+
+                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+
+        public IEnumerable<yTenantDTO> GetAllByUserId(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByUserIdQuery(value , TakeOffId);
+
+                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+
+        public IEnumerable<yTenantDTO> GetAllByDeleted(bool value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByDeletedQuery(value , TakeOffId);
+
+                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+
+        public IEnumerable<yTenantDTO> GetAllByChanged(DateTime value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByChangedQuery(value , TakeOffId);
+
+                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

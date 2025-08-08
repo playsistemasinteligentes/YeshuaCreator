@@ -29,6 +29,10 @@ namespace Command.Write
         public string EncaminhamentoOutrosProfissionais { get; set; }
         public string InformacoesRelevantesFuturasConsultas { get; set; }
         public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+        public int? TenantID { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

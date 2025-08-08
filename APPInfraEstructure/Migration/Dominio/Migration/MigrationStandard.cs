@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static Migration.Dominio.Migration.S000002;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Migration.Dominio.Migration
 {
@@ -19,56 +21,68 @@ namespace Migration.Dominio.Migration
         {
             AddModule("ADM", "Administrativo");
 
-            AddEntity("Ytenant").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key()
+            AddEntity("yTenant").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_correntUser.TenantID").NeedBeWhere().CanTakeOffWhere()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull()
             .AddColumn("UserId", "User ID").Int();
 
-            AddEntity("Yuser").AddModule("ADM")
+            AddEntity("yUser").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
-            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID");
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
-            AddEntity("YStandardFields")
-            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardField("#_correntUser.TenantID").BackEndField(true)
-            .AddColumn("Deleted", "Deleted").Boolean().StandardField("0").BackEndField(true)
-            .AddColumn("Changed", "Changed").DateTime().StandardField("#DateTime.Now").BackEndField(false)
-            .AddColumn("UserId", "User ID").Int().FK("Yuser", "Id").StandardField("#_correntUser.UserId").BackEndField(false);
+            AddEntity("yStandardFields")
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere()
+            .NotEntity("yModule")
+            .AddColumn("Deleted", "Deleted").Boolean().DefaultValue("0").NeedBeWhere().EditFront(false)
+            .NotEntity("yModule")
+            .AddColumn("Changed", "Changed").DateTime().DefaultValue("#DateTime.Now").EditFront(false)
+            .NotEntity("yModule")
+            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_correntUser.UserId").EditFront(false).VisivelFront(true)
+            .NotEntity("yModule");
 
 
-            AddEntity("YconfigArcteture").AddModule("ADM").Cached()
+            AddEntity("yConfigArcteture").AddModule("ADM").Cached()
             .AddColumn("Id", "ID").Int().Key()
             .AddColumn("AuditTrackerActived", "AuditTrackerActived").Int()
             .AddColumn("AuditCRUDActived", "AuditCRUDActived").Int();
 
-            AddEntity("YconfigNotification").AddModule("ADM").Cached()
+            AddEntity("yConfigNotification").AddModule("ADM").Cached()
             .AddColumn("Id", "ID").Int().Key()
-            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID")
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID")
             .AddColumn("EmailSmtpClient", "EmailSmtpClient").Varchar(100)
             .AddColumn("EmailPort", "EmailPort").Int()
             .AddColumn("EmailUserName", "EmailUserName").Varchar(100)
             .AddColumn("EmailPassword", "EmailPassword").Varchar(60);
 
-            AddEntity("Yperfil").AddModule("ADM")
+            AddEntity("yPerfil").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("Description", "Descrição").Varchar(150).NotNull();
 
-            AddEntity("YpermissionModules")
+            AddEntity("yModule")
             .AddColumn("Id", "ID").Varchar(100).Key()
             .AddColumn("Description", "Descrição").Varchar(1000);
 
-            AddEntity("YtenantPermissionMudules").AddModule("ADM")
+            AddEntity("yTenantModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("permissionModulesId", "ID Modulo").FK("YpermissionModules", "Id").Varchar(100)
-            .AddColumn("TenantID", "TenantID").Int().FK("Ytenant", "Id").StandardValue("#_correntUser.TenantID")
+            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100)
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
 
-            AddEntity("YpermissionActions")
+            AddEntity("yUserModule").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _correntUser.TenantID)")
+            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id")
+            .AddColumn("ValidUntil", "Valido ate").DateTime();
+
+
+
+            AddEntity("yGrant")
             .AddColumn("Id", "ID").Varchar(100).Key()
             .AddColumn("Description", "Descrição").Varchar(1000);
 
@@ -76,9 +90,9 @@ namespace Migration.Dominio.Migration
             .AddColumn("Id", "ID").Varchar(100).Key()
             .AddColumn("Description", "Descrição").Varchar(1000);*/
 
-            AddEntity("YperfilPermissionActions").AddModule("ADM")
-            .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
-            .AddColumn("permissionActionsId", "ID Permição").FK("YpermissionActions", "Id").Varchar(100)
+            AddEntity("yPerfilGrant").AddModule("ADM")
+            .AddColumn("PerfilId", "ID Perfil").FK("yPerfil", "Id").Int()
+            .AddColumn("GrantId", "ID Permição").FK("yGrant", "Id").Varchar(100)
             .AddColumn("Grant", "Permite acessar").Boolean()
             .AddColumn("Create", "Permite Criar").Boolean()
             .AddColumn("Read", "Permite  Ler").Boolean()
@@ -86,9 +100,9 @@ namespace Migration.Dominio.Migration
             .AddColumn("Delete", "Permite Deletar").Boolean()
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
-            AddEntity("YuserPermissionActions").AddModule("ADM")
-            .AddColumn("PerfilId", "ID Perfil").FK("Yperfil", "Id").Int()
-            .AddColumn("permissionActionsId", "ID Permição").FK("YpermissionActions", "Id").Varchar(100)
+            AddEntity("yUserGrant").AddModule("ADM")
+            .AddColumn("PerfilId", "ID Perfil").FK("yPerfil", "Id").Int()
+            .AddColumn("GrantId", "ID Permição").FK("yGrant", "Id").Varchar(100)
             .AddColumn("Grant", "Permite acessar").Boolean()
             .AddColumn("Create", "Permite Criar").Boolean()
             .AddColumn("Read", "Permite  Ler").Boolean()
@@ -102,19 +116,23 @@ namespace Migration.Dominio.Migration
     public class S000002 : MigrationBase
     {
         public record Account(int CpfCnpj, string nome, string email, string phone, string password, string confirmpassword);
-        public record LoginUserEndPassword(string email, string password);
+        public record AccountResult(int TenantId, int UserId);
+
+
+        public record LoginInput(string email, string password);
+        public record LoginOutput(List<string> modulos, int UserId, string email, int tenantId);
+
         public override void Up()
         {
 
-            //AlterEntity("Ytenant").AddColumn("UserIDAdmin", "Administrador").FK("Yuser", "Id").Int();
+            //AlterEntity("yTenant").AddColumn("UserIDAdmin", "Administrador").FK("yUser", "Id").Int();
 
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account(0, "", "", "", "", "")).Authorization(Authorization.Free)
-            .AddEntity("Ytenant").AddEntity("Yuser").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account(0, "", "", "", "", ""), new AccountResult(1, 1)).Authorization(Authorization.Free)
+            .AddEntity("yTenant").AddEntity("yUser").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginUserEndPassword("", ""))
-                .AddEntity("Yuser");
-
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
+                .AddEntity("yUser").AddEntity("yTenantModule").AddEntity("yUserModule");
 
 
             AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("RecoveryAccount", new RecoveryAccount("", TypeNotification.Email))

@@ -1,7 +1,7 @@
 
-                namespace Dominio.Entitys.YconfigNotification
+                namespace Dominio.Entitys.yConfigNotification
                 {
-            public partial class YconfigNotificationEntity
+            public partial class yConfigNotificationEntity
 {
 }
 }

@@ -83,6 +83,15 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Varchar(length);
         }
+        public Entity WhereClauses(string WhereClauses)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().WhereClauses(WhereClauses);
+            else
+                return this.AlterColumns.Last().WhereClauses(WhereClauses);
+        }
+
+
         public Entity DateTime()
         {
             if (this.StatusColuns == 1)
@@ -119,20 +128,47 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Key();
         }
-        public Entity StandardField(string value)
+        public Entity DefaultValue(string value)
         {
             if (this.StatusColuns == 1)
-                return this.AddColumns.Last().StandardField(value);
+                return this.AddColumns.Last().DefaultValue(value);
             else
-                return this.AlterColumns.Last().StandardField(value);
+                return this.AlterColumns.Last().DefaultValue(value);
         }
-        public Entity StandardValue(string value)
+
+        public Entity EditFront(bool value)
         {
             if (this.StatusColuns == 1)
-                return this.AddColumns.Last().StandardValue(value);
+                return this.AddColumns.Last().EditFront(value);
             else
-                return this.AlterColumns.Last().StandardValue(value);
+                return this.AlterColumns.Last().EditFront(value);
         }
+
+        public Entity VisivelFront(bool value)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().VisivelFront(value);
+            else
+                return this.AlterColumns.Last().VisivelFront(value);
+        }
+
+        public Entity CanTakeOffWhere()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().CanTakeOffWhere();
+            else
+                return this.AlterColumns.Last().CanTakeOffWhere();
+        }
+
+        public Entity NeedBeWhere()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().NeedBeWhere();
+            else
+                return this.AlterColumns.Last().NeedBeWhere();
+        }
+
+
 
         public Entity Incremento()
         {
@@ -175,13 +211,6 @@ namespace Dominio
                 return this.EntityDescription;
         }
 
-        public Entity BackEndField(bool where)
-        {
-            if (this.StatusColuns == 1)
-                return this.AddColumns.Last().BackEndField(where);
-            else
-                return this.AlterColumns.Last().BackEndField(where);
-        }
 
         public Entity Password()
         {
@@ -196,6 +225,16 @@ namespace Dominio
                 return this.AddColumns.Last().UserEncryptedField();
             else
                 return this.AlterColumns.Last().UserEncryptedField();
+        }
+
+        internal Entity NotEntity(string entidade)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().NotAplicableEntityToStandardField(entidade);
+            else
+                return this.AlterColumns.Last().NotAplicableEntityToStandardField(entidade);
+
+            return this;
         }
     }
 }

@@ -8,23 +8,23 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class YconfigArctetureReadReceiver : ReciverBase<DataPagination<YconfigArctetureDTO>>
+    public class yConfigArctetureReadReceiver : ReciverBase<DataPagination<yConfigArctetureDTO>>
     {
-        private readonly IYconfigArctetureReadRepository _repository;
+        private readonly IyConfigArctetureReadRepository _repository;
         private readonly ILogger _logger;
 
-        public YconfigArctetureReadReceiver(IYconfigArctetureReadRepository repository,ILogger logger)
+        public yConfigArctetureReadReceiver(IyConfigArctetureReadRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<DataPagination<YconfigArctetureDTO>> Action(ICommand comand)
+        protected override State<DataPagination<yConfigArctetureDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Read.YconfigArctetureReadCommand c) 
+            if(comand is Command.Read.yConfigArctetureReadCommand c) 
              {    
-                var YconfigArctetureReadRepository = _repository.getYconfigArcteture(c);
-                return Success("OK", YconfigArctetureReadRepository);
+                var yConfigArctetureReadRepository = _repository.getyConfigArcteture(c);
+                return Success("OK", yConfigArctetureReadRepository);
             }
             else 
             {

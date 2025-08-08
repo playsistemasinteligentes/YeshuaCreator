@@ -2,19 +2,19 @@
 
                             namespace Dominio.Entitys
                             {
-                                public class YperfilFactory
+                                public class yPerfilFactory
                                 {
                                     private readonly Dominio.Interfaces.ILogger _logger;
 
-                                    public YperfilFactory(Dominio.Interfaces.ILogger logger)
+                                    public yPerfilFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYperfilEntity Create(int? id, string description )
+                                    } public IyPerfilEntity Create(int? id, string description )
                             {
-                            var entity = new YperfilEntity(id, description );
+                            var entity = new yPerfilEntity(id, description );
 
 
-                            var decoratedEntity = new YperfilDecorator(entity, _logger);
+                            var decoratedEntity = new yPerfilDecorator(entity, _logger);
                             return decoratedEntity;
                                     }
                                 }

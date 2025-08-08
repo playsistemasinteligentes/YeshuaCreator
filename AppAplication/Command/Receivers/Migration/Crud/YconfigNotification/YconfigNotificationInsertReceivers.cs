@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertYconfigNotificationReceiver : ReciverBase <IYconfigNotificationEntity>
+    public class InsertyConfigNotificationReceiver : ReciverBase <IyConfigNotificationEntity>
     {
-        private readonly IYconfigNotificationWriteRepository _repository;
+        private readonly IyConfigNotificationWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertYconfigNotificationReceiver(IYconfigNotificationWriteRepository repository,ILogger logger)
+        public InsertyConfigNotificationReceiver(IyConfigNotificationWriteRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<IYconfigNotificationEntity> Action(ICommand comand)
+        protected override State<IyConfigNotificationEntity> Action(ICommand comand)
         {
-             if(comand is Command.Write.YconfigNotificationCrudCommand c) 
+             if(comand is Command.Write.yConfigNotificationCrudCommand c) 
              {    
-                 var yconfignotification = new YconfigNotificationFactory(_logger).Create(c.Id, c.TenantID, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword);
+                 var yconfignotification = new yConfigNotificationFactory(_logger).Create(c.Id, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword);
                  if (!yconfignotification.isValidInsert())
                      return ValidationError(yconfignotification.getErroMensagens(), comand);
 

@@ -29,38 +29,46 @@ namespace Dominio
             this.UseCaseSubGroup.Add(new UseCaseSubGroup(name));
             return this;
         }
-        public UseCaseGroup AddUseCase(string method, params object[] parametros)
+        public UseCaseGroup AddUseCase(string method, params object[] input)
         {
             UseCase _Method = new UseCase(method);
             _Method.UseCaseGroup = this;
             _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
-            foreach (var param in parametros)
+
+            if (input != null)
             {
-                if (_Method.Inputs == null)
-                    _Method.Inputs = new object[] { param };
-                else
-                {
-                    var imput = _Method.Inputs;
-                    Array.Resize(ref imput, _Method.Inputs.Length + 1);
-                    _Method.Inputs[_Method.Inputs.Length - 1] = param;
-                }
-
-                if (param == null) continue;
-                Type type = param.GetType();
-                if (type.IsClass || type.IsValueType)
-                {
-                    //codeBuilder.AppendLine($"// Classe/Struct/Record: {type.Name}");
-                    //codeBuilder.AppendLine($"public class {type.Name} {{");
-
-                    foreach (PropertyInfo prop in type.GetProperties())
-                    {
-                        //codeBuilder.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
-                    }
-
-                    //codeBuilder.AppendLine("}");
-                }
-
+                _Method.Inputs = new object[] { input.First() };
+                _Method.Outputs = new object[] { input.Last() };
             }
+            /*
+                        foreach (var param in input)
+                        {
+                            if (_Method.Inputs == null)
+                                _Method.Inputs = new object[] { param };
+                            else
+                            {
+                                var imput = _Method.Inputs;
+                                Array.Resize(ref imput, _Method.Inputs.Length + 1);
+                                _Method.Inputs[_Method.Inputs.Length - 1] = param;
+                            }
+
+                            if (param == null) continue;
+                            Type type = param.GetType();
+                            if (type.IsClass || type.IsValueType)
+                            {
+                                //codeBuilder.AppendLine($"// Classe/Struct/Record: {type.Name}");
+                                //codeBuilder.AppendLine($"public class {type.Name} {{");
+
+                                foreach (PropertyInfo prop in type.GetProperties())
+                                {
+                                    //codeBuilder.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
+                                }
+
+                                //codeBuilder.AppendLine("}");
+                            }
+
+                        }
+                        */
             this.UseCaseSubGroup.Last().UseCases.Add(_Method);
             return this;
         }

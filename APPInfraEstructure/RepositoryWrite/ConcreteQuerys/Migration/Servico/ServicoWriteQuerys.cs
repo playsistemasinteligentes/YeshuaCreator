@@ -35,12 +35,16 @@ namespace Query.Write
         }
         public QueryModel UpdateServicoQuery(IServicoEntity Servico)
         {
-            this.Query = $@" UPDATE Servico SET GrupoServicoId = @GrupoServicoId, Nome = @Nome, Valor = @Valor WHERE Id = @Id ";
+            this.Query = $@" UPDATE Servico SET GrupoServicoId = @GrupoServicoId, Nome = @Nome, Valor = @Valor, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 GrupoServicoId = Servico.GrupoServicoId,
                 Nome = Servico.Nome,
                 Valor = Servico.Valor,
+                TenantID = Servico.TenantID,
+                Deleted = Servico.Deleted,
+                Changed = Servico.Changed,
+                UserId = Servico.UserId,
                 Id = Servico.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -71,6 +75,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 Valor = entity.Valor,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTenantID(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TenantID = entity.TenantID,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDeleted(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Deleted = entity.Deleted,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateChanged(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET Changed = @Changed WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Changed = entity.Changed,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(IServicoEntity entity)
+        {
+            this.Query = $@" UPDATE Servico SET UserId = @UserId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                UserId = entity.UserId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

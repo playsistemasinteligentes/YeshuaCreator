@@ -85,7 +85,7 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand c) ");
                 sb.AppendLine("             {    ");
-                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => "c." + c.Name))});");
+                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => "c." + c.Name))});");
                 sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
                 sb.AppendLine($"                     return ValidationError({_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
                 sb.AppendLine();
@@ -116,7 +116,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using Repositorio.Outputs;");
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
@@ -156,7 +156,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine();

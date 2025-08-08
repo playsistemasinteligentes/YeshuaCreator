@@ -11,43 +11,45 @@ using System.Threading.Tasks;
 
 namespace Query.Write
 {
-    public class YuserQueryWrite : QueryBase, IYuserQueryWrite
+    public class yUserQueryWrite : QueryBase, IyUserQueryWrite
     {
         protected readonly ICurrentUser _correntUser;
-        public YuserQueryWrite(ICurrentUser correntUser)
+        public yUserQueryWrite(ICurrentUser correntUser)
         {
             _correntUser = correntUser;
         }
-        public QueryModel InserirYuserQuery(IYuserEntity Yuser)
+        public QueryModel InseriryUserQuery(IyUserEntity yUser)
         {
-            this.Query = $@" INSERT INTO Yuser (Nome, Email, Senha, TenantID, Deleted, Changed) OUTPUT INSERTED.Id VALUES(@Nome, @Email, @Senha, @TenantID, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO yUser (Nome, Email, Senha, TenantID, Deleted, Changed) OUTPUT INSERTED.Id VALUES(@Nome, @Email, @Senha, @TenantID, @Deleted, @Changed) ";
             this.Parameters = new
             {
-                Nome = Yuser.Nome,
-                Email = Yuser.Email,
-                Senha = Yuser.Senha,
-                TenantID = Yuser.TenantID,
+                Nome = yUser.Nome,
+                Email = yUser.Email,
+                Senha = yUser.Senha,
+                TenantID = _correntUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateYuserQuery(IYuserEntity Yuser)
+        public QueryModel UpdateyUserQuery(IyUserEntity yUser)
         {
-            this.Query = $@" UPDATE Yuser SET Nome = @Nome, Email = @Email, Senha = @Senha, TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUser SET Nome = @Nome, Email = @Email, Senha = @Senha, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Nome = Yuser.Nome,
-                Email = Yuser.Email,
-                Senha = Yuser.Senha,
-                TenantID = Yuser.TenantID,
-                Id = Yuser.Id,
+                Nome = yUser.Nome,
+                Email = yUser.Email,
+                Senha = yUser.Senha,
+                TenantID = yUser.TenantID,
+                Deleted = yUser.Deleted,
+                Changed = yUser.Changed,
+                Id = yUser.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNome(IYuserEntity entity)
+        public QueryModel UpdateNome(IyUserEntity entity)
         {
-            this.Query = $@" UPDATE Yuser SET Nome = @Nome WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUser SET Nome = @Nome WHERE Id = @Id ";
             this.Parameters = new
             {
                 Nome = entity.Nome,
@@ -55,9 +57,9 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEmail(IYuserEntity entity)
+        public QueryModel UpdateEmail(IyUserEntity entity)
         {
-            this.Query = $@" UPDATE Yuser SET Email = @Email WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUser SET Email = @Email WHERE Id = @Id ";
             this.Parameters = new
             {
                 Email = entity.Email,
@@ -65,9 +67,9 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSenha(IYuserEntity entity)
+        public QueryModel UpdateSenha(IyUserEntity entity)
         {
-            this.Query = $@" UPDATE Yuser SET Senha = @Senha WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUser SET Senha = @Senha WHERE Id = @Id ";
             this.Parameters = new
             {
                 Senha = entity.Senha,
@@ -75,9 +77,9 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IYuserEntity entity)
+        public QueryModel UpdateTenantID(IyUserEntity entity)
         {
-            this.Query = $@" UPDATE Yuser SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUser SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
                 TenantID = entity.TenantID,
@@ -85,12 +87,32 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel DeleteYuserQuery(IYuserEntity Yuser)
+        public QueryModel UpdateDeleted(IyUserEntity entity)
         {
-            this.Query = $@" DELETE FROM Yuser WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUser SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Id = Yuser.Id,
+                Deleted = entity.Deleted,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateChanged(IyUserEntity entity)
+        {
+            this.Query = $@" UPDATE yUser SET Changed = @Changed WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Changed = entity.Changed,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyUserQuery(IyUserEntity yUser)
+        {
+            this.Query = $@" DELETE FROM yUser WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = yUser.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

@@ -8,12 +8,12 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class YconfigNotificationDecorator : IYconfigNotificationEntity
+                    public partial class yConfigNotificationDecorator : IyConfigNotificationEntity
 {
 
-                        private readonly IYconfigNotificationEntity _inner;
+                        private readonly IyConfigNotificationEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
-                        public YconfigNotificationDecorator(IYconfigNotificationEntity inner, Dominio.Interfaces.ILogger logger)
+                        public yConfigNotificationDecorator(IyConfigNotificationEntity inner, Dominio.Interfaces.ILogger logger)
                         {
                             _inner = inner;
                             _logger = logger;
@@ -92,6 +92,45 @@
                                             {
                                                 _logger.Info($"Propriedade EmailPassword: antes={_inner.EmailPassword}, depois={value}");
                                                 _inner.EmailPassword = value;
+                                            }
+                                        }
+                                    }
+
+                                    public bool? Deleted
+                                    {
+                                        get => _inner.Deleted;
+                                        set
+                                        {
+                                            if (_inner.Deleted != value)
+                                            {
+                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
+                                                _inner.Deleted = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? Changed
+                                    {
+                                        get => _inner.Changed;
+                                        set
+                                        {
+                                            if (_inner.Changed != value)
+                                            {
+                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
+                                                _inner.Changed = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? UserId
+                                    {
+                                        get => _inner.UserId;
+                                        set
+                                        {
+                                            if (_inner.UserId != value)
+                                            {
+                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
+                                                _inner.UserId = value;
                                             }
                                         }
                                     }

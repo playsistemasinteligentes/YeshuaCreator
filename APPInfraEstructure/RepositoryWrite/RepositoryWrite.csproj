@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ConcreteQuerys\" />
+  </ItemGroup>
+
 </Project>

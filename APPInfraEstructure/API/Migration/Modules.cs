@@ -58,14 +58,15 @@ public static class StaticModules
         Modules.Add(new Module("PSI", "Clinica  Psicologia"));
         Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
         Modules.Add(new Module("ADM", "Administrativo"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Ytenant"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Yuser"));
-        Modules.LastOrDefault().Menus.Add(new Menu("YconfigArcteture"));
-        Modules.LastOrDefault().Menus.Add(new Menu("YconfigNotification"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Yperfil"));
-        Modules.LastOrDefault().Menus.Add(new Menu("YtenantPermissionMudules"));
-        Modules.LastOrDefault().Menus.Add(new Menu("YperfilPermissionActions"));
-        Modules.LastOrDefault().Menus.Add(new Menu("YuserPermissionActions"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yUser"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yConfigArcteture"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yConfigNotification"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yPerfil"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yTenantModule"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yUserModule"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yPerfilGrant"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yUserGrant"));
     }
 }
 }

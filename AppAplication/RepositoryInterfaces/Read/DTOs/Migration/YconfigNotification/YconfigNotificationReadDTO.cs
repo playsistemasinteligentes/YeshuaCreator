@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record YconfigNotificationDTO
+    public record yConfigNotificationDTO
     {
     public int id { get; set; }
     public int tenantid { get; set; }
@@ -14,6 +14,9 @@ namespace Repositorio.Outputs
     public int emailport { get; set; }
     public string emailusername { get; set; }
     public string emailpassword { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    public int userid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

@@ -51,7 +51,7 @@ namespace Dominio.Migration
             List<Column> columns = migration
                             .SelectMany(m => m.Entitys)
                             .SelectMany(e => e.AddColumns)
-                            .Where(c => c.IsStandardField)
+                            .Where(c => c.IsValueDefault && c.Entity.EntityName == "yStandardFields")
                             .Distinct()
                             .ToList();
 
@@ -59,10 +59,13 @@ namespace Dominio.Migration
 
             foreach (var m in migration)
             {
-                foreach (var entity in m.Entitys.Where(x => x.EntityName != "YStandardFields"))
+                foreach (var entity in m.Entitys.Where(x => x.EntityName != "yStandardFields"))
                 {
                     foreach (var col in columns)
                     {
+                        if (col.NotAplicableStandardFieldToEntity.Where(x => x == entity.EntityName).Any())
+                            continue;
+
                         if (entity.AddColumns.Where(x => x.Name == col.Name).Count() > 0)
                             continue;
 
@@ -79,7 +82,7 @@ namespace Dominio.Migration
             }
 
             foreach (var m in migration)
-                m.Entitys.RemoveAll(x => x.EntityName == "YStandardFields");
+                m.Entitys.RemoveAll(x => x.EntityName == "yStandardFields");
 
             foreach (var schema in _schemas.OfType<ISchemaDataBase>())
             {

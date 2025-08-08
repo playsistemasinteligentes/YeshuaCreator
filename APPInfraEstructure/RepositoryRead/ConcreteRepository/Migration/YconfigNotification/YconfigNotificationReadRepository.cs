@@ -16,155 +16,289 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class YconfigNotificationReadRepository : IYconfigNotificationReadRepository
+    public class yConfigNotificationReadRepository : IyConfigNotificationReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _correntUser;
-       protected readonly IYconfigNotificationQueryRead _query;
+       protected readonly IyConfigNotificationQueryRead _query;
 
-        public YconfigNotificationReadRepository(SqlFactory factory, ICurrentUser correntUser,IYconfigNotificationQueryRead query)
+        public yConfigNotificationReadRepository(SqlFactory factory, ICurrentUser correntUser,IyConfigNotificationQueryRead query)
         {
             _connection = factory.SqlConnection();
             _correntUser = correntUser;
             _query = query;
         }
 
-        public DataPagination<YconfigNotificationDTO> getYconfigNotification(ICommandRead command)
+        public DataPagination<yConfigNotificationDTO> getyConfigNotification(ICommandRead command )
          {
-            if (command is Command.Read.YconfigNotificationReadCommand c)
-                return getYconfigNotification(c);
+            if (command is Command.Read.yConfigNotificationReadCommand c)
+                return getyConfigNotification(c );
             throw new NotImplementedException();
         }
-        private DataPagination<YconfigNotificationDTO> getYconfigNotification(Command.Read.YconfigNotificationReadCommand command)
+        private DataPagination<yConfigNotificationDTO> getyConfigNotification(Command.Read.yConfigNotificationReadCommand command )
         {
-            var query = _query.YconfigNotificationQuery(command);
+            var query = _query.yConfigNotificationQuery(command );
 
-                var itens = _connection.Query<YconfigNotificationDTO>(query.Query,query.Parameters);
-                return new DataPagination<YconfigNotificationDTO>(
+                var itens = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters);
+                return new DataPagination<yConfigNotificationDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(Command.Patterns.Command.SearchFKCommand command)
+        private IEnumerable<yConfigNotificationTenantIDDTO> getyConfigNotificationReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<YconfigNotificationTenantIDDTO> lista;
-            var query = _query.YconfigNotificationTenantIDQuery(command);
+            List<yConfigNotificationTenantIDDTO> lista;
+            var query = _query.yConfigNotificationTenantIDQuery(command );
 
-                lista = _connection.Query<YconfigNotificationTenantIDDTO>(query.Query,query.Parameters) as List<YconfigNotificationTenantIDDTO>;
+                lista = _connection.Query<yConfigNotificationTenantIDDTO>(query.Query,query.Parameters) as List<yConfigNotificationTenantIDDTO>;
             return lista;
         }
 
-        public IEnumerable<YconfigNotificationTenantIDDTO> getYconfigNotificationReadFKTenantID(object command)
+        public IEnumerable<yConfigNotificationTenantIDDTO> getyConfigNotificationReadFKTenantID(object command )
         {
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
-                return getYconfigNotificationReadFKTenantID(c);
+                return getyConfigNotificationReadFKTenantID(c );
             }
             throw new NotImplementedException();
         }
 
-        public bool ExistsById(int value)
+        private IEnumerable<yConfigNotificationUserIdDTO> getyConfigNotificationReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            var query = _query.ExistsByIdQuery(value);
+            List<yConfigNotificationUserIdDTO> lista;
+            var query = _query.yConfigNotificationUserIdQuery(command );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
+                lista = _connection.Query<yConfigNotificationUserIdDTO>(query.Query,query.Parameters) as List<yConfigNotificationUserIdDTO>;
+            return lista;
         }
 
-        public bool ExistsByTenantID(int value)
+        public IEnumerable<yConfigNotificationUserIdDTO> getyConfigNotificationReadFKUserId(object command )
         {
-            var query = _query.ExistsByTenantIDQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByEmailSmtpClient(string value)
-        {
-            var query = _query.ExistsByEmailSmtpClientQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByEmailPort(int value)
-        {
-            var query = _query.ExistsByEmailPortQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByEmailUserName(string value)
-        {
-            var query = _query.ExistsByEmailUserNameQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByEmailPassword(string value)
-        {
-            var query = _query.ExistsByEmailPasswordQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public YconfigNotificationDTO FirstById(int value)
-        {
-            var query = _query.FirstByIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigNotificationDTO FirstByTenantID(int value)
-        {
-            var query = _query.FirstByTenantIDQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigNotificationDTO FirstByEmailSmtpClient(string value)
-        {
-            var query = _query.FirstByEmailSmtpClientQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigNotificationDTO FirstByEmailPort(int value)
-        {
-            var query = _query.FirstByEmailPortQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigNotificationDTO FirstByEmailUserName(string value)
-        {
-            var query = _query.FirstByEmailUserNameQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigNotificationDTO FirstByEmailPassword(string value)
-        {
-            var query = _query.FirstByEmailPasswordQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<YconfigNotificationDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public YconfigNotificationDTO getById()
-        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getyConfigNotificationReadFKUserId(c );
+            }
             throw new NotImplementedException();
         }
+
+        public bool ExistsById(int value )
+        {
+            var query = _query.ExistsByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTenantID(int value )
+        {
+            var query = _query.ExistsByTenantIDQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailSmtpClient(string value )
+        {
+            var query = _query.ExistsByEmailSmtpClientQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailPort(int value )
+        {
+            var query = _query.ExistsByEmailPortQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailUserName(string value )
+        {
+            var query = _query.ExistsByEmailUserNameQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEmailPassword(string value )
+        {
+            var query = _query.ExistsByEmailPasswordQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDeleted(bool value )
+        {
+            var query = _query.ExistsByDeletedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByChanged(DateTime value )
+        {
+            var query = _query.ExistsByChangedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByUserId(int value )
+        {
+            var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public yConfigNotificationDTO FirstById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByTenantID(int value )
+        {
+            var query = _query.FirstByTenantIDQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByEmailSmtpClient(string value )
+        {
+            var query = _query.FirstByEmailSmtpClientQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByEmailPort(int value )
+        {
+            var query = _query.FirstByEmailPortQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByEmailUserName(string value )
+        {
+            var query = _query.FirstByEmailUserNameQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByEmailPassword(string value )
+        {
+            var query = _query.FirstByEmailPasswordQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByDeleted(bool value )
+        {
+            var query = _query.FirstByDeletedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByChanged(DateTime value )
+        {
+            var query = _query.FirstByChangedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yConfigNotificationDTO FirstByUserId(int value )
+        {
+            var query = _query.FirstByUserIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByTenantID(int value )
+        {
+            var query = _query.FirstByTenantIDQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByEmailSmtpClient(string value )
+        {
+            var query = _query.FirstByEmailSmtpClientQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByEmailPort(int value )
+        {
+            var query = _query.FirstByEmailPortQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByEmailUserName(string value )
+        {
+            var query = _query.FirstByEmailUserNameQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByEmailPassword(string value )
+        {
+            var query = _query.FirstByEmailPasswordQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByDeleted(bool value )
+        {
+            var query = _query.FirstByDeletedQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByChanged(DateTime value )
+        {
+            var query = _query.FirstByChangedQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
+        public IEnumerable<yConfigNotificationDTO> GetAllByUserId(int value )
+        {
+            var query = _query.FirstByUserIdQuery(value );
+
+                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                return result;
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

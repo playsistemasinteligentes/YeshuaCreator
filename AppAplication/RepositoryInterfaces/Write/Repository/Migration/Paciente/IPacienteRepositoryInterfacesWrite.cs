@@ -23,6 +23,10 @@ namespace IRepository.Write
         public void UpdateTelefoneResponsavel(IPacienteEntity entity);
         public void UpdatePrincipaisQueixas(IPacienteEntity entity);
         public void UpdateObservacaoAdicional(IPacienteEntity entity);
+        public void UpdateTenantID(IPacienteEntity entity);
+        public void UpdateDeleted(IPacienteEntity entity);
+        public void UpdateChanged(IPacienteEntity entity);
+        public void UpdateUserId(IPacienteEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

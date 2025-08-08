@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Receivers\Migration\Read\yModule\yModuleReadFKTenantIDReceivers.cs" />
+    <Compile Remove="Receivers\Migration\Read\YUserPermissionMudules\YUserPermissionMudulesReadFKTenantIDReceivers.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
+    <ProjectReference Include="..\RepositoryInterfaces\RepositoryInterfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Custon\HubAgents\" />
+    <Folder Include="Patterns\Command\Interface\" />
+  </ItemGroup>
+
+</Project>

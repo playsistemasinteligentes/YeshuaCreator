@@ -1,7 +1,7 @@
 
                 namespace Dominio.Entitys
                 {
-            public partial class YStandardFieldsEntity
+            public partial class yStandardFieldsEntity
 {
 }
 }

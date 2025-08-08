@@ -20,6 +20,10 @@ namespace Repositorio.Outputs
     public string telefoneresponsavel { get; set; }
     public string principaisqueixas { get; set; }
     public string observacaoadicional { get; set; }
+    public int tenantid { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    public int userid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

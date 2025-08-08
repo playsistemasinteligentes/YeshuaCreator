@@ -18,6 +18,10 @@ namespace IQuery.Write
         public QueryModel UpdateTelefoneResponsavel(IPacienteEntity entity);
         public QueryModel UpdatePrincipaisQueixas(IPacienteEntity entity);
         public QueryModel UpdateObservacaoAdicional(IPacienteEntity entity);
+        public QueryModel UpdateTenantID(IPacienteEntity entity);
+        public QueryModel UpdateDeleted(IPacienteEntity entity);
+        public QueryModel UpdateChanged(IPacienteEntity entity);
+        public QueryModel UpdateUserId(IPacienteEntity entity);
         public QueryModel DeletePacienteQuery(IPacienteEntity Paciente);
     }
 }

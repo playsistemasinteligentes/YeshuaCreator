@@ -12,5 +12,6 @@ namespace Aplication.Interfaces.Services
         int UserId { get; }
         int TenantID { get; }
         IEnumerable<Claim> Claims { get; }
+        void SetTenantId(int id);
     }
 }

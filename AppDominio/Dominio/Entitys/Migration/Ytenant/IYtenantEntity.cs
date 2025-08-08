@@ -8,12 +8,14 @@
 
                 namespace Dominio.Entitys
                 {
-                    public interface IYtenantEntity
+                    public interface IyTenantEntity
 {
     int? Id { get; set; }
     int CnpjCpf { get; set; }
     string Nome { get; set; }
     int? UserId { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

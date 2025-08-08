@@ -12,48 +12,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Repository.Ytenant
+namespace Input.Repository.yTenant
 {
-    public class YtenantWriteRepository : IYtenantWriteRepository
+    public class yTenantWriteRepository : IyTenantWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
-       private readonly IYtenantQueryWrite _query; 
+       private readonly IyTenantQueryWrite _query; 
 
-        public YtenantWriteRepository(IUnitOfWork unitOfWork,IYtenantQueryWrite query)
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
              _query = query;
         }
 
-        public void Insert(IYtenantEntity Ytenant)
+        public void Insert(IyTenantEntity yTenant)
         {
-            var query = _query.InserirYtenantQuery(Ytenant);
-        Ytenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+            var query = _query.InseriryTenantQuery(yTenant);
+        yTenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(IYtenantEntity Ytenant)
+        public void Update(IyTenantEntity yTenant)
         {
-            var query = _query.UpdateYtenantQuery(Ytenant);
+            var query = _query.UpdateyTenantQuery(yTenant);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(IYtenantEntity Ytenant)
+        public void Delete(IyTenantEntity yTenant)
         {
-            var query = _query.DeleteYtenantQuery(Ytenant);
+            var query = _query.DeleteyTenantQuery(yTenant);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateCnpjCpf(IYtenantEntity entity)
+        public void UpdateCnpjCpf(IyTenantEntity entity)
         {
             var query = _query.UpdateCnpjCpf(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateNome(IYtenantEntity entity)
+        public void UpdateNome(IyTenantEntity entity)
         {
             var query = _query.UpdateNome(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateUserId(IYtenantEntity entity)
+        public void UpdateUserId(IyTenantEntity entity)
         {
             var query = _query.UpdateUserId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDeleted(IyTenantEntity entity)
+        {
+            var query = _query.UpdateDeleted(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateChanged(IyTenantEntity entity)
+        {
+            var query = _query.UpdateChanged(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

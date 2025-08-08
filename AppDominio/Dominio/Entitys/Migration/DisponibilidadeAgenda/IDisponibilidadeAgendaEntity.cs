@@ -13,6 +13,10 @@
     int? Id { get; set; }
     int? ProfissionalId { get; set; }
     DateTime DataHora { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

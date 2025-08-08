@@ -10,6 +10,10 @@ namespace IQuery.Write
         public QueryModel UpdateNome(IProfissionalEntity entity);
         public QueryModel UpdateEspecialidadeId(IProfissionalEntity entity);
         public QueryModel UpdateTelefone(IProfissionalEntity entity);
+        public QueryModel UpdateTenantID(IProfissionalEntity entity);
+        public QueryModel UpdateDeleted(IProfissionalEntity entity);
+        public QueryModel UpdateChanged(IProfissionalEntity entity);
+        public QueryModel UpdateUserId(IProfissionalEntity entity);
         public QueryModel DeleteProfissionalQuery(IProfissionalEntity Profissional);
     }
 }

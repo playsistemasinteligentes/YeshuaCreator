@@ -37,6 +37,10 @@ namespace IRepository.Write
         public void UpdateEncaminhamentoOutrosProfissionais(ISesoesEntity entity);
         public void UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity);
         public void UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity);
+        public void UpdateTenantID(ISesoesEntity entity);
+        public void UpdateDeleted(ISesoesEntity entity);
+        public void UpdateChanged(ISesoesEntity entity);
+        public void UpdateUserId(ISesoesEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

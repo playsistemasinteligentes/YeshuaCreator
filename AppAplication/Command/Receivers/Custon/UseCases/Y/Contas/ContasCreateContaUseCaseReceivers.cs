@@ -1,4 +1,5 @@
 
+using Aplication.Interfaces.Services;
 using Command.UseCase;
 using Dominio.Entitys;
 using Dominio.Interfaces;
@@ -13,11 +14,13 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly IYtenantReadRepository _repReadY_Tenant;
-        private readonly IYtenantWriteRepository _repWriteY_Tenant;
-        private readonly IYuserReadRepository _repReadY_User;
-        private readonly IYuserWriteRepository _repWriteY_User;
-        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IYtenantReadRepository repReadY_Tenant, IYtenantWriteRepository repWriteY_Tenant, IYuserReadRepository repReadY_User, IYuserWriteRepository repWriteY_User)
+        private readonly IyTenantReadRepository _repReadY_Tenant;
+        private readonly IyTenantWriteRepository _repWriteY_Tenant;
+        private readonly IyUserReadRepository _repReadY_User;
+        private readonly IyUserWriteRepository _repWriteY_User;
+        private readonly ICurrentUser _CurrentUser;
+
+        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyTenantReadRepository repReadY_Tenant, IyTenantWriteRepository repWriteY_Tenant, IyUserReadRepository repReadY_User, IyUserWriteRepository repWriteY_User, ICurrentUser CurrentUser)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
@@ -25,37 +28,37 @@ namespace Command.Receivers.UseCase
             _repWriteY_Tenant = repWriteY_Tenant;
             _repReadY_User = repReadY_User;
             _repWriteY_User = repWriteY_User;
+            _CurrentUser = CurrentUser;
         }
 
-        partial void CustomActionHook(ref State<object> state, ContasCreateContaUseCaseCommand comand)
+        partial void CustomActionHook(ref State<ContasCreateContaUseCaseOutputCommand> state, ContasCreateContaUseCaseInputCommand comand)
         {
             try
             {
 
                 // Validação básica
                 if (comand.CpfCnpj == 0)
-                    throw new ReceiverException<object>(Error("Cpf / Cnpj é obrigatório", default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Cpf / Cnpj é obrigatório", default));
 
                 if (string.IsNullOrWhiteSpace(comand.email))
-                    throw new ReceiverException<object>(Error("Email é obrigatório", default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Email é obrigatório", default));
 
                 if (string.IsNullOrWhiteSpace(comand.nome))
-                    throw new ReceiverException<object>(Error("Nome é obrigatório", default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Nome é obrigatório", default));
 
                 if (comand.password != comand.confirmpassword)
-                    throw new ReceiverException<object>(Error("Senhas não conferem", default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Senhas não conferem", default));
 
                 if (_repReadY_Tenant.ExistsByCnpjCpf(comand.CpfCnpj))
-                    throw new ReceiverException<object>(Error("Conta já existente.", default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Conta já existente.", default));
 
                 if (_repReadY_User.ExistsByEmail(comand.email))
                     if (_repReadY_Tenant.ExistsByUserId(_repReadY_User.FirstByEmail(comand.email).id))
-                        throw new ReceiverException<object>(Error("Conta existente.", default));
+                        throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Conta existente.", default));
 
                 _unitOfWork.BeginTran();
 
-                var tenant = new YtenantFactory(_logger).Create(
-                    null,
+                var tenant = new yTenantFactory(_logger).Create(
                     comand.CpfCnpj,
                     comand.nome,
                     null
@@ -63,22 +66,22 @@ namespace Command.Receivers.UseCase
                 _repWriteY_Tenant.Insert(tenant);
 
                 if (!tenant.isValidInsert())
-                    throw new ReceiverException<object>(Error(string.Join("; ", tenant.getErroMensagens()), default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error(string.Join("; ", tenant.getErroMensagens()), default));
 
                 if (!tenant.Id.HasValue)
-                    throw new ReceiverException<object>(Error("Erro ao criar Tenant, Id não gerado", default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Erro ao criar Tenant, Id não gerado", default));
 
                 // Criação do User usando Factory (padrão seu)
-                var user = new YuserFactory(_logger).Create(
+                var user = new yUserFactory(_logger).Create(
                     null,
                     comand.email,
                     comand.email, // Nome: Aqui você decide o valor real, coloquei email como exemplo
-                    comand.password,
-                    tenant.Id
-                );
+                    comand.password);
+
+                _CurrentUser.SetTenantId(tenant.Id.Value);
 
                 if (!user.isValidInsert())
-                    throw new ReceiverException<object>(Error(string.Join("; ", user.getErroMensagens()), default));
+                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default));
 
                 _repWriteY_User.Insert(user);
 
@@ -87,9 +90,9 @@ namespace Command.Receivers.UseCase
 
                 _unitOfWork.Commit();
 
-                state = Success("Conta criada com sucesso", new { TenantId = tenant.Id, UserId = user.Id });
+                state = Success("Conta criada com sucesso", new ContasCreateContaUseCaseOutputCommand { TenantId = tenant.Id.Value, UserId = user.Id.Value });
             }
-            catch (ReceiverException<object>)
+            catch (ReceiverException<ContasCreateContaUseCaseOutputCommand>)
             {
                 _unitOfWork.Rollback();
                 throw;
@@ -97,7 +100,7 @@ namespace Command.Receivers.UseCase
             catch (Exception ex)
             {
                 _unitOfWork.Rollback();
-                throw new ReceiverException<object>(Error(ex, default));
+                throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error(ex, default));
             }
         }
 

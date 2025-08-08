@@ -8,23 +8,23 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class YperfilReadReceiver : ReciverBase<DataPagination<YperfilDTO>>
+    public class yPerfilReadReceiver : ReciverBase<DataPagination<yPerfilDTO>>
     {
-        private readonly IYperfilReadRepository _repository;
+        private readonly IyPerfilReadRepository _repository;
         private readonly ILogger _logger;
 
-        public YperfilReadReceiver(IYperfilReadRepository repository,ILogger logger)
+        public yPerfilReadReceiver(IyPerfilReadRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<DataPagination<YperfilDTO>> Action(ICommand comand)
+        protected override State<DataPagination<yPerfilDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Read.YperfilReadCommand c) 
+            if(comand is Command.Read.yPerfilReadCommand c) 
              {    
-                var YperfilReadRepository = _repository.getYperfil(c);
-                return Success("OK", YperfilReadRepository);
+                var yPerfilReadRepository = _repository.getyPerfil(c);
+                return Success("OK", yPerfilReadRepository);
             }
             else 
             {

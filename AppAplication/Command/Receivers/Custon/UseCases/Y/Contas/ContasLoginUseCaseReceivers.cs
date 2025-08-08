@@ -1,9 +1,13 @@
 using Dominio.Interfaces;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
-using Command.UseCase;
 using IRepository.Read;
 using IRepository.Write;
+using Command.UseCase;
+using Repositorio.Outputs;
+using RepositoryInterfaces.Patterns.Repository;
+using System.Text.Encodings.Web;
+using Aplication.Interfaces.Services;
 
 namespace Command.Receivers.UseCase
 {
@@ -11,39 +15,65 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly IYuserReadRepository _repReadY_User;
-        private readonly IYuserWriteRepository _repWriteY_User;
-        public ContasLoginUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IYuserReadRepository repReadY_User, IYuserWriteRepository repWriteY_User)
+        private readonly IyUserReadRepository _repReadYuser;
+        private readonly IyUserWriteRepository _repWriteYuser;
+        private readonly IyTenantModuleReadRepository _repReadyTenantModule;
+        private readonly IyTenantModuleWriteRepository _repWriteyTenantModule;
+        private readonly IyUserModuleReadRepository _repReadyUserModule;
+        private readonly IyUserModuleWriteRepository _repWriteyUserModule;
+        private readonly IyTenantReadRepository _repReadYtenantRepository;
+        private readonly ICurrentUser _CurrentUser;
+
+        public ContasLoginUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyUserReadRepository repReadYuser, IyUserWriteRepository repWriteYuser, IyTenantModuleReadRepository repReadyTenantModule, IyTenantModuleWriteRepository repWriteyTenantModule, IyUserModuleReadRepository repReadyUserModule, IyUserModuleWriteRepository repWriteyUserModule, IyTenantReadRepository repIYtenantReadRepository, ICurrentUser CurrentUser)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
-            _repReadY_User = repReadY_User;
-            _repWriteY_User = repWriteY_User;
+            _repReadYuser = repReadYuser;
+            _repWriteYuser = repWriteYuser;
+            _repReadyTenantModule = repReadyTenantModule;
+            _repWriteyTenantModule = repWriteyTenantModule;
+            _repReadyUserModule = repReadyUserModule;
+            _repWriteyUserModule = repWriteyUserModule;
+            _repReadYtenantRepository = repIYtenantReadRepository;
+            _CurrentUser = CurrentUser;
         }
-        partial void CustomActionHook(ref State<object> state, ContasLoginUseCaseCommand command)
+        partial void CustomActionHook(ref State<ContasLoginUseCaseOutputCommand> state, ContasLoginUseCaseInputCommand comand)
         {
             try
             {
-                var user = _repReadY_User.FirstByEmail(command.email);
+
+                var user = _repReadYuser.FirstByEmail(comand.email, true);
                 if (user == null)
-                    throw new ReceiverException<object>(Error("Erro login.", default));
+                    throw new ReceiverException<ContasLoginUseCaseOutputCommand>(Error("Erro login.", default));
 
-                if (user.senha != command.password)
-                {
-                    throw new ReceiverException<object>(Error("Erro login.", default));
-                }
+                if (user.senha != comand.password)
+                    throw new ReceiverException<ContasLoginUseCaseOutputCommand>(Error("Erro login.", default));
 
-                state = Success("Login válido", user);
+                _CurrentUser.SetTenantId(user.tenantid);
+
+                var ModulosUsuario = _repReadyUserModule.GetAllByUserId(user.id);
+                bool usuarioVinculadoAoTenant = _repReadYtenantRepository.ExistsByUserId(user.id);
+
+                ContasLoginUseCaseOutputCommand retorno = new ContasLoginUseCaseOutputCommand();
+                retorno.modulos = ModulosUsuario.Select(x => x.moduleid).ToList();
+                retorno.tenantId = user.tenantid;
+                retorno.email = user.email;
+                retorno.UserId = user.id;
+
+                if (usuarioVinculadoAoTenant)
+                    retorno.modulos.Add("ADM");
+
+                state = Success("Login válido", retorno);
             }
 
-            catch (ReceiverException<object> ex)
+            catch (ReceiverException<ContasLoginUseCaseOutputCommand> ex)
             {
                 state = ex.State;
                 throw;
             }
             catch (Exception ex)
             {
-                throw new ReceiverException<object>(Error(ex, default));
+                throw new ReceiverException<ContasLoginUseCaseOutputCommand>(Error(ex, default));
             }
         }
     }

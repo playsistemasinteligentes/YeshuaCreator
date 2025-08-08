@@ -15,6 +15,10 @@ namespace IRepository.Write
         public void UpdateGrupoServicoId(IServicoEntity entity);
         public void UpdateNome(IServicoEntity entity);
         public void UpdateValor(IServicoEntity entity);
+        public void UpdateTenantID(IServicoEntity entity);
+        public void UpdateDeleted(IServicoEntity entity);
+        public void UpdateChanged(IServicoEntity entity);
+        public void UpdateUserId(IServicoEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

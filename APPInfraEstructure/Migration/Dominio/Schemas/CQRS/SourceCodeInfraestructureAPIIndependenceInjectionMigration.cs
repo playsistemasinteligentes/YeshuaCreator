@@ -70,7 +70,7 @@ namespace Dominio.Schemas.CQRS
                     // decorator 
 
                     // Registra o decorador como implementação da interface
-                    sb.AppendLine($"    builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepositoryInterface}.I{entity.EntityName}ReadRepository>(sp =>");
+                    sb.AppendLine($"    builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryRead}.I{entity.EntityName}ReadRepository>(sp =>");
                     sb.AppendLine($"    {{");
                     // fixos
                     sb.AppendLine($"    var inner = sp.GetRequiredService<{CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
@@ -101,7 +101,7 @@ namespace Dominio.Schemas.CQRS
                 }
 
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
-                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceReadRepositoryInterface}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryRead}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryRead}.I{entity.EntityName}QueryRead, {CQRSParam.I.NameSpaceQueryRead}.{entity.EntityName}QueryRead>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryWrite}.I{entity.EntityName}QueryWrite, {CQRSParam.I.NameSpaceQueryWrite}.{entity.EntityName}QueryWrite>();");
 

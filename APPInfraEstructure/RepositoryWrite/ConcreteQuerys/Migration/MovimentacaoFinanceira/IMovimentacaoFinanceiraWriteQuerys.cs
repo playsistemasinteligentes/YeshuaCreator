@@ -13,6 +13,10 @@ namespace IQuery.Write
         public QueryModel UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity);
         public QueryModel UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity);
         public QueryModel UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity);
+        public QueryModel UpdateTenantID(IMovimentacaoFinanceiraEntity entity);
+        public QueryModel UpdateDeleted(IMovimentacaoFinanceiraEntity entity);
+        public QueryModel UpdateChanged(IMovimentacaoFinanceiraEntity entity);
+        public QueryModel UpdateUserId(IMovimentacaoFinanceiraEntity entity);
         public QueryModel DeleteMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira);
     }
 }

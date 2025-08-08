@@ -8,15 +8,16 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class YtenantEntity : IYtenantEntity
+                    public partial class yTenantEntity : IyTenantEntity
 {
     public int? Id { get; set; }
     public int CnpjCpf { get; set; }
     public string Nome { get; set; }
     public int? UserId { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
     private List<string> _erroMensagem = null;
- internal YtenantEntity(int? id, int cnpjcpf, string nome, int? userid ){
- Id = id; 
+ internal yTenantEntity(int cnpjcpf, string nome, int? userid ){
  CnpjCpf = cnpjcpf; 
  Nome = nome; 
  UserId = userid; 

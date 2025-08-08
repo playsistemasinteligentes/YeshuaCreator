@@ -22,12 +22,16 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Input\obj\Deb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryWrite.deps.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryWrite.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryWrite.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Command.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Dominio.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryInterfaces.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryRead.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Shered.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryInterfaces.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryRead.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Shered.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Shered.dll.config
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Command.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Dominio.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\obj\Debug\net8.0\RepositoryWrite.csproj.AssemblyReference.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\obj\Debug\net8.0\RepositoryWrite.GeneratedMSBuildEditorConfig.editorconfig
@@ -40,7 +44,3 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\obj\Debug\net8.0\refint\RepositoryWrite.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\obj\Debug\net8.0\RepositoryWrite.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\obj\Debug\net8.0\ref\RepositoryWrite.dll
-C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryRead.dll
-C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\RepositoryRead.pdb
-C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Command.dll
-C:\Users\angel\Source\Repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\RepositoryWrite\bin\Debug\net8.0\Command.pdb

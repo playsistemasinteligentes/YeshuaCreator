@@ -1,7 +1,7 @@
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Read
 {
-    public struct YperfilReadFKTenantIDCommand : ICommand
+    public struct yPerfilReadFKTenantIDCommand : ICommand
     {
         public int? Id { get; set; }
         public string Nome { get; set; }

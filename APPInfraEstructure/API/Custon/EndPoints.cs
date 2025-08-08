@@ -20,48 +20,34 @@ namespace API.Migrations
                 [FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver) =>
             {
 
-                var command = new Command.UseCase.ContasLoginUseCaseCommand();
+                var command = new Command.UseCase.ContasLoginUseCaseInputCommand();
                 command.email = user.Login;
                 command.password = user.Password;
                 var result = StateResults.Try(() => receiver.Execute(command));
 
-                if (result.Result is Ok<State<object>> okResult)
+                if (result.Result is Ok<State<Command.UseCase.ContasLoginUseCaseOutputCommand>> okResult)
                 {
+                    Command.UseCase.ContasLoginUseCaseOutputCommand _user = okResult.Value.Data;
+                    var modulesClaim = string.Join(",", _user.modulos);
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
 
-                    var userModuleKeys = new List<string> { "ADM", "mod3", "mod7" };
-
-                    // Junta os módulos em uma string única
-                    var modulesClaim = string.Join(",", userModuleKeys);
-
-
-
-                    var statObj = okResult.Value;
-
-                    if (statObj.Data is Repositorio.Outputs.YuserDTO _user)
-                    {
-
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
-
-                        var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, _user.id.ToString()),
+                    var claims = new List<Claim>{
+                        new Claim(ClaimTypes.NameIdentifier, _user.UserId.ToString()),
                         new Claim(ClaimTypes.Email, _user.email),
                         new Claim(ClaimTypes.Role, "Admin"),
-                        new Claim("tenantId", _user.tenantid.ToString()),
+                        new Claim("tenantId", _user.tenantId.ToString()),
                         new Claim("userModules", modulesClaim)
-                    };
-
-                        var tokenDescriptor = new SecurityTokenDescriptor
-                        {
-                            Subject = new ClaimsIdentity(claims),
-                            Expires = DateTime.UtcNow.AddSeconds(jwtSettings.ExpirationMinutes),
-                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                         };
-                        var token = tokenHandler.CreateToken(tokenDescriptor);
-                        return Results.Ok(new { token = tokenHandler.WriteToken(token) });
-                    }
-                    return Results.Unauthorized();
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.UtcNow.AddSeconds(jwtSettings.ExpirationMinutes),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    return Results.Ok(new { token = tokenHandler.WriteToken(token) });
                 }
 
                 return Results.Unauthorized();

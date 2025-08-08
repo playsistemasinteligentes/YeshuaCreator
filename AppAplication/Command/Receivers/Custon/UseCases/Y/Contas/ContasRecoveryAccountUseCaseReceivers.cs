@@ -1,10 +1,10 @@
 using Command.Commands;
 using Command.Patterns.Command;
 using Command.Read;
+using Command.UseCase;
 using Dominio.Entitys;
 using Dominio.Interfaces.Strategy;
 using IRepository.Read;
-using Read.RepositoryInterfaces;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 
@@ -15,21 +15,21 @@ namespace Command.Receivers.UseCase
 
         private readonly IINotificationFactory _factory;
         private readonly IMessage _messege;
-        private readonly IYuserReadRepository _userRep;
+        private readonly IyUserReadRepository _userRep;
         // Injete a fábrica no construtor
-        public ContasRecoveryAccountUseCaseReceiver(IINotificationFactory factory, IMessage messege, IYuserReadRepository userRep)
+        public ContasRecoveryAccountUseCaseReceiver(IINotificationFactory factory, IMessage messege, IyUserReadRepository userRep)
         {
             _factory = factory;
             _messege = messege;
             _userRep = userRep;
         }
 
-        partial void CustomActionHook(ref State<object> state, Command.UseCase.ContasRecoveryAccountUseCaseCommand command)
+        partial void CustomActionHook(ref State<ContasRecoveryAccountUseCaseOutputCommand> state, Command.UseCase.ContasRecoveryAccountUseCaseInputCommand command)
         {
             var notification = _factory.GetType(command.typeNotification);
-            var us = new YuserReadCommand();
+            var us = new yUserReadCommand();
             us.Email = command.email;
-            var user = _userRep.getYuser(us);
+            var user = _userRep.getyUser(us);
             _messege.Destination = user.Items.ElementAt(0).email;
             _messege.Subject = "Recuperação de email";
             _messege.Body = $@"

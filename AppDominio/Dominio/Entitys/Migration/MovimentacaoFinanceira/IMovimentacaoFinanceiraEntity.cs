@@ -17,6 +17,10 @@
     int TipoMovimentacao { get; set; }
     DateTime DataMovimentacao { get; set; }
     Decimal SaldoAtual { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

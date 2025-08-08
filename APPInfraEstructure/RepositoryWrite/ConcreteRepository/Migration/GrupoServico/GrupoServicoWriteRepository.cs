@@ -46,6 +46,26 @@ namespace Input.Repository.GrupoServico
             var query = _query.UpdateDescricao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
+        public void UpdateTenantID(IGrupoServicoEntity entity)
+        {
+            var query = _query.UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDeleted(IGrupoServicoEntity entity)
+        {
+            var query = _query.UpdateDeleted(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateChanged(IGrupoServicoEntity entity)
+        {
+            var query = _query.UpdateChanged(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUserId(IGrupoServicoEntity entity)
+        {
+            var query = _query.UpdateUserId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

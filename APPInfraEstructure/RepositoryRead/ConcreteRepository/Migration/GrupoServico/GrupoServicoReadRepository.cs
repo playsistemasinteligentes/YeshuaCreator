@@ -29,15 +29,15 @@ namespace Read.Repository
             _query = query;
         }
 
-        public DataPagination<GrupoServicoDTO> getGrupoServico(ICommandRead command)
+        public DataPagination<GrupoServicoDTO> getGrupoServico(ICommandRead command )
          {
             if (command is Command.Read.GrupoServicoReadCommand c)
-                return getGrupoServico(c);
+                return getGrupoServico(c );
             throw new NotImplementedException();
         }
-        private DataPagination<GrupoServicoDTO> getGrupoServico(Command.Read.GrupoServicoReadCommand command)
+        private DataPagination<GrupoServicoDTO> getGrupoServico(Command.Read.GrupoServicoReadCommand command )
         {
-            var query = _query.GrupoServicoQuery(command);
+            var query = _query.GrupoServicoQuery(command );
 
                 var itens = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters);
                 return new DataPagination<GrupoServicoDTO>(
@@ -47,42 +47,186 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        public bool ExistsById(int value)
+        private IEnumerable<GrupoServicoTenantIDDTO> getGrupoServicoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            var query = _query.ExistsByIdQuery(value);
+            List<GrupoServicoTenantIDDTO> lista;
+            var query = _query.GrupoServicoTenantIDQuery(command );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
+                lista = _connection.Query<GrupoServicoTenantIDDTO>(query.Query,query.Parameters) as List<GrupoServicoTenantIDDTO>;
+            return lista;
         }
 
-        public bool ExistsByDescricao(string value)
+        public IEnumerable<GrupoServicoTenantIDDTO> getGrupoServicoReadFKTenantID(object command )
         {
-            var query = _query.ExistsByDescricaoQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public GrupoServicoDTO FirstById(int value)
-        {
-            var query = _query.FirstByIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public GrupoServicoDTO FirstByDescricao(string value)
-        {
-            var query = _query.FirstByDescricaoQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public GrupoServicoDTO getById()
-        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getGrupoServicoReadFKTenantID(c );
+            }
             throw new NotImplementedException();
         }
+
+        private IEnumerable<GrupoServicoUserIdDTO> getGrupoServicoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
+        {
+            List<GrupoServicoUserIdDTO> lista;
+            var query = _query.GrupoServicoUserIdQuery(command );
+
+                lista = _connection.Query<GrupoServicoUserIdDTO>(query.Query,query.Parameters) as List<GrupoServicoUserIdDTO>;
+            return lista;
+        }
+
+        public IEnumerable<GrupoServicoUserIdDTO> getGrupoServicoReadFKUserId(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getGrupoServicoReadFKUserId(c );
+            }
+            throw new NotImplementedException();
+        }
+
+        public bool ExistsById(int value )
+        {
+            var query = _query.ExistsByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDescricao(string value )
+        {
+            var query = _query.ExistsByDescricaoQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTenantID(int value )
+        {
+            var query = _query.ExistsByTenantIDQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDeleted(bool value )
+        {
+            var query = _query.ExistsByDeletedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByChanged(DateTime value )
+        {
+            var query = _query.ExistsByChangedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByUserId(int value )
+        {
+            var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public GrupoServicoDTO FirstById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public GrupoServicoDTO FirstByDescricao(string value )
+        {
+            var query = _query.FirstByDescricaoQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public GrupoServicoDTO FirstByTenantID(int value )
+        {
+            var query = _query.FirstByTenantIDQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public GrupoServicoDTO FirstByDeleted(bool value )
+        {
+            var query = _query.FirstByDeletedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public GrupoServicoDTO FirstByChanged(DateTime value )
+        {
+            var query = _query.FirstByChangedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public GrupoServicoDTO FirstByUserId(int value )
+        {
+            var query = _query.FirstByUserIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<GrupoServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public IEnumerable<GrupoServicoDTO> GetAllById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return result;
+        }
+
+        public IEnumerable<GrupoServicoDTO> GetAllByDescricao(string value )
+        {
+            var query = _query.FirstByDescricaoQuery(value );
+
+                var result = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return result;
+        }
+
+        public IEnumerable<GrupoServicoDTO> GetAllByTenantID(int value )
+        {
+            var query = _query.FirstByTenantIDQuery(value );
+
+                var result = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return result;
+        }
+
+        public IEnumerable<GrupoServicoDTO> GetAllByDeleted(bool value )
+        {
+            var query = _query.FirstByDeletedQuery(value );
+
+                var result = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return result;
+        }
+
+        public IEnumerable<GrupoServicoDTO> GetAllByChanged(DateTime value )
+        {
+            var query = _query.FirstByChangedQuery(value );
+
+                var result = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return result;
+        }
+
+        public IEnumerable<GrupoServicoDTO> GetAllByUserId(int value )
+        {
+            var query = _query.FirstByUserIdQuery(value );
+
+                var result = _connection.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                return result;
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

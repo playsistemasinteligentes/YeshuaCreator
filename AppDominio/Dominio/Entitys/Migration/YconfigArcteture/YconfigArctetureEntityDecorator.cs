@@ -8,12 +8,12 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class YconfigArctetureDecorator : IYconfigArctetureEntity
+                    public partial class yConfigArctetureDecorator : IyConfigArctetureEntity
 {
 
-                        private readonly IYconfigArctetureEntity _inner;
+                        private readonly IyConfigArctetureEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
-                        public YconfigArctetureDecorator(IYconfigArctetureEntity inner, Dominio.Interfaces.ILogger logger)
+                        public yConfigArctetureDecorator(IyConfigArctetureEntity inner, Dominio.Interfaces.ILogger logger)
                         {
                             _inner = inner;
                             _logger = logger;
@@ -53,6 +53,58 @@
                                             {
                                                 _logger.Info($"Propriedade AuditCRUDActived: antes={_inner.AuditCRUDActived}, depois={value}");
                                                 _inner.AuditCRUDActived = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? TenantID
+                                    {
+                                        get => _inner.TenantID;
+                                        set
+                                        {
+                                            if (_inner.TenantID != value)
+                                            {
+                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
+                                                _inner.TenantID = value;
+                                            }
+                                        }
+                                    }
+
+                                    public bool? Deleted
+                                    {
+                                        get => _inner.Deleted;
+                                        set
+                                        {
+                                            if (_inner.Deleted != value)
+                                            {
+                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
+                                                _inner.Deleted = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? Changed
+                                    {
+                                        get => _inner.Changed;
+                                        set
+                                        {
+                                            if (_inner.Changed != value)
+                                            {
+                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
+                                                _inner.Changed = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? UserId
+                                    {
+                                        get => _inner.UserId;
+                                        set
+                                        {
+                                            if (_inner.UserId != value)
+                                            {
+                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
+                                                _inner.UserId = value;
                                             }
                                         }
                                     }

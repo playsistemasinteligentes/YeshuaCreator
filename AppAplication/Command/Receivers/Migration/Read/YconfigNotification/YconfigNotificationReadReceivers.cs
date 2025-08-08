@@ -8,23 +8,23 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class YconfigNotificationReadReceiver : ReciverBase<DataPagination<YconfigNotificationDTO>>
+    public class yConfigNotificationReadReceiver : ReciverBase<DataPagination<yConfigNotificationDTO>>
     {
-        private readonly IYconfigNotificationReadRepository _repository;
+        private readonly IyConfigNotificationReadRepository _repository;
         private readonly ILogger _logger;
 
-        public YconfigNotificationReadReceiver(IYconfigNotificationReadRepository repository,ILogger logger)
+        public yConfigNotificationReadReceiver(IyConfigNotificationReadRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<DataPagination<YconfigNotificationDTO>> Action(ICommand comand)
+        protected override State<DataPagination<yConfigNotificationDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Read.YconfigNotificationReadCommand c) 
+            if(comand is Command.Read.yConfigNotificationReadCommand c) 
              {    
-                var YconfigNotificationReadRepository = _repository.getYconfigNotification(c);
-                return Success("OK", YconfigNotificationReadRepository);
+                var yConfigNotificationReadRepository = _repository.getyConfigNotification(c);
+                return Success("OK", yConfigNotificationReadRepository);
             }
             else 
             {

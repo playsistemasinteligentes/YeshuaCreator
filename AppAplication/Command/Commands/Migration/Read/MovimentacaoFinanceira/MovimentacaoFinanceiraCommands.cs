@@ -10,6 +10,10 @@ namespace Command.Read
         public int? TipoMovimentacao { get; set; }
         public DateTime? DataMovimentacao { get; set; }
         public Decimal? SaldoAtual { get; set; }
+        public int? TenantID { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

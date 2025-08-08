@@ -19,13 +19,21 @@ namespace Dominio.Schemas.CQRS
 
         protected override StringBuilder GenerateCode()
         {
+
             var sb = new StringBuilder();
+            var itens = _entity.AddColumns.Where(x => x.WhereCanTakeOff).Select(colun => $"bool TakeOff{colun.Name} = false");
+            string takeOff = itens.Any() ? ", " + string.Join(", ", itens) : string.Empty;
+            itens = _entity.AddColumns.Where(x => x.WhereCanTakeOff).Select(colun => $"TakeOff{colun.Name}");
+            string VariavaltakeOff = itens.Any() ? ", " + string.Join(", ", itens) : string.Empty;
+
+
+
             if (_cacheDecorator)
             {
                 sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
                 sb.AppendLine($"using RepositoryInterfaces.Services;");
 
                 sb.AppendLine();
@@ -79,19 +87,19 @@ namespace Dominio.Schemas.CQRS
 
 
                 // get{EntityName}
-                sb.AppendLine($"    public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command)");
+                sb.AppendLine($"    public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command {takeOff})");
                 sb.AppendLine("    {");
                 sb.AppendLine("        bool isFullQuery = true; // Ajuste conforme sua lógica de filtros");
                 sb.AppendLine($"        var key = $\"{_entity.EntityName}:All:Page:{{command.Paginacao.Page}}:PageZize:{{command.Paginacao.PageSize}}\";");
 
                 sb.AppendLine("        if (isFullQuery)");
                 sb.AppendLine("        {");
-                sb.AppendLine("            var cached = _cacheAll.Get(key);");
+                sb.AppendLine($"            var cached = _cacheAll.Get(key {VariavaltakeOff});");
                 sb.AppendLine("            if (cached != null)");
                 sb.AppendLine($"                return new DataPagination<{_entity.EntityName}DTO>(cached, command.Paginacao.Page, command.Paginacao.PageSize);");
 
                 sb.AppendLine();
-                sb.AppendLine($"            var data = _inner.get{_entity.EntityName}(command);");
+                sb.AppendLine($"            var data = _inner.get{_entity.EntityName}(command {VariavaltakeOff});");
                 sb.AppendLine($"            _cacheAll.Set(key, data.Items, \"{_entity.EntityName}\");");
                 sb.AppendLine("            return data;");
                 sb.AppendLine("        }");
@@ -103,21 +111,21 @@ namespace Dominio.Schemas.CQRS
                 {
 
 
-                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
+                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command {takeOff})");
                     sb.AppendLine("        {");
                     sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand c)");
-                    sb.AppendLine("                return get" + _entity.EntityName + CommandType.ReadFK + column.Name + "(c);");
+                    sb.AppendLine($"                return get" + _entity.EntityName + CommandType.ReadFK + column.Name + $"(c {VariavaltakeOff});");
                     sb.AppendLine("            throw new NotImplementedException();");
                     sb.AppendLine("        }");
 
-                    sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command)");
+                    sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command {takeOff})");
                     sb.AppendLine("        {");
 
                     sb.AppendLine($"            string key = $\"{_entity.EntityName}:FK:{column.Name}:{{command.searchFK}}\";");
 
-                    sb.AppendLine($"            var cached = _cacheFK{column.Name}.Get(key);");
+                    sb.AppendLine($"            var cached = _cacheFK{column.Name}.Get(key {takeOff});");
                     sb.AppendLine("            if (cached != null) return cached;");
-                    sb.AppendLine($"            var result = _inner.get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(command);");
+                    sb.AppendLine($"            var result = _inner.get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(command {VariavaltakeOff});");
                     sb.AppendLine($"            if (result != null) _cacheFK{column.Name}.Set(key, result,\"{_entity.EntityName}\");");
                     sb.AppendLine("            return result;");
                     sb.AppendLine("        }");
@@ -138,18 +146,12 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("    }");
 
 
-                sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
-                sb.AppendLine("        {");
-                sb.AppendLine("            throw new NotImplementedException();");
-                sb.AppendLine("        }");
-
-
                 //Exist
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
-                    sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value)");
+                    sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value {takeOff})");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"                return _inner.ExistsBy{column.Name}(value);");
+                    sb.AppendLine($"                return _inner.ExistsBy{column.Name}(value {VariavaltakeOff});");
                     sb.AppendLine("        }");
                     sb.AppendLine();
                 }
@@ -157,13 +159,22 @@ namespace Dominio.Schemas.CQRS
                 //FirstBy
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
-                    sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value)");
+                    sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value {takeOff})");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"                return _inner.FirstBy{column.Name}(value);");
+                    sb.AppendLine($"                return _inner.FirstBy{column.Name}(value {VariavaltakeOff});");
                     sb.AppendLine("        }");
                     sb.AppendLine();
                 }
 
+                //GetAllBy
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                {
+                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> GetAllBy{column.Name}({column.getCsharpType()} value {takeOff})");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"                return _inner.GetAllBy{column.Name}(value {VariavaltakeOff});");
+                    sb.AppendLine("        }");
+                    sb.AppendLine();
+                }
 
 
                 sb.AppendLine("    }");
@@ -175,7 +186,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepository};");
-            sb.AppendLine($"using {CQRSParam.I.NameSpaceReadRepositoryInterface};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceIQueryRead};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
 
@@ -203,16 +214,16 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            _query = query;");
             sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command)");
+            sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command {takeOff})");
             sb.AppendLine("         {");
             sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command c)");
-            sb.AppendLine($"                return get{_entity.EntityName}(c);");
+            sb.AppendLine($"                return get{_entity.EntityName}(c {VariavaltakeOff});");
             sb.AppendLine("            throw new NotImplementedException();");
             sb.AppendLine("        }");
 
-            sb.AppendLine($"        private DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command command)");
+            sb.AppendLine($"        private DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command command {takeOff})");
             sb.AppendLine("        {");
-            sb.AppendLine($"            var query = _query.{_entity.EntityName}Query(command);");
+            sb.AppendLine($"            var query = _query.{_entity.EntityName}Query(command {VariavaltakeOff});");
             sb.AppendLine();
             sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters);");
             //var itens = _connection.Query<GrupoServicoDTO>(query.Query, query.Parameters);
@@ -227,22 +238,22 @@ namespace Dominio.Schemas.CQRS
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
             {
 
-                sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command)");
+                sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command {takeOff})");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            List<{_entity.EntityName}{column.Name}DTO> lista;");
-                sb.AppendLine($"            var query = _query.{_entity.EntityName}{column.Name}Query(command);");
+                sb.AppendLine($"            var query = _query.{_entity.EntityName}{column.Name}Query(command {VariavaltakeOff});");
                 sb.AppendLine();
                 sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{column.Name}DTO>;");
                 sb.AppendLine("            return lista;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
 
-                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command)");
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command {takeOff})");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand c)");
                 sb.AppendLine("            {");
-                sb.AppendLine($"                return get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(c);");
+                sb.AppendLine($"                return get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(c {VariavaltakeOff});");
                 sb.AppendLine("            }");
                 sb.AppendLine("            throw new NotImplementedException();");
 
@@ -255,9 +266,9 @@ namespace Dominio.Schemas.CQRS
             //Exist
             foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
             {
-                sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value)");
+                sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value {takeOff})");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            var query = _query.ExistsBy{column.Name}Query(value);");
+                sb.AppendLine($"            var query = _query.ExistsBy{column.Name}Query(value {VariavaltakeOff});");
                 sb.AppendLine();
                 sb.AppendLine("                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);");
                 sb.AppendLine("                return result == 1;");
@@ -268,9 +279,9 @@ namespace Dominio.Schemas.CQRS
             //FirstBy
             foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
             {
-                sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value)");
+                sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value {takeOff})");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            var query = _query.FirstBy{column.Name}Query(value);");
+                sb.AppendLine($"            var query = _query.FirstBy{column.Name}Query(value {VariavaltakeOff});");
                 sb.AppendLine();
                 sb.AppendLine($"                var result = _connection.QueryFirstOrDefault<{_entity.EntityName}DTO>(query.Query, query.Parameters);");
                 sb.AppendLine("                return result;");
@@ -278,13 +289,19 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
             }
 
+            //GetAllBy
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+            {
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> GetAllBy{column.Name}({column.getCsharpType()} value {takeOff})");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            var query = _query.FirstBy{column.Name}Query(value {VariavaltakeOff});");
+                sb.AppendLine();
+                sb.AppendLine($"                var result = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
+                sb.AppendLine("                return result;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+            }
 
-
-
-            sb.AppendLine($"        public {_entity.EntityName}DTO getById()");
-            sb.AppendLine("        {");
-            sb.AppendLine("            throw new NotImplementedException();");
-            sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");
 

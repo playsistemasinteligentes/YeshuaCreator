@@ -1,7 +1,7 @@
 
-                namespace Dominio.Entitys.YconfigArcteture
+                namespace Dominio.Entitys.yConfigArcteture
                 {
-            public partial class YconfigArctetureEntity
+            public partial class yConfigArctetureEntity
 {
 }
 }

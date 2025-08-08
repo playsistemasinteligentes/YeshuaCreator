@@ -8,23 +8,23 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class YuserReadReceiver : ReciverBase<DataPagination<YuserDTO>>
+    public class yUserReadReceiver : ReciverBase<DataPagination<yUserDTO>>
     {
-        private readonly IYuserReadRepository _repository;
+        private readonly IyUserReadRepository _repository;
         private readonly ILogger _logger;
 
-        public YuserReadReceiver(IYuserReadRepository repository,ILogger logger)
+        public yUserReadReceiver(IyUserReadRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<DataPagination<YuserDTO>> Action(ICommand comand)
+        protected override State<DataPagination<yUserDTO>> Action(ICommand comand)
         {
-            if(comand is Command.Read.YuserReadCommand c) 
+            if(comand is Command.Read.yUserReadCommand c) 
              {    
-                var YuserReadRepository = _repository.getYuser(c);
-                return Success("OK", YuserReadRepository);
+                var yUserReadRepository = _repository.getyUser(c);
+                return Success("OK", yUserReadRepository);
             }
             else 
             {

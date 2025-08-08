@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateYconfigArctetureReceiver : ReciverBase <IYconfigArctetureEntity>
+    public class UpdateyConfigArctetureReceiver : ReciverBase <IyConfigArctetureEntity>
     {
-        private readonly IYconfigArctetureWriteRepository _repository;
+        private readonly IyConfigArctetureWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateYconfigArctetureReceiver(IYconfigArctetureWriteRepository repository,ILogger logger)
+        public UpdateyConfigArctetureReceiver(IyConfigArctetureWriteRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<IYconfigArctetureEntity> Action(ICommand comand)
+        protected override State<IyConfigArctetureEntity> Action(ICommand comand)
         {
-             if(comand is Command.Write.YconfigArctetureCrudCommand c) 
+             if(comand is Command.Write.yConfigArctetureCrudCommand c) 
              {    
-                 var yconfigarcteture = new YconfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
+                 var yconfigarcteture = new yConfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
                  if (!yconfigarcteture.isValidUpdate())
                      return ValidationError(yconfigarcteture.getErroMensagens(), comand);
 

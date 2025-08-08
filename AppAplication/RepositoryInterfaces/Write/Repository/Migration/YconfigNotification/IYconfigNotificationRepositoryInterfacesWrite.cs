@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
 namespace IRepository.Write
 {
-    public partial interface IYconfigNotificationWriteRepository
+    public partial interface IyConfigNotificationWriteRepository
     {
-        void Insert(IYconfigNotificationEntity yconfignotification);
-        void Update(IYconfigNotificationEntity yconfignotification);
-        void Delete(IYconfigNotificationEntity yconfignotification);
-        public void UpdateTenantID(IYconfigNotificationEntity entity);
-        public void UpdateEmailSmtpClient(IYconfigNotificationEntity entity);
-        public void UpdateEmailPort(IYconfigNotificationEntity entity);
-        public void UpdateEmailUserName(IYconfigNotificationEntity entity);
-        public void UpdateEmailPassword(IYconfigNotificationEntity entity);
+        void Insert(IyConfigNotificationEntity yconfignotification);
+        void Update(IyConfigNotificationEntity yconfignotification);
+        void Delete(IyConfigNotificationEntity yconfignotification);
+        public void UpdateTenantID(IyConfigNotificationEntity entity);
+        public void UpdateEmailSmtpClient(IyConfigNotificationEntity entity);
+        public void UpdateEmailPort(IyConfigNotificationEntity entity);
+        public void UpdateEmailUserName(IyConfigNotificationEntity entity);
+        public void UpdateEmailPassword(IyConfigNotificationEntity entity);
+        public void UpdateDeleted(IyConfigNotificationEntity entity);
+        public void UpdateChanged(IyConfigNotificationEntity entity);
+        public void UpdateUserId(IyConfigNotificationEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

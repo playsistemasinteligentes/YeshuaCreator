@@ -7,15 +7,17 @@ using System.Threading.Tasks;
 
 namespace IRepository.Write
 {
-    public partial interface IYuserWriteRepository
+    public partial interface IyUserWriteRepository
     {
-        void Insert(IYuserEntity yuser);
-        void Update(IYuserEntity yuser);
-        void Delete(IYuserEntity yuser);
-        public void UpdateNome(IYuserEntity entity);
-        public void UpdateEmail(IYuserEntity entity);
-        public void UpdateSenha(IYuserEntity entity);
-        public void UpdateTenantID(IYuserEntity entity);
+        void Insert(IyUserEntity yuser);
+        void Update(IyUserEntity yuser);
+        void Delete(IyUserEntity yuser);
+        public void UpdateNome(IyUserEntity entity);
+        public void UpdateEmail(IyUserEntity entity);
+        public void UpdateSenha(IyUserEntity entity);
+        public void UpdateTenantID(IyUserEntity entity);
+        public void UpdateDeleted(IyUserEntity entity);
+        public void UpdateChanged(IyUserEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

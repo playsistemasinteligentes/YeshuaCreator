@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 
 namespace IRepository.Write
 {
-    public partial interface IYconfigArctetureWriteRepository
+    public partial interface IyConfigArctetureWriteRepository
     {
-        void Insert(IYconfigArctetureEntity yconfigarcteture);
-        void Update(IYconfigArctetureEntity yconfigarcteture);
-        void Delete(IYconfigArctetureEntity yconfigarcteture);
-        public void UpdateAuditTrackerActived(IYconfigArctetureEntity entity);
-        public void UpdateAuditCRUDActived(IYconfigArctetureEntity entity);
+        void Insert(IyConfigArctetureEntity yconfigarcteture);
+        void Update(IyConfigArctetureEntity yconfigarcteture);
+        void Delete(IyConfigArctetureEntity yconfigarcteture);
+        public void UpdateAuditTrackerActived(IyConfigArctetureEntity entity);
+        public void UpdateAuditCRUDActived(IyConfigArctetureEntity entity);
+        public void UpdateTenantID(IyConfigArctetureEntity entity);
+        public void UpdateDeleted(IyConfigArctetureEntity entity);
+        public void UpdateChanged(IyConfigArctetureEntity entity);
+        public void UpdateUserId(IyConfigArctetureEntity entity);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

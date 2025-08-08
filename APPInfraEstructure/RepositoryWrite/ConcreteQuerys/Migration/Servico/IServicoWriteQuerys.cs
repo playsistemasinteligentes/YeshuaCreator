@@ -10,6 +10,10 @@ namespace IQuery.Write
         public QueryModel UpdateGrupoServicoId(IServicoEntity entity);
         public QueryModel UpdateNome(IServicoEntity entity);
         public QueryModel UpdateValor(IServicoEntity entity);
+        public QueryModel UpdateTenantID(IServicoEntity entity);
+        public QueryModel UpdateDeleted(IServicoEntity entity);
+        public QueryModel UpdateChanged(IServicoEntity entity);
+        public QueryModel UpdateUserId(IServicoEntity entity);
         public QueryModel DeleteServicoQuery(IServicoEntity Servico);
     }
 }

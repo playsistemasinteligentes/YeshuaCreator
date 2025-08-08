@@ -14,6 +14,10 @@
     int? GrupoServicoId { get; set; }
     string Nome { get; set; }
     Decimal Valor { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

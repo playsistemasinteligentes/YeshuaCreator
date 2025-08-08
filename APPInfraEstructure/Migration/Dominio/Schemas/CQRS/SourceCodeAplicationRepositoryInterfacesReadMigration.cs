@@ -18,6 +18,9 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCode()
         {
             StringBuilder sb = new StringBuilder();
+            var itens = _entity.AddColumns.Where(x => x.WhereCanTakeOff).Select(colun => $"bool TakeOff{colun.Name} = false");
+            string takeOff = itens.Any() ? ", " + string.Join(", ", itens) : string.Empty;
+
 
             // Adiciona os usings
             sb.AppendLine($"using Repositorio.Outputs;");
@@ -32,25 +35,30 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a interface
-            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepositoryInterface}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIRepositoryRead}");
             sb.AppendLine("{");
             sb.AppendLine($"    public interface I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
 
             //--trocar ICommand comando por um DTO apenas pra não gerar dependencia do Repositorio para o command
 
-            sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command);");
-            sb.AppendLine($"        public {_entity.EntityName}DTO getById();");
+            sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command {takeOff});");
 
             foreach (var column in _entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
-                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command);");
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(object command {takeOff});");
 
 
+            //Exist
             foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
-                sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value);");
+                sb.AppendLine($"        public bool ExistsBy{column.Name}({column.getCsharpType()} value {takeOff});");
 
+            //FirstBy
             foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
-                sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value);");
+                sb.AppendLine($"        public {_entity.EntityName}DTO FirstBy{column.Name}({column.getCsharpType()} value {takeOff});");
+
+            //GetAllBy
+            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> GetAllBy{column.Name}({column.getCsharpType()} value {takeOff});");
 
 
             sb.AppendLine("    }");
@@ -63,7 +71,7 @@ namespace Dominio.Schemas.CQRS
             var sb = new StringBuilder();
             return new StringBuilder();
 
-            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepositoryInterface}");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIRepositoryRead}");
             sb.AppendLine("{");
 
             // Define a classe

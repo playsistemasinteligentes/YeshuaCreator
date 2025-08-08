@@ -3,10 +3,17 @@ using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
 namespace Command.UseCase
 {
-    public partial record ContasRecoveryAccountUseCaseCommand : ICommand
-    {
+public partial record ContasRecoveryAccountUseCaseInputCommand : ICommand
+{
     public string email { get; set; }
     public TypeNotification typeNotification { get; set; }
-    }
+}
+
+public partial record ContasRecoveryAccountUseCaseOutputCommand : ICommand
+{
+    public string email { get; set; }
+    public TypeNotification typeNotification { get; set; }
+}
+
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

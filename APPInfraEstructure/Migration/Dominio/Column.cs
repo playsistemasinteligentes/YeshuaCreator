@@ -37,12 +37,17 @@ namespace Dominio
 
         public string ColumnReference { get; private set; }
         public bool required { get; internal set; }
-        public bool IsBackEndField { get; private set; }
-        public bool IsWhereBackEndField { get; private set; }
         public bool IsUserEncryptedField { get; private set; }
         public bool IsPassword { get; private set; }
-        public bool IsStandardField { get; set; } = false;
-        public string StandardFieldValue { get; internal set; }
+        public bool IsValueDefault { get; set; } = false;
+        public string ValueDefault { get; internal set; }
+        public bool FrontEdit { get; set; } = true;
+        public bool FrontVisibol { get; set; } = true;
+        public bool WhereCanTakeOff { get; set; } = false;
+        public bool IsBackEndField { get; set; } = false;
+        public bool WhereNeedBe { get; set; } = false;
+        public List<string> NotAplicableStandardFieldToEntity { get; private set; } = new List<string>();
+        public string ClausesWhere { get; private set; } = "";
 
         public Entity Int()
         {
@@ -186,13 +191,6 @@ namespace Dominio
             return this.Entity;
         }
 
-        internal Entity BackEndField(bool where)
-        {
-            this.IsBackEndField = true;
-            this.IsWhereBackEndField = where;
-            return this.Entity;
-        }
-
         internal Entity Password()
         {
             this.IsPassword = true;
@@ -210,18 +208,17 @@ namespace Dominio
             return this.Entity;
         }
 
-        public Entity StandardField(string value)
+        public Entity DefaultValue(string value)
         {
-            this.StandardFieldValue = value;
-            this.IsStandardField = true;
+            this.ValueDefault = value;
+            this.IsValueDefault = true;
             return this.Entity;
         }
-        public Entity StandardValue(string value)
+        public Entity EditFront(bool value)
         {
-            this.StandardFieldValue = value;
+            this.FrontEdit = value;
             return this.Entity;
         }
-
 
 
 
@@ -236,11 +233,11 @@ namespace Dominio
                 IsNotNull = this.IsNotNull,
                 required = this.required,
                 IsBackEndField = this.IsBackEndField,
-                IsWhereBackEndField = this.IsWhereBackEndField,
+                WhereNeedBe = this.WhereNeedBe,
                 IsUserEncryptedField = this.IsUserEncryptedField,
                 IsPassword = this.IsPassword,
-                IsStandardField = this.IsStandardField,
-                StandardFieldValue = this.StandardFieldValue,
+                IsValueDefault = this.IsValueDefault,
+                ValueDefault = this.ValueDefault,
                 IsFK = this.IsFK,
                 IsKey = this.IsKey,
                 ColumnReference = this.ColumnReference,
@@ -261,7 +258,34 @@ namespace Dominio
             return copy;
         }
 
+        internal Entity VisivelFront(bool value)
+        {
+            this.FrontVisibol = value;
+            return this.Entity;
+        }
 
+        internal Entity CanTakeOffWhere()
+        {
+            this.WhereCanTakeOff = true;
+            return this.Entity;
+        }
 
+        internal Entity NeedBeWhere()
+        {
+            this.WhereNeedBe = true;
+            return this.Entity;
+        }
+
+        internal Entity NotAplicableEntityToStandardField(string entidade)
+        {
+            this.NotAplicableStandardFieldToEntity.Add(entidade);
+            return this.Entity;
+        }
+
+        internal Entity WhereClauses(string whereClauses)
+        {
+            this.ClausesWhere = whereClauses;
+            return this.Entity;
+        }
     }
 }

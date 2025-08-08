@@ -32,6 +32,10 @@ namespace IQuery.Write
         public QueryModel UpdateEncaminhamentoOutrosProfissionais(ISesoesEntity entity);
         public QueryModel UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity);
         public QueryModel UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity);
+        public QueryModel UpdateTenantID(ISesoesEntity entity);
+        public QueryModel UpdateDeleted(ISesoesEntity entity);
+        public QueryModel UpdateChanged(ISesoesEntity entity);
+        public QueryModel UpdateUserId(ISesoesEntity entity);
         public QueryModel DeleteSesoesQuery(ISesoesEntity Sesoes);
     }
 }

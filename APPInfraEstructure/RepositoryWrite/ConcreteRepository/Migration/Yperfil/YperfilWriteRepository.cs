@@ -12,38 +12,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Input.Repository.Yperfil
+namespace Input.Repository.yPerfil
 {
-    public class YperfilWriteRepository : IYperfilWriteRepository
+    public class yPerfilWriteRepository : IyPerfilWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
-       private readonly IYperfilQueryWrite _query; 
+       private readonly IyPerfilQueryWrite _query; 
 
-        public YperfilWriteRepository(IUnitOfWork unitOfWork,IYperfilQueryWrite query)
+        public yPerfilWriteRepository(IUnitOfWork unitOfWork,IyPerfilQueryWrite query)
         {
              _UnitOfWork= unitOfWork;
              _query = query;
         }
 
-        public void Insert(IYperfilEntity Yperfil)
+        public void Insert(IyPerfilEntity yPerfil)
         {
-            var query = _query.InserirYperfilQuery(Yperfil);
-        Yperfil.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+            var query = _query.InseriryPerfilQuery(yPerfil);
+        yPerfil.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
 
-        public void Update(IYperfilEntity Yperfil)
+        public void Update(IyPerfilEntity yPerfil)
         {
-            var query = _query.UpdateYperfilQuery(Yperfil);
+            var query = _query.UpdateyPerfilQuery(yPerfil);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void Delete(IYperfilEntity Yperfil)
+        public void Delete(IyPerfilEntity yPerfil)
         {
-            var query = _query.DeleteYperfilQuery(Yperfil);
+            var query = _query.DeleteyPerfilQuery(yPerfil);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateDescription(IYperfilEntity entity)
+        public void UpdateDescription(IyPerfilEntity entity)
         {
             var query = _query.UpdateDescription(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateTenantID(IyPerfilEntity entity)
+        {
+            var query = _query.UpdateTenantID(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateDeleted(IyPerfilEntity entity)
+        {
+            var query = _query.UpdateDeleted(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateChanged(IyPerfilEntity entity)
+        {
+            var query = _query.UpdateChanged(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUserId(IyPerfilEntity entity)
+        {
+            var query = _query.UpdateUserId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
     }

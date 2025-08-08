@@ -1,10 +1,12 @@
 ﻿using Dominio.Migration;
 using Dominio.Schemas.CQRS;
 using Interfaces.Schemas;
+using Migration.Dominio;
 using Migration.Interfaces;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.Metrics;
+using static Dapper.SqlMapper;
 
 namespace Dominio.Schemas
 {
@@ -19,13 +21,20 @@ namespace Dominio.Schemas
         public List<MigrationQuery> ApplyMigration(Dominio.Migration.MigrationBase migration)
         {
             List<MigrationQuery> querys = new List<MigrationQuery>();
-            foreach (var e in migration.Entitys.Where(x => x.EntityName != "YStandardFields"))
+            foreach (var e in migration.Entitys.Where(x => x.EntityName != "yStandardFields"))
             {
                 if (e.create)
                     querys.Add(CreateTable(e));
                 else
                     querys.Add(AlterTable(e));
             }
+
+            foreach (var mod in migration.Modules)
+            {
+                querys.Add(InsertModules(mod));
+            }
+
+
             return querys;
         }
 
@@ -37,28 +46,28 @@ namespace Dominio.Schemas
             }
 
             var dropColumns = entity.DropColumns.Select(c =>
-                $" ALTER TABLE {entity.EntityName} DROP COLUMN {c.Name}; "
+                $" ALTER TABLE {entity.EntityName} DROP COLUMN [{c.Name}]; "
             ).ToArray();
             var dropColumnsString = string.Join("; ", dropColumns);
 
             var addColumns = entity.AddColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ADD [{c.Name}]  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
             ).ToArray();
             var addColumnsString = string.Join("; ", addColumns);
 
             var alterColumns = entity.AlterColumns.Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN {c.Name}  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
+                $"  ALTER TABLE {entity.EntityName} ALTER COLUMN [{c.Name}]  {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
             ).ToArray();
             var alterColumnsString = string.Join("; ", alterColumns);
 
             var addForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
+                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
             ).ToArray();
             var addForingKeyString = string.Join("; ", addForingKey);
 
             var alterForingKey = entity.AlterColumns.Where(x => x.IsFK).Select(c =>
             $" IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_{c.FkEntityName}') BEGIN  " +
-            $"ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.Name}); " +
+            $"ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}([{c.Name}]); " +
             $"END ").ToArray();
             var alterForingKeyString = string.Join("; ", alterForingKey);
 
@@ -72,16 +81,21 @@ namespace Dominio.Schemas
                 throw new InvalidOperationException("EntityName cannot be null or empty.");
             }
             var columnsSql = entity.AddColumns.Select(c =>
-                $"{c.Name} {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
+                $"[{c.Name}] {GetSqlDataType(c)} {(c.AutoIncremento ? "IDENTITY(1, 1)" : "")} {(c.IsKey ? "PRIMARY KEY " : "")} {(!c.IsKey ? c.IsNotNull ? "NOT NULL" : "NULL" : "")}"
             ).ToArray();
             var columnsSqlString = string.Join(", ", columnsSql);
 
             var columsForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
-                $"  CONSTRAINT FK_{c.Entity.EntityName}_{c.FkEntityName} FOREIGN KEY({c.Name}) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
+                $"  CONSTRAINT FK_{c.Entity.EntityName}_{c.FkEntityName} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
             ).ToArray();
             var columsForingKeyString = string.Join(", ", columsForingKey);
             columsForingKeyString = string.IsNullOrEmpty(columsForingKeyString) ? "" : ($",{columsForingKeyString}");
             return new MigrationQuery($" CREATE TABLE {entity.EntityName} ({columnsSqlString} {columsForingKeyString});", null);
+        }
+
+        public MigrationQuery InsertModules(Module module)
+        {
+            return new MigrationQuery($" INSERT INTO yModule (Id, Description) values ('{module.Key}','{module.Description}');", null);
         }
 
         private string GetSqlDataType(Column column)

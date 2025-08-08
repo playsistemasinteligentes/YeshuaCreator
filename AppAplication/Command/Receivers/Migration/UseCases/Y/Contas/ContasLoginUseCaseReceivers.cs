@@ -13,20 +13,20 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
 {
-    public partial class ContasLoginUseCaseReceiver : ReciverBase<object>
+    public partial class ContasLoginUseCaseReceiver : ReciverBase<ContasLoginUseCaseOutputCommand>
     {
 
 
-        protected override State<object> Action(ICommand comand)
+        protected override State<ContasLoginUseCaseOutputCommand> Action(ICommand comand)
         {
             try
             {
-                 State<object> retorno = Success("OK", (ContasLoginUseCaseCommand)comand);
-                 if (comand is Command.UseCase.ContasLoginUseCaseCommand specificCommand)
+                 State<ContasLoginUseCaseOutputCommand> retorno = Success("OK", null);
+                 if (comand is Command.UseCase.ContasLoginUseCaseInputCommand specificCommand)
                  CustomActionHook(ref retorno, specificCommand);
                  return retorno;
             }
-            catch (ReceiverException<object> e)
+            catch (ReceiverException<ContasLoginUseCaseOutputCommand> e)
             {
                 return e.State;
             }
@@ -35,7 +35,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<object> state, Command.UseCase.ContasLoginUseCaseCommand comand);
+partial void CustomActionHook(ref State<ContasLoginUseCaseOutputCommand> state, Command.UseCase.ContasLoginUseCaseInputCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

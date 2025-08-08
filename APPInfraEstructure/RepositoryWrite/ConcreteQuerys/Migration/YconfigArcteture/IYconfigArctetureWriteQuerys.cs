@@ -3,13 +3,17 @@ using Dominio.Entitys;
 namespace IQuery.Write
 {
 
-    public interface IYconfigArctetureQueryWrite 
+    public interface IyConfigArctetureQueryWrite 
      {
-        public QueryModel InserirYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture);
-        public QueryModel UpdateYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture);
-        public QueryModel UpdateAuditTrackerActived(IYconfigArctetureEntity entity);
-        public QueryModel UpdateAuditCRUDActived(IYconfigArctetureEntity entity);
-        public QueryModel DeleteYconfigArctetureQuery(IYconfigArctetureEntity YconfigArcteture);
+        public QueryModel InseriryConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
+        public QueryModel UpdateyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
+        public QueryModel UpdateAuditTrackerActived(IyConfigArctetureEntity entity);
+        public QueryModel UpdateAuditCRUDActived(IyConfigArctetureEntity entity);
+        public QueryModel UpdateTenantID(IyConfigArctetureEntity entity);
+        public QueryModel UpdateDeleted(IyConfigArctetureEntity entity);
+        public QueryModel UpdateChanged(IyConfigArctetureEntity entity);
+        public QueryModel UpdateUserId(IyConfigArctetureEntity entity);
+        public QueryModel DeleteyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

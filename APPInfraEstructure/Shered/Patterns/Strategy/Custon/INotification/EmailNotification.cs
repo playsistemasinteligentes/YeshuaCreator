@@ -9,10 +9,10 @@ namespace Shered.Patterns.Strategy
 {
     public partial class EmailNotification : INotification
     {
-        private readonly IYconfigNotificationReadRepository _repReadYConfig;
-        private readonly IYuserReadRepository _repUserReadRepository;
+        private readonly IyConfigNotificationReadRepository _repReadYConfig;
+        private readonly IyUserReadRepository _repUserReadRepository;
 
-        public EmailNotification(IYconfigNotificationReadRepository repReadYConfig, IYuserReadRepository repUserReadRepository)
+        public EmailNotification(IyConfigNotificationReadRepository repReadYConfig, IyUserReadRepository repUserReadRepository)
         {
             _repReadYConfig = repReadYConfig;
             _repUserReadRepository = repUserReadRepository;

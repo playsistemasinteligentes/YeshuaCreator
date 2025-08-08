@@ -2,19 +2,19 @@
 
                             namespace Dominio.Entitys
                             {
-                                public class YuserFactory
+                                public class yUserFactory
                                 {
                                     private readonly Dominio.Interfaces.ILogger _logger;
 
-                                    public YuserFactory(Dominio.Interfaces.ILogger logger)
+                                    public yUserFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IYuserEntity Create(int? id, string nome, string email, string senha, int? tenantid )
+                                    } public IyUserEntity Create(int? id, string nome, string email, string senha )
                             {
-                            var entity = new YuserEntity(id, nome, email, senha, tenantid );
+                            var entity = new yUserEntity(id, nome, email, senha );
 
 
-                            var decoratedEntity = new YuserDecorator(entity, _logger);
+                            var decoratedEntity = new yUserDecorator(entity, _logger);
                             return decoratedEntity;
                                     }
                                 }

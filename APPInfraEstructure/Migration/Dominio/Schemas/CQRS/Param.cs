@@ -27,7 +27,7 @@ namespace Migration.Dominio.Schemas.CQRS
         public object NameSpaceCommandsPartners { get; set; } = "Command.Patterns.Command";
         public object NameSpaceInterfaceCommandsPartners { get; set; } = "RepositoryInterfaces.Patterns.Command";
         public object NameSpaceInterfaceRepositoryPartners { get; set; } = "RepositoryInterfaces.Patterns.Repository";
-        public object NameSpaceReadRepositoryInterface { get; set; } = "IRepository.Read";
+        public object NameSpaceIRepositoryRead { get; set; } = "IRepository.Read";
         public object NameSpaceIRepositoryWrite { get; set; } = "IRepository.Write";
         public object NameSpaceIQueryWrite { get; set; } = "IQuery.Write";
         public object NameSpaceQueryWrite { get; set; } = "Query.Write";

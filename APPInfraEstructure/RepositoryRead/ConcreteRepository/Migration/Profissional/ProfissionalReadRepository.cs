@@ -29,15 +29,15 @@ namespace Read.Repository
             _query = query;
         }
 
-        public DataPagination<ProfissionalDTO> getProfissional(ICommandRead command)
+        public DataPagination<ProfissionalDTO> getProfissional(ICommandRead command )
          {
             if (command is Command.Read.ProfissionalReadCommand c)
-                return getProfissional(c);
+                return getProfissional(c );
             throw new NotImplementedException();
         }
-        private DataPagination<ProfissionalDTO> getProfissional(Command.Read.ProfissionalReadCommand command)
+        private DataPagination<ProfissionalDTO> getProfissional(Command.Read.ProfissionalReadCommand command )
         {
-            var query = _query.ProfissionalQuery(command);
+            var query = _query.ProfissionalQuery(command );
 
                 var itens = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters);
                 return new DataPagination<ProfissionalDTO>(
@@ -47,92 +47,252 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(Command.Patterns.Command.SearchFKCommand command)
+        private IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(Command.Patterns.Command.SearchFKCommand command )
         {
             List<ProfissionalEspecialidadeIdDTO> lista;
-            var query = _query.ProfissionalEspecialidadeIdQuery(command);
+            var query = _query.ProfissionalEspecialidadeIdQuery(command );
 
                 lista = _connection.Query<ProfissionalEspecialidadeIdDTO>(query.Query,query.Parameters) as List<ProfissionalEspecialidadeIdDTO>;
             return lista;
         }
 
-        public IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(object command)
+        public IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(object command )
         {
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
-                return getProfissionalReadFKEspecialidadeId(c);
+                return getProfissionalReadFKEspecialidadeId(c );
             }
             throw new NotImplementedException();
         }
 
-        public bool ExistsById(int value)
+        private IEnumerable<ProfissionalTenantIDDTO> getProfissionalReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            var query = _query.ExistsByIdQuery(value);
+            List<ProfissionalTenantIDDTO> lista;
+            var query = _query.ProfissionalTenantIDQuery(command );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
+                lista = _connection.Query<ProfissionalTenantIDDTO>(query.Query,query.Parameters) as List<ProfissionalTenantIDDTO>;
+            return lista;
         }
 
-        public bool ExistsByNome(string value)
+        public IEnumerable<ProfissionalTenantIDDTO> getProfissionalReadFKTenantID(object command )
         {
-            var query = _query.ExistsByNomeQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByEspecialidadeId(int value)
-        {
-            var query = _query.ExistsByEspecialidadeIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByTelefone(string value)
-        {
-            var query = _query.ExistsByTelefoneQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public ProfissionalDTO FirstById(int value)
-        {
-            var query = _query.FirstByIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ProfissionalDTO FirstByNome(string value)
-        {
-            var query = _query.FirstByNomeQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ProfissionalDTO FirstByEspecialidadeId(int value)
-        {
-            var query = _query.FirstByEspecialidadeIdQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ProfissionalDTO FirstByTelefone(string value)
-        {
-            var query = _query.FirstByTelefoneQuery(value);
-
-                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public ProfissionalDTO getById()
-        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getProfissionalReadFKTenantID(c );
+            }
             throw new NotImplementedException();
         }
+
+        private IEnumerable<ProfissionalUserIdDTO> getProfissionalReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
+        {
+            List<ProfissionalUserIdDTO> lista;
+            var query = _query.ProfissionalUserIdQuery(command );
+
+                lista = _connection.Query<ProfissionalUserIdDTO>(query.Query,query.Parameters) as List<ProfissionalUserIdDTO>;
+            return lista;
+        }
+
+        public IEnumerable<ProfissionalUserIdDTO> getProfissionalReadFKUserId(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getProfissionalReadFKUserId(c );
+            }
+            throw new NotImplementedException();
+        }
+
+        public bool ExistsById(int value )
+        {
+            var query = _query.ExistsByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByNome(string value )
+        {
+            var query = _query.ExistsByNomeQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEspecialidadeId(int value )
+        {
+            var query = _query.ExistsByEspecialidadeIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTelefone(string value )
+        {
+            var query = _query.ExistsByTelefoneQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTenantID(int value )
+        {
+            var query = _query.ExistsByTenantIDQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByDeleted(bool value )
+        {
+            var query = _query.ExistsByDeletedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByChanged(DateTime value )
+        {
+            var query = _query.ExistsByChangedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByUserId(int value )
+        {
+            var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public ProfissionalDTO FirstById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByNome(string value )
+        {
+            var query = _query.FirstByNomeQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByEspecialidadeId(int value )
+        {
+            var query = _query.FirstByEspecialidadeIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByTelefone(string value )
+        {
+            var query = _query.FirstByTelefoneQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByTenantID(int value )
+        {
+            var query = _query.FirstByTenantIDQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByDeleted(bool value )
+        {
+            var query = _query.FirstByDeletedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByChanged(DateTime value )
+        {
+            var query = _query.FirstByChangedQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ProfissionalDTO FirstByUserId(int value )
+        {
+            var query = _query.FirstByUserIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByNome(string value )
+        {
+            var query = _query.FirstByNomeQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByEspecialidadeId(int value )
+        {
+            var query = _query.FirstByEspecialidadeIdQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByTelefone(string value )
+        {
+            var query = _query.FirstByTelefoneQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByTenantID(int value )
+        {
+            var query = _query.FirstByTenantIDQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByDeleted(bool value )
+        {
+            var query = _query.FirstByDeletedQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByChanged(DateTime value )
+        {
+            var query = _query.FirstByChangedQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByUserId(int value )
+        {
+            var query = _query.FirstByUserIdQuery(value );
+
+                var result = _connection.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                return result;
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

@@ -34,11 +34,15 @@ namespace Query.Write
         }
         public QueryModel UpdateDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId, DataHora = @DataHora WHERE Id = @Id ";
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId, DataHora = @DataHora, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,
                 DataHora = DisponibilidadeAgenda.DataHora,
+                TenantID = DisponibilidadeAgenda.TenantID,
+                Deleted = DisponibilidadeAgenda.Deleted,
+                Changed = DisponibilidadeAgenda.Changed,
+                UserId = DisponibilidadeAgenda.UserId,
                 Id = DisponibilidadeAgenda.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -59,6 +63,46 @@ namespace Query.Write
             this.Parameters = new
             {
                 DataHora = entity.DataHora,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTenantID(IDisponibilidadeAgendaEntity entity)
+        {
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TenantID = entity.TenantID,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDeleted(IDisponibilidadeAgendaEntity entity)
+        {
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Deleted = entity.Deleted,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateChanged(IDisponibilidadeAgendaEntity entity)
+        {
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET Changed = @Changed WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Changed = entity.Changed,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(IDisponibilidadeAgendaEntity entity)
+        {
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET UserId = @UserId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                UserId = entity.UserId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

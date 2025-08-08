@@ -12,6 +12,10 @@ namespace Repositorio.Outputs
     public string nome { get; set; }
     public string endereco { get; set; }
     public string telefone { get; set; }
+    public int tenantid { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    public int userid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

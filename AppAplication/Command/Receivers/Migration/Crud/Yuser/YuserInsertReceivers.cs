@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertYuserReceiver : ReciverBase <IYuserEntity>
+    public class InsertyUserReceiver : ReciverBase <IyUserEntity>
     {
-        private readonly IYuserWriteRepository _repository;
+        private readonly IyUserWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertYuserReceiver(IYuserWriteRepository repository,ILogger logger)
+        public InsertyUserReceiver(IyUserWriteRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<IYuserEntity> Action(ICommand comand)
+        protected override State<IyUserEntity> Action(ICommand comand)
         {
-             if(comand is Command.Write.YuserCrudCommand c) 
+             if(comand is Command.Write.yUserCrudCommand c) 
              {    
-                 var yuser = new YuserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha, c.TenantID);
+                 var yuser = new yUserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha);
                  if (!yuser.isValidInsert())
                      return ValidationError(yuser.getErroMensagens(), comand);
 

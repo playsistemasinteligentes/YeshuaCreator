@@ -9,14 +9,29 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IYperfilReadRepository
+    public interface IyPerfilReadRepository
     {
-        public DataPagination<YperfilDTO> getYperfil(ICommandRead command);
-        public YperfilDTO getById();
-        public bool ExistsById(int value);
-        public bool ExistsByDescription(string value);
-        public YperfilDTO FirstById(int value);
-        public YperfilDTO FirstByDescription(string value);
+        public DataPagination<yPerfilDTO> getyPerfil(ICommandRead command );
+        public IEnumerable<yPerfilTenantIDDTO> getyPerfilReadFKTenantID(object command );
+        public IEnumerable<yPerfilUserIdDTO> getyPerfilReadFKUserId(object command );
+        public bool ExistsById(int value );
+        public bool ExistsByDescription(string value );
+        public bool ExistsByTenantID(int value );
+        public bool ExistsByDeleted(bool value );
+        public bool ExistsByChanged(DateTime value );
+        public bool ExistsByUserId(int value );
+        public yPerfilDTO FirstById(int value );
+        public yPerfilDTO FirstByDescription(string value );
+        public yPerfilDTO FirstByTenantID(int value );
+        public yPerfilDTO FirstByDeleted(bool value );
+        public yPerfilDTO FirstByChanged(DateTime value );
+        public yPerfilDTO FirstByUserId(int value );
+        public IEnumerable<yPerfilDTO> GetAllById(int value );
+        public IEnumerable<yPerfilDTO> GetAllByDescription(string value );
+        public IEnumerable<yPerfilDTO> GetAllByTenantID(int value );
+        public IEnumerable<yPerfilDTO> GetAllByDeleted(bool value );
+        public IEnumerable<yPerfilDTO> GetAllByChanged(DateTime value );
+        public IEnumerable<yPerfilDTO> GetAllByUserId(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

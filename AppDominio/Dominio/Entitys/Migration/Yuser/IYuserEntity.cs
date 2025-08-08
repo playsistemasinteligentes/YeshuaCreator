@@ -8,13 +8,15 @@
 
                 namespace Dominio.Entitys
                 {
-                    public interface IYuserEntity
+                    public interface IyUserEntity
 {
     int? Id { get; set; }
     string Nome { get; set; }
     string Email { get; set; }
     string Senha { get; set; }
     int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

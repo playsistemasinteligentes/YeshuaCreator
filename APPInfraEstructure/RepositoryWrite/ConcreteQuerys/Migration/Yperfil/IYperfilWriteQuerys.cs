@@ -3,12 +3,16 @@ using Dominio.Entitys;
 namespace IQuery.Write
 {
 
-    public interface IYperfilQueryWrite 
+    public interface IyPerfilQueryWrite 
      {
-        public QueryModel InserirYperfilQuery(IYperfilEntity Yperfil);
-        public QueryModel UpdateYperfilQuery(IYperfilEntity Yperfil);
-        public QueryModel UpdateDescription(IYperfilEntity entity);
-        public QueryModel DeleteYperfilQuery(IYperfilEntity Yperfil);
+        public QueryModel InseriryPerfilQuery(IyPerfilEntity yPerfil);
+        public QueryModel UpdateyPerfilQuery(IyPerfilEntity yPerfil);
+        public QueryModel UpdateDescription(IyPerfilEntity entity);
+        public QueryModel UpdateTenantID(IyPerfilEntity entity);
+        public QueryModel UpdateDeleted(IyPerfilEntity entity);
+        public QueryModel UpdateChanged(IyPerfilEntity entity);
+        public QueryModel UpdateUserId(IyPerfilEntity entity);
+        public QueryModel DeleteyPerfilQuery(IyPerfilEntity yPerfil);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

@@ -8,13 +8,17 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class YconfigArctetureEntity : IYconfigArctetureEntity
+                    public partial class yConfigArctetureEntity : IyConfigArctetureEntity
 {
     public int? Id { get; set; }
     public int? AuditTrackerActived { get; set; }
     public int? AuditCRUDActived { get; set; }
+    public int? TenantID { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
+    public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal YconfigArctetureEntity(int? id, int? audittrackeractived, int? auditcrudactived ){
+ internal yConfigArctetureEntity(int? id, int? audittrackeractived, int? auditcrudactived ){
  Id = id; 
  AuditTrackerActived = audittrackeractived; 
  AuditCRUDActived = auditcrudactived; 

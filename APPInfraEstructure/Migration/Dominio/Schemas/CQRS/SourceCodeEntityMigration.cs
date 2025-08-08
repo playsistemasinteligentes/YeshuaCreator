@@ -39,9 +39,9 @@ namespace Dominio.Schemas.CQRS
                                     }}");
 
 
-                sb.AppendLine(@$" public I{_entity.EntityName}Entity Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} )
+                sb.AppendLine(@$" public I{_entity.EntityName}Entity Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} )
                             {{
-                            var entity = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => c.getParameterConstructor()))} );
+                            var entity = new {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => c.getParameterConstructor()))} );
 
 
                             var decoratedEntity = new {_entity.EntityName}Decorator(entity, _logger);
@@ -137,8 +137,8 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine("    private List<string> _erroMensagem = null;");
                 // construtor 
-                sb.AppendLine(@$" internal {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} ){{");
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+                sb.AppendLine(@$" internal {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} ){{");
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault))
                     if (column.getCsharpType() == "DateTime")
                         sb.AppendLine($" {column.Name} = ({column.getParameterConstructor()} < (new DateTime(1800, 1, 1))) ? DateTime.Now : {column.getParameterConstructor()}; ");
                     else

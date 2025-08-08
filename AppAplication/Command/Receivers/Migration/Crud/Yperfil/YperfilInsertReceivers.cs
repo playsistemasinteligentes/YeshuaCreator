@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertYperfilReceiver : ReciverBase <IYperfilEntity>
+    public class InsertyPerfilReceiver : ReciverBase <IyPerfilEntity>
     {
-        private readonly IYperfilWriteRepository _repository;
+        private readonly IyPerfilWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertYperfilReceiver(IYperfilWriteRepository repository,ILogger logger)
+        public InsertyPerfilReceiver(IyPerfilWriteRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<IYperfilEntity> Action(ICommand comand)
+        protected override State<IyPerfilEntity> Action(ICommand comand)
         {
-             if(comand is Command.Write.YperfilCrudCommand c) 
+             if(comand is Command.Write.yPerfilCrudCommand c) 
              {    
-                 var yperfil = new YperfilFactory(_logger).Create(c.Id, c.Description);
+                 var yperfil = new yPerfilFactory(_logger).Create(c.Id, c.Description);
                  if (!yperfil.isValidInsert())
                      return ValidationError(yperfil.getErroMensagens(), comand);
 

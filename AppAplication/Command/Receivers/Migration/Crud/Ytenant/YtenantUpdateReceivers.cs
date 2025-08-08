@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateYtenantReceiver : ReciverBase <IYtenantEntity>
+    public class UpdateyTenantReceiver : ReciverBase <IyTenantEntity>
     {
-        private readonly IYtenantWriteRepository _repository;
+        private readonly IyTenantWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateYtenantReceiver(IYtenantWriteRepository repository,ILogger logger)
+        public UpdateyTenantReceiver(IyTenantWriteRepository repository,ILogger logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        protected override State<IYtenantEntity> Action(ICommand comand)
+        protected override State<IyTenantEntity> Action(ICommand comand)
         {
-             if(comand is Command.Write.YtenantCrudCommand c) 
+             if(comand is Command.Write.yTenantCrudCommand c) 
              {    
-                 var ytenant = new YtenantFactory(_logger).Create(c.Id, c.CnpjCpf, c.Nome, c.UserId);
+                 var ytenant = new yTenantFactory(_logger).Create(c.CnpjCpf, c.Nome, c.UserId);
                  if (!ytenant.isValidUpdate())
                      return ValidationError(ytenant.getErroMensagens(), comand);
 

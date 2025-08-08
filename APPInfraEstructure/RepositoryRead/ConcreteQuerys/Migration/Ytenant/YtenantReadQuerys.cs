@@ -11,32 +11,32 @@ using System.Threading.Tasks;
 
 namespace Query.Read 
 {
-    public class YtenantQueryRead : QueryBase, IYtenantQueryRead
+    public class yTenantQueryRead : QueryBase, IyTenantQueryRead
     {
         protected readonly ICurrentUser _correntUser;
-        public YtenantQueryRead(ICurrentUser correntUser)
+        public yTenantQueryRead(ICurrentUser correntUser)
         {
             _correntUser = correntUser;
         }
-        public QueryModel YtenantQuery(Command.Read.YtenantReadCommand Command)
+        public QueryModel yTenantQuery(Command.Read.yTenantReadCommand Command , bool TakeOffId = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, CnpjCpf, Nome, UserId, Deleted, Changed from Ytenant ";
-if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
-if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+            this.Query = $@" select Id, CnpjCpf, Nome, UserId, Deleted, Changed from yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
 if (Command.CnpjCpf.HasValue) parametersDict["CnpjCpf"] = Command.CnpjCpf.Value;
 if (Command.CnpjCpf.HasValue) whereClauses.Add($"CnpjCpf = @CnpjCpf");
 if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
 if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
 if (Command.UserId.HasValue) parametersDict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
             if (whereClauses.Any()) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere(" AND ")} {string.Join(" AND ", whereClauses)}"; 
-            else if (!string.IsNullOrEmpty(getBackEndFieldWitchWhere())) 
-                 this.Query += $" WHERE {getBackEndFieldWitchWhere()}"; 
+                 this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -46,69 +46,221 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel ExistsByIdQuery(int value)
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffId = false)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} Id = @Id";
-            var parameters = new { Id = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Id"] = value; 
+                      whereClauses.Add($" Id = @Id ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByCnpjCpfQuery(int value)
+        public QueryModel ExistsByCnpjCpfQuery(int value , bool TakeOffId = false)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} CnpjCpf = @CnpjCpf";
-            var parameters = new { CnpjCpf = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["CnpjCpf"] = value; 
+                      whereClauses.Add($" CnpjCpf = @CnpjCpf ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByNomeQuery(string value)
+        public QueryModel ExistsByNomeQuery(string value , bool TakeOffId = false)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} Nome = @Nome";
-            var parameters = new { Nome = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Nome"] = value; 
+                      whereClauses.Add($" Nome = @Nome ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByUserIdQuery(int value)
+        public QueryModel ExistsByUserIdQuery(int value , bool TakeOffId = false)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} UserId = @UserId";
-            var parameters = new { UserId = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["UserId"] = value; 
+                      whereClauses.Add($" UserId = @UserId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByChangedQuery(DateTime value)
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffId = false)
         {
-            var sql = $"SELECT 1 FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")} Changed = @Changed";
-            var parameters = new { Changed = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Deleted"] = value; 
+                      whereClauses.Add($" Deleted = @Deleted ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByIdQuery(int value)
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffId = false)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  Id = @Id";
-            var parameters = new { Id = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Changed"] = value; 
+                      whereClauses.Add($" Changed = @Changed ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByCnpjCpfQuery(int value)
+        public QueryModel FirstByIdQuery(int value , bool TakeOffId = false)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  CnpjCpf = @CnpjCpf";
-            var parameters = new { CnpjCpf = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Id"] = value; 
+                      whereClauses.Add($" Id = @Id ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByNomeQuery(string value)
+        public QueryModel FirstByCnpjCpfQuery(int value , bool TakeOffId = false)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  Nome = @Nome";
-            var parameters = new { Nome = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["CnpjCpf"] = value; 
+                      whereClauses.Add($" CnpjCpf = @CnpjCpf ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByUserIdQuery(int value)
+        public QueryModel FirstByNomeQuery(string value , bool TakeOffId = false)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  UserId = @UserId";
-            var parameters = new { UserId = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Nome"] = value; 
+                      whereClauses.Add($" Nome = @Nome ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByChangedQuery(DateTime value)
+        public QueryModel FirstByUserIdQuery(int value , bool TakeOffId = false)
         {
-            var sql = $"SELECT * FROM Ytenant WHERE {getBackEndFieldWitchWhere(" AND ")}  Changed = @Changed";
-            var parameters = new { Changed = value };
-            return new QueryModel(sql, parameters);
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["UserId"] = value; 
+                      whereClauses.Add($" UserId = @UserId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
-        private string getBackEndFieldWitchWhere(string sql = "")
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffId = false)
         {
-         return $" (Deleted = 0) "+sql;
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Deleted"] = value; 
+                      whereClauses.Add($" Deleted = @Deleted ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Changed"] = value; 
+                      whereClauses.Add($" Changed = @Changed ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
         }
     }
 }

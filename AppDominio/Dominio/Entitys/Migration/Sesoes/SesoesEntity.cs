@@ -36,6 +36,10 @@
     public string EncaminhamentoOutrosProfissionais { get; set; }
     public string InformacoesRelevantesFuturasConsultas { get; set; }
     public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+    public int? TenantID { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
+    public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
  internal SesoesEntity(int? id, int? pacienteid, int? profissionalid, int? servicoid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
  Id = id; 

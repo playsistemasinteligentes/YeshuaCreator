@@ -1,7 +1,7 @@
 
-                namespace Dominio.Entitys.Yperfil
+                namespace Dominio.Entitys.yPerfil
                 {
-            public partial class YperfilEntity
+            public partial class yPerfilEntity
 {
 }
 }

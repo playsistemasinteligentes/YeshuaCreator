@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record YperfilTenantIDDTO
+    public record yPerfilTenantIDDTO
     {
     public int id { get; set; }
     public string nome { get; set; }

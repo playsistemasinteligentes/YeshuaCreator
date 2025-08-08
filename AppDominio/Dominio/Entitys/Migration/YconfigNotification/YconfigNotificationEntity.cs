@@ -8,7 +8,7 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class YconfigNotificationEntity : IYconfigNotificationEntity
+                    public partial class yConfigNotificationEntity : IyConfigNotificationEntity
 {
     public int? Id { get; set; }
     public int? TenantID { get; set; }
@@ -16,10 +16,12 @@
     public int? EmailPort { get; set; }
     public string EmailUserName { get; set; }
     public string EmailPassword { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
+    public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal YconfigNotificationEntity(int? id, int? tenantid, string emailsmtpclient, int? emailport, string emailusername, string emailpassword ){
+ internal yConfigNotificationEntity(int? id, string emailsmtpclient, int? emailport, string emailusername, string emailpassword ){
  Id = id; 
- TenantID = tenantid; 
  EmailSmtpClient = emailsmtpclient; 
  EmailPort = emailport; 
  EmailUserName = emailusername; 
