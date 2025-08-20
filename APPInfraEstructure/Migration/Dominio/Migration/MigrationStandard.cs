@@ -38,11 +38,11 @@ namespace Migration.Dominio.Migration
             AddEntity("yStandardFields")
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere()
             .NotEntity("yModule")
-            .AddColumn("Deleted", "Deleted").Boolean().DefaultValue("0").NeedBeWhere().EditFront(false)
+            .AddColumn("Deleted", "Deleted").Boolean().DefaultValue("0").NeedBeWhere().EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
-            .AddColumn("Changed", "Changed").DateTime().DefaultValue("#DateTime.Now").EditFront(false)
+            .AddColumn("Changed", "Changed").DateTime().DefaultValue("#DateTime.Now").EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
-            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_correntUser.UserId").EditFront(false).VisivelFront(true)
+            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_correntUser.UserId").EditFront(false).VisivelFront(false)
             .NotEntity("yModule");
 
 
@@ -76,7 +76,7 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yUserModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("ModuleId", "ID Modulo").FK("yTenantModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _correntUser.TenantID)")
+            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _correntUser.TenantID)")
             .AddColumn("UserId", "User ID").Int().FK("yUser", "Id")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 

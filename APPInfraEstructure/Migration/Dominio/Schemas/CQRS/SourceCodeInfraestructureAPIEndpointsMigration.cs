@@ -91,43 +91,34 @@ namespace Dominio.Schemas.CQRS
 
 
             // menus 
-            sb.AppendLine("app.MapGet(\"/getMenu\", (HttpContext context) =>");
-            sb.AppendLine("{");
+            sb.AppendLine(@"
+                    app.MapGet(""/getMenu"", (HttpContext context) =>
+                    {
+                        var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == ""userModules"")?.Value;
+                        if (modulesClaim == null)
+                            return Results.Unauthorized();
 
+                        var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                        var userModules = StaticModules.Modules
+                            .Where(m => moduleKeys.Contains(m.Key))
+                            .ToList();
 
-            sb.AppendLine("var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == \"userModules\")?.Value;");
-            sb.AppendLine("if (modulesClaim == null)");
-            sb.AppendLine("    return Results.Unauthorized();");
-            sb.AppendLine();
-            sb.AppendLine("var moduleKeys = modulesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries);");
-            sb.AppendLine("var userModules = StaticModules.Modules.Where(m => moduleKeys.Contains(m.Key)).ToList();");
-            sb.AppendLine("var result = new List<object>();");
-            sb.AppendLine("foreach (var mol in userModules)");
-            sb.AppendLine("{");
-            sb.AppendLine("    foreach (var men in mol.Menus)");
-            sb.AppendLine("    {");
-            sb.AppendLine("        result.Add(new");
-            sb.AppendLine("        {");
-            sb.AppendLine("            id = men.Title,");
-            sb.AppendLine("            description = men.Title,");
-            sb.AppendLine("            endpoint = $\"/getMetaData{men.Title}\",");
-            sb.AppendLine("            type = \"crud\"");
-            sb.AppendLine("        });");
-            sb.AppendLine("    }");
-            sb.AppendLine("}");
-            sb.AppendLine("var menu = result.ToArray();");
-            sb.AppendLine("return Results.Ok(menu);");
+                        var result = userModules.Select(m => new
+                        {
+                            id = m.Key,
+                            description = m.Title,
+                            children = m.Menus.Select(menu => new
+                            {
+                                description = menu.Title,
+                                endpoint = $""/getMetaData{menu.Title}"",
+                                type = ""crud""
+                            }).ToList()
+                        }).ToList();
 
-            /*
-                                    sb.AppendLine("new{");
-                            sb.AppendLine($"id=\"{entidade.EntityName}\",");
-                            sb.AppendLine($"description=\"{entidade.EntityName}\",");
-                            sb.AppendLine($"endpoint=\"/getMetaData{entidade.EntityName}\",");
-                            sb.AppendLine($"type = \"crud\"");
-                            sb.AppendLine("}");
+                        return Results.Ok(result);
+                    }).RequireAuthorization();
+            ");
 
-                     */
-            sb.AppendLine("}).RequireAuthorization();");
 
 
 
@@ -185,7 +176,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("searchFields = new[]");
                 sb.AppendLine("{");
 
-                foreach (var item in entidade.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     string endPontGetMetadata = string.Empty;
@@ -216,7 +207,7 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("formFields = new[]");
                 sb.AppendLine("{");
-                foreach (var item in entidade.AddColumns.Where(x => !x.IsBackEndField))
+                foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
                 {
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     string endPontGetMetadata = string.Empty;
@@ -247,7 +238,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("             endpoints = new");
                 sb.AppendLine("             {");
 
-                foreach (var column in entidade.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
+                foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
                     sb.AppendLine($"                 {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
 
 

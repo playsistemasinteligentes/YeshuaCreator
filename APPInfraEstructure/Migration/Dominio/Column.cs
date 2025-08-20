@@ -242,7 +242,8 @@ namespace Dominio
                 IsKey = this.IsKey,
                 ColumnReference = this.ColumnReference,
                 Length = this.Length,
-                Precision = this.Precision
+                Precision = this.Precision,
+                FrontVisibol = this.FrontVisibol
             };
 
             if (this.Enum != null)

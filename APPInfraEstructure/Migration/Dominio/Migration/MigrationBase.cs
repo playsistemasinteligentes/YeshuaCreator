@@ -98,7 +98,10 @@ namespace Dominio.Migration
         {
             Module modulo = Modules.Where(x => x.Key == key).FirstOrDefault();
             if (modulo == null)
+            {
                 modulo = new Module(key);
+                Modules.Add(modulo);
+            }
             modulo.Entities.Add(_entity);
             return _entity.AddModule(modulo);
         }
