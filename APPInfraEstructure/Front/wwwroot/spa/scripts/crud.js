@@ -246,6 +246,8 @@ function renderSearch(metadata, modoFk = false) {
             input.dataset.id = '';
             input.dataset.endPontGetMetadata = field.endPontGetMetadata;
 
+            console.log('teste');
+
             input.type = "text";
             input.step = "";
 
@@ -578,7 +580,7 @@ async function buildSearchFK(tipo, campoId, valor) {
 function openSearchFK(metadataFk, campoDestino) {
     const container = document.getElementById('modal-conteudo-fk');
     showFkModal();
-
+    console.log('aqui');
     crudState.fkContext = {
         metadata: metadataFk,
         campoDestino: campoDestino

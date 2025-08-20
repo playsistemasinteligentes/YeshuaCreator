@@ -76,10 +76,9 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yUserModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _correntUser.TenantID)")
+            .AddColumn("ModuleId", "ID Modulo").FK("yTenantModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _correntUser.TenantID)")
             .AddColumn("UserId", "User ID").Int().FK("yUser", "Id")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
-
 
 
             AddEntity("yGrant")
