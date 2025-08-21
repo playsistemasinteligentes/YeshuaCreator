@@ -111,7 +111,7 @@ namespace Dominio.Migration
         {
             // Cria um dicionário para acesso rápido às entidades já sanitizadas
             var moduleDictionary = sanitizedMedules.ToDictionary(e => e.Key, e => e);
-            foreach (var mol in migration.Modules)
+            foreach (var mol in migration.Modules.Where(x => !string.IsNullOrEmpty(x.Description._value)))
             {
                 if (!moduleDictionary.TryGetValue(mol.Key, out var sanitizedModule))
                 {
