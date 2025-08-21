@@ -450,105 +450,163 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
 
 }
 
+
+
 function renderFormCrud() {
     const formGroup = document.getElementById('form-group');
     formGroup.innerHTML = '';
 
+    const tabsMap = {};
     crudState.metadata.formFields.forEach(field => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'flex flex-col';
-
-
-        const label = document.createElement('label');
-        label.textContent = field.label;
-        label.setAttribute('for', `insert-${field.id}`);
-        // label.className = 'block text-sm font-medium text-gray-700 mb-1';
-        label.className = 'block text-sm font-medium text-gray-400 mb-1';
-
-
-        let input;
-
-        if (field.type.toLowerCase() === 'list' || field.type.toLowerCase() === 'enum') {
-            input = document.createElement('select');
-            input.id = `insert-${field.id}`;
-            input.className = 'border p-2 rounded';
-
-            const defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.textContent = `Selecione ${field.label}`;
-            input.appendChild(defaultOption);
-
-            if (field.options && Array.isArray(field.options)) {
-                field.options.forEach(optionData => {
-                    const option = document.createElement('option');
-                    option.value = optionData.value;
-                    option.textContent = optionData.display;
-                    input.appendChild(option);
-                });
-            }
-
-            wrapper.appendChild(label);
-            wrapper.appendChild(input);
-        } else {
-            input = document.createElement('input');
-            input.id = `insert-${field.id}`;
-            //input.placeholder = field.label;
-            input.className = 'border p-2 rounded';
-
-            switch (field.type.toLowerCase()) {
-                case 'int':
-                    input.type = 'number';
-                    input.step = '1';
-                    break;
-                case 'float':
-                case 'decimal':
-                    input.type = 'number';
-                    input.step = '0.01';
-                    break;
-                case 'datetime':
-                    input.type = 'datetime-local';
-                    break;
-                default:
-                    input.type = 'text';
-            }
-
-            if (field.isFk) {
-                input.dataset.description = '';
-                input.dataset.id = '';
-                input.dataset.endPontGetMetadata = field.endPontGetMetadata;
-                input.type = "text";
-                input.step = "";
-
-                input.addEventListener('keypress', function (event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        buildSearchFK('insert', field.id, input.value);
-                    }
-                });
-
-                const fkWrapper = document.createElement('div');
-                fkWrapper.className = 'flex gap-2';
-
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.innerHTML = '🔍';
-                button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
-                button.onclick = () => buildSearchFK('insert', field.id, input.value);
-
-                fkWrapper.appendChild(input);
-                fkWrapper.appendChild(button);
-
-                wrapper.appendChild(label);
-                wrapper.appendChild(fkWrapper);
-            } else {
-                wrapper.appendChild(label);
-                wrapper.appendChild(input);
-            }
-        }
-        formGroup.appendChild(wrapper);
+        const tabKey = field.type.toLowerCase();
+        if (!tabsMap[tabKey]) tabsMap[tabKey] = [];
+        tabsMap[tabKey].push(field);
     });
 
-    formGroup.appendChild(gridContainer);
+    const tabsContainer = document.createElement('div');
+    tabsContainer.className = 'tabs-container w-full';
+
+    const tabsButtons = document.createElement('div');
+    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
+    // flex-col em mobile, flex-row em desktop
+
+    const tabsContent = document.createElement('div');
+    tabsContent.className = 'tabs-content w-full';
+
+    let first = true;
+    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
+        if (first) btn.classList.add('bg-blue-500', 'text-white');
+        btn.dataset.tabIndex = index;
+        tabsButtons.appendChild(btn);
+
+        const tabContent = document.createElement('div');
+        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
+        tabContent.style.display = first ? 'grid' : 'none';
+
+        fields.forEach(field => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex flex-col w-full';
+
+            const label = document.createElement('label');
+            label.textContent = field.label;
+            label.setAttribute('for', `insert-${field.id}`);
+            label.className = 'block text-sm font-medium text-gray-400 mb-1';
+
+            let input;
+            if (field.type.toLowerCase() === 'list' || field.type.toLowerCase() === 'enum') {
+                input = document.createElement('select');
+                input.id = `insert-${field.id}`;
+                input.className = 'border p-2 rounded w-full';
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = `Selecione ${field.label}`;
+                input.appendChild(defaultOption);
+
+                if (field.options && Array.isArray(field.options)) {
+                    field.options.forEach(optionData => {
+                        const option = document.createElement('option');
+                        option.value = optionData.value;
+                        option.textContent = optionData.display;
+                        input.appendChild(option);
+                    });
+                }
+
+                wrapper.appendChild(label);
+                wrapper.appendChild(input);
+            } else {
+                input = document.createElement('input');
+                input.id = `insert-${field.id}`;
+                input.className = 'border p-2 rounded w-full';
+
+                switch (field.type.toLowerCase()) {
+                    case 'int': input.type = 'number'; input.step = '1'; break;
+                    case 'float': case 'decimal': input.type = 'number'; input.step = '0.01'; break;
+                    case 'datetime': input.type = 'datetime-local'; break;
+                    default: input.type = 'text';
+                }
+
+                if (field.isFk) {
+                    input.dataset.description = '';
+                    input.dataset.id = '';
+                    input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+
+                    input.addEventListener('keypress', function (event) {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            buildSearchFK('insert', field.id, input.value);
+                        }
+                    });
+
+                    const fkWrapper = document.createElement('div');
+                    fkWrapper.className = 'flex gap-2 w-full';
+
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.innerHTML = '🔍';
+                    button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
+                    button.onclick = () => buildSearchFK('insert', field.id, input.value);
+
+                    fkWrapper.appendChild(input);
+                    fkWrapper.appendChild(button);
+
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(fkWrapper);
+                } else {
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(input);
+                }
+            }
+
+            tabContent.appendChild(wrapper);
+        });
+
+        tabsContent.appendChild(tabContent);
+        first = false;
+    });
+
+    tabsContainer.appendChild(tabsButtons);
+    tabsContainer.appendChild(tabsContent);
+    formGroup.appendChild(tabsContainer);
+
+    const buttons = tabsButtons.querySelectorAll('button');
+    const panes = tabsContent.querySelectorAll('.tab-pane');
+
+    buttons.forEach((btn, idx) => {
+        btn.addEventListener('click', () => {
+            const isMobile = window.innerWidth < 768; // breakpoint Tailwind md
+            if (isMobile) {
+                // sanfona: alterna exibição do painel abaixo do botão
+                panes[idx].style.display = panes[idx].style.display === 'grid' ? 'none' : 'grid';
+            } else {
+                // desktop: abas tradicionais
+                panes.forEach(p => (p.style.display = 'none'));
+                panes[idx].style.display = 'grid';
+                buttons.forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+                btn.classList.add('bg-blue-500', 'text-white');
+            }
+        });
+    });
+
+    // opcional: atualizar sanfona ao redimensionar
+    window.addEventListener('resize', () => {
+        const isMobile = window.innerWidth < 768;
+        panes.forEach((pane, idx) => {
+            if (isMobile) {
+                pane.style.display = 'none'; // fechar todos no mobile
+            } else {
+                pane.style.display = idx === 0 ? 'grid' : 'none'; // abrir primeira aba no desktop
+            }
+        });
+        buttons.forEach((b, idx) => {
+            b.classList.remove('bg-blue-500', 'text-white');
+            if (!isMobile && idx === 0) b.classList.add('bg-blue-500', 'text-white');
+        });
+    });
 }
 
 async function buildSearchFK(tipo, campoId, valor) {
