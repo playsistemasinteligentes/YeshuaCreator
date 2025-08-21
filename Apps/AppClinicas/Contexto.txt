@@ -120537,3 +120537,156 @@ public partial class Message : IMessage
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
 
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasCreateContaUseCaseReceiver : ReciverBase<ContasCreateContaUseCaseOutputCommand>
+    {
+        protected override State<ContasCreateContaUseCaseOutputCommand> Action(ICommand comand)
+        {
+            try
+            {
+                 State<ContasCreateContaUseCaseOutputCommand> retorno = Success("OK", null);
+                 if (comand is Command.UseCase.ContasCreateContaUseCaseInputCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<ContasCreateContaUseCaseOutputCommand> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<ContasCreateContaUseCaseOutputCommand> state, Command.UseCase.ContasCreateContaUseCaseInputCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+// Escopo: Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook
+namespace Command.Receivers.UseCase
+{
+    public partial class ContasRecoveryAccountUseCaseReceiver : ReciverBase<ContasRecoveryAccountUseCaseOutputCommand>
+    {
+        protected override State<ContasRecoveryAccountUseCaseOutputCommand> Action(ICommand comand)
+        {
+            try
+            {
+                 State<ContasRecoveryAccountUseCaseOutputCommand> retorno = Success("OK", null);
+                 if (comand is Command.UseCase.ContasRecoveryAccountUseCaseInputCommand specificCommand)
+                 CustomActionHook(ref retorno, specificCommand);
+                 return retorno;
+            }
+            catch (ReceiverException<ContasRecoveryAccountUseCaseOutputCommand> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<ContasRecoveryAccountUseCaseOutputCommand> state, Command.UseCase.ContasRecoveryAccountUseCaseInputCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Dominio.Enum.Strategy;
+public enum TypeNotification
+{
+    Email = 1,
+    SMS = 2,
+    Whatsapp = 3,
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Dominio.Interfaces.Strategy;
+public interface IMessage
+{
+    String Destination { get; set; }
+    String Body { get; set; }
+    String Subject { get; set; }
+    Byte[] Attachment { get; set; }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Dominio.Interfaces.Strategy;
+public interface INotification
+{
+    TypeNotification Type { get; }
+    void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Shered.Patterns.Strategy;
+public partial class EmailNotification : INotification
+{
+    public TypeNotification Type => TypeNotification.Email;
+    public partial void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Shered.Patterns.Strategy;
+public partial class SMSNotification : INotification
+{
+    public TypeNotification Type => TypeNotification.SMS;
+    public partial void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Shered.Patterns.Strategy;
+public partial class WhatsappNotification : INotification
+{
+    public TypeNotification Type => TypeNotification.Whatsapp;
+    public partial void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Dominio.Interfaces.Strategy;
+public interface IINotificationFactory
+{
+    INotification GetType(TypeNotification type);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Shered.Patterns.Strategy;
+public class NotificationFactory : IINotificationFactory
+{
+    private readonly EmailNotification _emailnotification;
+    private readonly SMSNotification _smsnotification;
+    private readonly WhatsappNotification _whatsappnotification;
+    public NotificationFactory(
+        EmailNotification emailnotification,
+        SMSNotification smsnotification,
+        WhatsappNotification whatsappnotification
+    )
+    {
+        _emailnotification = emailnotification;
+        _smsnotification = smsnotification;
+        _whatsappnotification = whatsappnotification;
+    }
+    public INotification GetType(TypeNotification type)
+    {
+        return type switch
+        {
+            TypeNotification.Email => _emailnotification,
+            TypeNotification.SMS => _smsnotification,
+            TypeNotification.Whatsapp => _whatsappnotification,
+            _ => throw new ArgumentException("Invalid Type")
+        };
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+
+namespace Shered.Patterns.Strategy;
+public partial class Message : IMessage
+{
+    public string Destination { get; set; }
+    public string Body { get; set; }
+    public string Subject { get; set; }
+    public byte[] Attachment { get; set; }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+

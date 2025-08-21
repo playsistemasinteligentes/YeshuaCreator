@@ -35,13 +35,13 @@ export async function loadDataMenu() {
             if (item.children && item.children.length > 0) {
                 // Submenu
                 const container = document.createElement('div');
-                container.className = 'relative group';
+                container.className = 'relative';
 
                 const button = document.createElement('button');
-                button.className = 'flex justify-between w-full px-4 py-2 hover:bg-gray-100 text-gray-700';
+                button.className = 'menu-toggle flex justify-between w-full px-4 py-2 hover:bg-gray-100 text-gray-700';
                 button.innerHTML = `
                     ${item.description}
-                    <svg class="w-4 h-4 ml-2 transform transition-transform group-hover:rotate-180" 
+                    <svg class="w-4 h-4 ml-2 transform transition-transform" 
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                         d="M19 9l-7 7-7-7" />
@@ -49,20 +49,30 @@ export async function loadDataMenu() {
                 `;
 
                 const submenuList = document.createElement('div');
-                submenuList.className = 'hidden md:absolute md:mt-2 md:bg-white md:shadow-lg md:rounded-md md:w-48';
+                submenuList.className = 'submenu hidden md:absolute md:mt-2 md:bg-white md:shadow-lg md:rounded-md md:w-48';
 
                 item.children.forEach(child => {
                     const link = createMenuLink(child.description);
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        closeMenu();
+                        closeMenu();          // fecha menu no mobile
+                        closeAllSubmenus();   // fecha submenu no desktop
                         loadDataCrud(`${environments.urlApi}${child.endpoint}`, child.type);
                     });
                     submenuList.appendChild(link);
                 });
 
-                button.addEventListener('click', () => {
-                    submenuList.classList.toggle('hidden');
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); // não deixa o clique subir para o document
+                    const isOpen = !submenuList.classList.contains('hidden');
+
+                    // fecha todos os outros submenus
+                    closeAllSubmenus();
+
+                    if (!isOpen) {
+                        submenuList.classList.remove('hidden');
+                        button.querySelector('svg').classList.add('rotate-180');
+                    }
                 });
 
                 container.appendChild(button);
@@ -74,10 +84,18 @@ export async function loadDataMenu() {
                 const link = createMenuLink(item.description);
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    closeMenu();
+                    closeMenu();          // mobile
+                    closeAllSubmenus();   // desktop
                     loadDataCrud(`${environments.urlApi}${item.endpoint}`, item.type);
                 });
                 menuList.appendChild(link);
+            }
+        });
+
+        // Fecha submenus se clicar fora do menu
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#menu')) {
+                closeAllSubmenus();
             }
         });
 
@@ -106,6 +124,11 @@ export function closeMenu() {
     if (menu && !menu.classList.contains('hidden')) {
         menu.classList.add('hidden');
     }
+}
+
+function closeAllSubmenus() {
+    document.querySelectorAll('#menu .submenu').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('#menu .menu-toggle svg').forEach(i => i.classList.remove('rotate-180'));
 }
 
 function handleLogout(e) {

@@ -107,6 +107,13 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Int();
         }
+        public Entity Group(string value)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().SetGroup(value);
+            else
+                return this.AlterColumns.Last().SetGroup(value);
+        }
         public Entity Boolean()
         {
             if (this.StatusColuns == 1)

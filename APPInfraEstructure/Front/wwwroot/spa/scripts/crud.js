@@ -458,7 +458,7 @@ function renderFormCrud() {
 
     const tabsMap = {};
     crudState.metadata.formFields.forEach(field => {
-        const tabKey = field.type.toLowerCase();
+        const tabKey = field.displaygroup.toLowerCase();
         if (!tabsMap[tabKey]) tabsMap[tabKey] = [];
         tabsMap[tabKey].push(field);
     });

@@ -22,10 +22,10 @@ namespace Migration.Dominio.Migration
             AddModule("ADM", "Administrativo");
 
             AddEntity("yTenant").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_correntUser.TenantID").NeedBeWhere().CanTakeOffWhere()
-            .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull()
-            .AddColumn("Nome", "Nome").Varchar(150).NotNull()
-            .AddColumn("UserId", "User ID").Int();
+            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_correntUser.TenantID").NeedBeWhere().CanTakeOffWhere().Group("Geral")
+            .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull().Group("Geral 1")
+            .AddColumn("Nome", "Nome").Varchar(150).NotNull().Group("Geral 2")
+            .AddColumn("UserId", "User ID").Int().Group("Geral 2");
 
             AddEntity("yUser").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()

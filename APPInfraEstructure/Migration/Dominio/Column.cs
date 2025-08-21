@@ -46,12 +46,19 @@ namespace Dominio
         public bool WhereCanTakeOff { get; set; } = false;
         public bool IsBackEndField { get; set; } = false;
         public bool WhereNeedBe { get; set; } = false;
+        public string DisplayGroup { get; set; } = "";
+
         public List<string> NotAplicableStandardFieldToEntity { get; private set; } = new List<string>();
         public string ClausesWhere { get; private set; } = "";
 
         public Entity Int()
         {
             Type = "int";
+            return this.Entity;
+        }
+        public Entity SetGroup(string value)
+        {
+            DisplayGroup = value;
             return this.Entity;
         }
         public Entity Varchar(int length)
