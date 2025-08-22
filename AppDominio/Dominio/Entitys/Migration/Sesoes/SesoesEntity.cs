@@ -10,22 +10,23 @@
                 {
                     public partial class SesoesEntity : ISesoesEntity
 {
+    public int? ServicoId { get; set; }
+    public int? ProfissionalId { get; set; }
     public int? Id { get; set; }
     public int? PacienteId { get; set; }
-    public int? ProfissionalId { get; set; }
-    public int? ServicoId { get; set; }
     public DateTime DataInicio { get; set; }
     public DateTime DataFim { get; set; }
     public int? Status { get; set; }
     public int? MovimentacaoFinanceiraId { get; set; }
-    public string SinteseProntuario { get; set; }
+    public string Prontuario { get; set; }
     public string QueixaPrincipal { get; set; }
-    public string MotivoConsultaAtual { get; set; }
+    public string RegistroDocumental { get; set; }
     public string SintomasRelatados { get; set; }
     public int? MudancasDesdeUltimaSessaao { get; set; }
     public string ComportamentoObservado { get; set; }
     public string EstadoEmocionalGeral { get; set; }
     public string DiscursoPensamentos { get; set; }
+    public string UsoMedicacao { get; set; }
     public string TecnicasUtilizadas { get; set; }
     public string QuestionamentosReflexoesAbordadas { get; set; }
     public string ExerciciosTarefasSugeridas { get; set; }
@@ -41,23 +42,24 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal SesoesEntity(int? id, int? pacienteid, int? profissionalid, int? servicoid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string sinteseprontuario, string queixaprincipal, string motivoconsultaatual, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
+ internal SesoesEntity(int? servicoid, int? profissionalid, int? id, int? pacienteid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string prontuario, string queixaprincipal, string registrodocumental, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string usomedicacao, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico ){
+ ServicoId = servicoid; 
+ ProfissionalId = profissionalid; 
  Id = id; 
  PacienteId = pacienteid; 
- ProfissionalId = profissionalid; 
- ServicoId = servicoid; 
  DataInicio = (datainicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : datainicio; 
  DataFim = (datafim < (new DateTime(1800, 1, 1))) ? DateTime.Now : datafim; 
  Status = status; 
  MovimentacaoFinanceiraId = movimentacaofinanceiraid; 
- SinteseProntuario = sinteseprontuario; 
+ Prontuario = prontuario; 
  QueixaPrincipal = queixaprincipal; 
- MotivoConsultaAtual = motivoconsultaatual; 
+ RegistroDocumental = registrodocumental; 
  SintomasRelatados = sintomasrelatados; 
  MudancasDesdeUltimaSessaao = mudancasdesdeultimasessaao; 
  ComportamentoObservado = comportamentoobservado; 
  EstadoEmocionalGeral = estadoemocionalgeral; 
  DiscursoPensamentos = discursopensamentos; 
+ UsoMedicacao = usomedicacao; 
  TecnicasUtilizadas = tecnicasutilizadas; 
  QuestionamentosReflexoesAbordadas = questionamentosreflexoesabordadas; 
  ExerciciosTarefasSugeridas = exerciciostarefassugeridas; 

@@ -1,10 +1,31 @@
-﻿<!-- Barra superior -->
-<div class="flex justify-between items-center p-4 bg-blue-600 text-white">
-    <h1 id="form-description" class="text-xl font-bold"></h1>
+﻿<!-- 🔵 Barra superior -->
+<header class="flex justify-between items-center px-6 py-3 bg-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
 
-    <!-- Botão hamburguer só aparece no mobile -->
-    <button id="btn-toggle-menu" class="text-2xl md:hidden" aria-label="Toggle menu">☰</button>
-</div>
+    <!-- 👉 Logo + título -->
+    <div class="flex items-center gap-3">
+        <!-- Ícone Play -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+        </svg>
+        <h1 class="text-lg font-bold">Play Sistemas Inteligentes</h1>
+    </div>
+
+    <!-- 👉 Ações do usuário -->
+    <div class="flex items-center gap-4">
+        <!-- Botão hamburguer (só no mobile) -->
+        <button id="btn-toggle-menu" class="text-2xl md:hidden" aria-label="Toggle menu">☰</button>
+
+        <!-- Ícone logout (mantém função de logout) -->
+        <button id="logout-header" class="p-2 hover:bg-blue-700 rounded transition" aria-label="Sair">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+            </svg>
+        </button>
+    </div>
+</header>
+
+<!-- Compensa altura da barra fixa -->
+<div class="h-16"></div>
 
 <!-- Menu (desktop: horizontal | mobile: dropdown) -->
 <nav id="menu"

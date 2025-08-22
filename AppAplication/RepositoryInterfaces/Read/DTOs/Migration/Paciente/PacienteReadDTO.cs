@@ -18,8 +18,7 @@ namespace Repositorio.Outputs
     public string endereco { get; set; }
     public string nomeresponsavel { get; set; }
     public string telefoneresponsavel { get; set; }
-    public string principaisqueixas { get; set; }
-    public string observacaoadicional { get; set; }
+    public string observacao { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

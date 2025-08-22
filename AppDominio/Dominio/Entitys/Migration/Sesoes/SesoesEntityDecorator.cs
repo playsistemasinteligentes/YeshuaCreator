@@ -18,6 +18,32 @@
                             _inner = inner;
                             _logger = logger;
                         }
+                                    public int? ServicoId
+                                    {
+                                        get => _inner.ServicoId;
+                                        set
+                                        {
+                                            if (_inner.ServicoId != value)
+                                            {
+                                                _logger.Info($"Propriedade ServicoId: antes={_inner.ServicoId}, depois={value}");
+                                                _inner.ServicoId = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? ProfissionalId
+                                    {
+                                        get => _inner.ProfissionalId;
+                                        set
+                                        {
+                                            if (_inner.ProfissionalId != value)
+                                            {
+                                                _logger.Info($"Propriedade ProfissionalId: antes={_inner.ProfissionalId}, depois={value}");
+                                                _inner.ProfissionalId = value;
+                                            }
+                                        }
+                                    }
+
                                     public int? Id
                                     {
                                         get => _inner.Id;
@@ -40,32 +66,6 @@
                                             {
                                                 _logger.Info($"Propriedade PacienteId: antes={_inner.PacienteId}, depois={value}");
                                                 _inner.PacienteId = value;
-                                            }
-                                        }
-                                    }
-
-                                    public int? ProfissionalId
-                                    {
-                                        get => _inner.ProfissionalId;
-                                        set
-                                        {
-                                            if (_inner.ProfissionalId != value)
-                                            {
-                                                _logger.Info($"Propriedade ProfissionalId: antes={_inner.ProfissionalId}, depois={value}");
-                                                _inner.ProfissionalId = value;
-                                            }
-                                        }
-                                    }
-
-                                    public int? ServicoId
-                                    {
-                                        get => _inner.ServicoId;
-                                        set
-                                        {
-                                            if (_inner.ServicoId != value)
-                                            {
-                                                _logger.Info($"Propriedade ServicoId: antes={_inner.ServicoId}, depois={value}");
-                                                _inner.ServicoId = value;
                                             }
                                         }
                                     }
@@ -122,15 +122,15 @@
                                         }
                                     }
 
-                                    public string SinteseProntuario
+                                    public string Prontuario
                                     {
-                                        get => _inner.SinteseProntuario;
+                                        get => _inner.Prontuario;
                                         set
                                         {
-                                            if (_inner.SinteseProntuario != value)
+                                            if (_inner.Prontuario != value)
                                             {
-                                                _logger.Info($"Propriedade SinteseProntuario: antes={_inner.SinteseProntuario}, depois={value}");
-                                                _inner.SinteseProntuario = value;
+                                                _logger.Info($"Propriedade Prontuario: antes={_inner.Prontuario}, depois={value}");
+                                                _inner.Prontuario = value;
                                             }
                                         }
                                     }
@@ -148,15 +148,15 @@
                                         }
                                     }
 
-                                    public string MotivoConsultaAtual
+                                    public string RegistroDocumental
                                     {
-                                        get => _inner.MotivoConsultaAtual;
+                                        get => _inner.RegistroDocumental;
                                         set
                                         {
-                                            if (_inner.MotivoConsultaAtual != value)
+                                            if (_inner.RegistroDocumental != value)
                                             {
-                                                _logger.Info($"Propriedade MotivoConsultaAtual: antes={_inner.MotivoConsultaAtual}, depois={value}");
-                                                _inner.MotivoConsultaAtual = value;
+                                                _logger.Info($"Propriedade RegistroDocumental: antes={_inner.RegistroDocumental}, depois={value}");
+                                                _inner.RegistroDocumental = value;
                                             }
                                         }
                                     }
@@ -222,6 +222,19 @@
                                             {
                                                 _logger.Info($"Propriedade DiscursoPensamentos: antes={_inner.DiscursoPensamentos}, depois={value}");
                                                 _inner.DiscursoPensamentos = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string UsoMedicacao
+                                    {
+                                        get => _inner.UsoMedicacao;
+                                        set
+                                        {
+                                            if (_inner.UsoMedicacao != value)
+                                            {
+                                                _logger.Info($"Propriedade UsoMedicacao: antes={_inner.UsoMedicacao}, depois={value}");
+                                                _inner.UsoMedicacao = value;
                                             }
                                         }
                                     }

@@ -20,7 +20,7 @@ namespace Query.Write
         }
         public QueryModel InserirPacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" INSERT INTO Paciente (Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, PrincipaisQueixas, ObservacaoAdicional, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @PrincipaisQueixas, @ObservacaoAdicional, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO Paciente (Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, Observacao, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @Observacao, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Nome = Paciente.Nome,
@@ -32,8 +32,7 @@ namespace Query.Write
                 Endereco = Paciente.Endereco,
                 NomeResponsavel = Paciente.NomeResponsavel,
                 TelefoneResponsavel = Paciente.TelefoneResponsavel,
-                PrincipaisQueixas = Paciente.PrincipaisQueixas,
-                ObservacaoAdicional = Paciente.ObservacaoAdicional,
+                Observacao = Paciente.Observacao,
                 TenantID = _correntUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -43,7 +42,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone, DataNascimento = @DataNascimento, Genero = @Genero, Escolaridade = @Escolaridade, Profissao = @Profissao, Endereco = @Endereco, NomeResponsavel = @NomeResponsavel, TelefoneResponsavel = @TelefoneResponsavel, PrincipaisQueixas = @PrincipaisQueixas, ObservacaoAdicional = @ObservacaoAdicional, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone, DataNascimento = @DataNascimento, Genero = @Genero, Escolaridade = @Escolaridade, Profissao = @Profissao, Endereco = @Endereco, NomeResponsavel = @NomeResponsavel, TelefoneResponsavel = @TelefoneResponsavel, Observacao = @Observacao, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Nome = Paciente.Nome,
@@ -55,8 +54,7 @@ namespace Query.Write
                 Endereco = Paciente.Endereco,
                 NomeResponsavel = Paciente.NomeResponsavel,
                 TelefoneResponsavel = Paciente.TelefoneResponsavel,
-                PrincipaisQueixas = Paciente.PrincipaisQueixas,
-                ObservacaoAdicional = Paciente.ObservacaoAdicional,
+                Observacao = Paciente.Observacao,
                 TenantID = Paciente.TenantID,
                 Deleted = Paciente.Deleted,
                 Changed = Paciente.Changed,
@@ -155,22 +153,12 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdatePrincipaisQueixas(IPacienteEntity entity)
+        public QueryModel UpdateObservacao(IPacienteEntity entity)
         {
-            this.Query = $@" UPDATE Paciente SET PrincipaisQueixas = @PrincipaisQueixas WHERE Id = @Id ";
+            this.Query = $@" UPDATE Paciente SET Observacao = @Observacao WHERE Id = @Id ";
             this.Parameters = new
             {
-                PrincipaisQueixas = entity.PrincipaisQueixas,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateObservacaoAdicional(IPacienteEntity entity)
-        {
-            this.Query = $@" UPDATE Paciente SET ObservacaoAdicional = @ObservacaoAdicional WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                ObservacaoAdicional = entity.ObservacaoAdicional,
+                Observacao = entity.Observacao,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -10,22 +10,23 @@
                 {
                     public interface ISesoesEntity
 {
+    int? ServicoId { get; set; }
+    int? ProfissionalId { get; set; }
     int? Id { get; set; }
     int? PacienteId { get; set; }
-    int? ProfissionalId { get; set; }
-    int? ServicoId { get; set; }
     DateTime DataInicio { get; set; }
     DateTime DataFim { get; set; }
     int? Status { get; set; }
     int? MovimentacaoFinanceiraId { get; set; }
-    string SinteseProntuario { get; set; }
+    string Prontuario { get; set; }
     string QueixaPrincipal { get; set; }
-    string MotivoConsultaAtual { get; set; }
+    string RegistroDocumental { get; set; }
     string SintomasRelatados { get; set; }
     int? MudancasDesdeUltimaSessaao { get; set; }
     string ComportamentoObservado { get; set; }
     string EstadoEmocionalGeral { get; set; }
     string DiscursoPensamentos { get; set; }
+    string UsoMedicacao { get; set; }
     string TecnicasUtilizadas { get; set; }
     string QuestionamentosReflexoesAbordadas { get; set; }
     string ExerciciosTarefasSugeridas { get; set; }

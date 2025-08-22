@@ -23,6 +23,7 @@ namespace Migration.Dominio
         }
         public Descricao Description { get; set; }
         public bool Existe { get; }
+        public bool Inserir { set; get; } = false;
         public string Key
         {
             get; set;

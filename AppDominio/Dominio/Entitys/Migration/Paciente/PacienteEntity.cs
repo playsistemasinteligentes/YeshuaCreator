@@ -20,14 +20,13 @@
     public string Endereco { get; set; }
     public string NomeResponsavel { get; set; }
     public string TelefoneResponsavel { get; set; }
-    public string PrincipaisQueixas { get; set; }
-    public string ObservacaoAdicional { get; set; }
+    public string Observacao { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal PacienteEntity(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string principaisqueixas, string observacaoadicional ){
+ internal PacienteEntity(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string observacao ){
  Id = id; 
  Nome = nome; 
  Telefone = telefone; 
@@ -38,8 +37,7 @@
  Endereco = endereco; 
  NomeResponsavel = nomeresponsavel; 
  TelefoneResponsavel = telefoneresponsavel; 
- PrincipaisQueixas = principaisqueixas; 
- ObservacaoAdicional = observacaoadicional; 
+ Observacao = observacao; 
 }
 public bool isValidData()
 {

@@ -29,7 +29,7 @@ namespace Dominio.Schemas
                     querys.Add(AlterTable(e));
             }
 
-            foreach (var mod in migration.Modules)
+            foreach (var mod in migration.Modules.Where(x => x.Inserir))
             {
                 querys.Add(InsertModules(mod));
             }

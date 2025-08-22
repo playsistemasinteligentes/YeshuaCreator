@@ -56,6 +56,14 @@ public static class StaticModules
     {
         Modules.Clear();
         Modules.Add(new Module("PSI", "Clinica  Psicologia"));
+        Modules.LastOrDefault().Menus.Add(new Menu("Especialidade"));
+        Modules.LastOrDefault().Menus.Add(new Menu("Profissional"));
+        Modules.LastOrDefault().Menus.Add(new Menu("DisponibilidadeAgenda"));
+        Modules.LastOrDefault().Menus.Add(new Menu("GrupoServico"));
+        Modules.LastOrDefault().Menus.Add(new Menu("Servico"));
+        Modules.LastOrDefault().Menus.Add(new Menu("Paciente"));
+        Modules.LastOrDefault().Menus.Add(new Menu("MovimentacaoFinanceira"));
+        Modules.LastOrDefault().Menus.Add(new Menu("Sesoes"));
         Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));

@@ -13,8 +13,7 @@ namespace Command.Write
         public string Endereco { get; set; }
         public string NomeResponsavel { get; set; }
         public string TelefoneResponsavel { get; set; }
-        public string PrincipaisQueixas { get; set; }
-        public string ObservacaoAdicional { get; set; }
+        public string Observacao { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

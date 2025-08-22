@@ -163,17 +163,9 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByPrincipaisQueixas(string value )
+        public bool ExistsByObservacao(string value )
         {
-            var query = _query.ExistsByPrincipaisQueixasQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByObservacaoAdicional(string value )
-        {
-            var query = _query.ExistsByObservacaoAdicionalQuery(value );
+            var query = _query.ExistsByObservacaoQuery(value );
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -291,17 +283,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public PacienteDTO FirstByPrincipaisQueixas(string value )
+        public PacienteDTO FirstByObservacao(string value )
         {
-            var query = _query.FirstByPrincipaisQueixasQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public PacienteDTO FirstByObservacaoAdicional(string value )
-        {
-            var query = _query.FirstByObservacaoAdicionalQuery(value );
+            var query = _query.FirstByObservacaoQuery(value );
 
                 var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
@@ -419,17 +403,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<PacienteDTO> GetAllByPrincipaisQueixas(string value )
+        public IEnumerable<PacienteDTO> GetAllByObservacao(string value )
         {
-            var query = _query.FirstByPrincipaisQueixasQuery(value );
-
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
-                return result;
-        }
-
-        public IEnumerable<PacienteDTO> GetAllByObservacaoAdicional(string value )
-        {
-            var query = _query.FirstByObservacaoAdicionalQuery(value );
+            var query = _query.FirstByObservacaoQuery(value );
 
                 var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;

@@ -20,8 +20,7 @@
     string Endereco { get; set; }
     string NomeResponsavel { get; set; }
     string TelefoneResponsavel { get; set; }
-    string PrincipaisQueixas { get; set; }
-    string ObservacaoAdicional { get; set; }
+    string Observacao { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

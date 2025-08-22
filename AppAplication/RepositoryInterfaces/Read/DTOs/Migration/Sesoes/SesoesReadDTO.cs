@@ -8,22 +8,23 @@ namespace Repositorio.Outputs
 {
     public record SesoesDTO
     {
+    public int servicoid { get; set; }
+    public int profissionalid { get; set; }
     public int id { get; set; }
     public int pacienteid { get; set; }
-    public int profissionalid { get; set; }
-    public int servicoid { get; set; }
     public DateTime datainicio { get; set; }
     public DateTime datafim { get; set; }
     public int status { get; set; }
     public int movimentacaofinanceiraid { get; set; }
-    public string sinteseprontuario { get; set; }
+    public string prontuario { get; set; }
     public string queixaprincipal { get; set; }
-    public string motivoconsultaatual { get; set; }
+    public string registrodocumental { get; set; }
     public string sintomasrelatados { get; set; }
     public int mudancasdesdeultimasessaao { get; set; }
     public string comportamentoobservado { get; set; }
     public string estadoemocionalgeral { get; set; }
     public string discursopensamentos { get; set; }
+    public string usomedicacao { get; set; }
     public string tecnicasutilizadas { get; set; }
     public string questionamentosreflexoesabordadas { get; set; }
     public string exerciciostarefassugeridas { get; set; }

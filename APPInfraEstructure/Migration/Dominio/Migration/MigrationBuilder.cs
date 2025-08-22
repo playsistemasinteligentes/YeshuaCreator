@@ -14,6 +14,7 @@ using System.Data.Common;
 using Migration.Dominio;
 using Module = Migration.Dominio.Module;
 using static Dapper.SqlMapper;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Dominio.Migration
 {
@@ -111,13 +112,27 @@ namespace Dominio.Migration
         {
             // Cria um dicionário para acesso rápido às entidades já sanitizadas
             var moduleDictionary = sanitizedMedules.ToDictionary(e => e.Key, e => e);
-            foreach (var mol in migration.Modules.Where(x => !string.IsNullOrEmpty(x.Description._value)))
+            foreach (var mol in migration.Modules)
             {
-                if (!moduleDictionary.TryGetValue(mol.Key, out var sanitizedModule))
+                if (!moduleDictionary.TryGetValue(mol.Key, out Module? sanitizedModule))
                 {
                     sanitizedMedules.Add(mol);
                     moduleDictionary[mol.Key] = mol;
                     _migrationConcriteBase.AddModule(mol);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(mol.Description._value))
+                        sanitizedModule.Description = mol.Description;
+                    foreach (var entity in mol.Entities)
+                    {
+                        // Verifica se já existe um entity com o mesmo EntityName
+                        if (!sanitizedModule.Entities.Any(e => e.EntityName == entity.EntityName))
+                        {
+                            sanitizedModule.Entities.Add(entity);
+                        }
+                    }
+
                 }
             }
 

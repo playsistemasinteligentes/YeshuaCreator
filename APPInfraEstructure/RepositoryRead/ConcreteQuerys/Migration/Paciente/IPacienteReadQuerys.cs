@@ -16,8 +16,7 @@ namespace IQuery.Read
         public QueryModel ExistsByEnderecoQuery(string value );
         public QueryModel ExistsByNomeResponsavelQuery(string value );
         public QueryModel ExistsByTelefoneResponsavelQuery(string value );
-        public QueryModel ExistsByPrincipaisQueixasQuery(string value );
-        public QueryModel ExistsByObservacaoAdicionalQuery(string value );
+        public QueryModel ExistsByObservacaoQuery(string value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
@@ -32,8 +31,7 @@ namespace IQuery.Read
         public QueryModel FirstByEnderecoQuery(string value );
         public QueryModel FirstByNomeResponsavelQuery(string value );
         public QueryModel FirstByTelefoneResponsavelQuery(string value );
-        public QueryModel FirstByPrincipaisQueixasQuery(string value );
-        public QueryModel FirstByObservacaoAdicionalQuery(string value );
+        public QueryModel FirstByObservacaoQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );

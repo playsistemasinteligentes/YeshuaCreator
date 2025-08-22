@@ -148,28 +148,15 @@
                                         }
                                     }
 
-                                    public string PrincipaisQueixas
+                                    public string Observacao
                                     {
-                                        get => _inner.PrincipaisQueixas;
+                                        get => _inner.Observacao;
                                         set
                                         {
-                                            if (_inner.PrincipaisQueixas != value)
+                                            if (_inner.Observacao != value)
                                             {
-                                                _logger.Info($"Propriedade PrincipaisQueixas: antes={_inner.PrincipaisQueixas}, depois={value}");
-                                                _inner.PrincipaisQueixas = value;
-                                            }
-                                        }
-                                    }
-
-                                    public string ObservacaoAdicional
-                                    {
-                                        get => _inner.ObservacaoAdicional;
-                                        set
-                                        {
-                                            if (_inner.ObservacaoAdicional != value)
-                                            {
-                                                _logger.Info($"Propriedade ObservacaoAdicional: antes={_inner.ObservacaoAdicional}, depois={value}");
-                                                _inner.ObservacaoAdicional = value;
+                                                _logger.Info($"Propriedade Observacao: antes={_inner.Observacao}, depois={value}");
+                                                _inner.Observacao = value;
                                             }
                                         }
                                     }

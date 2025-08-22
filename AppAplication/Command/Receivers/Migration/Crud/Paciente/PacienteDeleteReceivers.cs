@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PacienteCrudCommand c) 
              {    
-                 var paciente = new PacienteFactory(_logger).Create(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.PrincipaisQueixas, c.ObservacaoAdicional);
+                 var paciente = new PacienteFactory(_logger).Create(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.Observacao);
                  if (!paciente.isValidDelete())
                      return ValidationError(paciente.getErroMensagens(), comand);
 

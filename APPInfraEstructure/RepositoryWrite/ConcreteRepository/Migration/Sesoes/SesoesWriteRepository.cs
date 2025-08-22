@@ -41,9 +41,9 @@ namespace Input.Repository.Sesoes
             var query = _query.DeleteSesoesQuery(Sesoes);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdatePacienteId(ISesoesEntity entity)
+        public void UpdateServicoId(ISesoesEntity entity)
         {
-            var query = _query.UpdatePacienteId(entity);
+            var query = _query.UpdateServicoId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateProfissionalId(ISesoesEntity entity)
@@ -51,9 +51,9 @@ namespace Input.Repository.Sesoes
             var query = _query.UpdateProfissionalId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateServicoId(ISesoesEntity entity)
+        public void UpdatePacienteId(ISesoesEntity entity)
         {
-            var query = _query.UpdateServicoId(entity);
+            var query = _query.UpdatePacienteId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateDataInicio(ISesoesEntity entity)
@@ -76,9 +76,9 @@ namespace Input.Repository.Sesoes
             var query = _query.UpdateMovimentacaoFinanceiraId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateSinteseProntuario(ISesoesEntity entity)
+        public void UpdateProntuario(ISesoesEntity entity)
         {
-            var query = _query.UpdateSinteseProntuario(entity);
+            var query = _query.UpdateProntuario(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateQueixaPrincipal(ISesoesEntity entity)
@@ -86,9 +86,9 @@ namespace Input.Repository.Sesoes
             var query = _query.UpdateQueixaPrincipal(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateMotivoConsultaAtual(ISesoesEntity entity)
+        public void UpdateRegistroDocumental(ISesoesEntity entity)
         {
-            var query = _query.UpdateMotivoConsultaAtual(entity);
+            var query = _query.UpdateRegistroDocumental(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateSintomasRelatados(ISesoesEntity entity)
@@ -114,6 +114,11 @@ namespace Input.Repository.Sesoes
         public void UpdateDiscursoPensamentos(ISesoesEntity entity)
         {
             var query = _query.UpdateDiscursoPensamentos(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateUsoMedicacao(ISesoesEntity entity)
+        {
+            var query = _query.UpdateUsoMedicacao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTecnicasUtilizadas(ISesoesEntity entity)

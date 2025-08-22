@@ -79,6 +79,7 @@ namespace Dominio.Migration
             if (_module == null)
             {
                 _module = new Module(key, Descricao.normalise(moduleDescription));
+                _module.Inserir = true;
                 Modules.Add(_module);
             }
             return this;

@@ -7,6 +7,12 @@ export function buildMenu() {
     btnToggleMenu?.addEventListener('click', () => {
         menu.classList.toggle('hidden');
     });
+
+    // Ativa logout também no botão do header
+    const logoutHeader = document.getElementById('logout-header');
+    if (logoutHeader) {
+        logoutHeader.addEventListener('click', handleLogout);
+    }
 }
 
 export async function loadDataMenu() {

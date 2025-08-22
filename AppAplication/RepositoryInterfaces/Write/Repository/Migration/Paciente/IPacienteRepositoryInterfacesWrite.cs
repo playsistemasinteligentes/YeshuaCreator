@@ -21,8 +21,7 @@ namespace IRepository.Write
         public void UpdateEndereco(IPacienteEntity entity);
         public void UpdateNomeResponsavel(IPacienteEntity entity);
         public void UpdateTelefoneResponsavel(IPacienteEntity entity);
-        public void UpdatePrincipaisQueixas(IPacienteEntity entity);
-        public void UpdateObservacaoAdicional(IPacienteEntity entity);
+        public void UpdateObservacao(IPacienteEntity entity);
         public void UpdateTenantID(IPacienteEntity entity);
         public void UpdateDeleted(IPacienteEntity entity);
         public void UpdateChanged(IPacienteEntity entity);

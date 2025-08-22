@@ -68,7 +68,6 @@ namespace AppClinicas
                 .AddColumn("Nome", "Nome do Paciente").Varchar(150).NotNull()
                 .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull()
                 .AddColumn("DataNascimento", "Data Nascimento").DateTime()
-
                 .AddColumn("Genero", "Gênero").Int()
                     .Enumerable(1, "Mascolino")
                     .Enumerable(2, "Feminino")
@@ -78,8 +77,8 @@ namespace AppClinicas
                 .AddColumn("Endereco", "Endereço").Varchar(250)
                 .AddColumn("NomeResponsavel", "Nome Responsavel").Varchar(250)
                 .AddColumn("TelefoneResponsavel", "Telefone Responsavel").Varchar(15)
-                .AddColumn("PrincipaisQueixas", "PrincipaisQueixas").Varchar(4000)
-                .AddColumn("ObservacaoAdicional", "ObservacaoAdicional").Varchar(2000);
+                .AddColumn("Observacao", "Observacao").Varchar(2000);
+
 
             AddEntity("MovimentacaoFinanceira").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -94,13 +93,15 @@ namespace AppClinicas
 
 
             AddEntity("Sesoes").AddModule("PSI")
-                .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int()
-                .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int()
+
                 .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int()
-                .AddColumn("DataInicio", "Data Inicio").DateTime().NotNull()
-                .AddColumn("DataFim", "Data Fim").DateTime().NotNull()
-                .AddColumn("Status", "Status do Agendamento").Int()
+                .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("Agenda")
+                .AddColumn("Id", "ID").Int().Incremento().Key().Group("Agenda")
+
+                .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int().Group("Agenda")
+                .AddColumn("DataInicio", "Data Inicio").DateTime().NotNull().Group("Agenda")
+                .AddColumn("DataFim", "Data Fim").DateTime().NotNull().Group("Agenda")
+                .AddColumn("Status", "Status do Agendamento").Int().Group("Agenda")
                 .Enumerable(0, "Em Aberto")
                 .Enumerable(1, "Compareceu")
                 .Enumerable(2, "Não Compareceu")
@@ -108,38 +109,45 @@ namespace AppClinicas
                 .Enumerable(4, "Remarcado pelo paciente")
                 .AddColumn("MovimentacaoFinanceiraId", "Financeiro").FK("MovimentacaoFinanceira", "Id").Int()
 
-                .AddColumn("SinteseProntuario", "Sintese Prontuario").Varchar(8000)
+                .AddColumn("Prontuario", "Prontuario").Varchar(8000).Group("Atendimento")
+                .AddColumn("QueixaPrincipal", "Queixa Principal").Varchar(500).Group("Atendimento")
+                .AddColumn("RegistroDocumental", "Registro Documental").Varchar(8000).Group("Atendimento")
                 // prontuario CRP
                 // RegistroDocumental CRP
                 // Anaminese 
+
                 //3. Queixa Principal e Evolução
-                .AddColumn("QueixaPrincipal", "Queixa Principal").Varchar(500)
-                .AddColumn("MotivoConsultaAtual", "Motivo da consulta atual").Varchar(500)
-                .AddColumn("SintomasRelatados", "Sintomas relatados").Varchar(500)
-                .AddColumn("MudancasDesdeUltimaSessaao", "Mudanças desde a última sessão").Int()
+                .AddColumn("SintomasRelatados", "Sintomas relatados").Varchar(500).Group("Atendimento")
+                .AddColumn("MudancasDesdeUltimaSessaao", "Mudanças desde a última sessão").Int().Group("Atendimento")
                 .Enumerable(1, "Menteve")
                 .Enumerable(2, "Melhora")
                 .Enumerable(3, "Piora")
                 .Enumerable(4, "Eventos novos")
+
                 //4. Observações Clínicas
-                .AddColumn("ComportamentoObservado", "Comportamento observado durante a sessão").Varchar(500)
-                .AddColumn("EstadoEmocionalGeral", "Estado emocional geral", "(exemplo: ansioso, deprimido, irritado, estável)").Varchar(500)
-                .AddColumn("DiscursoPensamentos", "Discurso e pensamentos", "(lógicos, acelerados, confusos, obsessivos)").Varchar(500)
+                .AddColumn("ComportamentoObservado", "Comportamento observado durante a sessão").Varchar(500).Group("Observações Clínicas")
+                .AddColumn("EstadoEmocionalGeral", "Estado emocional geral", "(exemplo: ansioso, deprimido, irritado, estável)").Varchar(500).Group("Observações Clínicas")
+                .AddColumn("DiscursoPensamentos", "Discurso e pensamentos", "(lógicos, acelerados, confusos, obsessivos)").Varchar(500).Group("Observações Clínicas")
+                .AddColumn("UsoMedicacao", "Uso de Medicação", "(Medicamentos utilizados)").Varchar(500).Group("Observações Clínicas")
+
                 //5. Estratégias e Intervenções na Sessão
-                .AddColumn("TecnicasUtilizadas", "Técnicas utilizadas").Varchar(500)
-                .AddColumn("QuestionamentosReflexoesAbordadas", "Questionamentos e reflexões abordadas").Varchar(500)
-                .AddColumn("ExerciciosTarefasSugeridas", "Exercícios ou tarefas de casa sugeridas").Varchar(500)
+                .AddColumn("TecnicasUtilizadas", "Técnicas utilizadas").Varchar(500).Group("Estratégias")
+                .AddColumn("QuestionamentosReflexoesAbordadas", "Questionamentos e reflexões abordadas").Varchar(500).Group("Estratégias")
+                .AddColumn("ExerciciosTarefasSugeridas", "Exercícios ou tarefas de casa sugeridas").Varchar(500).Group("Estratégias")
 
                 //6. Diagnóstico ou Hipótese Diagnóstica (se aplicável)
-                .AddColumn("DiagnoosticoHipoteseDiagnoostica", "Diagnóstico ou Hipótese Diagnóstica").Varchar(500).UserEncryptedField()
+                .AddColumn("DiagnoosticoHipoteseDiagnoostica", "Diagnóstico ou Hipótese Diagnóstica").Varchar(500).UserEncryptedField().Group("Diagnóstico")
+
                 //7. Plano Terapêutico e Encaminhamentos
-                .AddColumn("ObjetivosCurtoPrazo", "Objetivos a curto prazo").Varchar(500)
-                .AddColumn("ObjetivosLongoPrazo", "Objetivos a longo prazo").Varchar(500)
-                .AddColumn("FrequenciaSugeridaSessooes", "Frequência sugerida das sessões").Varchar(500)
-                .AddColumn("EncaminhamentoOutrosProfissionais", "Encaminhamento para outros profissionais").Varchar(500)
+                .AddColumn("ObjetivosCurtoPrazo", "Objetivos a curto prazo").Varchar(500).Group("Plano Terapêutico")
+                .AddColumn("ObjetivosLongoPrazo", "Objetivos a longo prazo").Varchar(500).Group("Plano Terapêutico")
+                .AddColumn("FrequenciaSugeridaSessooes", "Frequência sugerida das sessões").Varchar(500).Group("Plano Terapêutico")
+                .AddColumn("EncaminhamentoOutrosProfissionais", "Encaminhamento para outros profissionais").Varchar(500).Group("Plano Terapêutico")
+
                 //8. Anotações Extras
-                .AddColumn("InformacoesRelevantesFuturasConsultas", "Informações relevantes que podem ser úteis em futuras consultas").Varchar(500)
-                .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(500);
+                .AddColumn("InformacoesRelevantesFuturasConsultas", "Informações relevantes que podem ser úteis em futuras consultas").Varchar(500).Group("Anotações Extras")
+                .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(500).Group("Anotações Extras");
+
 
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddUsecaseGroup("ClinicaPaciente")

@@ -246,8 +246,6 @@ function renderSearch(metadata, modoFk = false) {
             input.dataset.id = '';
             input.dataset.endPontGetMetadata = field.endPontGetMetadata;
 
-            console.log('teste');
-
             input.type = "text";
             input.step = "";
 
@@ -523,13 +521,6 @@ function renderFormCrud() {
                 input.id = `insert-${field.id}`;
                 input.className = 'border p-2 rounded w-full';
 
-                switch (field.type.toLowerCase()) {
-                    case 'int': input.type = 'number'; input.step = '1'; break;
-                    case 'float': case 'decimal': input.type = 'number'; input.step = '0.01'; break;
-                    case 'datetime': input.type = 'datetime-local'; break;
-                    default: input.type = 'text';
-                }
-
                 if (field.isFk) {
                     input.dataset.description = '';
                     input.dataset.id = '';
@@ -556,7 +547,17 @@ function renderFormCrud() {
 
                     wrapper.appendChild(label);
                     wrapper.appendChild(fkWrapper);
-                } else {
+                }
+                else {
+
+                    switch (field.type.toLowerCase()) {
+                        case 'int': input.type = 'number'; input.step = '1'; break;
+                        case 'float': case 'decimal': input.type = 'number'; input.step = '0.01'; break;
+                        case 'datetime': input.type = 'datetime-local'; break;
+                        default: input.type = 'text';
+                    }
+
+
                     wrapper.appendChild(label);
                     wrapper.appendChild(input);
                 }

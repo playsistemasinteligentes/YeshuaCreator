@@ -16,8 +16,7 @@ namespace IQuery.Write
         public QueryModel UpdateEndereco(IPacienteEntity entity);
         public QueryModel UpdateNomeResponsavel(IPacienteEntity entity);
         public QueryModel UpdateTelefoneResponsavel(IPacienteEntity entity);
-        public QueryModel UpdatePrincipaisQueixas(IPacienteEntity entity);
-        public QueryModel UpdateObservacaoAdicional(IPacienteEntity entity);
+        public QueryModel UpdateObservacao(IPacienteEntity entity);
         public QueryModel UpdateTenantID(IPacienteEntity entity);
         public QueryModel UpdateDeleted(IPacienteEntity entity);
         public QueryModel UpdateChanged(IPacienteEntity entity);

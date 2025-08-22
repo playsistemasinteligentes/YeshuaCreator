@@ -1079,7 +1079,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Sesoes/SesoesReadFKPacienteId", async ([FromServices] Command.Receivers.Read.SesoesReadFKPacienteIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/Sesoes/SesoesReadFKServicoId", async ([FromServices] Command.Receivers.Read.SesoesReadFKServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1113,7 +1113,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Sesoes/SesoesReadFKServicoId", async ([FromServices] Command.Receivers.Read.SesoesReadFKServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/Sesoes/SesoesReadFKPacienteId", async ([FromServices] Command.Receivers.Read.SesoesReadFKPacienteIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1623,9 +1623,9 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "descricao", label = "Descrição da Especialidade",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "descricao", label = "Descrição da Especialidade",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1659,13 +1659,13 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome do Profissional",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome do Profissional",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "especialidadeid", label = "Especialidade do Profissional",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataEspecialidade", fksDisplayFields =  new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "especialidadeid", label = "Especialidade do Profissional",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataEspecialidade", fksDisplayFields =  new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "telefone", label = "Telefone do Profissional",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "telefone", label = "Telefone do Profissional",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1698,11 +1698,11 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "profissionalid", label = "Profissional",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "profissionalid", label = "Profissional",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "datahora", label = "Horário Disponível",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "datahora", label = "Horário Disponível",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1733,9 +1733,9 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "descricao", label = "Descrição do Grupo de Serviços",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "descricao", label = "Descrição do Grupo de Serviços",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1769,13 +1769,13 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "gruposervicoid", label = "Grupo de Serviço",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataGrupoServico", fksDisplayFields =  new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "gruposervicoid", label = "Grupo de Serviço",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataGrupoServico", fksDisplayFields =  new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome do Serviço",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome do Serviço",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "valor", label = "Valor do Serviço",displaygroup = "", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "valor", label = "Valor do Serviço",displaygroup = "Geral", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1823,40 +1823,36 @@ new {value = 3,display = "Outros"},
  },
  new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "principaisqueixas", label = "PrincipaisQueixas", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "observacaoadicional", label = "ObservacaoAdicional", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "observacao", label = "Observacao", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome do Paciente",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome do Paciente",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "telefone", label = "Telefone de Contato",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "telefone", label = "Telefone de Contato",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "datanascimento", label = "Data Nascimento",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "datanascimento", label = "Data Nascimento",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "genero", label = "Gênero",displaygroup = "", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
+ new { id = "genero", label = "Gênero",displaygroup = "Geral", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
 new {value = 1,display = "Mascolino"},
 new {value = 2,display = "Feminino"},
 new {value = 3,display = "Outros"},
 }
   },
- new { id = "escolaridade", label = "Escolaridade",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "escolaridade", label = "Escolaridade",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "profissao", label = "Profissão",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "profissao", label = "Profissão",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "endereco", label = "Endereço",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "endereco", label = "Endereço",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nomeresponsavel", label = "Nome Responsavel",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nomeresponsavel", label = "Nome Responsavel",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "telefoneresponsavel", label = "Telefone Responsavel",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "telefoneresponsavel", label = "Telefone Responsavel",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "principaisqueixas", label = "PrincipaisQueixas",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "observacaoadicional", label = "ObservacaoAdicional",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "observacao", label = "Observacao",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1899,22 +1895,22 @@ new {value = 2,display = "Pagamento"},
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "pacienteid", label = "Paciente",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "pacienteid", label = "Paciente",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "servicoid", label = "Serviço",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "servicoid", label = "Serviço",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "valor", label = "Valor da Transação",displaygroup = "", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "valor", label = "Valor da Transação",displaygroup = "Geral", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tipomovimentacao", label = "Tipo de Movimentação",displaygroup = "", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
+ new { id = "tipomovimentacao", label = "Tipo de Movimentação",displaygroup = "Geral", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
 new {value = 1,display = "Recebimento"},
 new {value = 2,display = "Pagamento"},
 }
   },
- new { id = "datamovimentacao", label = "Data da Movimentação",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "datamovimentacao", label = "Data da Movimentação",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "saldoatual", label = "Saldo Atual",displaygroup = "", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "saldoatual", label = "Saldo Atual",displaygroup = "Geral", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -1939,13 +1935,13 @@ var metadatacrud = new
 entityDescription = "Sesoes",
 searchFields = new[]
 {
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "pacienteid", label = "Paciente", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "servicoid", label = "Serviço", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "profissionalid", label = "Profissional", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "servicoid", label = "Serviço", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "pacienteid", label = "Paciente", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
@@ -1961,11 +1957,11 @@ new {value = 4,display = "Remarcado pelo paciente"},
  },
  new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "sinteseprontuario", label = "Sintese Prontuario", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "prontuario", label = "Prontuario", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "queixaprincipal", label = "Queixa Principal", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "motivoconsultaatual", label = "Motivo da consulta atual", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "registrodocumental", label = "Registro Documental", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "sintomasrelatados", label = "Sintomas relatados", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
@@ -1981,6 +1977,8 @@ new {value = 4,display = "Eventos novos"},
  new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "usomedicacao", label = "Uso de Medicação", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
@@ -2005,19 +2003,19 @@ new {value = 4,display = "Eventos novos"},
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "servicoid", label = "Serviço",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "pacienteid", label = "Paciente",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "profissionalid", label = "Profissional",displaygroup = "Agenda", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "profissionalid", label = "Profissional",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Agenda", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "servicoid", label = "Serviço",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "pacienteid", label = "Paciente",displaygroup = "Agenda", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "datainicio", label = "Data Inicio",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "datainicio", label = "Data Inicio",displaygroup = "Agenda", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "datafim", label = "Data Fim",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "datafim", label = "Data Fim",displaygroup = "Agenda", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "status", label = "Status do Agendamento",displaygroup = "", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
+ new { id = "status", label = "Status do Agendamento",displaygroup = "Agenda", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
 new {value = 0,display = "Em Aberto"},
 new {value = 1,display = "Compareceu"},
 new {value = 2,display = "Não Compareceu"},
@@ -2025,55 +2023,57 @@ new {value = 3,display = "Remarcado pelo proficional"},
 new {value = 4,display = "Remarcado pelo paciente"},
 }
   },
- new { id = "movimentacaofinanceiraid", label = "Financeiro",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "movimentacaofinanceiraid", label = "Financeiro",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "sinteseprontuario", label = "Sintese Prontuario",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "prontuario", label = "Prontuario",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "queixaprincipal", label = "Queixa Principal",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "queixaprincipal", label = "Queixa Principal",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "motivoconsultaatual", label = "Motivo da consulta atual",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "registrodocumental", label = "Registro Documental",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "sintomasrelatados", label = "Sintomas relatados",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "sintomasrelatados", label = "Sintomas relatados",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão",displaygroup = "", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
+ new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão",displaygroup = "Atendimento", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
 new {value = 1,display = "Menteve"},
 new {value = 2,display = "Melhora"},
 new {value = 3,display = "Piora"},
 new {value = 4,display = "Eventos novos"},
 }
   },
- new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "estadoemocionalgeral", label = "Estado emocional geral",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "estadoemocionalgeral", label = "Estado emocional geral",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "discursopensamentos", label = "Discurso e pensamentos",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "discursopensamentos", label = "Discurso e pensamentos",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tecnicasutilizadas", label = "Técnicas utilizadas",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "usomedicacao", label = "Uso de Medicação",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "tecnicasutilizadas", label = "Técnicas utilizadas",displaygroup = "Estratégias", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas",displaygroup = "Estratégias", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas",displaygroup = "Estratégias", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica",displaygroup = "Diagnóstico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas",displaygroup = "Anotações Extras", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico",displaygroup = "Anotações Extras", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
              {
-                 pacienteid = "/Sesoes/SesoesReadFKPacienteId",
-                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
                  servicoid = "/Sesoes/SesoesReadFKServicoId",
+                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+                 pacienteid = "/Sesoes/SesoesReadFKPacienteId",
                  movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
                  create = "/Sesoes/PostSesoes",
                  read = "/Sesoes/ReadSesoes",
@@ -2104,13 +2104,13 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome da Clínica",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome da Clínica",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "endereco", label = "Endereço da Clínica",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "endereco", label = "Endereço da Clínica",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "telefone", label = "Telefone de Contato",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "telefone", label = "Telefone de Contato",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2184,13 +2184,13 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "nome", label = "Nome Usuario",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "nome", label = "Nome Usuario",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "email", label = "Email",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "email", label = "Email",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "senha", label = "Senha",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "senha", label = "Senha",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2222,11 +2222,11 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "audittrackeractived", label = "AuditTrackerActived",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "audittrackeractived", label = "AuditTrackerActived",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "auditcrudactived", label = "AuditCRUDActived",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "auditcrudactived", label = "AuditCRUDActived",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2264,17 +2264,17 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tenantid", label = "TenantID",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "tenantid", label = "TenantID",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "emailsmtpclient", label = "EmailSmtpClient",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "emailsmtpclient", label = "EmailSmtpClient",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "emailport", label = "EmailPort",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "emailport", label = "EmailPort",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "emailusername", label = "EmailUserName",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "emailusername", label = "EmailUserName",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "emailpassword", label = "EmailPassword",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "emailpassword", label = "EmailPassword",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2305,9 +2305,9 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "description", label = "Descrição",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "description", label = "Descrição",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2337,9 +2337,9 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "description", label = "Descrição",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "description", label = "Descrição",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2373,13 +2373,13 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "moduleid", label = "ID Modulo",displaygroup = "", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "moduleid", label = "ID Modulo",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tenantid", label = "TenantID",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "tenantid", label = "TenantID",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "validuntil", label = "Valido ate",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2415,13 +2415,13 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "moduleid", label = "ID Modulo",displaygroup = "", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "moduleid", label = "ID Modulo",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "userid", label = "User ID",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayUser", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+ new { id = "userid", label = "User ID",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayUser", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "validuntil", label = "Valido ate",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2453,9 +2453,9 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "id", label = "ID",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "id", label = "ID",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "description", label = "Descrição",displaygroup = "", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "description", label = "Descrição",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2497,21 +2497,21 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "perfilid", label = "ID Perfil",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "perfilid", label = "ID Perfil",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "grantid", label = "ID Permição",displaygroup = "", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "grantid", label = "ID Permição",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "grant", label = "Permite acessar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "grant", label = "Permite acessar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "create", label = "Permite Criar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "create", label = "Permite Criar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "read", label = "Permite  Ler",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "read", label = "Permite  Ler",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "update", label = "Permite Atualizar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "update", label = "Permite Atualizar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "delete", label = "Permite Deletar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "delete", label = "Permite Deletar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "validuntil", label = "Valido ate",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new
@@ -2555,21 +2555,21 @@ searchFields = new[]
 },
 formFields = new[]
 {
- new { id = "perfilid", label = "ID Perfil",displaygroup = "", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "perfilid", label = "ID Perfil",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "grantid", label = "ID Permição",displaygroup = "", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
+ new { id = "grantid", label = "ID Permição",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "grant", label = "Permite acessar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "grant", label = "Permite acessar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "create", label = "Permite Criar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "create", label = "Permite Criar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "read", label = "Permite  Ler",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "read", label = "Permite  Ler",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "update", label = "Permite Atualizar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "update", label = "Permite Atualizar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "delete", label = "Permite Deletar",displaygroup = "", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "delete", label = "Permite Deletar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "validuntil", label = "Valido ate",displaygroup = "", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new

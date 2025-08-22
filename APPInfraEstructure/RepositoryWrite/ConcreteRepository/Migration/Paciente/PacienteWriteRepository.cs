@@ -86,14 +86,9 @@ namespace Input.Repository.Paciente
             var query = _query.UpdateTelefoneResponsavel(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdatePrincipaisQueixas(IPacienteEntity entity)
+        public void UpdateObservacao(IPacienteEntity entity)
         {
-            var query = _query.UpdatePrincipaisQueixas(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
-        public void UpdateObservacaoAdicional(IPacienteEntity entity)
-        {
-            var query = _query.UpdateObservacaoAdicional(entity);
+            var query = _query.UpdateObservacao(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTenantID(IPacienteEntity entity)
