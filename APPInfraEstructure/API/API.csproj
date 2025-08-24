@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
 </Project>

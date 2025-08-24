@@ -1,7 +1,0 @@
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\bin\Debug\net8.0\CoverletSourceRootsMapping_TestMigration
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.csproj.AssemblyReference.cache
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.AssemblyInfoInputs.cache
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.AssemblyInfo.cs
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.csproj.CoreCompileInputs.cache
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.sourcelink.json

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\APPInfraEstructure\Migration\Migration.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
 </Project>

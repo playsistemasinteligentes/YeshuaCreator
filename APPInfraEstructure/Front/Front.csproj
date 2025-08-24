@@ -7,27 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\spa\scripts\alert.js" />
-    <Content Remove="wwwroot\spa\scripts\crudEnumerator.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\spa\components\recording\APP gravação.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\spa\scripts\main.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <Content Remove="wwwroot\spa\environments.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\spa\scripts\components\NovaPasta\" />
-    <Folder Include="wwwroot\spa\style\" />
+    <Content Remove="appsettings.json" />
   </ItemGroup>
 
 </Project>

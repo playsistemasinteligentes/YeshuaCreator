@@ -78,9 +78,3 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Teste\bin\Deb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Teste\bin\Debug\net8.0\RepositoryWrite.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Teste\bin\Debug\net8.0\Shered.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Teste\bin\Debug\net8.0\Shered.dll.config
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Teste\obj\Debug\net8.0\Test.csproj.AssemblyReference.cache
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Teste\obj\Debug\net8.0\Test.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Teste\obj\Debug\net8.0\Test.AssemblyInfoInputs.cache
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Teste\obj\Debug\net8.0\Test.AssemblyInfo.cs
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Teste\obj\Debug\net8.0\Test.csproj.CoreCompileInputs.cache
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Teste\obj\Debug\net8.0\Test.sourcelink.json
