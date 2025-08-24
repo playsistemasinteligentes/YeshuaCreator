@@ -21,7 +21,7 @@ namespace AppClinicas
         public int MaxConcurrentUpgradedConnections { get; set; }
         public int MaxRequestBodySize { get; set; }
         public string[] CorsOrigins { get; set; }
-
-
+        public string Source { get; set; }
+        public string Project { get; set; }
     }
 }

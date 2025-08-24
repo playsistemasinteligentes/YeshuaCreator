@@ -7,8 +7,6 @@ namespace IQuery.Write
      {
         public QueryModel InserirSesoesQuery(ISesoesEntity Sesoes);
         public QueryModel UpdateSesoesQuery(ISesoesEntity Sesoes);
-        public QueryModel UpdateServicoId(ISesoesEntity entity);
-        public QueryModel UpdateProfissionalId(ISesoesEntity entity);
         public QueryModel UpdatePacienteId(ISesoesEntity entity);
         public QueryModel UpdateDataInicio(ISesoesEntity entity);
         public QueryModel UpdateDataFim(ISesoesEntity entity);
@@ -33,6 +31,8 @@ namespace IQuery.Write
         public QueryModel UpdateEncaminhamentoOutrosProfissionais(ISesoesEntity entity);
         public QueryModel UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity);
         public QueryModel UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity);
+        public QueryModel UpdateServicoId(ISesoesEntity entity);
+        public QueryModel UpdateProfissionalId(ISesoesEntity entity);
         public QueryModel UpdateTenantID(ISesoesEntity entity);
         public QueryModel UpdateDeleted(ISesoesEntity entity);
         public QueryModel UpdateChanged(ISesoesEntity entity);

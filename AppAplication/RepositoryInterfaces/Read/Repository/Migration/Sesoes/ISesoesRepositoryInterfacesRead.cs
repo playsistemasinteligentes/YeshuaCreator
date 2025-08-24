@@ -12,15 +12,12 @@ namespace IRepository.Read
     public interface ISesoesReadRepository
     {
         public DataPagination<SesoesDTO> getSesoes(ICommandRead command );
-        public IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(object command );
-        public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command );
         public IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(object command );
         public IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command );
+        public IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(object command );
+        public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command );
         public IEnumerable<SesoesTenantIDDTO> getSesoesReadFKTenantID(object command );
         public IEnumerable<SesoesUserIdDTO> getSesoesReadFKUserId(object command );
-        public bool ExistsByServicoId(int value );
-        public bool ExistsByProfissionalId(int value );
-        public bool ExistsById(int value );
         public bool ExistsByPacienteId(int value );
         public bool ExistsByDataInicio(DateTime value );
         public bool ExistsByDataFim(DateTime value );
@@ -45,13 +42,13 @@ namespace IRepository.Read
         public bool ExistsByEncaminhamentoOutrosProfissionais(string value );
         public bool ExistsByInformacoesRelevantesFuturasConsultas(string value );
         public bool ExistsByFeedbackPacienteSobreProcessoTerapeeutico(string value );
+        public bool ExistsById(int value );
+        public bool ExistsByServicoId(int value );
+        public bool ExistsByProfissionalId(int value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
-        public SesoesDTO FirstByServicoId(int value );
-        public SesoesDTO FirstByProfissionalId(int value );
-        public SesoesDTO FirstById(int value );
         public SesoesDTO FirstByPacienteId(int value );
         public SesoesDTO FirstByDataInicio(DateTime value );
         public SesoesDTO FirstByDataFim(DateTime value );
@@ -76,13 +73,13 @@ namespace IRepository.Read
         public SesoesDTO FirstByEncaminhamentoOutrosProfissionais(string value );
         public SesoesDTO FirstByInformacoesRelevantesFuturasConsultas(string value );
         public SesoesDTO FirstByFeedbackPacienteSobreProcessoTerapeeutico(string value );
+        public SesoesDTO FirstById(int value );
+        public SesoesDTO FirstByServicoId(int value );
+        public SesoesDTO FirstByProfissionalId(int value );
         public SesoesDTO FirstByTenantID(int value );
         public SesoesDTO FirstByDeleted(bool value );
         public SesoesDTO FirstByChanged(DateTime value );
         public SesoesDTO FirstByUserId(int value );
-        public IEnumerable<SesoesDTO> GetAllByServicoId(int value );
-        public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value );
-        public IEnumerable<SesoesDTO> GetAllById(int value );
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value );
         public IEnumerable<SesoesDTO> GetAllByDataInicio(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByDataFim(DateTime value );
@@ -107,6 +104,9 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByEncaminhamentoOutrosProfissionais(string value );
         public IEnumerable<SesoesDTO> GetAllByInformacoesRelevantesFuturasConsultas(string value );
         public IEnumerable<SesoesDTO> GetAllByFeedbackPacienteSobreProcessoTerapeeutico(string value );
+        public IEnumerable<SesoesDTO> GetAllById(int value );
+        public IEnumerable<SesoesDTO> GetAllByServicoId(int value );
+        public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value );
         public IEnumerable<SesoesDTO> GetAllByTenantID(int value );
         public IEnumerable<SesoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<SesoesDTO> GetAllByChanged(DateTime value );

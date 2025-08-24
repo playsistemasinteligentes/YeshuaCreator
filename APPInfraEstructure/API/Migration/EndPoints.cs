@@ -1079,40 +1079,6 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/Sesoes/SesoesReadFKServicoId", async ([FromServices] Command.Receivers.Read.SesoesReadFKServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/Sesoes/SesoesReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
 app.MapPost("/Sesoes/SesoesReadFKPacienteId", async ([FromServices] Command.Receivers.Read.SesoesReadFKPacienteIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -1131,6 +1097,40 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/Sesoes/SesoesReadFKMovimentacaoFinanceiraId", async ([FromServices] Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Sesoes/SesoesReadFKServicoId", async ([FromServices] Command.Receivers.Read.SesoesReadFKServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/Sesoes/SesoesReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1935,12 +1935,6 @@ var metadatacrud = new
 entityDescription = "Sesoes",
 searchFields = new[]
 {
- new { id = "servicoid", label = "Serviço", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "profissionalid", label = "Profissional", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
  new { id = "pacienteid", label = "Paciente", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
@@ -2000,15 +1994,15 @@ new {value = 4,display = "Eventos novos"},
  },
  new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
+ new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "servicoid", label = "Serviço", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
+ new { id = "profissionalid", label = "Profissional", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
+ },
 },
 formFields = new[]
 {
- new { id = "servicoid", label = "Serviço",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "profissionalid", label = "Profissional",displaygroup = "Agenda", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "id", label = "ID",displaygroup = "Agenda", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
  new { id = "pacienteid", label = "Paciente",displaygroup = "Agenda", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
   },
  new { id = "datainicio", label = "Data Inicio",displaygroup = "Agenda", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
@@ -2068,13 +2062,19 @@ new {value = 4,display = "Eventos novos"},
   },
  new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico",displaygroup = "Anotações Extras", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
+ new { id = "id", label = "ID",displaygroup = "IDs", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "servicoid", label = "Serviço",displaygroup = "IDs", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
+ new { id = "profissionalid", label = "Profissional",displaygroup = "IDs", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
+  },
 },
              endpoints = new
              {
-                 servicoid = "/Sesoes/SesoesReadFKServicoId",
-                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
                  pacienteid = "/Sesoes/SesoesReadFKPacienteId",
                  movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
+                 servicoid = "/Sesoes/SesoesReadFKServicoId",
+                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
                  create = "/Sesoes/PostSesoes",
                  read = "/Sesoes/ReadSesoes",
                  update = "/Sesoes/PutSesoes",

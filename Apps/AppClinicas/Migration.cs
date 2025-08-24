@@ -94,10 +94,6 @@ namespace AppClinicas
 
             AddEntity("Sesoes").AddModule("PSI")
 
-                .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int()
-                .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("Agenda")
-                .AddColumn("Id", "ID").Int().Incremento().Key().Group("Agenda")
-
                 .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int().Group("Agenda")
                 .AddColumn("DataInicio", "Data Inicio").DateTime().NotNull().Group("Agenda")
                 .AddColumn("DataFim", "Data Fim").DateTime().NotNull().Group("Agenda")
@@ -146,7 +142,11 @@ namespace AppClinicas
 
                 //8. Anotações Extras
                 .AddColumn("InformacoesRelevantesFuturasConsultas", "Informações relevantes que podem ser úteis em futuras consultas").Varchar(1000, true).Group("Anotações Extras")
-                .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(1000, true).Group("Anotações Extras");
+                .AddColumn("FeedbackPacienteSobreProcessoTerapeeutico", "Feedback do paciente sobre o processo terapêutico").Varchar(1000, true).Group("Anotações Extras")
+
+                .AddColumn("Id", "ID").Int().Incremento().Key().Group("IDs")
+                .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int().Group("IDs")
+                .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("IDs");
 
 
             // Agente para interação de agendamento de pacientes via WhatsApp

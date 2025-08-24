@@ -17,9 +17,11 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, co
     using (IUnitOfWork unitOfWork = new UnitOfWork(connection, true))
     {
         Console.WriteLine("Try Migrations");
-        new MigrationBuilder()
-            .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))
-            .ADDSchema(new SqlServerSchema(unitOfWork))
-            .Build().Run();
+
+        MigrationBuilder migration = new MigrationBuilder();
+        if (!string.IsNullOrEmpty(GS.I.MYC.Source))
+            migration.ADDSchema(new CSharpCQRS(GS.I.MYC.Project, GS.I.MYC.Source));
+        migration.ADDSchema(new SqlServerSchema(unitOfWork));
+        migration.Build().Run();
     }
 }

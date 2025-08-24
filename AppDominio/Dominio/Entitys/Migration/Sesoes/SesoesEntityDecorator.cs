@@ -18,45 +18,6 @@
                             _inner = inner;
                             _logger = logger;
                         }
-                                    public int? ServicoId
-                                    {
-                                        get => _inner.ServicoId;
-                                        set
-                                        {
-                                            if (_inner.ServicoId != value)
-                                            {
-                                                _logger.Info($"Propriedade ServicoId: antes={_inner.ServicoId}, depois={value}");
-                                                _inner.ServicoId = value;
-                                            }
-                                        }
-                                    }
-
-                                    public int? ProfissionalId
-                                    {
-                                        get => _inner.ProfissionalId;
-                                        set
-                                        {
-                                            if (_inner.ProfissionalId != value)
-                                            {
-                                                _logger.Info($"Propriedade ProfissionalId: antes={_inner.ProfissionalId}, depois={value}");
-                                                _inner.ProfissionalId = value;
-                                            }
-                                        }
-                                    }
-
-                                    public int? Id
-                                    {
-                                        get => _inner.Id;
-                                        set
-                                        {
-                                            if (_inner.Id != value)
-                                            {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
-                                                _inner.Id = value;
-                                            }
-                                        }
-                                    }
-
                                     public int? PacienteId
                                     {
                                         get => _inner.PacienteId;
@@ -365,6 +326,45 @@
                                             {
                                                 _logger.Info($"Propriedade FeedbackPacienteSobreProcessoTerapeeutico: antes={_inner.FeedbackPacienteSobreProcessoTerapeeutico}, depois={value}");
                                                 _inner.FeedbackPacienteSobreProcessoTerapeeutico = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? ServicoId
+                                    {
+                                        get => _inner.ServicoId;
+                                        set
+                                        {
+                                            if (_inner.ServicoId != value)
+                                            {
+                                                _logger.Info($"Propriedade ServicoId: antes={_inner.ServicoId}, depois={value}");
+                                                _inner.ServicoId = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? ProfissionalId
+                                    {
+                                        get => _inner.ProfissionalId;
+                                        set
+                                        {
+                                            if (_inner.ProfissionalId != value)
+                                            {
+                                                _logger.Info($"Propriedade ProfissionalId: antes={_inner.ProfissionalId}, depois={value}");
+                                                _inner.ProfissionalId = value;
                                             }
                                         }
                                     }

@@ -10,9 +10,6 @@
                 {
                     public interface ISesoesEntity
 {
-    int? ServicoId { get; set; }
-    int? ProfissionalId { get; set; }
-    int? Id { get; set; }
     int? PacienteId { get; set; }
     DateTime DataInicio { get; set; }
     DateTime DataFim { get; set; }
@@ -37,6 +34,9 @@
     string EncaminhamentoOutrosProfissionais { get; set; }
     string InformacoesRelevantesFuturasConsultas { get; set; }
     string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+    int? Id { get; set; }
+    int? ServicoId { get; set; }
+    int? ProfissionalId { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

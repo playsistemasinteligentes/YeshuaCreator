@@ -3,9 +3,6 @@ namespace Command.Read
 {
     public struct SesoesReadCommand : ICommandRead
     {
-        public int? ServicoId { get; set; }
-        public int? ProfissionalId { get; set; }
-        public int? Id { get; set; }
         public int? PacienteId { get; set; }
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
@@ -30,6 +27,9 @@ namespace Command.Read
         public string EncaminhamentoOutrosProfissionais { get; set; }
         public string InformacoesRelevantesFuturasConsultas { get; set; }
         public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+        public int? Id { get; set; }
+        public int? ServicoId { get; set; }
+        public int? ProfissionalId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

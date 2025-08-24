@@ -41,16 +41,6 @@ namespace Input.Repository.Sesoes
             var query = _query.DeleteSesoesQuery(Sesoes);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateServicoId(ISesoesEntity entity)
-        {
-            var query = _query.UpdateServicoId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
-        public void UpdateProfissionalId(ISesoesEntity entity)
-        {
-            var query = _query.UpdateProfissionalId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
         public void UpdatePacienteId(ISesoesEntity entity)
         {
             var query = _query.UpdatePacienteId(entity);
@@ -169,6 +159,16 @@ namespace Input.Repository.Sesoes
         public void UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity)
         {
             var query = _query.UpdateFeedbackPacienteSobreProcessoTerapeeutico(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateServicoId(ISesoesEntity entity)
+        {
+            var query = _query.UpdateServicoId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateProfissionalId(ISesoesEntity entity)
+        {
+            var query = _query.UpdateProfissionalId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateTenantID(ISesoesEntity entity)

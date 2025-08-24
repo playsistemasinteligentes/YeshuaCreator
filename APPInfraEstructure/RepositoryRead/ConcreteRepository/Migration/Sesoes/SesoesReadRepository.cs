@@ -47,42 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(Command.Patterns.Command.SearchFKCommand command )
-        {
-            List<SesoesServicoIdDTO> lista;
-            var query = _query.SesoesServicoIdQuery(command );
-
-                lista = _connection.Query<SesoesServicoIdDTO>(query.Query,query.Parameters) as List<SesoesServicoIdDTO>;
-            return lista;
-        }
-
-        public IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(object command )
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getSesoesReadFKServicoId(c );
-            }
-            throw new NotImplementedException();
-        }
-
-        private IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command )
-        {
-            List<SesoesProfissionalIdDTO> lista;
-            var query = _query.SesoesProfissionalIdQuery(command );
-
-                lista = _connection.Query<SesoesProfissionalIdDTO>(query.Query,query.Parameters) as List<SesoesProfissionalIdDTO>;
-            return lista;
-        }
-
-        public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command )
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getSesoesReadFKProfissionalId(c );
-            }
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command )
         {
             List<SesoesPacienteIdDTO> lista;
@@ -115,6 +79,42 @@ namespace Read.Repository
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
                 return getSesoesReadFKMovimentacaoFinanceiraId(c );
+            }
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(Command.Patterns.Command.SearchFKCommand command )
+        {
+            List<SesoesServicoIdDTO> lista;
+            var query = _query.SesoesServicoIdQuery(command );
+
+                lista = _connection.Query<SesoesServicoIdDTO>(query.Query,query.Parameters) as List<SesoesServicoIdDTO>;
+            return lista;
+        }
+
+        public IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getSesoesReadFKServicoId(c );
+            }
+            throw new NotImplementedException();
+        }
+
+        private IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command )
+        {
+            List<SesoesProfissionalIdDTO> lista;
+            var query = _query.SesoesProfissionalIdQuery(command );
+
+                lista = _connection.Query<SesoesProfissionalIdDTO>(query.Query,query.Parameters) as List<SesoesProfissionalIdDTO>;
+            return lista;
+        }
+
+        public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getSesoesReadFKProfissionalId(c );
             }
             throw new NotImplementedException();
         }
@@ -153,30 +153,6 @@ namespace Read.Repository
                 return getSesoesReadFKUserId(c );
             }
             throw new NotImplementedException();
-        }
-
-        public bool ExistsByServicoId(int value )
-        {
-            var query = _query.ExistsByServicoIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByProfissionalId(int value )
-        {
-            var query = _query.ExistsByProfissionalIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsById(int value )
-        {
-            var query = _query.ExistsByIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
         }
 
         public bool ExistsByPacienteId(int value )
@@ -371,6 +347,30 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsById(int value )
+        {
+            var query = _query.ExistsByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByServicoId(int value )
+        {
+            var query = _query.ExistsByServicoIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByProfissionalId(int value )
+        {
+            var query = _query.ExistsByProfissionalIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value )
         {
             var query = _query.ExistsByTenantIDQuery(value );
@@ -401,30 +401,6 @@ namespace Read.Repository
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
-        }
-
-        public SesoesDTO FirstByServicoId(int value )
-        {
-            var query = _query.FirstByServicoIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public SesoesDTO FirstByProfissionalId(int value )
-        {
-            var query = _query.FirstByProfissionalIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public SesoesDTO FirstById(int value )
-        {
-            var query = _query.FirstByIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
-                return result;
         }
 
         public SesoesDTO FirstByPacienteId(int value )
@@ -619,6 +595,30 @@ namespace Read.Repository
                 return result;
         }
 
+        public SesoesDTO FirstById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public SesoesDTO FirstByServicoId(int value )
+        {
+            var query = _query.FirstByServicoIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public SesoesDTO FirstByProfissionalId(int value )
+        {
+            var query = _query.FirstByProfissionalIdQuery(value );
+
+                var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public SesoesDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -648,30 +648,6 @@ namespace Read.Repository
             var query = _query.FirstByUserIdQuery(value );
 
                 var result = _connection.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
-        public IEnumerable<SesoesDTO> GetAllByServicoId(int value )
-        {
-            var query = _query.FirstByServicoIdQuery(value );
-
-                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
-                return result;
-        }
-
-        public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value )
-        {
-            var query = _query.FirstByProfissionalIdQuery(value );
-
-                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
-                return result;
-        }
-
-        public IEnumerable<SesoesDTO> GetAllById(int value )
-        {
-            var query = _query.FirstByIdQuery(value );
-
-                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
                 return result;
         }
 
@@ -862,6 +838,30 @@ namespace Read.Repository
         public IEnumerable<SesoesDTO> GetAllByFeedbackPacienteSobreProcessoTerapeeutico(string value )
         {
             var query = _query.FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(value );
+
+                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllByServicoId(int value )
+        {
+            var query = _query.FirstByServicoIdQuery(value );
+
+                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value )
+        {
+            var query = _query.FirstByProfissionalIdQuery(value );
 
                 var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
                 return result;

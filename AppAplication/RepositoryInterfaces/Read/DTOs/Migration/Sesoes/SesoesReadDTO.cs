@@ -8,9 +8,6 @@ namespace Repositorio.Outputs
 {
     public record SesoesDTO
     {
-    public int servicoid { get; set; }
-    public int profissionalid { get; set; }
-    public int id { get; set; }
     public int pacienteid { get; set; }
     public DateTime datainicio { get; set; }
     public DateTime datafim { get; set; }
@@ -35,6 +32,9 @@ namespace Repositorio.Outputs
     public string encaminhamentooutrosprofissionais { get; set; }
     public string informacoesrelevantesfuturasconsultas { get; set; }
     public string feedbackpacientesobreprocessoterapeeutico { get; set; }
+    public int id { get; set; }
+    public int servicoid { get; set; }
+    public int profissionalid { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

@@ -24,13 +24,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select ServicoId, ProfissionalId, Id, PacienteId, DataInicio, DataFim, Status, MovimentacaoFinanceiraId, Prontuario, QueixaPrincipal, RegistroDocumental, SintomasRelatados, MudancasDesdeUltimaSessaao, ComportamentoObservado, EstadoEmocionalGeral, DiscursoPensamentos, UsoMedicacao, TecnicasUtilizadas, QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo, ObjetivosLongoPrazo, FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico, TenantID, Deleted, Changed, UserId from Sesoes ";
-if (Command.ServicoId.HasValue) parametersDict["ServicoId"] = Command.ServicoId.Value;
-if (Command.ServicoId.HasValue) whereClauses.Add($"ServicoId = @ServicoId");
-if (Command.ProfissionalId.HasValue) parametersDict["ProfissionalId"] = Command.ProfissionalId.Value;
-if (Command.ProfissionalId.HasValue) whereClauses.Add($"ProfissionalId = @ProfissionalId");
-if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
-if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+            this.Query = $@" select PacienteId, DataInicio, DataFim, Status, MovimentacaoFinanceiraId, Prontuario, QueixaPrincipal, RegistroDocumental, SintomasRelatados, MudancasDesdeUltimaSessaao, ComportamentoObservado, EstadoEmocionalGeral, DiscursoPensamentos, UsoMedicacao, TecnicasUtilizadas, QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo, ObjetivosLongoPrazo, FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico, Id, ServicoId, ProfissionalId, TenantID, Deleted, Changed, UserId from Sesoes ";
 if (Command.PacienteId.HasValue) parametersDict["PacienteId"] = Command.PacienteId.Value;
 if (Command.PacienteId.HasValue) whereClauses.Add($"PacienteId = @PacienteId");
 if (Command.Status.HasValue) parametersDict["Status"] = Command.Status.Value;
@@ -75,6 +69,12 @@ if (!string.IsNullOrEmpty(Command.InformacoesRelevantesFuturasConsultas)) parame
 if (!string.IsNullOrEmpty(Command.InformacoesRelevantesFuturasConsultas)) whereClauses.Add($"InformacoesRelevantesFuturasConsultas like @InformacoesRelevantesFuturasConsultas");
 if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) parametersDict["FeedbackPacienteSobreProcessoTerapeeutico"] = $"%{Command.FeedbackPacienteSobreProcessoTerapeeutico}%";
 if (!string.IsNullOrEmpty(Command.FeedbackPacienteSobreProcessoTerapeeutico)) whereClauses.Add($"FeedbackPacienteSobreProcessoTerapeeutico like @FeedbackPacienteSobreProcessoTerapeeutico");
+if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
+if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
+if (Command.ServicoId.HasValue) parametersDict["ServicoId"] = Command.ServicoId.Value;
+if (Command.ServicoId.HasValue) whereClauses.Add($"ServicoId = @ServicoId");
+if (Command.ProfissionalId.HasValue) parametersDict["ProfissionalId"] = Command.ProfissionalId.Value;
+if (Command.ProfissionalId.HasValue) whereClauses.Add($"ProfissionalId = @ProfissionalId");
  parametersDict["TenantID"] = _correntUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
@@ -91,6 +91,66 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel SesoesPacienteIdQuery(Command.Patterns.Command.SearchFKCommand Command )
+        {
+            this.Query = $@" select Id, Nome from Paciente ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      parametersDict["Id"] = numero; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      parametersDict["Id"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Id like @Id ");
+                      parametersDict["Nome"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Nome like @Nome ");
+                 }
+           }
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+        public QueryModel SesoesMovimentacaoFinanceiraIdQuery(Command.Patterns.Command.SearchFKCommand Command )
+        {
+            this.Query = $@" select Id from MovimentacaoFinanceira ";
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      parametersDict["Id"] = numero; 
+                      whereClauses.Add($" Id = @Id"); 
+                 }
+                 else 
+                 {
+                      parametersDict["Id"] = $"%{Command.searchFK}%"; 
+                      whereClauses.Add($" Id like @Id ");
+                 }
+           }
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel SesoesServicoIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
@@ -143,66 +203,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Id like @Id ");
                       parametersDict["Nome"] = $"%{Command.searchFK}%"; 
                       whereClauses.Add($" Nome like @Nome ");
-                 }
-           }
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, this.Parameters); 
-        }
-        public QueryModel SesoesPacienteIdQuery(Command.Patterns.Command.SearchFKCommand Command )
-        {
-            this.Query = $@" select Id, Nome from Paciente ";
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            if (!string.IsNullOrEmpty(Command.searchFK)) 
-            {
-                 if (int.TryParse(Command.searchFK, out int numero)) 
-                 {
-                      parametersDict["Id"] = numero; 
-                      whereClauses.Add($" Id = @Id"); 
-                 }
-                 else 
-                 {
-                      parametersDict["Id"] = $"%{Command.searchFK}%"; 
-                      whereClauses.Add($" Id like @Id ");
-                      parametersDict["Nome"] = $"%{Command.searchFK}%"; 
-                      whereClauses.Add($" Nome like @Nome ");
-                 }
-           }
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, this.Parameters); 
-        }
-        public QueryModel SesoesMovimentacaoFinanceiraIdQuery(Command.Patterns.Command.SearchFKCommand Command )
-        {
-            this.Query = $@" select Id from MovimentacaoFinanceira ";
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            if (!string.IsNullOrEmpty(Command.searchFK)) 
-            {
-                 if (int.TryParse(Command.searchFK, out int numero)) 
-                 {
-                      parametersDict["Id"] = numero; 
-                      whereClauses.Add($" Id = @Id"); 
-                 }
-                 else 
-                 {
-                      parametersDict["Id"] = $"%{Command.searchFK}%"; 
-                      whereClauses.Add($" Id like @Id ");
                  }
            }
  parametersDict["TenantID"] = _correntUser.TenantID;
@@ -275,60 +275,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
-        }
-        public QueryModel ExistsByServicoIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM Sesoes ";
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      parametersDict["ServicoId"] = value; 
-                      whereClauses.Add($" ServicoId = @ServicoId ");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel ExistsByProfissionalIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM Sesoes ";
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      parametersDict["ProfissionalId"] = value; 
-                      whereClauses.Add($" ProfissionalId = @ProfissionalId ");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel ExistsByIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM Sesoes ";
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      parametersDict["Id"] = value; 
-                      whereClauses.Add($" Id = @Id ");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
         }
         public QueryModel ExistsByPacienteIdQuery(int value )
         {
@@ -762,6 +708,60 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM Sesoes ";
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Id"] = value; 
+                      whereClauses.Add($" Id = @Id ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByServicoIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM Sesoes ";
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["ServicoId"] = value; 
+                      whereClauses.Add($" ServicoId = @ServicoId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByProfissionalIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM Sesoes ";
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["ProfissionalId"] = value; 
+                      whereClauses.Add($" ProfissionalId = @ProfissionalId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
             this.Parameters = null;
@@ -829,60 +829,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"Deleted = @Deleted");
                       parametersDict["UserId"] = value; 
                       whereClauses.Add($" UserId = @UserId ");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel FirstByServicoIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM Sesoes ";
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      parametersDict["ServicoId"] = value; 
-                      whereClauses.Add($" ServicoId = @ServicoId ");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel FirstByProfissionalIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM Sesoes ";
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      parametersDict["ProfissionalId"] = value; 
-                      whereClauses.Add($" ProfissionalId = @ProfissionalId ");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel FirstByIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM Sesoes ";
- parametersDict["TenantID"] = _correntUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- parametersDict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      parametersDict["Id"] = value; 
-                      whereClauses.Add($" Id = @Id ");
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -1315,6 +1261,60 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"Deleted = @Deleted");
                       parametersDict["FeedbackPacienteSobreProcessoTerapeeutico"] = value; 
                       whereClauses.Add($" FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM Sesoes ";
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["Id"] = value; 
+                      whereClauses.Add($" Id = @Id ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByServicoIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM Sesoes ";
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["ServicoId"] = value; 
+                      whereClauses.Add($" ServicoId = @ServicoId ");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByProfissionalIdQuery(int value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var parametersDict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM Sesoes ";
+ parametersDict["TenantID"] = _correntUser.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ parametersDict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      parametersDict["ProfissionalId"] = value; 
+                      whereClauses.Add($" ProfissionalId = @ProfissionalId ");
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
