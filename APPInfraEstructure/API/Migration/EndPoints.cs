@@ -1957,13 +1957,13 @@ new {value = 4,display = "Remarcado pelo paciente"},
  },
  new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "prontuario", label = "Prontuario", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "prontuario", label = "Prontuario", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "queixaprincipal", label = "Queixa Principal", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "registrodocumental", label = "Registro Documental", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "registrodocumental", label = "Registro Documental", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "sintomasrelatados", label = "Sintomas relatados", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "sintomasrelatados", label = "Sintomas relatados", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
  new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", type = "enum", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
 new {value = 1,display = "Menteve"},
@@ -1972,33 +1972,33 @@ new {value = 3,display = "Piora"},
 new {value = 4,display = "Eventos novos"},
 }
  },
- new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "usomedicacao", label = "Uso de Medicação", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "usomedicacao", label = "Uso de Medicação", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
- new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
  },
 },
 formFields = new[]
@@ -2025,13 +2025,13 @@ new {value = 4,display = "Remarcado pelo paciente"},
   },
  new { id = "movimentacaofinanceiraid", label = "Financeiro",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "prontuario", label = "Prontuario",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "prontuario", label = "Prontuario",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "queixaprincipal", label = "Queixa Principal",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "queixaprincipal", label = "Queixa Principal",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "registrodocumental", label = "Registro Documental",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "registrodocumental", label = "Registro Documental",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "sintomasrelatados", label = "Sintomas relatados",displaygroup = "Atendimento", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "sintomasrelatados", label = "Sintomas relatados",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
  new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão",displaygroup = "Atendimento", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
 new {value = 1,display = "Menteve"},
@@ -2040,33 +2040,33 @@ new {value = 3,display = "Piora"},
 new {value = 4,display = "Eventos novos"},
 }
   },
- new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "estadoemocionalgeral", label = "Estado emocional geral",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "estadoemocionalgeral", label = "Estado emocional geral",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "discursopensamentos", label = "Discurso e pensamentos",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "discursopensamentos", label = "Discurso e pensamentos",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "usomedicacao", label = "Uso de Medicação",displaygroup = "Observações Clínicas", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "usomedicacao", label = "Uso de Medicação",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "tecnicasutilizadas", label = "Técnicas utilizadas",displaygroup = "Estratégias", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "tecnicasutilizadas", label = "Técnicas utilizadas",displaygroup = "Estratégias", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas",displaygroup = "Estratégias", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas",displaygroup = "Estratégias", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas",displaygroup = "Estratégias", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas",displaygroup = "Estratégias", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica",displaygroup = "Diagnóstico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica",displaygroup = "Diagnóstico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais",displaygroup = "Plano Terapêutico", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas",displaygroup = "Anotações Extras", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas",displaygroup = "Anotações Extras", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
- new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico",displaygroup = "Anotações Extras", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
+ new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico",displaygroup = "Anotações Extras", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
   },
 },
              endpoints = new

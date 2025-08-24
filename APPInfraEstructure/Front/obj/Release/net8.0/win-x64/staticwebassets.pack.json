@@ -1,6 +1,34 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\crud.css",
+      "PackagePath": "staticwebassets\\2\\crud.css"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\crud.js",
+      "PackagePath": "staticwebassets\\2\\crud.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\enumerators",
+      "PackagePath": "staticwebassets\\2"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\enumerators.js",
+      "PackagePath": "staticwebassets\\2\\enumerators.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\environments.js",
+      "PackagePath": "staticwebassets\\2\\environments.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\index.html",
+      "PackagePath": "staticwebassets\\2\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\2\\menu.css",
+      "PackagePath": "staticwebassets\\2\\menu.css"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\APP gravação.txt",
       "PackagePath": "staticwebassets\\APP gravação.txt"
     },
@@ -29,6 +57,10 @@
       "PackagePath": "staticwebassets\\enumerators.js"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\environments.js",
+      "PackagePath": "staticwebassets\\environments.js"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\fields.css",
       "PackagePath": "staticwebassets\\fields.css"
     },
@@ -55,6 +87,98 @@
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\site.jsx",
       "PackagePath": "staticwebassets\\site.jsx"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\fk-modal.html",
+      "PackagePath": "staticwebassets\\spa\\components\\fk-modal.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\enum\\enumerators",
+      "PackagePath": "staticwebassets\\spa\\enum"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\enum\\enumerators.js",
+      "PackagePath": "staticwebassets\\spa\\enum\\enumerators.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\environments.js",
+      "PackagePath": "staticwebassets\\spa\\environments.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\index.html",
+      "PackagePath": "staticwebassets\\spa\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\Test\\runTestSteps.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\Test\\runTestSteps.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\alerts.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\alerts.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\components\\fk-modal.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\components\\fk-modal.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crud.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\crud.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crudEnumerator.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\crudEnumerator.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\crudState.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\crudState.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\enumerators",
+      "PackagePath": "staticwebassets\\spa\\scripts"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\enumerators.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\enumerators.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\main.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\main.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\menssagensConfirm.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\menssagensConfirm.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\menu.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\menu.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\router.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\router.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\viewsScripts\\forgot.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\viewsScripts\\forgot.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\viewsScripts\\register.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\viewsScripts\\register.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\dashboard.html",
+      "PackagePath": "staticwebassets\\spa\\views\\dashboard.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\forgot.html",
+      "PackagePath": "staticwebassets\\spa\\views\\forgot.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\login.html",
+      "PackagePath": "staticwebassets\\spa\\views\\login.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\views\\register.html",
+      "PackagePath": "staticwebassets\\spa\\views\\register.html"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\style.css",

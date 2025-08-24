@@ -76,12 +76,12 @@ namespace Dominio
             return this;
         }
 
-        public Entity Varchar(int length)
+        public Entity Varchar(int length, bool isMemo = false)
         {
             if (this.StatusColuns == 1)
-                return this.AddColumns.Last().Varchar(length);
+                return this.AddColumns.Last().Varchar(length, isMemo);
             else
-                return this.AlterColumns.Last().Varchar(length);
+                return this.AlterColumns.Last().Varchar(length, isMemo);
         }
         public Entity WhereClauses(string WhereClauses)
         {

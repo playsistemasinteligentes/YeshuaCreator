@@ -1,4 +1,3 @@
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\APP gravação.txt
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\appsettings.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\Front.staticwebassets.runtime.json
@@ -75,3 +74,4 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Debug\net8.0\Front.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Debug\net8.0\Front.genruntimeconfig.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Debug\net8.0\ref\Front.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Debug\net8.0\wwwroot\spa\components\recording\APP gravação.txt

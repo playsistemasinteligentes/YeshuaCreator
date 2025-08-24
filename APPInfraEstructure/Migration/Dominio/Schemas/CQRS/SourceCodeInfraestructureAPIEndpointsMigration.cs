@@ -230,7 +230,6 @@ namespace Dominio.Schemas.CQRS
                     {
                         sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
                     }
-
                     sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\",displaygroup = \"{item.DisplayGroup}\", type = \"{item.getFrontType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()},endPontGetMetadata=\"{endPontGetMetadata}\", {fksDisplay}, {sbEnum.ToString()}  }},");
                 }
                 sb.AppendLine("},");

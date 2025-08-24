@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cadastro</title>
+    <link rel="stylesheet" href="styleTables.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="crud.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="modal-pesquisa" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Pesquisar Registro</h2>
+
+            <!-- Campo de busca -->
+            <input type="text" id="filtro-pesquisa" placeholder="Digite para filtrar..." onkeyup="filtrarTabela()">
+
+            <!-- Tabela de resultados -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-resultados"></tbody>
+            </table>
+
+            <!-- Paginação -->
+            <div id="paginacao"></div>
+        </div>
+    </div>
+
+    <div id="login-screen" class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" id="email" placeholder="Email" /><br><br>
+            <input type="password" id="password" placeholder="Senha" /><br><br>
+            <div align="center">
+                <button type="submit" style="vertical-align: middle;">Entrar</button>
+                <a href="#" onclick="showForgotPassword()" title="Esqueci a senha" style="margin: 0 10px; vertical-align: middle;">
+                    <i class="fas fa-key" style="font-size: 32px; vertical-align: middle;"></i>
+                </a>
+                <a href="#" onclick="showCreateAccount()" title="Criar conta" style="margin: 0 10px; vertical-align: middle;">
+                    <i class="fas fa-user-plus" style="font-size: 32px; vertical-align: middle;"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div id="forgot-password" class="login-container" style="display:none;">
+        <h2>Esqueci minha senha</h2>
+        <form id="forgot-password-form">
+            <input type="email" id="forgot-email" placeholder="Digite seu e-mail" required /><br><br>
+            <div align="center">
+                <button type="submit" style="vertical-align: middle;">Recuperar Senha</button>
+                <a href="#" onclick="showLogin()" title="Esqueci a senha" style="margin: 0 10px; vertical-align: middle;">
+                    <i class="fas fa-sign-in-alt" style="font-size: 32px; vertical-align: middle;"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div id="create-account" class="login-container" style="display:none;">
+        <h2>Criar Conta</h2>
+        <form id="create-account-form">
+            <input type="text" id="create-account-idcompany" placeholder="ID da Empresa" required /><br><br>
+            <input type="email" id="create-account-email" placeholder="Digite seu e-mail" required /><br><br>
+            <input type="text" id="create-account-phone" placeholder="Telefone" required /><br><br>
+            <input type="password" id="create-account-password-create" placeholder="Senha" required /><br><br>
+            <input type="password" id="create-account-confirm-password" placeholder="Confirme a senha" required /><br><br>
+            <div align="center">
+                <button type="submit" style="vertical-align: middle;">Criar Conta</button>
+                <a href="#" onclick="showLogin()" title="Esqueci a senha." style="margin: 0 10px; vertical-align: middle;">
+                    <i class="fas fa-sign-in-alt" style="font-size: 32px; vertical-align: middle;"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div id="app" style="display:none;">
+        <div class="navbar">
+            <div class="left-buttons">
+                <h1 id="form-description"></h1>
+            </div>
+            <div class="menu">
+                <button onclick="toggleMenu()">☰</button>
+                <div class="menu-content" id="menu">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="crud-form" class="container" style="display:none;">
+            <div class="buttons">
+                <div class="right-buttons">
+                    <button id="btn-new" onclick="crudNew()">Novo Registro</button>
+                    <button id="btn-search-parameters" onclick="crudSearchParameters()">Pesquisar</button>
+                    <button id="btn-create" style="display:none;" onclick="crudCreate()">Salvar</button>
+                    <button id="btn-update" style="display:none;" onclick="crudUpdate()">Atualizar</button>
+                    <button id="btn-search" style="display:none;" onclick="crudSearch()">Buscar</button>
+                    <div class="alert" id="alert-msg">Registro salvo com sucesso!</div>
+                </div>
+            </div>
+            <h2></h2>
+            <div class="form-group" id="form-group"></div>
+            <div id="table-container" class="table-container" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script src="environments.js"></script>
+    <script src="crud.js"></script>
+    <script src="enumerators.js"></script>
+    <script>
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                fecharModal();
+            }
+        });
+
+        function fecharModal() {
+            let modal = document.getElementById("modal-pesquisa");
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+        }
+
+        function showForgotPassword() {
+            document.getElementById("login-screen").style.display = "none";
+            document.getElementById("forgot-password").style.display = "block";
+        }
+
+        function showCreateAccount() {
+            document.getElementById("login-screen").style.display = "none";
+            document.getElementById("create-account").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("forgot-password").style.display = "none";
+            document.getElementById("create-account").style.display = "none";
+            document.getElementById("login-screen").style.display = "block";
+        }
+    </script>
+</body>
+
+</html>

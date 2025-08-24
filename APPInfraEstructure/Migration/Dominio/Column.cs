@@ -30,6 +30,8 @@ namespace Dominio
         public bool IsFK { get; private set; }
         public bool DisplayFK { get; set; }
         public string FkEntityName;
+        private bool IsMemo { get; set; } = false;
+
         public Entity EntityFK { get; set; }
         public bool IsNotNull { get; private set; }
         public string Helper { get; }
@@ -61,10 +63,11 @@ namespace Dominio
             DisplayGroup = value;
             return this.Entity;
         }
-        public Entity Varchar(int length)
+        public Entity Varchar(int length, bool isMemo)
         {
-            Type = "varchar";
-            Length = length;
+            this.IsMemo = isMemo;
+            this.Type = "varchar";
+            this.Length = length;
             return this.Entity;
         }
         public Entity Float()
@@ -134,9 +137,7 @@ namespace Dominio
         internal string getFrontType(bool nulableTag = false)
         {
             if (this.Enum != null && this.Enum.Count > 0)
-            {
                 return "enum";
-            }
 
             switch (this.Type)
             {
@@ -145,7 +146,15 @@ namespace Dominio
                 case "bool":
                     return "bool" + (nulableTag && !this.IsNotNull ? "?" : "");
                 case "varchar":
-                    return "string";
+                    {
+                        if (this.Length > 2000)
+                            return "memo";
+
+                        if (this.IsMemo)
+                            return "memo";
+
+                        return "string";
+                    }
                 case "datetime":
                     return "DateTime";
                 case "float":

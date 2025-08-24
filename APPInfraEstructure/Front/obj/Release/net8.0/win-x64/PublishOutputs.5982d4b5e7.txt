@@ -259,7 +259,6 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.AspNetCore.WebSockets.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.AspNetCore.WebUtilities.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.AspNetCore.dll
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.Binder.dll
@@ -303,7 +302,6 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Options.DataAnnotations.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Options.dll
-C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Primitives.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.WebEncoders.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.JSInterop.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Net.Http.Headers.dll
@@ -333,6 +331,8 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Dapper.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Extensions.Primitives.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Identity.Client.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.IdentityModel.Abstractions.dll
@@ -360,6 +360,10 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\zh-Hans\Microsoft.Data.SqlClient.resources.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\zh-Hant\Microsoft.Data.SqlClient.resources.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Dominio.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\RepositoryInterfaces.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Shered.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Shered.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Shered.dll.config
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Dominio.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\RepositoryInterfaces.pdb

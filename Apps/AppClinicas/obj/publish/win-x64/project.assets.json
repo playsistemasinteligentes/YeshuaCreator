@@ -616,28 +616,14 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Shered": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Migration.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Migration.dll": {}
-        }
-      },
-      "Shered/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
           "Dapper": "2.1.35",
-          "Microsoft.Data.SqlClient": "5.2.1",
-          "Newtonsoft.Json": "13.0.1"
+          "Microsoft.Data.SqlClient": "5.2.1"
         },
         "compile": {
-          "bin/placeholder/Shered.dll": {}
+          "bin/placeholder/Migration.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Shered.dll": {}
+          "bin/placeholder/Migration.dll": {}
         }
       }
     },
@@ -1241,28 +1227,14 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Shered": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Migration.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Migration.dll": {}
-        }
-      },
-      "Shered/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
           "Dapper": "2.1.35",
-          "Microsoft.Data.SqlClient": "5.2.1",
-          "Newtonsoft.Json": "13.0.1"
+          "Microsoft.Data.SqlClient": "5.2.1"
         },
         "compile": {
-          "bin/placeholder/Shered.dll": {}
+          "bin/placeholder/Migration.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Shered.dll": {}
+          "bin/placeholder/Migration.dll": {}
         }
       }
     }
@@ -2487,17 +2459,12 @@
       "type": "project",
       "path": "../../APPInfraEstructure/Migration/Migration.csproj",
       "msbuildProject": "../../APPInfraEstructure/Migration/Migration.csproj"
-    },
-    "Shered/1.0.0": {
-      "type": "project",
-      "path": "../../APPInfraEstructure/Shered/Shered.csproj",
-      "msbuildProject": "../../APPInfraEstructure/Shered/Shered.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Migration >= 1.0.0",
-      "Shered >= 1.0.0"
+      "Newtonsoft.Json >= 13.0.1"
     ]
   },
   "packageFolders": {
@@ -2534,9 +2501,6 @@
           "projectReferences": {
             "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Migration.csproj": {
               "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Migration.csproj"
-            },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
             }
           }
         }
@@ -2550,6 +2514,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

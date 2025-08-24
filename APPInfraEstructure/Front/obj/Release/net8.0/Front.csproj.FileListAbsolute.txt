@@ -68,3 +68,10 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Shered.dll.config
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\Front.csproj.AssemblyReference.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\Front.csproj.CopyComplete
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\wwwroot\APP gravação.txt
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Dominio.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\RepositoryInterfaces.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Dominio.pdb
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\RepositoryInterfaces.pdb
