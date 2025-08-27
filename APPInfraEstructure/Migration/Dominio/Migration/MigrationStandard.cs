@@ -22,10 +22,10 @@ namespace Migration.Dominio.Migration
             AddModule("ADM", "Administrativo");
 
             AddEntity("yTenant").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_correntUser.TenantID").NeedBeWhere().CanTakeOffWhere().Group("Geral")
-            .AddColumn("CnpjCpf", "Cnpj/Cpf").Int().NotNull().Group("Geral 1")
-            .AddColumn("Nome", "Nome").Varchar(150).NotNull().Group("Geral 2")
-            .AddColumn("UserId", "User ID").Int().Group("Geral 2");
+            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_correntUser.TenantID").NeedBeWhere().CanTakeOffWhere()
+            .AddColumn("CnpjCpf", "Cnpj/Cpf").Varchar(14).NotNull()
+            .AddColumn("Nome", "Nome").Varchar(150).NotNull()
+            .AddColumn("UserId", "User ID").Int();
 
             AddEntity("yUser").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -114,7 +114,7 @@ namespace Migration.Dominio.Migration
     [Migration(000002)]
     public class S000002 : MigrationBase
     {
-        public record Account(int CpfCnpj, string nome, string email, string phone, string password, string confirmpassword);
+        public record Account(string CpfCnpj, string nome, string email, string phone, string password, string confirmpassword);
         public record AccountResult(int TenantId, int UserId);
 
 
@@ -127,7 +127,7 @@ namespace Migration.Dominio.Migration
             //AlterEntity("yTenant").AddColumn("UserIDAdmin", "Administrador").FK("yUser", "Id").Int();
 
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account(0, "", "", "", "", ""), new AccountResult(1, 1)).Authorization(Authorization.Free)
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account("", "", "", "", "", ""), new AccountResult(1, 1)).Authorization(Authorization.Free)
             .AddEntity("yTenant").AddEntity("yUser").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
 
             AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))

@@ -9,7 +9,7 @@ namespace Repositorio.Outputs
     public record yTenantDTO
     {
     public int id { get; set; }
-    public int cnpjcpf { get; set; }
+    public string cnpjcpf { get; set; }
     public string nome { get; set; }
     public int userid { get; set; }
     public bool deleted { get; set; }

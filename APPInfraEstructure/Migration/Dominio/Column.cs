@@ -16,6 +16,10 @@ namespace Dominio
             if (CQRSParam.I.ColumnsDescriptions.Contains(columnName.ToLower()))
                 this.DisplayFK = true;
         }
+        public Column(string columnName)
+        {
+            this.Name = columnName;
+        }
 
         public Entity Entity { get; set; }
         public bool AutoIncremento { get; set; }

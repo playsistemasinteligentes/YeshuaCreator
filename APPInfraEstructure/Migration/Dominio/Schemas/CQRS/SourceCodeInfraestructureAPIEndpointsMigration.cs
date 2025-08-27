@@ -176,8 +176,13 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("searchFields = new[]");
                 sb.AppendLine("{");
 
+                int conta = 0;
                 foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
                 {
+                    conta++;
+                    if (conta > 5)
+                        break;
+
                     string fksDisplay = "fksDisplayFields =  new string[]{}";
                     string endPontGetMetadata = string.Empty;
                     if (item.IsFK)

@@ -9,7 +9,7 @@
                                     public yTenantFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IyTenantEntity Create(int cnpjcpf, string nome, int? userid )
+                                    } public IyTenantEntity Create(string cnpjcpf, string nome, int? userid )
                             {
                             var entity = new yTenantEntity(cnpjcpf, nome, userid );
 

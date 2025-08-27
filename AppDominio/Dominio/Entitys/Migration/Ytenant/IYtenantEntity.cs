@@ -11,7 +11,7 @@
                     public interface IyTenantEntity
 {
     int? Id { get; set; }
-    int CnpjCpf { get; set; }
+    string CnpjCpf { get; set; }
     string Nome { get; set; }
     int? UserId { get; set; }
     bool? Deleted { get; set; }

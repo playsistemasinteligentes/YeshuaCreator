@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\spa\\enum\\enumerators.js"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\environments.js",
+      "PackagePath": "staticwebassets\\spa\\environments.js"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\index.html",
       "PackagePath": "staticwebassets\\spa\\index.html"
     },

@@ -106,6 +106,10 @@ namespace Dominio.Migration
             modulo.Entities.Add(_entity);
             return _entity.AddModule(modulo);
         }
+        public Entity AddIndex()
+        {
+            return _entity.AddIndex();
+        }
 
         public Entity AddColumn(string columnName)
         {

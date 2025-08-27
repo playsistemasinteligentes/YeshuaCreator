@@ -5,7 +5,7 @@ namespace Command.UseCase
 {
 public partial record ContasCreateContaUseCaseInputCommand : ICommand
 {
-    public int CpfCnpj { get; set; }
+    public string CpfCnpj { get; set; }
     public string nome { get; set; }
     public string email { get; set; }
     public string phone { get; set; }

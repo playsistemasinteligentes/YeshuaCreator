@@ -4,7 +4,7 @@ namespace Command.Read
     public struct yTenantReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public int? CnpjCpf { get; set; }
+        public string CnpjCpf { get; set; }
         public string Nome { get; set; }
         public int? UserId { get; set; }
         public bool? Deleted { get; set; }

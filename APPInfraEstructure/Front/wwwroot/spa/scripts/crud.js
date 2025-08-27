@@ -294,7 +294,6 @@ function renderSearch(metadata, modoFk = false) {
 }
 
 function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) {
-
     const container = modoFk
         ? document.getElementById('modal-tabela-fk')
         : document.getElementById('table-container');
@@ -323,6 +322,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     thActions.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
     thActions.textContent = 'Ações';
     headerRow.appendChild(thActions);
+
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
@@ -345,35 +345,49 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                 const cell = document.createElement('td');
                 cell.className = 'px-4 py-2 border text-sm text-gray-800';
                 cell.textContent = item[field.id.toLowerCase()] || '';
+
+                // 👉 Se for modoFk, transforma a célula em "Selecionar"
+                if (modoFk) {
+                    cell.classList.add('cursor-pointer', 'hover:bg-green-50');
+                    cell.onclick = () => {
+                        const campo = crudState.fkContext.campoDestino;
+                        const input = document.getElementById(`${campo}`);
+                        input.value = item.nome || item.descricao || item.id || '';
+                        input.dataset.id = item.id;
+                        hideFkModal();
+                    };
+                }
+
                 row.appendChild(cell);
             });
 
             const actionsCell = document.createElement('td');
             actionsCell.className = 'px-4 py-2 border text-sm';
 
-            const editBtn = document.createElement('button');
-            editBtn.textContent = 'Editar';
-            editBtn.className = 'text-blue-600 hover:underline mr-2';
-            editBtn.onclick = () => editRecord(item);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.className = 'text-red-600 hover:underline';
-            deleteBtn.onclick = () => deleteRecord(item);
-
             if (modoFk) {
+                // Mantém compatibilidade, mas você pode remover se quiser
                 const selectBtn = document.createElement('button');
                 selectBtn.textContent = 'Selecionar';
                 selectBtn.className = 'text-green-600 hover:underline';
                 selectBtn.onclick = () => {
                     const campo = crudState.fkContext.campoDestino;
                     const input = document.getElementById(`${campo}`);
-                    input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
+                    input.value = item.nome || item.descricao || item.id || '';
                     input.dataset.id = item.id;
                     hideFkModal();
                 };
                 actionsCell.appendChild(selectBtn);
             } else {
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.className = 'text-blue-600 hover:underline mr-2';
+                editBtn.onclick = () => editRecord(item);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.className = 'text-red-600 hover:underline';
+                deleteBtn.onclick = () => deleteRecord(item);
+
                 actionsCell.appendChild(editBtn);
                 actionsCell.appendChild(deleteBtn);
             }
@@ -405,49 +419,48 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                 const fieldValue = item[field.id.toLowerCase()] || '';
                 const p = document.createElement('p');
                 p.innerHTML = `<strong>${field.label}:</strong> ${fieldValue}`;
+
+                // 👉 Se for modoFk, transforma cada campo em clicável
+                if (modoFk) {
+                    p.classList.add('cursor-pointer', 'hover:text-green-600');
+                    p.onclick = () => {
+                        const campo = crudState.fkContext.campoDestino;
+                        const input = document.getElementById(`${campo}`);
+                        input.value = item.nome || item.descricao || item.id || '';
+                        input.dataset.id = item.id;
+                        hideFkModal();
+                    };
+                }
+
                 card.appendChild(p);
             });
 
             const actions = document.createElement('div');
             actions.className = 'mt-2 flex gap-4';
 
-            const editBtn = document.createElement('button');
-            editBtn.textContent = 'Editar';
-            editBtn.className = 'text-blue-600 hover:underline';
-            editBtn.onclick = () => editRecord(item);
+            if (!modoFk) {
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.className = 'text-blue-600 hover:underline';
+                editBtn.onclick = () => editRecord(item);
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.className = 'text-red-600 hover:underline';
-            deleteBtn.onclick = () => deleteRecord(item);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.className = 'text-red-600 hover:underline';
+                deleteBtn.onclick = () => deleteRecord(item);
 
-            if (modoFk) {
-                const selectBtn = document.createElement('button');
-                selectBtn.textContent = 'Selecionar';
-                selectBtn.className = 'text-green-600 hover:underline';
-                selectBtn.onclick = () => {
-                    const campo = crudState.fkContext.campoDestino;
-                    const input = document.getElementById(`${campo}`);
-                    input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
-                    input.dataset.id = item.id;
-                    hideFkModal();
-                };
-                actions.appendChild(selectBtn);
-            } else {
                 actions.appendChild(editBtn);
                 actions.appendChild(deleteBtn);
             }
-            card.appendChild(actions);
 
+            card.appendChild(actions);
             cardWrapper.appendChild(card);
         });
     }
 
     container.appendChild(cardWrapper);
     container.style.display = 'block';
-
 }
-
 
 
 function renderFormCrud() {
@@ -471,6 +484,8 @@ function renderFormCrud() {
     tabsContent.className = 'tabs-content w-full';
 
     let first = true;
+    let mobileActiveIndex = 0; // guarda aba aberta no mobile
+
     Object.entries(tabsMap).forEach(([tabName, fields], index) => {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -546,32 +561,27 @@ function renderFormCrud() {
                     wrapper.appendChild(label);
                     wrapper.appendChild(fkWrapper);
                 } else {
-                    // ✅ tipos normais + memo
                     switch (field.type.toLowerCase()) {
                         case 'int':
                             input = document.createElement('input');
                             input.type = 'number';
                             input.step = '1';
                             break;
-
                         case 'float':
                         case 'decimal':
                             input = document.createElement('input');
                             input.type = 'number';
                             input.step = '0.01';
                             break;
-
                         case 'datetime':
                             input = document.createElement('input');
                             input.type = 'datetime-local';
                             break;
-
-                        case 'memo': // <-- NOVO: textarea
+                        case 'memo':
                             input = document.createElement('textarea');
                             input.rows = 4;
                             input.placeholder = `Digite ${field.label}...`;
                             break;
-
                         default:
                             input = document.createElement('input');
                             input.type = 'text';
@@ -599,35 +609,66 @@ function renderFormCrud() {
     const buttons = tabsButtons.querySelectorAll('button');
     const panes = tabsContent.querySelectorAll('.tab-pane');
 
+    // Clique nas abas
     buttons.forEach((btn, idx) => {
         btn.addEventListener('click', () => {
             const isMobile = window.innerWidth < 768;
-            if (isMobile) {
-                panes[idx].style.display = panes[idx].style.display === 'grid' ? 'none' : 'grid';
-            } else {
-                panes.forEach(p => (p.style.display = 'none'));
-                panes[idx].style.display = 'grid';
-                buttons.forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+            if (!isMobile) {
+                panes.forEach((p, i) => {
+                    p.style.display = i === idx ? 'grid' : 'none';
+                    buttons[i].classList.remove('bg-blue-500', 'text-white');
+                });
                 btn.classList.add('bg-blue-500', 'text-white');
+                return;
+            }
+
+            const pane = panes[idx];
+            const isOpen = pane.style.display === 'grid';
+
+            panes.forEach((p, i) => {
+                p.style.display = 'none';
+                buttons[i].classList.remove('bg-blue-500', 'text-white');
+            });
+
+            if (!isOpen) {
+                pane.style.display = 'grid';
+                btn.classList.add('bg-blue-500', 'text-white');
+                mobileActiveIndex = idx;
+            } else {
+                mobileActiveIndex = -1;
             }
         });
     });
 
+    // Ajuste no resize
     window.addEventListener('resize', () => {
         const isMobile = window.innerWidth < 768;
+        let anyOpen = false;
+
         panes.forEach((pane, idx) => {
             if (isMobile) {
-                pane.style.display = 'none';
+                if (idx === mobileActiveIndex) {
+                    pane.style.display = 'grid';
+                    buttons[idx].classList.add('bg-blue-500', 'text-white');
+                    anyOpen = true;
+                } else {
+                    pane.style.display = 'none';
+                    buttons[idx].classList.remove('bg-blue-500', 'text-white');
+                }
             } else {
                 pane.style.display = idx === 0 ? 'grid' : 'none';
+                buttons[idx].classList.remove('bg-blue-500', 'text-white');
+                if (idx === 0) buttons[idx].classList.add('bg-blue-500', 'text-white');
             }
         });
-        buttons.forEach((b, idx) => {
-            b.classList.remove('bg-blue-500', 'text-white');
-            if (!isMobile && idx === 0) b.classList.add('bg-blue-500', 'text-white');
-        });
+
+        if (isMobile && !anyOpen && mobileActiveIndex >= 0) {
+            panes[mobileActiveIndex].style.display = 'grid';
+            buttons[mobileActiveIndex].classList.add('bg-blue-500', 'text-white');
+        }
     });
 }
+
 
 
 async function buildSearchFK(tipo, campoId, valor) {

@@ -11,11 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\spa\environments.js" />
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromPublish>true</ExcludeFromPublish>
+    </Content>
   </ItemGroup>
-
   <ItemGroup>
-    <Content Remove="appsettings.json" />
+    <Content Update="wwwroot\spa\environments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromPublish>true</ExcludeFromPublish>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -27,8 +27,8 @@ namespace Query.Read
             this.Query = $@" select Id, CnpjCpf, Nome, UserId, Deleted, Changed from yTenant ";
 if (!TakeOffId)  parametersDict["Id"] = _correntUser.TenantID;
 if (!TakeOffId)  whereClauses.Add($"Id = @Id");
-if (Command.CnpjCpf.HasValue) parametersDict["CnpjCpf"] = Command.CnpjCpf.Value;
-if (Command.CnpjCpf.HasValue) whereClauses.Add($"CnpjCpf = @CnpjCpf");
+if (!string.IsNullOrEmpty(Command.CnpjCpf)) parametersDict["CnpjCpf"] = $"%{Command.CnpjCpf}%";
+if (!string.IsNullOrEmpty(Command.CnpjCpf)) whereClauses.Add($"CnpjCpf like @CnpjCpf");
 if (!string.IsNullOrEmpty(Command.Nome)) parametersDict["Nome"] = $"%{Command.Nome}%";
 if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
 if (Command.UserId.HasValue) parametersDict["UserId"] = Command.UserId.Value;
@@ -64,7 +64,7 @@ if (!TakeOffId)  whereClauses.Add($"Id = @Id");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByCnpjCpfQuery(int value , bool TakeOffId = false)
+        public QueryModel ExistsByCnpjCpfQuery(string value , bool TakeOffId = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -172,7 +172,7 @@ if (!TakeOffId)  whereClauses.Add($"Id = @Id");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByCnpjCpfQuery(int value , bool TakeOffId = false)
+        public QueryModel FirstByCnpjCpfQuery(string value , bool TakeOffId = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();

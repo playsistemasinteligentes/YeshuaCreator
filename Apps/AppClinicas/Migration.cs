@@ -149,6 +149,12 @@ namespace AppClinicas
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("IDs");
 
 
+            AlterEntity("Sesoes").AddIndex().AddIndexColumn();
+
+
+
+
+
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddUsecaseGroup("ClinicaPaciente")
                 .AddAgents("Agente de Agendamento de Paciente")

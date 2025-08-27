@@ -301,6 +301,30 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
 
     container.innerHTML = '';
 
+    // --- Função auxiliar para criar células clicáveis ---
+    function createClickableCell(item, field) {
+        const cell = document.createElement('td');
+        cell.className = 'px-4 py-2 border text-sm text-gray-800';
+
+        const value = item[field.id.toLowerCase()] || '';
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = value;
+        link.className = 'text-blue-600 hover:underline';
+        link.onclick = (e) => {
+            e.preventDefault();
+            // Lógica do botão "Selecionar" original
+            const campo = crudState.fkContext.campoDestino;
+            const input = document.getElementById(`${campo}`);
+            input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
+            input.dataset.id = item.id;
+            hideFkModal();
+        };
+
+        cell.appendChild(link);
+        return cell;
+    }
+
     // --- DESKTOP TABLE ---
     const tableWrapper = document.createElement('div');
     tableWrapper.className = 'hidden md:block';
@@ -319,10 +343,6 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
         headerRow.appendChild(th);
     });
 
-    const thActions = document.createElement('th');
-    thActions.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
-    thActions.textContent = 'Ações';
-    headerRow.appendChild(thActions);
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
@@ -331,7 +351,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     if (data.length === 0) {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = metadata.formFields.length + 1;
+        cell.colSpan = metadata.formFields.length;
         cell.className = 'px-4 py-2 border text-center text-gray-500';
         cell.textContent = "Nenhum dado encontrado";
         row.appendChild(cell);
@@ -342,43 +362,9 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             row.className = 'hover:bg-gray-50';
 
             metadata.formFields.forEach(field => {
-                const cell = document.createElement('td');
-                cell.className = 'px-4 py-2 border text-sm text-gray-800';
-                cell.textContent = item[field.id.toLowerCase()] || '';
-                row.appendChild(cell);
+                row.appendChild(createClickableCell(item, field));
             });
 
-            const actionsCell = document.createElement('td');
-            actionsCell.className = 'px-4 py-2 border text-sm';
-
-            const editBtn = document.createElement('button');
-            editBtn.textContent = 'Editar';
-            editBtn.className = 'text-blue-600 hover:underline mr-2';
-            editBtn.onclick = () => editRecord(item);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.className = 'text-red-600 hover:underline';
-            deleteBtn.onclick = () => deleteRecord(item);
-
-            if (modoFk) {
-                const selectBtn = document.createElement('button');
-                selectBtn.textContent = 'Selecionar';
-                selectBtn.className = 'text-green-600 hover:underline';
-                selectBtn.onclick = () => {
-                    const campo = crudState.fkContext.campoDestino;
-                    const input = document.getElementById(`${campo}`);
-                    input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
-                    input.dataset.id = item.id;
-                    hideFkModal();
-                };
-                actionsCell.appendChild(selectBtn);
-            } else {
-                actionsCell.appendChild(editBtn);
-                actionsCell.appendChild(deleteBtn);
-            }
-
-            row.appendChild(actionsCell);
             tbody.appendChild(row);
         });
     }
@@ -404,40 +390,29 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             metadata.formFields.forEach(field => {
                 const fieldValue = item[field.id.toLowerCase()] || '';
                 const p = document.createElement('p');
-                p.innerHTML = `<strong>${field.label}:</strong> ${fieldValue}`;
-                card.appendChild(p);
-            });
+                p.className = 'mb-1';
 
-            const actions = document.createElement('div');
-            actions.className = 'mt-2 flex gap-4';
+                const label = document.createElement('strong');
+                label.textContent = field.label + ': ';
+                p.appendChild(label);
 
-            const editBtn = document.createElement('button');
-            editBtn.textContent = 'Editar';
-            editBtn.className = 'text-blue-600 hover:underline';
-            editBtn.onclick = () => editRecord(item);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.className = 'text-red-600 hover:underline';
-            deleteBtn.onclick = () => deleteRecord(item);
-
-            if (modoFk) {
-                const selectBtn = document.createElement('button');
-                selectBtn.textContent = 'Selecionar';
-                selectBtn.className = 'text-green-600 hover:underline';
-                selectBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.textContent = fieldValue;
+                link.className = 'text-blue-600 hover:underline';
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    // Lógica do botão "Selecionar" original
                     const campo = crudState.fkContext.campoDestino;
                     const input = document.getElementById(`${campo}`);
-                    input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
+                    input.value = item.nome || item.descricao || item.id || '';
                     input.dataset.id = item.id;
                     hideFkModal();
                 };
-                actions.appendChild(selectBtn);
-            } else {
-                actions.appendChild(editBtn);
-                actions.appendChild(deleteBtn);
-            }
-            card.appendChild(actions);
+
+                p.appendChild(link);
+                card.appendChild(p);
+            });
 
             cardWrapper.appendChild(card);
         });
@@ -445,7 +420,6 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
 
     container.appendChild(cardWrapper);
     container.style.display = 'block';
-
 }
 
 

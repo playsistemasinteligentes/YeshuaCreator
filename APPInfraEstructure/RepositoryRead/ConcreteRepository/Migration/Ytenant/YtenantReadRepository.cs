@@ -55,7 +55,7 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByCnpjCpf(int value , bool TakeOffId = false)
+        public bool ExistsByCnpjCpf(string value , bool TakeOffId = false)
         {
             var query = _query.ExistsByCnpjCpfQuery(value , TakeOffId);
 
@@ -103,7 +103,7 @@ namespace Read.Repository
                 return result;
         }
 
-        public yTenantDTO FirstByCnpjCpf(int value , bool TakeOffId = false)
+        public yTenantDTO FirstByCnpjCpf(string value , bool TakeOffId = false)
         {
             var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
 
@@ -151,7 +151,7 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yTenantDTO> GetAllByCnpjCpf(int value , bool TakeOffId = false)
+        public IEnumerable<yTenantDTO> GetAllByCnpjCpf(string value , bool TakeOffId = false)
         {
             var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
 

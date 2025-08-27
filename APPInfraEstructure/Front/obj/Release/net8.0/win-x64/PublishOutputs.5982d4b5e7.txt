@@ -1,5 +1,6 @@
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Front.exe
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\appsettings.Development.json
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\appsettings.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Front.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Front.deps.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\obj\Release\net8.0\win-x64\PubTmp\Out\Front.runtimeconfig.json

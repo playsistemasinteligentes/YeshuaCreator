@@ -9,6 +9,7 @@ namespace Dominio
         public string EntityName { get; private set; }
         public string EntityDescription { get; private set; }
         public List<Column> AddColumns = new List<Column>();
+        public List<Index> AddIndexs = new List<Index>();
         public List<Column> DropColumns = new List<Column>();
         public List<Column> AlterColumns = new List<Column>();
         public List<string> GPTFunction = new List<string>();
@@ -57,6 +58,18 @@ namespace Dominio
             AddColumns.Add(col);
             return this;
         }
+        public Entity AddIndex()
+        {
+            var index = new Index(this);
+            AddIndexs.Add(index);
+            return this;
+        }
+        public void AddIndexColumn(string Name)
+        {
+            var column = new Column(Name);
+            this.AddIndexs.Last().IndexColumns.Add(column);
+        }
+
         public Entity AddColumn(string columnName, string description, string helper)
         {
             var col = new Column(columnName, description, this, helper);
@@ -243,5 +256,7 @@ namespace Dominio
 
             return this;
         }
+
+
     }
 }

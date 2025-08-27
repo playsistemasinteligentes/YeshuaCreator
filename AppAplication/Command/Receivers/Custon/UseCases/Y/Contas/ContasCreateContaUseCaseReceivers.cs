@@ -37,7 +37,7 @@ namespace Command.Receivers.UseCase
             {
 
                 // Validação básica
-                if (comand.CpfCnpj == 0)
+                if (string.IsNullOrEmpty(comand.CpfCnpj))
                     throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error("Cpf / Cnpj é obrigatório", default));
 
                 if (string.IsNullOrWhiteSpace(comand.email))

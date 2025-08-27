@@ -1,4 +1,6 @@
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\wwwroot\spa\environments.js
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\appsettings.Development.json
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\appsettings.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Front.staticwebassets.runtime.json
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Front.exe
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Front\bin\Release\net8.0\Front.deps.json
