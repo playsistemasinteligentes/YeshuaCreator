@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <Folder Include="Commands\Custon\HubAgents\" />
+    <Folder Include="Commands\Custon\Read\Sesoes\" />
+    <Folder Include="Commands\Migration\Read\Sesoes\" />
     <Folder Include="Patterns\Command\Interface\" />
   </ItemGroup>
 

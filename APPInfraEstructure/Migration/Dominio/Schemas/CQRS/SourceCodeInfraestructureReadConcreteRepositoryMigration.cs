@@ -315,12 +315,18 @@ namespace Dominio.Schemas.CQRS
                 {
                     string methodName = $"{_entity.EntityName}{ctxName}";
 
-                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> Get{methodName}({takeOff})");
+                    sb.AppendLine($"        public DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}(ICommandRead command {takeOff})");
                     sb.AppendLine("        {");
                     sb.AppendLine($"            var query = _query.{methodName}Query({VariavaltakeOff});");
                     sb.AppendLine();
-                    sb.AppendLine($"                var result = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
-                    sb.AppendLine("                return result;");
+
+                    sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
+                    sb.AppendLine($"                return new DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO>(");
+                    sb.AppendLine($"                                itens,");
+                    sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
+                    sb.AppendLine($"                command.Paginacao?.PageSize ?? 0,");
+                    sb.AppendLine($"                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);");
+
                     sb.AppendLine("        }");
                     sb.AppendLine();
                     sb.AppendLine();
@@ -331,12 +337,22 @@ namespace Dominio.Schemas.CQRS
                 {
                     string methodName = $"{_entity.EntityName}{whName}";
 
-                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}({CQRSParam.I.NameSpaceCommandRead}.{methodName}Command command {takeOff})");
+                    sb.AppendLine($"        public DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}(ICommandRead command {takeOff})");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"            var query = _query.{methodName}Query(command {VariavaltakeOff});");
+                    sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandRead}.{methodName}Command c)");
+                    sb.AppendLine("             {");
+                    sb.AppendLine($"                var query = _query.{methodName}Query(c {VariavaltakeOff});");
                     sb.AppendLine();
-                    sb.AppendLine($"                var result = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{query.Meta.QueryName}DTO>;");
-                    sb.AppendLine("                return result;");
+
+                    sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
+                    sb.AppendLine($"                return new DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO>(");
+                    sb.AppendLine($"                                itens,");
+                    sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
+                    sb.AppendLine($"                command.Paginacao?.PageSize ?? 0,");
+                    sb.AppendLine($"                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);");
+
+                    sb.AppendLine("             }");
+                    sb.AppendLine("            throw new NotImplementedException();");
                     sb.AppendLine("        }");
                     sb.AppendLine();
                 }

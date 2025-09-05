@@ -55,8 +55,10 @@ namespace Dominio.Schemas.CQRS
                     string ftype = field.TypeField == null ? field.Name : GetFriendlyTypeName(field.TypeField);
                     var getter = true ? " get;" : "";
                     var setter = true ? " set;" : "";
-                    sb.AppendLine($"        {fscope} {field} {field.Name} {{ {getter}{setter} }}");
+                    sb.AppendLine($"        {fscope} {ftype} {field.Name} {{ {getter}{setter} }}");
                 }
+
+                sb.AppendLine(" public Pagination Paginacao { get; set; }");
 
                 sb.AppendLine("    }");
                 sb.AppendLine("}");

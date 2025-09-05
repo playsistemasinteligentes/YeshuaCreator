@@ -3,8 +3,8 @@ namespace Command.Read
 {
     public struct SesoesGeralCommand : ICommandRead
     {
-        public System.DateTime DataInicio {  get; set; }
-        public  Paginacao {  get; set; }
+        public DateTime DataInicio {  get; set; }
+ public Pagination Paginacao { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

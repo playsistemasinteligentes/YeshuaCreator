@@ -756,6 +756,42 @@ app.MapPost("/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Receiver
 .RequireAuthorization();
 
 
+app.MapPost("/Sesoes/ReadSesoesGeral", async ([FromServices] Command.Receivers.Read.SesoesReadQueryGeralReceiver receiver, [FromBody] Command.Read.SesoesGeralCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/Sesoes/ReadSesoesHoje", async ([FromServices] Command.Receivers.Read.SesoesReadQueryHojeReceiver receiver, [FromBody] Command.Read.SesoesHojeCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/Sesoes/ReadSesoesSemana", async ([FromServices] Command.Receivers.Read.SesoesReadQuerySemanaReceiver receiver, [FromBody] Command.Read.SesoesSemanaCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/Sesoes/ReadSesoesMes", async ([FromServices] Command.Receivers.Read.SesoesReadQueryMesReceiver receiver, [FromBody] Command.Read.SesoesMesCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/Especialidade/EspecialidadeReadFKTenantID", async ([FromServices] Command.Receivers.Read.EspecialidadeReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try

@@ -899,39 +899,59 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<SesoesDTO> GetSesoesHoje()
+        public DataPagination<SesoesStandardDTO> GetSesoesHoje(ICommandRead command )
         {
             var query = _query.SesoesHojeQuery();
 
-                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
-                return result;
+                var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
 
-        public IEnumerable<SesoesDTO> GetSesoesSemana()
+        public DataPagination<SesoesStandardDTO> GetSesoesSemana(ICommandRead command )
         {
             var query = _query.SesoesSemanaQuery();
 
-                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
-                return result;
+                var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
 
-        public IEnumerable<SesoesDTO> GetSesoesMes()
+        public DataPagination<SesoesStandardDTO> GetSesoesMes(ICommandRead command )
         {
             var query = _query.SesoesMesQuery();
 
-                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
-                return result;
+                var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
 
-        public IEnumerable<SesoestesteDTO> GetSesoesGeral(Command.Read.SesoesGeralCommand command )
+        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command )
         {
-            var query = _query.SesoesGeralQuery(command );
+            if (command is Command.Read.SesoesGeralCommand c)
+             {
+                var query = _query.SesoesGeralQuery(c );
 
-                var result = _connection.Query<SesoestesteDTO>(query.Query,query.Parameters) as List<SesoestesteDTO>;
-                return result;
+                var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
         }
 
     }

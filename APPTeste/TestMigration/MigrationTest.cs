@@ -30,10 +30,10 @@ namespace TestMigration
                 {
                     using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
                     {
-                        new MigrationBuilder()
-                            .ADDSchema(new CSharpCQRS("Clinica", "C:\\temp"))
-                            .ADDSchema(new SqlServerSchema(unitOfWork))
-                            .Build().Run();
+                        // new MigrationBuilder()
+                        //     .ADDSchema(new CSharpCQRS("Clinica", "C:\\temp"))
+                        //     .ADDSchema(new SqlServerSchema(unitOfWork))
+                        //     .Build().Run();
 
                         // pendecias 
                         // kubernate

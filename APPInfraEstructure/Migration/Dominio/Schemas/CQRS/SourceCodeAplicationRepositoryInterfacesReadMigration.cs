@@ -1,4 +1,5 @@
-﻿using Migration.Dominio;
+﻿using Dominio.Migration;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
 using System.Text;
@@ -59,6 +60,28 @@ namespace Dominio.Schemas.CQRS
             //GetAllBy
             foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> GetAllBy{column.Name}({column.getCsharpType()} value {takeOff});");
+
+
+
+
+            foreach (var query in _entity.Queries.OfType<IQueryWithMeta>())
+            {
+                // WhereContexts
+                foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
+                {
+                    string methodName = $"{_entity.EntityName}{ctxName}";
+                    sb.AppendLine($"        public DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}(ICommandRead command {takeOff});");
+                }
+
+                // Wheres
+                foreach (var whName in query.Meta.WhereParameters.Keys)
+                {
+                    string methodName = $"{_entity.EntityName}{whName}";
+                    sb.AppendLine($"        public DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}(ICommandRead command {takeOff});");
+                }
+            }
+
+
 
 
             sb.AppendLine("    }");

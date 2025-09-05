@@ -1,4 +1,5 @@
-﻿using Migration.Dominio;
+﻿using Dominio.Migration;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Dominio.Schemas.CQRS
         private readonly string _nameSpace;
         private readonly string _column;
         private readonly string _generiClass;
+        private readonly string _whereName;
+        private readonly IQueryWithMeta _query;
 
         public SourceCodeAplicationCommandReceiversMigration(Entity entity, CommandType commandType, string nameSpace, string column)
             : base()
@@ -22,6 +25,16 @@ namespace Dominio.Schemas.CQRS
             _nameSpace = nameSpace;
             _column = column;
         }
+        public SourceCodeAplicationCommandReceiversMigration(Entity entity, CommandType commandType, string nameSpace, IQueryWithMeta query, string whereName)
+            : base()
+        {
+            _entity = entity;
+            _commandType = commandType;
+            _nameSpace = nameSpace;
+            _query = query;
+            _whereName = whereName;
+        }
+
 
         protected override StringBuilder GenerateCode()
         {
@@ -39,6 +52,9 @@ namespace Dominio.Schemas.CQRS
                     break;
                 case CommandType.Read:
                     return CommandCrud(CommandType.Read);
+                    break;
+                case CommandType.ReadQuery:
+                    return CommandCrud(CommandType.ReadQuery);
                     break;
                 case CommandType.ReadFK:
                     return CommandCrud(CommandType.ReadFK);
@@ -137,6 +153,46 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}(c);");
+                sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else ");
+                sb.AppendLine("            {");
+                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
+                sb.AppendLine("            }");
+                sb.AppendLine("        }");
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+                return sb;
+            }
+            else if (action == CommandType.ReadQuery)
+            {
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceRepositoryPartners};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+                sb.AppendLine($"using Repositorio.Outputs;");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
+                sb.AppendLine();
+                sb.AppendLine($"namespace {_nameSpace}");
+                sb.AppendLine("{");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_whereName}Receiver : ReciverBase<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>>");
+                sb.AppendLine("    {");
+                sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
+                sb.AppendLine($"        private readonly ILogger _logger;");
+
+                sb.AppendLine();
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_whereName}Receiver(I{_entity.EntityName}ReadRepository repository,ILogger logger)");
+                sb.AppendLine("        {");
+                sb.AppendLine("            _repository = repository;");
+                sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+                sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>> Action(ICommand comand)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_whereName}Command c) ");
+                sb.AppendLine("             {    ");
+                sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.Get{_entity.EntityName}{_whereName}(c);");
                 sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");

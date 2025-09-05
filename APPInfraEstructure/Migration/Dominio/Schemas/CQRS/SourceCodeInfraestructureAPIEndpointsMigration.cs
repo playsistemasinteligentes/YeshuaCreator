@@ -1,4 +1,5 @@
-﻿using Interfaces.Schemas;
+﻿using Dominio.Migration;
+using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
@@ -6,6 +7,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using static Dapper.SqlMapper;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Dominio.Schemas.CQRS
@@ -138,6 +140,47 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("");
                 sb.AppendLine("");
             }
+            #endregion
+
+            #region ReadQuery  
+
+            foreach (var entity in _migration.Entitys)
+            {
+                foreach (var query in entity.Queries.OfType<IQueryWithMeta>())
+                {
+                    foreach (var wh in query.Meta.WhereParameters)
+                    {
+                        sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}{wh.Key}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{wh.Key}Command command) =>");
+                        sb.AppendLine("{");
+
+                        sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
+                        //setResultHttp(sb, "result");
+
+                        sb.AppendLine($"}}).Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                        sb.AppendLine($".Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                        sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
+                        sb.AppendLine($".RequireAuthorization();");
+                        sb.AppendLine("");
+                        sb.AppendLine("");
+                    }
+                    foreach (var wh in query.Meta.WhereContextParameters)
+                    {
+                        sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}{wh.Key}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{wh.Key}Command command) =>");
+                        sb.AppendLine("{");
+
+                        sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
+                        //setResultHttp(sb, "result");
+
+                        sb.AppendLine($"}}).Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status200OK)");
+                        sb.AppendLine($".Produces<State<{CQRSParam.I.NameSpaceEntitys}.{entity.EntityName}Entity>>(StatusCodes.Status400BadRequest)");
+                        sb.AppendLine($".Produces(StatusCodes.Status500InternalServerError)");
+                        sb.AppendLine($".RequireAuthorization();");
+                        sb.AppendLine("");
+                        sb.AppendLine("");
+                    }
+                }
+            }
+
             #endregion
 
 

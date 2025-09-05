@@ -98,14 +98,32 @@ namespace Dominio.Schemas.CQRS
                             field.Name = cond.Field;
                             command.Fields.Add(field);
                         }
-                        field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
-                        field.TypeField = null;
-                        field.Name = "Paginacao";
-                        command.Fields.Add(field);
 
+                        var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead("Migration"), $"{_entity.EntityName}\\{_entity.EntityName}{wh.Key}Commands.cs");
+                        var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead("Custon"), $"{_entity.EntityName}\\{_entity.EntityName}{wh.Key}Commands.cs");
+                        var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(command);
+                        sourceCodeMigration.WriteCode(_entity, filePath, filePathCuston);
 
-                        var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead("Migration"), $"{_entity.EntityName}\\{_entity.EntityName}{CommandType.Read}{wh.Key}Commands.cs");
-                        var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead("Custon"), $"{_entity.EntityName}\\{_entity.EntityName}{CommandType.Read}{wh.Key}Commands.cs");
+                    }
+
+                    foreach (var wh in query.Meta.WhereContextParameters)
+                    {
+                        Dominio.Schemas.CQRS.Abstraction.Command command = new Dominio.Schemas.CQRS.Abstraction.Command();
+                        command.Namespace = CQRSParam.I.NameSpaceCommandRead;
+                        command.Name = $"{_entity.EntityName}{wh.Key}";
+                        command.Inherits = "ICommandRead";
+
+                        Dominio.Schemas.CQRS.Abstraction.CommandField field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
+                        foreach (var cond in wh.Value)
+                        {
+                            field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
+                            field.TypeField = cond.FieldType;
+                            field.Name = cond.Field;
+                            command.Fields.Add(field);
+                        }
+
+                        var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead("Migration"), $"{_entity.EntityName}\\{_entity.EntityName}{wh.Key}Commands.cs");
+                        var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead("Custon"), $"{_entity.EntityName}\\{_entity.EntityName}{wh.Key}Commands.cs");
                         var sourceCodeMigration = new SourceCodeAplicationCommandCommandsMigration(command);
                         sourceCodeMigration.WriteCode(_entity, filePath, filePathCuston);
 
@@ -188,6 +206,26 @@ namespace Dominio.Schemas.CQRS
                     filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadFK}{column.Name}Receivers.cs");
                     sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.ReadFK, CQRSParam.I.NameSpaceCommandReceiversRead, column.Name);
                     sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+                }
+
+                foreach (var query in entity.Queries.OfType<IQueryWithMeta>())
+                {
+
+                    foreach (var where in query.Meta.WhereParameters)
+                    {
+                        filePath = Path.Combine(GetPathAppAplicationCommandReceiversRead("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadQuery}{where.Key}Receivers.cs");
+                        filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadQuery}{where.Key}Receivers.cs");
+                        sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.ReadQuery, CQRSParam.I.NameSpaceCommandReceiversRead, query, where.Key);
+                        sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+
+                    }
+                    foreach (var where in query.Meta.WhereContextParameters)
+                    {
+                        filePath = Path.Combine(GetPathAppAplicationCommandReceiversRead("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadQuery}{where.Key}Receivers.cs");
+                        filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.ReadQuery}{where.Key}Receivers.cs");
+                        sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.ReadQuery, CQRSParam.I.NameSpaceCommandReceiversRead, query, where.Key);
+                        sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+                    }
                 }
             }
 

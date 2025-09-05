@@ -154,7 +154,7 @@ namespace AppClinicas
             .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.Profissional.Especialidade.Descricao })
             .ToCommand();
 
-            AddQuery<Sesoes>("teste", q => q
+            AddQuery<Sesoes>("Standard", q => q
              .WhereContext("Hoje", s => s.Paciente.Nome == "")
              .WhereContext("Semana", s => s.DataInicio >= DateTime.Today && s.Paciente.Id == 1 && s.Paciente.Nome == "")
              .WhereContext("Mes", s => s.DataInicio >= DateTime.Today)
