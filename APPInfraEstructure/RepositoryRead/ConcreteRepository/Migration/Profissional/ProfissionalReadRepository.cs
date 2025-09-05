@@ -19,13 +19,13 @@ namespace Read.Repository
     public class ProfissionalReadRepository : IProfissionalReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IProfissionalQueryRead _query;
 
-        public ProfissionalReadRepository(SqlFactory factory, ICurrentUser correntUser,IProfissionalQueryRead query)
+        public ProfissionalReadRepository(SqlFactory factory, ICurrentUser currentUser,IProfissionalQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

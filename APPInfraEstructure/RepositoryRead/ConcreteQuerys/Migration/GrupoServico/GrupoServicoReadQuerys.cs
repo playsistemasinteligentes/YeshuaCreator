@@ -13,10 +13,10 @@ namespace Query.Read
 {
     public class GrupoServicoQueryRead : QueryBase, IGrupoServicoQueryRead
     {
-        protected readonly ICurrentUser _correntUser;
-        public GrupoServicoQueryRead(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public GrupoServicoQueryRead(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel GrupoServicoQuery(Command.Read.GrupoServicoReadCommand Command )
         {
@@ -29,7 +29,7 @@ if (Command.Id.HasValue) parametersDict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.Descricao)) parametersDict["Descricao"] = $"%{Command.Descricao}%";
 if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -68,7 +68,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");
                  }
            }
- parametersDict["Id"] = _correntUser.TenantID;
+ parametersDict["Id"] = _currentUser.TenantID;
  whereClauses.Add($"Id = @Id");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -99,7 +99,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");
                  }
            }
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -115,7 +115,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -133,7 +133,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -151,7 +151,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -169,7 +169,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -187,7 +187,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -205,7 +205,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -223,7 +223,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -241,7 +241,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -259,7 +259,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -277,7 +277,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -295,7 +295,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -313,7 +313,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var parametersDict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM GrupoServico ";
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");

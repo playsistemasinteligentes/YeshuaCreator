@@ -19,13 +19,13 @@ namespace Read.Repository
     public class yPerfilReadRepository : IyPerfilReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IyPerfilQueryRead _query;
 
-        public yPerfilReadRepository(SqlFactory factory, ICurrentUser correntUser,IyPerfilQueryRead query)
+        public yPerfilReadRepository(SqlFactory factory, ICurrentUser currentUser,IyPerfilQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

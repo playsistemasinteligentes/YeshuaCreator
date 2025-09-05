@@ -19,13 +19,13 @@ namespace Read.Repository
     public class ServicoReadRepository : IServicoReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IServicoQueryRead _query;
 
-        public ServicoReadRepository(SqlFactory factory, ICurrentUser correntUser,IServicoQueryRead query)
+        public ServicoReadRepository(SqlFactory factory, ICurrentUser currentUser,IServicoQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

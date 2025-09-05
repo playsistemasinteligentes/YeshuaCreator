@@ -19,13 +19,13 @@ namespace Read.Repository
     public class MovimentacaoFinanceiraReadRepository : IMovimentacaoFinanceiraReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IMovimentacaoFinanceiraQueryRead _query;
 
-        public MovimentacaoFinanceiraReadRepository(SqlFactory factory, ICurrentUser correntUser,IMovimentacaoFinanceiraQueryRead query)
+        public MovimentacaoFinanceiraReadRepository(SqlFactory factory, ICurrentUser currentUser,IMovimentacaoFinanceiraQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

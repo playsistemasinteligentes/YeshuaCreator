@@ -13,10 +13,10 @@ namespace Query.Read
 {
     public class yConfigNotificationQueryRead : QueryBase, IyConfigNotificationQueryRead
     {
-        protected readonly ICurrentUser _correntUser;
-        public yConfigNotificationQueryRead(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public yConfigNotificationQueryRead(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel yConfigNotificationQuery(Command.Read.yConfigNotificationReadCommand Command )
         {
@@ -74,7 +74,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");
                  }
            }
- parametersDict["Id"] = _correntUser.TenantID;
+ parametersDict["Id"] = _currentUser.TenantID;
  whereClauses.Add($"Id = @Id");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -105,7 +105,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");
                  }
            }
- parametersDict["TenantID"] = _correntUser.TenantID;
+ parametersDict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  parametersDict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");

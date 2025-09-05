@@ -1,4 +1,5 @@
-﻿using Migration.Dominio;
+﻿using Dominio.Migration;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Collections.Specialized;
 using System.Data.Common;
@@ -51,9 +52,25 @@ namespace Dominio.Schemas.CQRS
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value {takeOff});");
                 }
-
                 //getall   pendencia
 
+                // Queries via AddQuery
+                foreach (var query in _entity.Queries.OfType<IQueryWithMeta>())
+                {
+                    // WhereContexts
+                    foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
+                    {
+                        string methodName = $"{_entity.EntityName}{ctxName}Query";
+                        sb.AppendLine($"    public QueryModel {methodName}();");
+                    }
+
+                    // Wheres
+                    foreach (var whName in query.Meta.WhereParameters.Keys)
+                    {
+                        string methodName = $"{_entity.EntityName}{whName}";
+                        sb.AppendLine($"    public QueryModel {methodName}Query({CQRSParam.I.NameSpaceCommandRead}.{methodName}Command Command);");
+                    }
+                }
 
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
@@ -81,11 +98,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public class {_entity.EntityName}QueryRead : QueryBase, I{_entity.EntityName}QueryRead");
                 sb.AppendLine("    {");
 
-                sb.AppendLine($"        protected readonly ICurrentUser _correntUser;");
+                sb.AppendLine($"        protected readonly ICurrentUser _currentUser;");
 
-                sb.AppendLine($"        public {_entity.EntityName}QueryRead(ICurrentUser correntUser)");
+                sb.AppendLine($"        public {_entity.EntityName}QueryRead(ICurrentUser currentUser)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            _correntUser = correntUser;");
+                sb.AppendLine($"            _currentUser = currentUser;");
                 sb.AppendLine("        }");
 
                 sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command Command {takeOff})");
@@ -218,6 +235,115 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("        }");
                 }
 
+
+                foreach (var query in _entity.Queries.OfType<IQueryWithMeta>())
+                {
+                    // ---- Context queries (WhereContextParameters)
+                    foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
+                    {
+                        string methodName = $"{_entity.EntityName}{ctxName}Query";
+                        sb.AppendLine($"        public QueryModel {methodName}()");
+                        sb.AppendLine("        {");
+                        sb.AppendLine($"            this.Query = @\"SELECT {string.Join(", ", query.Meta.SelectFields.Select(f => f.Path))} FROM {_entity.EntityName}\";");
+                        sb.AppendLine("            var whereClauses = new List<string>();");
+                        sb.AppendLine("            dynamic parameters = new ExpandoObject();");
+                        sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
+
+                        // Loop sobre as condições do WhereContext
+                        foreach (var cond in query.Meta.WhereContextParameters[ctxName])
+                        {
+                            string param = cond.Field;
+                            string rightExpr = cond.RightExpression;
+
+                            sb.AppendLine($"            if ({rightExpr} != null)");
+                            sb.AppendLine("            {");
+
+                            // Ajuste de acordo com o tipo do campo
+                            var typeCode = Type.GetTypeCode(cond.FieldType);
+                            switch (typeCode)
+                            {
+                                case TypeCode.String:
+                                    sb.AppendLine($"                dict[\"{param}\"] = $\"%{{{rightExpr}}}%\";");
+                                    sb.AppendLine($"                whereClauses.Add(\"{param} LIKE @{param}\");");
+                                    break;
+
+                                case TypeCode.Boolean:
+                                    sb.AppendLine($"                dict[\"{param}\"] = {rightExpr} ? 1 : 0;");
+                                    sb.AppendLine($"                whereClauses.Add(\"{param} = @{param}\");");
+                                    break;
+
+                                case TypeCode.DateTime:
+                                case TypeCode.Int32:
+                                case TypeCode.Double:
+                                case TypeCode.Decimal:
+                                default:
+                                    sb.AppendLine($"                dict[\"{param}\"] = {rightExpr};");
+                                    sb.AppendLine($"                whereClauses.Add(\"{param} {cond.Operator} @{param}\");");
+                                    break;
+                            }
+
+                            sb.AppendLine("            }");
+                        }
+
+                        // Condições fixas
+                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                        sb.AppendLine("            whereClauses.Add(\"TenantID = @TenantID\");");
+                        sb.AppendLine("            dict[\"Deleted\"] = 0;");
+                        sb.AppendLine("            whereClauses.Add(\"Deleted = @Deleted\");");
+
+                        // Monta WHERE final
+                        sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
+                        sb.AppendLine("            this.Parameters = parameters;");
+                        sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
+                        sb.AppendLine("        }");
+                    }
+
+                    // ---- Where queries (WhereParameters)
+                    foreach (var wh in query.Meta.WhereParameters)
+                    {
+                        string methodName = $"{_entity.EntityName}{wh.Key}Query";
+                        string commandName = $"{_entity.EntityName}{wh.Key}Command";
+
+                        sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command)");
+                        sb.AppendLine("        {");
+                        sb.AppendLine($"            this.Query = @\"SELECT {string.Join(", ", query.Meta.SelectFields.Select(f => f.Path))} FROM {_entity.EntityName}\";");
+                        sb.AppendLine("            var whereClauses = new List<string>();");
+                        sb.AppendLine("            dynamic parameters = new ExpandoObject();");
+                        sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
+
+                        foreach (var cond in wh.Value)
+                        {
+                            string param = cond.Field;
+                            sb.AppendLine($"            if (Command.{param} != null)");
+                            sb.AppendLine("            {");
+                            if (cond.Operator == "LIKE")
+                            {
+                                sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{param}}}%\";");
+                                sb.AppendLine($"                whereClauses.Add(\"{param} LIKE @{param}\");");
+                            }
+                            else
+                            {
+                                sb.AppendLine($"                dict[\"{param}\"] = Command.{param};");
+                                sb.AppendLine($"                whereClauses.Add(\"{param} {cond.Operator} @{param}\");");
+                            }
+                            sb.AppendLine("            }");
+                        }
+
+                        // Condições fixas
+                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                        sb.AppendLine("            whereClauses.Add(\"TenantID = @TenantID\");");
+                        sb.AppendLine("            dict[\"Deleted\"] = 0;");
+                        sb.AppendLine("            whereClauses.Add(\"Deleted = @Deleted\");");
+
+                        // Monta WHERE final
+                        sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
+                        sb.AppendLine("            this.Parameters = parameters;");
+                        sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
+                        sb.AppendLine("        }");
+                    }
+                }
+
+
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
 
@@ -254,7 +380,6 @@ namespace Dominio.Schemas.CQRS
 
 
         }
-
 
         protected override StringBuilder GenerateCustonCode()
         {

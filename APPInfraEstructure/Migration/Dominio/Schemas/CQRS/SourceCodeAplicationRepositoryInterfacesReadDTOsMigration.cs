@@ -2,6 +2,7 @@
 using System.Text;
 using Migration.Dominio.Schemas.CQRS;
 using System.Linq;
+using Dominio.Migration;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -10,12 +11,20 @@ namespace Dominio.Schemas.CQRS
         private readonly Entity _entity;
         private readonly string _column;
         private readonly CommandType _commandType;
+        private readonly IQueryWithMeta _query;
 
         public SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(Entity entity, CommandType commandType, string column)
             : base()
         {
             _entity = entity;
             _column = column;
+            _commandType = commandType;
+        }
+        public SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(Entity entity, CommandType commandType, IQueryWithMeta queryMeta)
+            : base()
+        {
+            _entity = entity;
+            _query = queryMeta;
             _commandType = commandType;
         }
 
@@ -34,18 +43,29 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a struct
             sb.AppendLine($"namespace Repositorio.Outputs");
             sb.AppendLine("{");
-            sb.AppendLine($"    public record {_entity.EntityName}{_column}DTO");
-            sb.AppendLine("    {");
 
             switch (_commandType)
             {
                 case CommandType.Read:
+                    sb.AppendLine($"    public record {_entity.EntityName}{_column}DTO");
+                    sb.AppendLine("    {");
 
                     foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                         sb.AppendLine($"    public {column.getCsharpType()} {column.Name.ToLower()} {{ get; set; }}");
 
                     break;
+                case CommandType.ReadQuery:
+                    sb.AppendLine($"    public record {_entity.EntityName}{_query.Meta.QueryName}DTO");
+                    sb.AppendLine("    {");
+
+                    foreach (var column in _query.Meta.SelectFields)
+                        sb.AppendLine($"    public {GetFriendlyTypeName(column.FieldType)} {column.Name.ToLower()} {{ get; set; }}");
+
+                    break;
                 case CommandType.ReadFK:
+
+                    sb.AppendLine($"    public record {_entity.EntityName}{_column}DTO");
+                    sb.AppendLine("    {");
 
                     Column columnFK = _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault();
                     foreach (var column in columnFK.EntityFK.AddColumns.Where(x => x.DisplayFK))

@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yConfigNotificationQueryWrite : QueryBase, IyConfigNotificationQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public yConfigNotificationQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public yConfigNotificationQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InseriryConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification)
         {
@@ -24,14 +24,14 @@ namespace Query.Write
             this.Parameters = new
             {
                 Id = yConfigNotification.Id,
-                TenantID = _correntUser.TenantID,
+                TenantID = _currentUser.TenantID,
                 EmailSmtpClient = yConfigNotification.EmailSmtpClient,
                 EmailPort = yConfigNotification.EmailPort,
                 EmailUserName = yConfigNotification.EmailUserName,
                 EmailPassword = yConfigNotification.EmailPassword,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _correntUser.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

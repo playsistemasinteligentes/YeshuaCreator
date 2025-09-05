@@ -19,13 +19,13 @@ namespace Read.Repository
     public class yUserModuleReadRepository : IyUserModuleReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IyUserModuleQueryRead _query;
 
-        public yUserModuleReadRepository(SqlFactory factory, ICurrentUser correntUser,IyUserModuleQueryRead query)
+        public yUserModuleReadRepository(SqlFactory factory, ICurrentUser currentUser,IyUserModuleQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

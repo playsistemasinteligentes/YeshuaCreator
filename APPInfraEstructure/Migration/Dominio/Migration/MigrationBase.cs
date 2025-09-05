@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Dominio.Migration
 {
-    public abstract class MigrationBase
+    public abstract partial class MigrationBase
     {
         public List<Entity> Entitys = new List<Entity>();
         public List<Module> Modules = new List<Module>();

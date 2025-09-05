@@ -159,34 +159,7 @@ namespace Dominio.Schemas.CQRS
         }
 
         // Função auxiliar para nome de tipos amigável permanece igual
-        private string GetFriendlyTypeName(Type type)
-        {
-            if (type.IsGenericType)
-            {
-                string typeName = type.Name.Substring(0, type.Name.IndexOf('`'));
-                var genericArgs = type.GetGenericArguments()
-                                      .Select(t => GetFriendlyTypeName(t));
-                return $"{typeName}<{string.Join(", ", genericArgs)}>";
-            }
-            else if (type.IsArray)
-            {
-                return $"{GetFriendlyTypeName(type.GetElementType())}[]";
-            }
-            else
-            {
-                return type switch
-                {
-                    _ when type == typeof(int) => "int",
-                    _ when type == typeof(string) => "string",
-                    _ when type == typeof(bool) => "bool",
-                    _ when type == typeof(double) => "double",
-                    _ when type == typeof(float) => "float",
-                    _ when type == typeof(long) => "long",
-                    _ when type == typeof(decimal) => "decimal",
-                    _ => type.Name
-                };
-            }
-        }
+
 
     }
 }

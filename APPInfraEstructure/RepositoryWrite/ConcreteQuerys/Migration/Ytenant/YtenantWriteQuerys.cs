@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public yTenantQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public yTenantQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
         {

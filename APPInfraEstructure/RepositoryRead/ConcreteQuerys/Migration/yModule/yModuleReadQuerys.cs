@@ -13,10 +13,10 @@ namespace Query.Read
 {
     public class yModuleQueryRead : QueryBase, IyModuleQueryRead
     {
-        protected readonly ICurrentUser _correntUser;
-        public yModuleQueryRead(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public yModuleQueryRead(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel yModuleQuery(Command.Read.yModuleReadCommand Command )
         {

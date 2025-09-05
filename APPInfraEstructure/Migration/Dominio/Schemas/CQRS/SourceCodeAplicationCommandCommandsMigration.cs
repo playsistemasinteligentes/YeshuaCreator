@@ -12,9 +12,14 @@ namespace Dominio.Schemas.CQRS
         private readonly CommandType _commandType;
         private readonly string _nameSpace;
         private readonly string _column;
+        private readonly Dominio.Schemas.CQRS.Abstraction.Command _abstracao;
 
-        public SourceCodeAplicationCommandCommandsMigration(Entity entity, CommandType commandType, string nameSpace, string column)
-            : base()
+        public SourceCodeAplicationCommandCommandsMigration(Dominio.Schemas.CQRS.Abstraction.Command abstracao) : base()
+        {
+            _abstracao = abstracao;
+        }
+
+        public SourceCodeAplicationCommandCommandsMigration(Entity entity, CommandType commandType, string nameSpace, string column) : base()
         {
             _entity = entity;
             _commandType = commandType;
@@ -25,8 +30,41 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
-
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+
+            if (_abstracao != null)
+            {
+
+                // Namespace
+                sb.AppendLine($"namespace {_abstracao.Namespace}");
+                sb.AppendLine("{");
+
+                // Classe/Struct
+                var scope = "public";
+                var kind = "struct";
+                var inherits = string.IsNullOrWhiteSpace(_abstracao.Inherits) ? "" : $" : {_abstracao.Inherits}";
+
+                sb.AppendLine($"    {scope} {kind} {_abstracao.Name}Command{inherits}");
+                sb.AppendLine("    {");
+
+                // Campos
+                foreach (var field in _abstracao
+                    .Fields)
+                {
+                    var fscope = "public";
+                    string ftype = field.TypeField == null ? field.Name : GetFriendlyTypeName(field.TypeField);
+                    var getter = true ? " get;" : "";
+                    var setter = true ? " set;" : "";
+                    sb.AppendLine($"        {fscope} {field} {field.Name} {{ {getter}{setter} }}");
+                }
+
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+
+
+                return sb;
+            }
+
 
             // Adiciona a declaração do namespace
             sb.AppendLine($"namespace {_nameSpace}");

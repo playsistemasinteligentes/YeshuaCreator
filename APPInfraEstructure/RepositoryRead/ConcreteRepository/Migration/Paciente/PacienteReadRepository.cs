@@ -19,13 +19,13 @@ namespace Read.Repository
     public class PacienteReadRepository : IPacienteReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IPacienteQueryRead _query;
 
-        public PacienteReadRepository(SqlFactory factory, ICurrentUser correntUser,IPacienteQueryRead query)
+        public PacienteReadRepository(SqlFactory factory, ICurrentUser currentUser,IPacienteQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

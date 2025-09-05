@@ -19,13 +19,13 @@ namespace Read.Repository
     public class SesoesReadRepository : ISesoesReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly ISesoesQueryRead _query;
 
-        public SesoesReadRepository(SqlFactory factory, ICurrentUser correntUser,ISesoesQueryRead query)
+        public SesoesReadRepository(SqlFactory factory, ICurrentUser currentUser,ISesoesQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 
@@ -896,6 +896,41 @@ namespace Read.Repository
             var query = _query.FirstByUserIdQuery(value );
 
                 var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetSesoesHoje()
+        {
+            var query = _query.SesoesHojeQuery();
+
+                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+
+        public IEnumerable<SesoesDTO> GetSesoesSemana()
+        {
+            var query = _query.SesoesSemanaQuery();
+
+                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+
+        public IEnumerable<SesoesDTO> GetSesoesMes()
+        {
+            var query = _query.SesoesMesQuery();
+
+                var result = _connection.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                return result;
+        }
+
+
+        public IEnumerable<SesoestesteDTO> GetSesoesGeral(Command.Read.SesoesGeralCommand command )
+        {
+            var query = _query.SesoesGeralQuery(command );
+
+                var result = _connection.Query<SesoestesteDTO>(query.Query,query.Parameters) as List<SesoestesteDTO>;
                 return result;
         }
 

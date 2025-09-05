@@ -19,13 +19,13 @@ namespace Read.Repository
     public class DisponibilidadeAgendaReadRepository : IDisponibilidadeAgendaReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IDisponibilidadeAgendaQueryRead _query;
 
-        public DisponibilidadeAgendaReadRepository(SqlFactory factory, ICurrentUser correntUser,IDisponibilidadeAgendaQueryRead query)
+        public DisponibilidadeAgendaReadRepository(SqlFactory factory, ICurrentUser currentUser,IDisponibilidadeAgendaQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

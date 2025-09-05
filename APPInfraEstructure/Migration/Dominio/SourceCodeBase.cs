@@ -38,7 +38,6 @@ namespace Migration.Dominio
         // Método abstrato para definir a lógica específica de geração de código
         protected abstract StringBuilder GenerateCode();
         protected abstract StringBuilder GenerateCustonCode();
-
         public void WriteContexto(string content)
         {
             try
@@ -88,6 +87,34 @@ namespace Migration.Dominio
             }
         }
 
+        public string GetFriendlyTypeName(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                string typeName = type.Name.Substring(0, type.Name.IndexOf('`'));
+                var genericArgs = type.GetGenericArguments()
+                                      .Select(t => GetFriendlyTypeName(t));
+                return $"{typeName}<{string.Join(", ", genericArgs)}>";
+            }
+            else if (type.IsArray)
+            {
+                return $"{GetFriendlyTypeName(type.GetElementType())}[]";
+            }
+            else
+            {
+                return type switch
+                {
+                    _ when type == typeof(int) => "int",
+                    _ when type == typeof(string) => "string",
+                    _ when type == typeof(bool) => "bool",
+                    _ when type == typeof(double) => "double",
+                    _ when type == typeof(float) => "float",
+                    _ when type == typeof(long) => "long",
+                    _ when type == typeof(decimal) => "decimal",
+                    _ => type.Name
+                };
+            }
+        }
 
         public void WriteCode(StringBuilder code, string path, bool custon, bool context)
         {
@@ -108,7 +135,7 @@ namespace Migration.Dominio
         {
             StringBuilder code = GenerateCode();
             bool context = false;
-            if ((entity != null && entity.EntityName == "Ytenant") || (useCase != null && (useCase.Name._value == "createConta" || useCase.Name._value == "RecoveryAccount")))
+            if ((entity != null && entity.EntityName == "yTenant") || (useCase != null && (useCase.Name._value == "createConta" || useCase.Name._value == "RecoveryAccount")))
                 context = true;
             WriteCode(code, filePathMigration, false, context);
 

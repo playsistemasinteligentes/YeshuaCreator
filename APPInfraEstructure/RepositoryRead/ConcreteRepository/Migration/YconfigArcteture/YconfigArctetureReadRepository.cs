@@ -19,13 +19,13 @@ namespace Read.Repository
     public class yConfigArctetureReadRepository : IyConfigArctetureReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IyConfigArctetureQueryRead _query;
 
-        public yConfigArctetureReadRepository(SqlFactory factory, ICurrentUser correntUser,IyConfigArctetureQueryRead query)
+        public yConfigArctetureReadRepository(SqlFactory factory, ICurrentUser currentUser,IyConfigArctetureQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

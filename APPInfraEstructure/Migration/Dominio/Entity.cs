@@ -1,4 +1,5 @@
-﻿using Dominio.TiposPrimitivos;
+﻿using Dominio.Migration;
+using Dominio.TiposPrimitivos;
 using Migration.Dominio;
 using static Dapper.SqlMapper;
 
@@ -15,6 +16,7 @@ namespace Dominio
         public List<string> GPTFunction = new List<string>();
         public List<string> IndexDB = new List<string>();
         public List<Module> AddModules = new List<Module>();
+        public List<IMigrationQueryDefinition> Queries { get; } = new List<IMigrationQueryDefinition>();
 
         public bool create { get; set; }
         public int StatusColuns { get; set; }

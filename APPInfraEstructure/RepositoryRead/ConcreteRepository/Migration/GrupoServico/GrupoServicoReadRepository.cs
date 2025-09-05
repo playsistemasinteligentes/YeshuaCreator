@@ -19,13 +19,13 @@ namespace Read.Repository
     public class GrupoServicoReadRepository : IGrupoServicoReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IGrupoServicoQueryRead _query;
 
-        public GrupoServicoReadRepository(SqlFactory factory, ICurrentUser correntUser,IGrupoServicoQueryRead query)
+        public GrupoServicoReadRepository(SqlFactory factory, ICurrentUser currentUser,IGrupoServicoQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

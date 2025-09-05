@@ -19,13 +19,13 @@ namespace Read.Repository
     public class yConfigNotificationReadRepository : IyConfigNotificationReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IyConfigNotificationQueryRead _query;
 
-        public yConfigNotificationReadRepository(SqlFactory factory, ICurrentUser correntUser,IyConfigNotificationQueryRead query)
+        public yConfigNotificationReadRepository(SqlFactory factory, ICurrentUser currentUser,IyConfigNotificationQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

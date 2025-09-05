@@ -19,13 +19,13 @@ namespace Read.Repository
     public class EspecialidadeReadRepository : IEspecialidadeReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IEspecialidadeQueryRead _query;
 
-        public EspecialidadeReadRepository(SqlFactory factory, ICurrentUser correntUser,IEspecialidadeQueryRead query)
+        public EspecialidadeReadRepository(SqlFactory factory, ICurrentUser currentUser,IEspecialidadeQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

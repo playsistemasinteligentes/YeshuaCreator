@@ -22,7 +22,7 @@ namespace Migration.Dominio.Migration
             AddModule("ADM", "Administrativo");
 
             AddEntity("yTenant").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_correntUser.TenantID").NeedBeWhere().CanTakeOffWhere()
+            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_currentUser.TenantID").NeedBeWhere().CanTakeOffWhere()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Varchar(14).NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull()
             .AddColumn("UserId", "User ID").Int();
@@ -32,17 +32,17 @@ namespace Migration.Dominio.Migration
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
             AddEntity("yStandardFields")
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere()
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere()
             .NotEntity("yModule")
             .AddColumn("Deleted", "Deleted").Boolean().DefaultValue("0").NeedBeWhere().EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
             .AddColumn("Changed", "Changed").DateTime().DefaultValue("#DateTime.Now").EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
-            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_correntUser.UserId").EditFront(false).VisivelFront(false)
+            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_currentUser.UserId").EditFront(false).VisivelFront(false)
             .NotEntity("yModule");
 
 
@@ -53,7 +53,7 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yConfigNotification").AddModule("ADM").Cached()
             .AddColumn("Id", "ID").Int().Key()
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID")
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID")
             .AddColumn("EmailSmtpClient", "EmailSmtpClient").Varchar(100)
             .AddColumn("EmailPort", "EmailPort").Int()
             .AddColumn("EmailUserName", "EmailUserName").Varchar(100)
@@ -70,13 +70,13 @@ namespace Migration.Dominio.Migration
             AddEntity("yTenantModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100)
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_correntUser.TenantID")
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
 
             AddEntity("yUserModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _correntUser.TenantID)")
+            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _currentUser.TenantID)")
             .AddColumn("UserId", "User ID").Int().FK("yUser", "Id")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
@@ -116,8 +116,6 @@ namespace Migration.Dominio.Migration
     {
         public record Account(string CpfCnpj, string nome, string email, string phone, string password, string confirmpassword);
         public record AccountResult(int TenantId, int UserId);
-
-
         public record LoginInput(string email, string password);
         public record LoginOutput(List<string> modulos, int UserId, string email, int tenantId);
 

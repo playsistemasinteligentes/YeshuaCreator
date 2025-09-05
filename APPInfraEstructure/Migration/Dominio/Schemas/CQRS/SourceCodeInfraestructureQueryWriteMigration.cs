@@ -61,11 +61,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public class {_entity.EntityName}QueryWrite : QueryBase, I{_entity.EntityName}QueryWrite");
                 sb.AppendLine("    {");
 
-                sb.AppendLine($"        protected readonly ICurrentUser _correntUser;");
+                sb.AppendLine($"        protected readonly ICurrentUser _currentUser;");
 
-                sb.AppendLine($"        public {_entity.EntityName}QueryWrite(ICurrentUser correntUser)");
+                sb.AppendLine($"        public {_entity.EntityName}QueryWrite(ICurrentUser currentUser)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            _correntUser = correntUser;");
+                sb.AppendLine($"            _currentUser = currentUser;");
                 sb.AppendLine("        }");
 
                 sb.AppendLine($"        public QueryModel Inserir{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");

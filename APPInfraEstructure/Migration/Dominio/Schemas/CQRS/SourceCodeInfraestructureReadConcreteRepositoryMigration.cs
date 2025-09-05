@@ -1,7 +1,12 @@
-﻿using Migration.Dominio;
+﻿using Dominio.Migration;
+using Dominio.Schemas.CQRS.Abstraction;
+using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using MyApp.QueryBuilder;
 using System.Data.Common;
+using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -204,13 +209,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public class {_entity.EntityName}ReadRepository : I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
             sb.AppendLine("        protected readonly IDbConnection _connection;");
-            sb.AppendLine("        protected readonly ICurrentUser _correntUser;");
+            sb.AppendLine("        protected readonly ICurrentUser _currentUser;");
             sb.AppendLine($"       protected readonly I{_entity.EntityName}QueryRead _query;");
             sb.AppendLine();
-            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(SqlFactory factory, ICurrentUser correntUser,I{_entity.EntityName}QueryRead query)");
+            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(SqlFactory factory, ICurrentUser currentUser,I{_entity.EntityName}QueryRead query)");
             sb.AppendLine("        {");
             sb.AppendLine("            _connection = factory.SqlConnection();");
-            sb.AppendLine("            _correntUser = correntUser;");
+            sb.AppendLine("            _currentUser = currentUser;");
             sb.AppendLine("            _query = query;");
             sb.AppendLine("        }");
             sb.AppendLine();
@@ -301,6 +306,44 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        }");
                 sb.AppendLine();
             }
+
+
+            foreach (var query in _entity.Queries.OfType<IQueryWithMeta>())
+            {
+                // WhereContexts
+                foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
+                {
+                    string methodName = $"{_entity.EntityName}{ctxName}";
+
+                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}DTO> Get{methodName}({takeOff})");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"            var query = _query.{methodName}Query({VariavaltakeOff});");
+                    sb.AppendLine();
+                    sb.AppendLine($"                var result = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
+                    sb.AppendLine("                return result;");
+                    sb.AppendLine("        }");
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
+
+                // Wheres
+                foreach (var whName in query.Meta.WhereParameters.Keys)
+                {
+                    string methodName = $"{_entity.EntityName}{whName}";
+
+                    sb.AppendLine($"        public IEnumerable<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}({CQRSParam.I.NameSpaceCommandRead}.{methodName}Command command {takeOff})");
+                    sb.AppendLine("        {");
+                    sb.AppendLine($"            var query = _query.{methodName}Query(command {VariavaltakeOff});");
+                    sb.AppendLine();
+                    sb.AppendLine($"                var result = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{query.Meta.QueryName}DTO>;");
+                    sb.AppendLine("                return result;");
+                    sb.AppendLine("        }");
+                    sb.AppendLine();
+                }
+            }
+
+
+
 
             sb.AppendLine("    }");
             sb.AppendLine("}");

@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class ClinicaQueryWrite : QueryBase, IClinicaQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public ClinicaQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public ClinicaQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InserirClinicaQuery(IClinicaEntity Clinica)
         {
@@ -26,10 +26,10 @@ namespace Query.Write
                 Nome = Clinica.Nome,
                 Endereco = Clinica.Endereco,
                 Telefone = Clinica.Telefone,
-                TenantID = _correntUser.TenantID,
+                TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _correntUser.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

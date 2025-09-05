@@ -1,4 +1,5 @@
 ﻿using Dominio.Migration;
+using MyApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,10 +149,17 @@ namespace AppClinicas
                 .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int().Group("IDs")
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("IDs");
 
+            var cmd = Sesoes.Query()
+            .Where(s => s.DataInicio == DateTime.Today)
+            .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.Profissional.Especialidade.Descricao })
+            .ToCommand();
 
-            AlterEntity("Sesoes").AddIndex().AddIndexColumn();
-
-
+            AddQuery<Sesoes>("teste", q => q
+             .WhereContext("Hoje", s => s.Paciente.Nome == "")
+             .WhereContext("Semana", s => s.DataInicio >= DateTime.Today && s.Paciente.Id == 1 && s.Paciente.Nome == "")
+             .WhereContext("Mes", s => s.DataInicio >= DateTime.Today)
+             .Where("Geral", s => s.DataInicio >= DateTime.Today)
+             .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome }));
 
 
 

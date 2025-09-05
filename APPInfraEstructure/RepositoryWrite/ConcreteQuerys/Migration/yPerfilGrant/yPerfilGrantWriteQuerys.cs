@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yPerfilGrantQueryWrite : QueryBase, IyPerfilGrantQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public yPerfilGrantQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public yPerfilGrantQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InseriryPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant)
         {
@@ -31,10 +31,10 @@ namespace Query.Write
                 Update = yPerfilGrant.Update,
                 Delete = yPerfilGrant.Delete,
                 ValidUntil = yPerfilGrant.ValidUntil,
-                TenantID = _correntUser.TenantID,
+                TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _correntUser.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class EspecialidadeQueryWrite : QueryBase, IEspecialidadeQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public EspecialidadeQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public EspecialidadeQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InserirEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
@@ -24,10 +24,10 @@ namespace Query.Write
             this.Parameters = new
             {
                 Descricao = Especialidade.Descricao,
-                TenantID = _correntUser.TenantID,
+                TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _correntUser.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

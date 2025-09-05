@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class DisponibilidadeAgendaQueryWrite : QueryBase, IDisponibilidadeAgendaQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public DisponibilidadeAgendaQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public DisponibilidadeAgendaQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InserirDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
@@ -25,10 +25,10 @@ namespace Query.Write
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,
                 DataHora = DisponibilidadeAgenda.DataHora,
-                TenantID = _correntUser.TenantID,
+                TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _correntUser.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

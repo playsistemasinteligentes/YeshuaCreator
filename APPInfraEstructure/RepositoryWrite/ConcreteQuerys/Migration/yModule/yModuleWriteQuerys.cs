@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yModuleQueryWrite : QueryBase, IyModuleQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public yModuleQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public yModuleQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InseriryModuleQuery(IyModuleEntity yModule)
         {

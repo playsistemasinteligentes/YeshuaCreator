@@ -19,13 +19,13 @@ namespace Read.Repository
     public class ClinicaReadRepository : IClinicaReadRepository
     {
         protected readonly IDbConnection _connection;
-        protected readonly ICurrentUser _correntUser;
+        protected readonly ICurrentUser _currentUser;
        protected readonly IClinicaQueryRead _query;
 
-        public ClinicaReadRepository(SqlFactory factory, ICurrentUser correntUser,IClinicaQueryRead query)
+        public ClinicaReadRepository(SqlFactory factory, ICurrentUser currentUser,IClinicaQueryRead query)
         {
             _connection = factory.SqlConnection();
-            _correntUser = correntUser;
+            _currentUser = currentUser;
             _query = query;
         }
 

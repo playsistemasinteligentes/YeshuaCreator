@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class GrupoServicoQueryWrite : QueryBase, IGrupoServicoQueryWrite
     {
-        protected readonly ICurrentUser _correntUser;
-        public GrupoServicoQueryWrite(ICurrentUser correntUser)
+        protected readonly ICurrentUser _currentUser;
+        public GrupoServicoQueryWrite(ICurrentUser currentUser)
         {
-            _correntUser = correntUser;
+            _currentUser = currentUser;
         }
         public QueryModel InserirGrupoServicoQuery(IGrupoServicoEntity GrupoServico)
         {
@@ -24,10 +24,10 @@ namespace Query.Write
             this.Parameters = new
             {
                 Descricao = GrupoServico.Descricao,
-                TenantID = _correntUser.TenantID,
+                TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _correntUser.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
