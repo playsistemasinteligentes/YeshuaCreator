@@ -114,13 +114,13 @@ namespace Dominio.Schemas.CQRS
                         command.Inherits = "ICommandRead";
 
                         Dominio.Schemas.CQRS.Abstraction.CommandField field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
-                        foreach (var cond in wh.Value)
-                        {
-                            field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
-                            field.TypeField = cond.FieldType;
-                            field.Name = cond.Field;
-                            command.Fields.Add(field);
-                        }
+                        //foreach (var cond in wh.Value)
+                        //{
+                        //field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
+                        //field.TypeField = cond.FieldType;
+                        //field.Name = cond.Field;
+                        //command.Fields.Add(field);
+                        //}
 
                         var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead("Migration"), $"{_entity.EntityName}\\{_entity.EntityName}{wh.Key}Commands.cs");
                         var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead("Custon"), $"{_entity.EntityName}\\{_entity.EntityName}{wh.Key}Commands.cs");

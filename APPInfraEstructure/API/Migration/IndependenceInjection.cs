@@ -109,6 +109,10 @@ builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKServicoIdReceiv
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryGeralReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryHojeReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQuerySemanaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryMesReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();

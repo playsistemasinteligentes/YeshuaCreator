@@ -1,8 +1,10 @@
-﻿using Interfaces.Schemas;
+﻿using Dominio.Migration;
+using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Net.Http;
 using System.Text;
+using static Dapper.SqlMapper;
 using static Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -113,6 +115,17 @@ namespace Dominio.Schemas.CQRS
                 {
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver>();");
                 }
+
+                foreach (var query in entity.Queries.OfType<IQueryWithMeta>())
+                {
+                    foreach (var wh in query.Meta.WhereParameters)
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver>();");
+
+                    foreach (var wh in query.Meta.WhereContextParameters)
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver>();");
+
+                }
+
             }
             foreach (var group in _migration.UseCaseGroup)
             {

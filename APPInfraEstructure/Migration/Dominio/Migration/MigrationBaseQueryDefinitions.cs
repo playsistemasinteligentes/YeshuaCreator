@@ -64,7 +64,7 @@ namespace Dominio.Migration
         public bool IsForFront { get; set; } = false;
 
         public List<(string ContextName, Expression<Func<T, bool>> Filter)> WhereContexts { get; } = new();
-        public List<(string WhereName, LambdaExpression Filter)> Wheres { get; } = new();
+        public List<(string WhereName, Expression<Func<T, bool>> Filter)> Wheres { get; } = new();
         public List<LambdaExpression> Selects { get; } = new();
 
         private readonly Query<T> _queryBuilder;
@@ -78,7 +78,7 @@ namespace Dominio.Migration
         public MigrationQueryDefinition() => _queryBuilder = new Query<T>();
 
         // --- Where padrão ---
-        public MigrationQueryDefinition<T> Where<TProp>(string paramName, Expression<Func<T, TProp>> filter)
+        public MigrationQueryDefinition<T> Where(string paramName, Expression<Func<T, bool>> filter)
         {
             Wheres.Add((paramName, filter));
 
@@ -277,20 +277,40 @@ namespace Dominio.Migration
         {
             var query = new Query<T>();
 
-            // aplica selects na query
-            foreach (var sel in Selects)
+
+            Meta.QueryName = Name;
+            Meta.SqlBase = query.ToCommand().Sql;
+
+            foreach (var ctx in Wheres)
             {
-                var tSelect = sel.ReturnType;
+                query = new Query<T>();
+
+                var tSelect = Selects.Last().ReturnType;
                 var selectMethod = typeof(Query<T>)
                     .GetMethods()
                     .First(m => m.Name == "Select" && m.IsGenericMethodDefinition)
                     .MakeGenericMethod(tSelect);
 
-                selectMethod.Invoke(query, new object[] { sel });
+                selectMethod.Invoke(query, new object[] { Selects.Last() });
+
+                query.Where(ctx.Filter);
+                var teste = query.ToCommand();
+            }
+            foreach (var ctx in WhereContexts)
+            {
+                query = new Query<T>();
+                var tSelect = Selects.Last().ReturnType;
+                var selectMethod = typeof(Query<T>)
+                    .GetMethods()
+                    .First(m => m.Name == "Select" && m.IsGenericMethodDefinition)
+                    .MakeGenericMethod(tSelect);
+
+                selectMethod.Invoke(query, new object[] { Selects.Last() });
+                query.Where(ctx.Filter);
+                ctx.ContextName = "";
+                var teste = query.ToCommand();
             }
 
-            Meta.SqlBase = query.ToCommand().Sql;
-            Meta.QueryName = Name;
         }
 
         // --- Interface ---
@@ -298,7 +318,7 @@ namespace Dominio.Migration
             => WhereContexts.Select(c => (c.ContextName, (LambdaExpression)c.Filter));
 
         IEnumerable<(string WhereName, LambdaExpression Filter)> IMigrationQueryDefinition.GetWheres()
-            => Wheres;
+            => Wheres.Select(c => (c.WhereName, (LambdaExpression)c.Filter));
 
         IEnumerable<LambdaExpression> IMigrationQueryDefinition.GetSelects()
             => Selects;

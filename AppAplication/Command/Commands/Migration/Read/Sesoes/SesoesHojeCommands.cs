@@ -3,7 +3,6 @@ namespace Command.Read
 {
     public struct SesoesHojeCommand : ICommandRead
     {
-        public string Nome {  get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

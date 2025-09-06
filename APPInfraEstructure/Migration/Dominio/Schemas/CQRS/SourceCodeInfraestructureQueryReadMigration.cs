@@ -244,32 +244,30 @@ namespace Dominio.Schemas.CQRS
                         string methodName = $"{_entity.EntityName}{ctxName}Query";
                         sb.AppendLine($"        public QueryModel {methodName}()");
                         sb.AppendLine("        {");
-                        sb.AppendLine($"            this.Query = @\"SELECT {string.Join(", ", query.Meta.SelectFields.Select(f => f.Path))} FROM {_entity.EntityName}\";");
+                        sb.AppendLine($"            this.Query = \"{query.Meta.SqlBase}\";");
                         sb.AppendLine("            var whereClauses = new List<string>();");
                         sb.AppendLine("            dynamic parameters = new ExpandoObject();");
                         sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
 
-                        // Loop sobre as condições do WhereContext
                         foreach (var cond in query.Meta.WhereContextParameters[ctxName])
                         {
+                            sb.AppendLine("");
                             string param = cond.Field;
                             string rightExpr = cond.RightExpression;
 
-                            sb.AppendLine($"            if ({rightExpr} != null)");
-                            sb.AppendLine("            {");
 
                             // Ajuste de acordo com o tipo do campo
                             var typeCode = Type.GetTypeCode(cond.FieldType);
                             switch (typeCode)
                             {
                                 case TypeCode.String:
-                                    sb.AppendLine($"                dict[\"{param}\"] = $\"%{{{rightExpr}}}%\";");
-                                    sb.AppendLine($"                whereClauses.Add(\"{param} LIKE @{param}\");");
+                                    sb.AppendLine($"                dict[\"{param}\"] = $\"{{{rightExpr}}}\";");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} {param}\");");
                                     break;
 
                                 case TypeCode.Boolean:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr} ? 1 : 0;");
-                                    sb.AppendLine($"                whereClauses.Add(\"{param} = @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
                                     break;
 
                                 case TypeCode.DateTime:
@@ -278,19 +276,21 @@ namespace Dominio.Schemas.CQRS
                                 case TypeCode.Decimal:
                                 default:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr};");
-                                    sb.AppendLine($"                whereClauses.Add(\"{param} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
                                     break;
                             }
 
-                            sb.AppendLine("            }");
                         }
+                        sb.AppendLine("");
 
                         // Condições fixas
                         sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
                         sb.AppendLine("            whereClauses.Add(\"TenantID = @TenantID\");");
+                        sb.AppendLine("");
                         sb.AppendLine("            dict[\"Deleted\"] = 0;");
                         sb.AppendLine("            whereClauses.Add(\"Deleted = @Deleted\");");
 
+                        sb.AppendLine("");
                         // Monta WHERE final
                         sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
                         sb.AppendLine("            this.Parameters = parameters;");
@@ -306,34 +306,38 @@ namespace Dominio.Schemas.CQRS
 
                         sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command)");
                         sb.AppendLine("        {");
-                        sb.AppendLine($"            this.Query = @\"SELECT {string.Join(", ", query.Meta.SelectFields.Select(f => f.Path))} FROM {_entity.EntityName}\";");
+                        sb.AppendLine($"            this.Query = \"{query.Meta.SqlBase}\";");
                         sb.AppendLine("            var whereClauses = new List<string>();");
                         sb.AppendLine("            dynamic parameters = new ExpandoObject();");
                         sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
 
                         foreach (var cond in wh.Value)
                         {
+                            sb.AppendLine("");
                             string param = cond.Field;
                             sb.AppendLine($"            if (Command.{param} != null)");
                             sb.AppendLine("            {");
                             if (cond.Operator == "LIKE")
                             {
                                 sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{param}}}%\";");
-                                sb.AppendLine($"                whereClauses.Add(\"{param} LIKE @{param}\");");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} LIKE @{param}\");");
                             }
                             else
                             {
                                 sb.AppendLine($"                dict[\"{param}\"] = Command.{param};");
-                                sb.AppendLine($"                whereClauses.Add(\"{param} {cond.Operator} @{param}\");");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
                             }
                             sb.AppendLine("            }");
                         }
 
                         // Condições fixas
+                        sb.AppendLine("");
                         sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
                         sb.AppendLine("            whereClauses.Add(\"TenantID = @TenantID\");");
+                        sb.AppendLine("");
                         sb.AppendLine("            dict[\"Deleted\"] = 0;");
                         sb.AppendLine("            whereClauses.Add(\"Deleted = @Deleted\");");
+                        sb.AppendLine("");
 
                         // Monta WHERE final
                         sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");

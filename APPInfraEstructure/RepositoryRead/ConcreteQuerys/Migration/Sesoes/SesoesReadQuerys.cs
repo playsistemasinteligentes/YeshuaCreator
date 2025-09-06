@@ -1394,86 +1394,89 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
         }
         public QueryModel SesoesHojeQuery()
         {
-            this.Query = @"SELECT Id, DataInicio, Paciente.Nome FROM Sesoes";
+            this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            if ("" != null)
-            {
-                dict["Nome"] = $"%{""}%";
-                whereClauses.Add("Nome LIKE @Nome");
-            }
+
+                dict["Nome"] = $"{"Angelo"}";
+                whereClauses.Add(".Nome = Nome");
+
             dict["TenantID"] = _currentUser.TenantID;
             whereClauses.Add("TenantID = @TenantID");
+
             dict["Deleted"] = 0;
             whereClauses.Add("Deleted = @Deleted");
+
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel SesoesSemanaQuery()
         {
-            this.Query = @"SELECT Id, DataInicio, Paciente.Nome FROM Sesoes";
+            this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            if (DateTime.Today != null)
-            {
+
                 dict["DataInicio"] = DateTime.Today;
-                whereClauses.Add("DataInicio >= @DataInicio");
-            }
-            if (1 != null)
-            {
+                whereClauses.Add("s.DataInicio >= @DataInicio");
+
                 dict["Id"] = 1;
-                whereClauses.Add("Id = @Id");
-            }
-            if ("" != null)
-            {
-                dict["Nome"] = $"%{""}%";
-                whereClauses.Add("Nome LIKE @Nome");
-            }
+                whereClauses.Add(".Id = @Id");
+
+                dict["Nome"] = $"{""}";
+                whereClauses.Add(".Nome = Nome");
+
             dict["TenantID"] = _currentUser.TenantID;
             whereClauses.Add("TenantID = @TenantID");
+
             dict["Deleted"] = 0;
             whereClauses.Add("Deleted = @Deleted");
+
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel SesoesMesQuery()
         {
-            this.Query = @"SELECT Id, DataInicio, Paciente.Nome FROM Sesoes";
+            this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            if (DateTime.Today != null)
-            {
+
                 dict["DataInicio"] = DateTime.Today;
-                whereClauses.Add("DataInicio >= @DataInicio");
-            }
+                whereClauses.Add("s.DataInicio >= @DataInicio");
+
             dict["TenantID"] = _currentUser.TenantID;
             whereClauses.Add("TenantID = @TenantID");
+
             dict["Deleted"] = 0;
             whereClauses.Add("Deleted = @Deleted");
+
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command)
         {
-            this.Query = @"SELECT Id, DataInicio, Paciente.Nome FROM Sesoes";
+            this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
+
             if (Command.DataInicio != null)
             {
                 dict["DataInicio"] = Command.DataInicio;
-                whereClauses.Add("DataInicio >= @DataInicio");
+                whereClauses.Add("s.DataInicio >= @DataInicio");
             }
+
             dict["TenantID"] = _currentUser.TenantID;
             whereClauses.Add("TenantID = @TenantID");
+
             dict["Deleted"] = 0;
             whereClauses.Add("Deleted = @Deleted");
+
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);

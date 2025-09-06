@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Dapper;
+using Dominio.Migration;
 
 namespace MyApp.QueryBuilder
 {
@@ -19,7 +20,6 @@ namespace MyApp.QueryBuilder
         private readonly List<string> _wheres = new();
         private readonly DynamicParameters _parameters = new();
         private int _paramIndex = 0;
-
         private const string RootAlias = "t0";
 
         public SqlVisitor(QueryBase query, Type rootType)
@@ -31,6 +31,9 @@ namespace MyApp.QueryBuilder
 
         public QueryCommand BuildCommand()
         {
+            // Lista temporária para armazenar condições
+            var conditions = new List<QueryCondition>();
+
             // SELECT
             if (_query.SelectBody == null)
             {
@@ -44,13 +47,13 @@ namespace MyApp.QueryBuilder
             // WHERE
             foreach (var where in _query.Wheres)
             {
-                var cond = VisitPredicate(where);
+                var cond = VisitPredicate(where, conditions);
                 if (!string.IsNullOrWhiteSpace(cond))
                     _wheres.Add(cond);
             }
 
             var sql = ComposeSql();
-            return new QueryCommand(sql, _parameters);
+            return new QueryCommand(sql, _parameters, conditions);
         }
 
         private string ComposeSql()
@@ -84,51 +87,77 @@ namespace MyApp.QueryBuilder
         #endregion
 
         #region WHERE
-        private string VisitPredicate(LambdaExpression lambda)
+        private string VisitPredicate(LambdaExpression lambda, List<QueryCondition> conditions)
         {
-            return VisitBoolean(lambda.Body, RootAlias);
+            return VisitBoolean(lambda.Body, RootAlias, conditions);
         }
 
-        private string VisitBoolean(Expression expr, string currentAlias)
+        private static MemberExpression? GetMemberExpression(Expression expr)
+        {
+            return expr switch
+            {
+                MemberExpression me => me,
+                UnaryExpression ue when ue.Operand is MemberExpression inner => inner,
+                _ => null
+            };
+        }
+
+        private string VisitBoolean(Expression expr, string currentAlias, List<QueryCondition> conditions)
         {
             switch (expr)
             {
                 case BinaryExpression be:
                     if (be.NodeType == ExpressionType.AndAlso || be.NodeType == ExpressionType.And)
-                        return $"({VisitBoolean(be.Left, currentAlias)} AND {VisitBoolean(be.Right, currentAlias)})";
+                        return $"({VisitBoolean(be.Left, currentAlias, conditions)} AND {VisitBoolean(be.Right, currentAlias, conditions)})";
                     if (be.NodeType == ExpressionType.OrElse || be.NodeType == ExpressionType.Or)
-                        return $"({VisitBoolean(be.Left, currentAlias)} OR {VisitBoolean(be.Right, currentAlias)})";
+                        return $"({VisitBoolean(be.Left, currentAlias, conditions)} OR {VisitBoolean(be.Right, currentAlias, conditions)})";
 
                     // comparison
+                    var leftMember = GetMemberExpression(be.Left);
                     var leftSql = VisitValueExpression(be.Left, currentAlias, forSelect: false);
+
+                    string op;
+                    string rightExpr;
 
                     if (IsNullConstant(be.Right))
                     {
-                        return be.NodeType switch
-                        {
-                            ExpressionType.Equal => $"{leftSql} IS NULL",
-                            ExpressionType.NotEqual => $"{leftSql} IS NOT NULL",
-                            _ => throw new NotSupportedException($"Null comparison not supported: {be.NodeType}")
-                        };
+                        op = be.NodeType == ExpressionType.Equal ? "IS NULL" : "IS NOT NULL";
+                        rightExpr = "NULL";
+                    }
+                    else
+                    {
+                        var val = Eval(be.Right);
+                        rightExpr = val?.ToString() ?? "NULL";
+                        op = OpSql(be.NodeType);
                     }
 
-                    var rightVal = Eval(be.Right);
-                    var param = AddParameter(rightVal);
-                    var op = OpSql(be.NodeType);
-                    return $"{leftSql} {op} {param}";
+                    // Preenche metadata
+                    if (leftMember != null)
+                    {
+                        conditions.Add(new QueryCondition
+                        {
+                            Prefix = currentAlias,
+                            Field = leftMember.Member.Name,
+                            Operator = op,
+                            RightExpression = rightExpr,
+                            FieldType = ((PropertyInfo)leftMember.Member).PropertyType
+                        });
+                    }
+
+                    return $"{leftSql} {op} {(IsNullConstant(be.Right) ? "" : AddParameter(Eval(be.Right)))}";
 
                 case UnaryExpression ue when ue.NodeType == ExpressionType.Not:
-                    return $"(NOT {VisitBoolean(ue.Operand, currentAlias)})";
+                    return $"(NOT {VisitBoolean(ue.Operand, currentAlias, conditions)})";
 
                 case MethodCallExpression m:
-                    return VisitBooleanMethod(m, currentAlias);
+                    return VisitBooleanMethod(m, currentAlias, conditions);
 
                 default:
                     throw new NotSupportedException($"Boolean expression not supported: {expr.NodeType}");
             }
         }
 
-        private string VisitBooleanMethod(MethodCallExpression m, string currentAlias)
+        private string VisitBooleanMethod(MethodCallExpression m, string currentAlias, List<QueryCondition> conditions)
         {
             // string methods
             if (m.Method.DeclaringType == typeof(string))
@@ -144,21 +173,18 @@ namespace MyApp.QueryBuilder
                 };
             }
 
-            // Enumerable.Contains(collection, item) OR collection.Contains(item)
+            // Enumerable.Contains(collection, item)
             if (m.Method.Name == nameof(Enumerable.Contains))
             {
-                // cases:
-                // - constantCollection.Contains(x.Prop)  => m.Object == null, m.Arguments[0] = collection, m.Arguments[1]=member
-                // - memberCollection.Contains(constant)  => m.Object = member, m.Arguments[0] = constant
                 IEnumerable<object>? values = null;
                 Expression? itemExpr = null;
 
-                if (m.Arguments.Count == 2) // Enumerable.Contains(collection, item)
+                if (m.Arguments.Count == 2)
                 {
                     values = Eval(m.Arguments[0]) as IEnumerable<object>;
                     itemExpr = m.Arguments[1];
                 }
-                else if (m.Object != null && m.Arguments.Count == 1) // collection.Contains(item)
+                else if (m.Object != null && m.Arguments.Count == 1)
                 {
                     values = Eval(m.Object) as IEnumerable<object>;
                     itemExpr = m.Arguments[0];
@@ -193,7 +219,6 @@ namespace MyApp.QueryBuilder
                     return AddParameter(c.Value);
 
                 case MethodCallExpression m when m.Method.DeclaringType == typeof(string):
-                    // evaluate result and param it
                     var val = (string?)Eval(m) ?? string.Empty;
                     return AddParameter(val);
 
@@ -205,10 +230,10 @@ namespace MyApp.QueryBuilder
 
         private string ResolveMemberChain(MemberExpression me, bool forSelect)
         {
-            // get chain of members excluding parameter root
-            var chain = GetChain(me); // returns list of PropertyInfo (in order)
+            var chain = GetChain(me);
             string currentPath = string.Empty;
             string parentAlias = RootAlias;
+
             for (int i = 0; i < chain.Length; i++)
             {
                 var prop = chain[i];
@@ -218,14 +243,11 @@ namespace MyApp.QueryBuilder
 
                 if (isNavigation && !isLast)
                 {
-                    // ensure join for navigation
                     currentPath = AppendPath(currentPath, prop.Name);
-                    var alias = EnsureJoin(parentAlias, currentPath, prop);
-                    parentAlias = alias;
+                    parentAlias = EnsureJoin(parentAlias, currentPath, prop);
                     continue;
                 }
 
-                // if last and navigation: select PK as fallback (alias.Id)
                 if (isNavigation && isLast)
                 {
                     currentPath = AppendPath(currentPath, prop.Name);
@@ -233,9 +255,7 @@ namespace MyApp.QueryBuilder
                     return $"{alias}.Id";
                 }
 
-                // primitive property => return alias.column
-                var columnName = prop.Name;
-                return $"{parentAlias}.{columnName}";
+                return $"{parentAlias}.{prop.Name}";
             }
 
             throw new NotSupportedException("Cannot resolve member chain for SQL.");
@@ -250,7 +270,6 @@ namespace MyApp.QueryBuilder
             var alias = NextAlias();
             _aliasByPath[path] = alias;
 
-            // navProp.PropertyType is the referenced type
             var navType = navProp.PropertyType;
             var fkName = navProp.Name + "Id"; // convenção
             var joinType = _query.LeftJoinPaths.Contains(path) ? "LEFT JOIN" : "INNER JOIN";
@@ -296,7 +315,6 @@ namespace MyApp.QueryBuilder
                     throw new NotSupportedException("Only property members are supported.");
                 cur = m.Expression;
             }
-            // remove root parameter item if exists (first element would be the first property accessed on the parameter)
             return stack.ToArray();
         }
 
@@ -309,7 +327,6 @@ namespace MyApp.QueryBuilder
                 list.Insert(0, m.Member.Name);
                 cur = m.Expression;
             }
-            // remove root param name if present (first item corresponds to property on root)
             if (list.Count > 0) list.RemoveAt(0);
             return string.Join('.', list);
         }
