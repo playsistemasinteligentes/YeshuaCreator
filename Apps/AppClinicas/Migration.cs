@@ -151,7 +151,7 @@ namespace AppClinicas
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("IDs");
 
             var cmd = Sesoes.Query()
-            .Where(s => s.DataInicio == DateTime.Today)
+            .Where(s => s.DataInicio == DateTime.Today && s.Paciente.Nome == "Angelo")
             .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.Profissional.Especialidade.Descricao })
             .ToCommand();
 

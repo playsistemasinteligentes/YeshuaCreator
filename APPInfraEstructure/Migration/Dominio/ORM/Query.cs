@@ -49,4 +49,11 @@ namespace MyApp.QueryBuilder
     {
         public static MyApp.QueryBuilder.Query<T> For<T>() => new MyApp.QueryBuilder.Query<T>();
     }
+    public sealed class QueryField
+    {
+        public string Prefix { get; set; } = string.Empty;  // alias da tabela (t0, t1...)
+        public string Field { get; set; } = string.Empty;   // nome da coluna
+        public string Expression { get; set; } = string.Empty; // SQL bruto no SELECT
+        public Type FieldType { get; set; } = typeof(object);
+    }
 }

@@ -111,10 +111,10 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByDeleted(bool value );
         public IEnumerable<SesoesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByUserId(int value );
+        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command );
         public DataPagination<SesoesStandardDTO> GetSesoesHoje(ICommandRead command );
         public DataPagination<SesoesStandardDTO> GetSesoesSemana(ICommandRead command );
         public DataPagination<SesoesStandardDTO> GetSesoesMes(ICommandRead command );
-        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

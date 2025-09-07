@@ -19,6 +19,9 @@ namespace MyApp.QueryBuilder
         private readonly List<string> _selects = new();
         private readonly List<string> _wheres = new();
         private readonly DynamicParameters _parameters = new();
+        private readonly List<QueryField> _selectFields = new();
+        private string _lastAlias = RootAlias;
+
         private int _paramIndex = 0;
         private const string RootAlias = "t0";
 
@@ -53,7 +56,8 @@ namespace MyApp.QueryBuilder
             }
 
             var sql = ComposeSql();
-            return new QueryCommand(sql, _parameters, conditions);
+            return new QueryCommand(sql, _parameters, conditions, _selectFields);
+
         }
 
         private string ComposeSql()
@@ -77,12 +81,36 @@ namespace MyApp.QueryBuilder
                 {
                     var sel = VisitValueExpression(arg, currentAlias, forSelect: true);
                     _selects.Add(sel);
+
+                    var member = GetMemberExpression(arg);
+                    if (member != null)
+                    {
+                        _selectFields.Add(new QueryField
+                        {
+                            Prefix = sel.Split(".")[0],
+                            Field = member.Member.Name,
+                            Expression = sel,
+                            FieldType = ((PropertyInfo)member.Member).PropertyType
+                        });
+                    }
                 }
                 return;
             }
 
             var single = VisitValueExpression(body, currentAlias, forSelect: true);
             _selects.Add(single);
+
+            var singleMember = GetMemberExpression(body);
+            if (singleMember != null)
+            {
+                _selectFields.Add(new QueryField
+                {
+                    Prefix = single.Split(".")[0],
+                    Field = singleMember.Member.Name,
+                    Expression = single,
+                    FieldType = ((PropertyInfo)singleMember.Member).PropertyType
+                });
+            }
         }
         #endregion
 
@@ -136,10 +164,11 @@ namespace MyApp.QueryBuilder
                     {
                         conditions.Add(new QueryCondition
                         {
-                            Prefix = currentAlias,
+                            Prefix = _lastAlias,
                             Field = leftMember.Member.Name,
                             Operator = op,
-                            RightExpression = rightExpr,
+                            RightExpression = be.Right.ToString(),
+                            RightExpressionValue = rightExpr,
                             FieldType = ((PropertyInfo)leftMember.Member).PropertyType
                         });
                     }
@@ -252,6 +281,7 @@ namespace MyApp.QueryBuilder
                 {
                     currentPath = AppendPath(currentPath, prop.Name);
                     var alias = EnsureJoin(parentAlias, currentPath, prop);
+                    _lastAlias = alias;
                     return $"{alias}.Id";
                 }
 

@@ -1,11 +1,13 @@
 ﻿using Dominio.Migration;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using MyApp.QueryBuilder;
 using System.Collections.Specialized;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Text;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dominio.Schemas.CQRS
@@ -238,6 +240,8 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var query in _entity.Queries.OfType<IQueryWithMeta>())
                 {
+                    var prefixoList = query.Meta.SelectFields.Select(x => x.Prefix).Distinct();
+
                     // ---- Context queries (WhereContextParameters)
                     foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
                     {
@@ -248,7 +252,6 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("            var whereClauses = new List<string>();");
                         sb.AppendLine("            dynamic parameters = new ExpandoObject();");
                         sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
-
                         foreach (var cond in query.Meta.WhereContextParameters[ctxName])
                         {
                             sb.AppendLine("");
@@ -262,7 +265,7 @@ namespace Dominio.Schemas.CQRS
                             {
                                 case TypeCode.String:
                                     sb.AppendLine($"                dict[\"{param}\"] = $\"{{{rightExpr}}}\";");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} {param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
                                     break;
 
                                 case TypeCode.Boolean:
@@ -281,14 +284,17 @@ namespace Dominio.Schemas.CQRS
                             }
 
                         }
-                        sb.AppendLine("");
 
                         // Condições fixas
-                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
-                        sb.AppendLine("            whereClauses.Add(\"TenantID = @TenantID\");");
                         sb.AppendLine("");
                         sb.AppendLine("            dict[\"Deleted\"] = 0;");
-                        sb.AppendLine("            whereClauses.Add(\"Deleted = @Deleted\");");
+                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                        foreach (var prefix in prefixoList)
+                        {
+                            sb.AppendLine("");
+                            sb.AppendLine($"            whereClauses.Add(\"{prefix}.TenantID = @TenantID\");");
+                            sb.AppendLine($"            whereClauses.Add(\"{prefix}.Deleted = @Deleted\");");
+                        }
 
                         sb.AppendLine("");
                         // Monta WHERE final
@@ -330,15 +336,15 @@ namespace Dominio.Schemas.CQRS
                             sb.AppendLine("            }");
                         }
 
-                        // Condições fixas
-                        sb.AppendLine("");
-                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
-                        sb.AppendLine("            whereClauses.Add(\"TenantID = @TenantID\");");
                         sb.AppendLine("");
                         sb.AppendLine("            dict[\"Deleted\"] = 0;");
-                        sb.AppendLine("            whereClauses.Add(\"Deleted = @Deleted\");");
-                        sb.AppendLine("");
-
+                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                        foreach (var prefix in prefixoList)
+                        {
+                            sb.AppendLine("");
+                            sb.AppendLine($"            whereClauses.Add(\"{prefix}.TenantID = @TenantID\");");
+                            sb.AppendLine($"            whereClauses.Add(\"{prefix}.Deleted = @Deleted\");");
+                        }
                         // Monta WHERE final
                         sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
                         sb.AppendLine("            this.Parameters = parameters;");

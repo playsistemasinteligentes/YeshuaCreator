@@ -59,7 +59,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("    {");
 
                     foreach (var column in _query.Meta.SelectFields)
-                        sb.AppendLine($"    public {GetFriendlyTypeName(column.FieldType)} {column.Name.ToLower()} {{ get; set; }}");
+                        sb.AppendLine($"    public {GetFriendlyTypeName(column.FieldType)} {column.Field.ToLower()} {{ get; set; }}");
 
                     break;
                 case CommandType.ReadFK:

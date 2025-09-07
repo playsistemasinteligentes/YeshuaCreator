@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -44,13 +45,15 @@ namespace Dominio.Migration
         public string Field { get; set; } = string.Empty;    // DataInicio
         public string Operator { get; set; } = string.Empty; // >=, =, !=
         public string RightExpression { get; set; } = string.Empty; // DateTime.Today, "Ativo"
+        public object? RightExpressionValue { get; set; }  // Ex: DateTime.Today, "Ativo"
         public Type FieldType { get; set; } = typeof(object);
     }
     public class MigrationQueryMeta
     {
         public string QueryName { get; set; } = string.Empty;
         public string SqlBase { get; set; } = string.Empty;
-        public List<QuerySelectField> SelectFields { get; set; } = new();
+        //public List<QuerySelectField> SelectFields { get; set; } = new();
+        public List<QueryField> SelectFields { get; set; } = new();
         public Dictionary<string, List<QueryCondition>> WhereContextParameters { get; set; } = new();
         public Dictionary<string, List<QueryCondition>> WhereParameters { get; set; } = new();
 
@@ -77,85 +80,16 @@ namespace Dominio.Migration
 
         public MigrationQueryDefinition() => _queryBuilder = new Query<T>();
 
-        // --- Where padrão ---
         public MigrationQueryDefinition<T> Where(string paramName, Expression<Func<T, bool>> filter)
         {
             Wheres.Add((paramName, filter));
-
-            var conditions = ExtractConditions(filter.Body);
-            if (conditions.Any())
-            {
-                if (!Meta.WhereParameters.ContainsKey(paramName))
-                    Meta.WhereParameters[paramName] = new List<QueryCondition>();
-
-                Meta.WhereParameters[paramName].AddRange(conditions);
-            }
-
             return this;
         }
-
-        // --- WhereContext ---
         public MigrationQueryDefinition<T> WhereContext(string contextName, Expression<Func<T, bool>> filter)
         {
             WhereContexts.Add((contextName, filter));
-
-            var conditions = ExtractConditions(filter.Body);
-            if (conditions.Any())
-            {
-                if (!Meta.WhereContextParameters.ContainsKey(contextName))
-                    Meta.WhereContextParameters[contextName] = new List<QueryCondition>();
-
-                Meta.WhereContextParameters[contextName].AddRange(conditions);
-            }
-
             return this;
         }
-
-        // --- Extração das condições ---
-        private List<QueryCondition> ExtractConditions(Expression expr)
-        {
-            var list = new List<QueryCondition>();
-
-            void Visit(Expression e)
-            {
-                if (e is BinaryExpression be)
-                {
-                    string op = GetSqlOperator(be.NodeType);
-
-                    if (be.Left is MemberExpression member)
-                    {
-                        string prefix = ResolveAlias(member.Expression); // "s", "p"...
-                        string field = member.Member.Name;
-                        string right = ExpressionToString(be.Right);
-
-                        list.Add(new QueryCondition
-                        {
-                            Prefix = prefix,
-                            Field = field,
-                            Operator = op,
-                            RightExpression = right,
-                            FieldType = member.Type
-                        });
-                    }
-
-                    Visit(be.Left);
-                    Visit(be.Right);
-                }
-            }
-
-            Visit(expr);
-            return list;
-        }
-
-        private string ResolveAlias(Expression? expr)
-        {
-            // simplificação: usamos o nome da variável de entrada
-            if (expr is ParameterExpression p)
-                return p.Name ?? typeof(T).Name.Substring(0, 1).ToLower();
-
-            return string.Empty;
-        }
-
         private string ExpressionToString(Expression expr)
         {
             switch (expr)
@@ -225,16 +159,6 @@ namespace Dominio.Migration
                     }
                 }
             }
-            else
-            {
-                Meta.SelectFields.Add(new QuerySelectField
-                {
-                    Entity = typeof(T).Name,
-                    Path = selector.Body.ToString(),
-                    Name = selector.Body.ToString(),
-                    FieldType = selector.ReturnType
-                });
-            }
 
             return this;
         }
@@ -245,17 +169,6 @@ namespace Dominio.Migration
             string name = member.Member.Name;               // Nome
             string entity = member.Member.DeclaringType?.Name ?? typeof(T).Name;
             Type type = member.Type;
-
-            if (!Meta.SelectFields.Any(sf => sf.Path == path))
-            {
-                Meta.SelectFields.Add(new QuerySelectField
-                {
-                    Entity = entity,
-                    Path = path,
-                    Name = name,
-                    FieldType = type
-                });
-            }
         }
 
         private string GetFullPath(MemberExpression expr)
@@ -275,11 +188,12 @@ namespace Dominio.Migration
         // --- SQL Base ---
         public void BuildSqlBase()
         {
-            var query = new Query<T>();
-
-
             Meta.QueryName = Name;
-            Meta.SqlBase = query.ToCommand().Sql;
+            Query<T> query;
+            QueryCommand queryCommand;
+            Meta.SqlBase = string.Empty;
+            Meta.SelectFields.Clear();
+
 
             foreach (var ctx in Wheres)
             {
@@ -293,8 +207,19 @@ namespace Dominio.Migration
 
                 selectMethod.Invoke(query, new object[] { Selects.Last() });
 
+                if (string.IsNullOrEmpty(Meta.SqlBase))
+                {
+                    queryCommand = query.ToCommand();
+                    Meta.SqlBase = queryCommand.Sql;
+                    if (Meta.SelectFields.Count == 0 && queryCommand.SelectFields.Any())
+                        Meta.SelectFields.AddRange(queryCommand.SelectFields);
+                }
                 query.Where(ctx.Filter);
-                var teste = query.ToCommand();
+                queryCommand = query.ToCommand();
+
+                if (!this.Meta.WhereContextParameters.ContainsKey(ctx.WhereName))
+                    Meta.WhereContextParameters[ctx.WhereName] = new List<QueryCondition>();
+                Meta.WhereContextParameters[ctx.WhereName].AddRange(queryCommand.Conditions);
             }
             foreach (var ctx in WhereContexts)
             {
@@ -306,11 +231,22 @@ namespace Dominio.Migration
                     .MakeGenericMethod(tSelect);
 
                 selectMethod.Invoke(query, new object[] { Selects.Last() });
+                if (string.IsNullOrEmpty(Meta.SqlBase))
+                {
+                    queryCommand = query.ToCommand();
+                    Meta.SqlBase = queryCommand.Sql;
+                    if (Meta.SelectFields.Count == 0 && queryCommand.SelectFields.Any())
+                        Meta.SelectFields.AddRange(queryCommand.SelectFields);
+                }
                 query.Where(ctx.Filter);
-                ctx.ContextName = "";
-                var teste = query.ToCommand();
-            }
+                queryCommand = query.ToCommand();
 
+
+                if (!this.Meta.WhereContextParameters.ContainsKey(ctx.ContextName))
+                    Meta.WhereContextParameters[ctx.ContextName] = new List<QueryCondition>();
+                Meta.WhereContextParameters[ctx.ContextName].AddRange(queryCommand.Conditions);
+
+            }
         }
 
         // --- Interface ---
