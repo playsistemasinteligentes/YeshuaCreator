@@ -206,99 +206,163 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine($"app.MapGet(\"/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
                 sb.AppendLine("{");
-                sb.AppendLine("var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;");
+                sb.AppendLine("    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;");
+                sb.AppendLine("    if (string.IsNullOrEmpty(userId))");
+                sb.AppendLine("        return Results.Unauthorized();");
 
-                sb.AppendLine("if (string.IsNullOrEmpty(userId))");
-                sb.AppendLine("return Results.Unauthorized();");
+                sb.AppendLine("    var metadatacrud = new");
+                sb.AppendLine("    {");
+                sb.AppendLine($"        entityDescription = \"{entidade.getDescription()}\",");
+
+                // 🔎 BLOCO DE PESQUISA
+                sb.AppendLine("        search = new[]{");
+
+                if (entidade.Queries.Count > 0)
+                {
+                    foreach (var query in entidade.Queries.OfType<IQueryWithMeta>())
+                    {
+                        sb.AppendLine("            new {");
+                        sb.AppendLine($"                id = \"{query.Meta.QueryName}\",");
+                        sb.AppendLine($"                description = \"{query.Meta.QueryName}\",");
+
+                        // resultFields
+                        sb.AppendLine("            resultFields = new[]");
+                        sb.AppendLine("            {");
+                        int conta = 0;
+                        foreach (var item in query.Meta.SelectFields)
+                        {
+                            if (item.Column == null)
+                                item.Column = _migration.GetColumn(item.EntityName, item.Field);
+
+                            sb.AppendLine($"                new {{ id = \"{item.Column.Name.ToLower()}\", label = \"{item.Column.Description}\", type = \"{item.Column.getFrontType()}\" }},");
+                        }
+
+                        sb.AppendLine("            },");
+
+                        // filterFields
+                        sb.AppendLine("            filterFields = new[]");
+                        sb.AppendLine("            {");
+                        foreach (var wp in query.Meta.WhereParameters)
+                        {
+                            foreach (var item in wp.Value)
+                            {
+                                string fksDisplay = "fksDisplayFields = new string[]{}";
+                                string endPontGetMetadata = string.Empty;
+
+                                if (item.Column == null)
+                                    item.Column = _migration.GetColumn(item.EntityName, item.Field); ;
+
+                                if (item.Column.IsFK)
+                                {
+                                    endPontGetMetadata = $"/getMetaData{item.Column.EntityFK.EntityName}";
+                                    fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", item.Column.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                                }
+
+                                sb.AppendLine($"                new {{ id = \"{item.Column.Name.ToLower()}\", label = \"{item.Column.Description}\", type = \"{item.Column.getFrontType()}\", isFk = {item.Column.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay} }},");
+                            }
+                        }
+
+                        sb.AppendLine("            },");
+
+                        // quickSearches (depois você pode carregar de config/tabela)
+                        sb.AppendLine("            quickSearches = new[]");
+                        sb.AppendLine("            {");
+
+                        foreach (var wp in query.Meta.WhereContextParameters)
+                            foreach (var item in wp.Value)
+                                sb.AppendLine($"                new {{ id = \"{wp.Key}\", label = \"{wp.Key}\", icon = \"calendar-day\", endpoint = $\"/" + entidade.EntityName + "/ChamadosHoje\" },");
+
+                        sb.AppendLine("            },");
+
+                        // fkEndpoints
+                        sb.AppendLine("            fkEndpoints = new");
+                        sb.AppendLine("            {");
+                        foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
+                            sb.AppendLine($"                {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
+                        sb.AppendLine("            }");
+
+                        sb.AppendLine("            },");
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("            new {");
+                    sb.AppendLine($"                id = \"Standard\",");
+                    sb.AppendLine($"                description = \"Standard\",");
+
+                    // resultFields
+                    sb.AppendLine("            resultFields = new[]");
+                    sb.AppendLine("            {");
+                    int conta = 0;
+                    foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
+                        sb.AppendLine($"                new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\" }},");
+
+                    sb.AppendLine("            },");
+
+                    // filterFields
+                    sb.AppendLine("            filterFields = new[]");
+                    sb.AppendLine("            {");
+                    foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
+                    {
+                        string fksDisplay = "fksDisplayFields = new string[]{}";
+                        string endPontGetMetadata = string.Empty;
+
+                        if (item.IsFK)
+                        {
+                            endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
+                            fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                        }
+
+                        sb.AppendLine($"                new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", isFk = {item.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay} }},");
+
+                    }
+                    sb.AppendLine("            },");
+
+                    // quickSearches (depois você pode carregar de config/tabela)
+                    sb.AppendLine("             quickSearches = Array.Empty<object>(),");
+
+                    sb.AppendLine("            fkEndpoints = new ");
+                    sb.AppendLine("            {");
+                    foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
+                        sb.AppendLine($"                {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
+                    sb.AppendLine("            }");
+
+                    sb.AppendLine("            },");
+                }
+                sb.AppendLine("        },"); // fecha vetor search
 
 
-                sb.AppendLine("var metadatacrud = new");
-                sb.AppendLine("{");
-                sb.AppendLine($"entityDescription = \"{entidade.getDescription()}\",");
-
-                sb.AppendLine("searchFields = new[]");
-                sb.AppendLine("{");
-
-                int conta = 0;
+                // 🔎 FORM FIELDS (igual ao anterior)
+                sb.AppendLine("        formFields = new[]");
+                sb.AppendLine("        {");
                 foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
                 {
-                    conta++;
-                    if (conta > 5)
-                        break;
-
-                    string fksDisplay = "fksDisplayFields =  new string[]{}";
+                    string fksDisplay = "fksDisplayFields = new string[]{}";
                     string endPontGetMetadata = string.Empty;
                     if (item.IsFK)
                     {
                         endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
-                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
+                        fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name.ToLower()}\""))} }}";
                     }
 
-
-                    StringBuilder sbEnum = new StringBuilder();
-                    if (item.Enum != null && item.Enum.Count() > 0)
-                    {
-                        sbEnum.AppendLine("options = new[]{");
-                        foreach (var Enum in item.Enum)
-                            sbEnum.AppendLine($"new {{value = {Enum.Key},display = \"{Enum.Value}\"}},");
-
-                        sbEnum.AppendLine("}");
-                    }
-                    else
-                    {
-                        sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
-                    }
-
-                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", isFk = {item.IsFK.ToString().ToLower()} ,endPontGetMetadata=\"{endPontGetMetadata}\", {fksDisplay}, {sbEnum.ToString()} }},");
+                    sb.AppendLine($"            new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", displaygroup = \"{item.DisplayGroup}\", type = \"{item.getFrontType()}\", required = {item.required.ToString().ToLower()}, isFk = {item.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay} }},");
                 }
-                sb.AppendLine("},");
+                sb.AppendLine("        },");
 
-                sb.AppendLine("formFields = new[]");
-                sb.AppendLine("{");
-                foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
-                {
-                    string fksDisplay = "fksDisplayFields =  new string[]{}";
-                    string endPontGetMetadata = string.Empty;
-                    if (item.IsFK)
-                    {
-                        endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
-                        fksDisplay = $"fksDisplayFields =  new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name.ToLower()}\""))} }}";
-                    }
-
-                    StringBuilder sbEnum = new StringBuilder();
-                    if (item.Enum != null && item.Enum.Count() > 0)
-                    {
-                        sbEnum.AppendLine("options = new[]{");
-                        foreach (var Enum in item.Enum)
-                            sbEnum.AppendLine($"new {{value = {Enum.Key},display = \"{Enum.Value}\"}},");
-
-                        sbEnum.AppendLine("}");
-                    }
-                    else
-                    {
-                        sbEnum.AppendLine("options = new[] { new { value = 0, display = \"\" }}");
-                    }
-                    sb.AppendLine($" new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\",displaygroup = \"{item.DisplayGroup}\", type = \"{item.getFrontType()}\", required = \"{item.required}\" , isFk = {item.IsFK.ToString().ToLower()},endPontGetMetadata=\"{endPontGetMetadata}\", {fksDisplay}, {sbEnum.ToString()}  }},");
-                }
-                sb.AppendLine("},");
-
-                sb.AppendLine("             endpoints = new");
-                sb.AppendLine("             {");
-
+                // 🔎 ENDPOINTS CRUD
+                sb.AppendLine("        endpoints = new");
+                sb.AppendLine("        {");
                 foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
                     sb.AppendLine($"                 {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
+                sb.AppendLine($"            create = \"/{entidade.EntityName}/Post{entidade.EntityName}\",");
+                sb.AppendLine($"            read = \"/{entidade.EntityName}/{CommandType.Read}{entidade.EntityName}\",");
+                sb.AppendLine($"            update = \"/{entidade.EntityName}/Put{entidade.EntityName}\",");
+                sb.AppendLine($"            delete = \"/{entidade.EntityName}/Delete{entidade.EntityName}\"");
+                sb.AppendLine("        }");
 
-
-
-                sb.AppendLine($"                 create = \"/{entidade.EntityName}/Post{entidade.EntityName}\",");
-                sb.AppendLine($"                 read = \"/{entidade.EntityName}/{CommandType.Read}{entidade.EntityName}\",");
-                sb.AppendLine($"                 update = \"/{entidade.EntityName}/Put{entidade.EntityName}\",");
-                sb.AppendLine($"                 delete = \"/{entidade.EntityName}/Delete{entidade.EntityName}\"");
-                sb.AppendLine("             }");
-                sb.AppendLine("         };");
-
-                sb.AppendLine("         return Results.Ok(metadatacrud);");
-                sb.AppendLine("     }).RequireAuthorization();");
+                sb.AppendLine("    };");
+                sb.AppendLine("    return Results.Ok(metadatacrud);");
+                sb.AppendLine("}).RequireAuthorization();");
             }
 
             #region ServicesMethod

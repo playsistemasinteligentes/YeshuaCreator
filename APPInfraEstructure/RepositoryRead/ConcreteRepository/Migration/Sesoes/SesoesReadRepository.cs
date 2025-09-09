@@ -899,19 +899,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command )
-        {
-            var query = _query.SesoesGeralQuery();
-
-                var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
-                return new DataPagination<SesoesStandardDTO>(
-                                itens,
-                command.Paginacao?.Page ?? 0,
-                command.Paginacao?.PageSize ?? 0,
-                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
-        }
-
-
         public DataPagination<SesoesStandardDTO> GetSesoesHoje(ICommandRead command )
         {
             var query = _query.SesoesHojeQuery();
@@ -950,6 +937,22 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
+
+        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command )
+        {
+            if (command is Command.Read.SesoesGeralCommand c)
+             {
+                var query = _query.SesoesGeralQuery(c );
+
+                var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
 
     }
 }

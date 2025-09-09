@@ -31,6 +31,7 @@ namespace Dominio.Migration
         {
             return _queries.OfType<MigrationQueryDefinition<T>>();
         }
+
     }
 
     public enum QueryType
@@ -47,6 +48,8 @@ namespace Dominio.Migration
         public string RightExpression { get; set; } = string.Empty; // DateTime.Today, "Ativo"
         public object? RightExpressionValue { get; set; }  // Ex: DateTime.Today, "Ativo"
         public Type FieldType { get; set; } = typeof(object);
+        public Column Column { get; set; }
+        public string EntityName { get; internal set; }
     }
     public class MigrationQueryMeta
     {
@@ -217,9 +220,9 @@ namespace Dominio.Migration
                 query.Where(ctx.Filter);
                 queryCommand = query.ToCommand();
 
-                if (!this.Meta.WhereContextParameters.ContainsKey(ctx.WhereName))
-                    Meta.WhereContextParameters[ctx.WhereName] = new List<QueryCondition>();
-                Meta.WhereContextParameters[ctx.WhereName].AddRange(queryCommand.Conditions);
+                if (!this.Meta.WhereParameters.ContainsKey(ctx.WhereName))
+                    Meta.WhereParameters[ctx.WhereName] = new List<QueryCondition>();
+                Meta.WhereParameters[ctx.WhereName].AddRange(queryCommand.Conditions);
             }
             foreach (var ctx in WhereContexts)
             {

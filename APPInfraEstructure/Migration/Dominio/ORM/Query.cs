@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -55,5 +56,7 @@ namespace MyApp.QueryBuilder
         public string Field { get; set; } = string.Empty;   // nome da coluna
         public string Expression { get; set; } = string.Empty; // SQL bruto no SELECT
         public Type FieldType { get; set; } = typeof(object);
+        public Column Column { get; set; }
+        public string EntityName { get; internal set; }
     }
 }

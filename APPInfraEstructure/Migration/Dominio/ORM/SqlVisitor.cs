@@ -10,6 +10,13 @@ using Dominio.Migration;
 
 namespace MyApp.QueryBuilder
 {
+    internal class SqlResult
+    {
+        public string Sql { get; set; } = string.Empty;
+        public string Alias { get; set; } = string.Empty;
+    }
+
+
     internal sealed class SqlVisitor
     {
         private readonly QueryBase _query;
@@ -85,12 +92,16 @@ namespace MyApp.QueryBuilder
                     var member = GetMemberExpression(arg);
                     if (member != null)
                     {
+                        var declaringType = (member.Expression as ParameterExpression)?.Type
+                                    ?? member.Member.DeclaringType;
+
                         _selectFields.Add(new QueryField
                         {
                             Prefix = sel.Split(".")[0],
                             Field = member.Member.Name,
                             Expression = sel,
-                            FieldType = ((PropertyInfo)member.Member).PropertyType
+                            FieldType = ((PropertyInfo)member.Member).PropertyType,
+                            EntityName = declaringType.Name
                         });
                     }
                 }
@@ -103,10 +114,13 @@ namespace MyApp.QueryBuilder
             var singleMember = GetMemberExpression(body);
             if (singleMember != null)
             {
+                var declaringType = (singleMember.Expression as ParameterExpression)?.Type ?? singleMember.Member.DeclaringType;
+
                 _selectFields.Add(new QueryField
                 {
                     Prefix = single.Split(".")[0],
                     Field = singleMember.Member.Name,
+                    EntityName = declaringType.Name,
                     Expression = single,
                     FieldType = ((PropertyInfo)singleMember.Member).PropertyType
                 });
@@ -140,9 +154,10 @@ namespace MyApp.QueryBuilder
                     if (be.NodeType == ExpressionType.OrElse || be.NodeType == ExpressionType.Or)
                         return $"({VisitBoolean(be.Left, currentAlias, conditions)} OR {VisitBoolean(be.Right, currentAlias, conditions)})";
 
-                    // comparison
+                    // comparação
                     var leftMember = GetMemberExpression(be.Left);
-                    var leftSql = VisitValueExpression(be.Left, currentAlias, forSelect: false);
+                    var leftSqlResult = leftMember != null ? ResolveMemberChain(leftMember, false) : null;
+                    var leftSql = leftSqlResult?.Sql ?? VisitValueExpression(be.Left, currentAlias, false);
 
                     string op;
                     string rightExpr;
@@ -158,18 +173,19 @@ namespace MyApp.QueryBuilder
                         rightExpr = val?.ToString() ?? "NULL";
                         op = OpSql(be.NodeType);
                     }
+                    var declaringType = (leftMember.Expression as ParameterExpression)?.Type ?? leftMember.Member.DeclaringType;
 
-                    // Preenche metadata
-                    if (leftMember != null)
+                    if (leftMember != null && leftSqlResult != null)
                     {
                         conditions.Add(new QueryCondition
                         {
-                            Prefix = _lastAlias,
+                            Prefix = leftSqlResult.Alias, // 👈 sempre o alias correto
                             Field = leftMember.Member.Name,
                             Operator = op,
                             RightExpression = be.Right.ToString(),
                             RightExpressionValue = rightExpr,
-                            FieldType = ((PropertyInfo)leftMember.Member).PropertyType
+                            FieldType = ((PropertyInfo)leftMember.Member).PropertyType,
+                            EntityName = declaringType.Name
                         });
                     }
 
@@ -239,7 +255,7 @@ namespace MyApp.QueryBuilder
             switch (expr)
             {
                 case MemberExpression me:
-                    return ResolveMemberChain(me, forSelect);
+                    return ResolveMemberChain(me, forSelect).Sql;
 
                 case UnaryExpression ue when ue.NodeType == ExpressionType.Convert:
                     return VisitValueExpression(ue.Operand, currentAlias, forSelect);
@@ -257,7 +273,7 @@ namespace MyApp.QueryBuilder
             }
         }
 
-        private string ResolveMemberChain(MemberExpression me, bool forSelect)
+        private SqlResult ResolveMemberChain(MemberExpression me, bool forSelect)
         {
             var chain = GetChain(me);
             string currentPath = string.Empty;
@@ -281,11 +297,10 @@ namespace MyApp.QueryBuilder
                 {
                     currentPath = AppendPath(currentPath, prop.Name);
                     var alias = EnsureJoin(parentAlias, currentPath, prop);
-                    _lastAlias = alias;
-                    return $"{alias}.Id";
+                    return new SqlResult { Sql = $"{alias}.Id", Alias = alias };
                 }
 
-                return $"{parentAlias}.{prop.Name}";
+                return new SqlResult { Sql = $"{parentAlias}.{prop.Name}", Alias = parentAlias };
             }
 
             throw new NotSupportedException("Cannot resolve member chain for SQL.");

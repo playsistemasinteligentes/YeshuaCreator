@@ -1644,903 +1644,1070 @@ return Results.Problem(ex.Message);
 
 app.MapGet("/getMetaDataEspecialidade", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Especialidade",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "descricao", label = "Descrição da Especialidade", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "descricao", label = "Descrição da Especialidade",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/Especialidade/PostEspecialidade",
-                 read = "/Especialidade/ReadEspecialidade",
-                 update = "/Especialidade/PutEspecialidade",
-                 delete = "/Especialidade/DeleteEspecialidade"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Especialidade",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "descricao", label = "Descrição da Especialidade", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "descricao", label = "Descrição da Especialidade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "descricao", label = "Descrição da Especialidade", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/Especialidade/PostEspecialidade",
+            read = "/Especialidade/ReadEspecialidade",
+            update = "/Especialidade/PutEspecialidade",
+            delete = "/Especialidade/DeleteEspecialidade"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataProfissional", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Profissional",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataEspecialidade", fksDisplayFields =  new string[]{ "Descricao" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome do Profissional",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "especialidadeid", label = "Especialidade do Profissional",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataEspecialidade", fksDisplayFields =  new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "telefone", label = "Telefone do Profissional",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Profissional",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "nome", label = "Nome do Profissional", type = "string" },
+                new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int" },
+                new { id = "telefone", label = "Telefone do Profissional", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "Descricao" } },
+                new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "nome", label = "Nome do Profissional", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "especialidadeid", label = "Especialidade do Profissional", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" } },
+            new { id = "telefone", label = "Telefone do Profissional", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
-                 create = "/Profissional/PostProfissional",
-                 read = "/Profissional/ReadProfissional",
-                 update = "/Profissional/PutProfissional",
-                 delete = "/Profissional/DeleteProfissional"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/Profissional/PostProfissional",
+            read = "/Profissional/ReadProfissional",
+            update = "/Profissional/PutProfissional",
+            delete = "/Profissional/DeleteProfissional"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "DisponibilidadeAgenda",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "profissionalid", label = "Profissional", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "datahora", label = "Horário Disponível", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "profissionalid", label = "Profissional",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "datahora", label = "Horário Disponível",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "DisponibilidadeAgenda",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "profissionalid", label = "Profissional", type = "int" },
+                new { id = "datahora", label = "Horário Disponível", type = "DateTime" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "Nome" } },
+                new { id = "datahora", label = "Horário Disponível", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                profissionalid = "/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "profissionalid", label = "Profissional", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "datahora", label = "Horário Disponível", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  profissionalid = "/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId",
-                 create = "/DisponibilidadeAgenda/PostDisponibilidadeAgenda",
-                 read = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
-                 update = "/DisponibilidadeAgenda/PutDisponibilidadeAgenda",
-                 delete = "/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/DisponibilidadeAgenda/PostDisponibilidadeAgenda",
+            read = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
+            update = "/DisponibilidadeAgenda/PutDisponibilidadeAgenda",
+            delete = "/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataGrupoServico", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "GrupoServico",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "descricao", label = "Descrição do Grupo de Serviços",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/GrupoServico/PostGrupoServico",
-                 read = "/GrupoServico/ReadGrupoServico",
-                 update = "/GrupoServico/PutGrupoServico",
-                 delete = "/GrupoServico/DeleteGrupoServico"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "GrupoServico",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "descricao", label = "Descrição do Grupo de Serviços", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/GrupoServico/PostGrupoServico",
+            read = "/GrupoServico/ReadGrupoServico",
+            update = "/GrupoServico/PutGrupoServico",
+            delete = "/GrupoServico/DeleteGrupoServico"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataServico", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Servico",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataGrupoServico", fksDisplayFields =  new string[]{ "Descricao" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "gruposervicoid", label = "Grupo de Serviço",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataGrupoServico", fksDisplayFields =  new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome do Serviço",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "valor", label = "Valor do Serviço",displaygroup = "Geral", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Servico",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int" },
+                new { id = "nome", label = "Nome do Serviço", type = "string" },
+                new { id = "valor", label = "Valor do Serviço", type = "Decimal" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "Descricao" } },
+                new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                gruposervicoid = "/Servico/ServicoReadFKGrupoServicoId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "gruposervicoid", label = "Grupo de Serviço", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" } },
+            new { id = "nome", label = "Nome do Serviço", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "valor", label = "Valor do Serviço", displaygroup = "Geral", type = "Decimal", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  gruposervicoid = "/Servico/ServicoReadFKGrupoServicoId",
-                 create = "/Servico/PostServico",
-                 read = "/Servico/ReadServico",
-                 update = "/Servico/PutServico",
-                 delete = "/Servico/DeleteServico"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/Servico/PostServico",
+            read = "/Servico/ReadServico",
+            update = "/Servico/PutServico",
+            delete = "/Servico/DeleteServico"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataPaciente", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Paciente",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "genero", label = "Gênero", type = "enum", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 1,display = "Mascolino"},
-new {value = 2,display = "Feminino"},
-new {value = 3,display = "Outros"},
-}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome do Paciente",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "telefone", label = "Telefone de Contato",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "datanascimento", label = "Data Nascimento",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "genero", label = "Gênero",displaygroup = "Geral", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 1,display = "Mascolino"},
-new {value = 2,display = "Feminino"},
-new {value = 3,display = "Outros"},
-}
-  },
- new { id = "escolaridade", label = "Escolaridade",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "profissao", label = "Profissão",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "endereco", label = "Endereço",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nomeresponsavel", label = "Nome Responsavel",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "telefoneresponsavel", label = "Telefone Responsavel",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "observacao", label = "Observacao",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/Paciente/PostPaciente",
-                 read = "/Paciente/ReadPaciente",
-                 update = "/Paciente/PutPaciente",
-                 delete = "/Paciente/DeletePaciente"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Paciente",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "nome", label = "Nome do Paciente", type = "string" },
+                new { id = "telefone", label = "Telefone de Contato", type = "string" },
+                new { id = "datanascimento", label = "Data Nascimento", type = "DateTime" },
+                new { id = "genero", label = "Gênero", type = "enum" },
+                new { id = "escolaridade", label = "Escolaridade", type = "string" },
+                new { id = "profissao", label = "Profissão", type = "string" },
+                new { id = "endereco", label = "Endereço", type = "string" },
+                new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string" },
+                new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string" },
+                new { id = "observacao", label = "Observacao", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "genero", label = "Gênero", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "escolaridade", label = "Escolaridade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "profissao", label = "Profissão", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "endereco", label = "Endereço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "observacao", label = "Observacao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "nome", label = "Nome do Paciente", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "telefone", label = "Telefone de Contato", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "datanascimento", label = "Data Nascimento", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "genero", label = "Gênero", displaygroup = "Geral", type = "enum", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "escolaridade", label = "Escolaridade", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "profissao", label = "Profissão", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "endereco", label = "Endereço", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "nomeresponsavel", label = "Nome Responsavel", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "telefoneresponsavel", label = "Telefone Responsavel", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "observacao", label = "Observacao", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/Paciente/PostPaciente",
+            read = "/Paciente/ReadPaciente",
+            update = "/Paciente/PutPaciente",
+            delete = "/Paciente/DeletePaciente"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "MovimentacaoFinanceira",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "pacienteid", label = "Paciente", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "servicoid", label = "Serviço", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "valor", label = "Valor da Transação", type = "Decimal", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 1,display = "Recebimento"},
-new {value = 2,display = "Pagamento"},
-}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "pacienteid", label = "Paciente",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "servicoid", label = "Serviço",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "valor", label = "Valor da Transação",displaygroup = "Geral", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "tipomovimentacao", label = "Tipo de Movimentação",displaygroup = "Geral", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 1,display = "Recebimento"},
-new {value = 2,display = "Pagamento"},
-}
-  },
- new { id = "datamovimentacao", label = "Data da Movimentação",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "saldoatual", label = "Saldo Atual",displaygroup = "Geral", type = "Decimal", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "MovimentacaoFinanceira",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "pacienteid", label = "Paciente", type = "int" },
+                new { id = "servicoid", label = "Serviço", type = "int" },
+                new { id = "valor", label = "Valor da Transação", type = "Decimal" },
+                new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum" },
+                new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime" },
+                new { id = "saldoatual", label = "Saldo Atual", type = "Decimal" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "Nome" } },
+                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "Nome" } },
+                new { id = "valor", label = "Valor da Transação", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                pacienteid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId",
+                servicoid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "pacienteid", label = "Paciente", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "servicoid", label = "Serviço", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "valor", label = "Valor da Transação", displaygroup = "Geral", type = "Decimal", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "tipomovimentacao", label = "Tipo de Movimentação", displaygroup = "Geral", type = "enum", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "datamovimentacao", label = "Data da Movimentação", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "saldoatual", label = "Saldo Atual", displaygroup = "Geral", type = "Decimal", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  pacienteid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId",
                  servicoid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId",
-                 create = "/MovimentacaoFinanceira/PostMovimentacaoFinanceira",
-                 read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
-                 update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
-                 delete = "/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/MovimentacaoFinanceira/PostMovimentacaoFinanceira",
+            read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
+            update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
+            delete = "/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Sesoes",
-searchFields = new[]
-{
- new { id = "pacienteid", label = "Paciente", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "status", label = "Status do Agendamento", type = "enum", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 0,display = "Em Aberto"},
-new {value = 1,display = "Compareceu"},
-new {value = 2,display = "Não Compareceu"},
-new {value = 3,display = "Remarcado pelo proficional"},
-new {value = 4,display = "Remarcado pelo paciente"},
-}
- },
- new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true ,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "pacienteid", label = "Paciente",displaygroup = "Agenda", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataPaciente", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "datainicio", label = "Data Inicio",displaygroup = "Agenda", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "datafim", label = "Data Fim",displaygroup = "Agenda", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "status", label = "Status do Agendamento",displaygroup = "Agenda", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 0,display = "Em Aberto"},
-new {value = 1,display = "Compareceu"},
-new {value = 2,display = "Não Compareceu"},
-new {value = 3,display = "Remarcado pelo proficional"},
-new {value = 4,display = "Remarcado pelo paciente"},
-}
-  },
- new { id = "movimentacaofinanceiraid", label = "Financeiro",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataMovimentacaoFinanceira", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "prontuario", label = "Prontuario",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "queixaprincipal", label = "Queixa Principal",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "registrodocumental", label = "Registro Documental",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "sintomasrelatados", label = "Sintomas relatados",displaygroup = "Atendimento", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão",displaygroup = "Atendimento", type = "enum", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[]{
-new {value = 1,display = "Menteve"},
-new {value = 2,display = "Melhora"},
-new {value = 3,display = "Piora"},
-new {value = 4,display = "Eventos novos"},
-}
-  },
- new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "estadoemocionalgeral", label = "Estado emocional geral",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "discursopensamentos", label = "Discurso e pensamentos",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "usomedicacao", label = "Uso de Medicação",displaygroup = "Observações Clínicas", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "tecnicasutilizadas", label = "Técnicas utilizadas",displaygroup = "Estratégias", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas",displaygroup = "Estratégias", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas",displaygroup = "Estratégias", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica",displaygroup = "Diagnóstico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais",displaygroup = "Plano Terapêutico", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas",displaygroup = "Anotações Extras", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico",displaygroup = "Anotações Extras", type = "memo", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "id", label = "ID",displaygroup = "IDs", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "servicoid", label = "Serviço",displaygroup = "IDs", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataServico", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "profissionalid", label = "Profissional",displaygroup = "IDs", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDataProfissional", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Sesoes",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "datainicio", label = "Data Inicio", type = "DateTime" },
+                new { id = "nome", label = "Nome do Paciente", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+            quickSearches = new[]
+            {
+                new { id = "Hoje", label = "Hoje", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
+                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
+                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
+                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
+                new { id = "Mes", label = "Mes", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
+            },
+            fkEndpoints = new
+            {
+                pacienteid = "/Sesoes/SesoesReadFKPacienteId",
+                movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
+                servicoid = "/Sesoes/SesoesReadFKServicoId",
+                profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "pacienteid", label = "Paciente", displaygroup = "Agenda", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "datainicio", label = "Data Inicio", displaygroup = "Agenda", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "datafim", label = "Data Fim", displaygroup = "Agenda", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "status", label = "Status do Agendamento", displaygroup = "Agenda", type = "enum", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "movimentacaofinanceiraid", label = "Financeiro", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  } },
+            new { id = "prontuario", label = "Prontuario", displaygroup = "Atendimento", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "queixaprincipal", label = "Queixa Principal", displaygroup = "Atendimento", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "registrodocumental", label = "Registro Documental", displaygroup = "Atendimento", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "sintomasrelatados", label = "Sintomas relatados", displaygroup = "Atendimento", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", displaygroup = "Atendimento", type = "enum", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", displaygroup = "Observações Clínicas", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "estadoemocionalgeral", label = "Estado emocional geral", displaygroup = "Observações Clínicas", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "discursopensamentos", label = "Discurso e pensamentos", displaygroup = "Observações Clínicas", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "usomedicacao", label = "Uso de Medicação", displaygroup = "Observações Clínicas", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", displaygroup = "Estratégias", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", displaygroup = "Estratégias", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", displaygroup = "Estratégias", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", displaygroup = "Diagnóstico", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", displaygroup = "Plano Terapêutico", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", displaygroup = "Plano Terapêutico", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", displaygroup = "Plano Terapêutico", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", displaygroup = "Plano Terapêutico", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", displaygroup = "Anotações Extras", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", displaygroup = "Anotações Extras", type = "memo", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "id", label = "ID", displaygroup = "IDs", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "servicoid", label = "Serviço", displaygroup = "IDs", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "profissionalid", label = "Profissional", displaygroup = "IDs", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" } },
+        },
+        endpoints = new
+        {
                  pacienteid = "/Sesoes/SesoesReadFKPacienteId",
                  movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
                  servicoid = "/Sesoes/SesoesReadFKServicoId",
                  profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
-                 create = "/Sesoes/PostSesoes",
-                 read = "/Sesoes/ReadSesoes",
-                 update = "/Sesoes/PutSesoes",
-                 delete = "/Sesoes/DeleteSesoes"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/Sesoes/PostSesoes",
+            read = "/Sesoes/ReadSesoes",
+            update = "/Sesoes/PutSesoes",
+            delete = "/Sesoes/DeleteSesoes"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDataClinica", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "Clinica",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome da Clínica",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "endereco", label = "Endereço da Clínica",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "telefone", label = "Telefone de Contato",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/Clinica/PostClinica",
-                 read = "/Clinica/ReadClinica",
-                 update = "/Clinica/PutClinica",
-                 delete = "/Clinica/DeleteClinica"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Clinica",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "nome", label = "Nome da Clínica", type = "string" },
+                new { id = "endereco", label = "Endereço da Clínica", type = "string" },
+                new { id = "telefone", label = "Telefone de Contato", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "nome", label = "Nome da Clínica", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "endereco", label = "Endereço da Clínica", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "telefone", label = "Telefone de Contato", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/Clinica/PostClinica",
+            read = "/Clinica/ReadClinica",
+            update = "/Clinica/PutClinica",
+            delete = "/Clinica/DeleteClinica"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayTenant", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yTenant",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "userid", label = "User ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "cnpjcpf", label = "Cnpj/Cpf",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "userid", label = "User ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/yTenant/PostyTenant",
-                 read = "/yTenant/ReadyTenant",
-                 update = "/yTenant/PutyTenant",
-                 delete = "/yTenant/DeleteyTenant"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yTenant",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string" },
+                new { id = "nome", label = "Nome", type = "string" },
+                new { id = "userid", label = "User ID", type = "int" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "nome", label = "Nome", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "userid", label = "User ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "cnpjcpf", label = "Cnpj/Cpf", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "nome", label = "Nome", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "userid", label = "User ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/yTenant/PostyTenant",
+            read = "/yTenant/ReadyTenant",
+            update = "/yTenant/PutyTenant",
+            delete = "/yTenant/DeleteyTenant"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayUser", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yUser",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "nome", label = "Nome Usuario", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "email", label = "Email", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "senha", label = "Senha", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "nome", label = "Nome Usuario",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "email", label = "Email",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "senha", label = "Senha",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/yUser/PostyUser",
-                 read = "/yUser/ReadyUser",
-                 update = "/yUser/PutyUser",
-                 delete = "/yUser/DeleteyUser"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yUser",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "nome", label = "Nome Usuario", type = "string" },
+                new { id = "email", label = "Email", type = "string" },
+                new { id = "senha", label = "Senha", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "nome", label = "Nome Usuario", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "email", label = "Email", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "senha", label = "Senha", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "nome", label = "Nome Usuario", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "email", label = "Email", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "senha", label = "Senha", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/yUser/PostyUser",
+            read = "/yUser/ReadyUser",
+            update = "/yUser/PutyUser",
+            delete = "/yUser/DeleteyUser"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayConfigArcteture", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yConfigArcteture",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "audittrackeractived", label = "AuditTrackerActived",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "auditcrudactived", label = "AuditCRUDActived",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/yConfigArcteture/PostyConfigArcteture",
-                 read = "/yConfigArcteture/ReadyConfigArcteture",
-                 update = "/yConfigArcteture/PutyConfigArcteture",
-                 delete = "/yConfigArcteture/DeleteyConfigArcteture"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yConfigArcteture",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int" },
+                new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "audittrackeractived", label = "AuditTrackerActived", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "auditcrudactived", label = "AuditCRUDActived", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/yConfigArcteture/PostyConfigArcteture",
+            read = "/yConfigArcteture/ReadyConfigArcteture",
+            update = "/yConfigArcteture/PutyConfigArcteture",
+            delete = "/yConfigArcteture/DeleteyConfigArcteture"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayConfigNotification", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yConfigNotification",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "tenantid", label = "TenantID", type = "int", isFk = true ,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "emailport", label = "EmailPort", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "emailusername", label = "EmailUserName", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "tenantid", label = "TenantID",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "emailsmtpclient", label = "EmailSmtpClient",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "emailport", label = "EmailPort",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "emailusername", label = "EmailUserName",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "emailpassword", label = "EmailPassword",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yConfigNotification",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "tenantid", label = "TenantID", type = "int" },
+                new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string" },
+                new { id = "emailport", label = "EmailPort", type = "int" },
+                new { id = "emailusername", label = "EmailUserName", type = "string" },
+                new { id = "emailpassword", label = "EmailPassword", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "Nome" } },
+                new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "emailport", label = "EmailPort", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "emailusername", label = "EmailUserName", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "emailpassword", label = "EmailPassword", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                tenantid = "/yConfigNotification/yConfigNotificationReadFKTenantID",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "tenantid", label = "TenantID", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "emailsmtpclient", label = "EmailSmtpClient", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "emailport", label = "EmailPort", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "emailusername", label = "EmailUserName", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "emailpassword", label = "EmailPassword", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  tenantid = "/yConfigNotification/yConfigNotificationReadFKTenantID",
-                 create = "/yConfigNotification/PostyConfigNotification",
-                 read = "/yConfigNotification/ReadyConfigNotification",
-                 update = "/yConfigNotification/PutyConfigNotification",
-                 delete = "/yConfigNotification/DeleteyConfigNotification"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/yConfigNotification/PostyConfigNotification",
+            read = "/yConfigNotification/ReadyConfigNotification",
+            update = "/yConfigNotification/PutyConfigNotification",
+            delete = "/yConfigNotification/DeleteyConfigNotification"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayPerfil", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yPerfil",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "description", label = "Descrição", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "description", label = "Descrição",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/yPerfil/PostyPerfil",
-                 read = "/yPerfil/ReadyPerfil",
-                 update = "/yPerfil/PutyPerfil",
-                 delete = "/yPerfil/DeleteyPerfil"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yPerfil",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "description", label = "Descrição", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "description", label = "Descrição", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/yPerfil/PostyPerfil",
+            read = "/yPerfil/ReadyPerfil",
+            update = "/yPerfil/PutyPerfil",
+            delete = "/yPerfil/DeleteyPerfil"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayModule", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yModule",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "description", label = "Descrição", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "description", label = "Descrição",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/yModule/PostyModule",
-                 read = "/yModule/ReadyModule",
-                 update = "/yModule/PutyModule",
-                 delete = "/yModule/DeleteyModule"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yModule",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string" },
+                new { id = "description", label = "Descrição", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "description", label = "Descrição", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/yModule/PostyModule",
+            read = "/yModule/ReadyModule",
+            update = "/yModule/PutyModule",
+            delete = "/yModule/DeleteyModule"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayTenantModule", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yTenantModule",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "moduleid", label = "ID Modulo", type = "string", isFk = true ,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "tenantid", label = "TenantID", type = "int", isFk = true ,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "moduleid", label = "ID Modulo",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "tenantid", label = "TenantID",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayTenant", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yTenantModule",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "moduleid", label = "ID Modulo", type = "string" },
+                new { id = "tenantid", label = "TenantID", type = "int" },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "moduleid", label = "ID Modulo", type = "string", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  } },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "Nome" } },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                moduleid = "/yTenantModule/yTenantModuleReadFKModuleId",
+                tenantid = "/yTenantModule/yTenantModuleReadFKTenantID",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "moduleid", label = "ID Modulo", displaygroup = "Geral", type = "string", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  } },
+            new { id = "tenantid", label = "TenantID", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "validuntil", label = "Valido ate", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  moduleid = "/yTenantModule/yTenantModuleReadFKModuleId",
                  tenantid = "/yTenantModule/yTenantModuleReadFKTenantID",
-                 create = "/yTenantModule/PostyTenantModule",
-                 read = "/yTenantModule/ReadyTenantModule",
-                 update = "/yTenantModule/PutyTenantModule",
-                 delete = "/yTenantModule/DeleteyTenantModule"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/yTenantModule/PostyTenantModule",
+            read = "/yTenantModule/ReadyTenantModule",
+            update = "/yTenantModule/PutyTenantModule",
+            delete = "/yTenantModule/DeleteyTenantModule"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayUserModule", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yUserModule",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "int", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "moduleid", label = "ID Modulo", type = "string", isFk = true ,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "userid", label = "User ID", type = "int", isFk = true ,endPontGetMetadata="/getMetaDatayUser", fksDisplayFields =  new string[]{ "Nome" }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "int", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "moduleid", label = "ID Modulo",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayModule", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "userid", label = "User ID",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayUser", fksDisplayFields =  new string[]{ "nome" }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yUserModule",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int" },
+                new { id = "moduleid", label = "ID Modulo", type = "string" },
+                new { id = "userid", label = "User ID", type = "int" },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "moduleid", label = "ID Modulo", type = "string", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  } },
+                new { id = "userid", label = "User ID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "Nome" } },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                moduleid = "/yUserModule/yUserModuleReadFKModuleId",
+                userid = "/yUserModule/yUserModuleReadFKUserId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "int", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "moduleid", label = "ID Modulo", displaygroup = "Geral", type = "string", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  } },
+            new { id = "userid", label = "User ID", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" } },
+            new { id = "validuntil", label = "Valido ate", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  moduleid = "/yUserModule/yUserModuleReadFKModuleId",
                  userid = "/yUserModule/yUserModuleReadFKUserId",
-                 create = "/yUserModule/PostyUserModule",
-                 read = "/yUserModule/ReadyUserModule",
-                 update = "/yUserModule/PutyUserModule",
-                 delete = "/yUserModule/DeleteyUserModule"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/yUserModule/PostyUserModule",
+            read = "/yUserModule/ReadyUserModule",
+            update = "/yUserModule/PutyUserModule",
+            delete = "/yUserModule/DeleteyUserModule"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayGrant", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yGrant",
-searchFields = new[]
-{
- new { id = "id", label = "ID", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "description", label = "Descrição", type = "string", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "id", label = "ID",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "description", label = "Descrição",displaygroup = "Geral", type = "string", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
-                 create = "/yGrant/PostyGrant",
-                 read = "/yGrant/ReadyGrant",
-                 update = "/yGrant/PutyGrant",
-                 delete = "/yGrant/DeleteyGrant"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yGrant",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string" },
+                new { id = "description", label = "Descrição", type = "string" },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "description", label = "Descrição", displaygroup = "Geral", type = "string", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
+            create = "/yGrant/PostyGrant",
+            read = "/yGrant/ReadyGrant",
+            update = "/yGrant/PutyGrant",
+            delete = "/yGrant/DeleteyGrant"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayPerfilGrant", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yPerfilGrant",
-searchFields = new[]
-{
- new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true ,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "grantid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "grant", label = "Permite acessar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "create", label = "Permite Criar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "read", label = "Permite  Ler", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "perfilid", label = "ID Perfil",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "grantid", label = "ID Permição",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "grant", label = "Permite acessar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "create", label = "Permite Criar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "read", label = "Permite  Ler",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "update", label = "Permite Atualizar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "delete", label = "Permite Deletar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yPerfilGrant",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "perfilid", label = "ID Perfil", type = "int" },
+                new { id = "grantid", label = "ID Permição", type = "string" },
+                new { id = "grant", label = "Permite acessar", type = "bool" },
+                new { id = "create", label = "Permite Criar", type = "bool" },
+                new { id = "read", label = "Permite  Ler", type = "bool" },
+                new { id = "update", label = "Permite Atualizar", type = "bool" },
+                new { id = "delete", label = "Permite Deletar", type = "bool" },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime" },
+            },
+            filterFields = new[]
+            {
+                new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  } },
+                new { id = "grantid", label = "ID Permição", type = "string", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  } },
+                new { id = "grant", label = "Permite acessar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "create", label = "Permite Criar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "read", label = "Permite  Ler", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "update", label = "Permite Atualizar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "delete", label = "Permite Deletar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                perfilid = "/yPerfilGrant/yPerfilGrantReadFKPerfilId",
+                grantid = "/yPerfilGrant/yPerfilGrantReadFKGrantId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "perfilid", label = "ID Perfil", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  } },
+            new { id = "grantid", label = "ID Permição", displaygroup = "Geral", type = "string", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  } },
+            new { id = "grant", label = "Permite acessar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "create", label = "Permite Criar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "read", label = "Permite  Ler", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "update", label = "Permite Atualizar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "delete", label = "Permite Deletar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "validuntil", label = "Valido ate", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  perfilid = "/yPerfilGrant/yPerfilGrantReadFKPerfilId",
                  grantid = "/yPerfilGrant/yPerfilGrantReadFKGrantId",
-                 create = "/yPerfilGrant/PostyPerfilGrant",
-                 read = "/yPerfilGrant/ReadyPerfilGrant",
-                 update = "/yPerfilGrant/PutyPerfilGrant",
-                 delete = "/yPerfilGrant/DeleteyPerfilGrant"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/yPerfilGrant/PostyPerfilGrant",
+            read = "/yPerfilGrant/ReadyPerfilGrant",
+            update = "/yPerfilGrant/PutyPerfilGrant",
+            delete = "/yPerfilGrant/DeleteyPerfilGrant"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/getMetaDatayUserGrant", (HttpContext context) =>
 {
-var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-if (string.IsNullOrEmpty(userId))
-return Results.Unauthorized();
-var metadatacrud = new
-{
-entityDescription = "yUserGrant",
-searchFields = new[]
-{
- new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true ,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "grantid", label = "ID Permição", type = "string", isFk = true ,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "grant", label = "Permite acessar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "create", label = "Permite Criar", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
- new { id = "read", label = "Permite  Ler", type = "bool", isFk = false ,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
- },
-},
-formFields = new[]
-{
- new { id = "perfilid", label = "ID Perfil",displaygroup = "Geral", type = "int", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayPerfil", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "grantid", label = "ID Permição",displaygroup = "Geral", type = "string", required = "False" , isFk = true,endPontGetMetadata="/getMetaDatayGrant", fksDisplayFields =  new string[]{  }, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "grant", label = "Permite acessar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "create", label = "Permite Criar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "read", label = "Permite  Ler",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "update", label = "Permite Atualizar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "delete", label = "Permite Deletar",displaygroup = "Geral", type = "bool", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
- new { id = "validuntil", label = "Valido ate",displaygroup = "Geral", type = "DateTime", required = "False" , isFk = false,endPontGetMetadata="", fksDisplayFields =  new string[]{}, options = new[] { new { value = 0, display = "" }}
-  },
-},
-             endpoints = new
-             {
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "yUserGrant",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+            resultFields = new[]
+            {
+                new { id = "perfilid", label = "ID Perfil", type = "int" },
+                new { id = "grantid", label = "ID Permição", type = "string" },
+                new { id = "grant", label = "Permite acessar", type = "bool" },
+                new { id = "create", label = "Permite Criar", type = "bool" },
+                new { id = "read", label = "Permite  Ler", type = "bool" },
+                new { id = "update", label = "Permite Atualizar", type = "bool" },
+                new { id = "delete", label = "Permite Deletar", type = "bool" },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime" },
+            },
+            filterFields = new[]
+            {
+                new { id = "perfilid", label = "ID Perfil", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  } },
+                new { id = "grantid", label = "ID Permição", type = "string", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  } },
+                new { id = "grant", label = "Permite acessar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "create", label = "Permite Criar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "read", label = "Permite  Ler", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "update", label = "Permite Atualizar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "delete", label = "Permite Deletar", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            },
+             quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                perfilid = "/yUserGrant/yUserGrantReadFKPerfilId",
+                grantid = "/yUserGrant/yUserGrantReadFKGrantId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "perfilid", label = "ID Perfil", displaygroup = "Geral", type = "int", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  } },
+            new { id = "grantid", label = "ID Permição", displaygroup = "Geral", type = "string", required = false, isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  } },
+            new { id = "grant", label = "Permite acessar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "create", label = "Permite Criar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "read", label = "Permite  Ler", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "update", label = "Permite Atualizar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "delete", label = "Permite Deletar", displaygroup = "Geral", type = "bool", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+            new { id = "validuntil", label = "Valido ate", displaygroup = "Geral", type = "DateTime", required = false, isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+        },
+        endpoints = new
+        {
                  perfilid = "/yUserGrant/yUserGrantReadFKPerfilId",
                  grantid = "/yUserGrant/yUserGrantReadFKGrantId",
-                 create = "/yUserGrant/PostyUserGrant",
-                 read = "/yUserGrant/ReadyUserGrant",
-                 update = "/yUserGrant/PutyUserGrant",
-                 delete = "/yUserGrant/DeleteyUserGrant"
-             }
-         };
-         return Results.Ok(metadatacrud);
-     }).RequireAuthorization();
+            create = "/yUserGrant/PostyUserGrant",
+            read = "/yUserGrant/ReadyUserGrant",
+            update = "/yUserGrant/PutyUserGrant",
+            delete = "/yUserGrant/DeleteyUserGrant"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 #region ServicesMethod
 app.MapPost("/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
 {

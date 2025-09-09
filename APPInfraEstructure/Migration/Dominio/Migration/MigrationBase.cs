@@ -22,6 +22,16 @@ namespace Dominio.Migration
         public int ID { get; set; }
         public string MigrationName { get; set; }
 
+        public Column GetColumn(string entityName, string columnName)
+        {
+            var column = Entitys
+                   .FirstOrDefault(e => e.EntityName.Equals(entityName, StringComparison.OrdinalIgnoreCase))?
+                   .AddColumns
+                   .FirstOrDefault(c => c.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+
+            return column;
+        }
+
 
         public MigrationBase AlterEntity(string entityName)
         {
