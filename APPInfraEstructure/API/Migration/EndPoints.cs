@@ -756,6 +756,24 @@ app.MapPost("/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Receiver
 .RequireAuthorization();
 
 
+app.MapPost("/Paciente/ReadPacienteGeral", async ([FromServices] Command.Receivers.Read.PacienteReadQueryGeralReceiver receiver, [FromBody] Command.Read.PacienteGeralCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/Paciente/ReadPacienteMes", async ([FromServices] Command.Receivers.Read.PacienteReadQueryMesReceiver receiver, [FromBody] Command.Read.PacienteMesCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/Sesoes/ReadSesoesGeral", async ([FromServices] Command.Receivers.Read.SesoesReadQueryGeralReceiver receiver, [FromBody] Command.Read.SesoesGeralCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -1654,6 +1672,7 @@ app.MapGet("/getMetaDataEspecialidade", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/Especialidade/ReadEspecialidade",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -1697,6 +1716,7 @@ app.MapGet("/getMetaDataProfissional", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/Profissional/ReadProfissional",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -1748,6 +1768,7 @@ app.MapGet("/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -1796,6 +1817,7 @@ app.MapGet("/getMetaDataGrupoServico", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/GrupoServico/ReadGrupoServico",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -1839,6 +1861,7 @@ app.MapGet("/getMetaDataServico", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/Servico/ReadServico",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -1890,36 +1913,21 @@ app.MapGet("/getMetaDataPaciente", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/Paciente/ReadPacienteGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
                 new { id = "nome", label = "Nome do Paciente", type = "string" },
-                new { id = "telefone", label = "Telefone de Contato", type = "string" },
-                new { id = "datanascimento", label = "Data Nascimento", type = "DateTime" },
-                new { id = "genero", label = "Gênero", type = "enum" },
-                new { id = "escolaridade", label = "Escolaridade", type = "string" },
-                new { id = "profissao", label = "Profissão", type = "string" },
-                new { id = "endereco", label = "Endereço", type = "string" },
-                new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string" },
-                new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string" },
-                new { id = "observacao", label = "Observacao", type = "string" },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
                 new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "genero", label = "Gênero", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "escolaridade", label = "Escolaridade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "profissao", label = "Profissão", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "endereco", label = "Endereço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
-                new { id = "observacao", label = "Observacao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
             },
-             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            quickSearches = new[]
+            {
+                new { id = "Mes", label = "Mes", icon = "calendar-day", endpoint = "/Paciente/ReadPacienteMes" },
+            },
+            fkEndpoints = new
             {
             }
             },
@@ -1960,6 +1968,7 @@ app.MapGet("/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2022,6 +2031,7 @@ app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/Sesoes/ReadSesoesGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2034,11 +2044,9 @@ app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
             },
             quickSearches = new[]
             {
-                new { id = "Hoje", label = "Hoje", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
-                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
-                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
-                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
-                new { id = "Mes", label = "Mes", icon = "calendar-day", endpoint = $"/Sesoes/ChamadosHoje" },
+                new { id = "Hoje", label = "Hoje", icon = "calendar-day", endpoint = "/Sesoes/ReadSesoesHoje" },
+                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = "/Sesoes/ReadSesoesSemana" },
+                new { id = "Mes", label = "Mes", icon = "calendar-day", endpoint = "/Sesoes/ReadSesoesMes" },
             },
             fkEndpoints = new
             {
@@ -2105,6 +2113,7 @@ app.MapGet("/getMetaDataClinica", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/Clinica/ReadClinica",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2154,6 +2163,7 @@ app.MapGet("/getMetaDatayTenant", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yTenant/ReadyTenant",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2203,6 +2213,7 @@ app.MapGet("/getMetaDatayUser", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yUser/ReadyUser",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2252,6 +2263,7 @@ app.MapGet("/getMetaDatayConfigArcteture", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yConfigArcteture/ReadyConfigArcteture",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2298,6 +2310,7 @@ app.MapGet("/getMetaDatayConfigNotification", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yConfigNotification/ReadyConfigNotification",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2355,6 +2368,7 @@ app.MapGet("/getMetaDatayPerfil", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yPerfil/ReadyPerfil",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2398,6 +2412,7 @@ app.MapGet("/getMetaDatayModule", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yModule/ReadyModule",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "string" },
@@ -2441,6 +2456,7 @@ app.MapGet("/getMetaDatayTenantModule", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yTenantModule/ReadyTenantModule",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2494,6 +2510,7 @@ app.MapGet("/getMetaDatayUserModule", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yUserModule/ReadyUserModule",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int" },
@@ -2547,6 +2564,7 @@ app.MapGet("/getMetaDatayGrant", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yGrant/ReadyGrant",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "string" },
@@ -2590,6 +2608,7 @@ app.MapGet("/getMetaDatayPerfilGrant", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yPerfilGrant/ReadyPerfilGrant",
             resultFields = new[]
             {
                 new { id = "perfilid", label = "ID Perfil", type = "int" },
@@ -2655,6 +2674,7 @@ app.MapGet("/getMetaDatayUserGrant", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
+                endpoint = "/yUserGrant/ReadyUserGrant",
             resultFields = new[]
             {
                 new { id = "perfilid", label = "ID Perfil", type = "int" },

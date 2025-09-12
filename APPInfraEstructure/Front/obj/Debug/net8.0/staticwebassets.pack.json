@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\spa\\index.html"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\ServicesGlobal\\apiFetch.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\ServicesGlobal\\apiFetch.js"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\Test\\runTestSteps.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\Test\\runTestSteps.js"
     },

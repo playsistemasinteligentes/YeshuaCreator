@@ -1,9 +1,12 @@
 ﻿using Dominio.Migration;
+using Dominio.Schemas.CQRS.Abstraction;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using MyApp.QueryBuilder;
+using System;
 using System.Collections.Specialized;
 using System.Data.Common;
+using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Text;
@@ -274,6 +277,10 @@ namespace Dominio.Schemas.CQRS
                                     break;
 
                                 case TypeCode.DateTime:
+                                    //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) parametersDict[\"{param}\"] = Command.{param}.Value;");
+                                    //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) whereClauses.Add($\"{param} = @{param}\");");
+                                    break;
+
                                 case TypeCode.Int32:
                                 case TypeCode.Double:
                                 case TypeCode.Decimal:
@@ -299,6 +306,16 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("");
                         // Monta WHERE final
                         sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
+
+                        //// Paginação
+                        //sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
+                        //sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
+                        //sb.AppendLine("            int offset = (page - 1) * pageSize;");
+                        //sb.AppendLine("            dict[\"Offset\"] = offset;");
+                        //sb.AppendLine("            dict[\"PageSize\"] = pageSize;");
+                        //sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
+
+
                         sb.AppendLine("            this.Parameters = parameters;");
                         sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
                         sb.AppendLine("        }");
@@ -328,13 +345,21 @@ namespace Dominio.Schemas.CQRS
                                 sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{param}}}%\";");
                                 sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} LIKE @{param}\");");
                             }
+                            else if (Type.GetTypeCode(cond.FieldType) == TypeCode.DateTime)
+                            {
+                                //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) parametersDict[\"{param}\"] = Command.{param}.Value;");
+                                //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) whereClauses.Add($\"{param} = @{param}\");");
+
+                            }
                             else
                             {
                                 sb.AppendLine($"                dict[\"{param}\"] = Command.{param};");
                                 sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
                             }
+
                             sb.AppendLine("            }");
                         }
+
 
                         sb.AppendLine("");
                         sb.AppendLine("            dict[\"Deleted\"] = 0;");
@@ -347,6 +372,15 @@ namespace Dominio.Schemas.CQRS
                         }
                         // Monta WHERE final
                         sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
+
+                        // Paginação
+                        sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
+                        sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
+                        sb.AppendLine("            int offset = (page - 1) * pageSize;");
+                        sb.AppendLine("            dict[\"Offset\"] = offset;");
+                        sb.AppendLine("            dict[\"PageSize\"] = pageSize;");
+                        sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
+
                         sb.AppendLine("            this.Parameters = parameters;");
                         sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
                         sb.AppendLine("        }");
@@ -386,11 +420,13 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"if (Command.{colunm.Name}.HasValue) parametersDict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
                     sb.AppendLine($"if (Command.{colunm.Name}.HasValue) whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
                 }
+                else if (colunm.getCsharpType() == "datetime")
+                {
+                    //sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name} > (DateTime)SqlDateTime.MinValue) parametersDict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
+                    //sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name} > (DateTime)SqlDateTime.MinValue) whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
+                }
             }
-
-
         }
-
         protected override StringBuilder GenerateCustonCode()
         {
             var sb = new StringBuilder();

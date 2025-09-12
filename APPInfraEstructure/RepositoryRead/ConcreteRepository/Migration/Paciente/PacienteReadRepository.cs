@@ -443,6 +443,35 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<PacienteStandardDTO> GetPacienteMes(ICommandRead command )
+        {
+            var query = _query.PacienteMesQuery();
+
+                var itens = _connection.Query<PacienteStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<PacienteStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+        }
+
+
+        public DataPagination<PacienteStandardDTO> GetPacienteGeral(ICommandRead command )
+        {
+            if (command is Command.Read.PacienteGeralCommand c)
+             {
+                var query = _query.PacienteGeralQuery(c );
+
+                var itens = _connection.Query<PacienteStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<PacienteStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

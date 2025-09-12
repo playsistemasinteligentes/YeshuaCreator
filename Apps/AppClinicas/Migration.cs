@@ -81,6 +81,10 @@ namespace AppClinicas
                 .AddColumn("TelefoneResponsavel", "Telefone Responsavel").Varchar(15)
                 .AddColumn("Observacao", "Observacao").Varchar(2000);
 
+            AddQuery<Paciente>("Standard", q => q
+             .WhereContext("Mes", s => s.Nome == "")
+             .Where("Geral", s => s.Nome == "")
+             .Select(s => new { s.Id, s.Nome }));
 
             AddEntity("MovimentacaoFinanceira").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()

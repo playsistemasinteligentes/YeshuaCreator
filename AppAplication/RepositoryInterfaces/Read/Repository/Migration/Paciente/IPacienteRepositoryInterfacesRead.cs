@@ -59,6 +59,8 @@ namespace IRepository.Read
         public IEnumerable<PacienteDTO> GetAllByDeleted(bool value );
         public IEnumerable<PacienteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PacienteDTO> GetAllByUserId(int value );
+        public DataPagination<PacienteStandardDTO> GetPacienteMes(ICommandRead command );
+        public DataPagination<PacienteStandardDTO> GetPacienteGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

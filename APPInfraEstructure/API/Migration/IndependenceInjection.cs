@@ -81,6 +81,8 @@ builder.Services.AddTransient<Command.Receivers.Write.DeletePacienteReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PacienteReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PacienteReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PacienteReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PacienteReadQueryGeralReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PacienteReadQueryMesReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IMovimentacaoFinanceiraWriteRepository, Input.Repository.MovimentacaoFinanceira.MovimentacaoFinanceiraWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IMovimentacaoFinanceiraReadRepository, Read.Repository.MovimentacaoFinanceiraReadRepository>();

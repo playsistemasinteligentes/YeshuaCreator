@@ -3,6 +3,7 @@ import { Actions } from './crudEnumerator.js';
 import { showAlert } from './alerts.js';
 import { showConfirm } from './menssagensConfirm.js';
 import { showFkModal, hideFkModal } from './components/fk-modal.js';
+import { apiFetch } from './ServicesGlobal/apiFetch.js';
 
 export function buildCrud() {
 
@@ -122,7 +123,9 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
     const token = localStorage.getItem('token');
 
     const searchFilters = {};
-    metadata.formFields.forEach(field => {
+    const currentSearch = metadata.search?.[0];
+    (currentSearch?.filterFields || []).forEach(field => {
+
         const input = document.getElementById(`search-${field.id}`);
         if (!input || input.value === '') return;
 
@@ -147,7 +150,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
     };
 
     try {
-        const response = await fetch(`${environments.urlApi}${metadata.endpoints.read}`, {
+        const response = await fetch(`${environments.urlApi}${currentSearch.endpoint}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -188,7 +191,9 @@ function renderSearch(metadata, modoFk = false) {
 
     formGroup.innerHTML = '';
 
-    metadata.searchFields.forEach(field => {
+    const currentSearch = metadata.search?.[0];
+    (currentSearch?.filterFields || []).forEach(field => {
+
         const wrapper = document.createElement('div');
         wrapper.className = 'flex flex-col';
 
@@ -298,6 +303,9 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
         ? document.getElementById('modal-tabela-fk')
         : document.getElementById('table-container');
 
+    const currentSearch = metadata.search?.find(s => s.id === "Standard") || metadata.search[0];
+
+
     container.innerHTML = '';
 
     // --- DESKTOP TABLE ---
@@ -311,7 +319,9 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     const headerRow = document.createElement('tr');
     headerRow.className = 'bg-gray-100';
 
-    metadata.formFields.forEach(field => {
+
+    (currentSearch?.resultFields || []).forEach(field => {
+
         const th = document.createElement('th');
         th.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
         th.textContent = field.label;
@@ -341,7 +351,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
 
-            metadata.formFields.forEach(field => {
+            currentSearch?.resultFields.forEach(field => {
                 const cell = document.createElement('td');
                 cell.className = 'px-4 py-2 border text-sm text-gray-800';
                 cell.textContent = item[field.id.toLowerCase()] || '';
@@ -415,7 +425,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             const card = document.createElement('div');
             card.className = 'bg-white border rounded p-4 shadow';
 
-            metadata.formFields.forEach(field => {
+            currentSearch?.resultFields.forEach(field => {
                 const fieldValue = item[field.id.toLowerCase()] || '';
                 const p = document.createElement('p');
                 p.innerHTML = `<strong>${field.label}:</strong> ${fieldValue}`;
@@ -656,9 +666,13 @@ function renderFormCrud() {
                     buttons[idx].classList.remove('bg-blue-500', 'text-white');
                 }
             } else {
-                pane.style.display = idx === 0 ? 'grid' : 'none';
+                // mantém a aba ativa no desktop também
+                const activeIndex = buttons.findIndex(btn => btn.classList.contains('bg-blue-500'));
+                const indexToShow = activeIndex >= 0 ? activeIndex : 0;
+
+                pane.style.display = idx === indexToShow ? 'grid' : 'none';
                 buttons[idx].classList.remove('bg-blue-500', 'text-white');
-                if (idx === 0) buttons[idx].classList.add('bg-blue-500', 'text-white');
+                if (idx === indexToShow) buttons[idx].classList.add('bg-blue-500', 'text-white');
             }
         });
 
@@ -822,7 +836,20 @@ async function editRecord(item) {
         }
         input.value = item[field.id.toLowerCase()] || '';
     });
+
+    scrollToCadastro();
 }
+
+function scrollToCadastro() {
+    const crudContainer = document.getElementById('crud-container');
+    if (!crudContainer) return;
+
+    // Rola o próprio container até o final
+    crudContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+
+
 
 async function deleteRecord(item) {
 

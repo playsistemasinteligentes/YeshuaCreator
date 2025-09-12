@@ -2,6 +2,8 @@
 using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
+using MyApp.Domain.Entities;
+using MyApp.QueryBuilder;
 using System.Data.Common;
 using System.Globalization;
 using System.Net.Http;
@@ -224,6 +226,7 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("            new {");
                         sb.AppendLine($"                id = \"{query.Meta.QueryName}\",");
                         sb.AppendLine($"                description = \"{query.Meta.QueryName}\",");
+                        sb.AppendLine($"                endpoint = \"/{entidade.EntityName}/Read{entidade.EntityName}{query.Meta.WhereParameters.FirstOrDefault().Key}\",");
 
                         // resultFields
                         sb.AppendLine("            resultFields = new[]");
@@ -269,8 +272,7 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("            {");
 
                         foreach (var wp in query.Meta.WhereContextParameters)
-                            foreach (var item in wp.Value)
-                                sb.AppendLine($"                new {{ id = \"{wp.Key}\", label = \"{wp.Key}\", icon = \"calendar-day\", endpoint = $\"/" + entidade.EntityName + "/ChamadosHoje\" },");
+                            sb.AppendLine($"                new {{ id = \"{wp.Key}\", label = \"{wp.Key}\", icon = \"calendar-day\", endpoint = \"/{entidade.EntityName}/Read{entidade.EntityName}{wp.Key}\" }},");
 
                         sb.AppendLine("            },");
 
@@ -289,6 +291,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("            new {");
                     sb.AppendLine($"                id = \"Standard\",");
                     sb.AppendLine($"                description = \"Standard\",");
+                    sb.AppendLine($"                endpoint = \"/{entidade.EntityName}/Read{entidade.EntityName}\",");
 
                     // resultFields
                     sb.AppendLine("            resultFields = new[]");

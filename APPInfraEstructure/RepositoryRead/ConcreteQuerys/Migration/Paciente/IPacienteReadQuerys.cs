@@ -36,6 +36,8 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+    public QueryModel PacienteMesQuery();
+    public QueryModel PacienteGeralQuery(Command.Read.PacienteGeralCommand Command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
