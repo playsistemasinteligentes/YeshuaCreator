@@ -112,11 +112,41 @@ function setStateCreate() {
     renderFormCrud();
 }
 function crudSearch(metadata = crudState.metadata, modoFk = false) {
-    resetPagination();
+
+    const currentSearch = metadata.search?.[0]
+    resetPagination(currentSearch.endpoint);
     fetchSearchResults(metadata, modoFk);
 }
-function resetPagination() {
+function resetPagination(endpoint) {
+    crudState.fullUrl = `${environments.urlApi}${endpoint}`;
     crudState.pagination.page = 1;
+}
+function renderQuickSearches(quickSearches) {
+    const container = document.getElementById("quick-search-container");
+    container.innerHTML = ""; // limpa antes
+
+    quickSearches.forEach(qs => {
+        const btn = document.createElement("button");
+        btn.className = "p-2 rounded hover:bg-blue-100 text-blue-600 transition flex items-center";
+        btn.innerHTML = `
+            <i class="fas fa-${qs.icon} mr-1"></i>
+            ${qs.label}
+        `;
+
+        btn.addEventListener("click", async () => {
+            // Guarda quick search selecionado
+            crudState.selectedQuickSearch = qs;
+
+            // Reseta paginação para página 1
+            resetPagination(qs.endpoint);
+
+            // Chama fetchSearchResults como nas outras pesquisas
+            // Passa metadata atual, se necessário, ou null se for só endpoint
+            await fetchSearchResults(crudState.metadata);
+        });
+
+        container.appendChild(btn);
+    });
 }
 
 async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
@@ -144,13 +174,13 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
         ...searchFilters,
         paginacao: {
             page: crudState.pagination.page || 1,
-            pageSize: crudState.pagination.pageSize || 20,
+            pageSize: crudState.pagination.pageSize || 5,
             pageWhithCount: crudState.pagination.PageWhithCount || false
         }
     };
 
     try {
-        const response = await fetch(`${environments.urlApi}${currentSearch.endpoint}`, {
+        const response = await fetch(`${crudState.fullUrl}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -166,7 +196,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
             const items = paginatedData.items || [];
 
             crudState.pagination.page = paginatedData.page || 1;
-            crudState.pagination.pageSize = paginatedData.pageSize || 20;
+            crudState.pagination.pageSize = paginatedData.pageSize || 5;
             crudState.pagination.total = paginatedData.totalItems || 0;
             crudState.pagination.hasNext = paginatedData.totalItems
                 ? (paginatedData.page * paginatedData.pageSize < paginatedData.totalItems)
@@ -296,6 +326,12 @@ function renderSearch(metadata, modoFk = false) {
         btnContainer.appendChild(btnPesquisar);
         formGroup.appendChild(btnContainer);
     }
+
+    if (!modoFk && currentSearch.quickSearches) {
+        renderQuickSearches(metadata.search[0].quickSearches);
+    }
+
+
 }
 
 function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) {

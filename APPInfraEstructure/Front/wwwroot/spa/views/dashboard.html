@@ -10,6 +10,9 @@
         <h1 class="text-lg font-bold">Play Sistemas Inteligentes</h1>
     </div>
 
+    <nav id="menu" class="hidden md:flex space-x-4">
+        <!-- JS vai injetar os links aqui -->
+    </nav>
     <!-- 👉 Ações do usuário -->
     <div class="flex items-center gap-4">
         <!-- Botão hamburguer (só no mobile) -->
@@ -27,11 +30,6 @@
 <!-- Compensa altura da barra fixa -->
 <div class="h-16"></div>
 
-<!-- Menu (desktop: horizontal | mobile: dropdown) -->
-<nav id="menu"
-     class="hidden flex-col md:flex md:flex-row md:space-x-4 bg-white shadow-md md:static absolute right-4 mt-2 rounded p-2 z-10">
-    <!-- Aqui o JS vai injetar os links dinamicamente -->
-</nav>
 
 <!-- 🔍 Pesquisa + Resultados -->
 <div id="crud-container" class="hidden space-y-6 px-4 py-6">
@@ -44,9 +42,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
-                    Pesquisa
+
                 </button>
             </h2>
+            <div id="quick-search-container" class="flex items-center gap-2"></div>
             <button id="btn-search" class="btn-search bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded">Buscar</button>
         </div>
 

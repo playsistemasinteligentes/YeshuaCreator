@@ -1,4 +1,9 @@
-﻿ Regra prática para decidir:
+﻿pendencia 
+estudar semantckernall
+
+
+
+ Regra prática para decidir:
 
 > 📌 Se a lógica responde à pergunta “como deve ser uma carga de transbordo válida?”, ela vai no domínio.
 📌 Se responde a “quando aplicar a lógica de transbordo?”, ela vai no use case.
