@@ -1392,7 +1392,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel SesoesHojeQuery()
+        public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command)
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
@@ -1412,10 +1412,16 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             whereClauses.Add("t1.Deleted = @Deleted");
 
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel SesoesSemanaQuery()
+        public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command)
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
@@ -1439,10 +1445,16 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             whereClauses.Add("t1.Deleted = @Deleted");
 
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel SesoesMesQuery()
+        public QueryModel SesoesMesQuery(Command.Read.SesoesMesCommand Command)
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
@@ -1460,6 +1472,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             whereClauses.Add("t1.Deleted = @Deleted");
 
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }

@@ -317,16 +317,18 @@ namespace Dominio.Schemas.CQRS
 
                     sb.AppendLine($"        public DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO> Get{methodName}(ICommandRead command {takeOff})");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"            var query = _query.{methodName}Query({VariavaltakeOff});");
+                    sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandRead}.{methodName}Command c)");
+                    sb.AppendLine("             {");
+                    sb.AppendLine($"            var query = _query.{methodName}Query(c {VariavaltakeOff});");
                     sb.AppendLine();
-
                     sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
                     sb.AppendLine($"                return new DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO>(");
                     sb.AppendLine($"                                itens,");
                     sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
                     sb.AppendLine($"                command.Paginacao?.PageSize ?? 0,");
                     sb.AppendLine($"                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);");
-
+                    sb.AppendLine("             }");
+                    sb.AppendLine("            throw new NotImplementedException();");
                     sb.AppendLine("        }");
                     sb.AppendLine();
                     sb.AppendLine();

@@ -72,9 +72,9 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
-    public QueryModel SesoesHojeQuery();
-    public QueryModel SesoesSemanaQuery();
-    public QueryModel SesoesMesQuery();
+    public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command);
+    public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command);
+    public QueryModel SesoesMesQuery(Command.Read.SesoesMesCommand Command);
     public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command);
     }
 }

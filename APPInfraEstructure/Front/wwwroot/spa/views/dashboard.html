@@ -1,6 +1,5 @@
 ﻿<!-- 🔵 Barra superior -->
 <header class="flex justify-between items-center px-6 py-3 bg-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
-
     <!-- 👉 Logo + título -->
     <div class="flex items-center gap-3">
         <!-- Ícone Play -->
@@ -13,12 +12,13 @@
     <nav id="menu" class="hidden md:flex space-x-4">
         <!-- JS vai injetar os links aqui -->
     </nav>
+
     <!-- 👉 Ações do usuário -->
     <div class="flex items-center gap-4">
         <!-- Botão hamburguer (só no mobile) -->
         <button id="btn-toggle-menu" class="text-2xl md:hidden" aria-label="Toggle menu">☰</button>
 
-        <!-- Ícone logout (mantém função de logout) -->
+        <!-- Ícone logout -->
         <button id="logout-header" class="p-2 hover:bg-blue-700 rounded transition" aria-label="Sair">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
@@ -30,11 +30,11 @@
 <!-- Compensa altura da barra fixa -->
 <div class="h-16"></div>
 
-
 <!-- 🔍 Pesquisa + Resultados -->
 <div id="crud-container" class="hidden space-y-6 px-4 py-6">
-    <!-- 🔍 Pesquisa -->
-    <div class="bg-white p-4 rounded-lg shadow-md">
+
+    <!-- Filtros -->
+    <div id="filtros-container" class="bg-white p-4 rounded-lg shadow-md">
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-xl font-bold">
                 <button id="btn-toggle-pesquisa"
@@ -42,18 +42,15 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
-
                 </button>
             </h2>
             <div id="quick-search-container" class="flex items-center gap-2"></div>
             <button id="btn-search" class="btn-search bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded">Buscar</button>
         </div>
 
-        <!-- Filtros e resultados -->
-        <div id="area-pesquisa" class="space-y-6 hidden transition-all duration-300">
-
+        <div id="area-pesquisa" class="hidden">
             <!-- Filtros simples -->
-            <div id="filtros-simples" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div id="filtros-simples" class="grid grid-cols-1 md:grid-cols-3 gap-4 ">
                 <input type="text" placeholder="Nome" class="border p-2 rounded">
                 <input type="email" placeholder="Email" class="border p-2 rounded">
                 <select class="border p-2 rounded">
@@ -64,8 +61,12 @@
             </div>
 
             <!-- Parâmetros avançados -->
-            <div>
-                <button id="btn-toggle-avancado" class="text-sm text-gray-600 hover:underline">Parâmetros Avançados</button>
+            <div class="mt-2">
+                <button id="btn-toggle-avancado" class="flex items-center text-blue-600 hover:text-blue-800 transition duration-200 p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
                 <div id="filtros-avancados" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden mt-2">
                     <input type="date" class="border p-2 rounded" placeholder="Data de criação">
                     <input type="text" class="border p-2 rounded" placeholder="CPF/CNPJ">
@@ -73,31 +74,29 @@
                 </div>
             </div>
 
-
-            <!-- Resultados -->
-            <div id="crud-tabela" class="space-y-4">
-                <h2 class="text-xl font-bold mb-2">Resultados</h2>
-                <div id="table-container"></div> <!-- É aqui que sua função insere -->
-            </div>
-            <div id="pagination-controls" class="mt-4 flex justify-between items-center">
-                <button id="btn-next-page" class="text-blue-600 hover:underline">Próxima Página</button>
-            </div>
-
-            <div class="flex justify-between items-center mt-4">
-                <!-- Checkbox: à esquerda -->
-                <label class="inline-flex items-center space-x-2">
-                    <input type="checkbox" id="chkCountTotal" class="form-checkbox h-4 w-4 text-blue-600" />
-                    <span class="text-sm text-gray-700">Contar total de registros</span>
-                </label>
-
-                <!-- Controles de paginação: à direita -->
-                <div id="pagination-controls" class="flex items-center space-x-4 text-sm text-gray-700"></div>
-            </div>
-
         </div>
     </div>
 
-    <!-- 📝 Cadastro -->
+    <!-- 2️⃣ Resultados + Paginação -->
+    <div id="resultados-container" class="bg-white p-4 rounded-lg shadow-md mt-4">
+        <h2 class="text-xl font-bold mb-2">Resultados</h2>
+
+        <!-- Aqui sua função JS insere a tabela -->
+        <div id="table-container"></div>
+
+        <!-- Controles de paginação -->
+        <div id="pagination-controls" class="mt-4 flex justify-between items-center text-sm text-gray-700"></div>
+
+        <!-- Checkbox contar total de registros -->
+        <div class="flex justify-start items-center mt-4">
+            <label class="inline-flex items-center space-x-2">
+                <input type="checkbox" id="chkCountTotal" class="form-checkbox h-4 w-4 text-blue-600" />
+                <span class="text-sm text-gray-700">Contar total de registros</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- 3️⃣ Cadastro -->
     <div class="bg-white p-4 rounded-lg shadow-md">
         <h2 class="text-xl font-bold mb-4">Cadastro</h2>
         <div id="form-group">

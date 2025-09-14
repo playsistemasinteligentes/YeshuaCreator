@@ -509,7 +509,282 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
 }
 
 
-function renderFormCrud() {
+
+function createFieldInput(field, tipo = 'insert') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flex flex-col w-full';
+
+    const label = document.createElement('label');
+    label.textContent = field.label;
+    label.setAttribute('for', `${tipo}-${field.id}`);
+    label.className = 'block text-sm font-medium text-gray-400 mb-1';
+
+    let input;
+
+    if (field.type.toLowerCase() === 'list' || field.type.toLowerCase() === 'enum') {
+        input = document.createElement('select');
+        input.id = `${tipo}-${field.id}`;
+        input.className = 'border p-2 rounded w-full';
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = `Selecione ${field.label}`;
+        input.appendChild(defaultOption);
+        field.options?.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.textContent = opt.display;
+            input.appendChild(option);
+        });
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+
+    } else if (field.isFk) {
+        input = document.createElement('input');
+        input.id = `${tipo}-${field.id}`;
+        input.className = 'border p-2 rounded w-full';
+        input.dataset.description = '';
+        input.dataset.id = '';
+        input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buildSearchFK(tipo, field.id, input.value);
+            }
+        });
+
+        const fkWrapper = document.createElement('div');
+        fkWrapper.className = 'flex gap-2 w-full';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.innerHTML = '🔍';
+        button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
+        button.onclick = () => buildSearchFK(tipo, field.id, input.value);
+
+        fkWrapper.appendChild(input);
+        fkWrapper.appendChild(button);
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(fkWrapper);
+
+    } else {
+        switch (field.type.toLowerCase()) {
+            case 'int':
+                input = document.createElement('input');
+                input.type = 'number';
+                input.step = '1';
+                break;
+            case 'float':
+            case 'decimal':
+                input = document.createElement('input');
+                input.type = 'number';
+                input.step = '0.01';
+                break;
+            case 'datetime':
+                input = document.createElement('input');
+                input.type = 'datetime-local';
+                break;
+            case 'memo':
+                input = document.createElement('textarea');
+                input.rows = 4;
+                input.placeholder = `Digite ${field.label}...`;
+                break;
+            default:
+                input = document.createElement('input');
+                input.type = 'text';
+        }
+        input.id = `${tipo}-${field.id}`;
+        input.className = 'border p-2 rounded w-full resize-y';
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+    }
+
+    return wrapper;
+}
+
+function buildTabsDesktop_(tabsMap) {
+    const container = document.createElement('div');
+    const tabsButtons = document.createElement('div');
+    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
+    const tabsContent = document.createElement('div');
+    tabsContent.className = 'tabs-content w-full';
+
+    let first = true;
+
+    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
+        if (first) btn.classList.add('bg-blue-500', 'text-white');
+        tabsButtons.appendChild(btn);
+
+        const tabContent = document.createElement('div');
+        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
+        tabContent.style.display = first ? 'grid' : 'none';
+
+        fields.forEach(field => tabContent.appendChild(createFieldInput(field)));
+
+        tabsContent.appendChild(tabContent);
+
+        btn.addEventListener('click', () => {
+            tabsContent.querySelectorAll('.tab-pane').forEach((p, i) => p.style.display = i === index ? 'grid' : 'none');
+            tabsButtons.querySelectorAll('button').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+            btn.classList.add('bg-blue-500', 'text-white');
+        });
+
+        first = false;
+    });
+
+    container.appendChild(tabsButtons);
+    container.appendChild(tabsContent);
+
+    return container;
+}
+
+function buildTabsDesktop(tabsMap) {
+    const container = document.createElement('div');
+    const tabsButtons = document.createElement('div');
+    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
+    const tabsContent = document.createElement('div');
+    tabsContent.className = 'tabs-content w-full';
+
+    let first = true;
+
+    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
+        if (first) btn.classList.add('bg-blue-500', 'text-white');
+        tabsButtons.appendChild(btn);
+
+        const tabContent = document.createElement('div');
+        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
+        tabContent.style.display = first ? 'grid' : 'none';
+
+        fields.forEach(field => tabContent.appendChild(createFieldInput(field)));
+
+        btn.addEventListener('click', () => {
+            tabsContent.querySelectorAll('.tab-pane').forEach((p, i) => p.style.display = i === index ? 'grid' : 'none');
+            tabsButtons.querySelectorAll('button').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+            btn.classList.add('bg-blue-500', 'text-white');
+            scrollToElement(btn);
+        });
+
+        tabsContent.appendChild(tabContent);
+        first = false;
+    });
+
+    container.appendChild(tabsButtons);
+    container.appendChild(tabsContent);
+
+    return container;
+}
+
+function buildAccordionMobile_(tabsMap) {
+    const container = document.createElement('div');
+    container.className = 'tabs-container w-full';
+
+    Object.entries(tabsMap).forEach(([tabName, fields]) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        btn.className = 'tab-btn px-4 py-2 border rounded text-left w-full';
+
+        const pane = document.createElement('div');
+        pane.className = 'tab-pane grid grid-cols-1 gap-4 w-full';
+        pane.style.display = 'none';
+
+        fields.forEach(field => pane.appendChild(createFieldInput(field)));
+
+        btn.addEventListener('click', () => {
+            const isOpen = pane.style.display === 'grid';
+            container.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            container.querySelectorAll('button').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+
+            if (!isOpen) {
+                pane.style.display = 'grid';
+                btn.classList.add('bg-blue-500', 'text-white');
+                scrollToElement(btn);
+            }
+        });
+
+        container.appendChild(btn);
+        container.appendChild(pane);
+    });
+
+    return container;
+}
+function buildAccordionMobile(tabsMap) {
+    const container = document.createElement('div');
+    container.className = 'w-full space-y-2'; // espaçamento entre abas
+
+    Object.entries(tabsMap).forEach(([tabName, fields]) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'border rounded-md overflow-hidden';
+
+        // botão da aba
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = `
+            <span class="font-semibold text-gray-700">${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</span>
+            <span class="ml-auto transform transition-transform text-gray-500">▸</span>
+        `;
+        btn.className = 'tab-btn flex items-center justify-between w-full px-4 py-2 bg-gray-50 hover:bg-gray-100';
+
+        // conteúdo da aba
+        const pane = document.createElement('div');
+        pane.className = 'tab-pane grid grid-cols-1 gap-4 w-full overflow-hidden transition-all duration-300 ease-in-out';
+        pane.style.maxHeight = '0'; // fechado por padrão
+
+        fields.forEach(field => pane.appendChild(createFieldInput(field)));
+
+        btn.addEventListener('click', () => {
+            const isOpen = pane.style.maxHeight !== '0px';
+
+            // Fecha todos
+            container.querySelectorAll('.tab-pane').forEach(p => p.style.maxHeight = '0');
+            container.querySelectorAll('.tab-btn span:last-child').forEach(icon => {
+                icon.style.transform = 'rotate(0deg)';
+                icon.textContent = '▸'; // seta lateral
+            });
+
+            if (!isOpen) {
+                pane.style.maxHeight = pane.scrollHeight + 'px';
+                const icon = btn.querySelector('span:last-child');
+                icon.style.transform = 'rotate(90deg)'; // gira pra baixo
+                icon.textContent = '▾'; // seta para baixo
+
+                // scroll após animação
+                setTimeout(() => scrollToElement(btn), 320);
+            }
+        });
+
+        wrapper.appendChild(btn);
+        wrapper.appendChild(pane);
+        container.appendChild(wrapper);
+    });
+
+    return container;
+}
+
+function scrollToElement(element) {
+    if (!element) return;
+
+    // Se houver header fixo, ajusta a margem automaticamente
+    const header = document.querySelector('header');
+    const headerHeight = header ? header.offsetHeight : 0;
+
+    window.scrollTo({
+        top: element.getBoundingClientRect().top + window.scrollY - headerHeight - 8, // 8px de margem
+        behavior: 'smooth'
+    });
+}
+
+
+export function renderFormCrud() {
     const formGroup = document.getElementById('form-group');
     formGroup.innerHTML = '';
 
@@ -520,205 +795,17 @@ function renderFormCrud() {
         tabsMap[tabKey].push(field);
     });
 
-    const tabsContainer = document.createElement('div');
-    tabsContainer.className = 'tabs-container w-full';
+    const isMobile = window.innerWidth < 768;
+    const layout = isMobile ? buildAccordionMobile(tabsMap) : buildTabsDesktop(tabsMap);
+    formGroup.appendChild(layout);
 
-    const tabsButtons = document.createElement('div');
-    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
-
-    const tabsContent = document.createElement('div');
-    tabsContent.className = 'tabs-content w-full';
-
-    let first = true;
-    let mobileActiveIndex = 0; // guarda aba aberta no mobile
-
-    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
-        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
-        if (first) btn.classList.add('bg-blue-500', 'text-white');
-        btn.dataset.tabIndex = index;
-        tabsButtons.appendChild(btn);
-
-        const tabContent = document.createElement('div');
-        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
-        tabContent.style.display = first ? 'grid' : 'none';
-
-        fields.forEach(field => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'flex flex-col w-full';
-
-            const label = document.createElement('label');
-            label.textContent = field.label;
-            label.setAttribute('for', `insert-${field.id}`);
-            label.className = 'block text-sm font-medium text-gray-400 mb-1';
-
-            let input;
-            if (field.type.toLowerCase() === 'list' || field.type.toLowerCase() === 'enum') {
-                input = document.createElement('select');
-                input.id = `insert-${field.id}`;
-                input.className = 'border p-2 rounded w-full';
-
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = `Selecione ${field.label}`;
-                input.appendChild(defaultOption);
-
-                if (field.options && Array.isArray(field.options)) {
-                    field.options.forEach(optionData => {
-                        const option = document.createElement('option');
-                        option.value = optionData.value;
-                        option.textContent = optionData.display;
-                        input.appendChild(option);
-                    });
-                }
-
-                wrapper.appendChild(label);
-                wrapper.appendChild(input);
-            } else {
-                if (field.isFk) {
-                    input = document.createElement('input');
-                    input.id = `insert-${field.id}`;
-                    input.className = 'border p-2 rounded w-full';
-                    input.dataset.description = '';
-                    input.dataset.id = '';
-                    input.dataset.endPontGetMetadata = field.endPontGetMetadata;
-
-                    input.addEventListener('keypress', function (event) {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            buildSearchFK('insert', field.id, input.value);
-                        }
-                    });
-
-                    const fkWrapper = document.createElement('div');
-                    fkWrapper.className = 'flex gap-2 w-full';
-
-                    const button = document.createElement('button');
-                    button.type = 'button';
-                    button.innerHTML = '🔍';
-                    button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
-                    button.onclick = () => buildSearchFK('insert', field.id, input.value);
-
-                    fkWrapper.appendChild(input);
-                    fkWrapper.appendChild(button);
-
-                    wrapper.appendChild(label);
-                    wrapper.appendChild(fkWrapper);
-                } else {
-                    switch (field.type.toLowerCase()) {
-                        case 'int':
-                            input = document.createElement('input');
-                            input.type = 'number';
-                            input.step = '1';
-                            break;
-                        case 'float':
-                        case 'decimal':
-                            input = document.createElement('input');
-                            input.type = 'number';
-                            input.step = '0.01';
-                            break;
-                        case 'datetime':
-                            input = document.createElement('input');
-                            input.type = 'datetime-local';
-                            break;
-                        case 'memo':
-                            input = document.createElement('textarea');
-                            input.rows = 4;
-                            input.placeholder = `Digite ${field.label}...`;
-                            break;
-                        default:
-                            input = document.createElement('input');
-                            input.type = 'text';
-                    }
-
-                    input.id = `insert-${field.id}`;
-                    input.className = 'border p-2 rounded w-full resize-y';
-
-                    wrapper.appendChild(label);
-                    wrapper.appendChild(input);
-                }
-            }
-
-            tabContent.appendChild(wrapper);
-        });
-
-        tabsContent.appendChild(tabContent);
-        first = false;
-    });
-
-    tabsContainer.appendChild(tabsButtons);
-    tabsContainer.appendChild(tabsContent);
-    formGroup.appendChild(tabsContainer);
-
-    const buttons = tabsButtons.querySelectorAll('button');
-    const panes = tabsContent.querySelectorAll('.tab-pane');
-
-    // Clique nas abas
-    buttons.forEach((btn, idx) => {
-        btn.addEventListener('click', () => {
-            const isMobile = window.innerWidth < 768;
-            if (!isMobile) {
-                panes.forEach((p, i) => {
-                    p.style.display = i === idx ? 'grid' : 'none';
-                    buttons[i].classList.remove('bg-blue-500', 'text-white');
-                });
-                btn.classList.add('bg-blue-500', 'text-white');
-                return;
-            }
-
-            const pane = panes[idx];
-            const isOpen = pane.style.display === 'grid';
-
-            panes.forEach((p, i) => {
-                p.style.display = 'none';
-                buttons[i].classList.remove('bg-blue-500', 'text-white');
-            });
-
-            if (!isOpen) {
-                pane.style.display = 'grid';
-                btn.classList.add('bg-blue-500', 'text-white');
-                mobileActiveIndex = idx;
-            } else {
-                mobileActiveIndex = -1;
-            }
-        });
-    });
-
-    // Ajuste no resize
     window.addEventListener('resize', () => {
-        const isMobile = window.innerWidth < 768;
-        let anyOpen = false;
-
-        panes.forEach((pane, idx) => {
-            if (isMobile) {
-                if (idx === mobileActiveIndex) {
-                    pane.style.display = 'grid';
-                    buttons[idx].classList.add('bg-blue-500', 'text-white');
-                    anyOpen = true;
-                } else {
-                    pane.style.display = 'none';
-                    buttons[idx].classList.remove('bg-blue-500', 'text-white');
-                }
-            } else {
-                // mantém a aba ativa no desktop também
-                const activeIndex = buttons.findIndex(btn => btn.classList.contains('bg-blue-500'));
-                const indexToShow = activeIndex >= 0 ? activeIndex : 0;
-
-                pane.style.display = idx === indexToShow ? 'grid' : 'none';
-                buttons[idx].classList.remove('bg-blue-500', 'text-white');
-                if (idx === indexToShow) buttons[idx].classList.add('bg-blue-500', 'text-white');
-            }
-        });
-
-        if (isMobile && !anyOpen && mobileActiveIndex >= 0) {
-            panes[mobileActiveIndex].style.display = 'grid';
-            buttons[mobileActiveIndex].classList.add('bg-blue-500', 'text-white');
+        const isMobileResize = window.innerWidth < 768;
+        if ((isMobile && !isMobileResize) || (!isMobile && isMobileResize)) {
+            renderFormCrud();
         }
     });
 }
-
 
 
 async function buildSearchFK(tipo, campoId, valor) {

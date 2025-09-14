@@ -445,7 +445,9 @@ namespace Read.Repository
 
         public DataPagination<PacienteStandardDTO> GetPacienteMes(ICommandRead command )
         {
-            var query = _query.PacienteMesQuery();
+            if (command is Command.Read.PacienteMesCommand c)
+             {
+            var query = _query.PacienteMesQuery(c );
 
                 var itens = _connection.Query<PacienteStandardDTO>(query.Query,query.Parameters);
                 return new DataPagination<PacienteStandardDTO>(
@@ -453,6 +455,8 @@ namespace Read.Repository
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
         }
 
 

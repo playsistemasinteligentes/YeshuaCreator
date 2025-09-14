@@ -901,7 +901,9 @@ namespace Read.Repository
 
         public DataPagination<SesoesStandardDTO> GetSesoesHoje(ICommandRead command )
         {
-            var query = _query.SesoesHojeQuery();
+            if (command is Command.Read.SesoesHojeCommand c)
+             {
+            var query = _query.SesoesHojeQuery(c );
 
                 var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
                 return new DataPagination<SesoesStandardDTO>(
@@ -909,12 +911,16 @@ namespace Read.Repository
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
         }
 
 
         public DataPagination<SesoesStandardDTO> GetSesoesSemana(ICommandRead command )
         {
-            var query = _query.SesoesSemanaQuery();
+            if (command is Command.Read.SesoesSemanaCommand c)
+             {
+            var query = _query.SesoesSemanaQuery(c );
 
                 var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
                 return new DataPagination<SesoesStandardDTO>(
@@ -922,12 +928,16 @@ namespace Read.Repository
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
         }
 
 
         public DataPagination<SesoesStandardDTO> GetSesoesMes(ICommandRead command )
         {
-            var query = _query.SesoesMesQuery();
+            if (command is Command.Read.SesoesMesCommand c)
+             {
+            var query = _query.SesoesMesQuery(c );
 
                 var itens = _connection.Query<SesoesStandardDTO>(query.Query,query.Parameters);
                 return new DataPagination<SesoesStandardDTO>(
@@ -935,6 +945,8 @@ namespace Read.Repository
                 command.Paginacao?.Page ?? 0,
                 command.Paginacao?.PageSize ?? 0,
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
         }
 
 

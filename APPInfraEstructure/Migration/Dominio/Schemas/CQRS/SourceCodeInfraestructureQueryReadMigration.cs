@@ -66,7 +66,7 @@ namespace Dominio.Schemas.CQRS
                     foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
                     {
                         string methodName = $"{_entity.EntityName}{ctxName}Query";
-                        sb.AppendLine($"    public QueryModel {methodName}();");
+                        sb.AppendLine($"    public QueryModel {methodName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{ctxName}Command Command);");
                     }
 
                     // Wheres
@@ -248,8 +248,9 @@ namespace Dominio.Schemas.CQRS
                     // ---- Context queries (WhereContextParameters)
                     foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
                     {
+                        string commandName = $"{_entity.EntityName}{ctxName}Command";
                         string methodName = $"{_entity.EntityName}{ctxName}Query";
-                        sb.AppendLine($"        public QueryModel {methodName}()");
+                        sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command)");
                         sb.AppendLine("        {");
                         sb.AppendLine($"            this.Query = \"{query.Meta.SqlBase}\";");
                         sb.AppendLine("            var whereClauses = new List<string>();");
@@ -307,13 +308,13 @@ namespace Dominio.Schemas.CQRS
                         // Monta WHERE final
                         sb.AppendLine("            if (whereClauses.Any()) this.Query += $\" WHERE {string.Join(\" AND \", whereClauses)}\";");
 
-                        //// Paginação
-                        //sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
-                        //sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
-                        //sb.AppendLine("            int offset = (page - 1) * pageSize;");
-                        //sb.AppendLine("            dict[\"Offset\"] = offset;");
-                        //sb.AppendLine("            dict[\"PageSize\"] = pageSize;");
-                        //sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
+                        // Paginação
+                        sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
+                        sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
+                        sb.AppendLine("            int offset = (page - 1) * pageSize;");
+                        sb.AppendLine("            dict[\"Offset\"] = offset;");
+                        sb.AppendLine("            dict[\"PageSize\"] = pageSize;");
+                        sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
 
 
                         sb.AppendLine("            this.Parameters = parameters;");

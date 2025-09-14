@@ -664,7 +664,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel PacienteMesQuery()
+        public QueryModel PacienteMesQuery(Command.Read.PacienteMesCommand Command)
         {
             this.Query = "SELECT t0.Id, t0.Nome FROM Paciente t0";
             var whereClauses = new List<string>();
@@ -681,6 +681,12 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             whereClauses.Add("t0.Deleted = @Deleted");
 
             if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
