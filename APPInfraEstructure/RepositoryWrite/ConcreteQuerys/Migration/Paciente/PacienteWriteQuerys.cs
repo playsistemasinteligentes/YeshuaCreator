@@ -42,7 +42,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone, DataNascimento = @DataNascimento, Genero = @Genero, Escolaridade = @Escolaridade, Profissao = @Profissao, Endereco = @Endereco, NomeResponsavel = @NomeResponsavel, TelefoneResponsavel = @TelefoneResponsavel, Observacao = @Observacao, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone, DataNascimento = @DataNascimento, Genero = @Genero, Escolaridade = @Escolaridade, Profissao = @Profissao, Endereco = @Endereco, NomeResponsavel = @NomeResponsavel, TelefoneResponsavel = @TelefoneResponsavel, Observacao = @Observacao, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Nome = Paciente.Nome,
@@ -55,10 +55,8 @@ namespace Query.Write
                 NomeResponsavel = Paciente.NomeResponsavel,
                 TelefoneResponsavel = Paciente.TelefoneResponsavel,
                 Observacao = Paciente.Observacao,
-                TenantID = Paciente.TenantID,
-                Deleted = Paciente.Deleted,
                 Changed = Paciente.Changed,
-                UserId = Paciente.UserId,
+                UserId = _currentUser.UserId,
                 Id = Paciente.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

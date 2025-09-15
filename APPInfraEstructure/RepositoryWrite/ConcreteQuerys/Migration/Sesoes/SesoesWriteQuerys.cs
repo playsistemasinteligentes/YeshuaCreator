@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSesoesQuery(ISesoesEntity Sesoes)
         {
-            this.Query = $@" UPDATE Sesoes SET PacienteId = @PacienteId, DataInicio = @DataInicio, DataFim = @DataFim, Status = @Status, MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId, Prontuario = @Prontuario, QueixaPrincipal = @QueixaPrincipal, RegistroDocumental = @RegistroDocumental, SintomasRelatados = @SintomasRelatados, MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao, ComportamentoObservado = @ComportamentoObservado, EstadoEmocionalGeral = @EstadoEmocionalGeral, DiscursoPensamentos = @DiscursoPensamentos, UsoMedicacao = @UsoMedicacao, TecnicasUtilizadas = @TecnicasUtilizadas, QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo, ObjetivosLongoPrazo = @ObjetivosLongoPrazo, FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico, ServicoId = @ServicoId, ProfissionalId = @ProfissionalId, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE Sesoes SET PacienteId = @PacienteId, DataInicio = @DataInicio, DataFim = @DataFim, Status = @Status, MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId, Prontuario = @Prontuario, QueixaPrincipal = @QueixaPrincipal, RegistroDocumental = @RegistroDocumental, SintomasRelatados = @SintomasRelatados, MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao, ComportamentoObservado = @ComportamentoObservado, EstadoEmocionalGeral = @EstadoEmocionalGeral, DiscursoPensamentos = @DiscursoPensamentos, UsoMedicacao = @UsoMedicacao, TecnicasUtilizadas = @TecnicasUtilizadas, QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas, ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas, DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica, ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo, ObjetivosLongoPrazo = @ObjetivosLongoPrazo, FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes, EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais, InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas, FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico, ServicoId = @ServicoId, ProfissionalId = @ProfissionalId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 PacienteId = Sesoes.PacienteId,
@@ -87,10 +87,8 @@ namespace Query.Write
                 FeedbackPacienteSobreProcessoTerapeeutico = Sesoes.FeedbackPacienteSobreProcessoTerapeeutico,
                 ServicoId = Sesoes.ServicoId,
                 ProfissionalId = Sesoes.ProfissionalId,
-                TenantID = Sesoes.TenantID,
-                Deleted = Sesoes.Deleted,
                 Changed = Sesoes.Changed,
-                UserId = Sesoes.UserId,
+                UserId = _currentUser.UserId,
                 Id = Sesoes.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

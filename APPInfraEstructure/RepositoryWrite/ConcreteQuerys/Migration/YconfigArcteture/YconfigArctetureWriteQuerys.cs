@@ -35,15 +35,13 @@ namespace Query.Write
         }
         public QueryModel UpdateyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET AuditTrackerActived = @AuditTrackerActived, AuditCRUDActived = @AuditCRUDActived, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yConfigArcteture SET AuditTrackerActived = @AuditTrackerActived, AuditCRUDActived = @AuditCRUDActived, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 AuditTrackerActived = yConfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = yConfigArcteture.AuditCRUDActived,
-                TenantID = yConfigArcteture.TenantID,
-                Deleted = yConfigArcteture.Deleted,
                 Changed = yConfigArcteture.Changed,
-                UserId = yConfigArcteture.UserId,
+                UserId = _currentUser.UserId,
                 Id = yConfigArcteture.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

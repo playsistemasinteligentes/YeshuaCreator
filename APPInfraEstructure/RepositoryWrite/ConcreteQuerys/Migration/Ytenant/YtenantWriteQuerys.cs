@@ -33,13 +33,12 @@ namespace Query.Write
         }
         public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
         {
-            this.Query = $@" UPDATE yTenant SET CnpjCpf = @CnpjCpf, Nome = @Nome, UserId = @UserId, Deleted = @Deleted, Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE yTenant SET CnpjCpf = @CnpjCpf, Nome = @Nome, UserId = @UserId, Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
                 CnpjCpf = yTenant.CnpjCpf,
                 Nome = yTenant.Nome,
-                UserId = yTenant.UserId,
-                Deleted = yTenant.Deleted,
+                UserId = _currentUser.UserId,
                 Changed = yTenant.Changed,
                 Id = yTenant.Id,
             };

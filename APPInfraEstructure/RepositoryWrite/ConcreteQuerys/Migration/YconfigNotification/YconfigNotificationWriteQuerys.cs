@@ -37,17 +37,15 @@ namespace Query.Write
         }
         public QueryModel UpdateyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification)
         {
-            this.Query = $@" UPDATE yConfigNotification SET TenantID = @TenantID, EmailSmtpClient = @EmailSmtpClient, EmailPort = @EmailPort, EmailUserName = @EmailUserName, EmailPassword = @EmailPassword, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yConfigNotification SET EmailSmtpClient = @EmailSmtpClient, EmailPort = @EmailPort, EmailUserName = @EmailUserName, EmailPassword = @EmailPassword, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = yConfigNotification.TenantID,
                 EmailSmtpClient = yConfigNotification.EmailSmtpClient,
                 EmailPort = yConfigNotification.EmailPort,
                 EmailUserName = yConfigNotification.EmailUserName,
                 EmailPassword = yConfigNotification.EmailPassword,
-                Deleted = yConfigNotification.Deleted,
                 Changed = yConfigNotification.Changed,
-                UserId = yConfigNotification.UserId,
+                UserId = _currentUser.UserId,
                 Id = yConfigNotification.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

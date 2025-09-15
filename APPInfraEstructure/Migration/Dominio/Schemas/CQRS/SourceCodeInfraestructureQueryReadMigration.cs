@@ -256,10 +256,12 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("            var whereClauses = new List<string>();");
                         sb.AppendLine("            dynamic parameters = new ExpandoObject();");
                         sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
+                        int indexParam = 0;
                         foreach (var cond in query.Meta.WhereContextParameters[ctxName])
                         {
+                            indexParam++;
                             sb.AppendLine("");
-                            string param = cond.Field;
+                            string param = $"{cond.Field}_{indexParam}";
                             string rightExpr = cond.RightExpression;
 
 
@@ -269,17 +271,17 @@ namespace Dominio.Schemas.CQRS
                             {
                                 case TypeCode.String:
                                     sb.AppendLine($"                dict[\"{param}\"] = $\"{{{rightExpr}}}\";");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
                                     break;
 
                                 case TypeCode.Boolean:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr} ? 1 : 0;");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
                                     break;
 
                                 case TypeCode.DateTime:
-                                    //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) parametersDict[\"{param}\"] = Command.{param}.Value;");
-                                    //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) whereClauses.Add($\"{param} = @{param}\");");
+                                    sb.AppendLine($"                dict[\"{param}\"] = {rightExpr};");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
                                     break;
 
                                 case TypeCode.Int32:
@@ -287,7 +289,7 @@ namespace Dominio.Schemas.CQRS
                                 case TypeCode.Decimal:
                                 default:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr};");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
                                     break;
                             }
 
@@ -335,10 +337,13 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("            dynamic parameters = new ExpandoObject();");
                         sb.AppendLine("            var dict = (IDictionary<string, object>)parameters;");
 
+                        int indexParam = 0;
                         foreach (var cond in wh.Value)
                         {
                             sb.AppendLine("");
                             string param = cond.Field;
+                            string param = $"{cond.Field}_{indexParam}";
+
                             sb.AppendLine($"            if (Command.{param} != null)");
                             sb.AppendLine("            {");
                             if (cond.Operator == "LIKE")
@@ -348,9 +353,8 @@ namespace Dominio.Schemas.CQRS
                             }
                             else if (Type.GetTypeCode(cond.FieldType) == TypeCode.DateTime)
                             {
-                                //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) parametersDict[\"{param}\"] = Command.{param}.Value;");
-                                //sb.AppendLine($"if (Command.{param} != null && Command.{param} {cond.Operator} (DateTime)SqlDateTime.MinValue) whereClauses.Add($\"{param} = @{param}\");");
-
+                                sb.AppendLine($"                dict[\"{param}\"] = {cond.RightExpression};");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
                             }
                             else
                             {

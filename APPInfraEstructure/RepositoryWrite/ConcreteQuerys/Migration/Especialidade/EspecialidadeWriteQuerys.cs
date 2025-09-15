@@ -33,14 +33,12 @@ namespace Query.Write
         }
         public QueryModel UpdateEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
-            this.Query = $@" UPDATE Especialidade SET Descricao = @Descricao, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE Especialidade SET Descricao = @Descricao, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Descricao = Especialidade.Descricao,
-                TenantID = Especialidade.TenantID,
-                Deleted = Especialidade.Deleted,
                 Changed = Especialidade.Changed,
-                UserId = Especialidade.UserId,
+                UserId = _currentUser.UserId,
                 Id = Especialidade.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

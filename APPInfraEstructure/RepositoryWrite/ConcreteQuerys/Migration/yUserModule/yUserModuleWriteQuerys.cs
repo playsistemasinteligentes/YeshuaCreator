@@ -34,14 +34,12 @@ namespace Query.Write
         }
         public QueryModel UpdateyUserModuleQuery(IyUserModuleEntity yUserModule)
         {
-            this.Query = $@" UPDATE yUserModule SET ModuleId = @ModuleId, UserId = @UserId, ValidUntil = @ValidUntil, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserModule SET ModuleId = @ModuleId, UserId = @UserId, ValidUntil = @ValidUntil, Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
                 ModuleId = yUserModule.ModuleId,
-                UserId = yUserModule.UserId,
+                UserId = _currentUser.UserId,
                 ValidUntil = yUserModule.ValidUntil,
-                TenantID = yUserModule.TenantID,
-                Deleted = yUserModule.Deleted,
                 Changed = yUserModule.Changed,
                 Id = yUserModule.Id,
             };

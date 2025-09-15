@@ -33,14 +33,12 @@ namespace Query.Write
         }
         public QueryModel UpdateyPerfilQuery(IyPerfilEntity yPerfil)
         {
-            this.Query = $@" UPDATE yPerfil SET Description = @Description, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yPerfil SET Description = @Description, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Description = yPerfil.Description,
-                TenantID = yPerfil.TenantID,
-                Deleted = yPerfil.Deleted,
                 Changed = yPerfil.Changed,
-                UserId = yPerfil.UserId,
+                UserId = _currentUser.UserId,
                 Id = yPerfil.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

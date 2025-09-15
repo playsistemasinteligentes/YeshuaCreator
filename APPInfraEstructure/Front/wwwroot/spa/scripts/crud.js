@@ -81,7 +81,6 @@ function togglePaginationControls(metadata = crudState.metadata, modoFk = false)
     container.appendChild(info);
     container.appendChild(btnNext);
 }
-
 export async function loadDataCrud(fullUrl, type) {
 
     document.getElementById('table-container').innerHTML = '';
@@ -148,7 +147,6 @@ function renderQuickSearches(quickSearches) {
         container.appendChild(btn);
     });
 }
-
 async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
     const token = localStorage.getItem('token');
 
@@ -212,7 +210,6 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
         erroRequestResponse(error);
     }
 }
-
 function renderSearch(metadata, modoFk = false) {
 
     const formGroup = modoFk
@@ -333,7 +330,6 @@ function renderSearch(metadata, modoFk = false) {
 
 
 }
-
 function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) {
     const container = modoFk
         ? document.getElementById('modal-tabela-fk')
@@ -507,9 +503,6 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     container.appendChild(cardWrapper);
     container.style.display = 'block';
 }
-
-
-
 function createFieldInput(field, tipo = 'insert') {
     const wrapper = document.createElement('div');
     wrapper.className = 'flex flex-col w-full';
@@ -602,47 +595,6 @@ function createFieldInput(field, tipo = 'insert') {
 
     return wrapper;
 }
-
-function buildTabsDesktop_(tabsMap) {
-    const container = document.createElement('div');
-    const tabsButtons = document.createElement('div');
-    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
-    const tabsContent = document.createElement('div');
-    tabsContent.className = 'tabs-content w-full';
-
-    let first = true;
-
-    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
-        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
-        if (first) btn.classList.add('bg-blue-500', 'text-white');
-        tabsButtons.appendChild(btn);
-
-        const tabContent = document.createElement('div');
-        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
-        tabContent.style.display = first ? 'grid' : 'none';
-
-        fields.forEach(field => tabContent.appendChild(createFieldInput(field)));
-
-        tabsContent.appendChild(tabContent);
-
-        btn.addEventListener('click', () => {
-            tabsContent.querySelectorAll('.tab-pane').forEach((p, i) => p.style.display = i === index ? 'grid' : 'none');
-            tabsButtons.querySelectorAll('button').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
-            btn.classList.add('bg-blue-500', 'text-white');
-        });
-
-        first = false;
-    });
-
-    container.appendChild(tabsButtons);
-    container.appendChild(tabsContent);
-
-    return container;
-}
-
 function buildTabsDesktop(tabsMap) {
     const container = document.createElement('div');
     const tabsButtons = document.createElement('div');
@@ -679,41 +631,6 @@ function buildTabsDesktop(tabsMap) {
 
     container.appendChild(tabsButtons);
     container.appendChild(tabsContent);
-
-    return container;
-}
-
-function buildAccordionMobile_(tabsMap) {
-    const container = document.createElement('div');
-    container.className = 'tabs-container w-full';
-
-    Object.entries(tabsMap).forEach(([tabName, fields]) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
-        btn.className = 'tab-btn px-4 py-2 border rounded text-left w-full';
-
-        const pane = document.createElement('div');
-        pane.className = 'tab-pane grid grid-cols-1 gap-4 w-full';
-        pane.style.display = 'none';
-
-        fields.forEach(field => pane.appendChild(createFieldInput(field)));
-
-        btn.addEventListener('click', () => {
-            const isOpen = pane.style.display === 'grid';
-            container.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
-            container.querySelectorAll('button').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
-
-            if (!isOpen) {
-                pane.style.display = 'grid';
-                btn.classList.add('bg-blue-500', 'text-white');
-                scrollToElement(btn);
-            }
-        });
-
-        container.appendChild(btn);
-        container.appendChild(pane);
-    });
 
     return container;
 }
@@ -769,7 +686,6 @@ function buildAccordionMobile(tabsMap) {
 
     return container;
 }
-
 function scrollToElement(element) {
     if (!element) return;
 
@@ -782,8 +698,6 @@ function scrollToElement(element) {
         behavior: 'smooth'
     });
 }
-
-
 export function renderFormCrud() {
     const formGroup = document.getElementById('form-group');
     formGroup.innerHTML = '';
@@ -806,8 +720,6 @@ export function renderFormCrud() {
         }
     });
 }
-
-
 async function buildSearchFK(tipo, campoId, valor) {
     // tipo = "search" ou "insert"
     const inputId = `${tipo}-${campoId}`;
@@ -846,7 +758,6 @@ function openSearchFK(metadataFk, campoDestino) {
     renderSearch(metadataFk, true); // true = modo FK
     crudSearch(metadataFk, true);
 }
-
 async function crudCreateOrUpdate() {
     if (crudState.currentAction == Actions.UPDATE) {
         crudUpdate();
@@ -854,8 +765,6 @@ async function crudCreateOrUpdate() {
         crudCreate();
     }
 }
-
-
 async function crudCreate() {
 
     const token = localStorage.getItem('token');
@@ -946,22 +855,66 @@ async function crudUpdate() {
         erroRequestResponse(error);
     }
 }
-
 async function editRecord(item) {
-
     crudState.currentAction = Actions.UPDATE;
 
-    // Preencher os campos de inserção com os dados do item
-    crudState.metadata.formFields.forEach(field => {
-        const input = document.getElementById(`insert-${field.id}`);
-        if (field.isFk) {
-            input.dataset.id = item[field.id.toLowerCase()] || '';
-        }
-        input.value = item[field.id.toLowerCase()] || '';
-    });
+    const token = localStorage.getItem('token');
+    const url = `${environments.urlApi}${crudState.metadata.endpoints.read}`;
 
-    scrollToCadastro();
+    // Monta o payload baseado no padrão de fetchSearchResults
+    const payload = {
+        paginacao: {
+            page: 1,
+            pageSize: 1,
+            pageWhithCount: false
+        },
+        // filtro apenas pelo ID
+        id: item.id
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            showAlert("Erro ao carregar detalhes do registro.", "error");
+            return;
+        }
+
+        const responseJson = await response.json();
+
+        // Extrai o registro completo do retorno
+        const fullRecord = responseJson.data?.items?.[0] || responseJson.results?.[0] || null;
+
+        if (!fullRecord) {
+            showAlert("Registro não encontrado.", "warning");
+            return;
+        }
+
+        // Preenche o formulário
+        crudState.metadata.formFields.forEach(field => {
+            const input = document.getElementById(`insert-${field.id}`);
+            if (!input) return;
+
+            if (field.isFk) {
+                input.dataset.id = fullRecord[field.id] || '';
+            }
+            input.value = fullRecord[field.id] ?? '';
+        });
+
+        scrollToCadastro();
+
+    } catch (error) {
+        erroRequestResponse(error);
+    }
 }
+
 
 function scrollToCadastro() {
     const crudContainer = document.getElementById('crud-container');
@@ -970,10 +923,6 @@ function scrollToCadastro() {
     // Rola o próprio container até o final
     crudContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
-
-
-
-
 async function deleteRecord(item) {
 
     showConfirm(`Tem certeza que deseja excluir o registro com ID ${item.id}?`, async () => {

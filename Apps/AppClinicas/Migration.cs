@@ -160,14 +160,12 @@ namespace AppClinicas
             .ToCommand();
 
             AddQuery<Sesoes>("Standard", q => q
-             .WhereContext("Hoje", s => s.Paciente.Nome == "Angelo")
-             .WhereContext("Semana", s => s.DataInicio >= DateTime.Today && s.Paciente.Id == 1 && s.Paciente.Nome == "")
-             .WhereContext("Mes", s => s.DataInicio >= DateTime.Today)
-             .Where("Geral", s => s.DataInicio >= DateTime.Today)
+            .WhereContext("Hoje", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(1))
+             .WhereContext("Semana", s => s.DataInicio >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && s.DataInicio < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek))
+             .WhereContext("Mes", s => s.DataInicio.Month == DateTime.Today.Month && s.DataInicio.Year == DateTime.Today.Year)
+             .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today)
+
              .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome }));
-
-
-
 
 
 

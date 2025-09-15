@@ -33,14 +33,12 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoServicoQuery(IGrupoServicoEntity GrupoServico)
         {
-            this.Query = $@" UPDATE GrupoServico SET Descricao = @Descricao, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE GrupoServico SET Descricao = @Descricao, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Descricao = GrupoServico.Descricao,
-                TenantID = GrupoServico.TenantID,
-                Deleted = GrupoServico.Deleted,
                 Changed = GrupoServico.Changed,
-                UserId = GrupoServico.UserId,
+                UserId = _currentUser.UserId,
                 Id = GrupoServico.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

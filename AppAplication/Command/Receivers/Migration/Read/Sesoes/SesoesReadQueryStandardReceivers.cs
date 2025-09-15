@@ -21,15 +21,9 @@ namespace Command.Receivers.Read
 
         protected override State<DataPagination<SesoesStandardDTO>> Action(ICommand comand)
         {
-            if (comand is Command.Read.SesoesGeralCommand c)
-            {
-                var SesoesReadRepository = _repository.GetSesoesMes(c);
-                return Success("OK", SesoesReadRepository);
-            }
-            else
-            {
-                return Error("ErroConversao", default);
-            }
+
+            return Error("ErroConversao", default);
+
         }
     }
 }

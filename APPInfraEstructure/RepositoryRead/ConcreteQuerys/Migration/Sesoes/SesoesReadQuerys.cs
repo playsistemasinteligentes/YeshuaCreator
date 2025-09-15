@@ -1399,8 +1399,11 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
 
-                dict["Nome"] = $"{"Angelo"}";
-                whereClauses.Add("t1.Nome = @Nome");
+                dict["DataInicio_1"] = DateTime.Today;
+                whereClauses.Add("t0.DataInicio >= @DataInicio_1");
+
+                dict["DataInicio_2"] = DateTime.Today.AddDays(1);
+                whereClauses.Add("t0.DataInicio < @DataInicio_2");
 
             dict["Deleted"] = 0;
             dict["TenantID"] = _currentUser.TenantID;
@@ -1428,12 +1431,11 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
 
+                dict["DataInicio_1"] = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                whereClauses.Add("t0.DataInicio >= @DataInicio_1");
 
-                dict["Id"] = 1;
-                whereClauses.Add("t1.Id = @Id");
-
-                dict["Nome"] = $"{""}";
-                whereClauses.Add("t1.Nome = @Nome");
+                dict["DataInicio_2"] = DateTime.Today.AddDays((7 - (int)DateTime.Today.DayOfWeek));
+                whereClauses.Add("t0.DataInicio < @DataInicio_2");
 
             dict["Deleted"] = 0;
             dict["TenantID"] = _currentUser.TenantID;
@@ -1461,6 +1463,11 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
 
+                dict["Month_1"] = DateTime.Today.Month;
+                whereClauses.Add("t0.Month = @Month_1");
+
+                dict["Year_2"] = DateTime.Today.Year;
+                whereClauses.Add("t0.Year = @Year_2");
 
             dict["Deleted"] = 0;
             dict["TenantID"] = _currentUser.TenantID;
@@ -1490,6 +1497,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
 
             if (Command.DataInicio != null)
             {
+                dict["DataInicio"] = DateTime.Today;
+                whereClauses.Add("t0.DataInicio >= @DataInicio");
+            }
+
+            if (Command.DataFim != null)
+            {
+                dict["DataFim"] = DateTime.Today;
+                whereClauses.Add("t0.DataFim <= @DataFim");
             }
 
             dict["Deleted"] = 0;

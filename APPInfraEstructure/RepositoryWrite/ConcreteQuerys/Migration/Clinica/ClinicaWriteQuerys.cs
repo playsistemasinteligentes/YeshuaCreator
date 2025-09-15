@@ -35,16 +35,14 @@ namespace Query.Write
         }
         public QueryModel UpdateClinicaQuery(IClinicaEntity Clinica)
         {
-            this.Query = $@" UPDATE Clinica SET Nome = @Nome, Endereco = @Endereco, Telefone = @Telefone, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE Clinica SET Nome = @Nome, Endereco = @Endereco, Telefone = @Telefone, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Nome = Clinica.Nome,
                 Endereco = Clinica.Endereco,
                 Telefone = Clinica.Telefone,
-                TenantID = Clinica.TenantID,
-                Deleted = Clinica.Deleted,
                 Changed = Clinica.Changed,
-                UserId = Clinica.UserId,
+                UserId = _currentUser.UserId,
                 Id = Clinica.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

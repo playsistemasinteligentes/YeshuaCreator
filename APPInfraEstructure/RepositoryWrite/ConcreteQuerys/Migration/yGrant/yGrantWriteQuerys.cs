@@ -34,14 +34,12 @@ namespace Query.Write
         }
         public QueryModel UpdateyGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" UPDATE yGrant SET Description = @Description, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yGrant SET Description = @Description, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Description = yGrant.Description,
-                TenantID = yGrant.TenantID,
-                Deleted = yGrant.Deleted,
                 Changed = yGrant.Changed,
-                UserId = yGrant.UserId,
+                UserId = _currentUser.UserId,
                 Id = yGrant.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -31,11 +31,6 @@ export async function loadDataMenu() {
         // Limpa menu
         menuList.innerHTML = '';
 
-        // Botão logout
-        const logoutLink = createMenuLink('Logout');
-        logoutLink.id = 'logout';
-        logoutLink.addEventListener('click', handleLogout);
-        menuList.appendChild(logoutLink);
 
         menuItems.forEach(item => {
             if (item.children && item.children.length > 0) {
@@ -44,7 +39,8 @@ export async function loadDataMenu() {
                 container.className = 'relative';
 
                 const button = document.createElement('button');
-                button.className = 'menu-toggle flex justify-between w-full px-4 py-2 hover:bg-gray-100 text-gray-700';
+                button.className = 'menu-toggle flex justify-between w-full px-4 py-2 text-white hover:bg-blue-700 rounded';
+
                 button.innerHTML = `
                     ${item.description}
                     <svg class="w-4 h-4 ml-2 transform transition-transform" 
@@ -55,7 +51,8 @@ export async function loadDataMenu() {
                 `;
 
                 const submenuList = document.createElement('div');
-                submenuList.className = 'submenu hidden md:absolute md:mt-2 md:bg-white md:shadow-lg md:rounded-md md:w-48';
+                submenuList.className = 'submenu hidden md:absolute md:mt-2 md:bg-blue-600 md:shadow-lg md:rounded-md md:w-48';
+
 
                 item.children.forEach(child => {
                     const link = createMenuLink(child.description);
@@ -110,13 +107,22 @@ export async function loadDataMenu() {
     }
 }
 
-function createMenuLink(text, extraClasses = '') {
+function createMenuLink(text, extraClasses = '', isSubmenu = false) {
     const link = document.createElement('a');
     link.href = '#';
     link.textContent = text;
-    link.className = `block px-4 py-2 hover:bg-gray-200 ${extraClasses}`;
+
+    if (isSubmenu) {
+        // azul para submenu, tanto mobile quanto desktop
+        link.className = `block px-4 py-2 text-white hover:bg-blue-700 ${extraClasses}`;
+    } else {
+        link.className = `block px-4 py-2 text-white hover:bg-blue-700 rounded ${extraClasses}`;
+    }
+
     return link;
 }
+
+
 
 export function toggleMenu() {
     const menu = document.getElementById('menu');

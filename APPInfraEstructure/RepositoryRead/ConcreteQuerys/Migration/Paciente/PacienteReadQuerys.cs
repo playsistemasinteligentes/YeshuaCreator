@@ -671,8 +671,8 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
 
-                dict["Nome"] = $"{""}";
-                whereClauses.Add("t0.Nome = @Nome");
+                dict["Nome_1"] = $"{""}";
+                whereClauses.Add("t0.Nome = @Nome_1");
 
             dict["Deleted"] = 0;
             dict["TenantID"] = _currentUser.TenantID;

@@ -463,6 +463,16 @@ namespace Dominio.Schemas.CQRS
             }
         }
 
+        private void AppInternalEntitys(MigrationBase migration)
+        {
+
+            var filePath = "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Dominio\\ORM\\entities.cs";
+            var filePathCuston = "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Dominio\\ORM\\Custonentities.cs";
+            var sourceCodeMigration = new SourceCodeEntityInternalMigration(migration.Entitys);
+            sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
+        }
+
+
         public void AppDominioGenerateDominioEnum(Migration.MigrationBase migration)
         {
             throw new NotImplementedException();
@@ -701,6 +711,8 @@ namespace Dominio.Schemas.CQRS
             //AppDominioGenerateDominioPrimitiveTypes(migration);
             //AppDominioGenerateDominioSpecifications(migration);
             //AppDominioGenerateDominioValidation(migration);
+
+            AppInternalEntitys(migration);
 
         }
     }

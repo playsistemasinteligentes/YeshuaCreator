@@ -8,7 +8,7 @@ namespace Repositorio.Outputs
 {
     public record PacienteStandardDTO
     {
-    public int id { get; set; }
+    public Nullable<int> id { get; set; }
     public string nome { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Migration.Dominio.Schemas.CQRS;
 using System.Data.Common;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Dominio.Schemas.CQRS
 {
@@ -102,7 +103,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        public QueryModel Update{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
                 sb.AppendLine("        {");
 
-                parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
+
+                parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID").Select(c => $"{c.Name} = @{c.Name}"));
                 var parametersWhere = string.Join(", ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
                 sb.AppendLine($"            this.Query = $@\" UPDATE {_entity.EntityName} SET {parametersString} WHERE {parametersWhere} \";");
 
@@ -110,9 +112,13 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            {");
 
                 // debito   incluir beckend fiel
-                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
-                    sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
-
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID"))
+                {
+                    if (column.Name == "UserId")
+                        sb.AppendLine($"                {column.Name} = _currentUser.UserId,");
+                    else
+                        sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
+                }
                 foreach (var column in _entity.AddColumns.Where(x => x.IsKey))
                     sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
                 sb.AppendLine("            };");

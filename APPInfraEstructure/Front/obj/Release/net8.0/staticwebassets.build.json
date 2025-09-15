@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zJt66Dk7avSPkKDkTnrbA3otkYZgRraMYuFaLtS53gQ=",
+  "Hash": "/bFHBAcIAQFAvvt4nUCOu4gHbIEnOP/FQQD4K4RUQg0=",
   "Source": "Front",
   "BasePath": "_content/Front",
   "Mode": "Default",
@@ -414,6 +414,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\spa\\scripts\\router.js"
+    },
+    {
+      "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\ServicesGlobal\\apiFetch.js",
+      "SourceId": "Front",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\",
+      "BasePath": "_content/Front",
+      "RelativePath": "spa/scripts/ServicesGlobal/apiFetch.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\spa\\scripts\\ServicesGlobal\\apiFetch.js"
     },
     {
       "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\Test\\runTestSteps.js",

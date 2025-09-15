@@ -34,15 +34,13 @@ namespace Query.Write
         }
         public QueryModel UpdateDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId, DataHora = @DataHora, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId, DataHora = @DataHora, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,
                 DataHora = DisponibilidadeAgenda.DataHora,
-                TenantID = DisponibilidadeAgenda.TenantID,
-                Deleted = DisponibilidadeAgenda.Deleted,
                 Changed = DisponibilidadeAgenda.Changed,
-                UserId = DisponibilidadeAgenda.UserId,
+                UserId = _currentUser.UserId,
                 Id = DisponibilidadeAgenda.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

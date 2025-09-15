@@ -38,7 +38,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
-            this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId, ServicoId = @ServicoId, Valor = @Valor, TipoMovimentacao = @TipoMovimentacao, DataMovimentacao = @DataMovimentacao, SaldoAtual = @SaldoAtual, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE MovimentacaoFinanceira SET PacienteId = @PacienteId, ServicoId = @ServicoId, Valor = @Valor, TipoMovimentacao = @TipoMovimentacao, DataMovimentacao = @DataMovimentacao, SaldoAtual = @SaldoAtual, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 PacienteId = MovimentacaoFinanceira.PacienteId,
@@ -47,10 +47,8 @@ namespace Query.Write
                 TipoMovimentacao = MovimentacaoFinanceira.TipoMovimentacao,
                 DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
                 SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
-                TenantID = MovimentacaoFinanceira.TenantID,
-                Deleted = MovimentacaoFinanceira.Deleted,
                 Changed = MovimentacaoFinanceira.Changed,
-                UserId = MovimentacaoFinanceira.UserId,
+                UserId = _currentUser.UserId,
                 Id = MovimentacaoFinanceira.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

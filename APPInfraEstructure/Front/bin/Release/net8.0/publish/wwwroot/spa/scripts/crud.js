@@ -3,6 +3,7 @@ import { Actions } from './crudEnumerator.js';
 import { showAlert } from './alerts.js';
 import { showConfirm } from './menssagensConfirm.js';
 import { showFkModal, hideFkModal } from './components/fk-modal.js';
+import { apiFetch } from './ServicesGlobal/apiFetch.js';
 
 export function buildCrud() {
 
@@ -80,7 +81,6 @@ function togglePaginationControls(metadata = crudState.metadata, modoFk = false)
     container.appendChild(info);
     container.appendChild(btnNext);
 }
-
 export async function loadDataCrud(fullUrl, type) {
 
     document.getElementById('table-container').innerHTML = '';
@@ -111,18 +111,49 @@ function setStateCreate() {
     renderFormCrud();
 }
 function crudSearch(metadata = crudState.metadata, modoFk = false) {
-    resetPagination();
+
+    const currentSearch = metadata.search?.[0]
+    resetPagination(currentSearch.endpoint);
     fetchSearchResults(metadata, modoFk);
 }
-function resetPagination() {
+function resetPagination(endpoint) {
+    crudState.fullUrl = `${environments.urlApi}${endpoint}`;
     crudState.pagination.page = 1;
 }
+function renderQuickSearches(quickSearches) {
+    const container = document.getElementById("quick-search-container");
+    container.innerHTML = ""; // limpa antes
 
+    quickSearches.forEach(qs => {
+        const btn = document.createElement("button");
+        btn.className = "p-2 rounded hover:bg-blue-100 text-blue-600 transition flex items-center";
+        btn.innerHTML = `
+            <i class="fas fa-${qs.icon} mr-1"></i>
+            ${qs.label}
+        `;
+
+        btn.addEventListener("click", async () => {
+            // Guarda quick search selecionado
+            crudState.selectedQuickSearch = qs;
+
+            // Reseta paginação para página 1
+            resetPagination(qs.endpoint);
+
+            // Chama fetchSearchResults como nas outras pesquisas
+            // Passa metadata atual, se necessário, ou null se for só endpoint
+            await fetchSearchResults(crudState.metadata);
+        });
+
+        container.appendChild(btn);
+    });
+}
 async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
     const token = localStorage.getItem('token');
 
     const searchFilters = {};
-    metadata.formFields.forEach(field => {
+    const currentSearch = metadata.search?.[0];
+    (currentSearch?.filterFields || []).forEach(field => {
+
         const input = document.getElementById(`search-${field.id}`);
         if (!input || input.value === '') return;
 
@@ -141,13 +172,13 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
         ...searchFilters,
         paginacao: {
             page: crudState.pagination.page || 1,
-            pageSize: crudState.pagination.pageSize || 20,
+            pageSize: crudState.pagination.pageSize || 5,
             pageWhithCount: crudState.pagination.PageWhithCount || false
         }
     };
 
     try {
-        const response = await fetch(`${environments.urlApi}${metadata.endpoints.read}`, {
+        const response = await fetch(`${crudState.fullUrl}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -163,7 +194,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
             const items = paginatedData.items || [];
 
             crudState.pagination.page = paginatedData.page || 1;
-            crudState.pagination.pageSize = paginatedData.pageSize || 20;
+            crudState.pagination.pageSize = paginatedData.pageSize || 5;
             crudState.pagination.total = paginatedData.totalItems || 0;
             crudState.pagination.hasNext = paginatedData.totalItems
                 ? (paginatedData.page * paginatedData.pageSize < paginatedData.totalItems)
@@ -179,7 +210,6 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
         erroRequestResponse(error);
     }
 }
-
 function renderSearch(metadata, modoFk = false) {
 
     const formGroup = modoFk
@@ -188,7 +218,9 @@ function renderSearch(metadata, modoFk = false) {
 
     formGroup.innerHTML = '';
 
-    metadata.searchFields.forEach(field => {
+    const currentSearch = metadata.search?.[0];
+    (currentSearch?.filterFields || []).forEach(field => {
+
         const wrapper = document.createElement('div');
         wrapper.className = 'flex flex-col';
 
@@ -291,39 +323,22 @@ function renderSearch(metadata, modoFk = false) {
         btnContainer.appendChild(btnPesquisar);
         formGroup.appendChild(btnContainer);
     }
+
+    if (!modoFk && currentSearch.quickSearches) {
+        renderQuickSearches(metadata.search[0].quickSearches);
+    }
+
+
 }
-
 function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) {
-
     const container = modoFk
         ? document.getElementById('modal-tabela-fk')
         : document.getElementById('table-container');
 
+    const currentSearch = metadata.search?.find(s => s.id === "Standard") || metadata.search[0];
+
+
     container.innerHTML = '';
-
-    // --- Função auxiliar para criar células clicáveis ---
-    function createClickableCell(item, field) {
-        const cell = document.createElement('td');
-        cell.className = 'px-4 py-2 border text-sm text-gray-800';
-
-        const value = item[field.id.toLowerCase()] || '';
-        const link = document.createElement('a');
-        link.href = '#';
-        link.textContent = value;
-        link.className = 'text-blue-600 hover:underline';
-        link.onclick = (e) => {
-            e.preventDefault();
-            // Lógica do botão "Selecionar" original
-            const campo = crudState.fkContext.campoDestino;
-            const input = document.getElementById(`${campo}`);
-            input.value = item.nome || item.descricao || item.id || ''; // pode personalizar conforme a chave
-            input.dataset.id = item.id;
-            hideFkModal();
-        };
-
-        cell.appendChild(link);
-        return cell;
-    }
 
     // --- DESKTOP TABLE ---
     const tableWrapper = document.createElement('div');
@@ -336,12 +351,19 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     const headerRow = document.createElement('tr');
     headerRow.className = 'bg-gray-100';
 
-    metadata.formFields.forEach(field => {
+
+    (currentSearch?.resultFields || []).forEach(field => {
+
         const th = document.createElement('th');
         th.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
         th.textContent = field.label;
         headerRow.appendChild(th);
     });
+
+    const thActions = document.createElement('th');
+    thActions.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
+    thActions.textContent = 'Ações';
+    headerRow.appendChild(thActions);
 
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -351,7 +373,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     if (data.length === 0) {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = metadata.formFields.length;
+        cell.colSpan = metadata.formFields.length + 1;
         cell.className = 'px-4 py-2 border text-center text-gray-500';
         cell.textContent = "Nenhum dado encontrado";
         row.appendChild(cell);
@@ -361,10 +383,58 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
 
-            metadata.formFields.forEach(field => {
-                row.appendChild(createClickableCell(item, field));
+            currentSearch?.resultFields.forEach(field => {
+                const cell = document.createElement('td');
+                cell.className = 'px-4 py-2 border text-sm text-gray-800';
+                cell.textContent = item[field.id.toLowerCase()] || '';
+
+                // 👉 Se for modoFk, transforma a célula em "Selecionar"
+                if (modoFk) {
+                    cell.classList.add('cursor-pointer', 'hover:bg-green-50');
+                    cell.onclick = () => {
+                        const campo = crudState.fkContext.campoDestino;
+                        const input = document.getElementById(`${campo}`);
+                        input.value = item.nome || item.descricao || item.id || '';
+                        input.dataset.id = item.id;
+                        hideFkModal();
+                    };
+                }
+
+                row.appendChild(cell);
             });
 
+            const actionsCell = document.createElement('td');
+            actionsCell.className = 'px-4 py-2 border text-sm';
+
+            if (modoFk) {
+                // Mantém compatibilidade, mas você pode remover se quiser
+                const selectBtn = document.createElement('button');
+                selectBtn.textContent = 'Selecionar';
+                selectBtn.className = 'text-green-600 hover:underline';
+                selectBtn.onclick = () => {
+                    const campo = crudState.fkContext.campoDestino;
+                    const input = document.getElementById(`${campo}`);
+                    input.value = item.nome || item.descricao || item.id || '';
+                    input.dataset.id = item.id;
+                    hideFkModal();
+                };
+                actionsCell.appendChild(selectBtn);
+            } else {
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.className = 'text-blue-600 hover:underline mr-2';
+                editBtn.onclick = () => editRecord(item);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.className = 'text-red-600 hover:underline';
+                deleteBtn.onclick = () => deleteRecord(item);
+
+                actionsCell.appendChild(editBtn);
+                actionsCell.appendChild(deleteBtn);
+            }
+
+            row.appendChild(actionsCell);
             tbody.appendChild(row);
         });
     }
@@ -387,33 +457,45 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             const card = document.createElement('div');
             card.className = 'bg-white border rounded p-4 shadow';
 
-            metadata.formFields.forEach(field => {
+            currentSearch?.resultFields.forEach(field => {
                 const fieldValue = item[field.id.toLowerCase()] || '';
                 const p = document.createElement('p');
-                p.className = 'mb-1';
+                p.innerHTML = `<strong>${field.label}:</strong> ${fieldValue}`;
 
-                const label = document.createElement('strong');
-                label.textContent = field.label + ': ';
-                p.appendChild(label);
+                // 👉 Se for modoFk, transforma cada campo em clicável
+                if (modoFk) {
+                    p.classList.add('cursor-pointer', 'hover:text-green-600');
+                    p.onclick = () => {
+                        const campo = crudState.fkContext.campoDestino;
+                        const input = document.getElementById(`${campo}`);
+                        input.value = item.nome || item.descricao || item.id || '';
+                        input.dataset.id = item.id;
+                        hideFkModal();
+                    };
+                }
 
-                const link = document.createElement('a');
-                link.href = '#';
-                link.textContent = fieldValue;
-                link.className = 'text-blue-600 hover:underline';
-                link.onclick = (e) => {
-                    e.preventDefault();
-                    // Lógica do botão "Selecionar" original
-                    const campo = crudState.fkContext.campoDestino;
-                    const input = document.getElementById(`${campo}`);
-                    input.value = item.nome || item.descricao || item.id || '';
-                    input.dataset.id = item.id;
-                    hideFkModal();
-                };
-
-                p.appendChild(link);
                 card.appendChild(p);
             });
 
+            const actions = document.createElement('div');
+            actions.className = 'mt-2 flex gap-4';
+
+            if (!modoFk) {
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.className = 'text-blue-600 hover:underline';
+                editBtn.onclick = () => editRecord(item);
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.className = 'text-red-600 hover:underline';
+                deleteBtn.onclick = () => deleteRecord(item);
+
+                actions.appendChild(editBtn);
+                actions.appendChild(deleteBtn);
+            }
+
+            card.appendChild(actions);
             cardWrapper.appendChild(card);
         });
     }
@@ -421,10 +503,202 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     container.appendChild(cardWrapper);
     container.style.display = 'block';
 }
+function createFieldInput(field, tipo = 'insert') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flex flex-col w-full';
 
+    const label = document.createElement('label');
+    label.textContent = field.label;
+    label.setAttribute('for', `${tipo}-${field.id}`);
+    label.className = 'block text-sm font-medium text-gray-400 mb-1';
 
+    let input;
 
-function renderFormCrud() {
+    if (field.type.toLowerCase() === 'list' || field.type.toLowerCase() === 'enum') {
+        input = document.createElement('select');
+        input.id = `${tipo}-${field.id}`;
+        input.className = 'border p-2 rounded w-full';
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = `Selecione ${field.label}`;
+        input.appendChild(defaultOption);
+        field.options?.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.textContent = opt.display;
+            input.appendChild(option);
+        });
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+
+    } else if (field.isFk) {
+        input = document.createElement('input');
+        input.id = `${tipo}-${field.id}`;
+        input.className = 'border p-2 rounded w-full';
+        input.dataset.description = '';
+        input.dataset.id = '';
+        input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buildSearchFK(tipo, field.id, input.value);
+            }
+        });
+
+        const fkWrapper = document.createElement('div');
+        fkWrapper.className = 'flex gap-2 w-full';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.innerHTML = '🔍';
+        button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
+        button.onclick = () => buildSearchFK(tipo, field.id, input.value);
+
+        fkWrapper.appendChild(input);
+        fkWrapper.appendChild(button);
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(fkWrapper);
+
+    } else {
+        switch (field.type.toLowerCase()) {
+            case 'int':
+                input = document.createElement('input');
+                input.type = 'number';
+                input.step = '1';
+                break;
+            case 'float':
+            case 'decimal':
+                input = document.createElement('input');
+                input.type = 'number';
+                input.step = '0.01';
+                break;
+            case 'datetime':
+                input = document.createElement('input');
+                input.type = 'datetime-local';
+                break;
+            case 'memo':
+                input = document.createElement('textarea');
+                input.rows = 4;
+                input.placeholder = `Digite ${field.label}...`;
+                break;
+            default:
+                input = document.createElement('input');
+                input.type = 'text';
+        }
+        input.id = `${tipo}-${field.id}`;
+        input.className = 'border p-2 rounded w-full resize-y';
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+    }
+
+    return wrapper;
+}
+function buildTabsDesktop(tabsMap) {
+    const container = document.createElement('div');
+    const tabsButtons = document.createElement('div');
+    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
+    const tabsContent = document.createElement('div');
+    tabsContent.className = 'tabs-content w-full';
+
+    let first = true;
+
+    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
+        if (first) btn.classList.add('bg-blue-500', 'text-white');
+        tabsButtons.appendChild(btn);
+
+        const tabContent = document.createElement('div');
+        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
+        tabContent.style.display = first ? 'grid' : 'none';
+
+        fields.forEach(field => tabContent.appendChild(createFieldInput(field)));
+
+        btn.addEventListener('click', () => {
+            tabsContent.querySelectorAll('.tab-pane').forEach((p, i) => p.style.display = i === index ? 'grid' : 'none');
+            tabsButtons.querySelectorAll('button').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+            btn.classList.add('bg-blue-500', 'text-white');
+            scrollToElement(btn);
+        });
+
+        tabsContent.appendChild(tabContent);
+        first = false;
+    });
+
+    container.appendChild(tabsButtons);
+    container.appendChild(tabsContent);
+
+    return container;
+}
+function buildAccordionMobile(tabsMap) {
+    const container = document.createElement('div');
+    container.className = 'w-full space-y-2'; // espaçamento entre abas
+
+    Object.entries(tabsMap).forEach(([tabName, fields]) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'border rounded-md overflow-hidden';
+
+        // botão da aba
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = `
+            <span class="font-semibold text-gray-700">${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</span>
+            <span class="ml-auto transform transition-transform text-gray-500">▸</span>
+        `;
+        btn.className = 'tab-btn flex items-center justify-between w-full px-4 py-2 bg-gray-50 hover:bg-gray-100';
+
+        // conteúdo da aba
+        const pane = document.createElement('div');
+        pane.className = 'tab-pane grid grid-cols-1 gap-4 w-full overflow-hidden transition-all duration-300 ease-in-out';
+        pane.style.maxHeight = '0'; // fechado por padrão
+
+        fields.forEach(field => pane.appendChild(createFieldInput(field)));
+
+        btn.addEventListener('click', () => {
+            const isOpen = pane.style.maxHeight !== '0px';
+
+            // Fecha todos
+            container.querySelectorAll('.tab-pane').forEach(p => p.style.maxHeight = '0');
+            container.querySelectorAll('.tab-btn span:last-child').forEach(icon => {
+                icon.style.transform = 'rotate(0deg)';
+                icon.textContent = '▸'; // seta lateral
+            });
+
+            if (!isOpen) {
+                pane.style.maxHeight = pane.scrollHeight + 'px';
+                const icon = btn.querySelector('span:last-child');
+                icon.style.transform = 'rotate(90deg)'; // gira pra baixo
+                icon.textContent = '▾'; // seta para baixo
+
+                // scroll após animação
+                setTimeout(() => scrollToElement(btn), 320);
+            }
+        });
+
+        wrapper.appendChild(btn);
+        wrapper.appendChild(pane);
+        container.appendChild(wrapper);
+    });
+
+    return container;
+}
+function scrollToElement(element) {
+    if (!element) return;
+
+    // Se houver header fixo, ajusta a margem automaticamente
+    const header = document.querySelector('header');
+    const headerHeight = header ? header.offsetHeight : 0;
+
+    window.scrollTo({
+        top: element.getBoundingClientRect().top + window.scrollY - headerHeight - 8, // 8px de margem
+        behavior: 'smooth'
+    });
+}
+export function renderFormCrud() {
     const formGroup = document.getElementById('form-group');
     formGroup.innerHTML = '';
 
@@ -435,175 +709,17 @@ function renderFormCrud() {
         tabsMap[tabKey].push(field);
     });
 
-    const tabsContainer = document.createElement('div');
-    tabsContainer.className = 'tabs-container w-full';
-
-    const tabsButtons = document.createElement('div');
-    tabsButtons.className = 'tabs-buttons flex flex-col md:flex-row gap-2 mb-4 w-full';
-
-    const tabsContent = document.createElement('div');
-    tabsContent.className = 'tabs-content w-full';
-
-    let first = true;
-    Object.entries(tabsMap).forEach(([tabName, fields], index) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = tabName.charAt(0).toUpperCase() + tabName.slice(1);
-        btn.className = 'px-4 py-2 border rounded text-left md:text-center w-full md:w-auto';
-        if (first) btn.classList.add('bg-blue-500', 'text-white');
-        btn.dataset.tabIndex = index;
-        tabsButtons.appendChild(btn);
-
-        const tabContent = document.createElement('div');
-        tabContent.className = 'tab-pane grid grid-cols-1 md:grid-cols-3 gap-4 w-full';
-        tabContent.style.display = first ? 'grid' : 'none';
-
-        fields.forEach(field => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'flex flex-col w-full';
-
-            const label = document.createElement('label');
-            label.textContent = field.label;
-            label.setAttribute('for', `insert-${field.id}`);
-            label.className = 'block text-sm font-medium text-gray-400 mb-1';
-
-            let input;
-            if (field.type.toLowerCase() === 'list' || field.type.toLowerCase() === 'enum') {
-                input = document.createElement('select');
-                input.id = `insert-${field.id}`;
-                input.className = 'border p-2 rounded w-full';
-
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = `Selecione ${field.label}`;
-                input.appendChild(defaultOption);
-
-                if (field.options && Array.isArray(field.options)) {
-                    field.options.forEach(optionData => {
-                        const option = document.createElement('option');
-                        option.value = optionData.value;
-                        option.textContent = optionData.display;
-                        input.appendChild(option);
-                    });
-                }
-
-                wrapper.appendChild(label);
-                wrapper.appendChild(input);
-            } else {
-                if (field.isFk) {
-                    input = document.createElement('input');
-                    input.id = `insert-${field.id}`;
-                    input.className = 'border p-2 rounded w-full';
-                    input.dataset.description = '';
-                    input.dataset.id = '';
-                    input.dataset.endPontGetMetadata = field.endPontGetMetadata;
-
-                    input.addEventListener('keypress', function (event) {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            buildSearchFK('insert', field.id, input.value);
-                        }
-                    });
-
-                    const fkWrapper = document.createElement('div');
-                    fkWrapper.className = 'flex gap-2 w-full';
-
-                    const button = document.createElement('button');
-                    button.type = 'button';
-                    button.innerHTML = '🔍';
-                    button.className = 'px-2 bg-gray-200 hover:bg-gray-300 rounded';
-                    button.onclick = () => buildSearchFK('insert', field.id, input.value);
-
-                    fkWrapper.appendChild(input);
-                    fkWrapper.appendChild(button);
-
-                    wrapper.appendChild(label);
-                    wrapper.appendChild(fkWrapper);
-                } else {
-                    // ✅ tipos normais + memo
-                    switch (field.type.toLowerCase()) {
-                        case 'int':
-                            input = document.createElement('input');
-                            input.type = 'number';
-                            input.step = '1';
-                            break;
-
-                        case 'float':
-                        case 'decimal':
-                            input = document.createElement('input');
-                            input.type = 'number';
-                            input.step = '0.01';
-                            break;
-
-                        case 'datetime':
-                            input = document.createElement('input');
-                            input.type = 'datetime-local';
-                            break;
-
-                        case 'memo': // <-- NOVO: textarea
-                            input = document.createElement('textarea');
-                            input.rows = 4;
-                            input.placeholder = `Digite ${field.label}...`;
-                            break;
-
-                        default:
-                            input = document.createElement('input');
-                            input.type = 'text';
-                    }
-
-                    input.id = `insert-${field.id}`;
-                    input.className = 'border p-2 rounded w-full resize-y';
-
-                    wrapper.appendChild(label);
-                    wrapper.appendChild(input);
-                }
-            }
-
-            tabContent.appendChild(wrapper);
-        });
-
-        tabsContent.appendChild(tabContent);
-        first = false;
-    });
-
-    tabsContainer.appendChild(tabsButtons);
-    tabsContainer.appendChild(tabsContent);
-    formGroup.appendChild(tabsContainer);
-
-    const buttons = tabsButtons.querySelectorAll('button');
-    const panes = tabsContent.querySelectorAll('.tab-pane');
-
-    buttons.forEach((btn, idx) => {
-        btn.addEventListener('click', () => {
-            const isMobile = window.innerWidth < 768;
-            if (isMobile) {
-                panes[idx].style.display = panes[idx].style.display === 'grid' ? 'none' : 'grid';
-            } else {
-                panes.forEach(p => (p.style.display = 'none'));
-                panes[idx].style.display = 'grid';
-                buttons.forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
-                btn.classList.add('bg-blue-500', 'text-white');
-            }
-        });
-    });
+    const isMobile = window.innerWidth < 768;
+    const layout = isMobile ? buildAccordionMobile(tabsMap) : buildTabsDesktop(tabsMap);
+    formGroup.appendChild(layout);
 
     window.addEventListener('resize', () => {
-        const isMobile = window.innerWidth < 768;
-        panes.forEach((pane, idx) => {
-            if (isMobile) {
-                pane.style.display = 'none';
-            } else {
-                pane.style.display = idx === 0 ? 'grid' : 'none';
-            }
-        });
-        buttons.forEach((b, idx) => {
-            b.classList.remove('bg-blue-500', 'text-white');
-            if (!isMobile && idx === 0) b.classList.add('bg-blue-500', 'text-white');
-        });
+        const isMobileResize = window.innerWidth < 768;
+        if ((isMobile && !isMobileResize) || (!isMobile && isMobileResize)) {
+            renderFormCrud();
+        }
     });
 }
-
-
 async function buildSearchFK(tipo, campoId, valor) {
     // tipo = "search" ou "insert"
     const inputId = `${tipo}-${campoId}`;
@@ -642,7 +758,6 @@ function openSearchFK(metadataFk, campoDestino) {
     renderSearch(metadataFk, true); // true = modo FK
     crudSearch(metadataFk, true);
 }
-
 async function crudCreateOrUpdate() {
     if (crudState.currentAction == Actions.UPDATE) {
         crudUpdate();
@@ -650,8 +765,6 @@ async function crudCreateOrUpdate() {
         crudCreate();
     }
 }
-
-
 async function crudCreate() {
 
     const token = localStorage.getItem('token');
@@ -742,21 +855,74 @@ async function crudUpdate() {
         erroRequestResponse(error);
     }
 }
-
 async function editRecord(item) {
-
     crudState.currentAction = Actions.UPDATE;
 
-    // Preencher os campos de inserção com os dados do item
-    crudState.metadata.formFields.forEach(field => {
-        const input = document.getElementById(`insert-${field.id}`);
-        if (field.isFk) {
-            input.dataset.id = item[field.id.toLowerCase()] || '';
+    const token = localStorage.getItem('token');
+    const url = `${environments.urlApi}${crudState.metadata.endpoints.read}`;
+
+    // Monta o payload baseado no padrão de fetchSearchResults
+    const payload = {
+        paginacao: {
+            page: 1,
+            pageSize: 1,
+            pageWhithCount: false
+        },
+        // filtro apenas pelo ID
+        id: item.id
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            showAlert("Erro ao carregar detalhes do registro.", "error");
+            return;
         }
-        input.value = item[field.id.toLowerCase()] || '';
-    });
+
+        const responseJson = await response.json();
+
+        // Extrai o registro completo do retorno
+        const fullRecord = responseJson.data?.items?.[0] || responseJson.results?.[0] || null;
+
+        if (!fullRecord) {
+            showAlert("Registro não encontrado.", "warning");
+            return;
+        }
+
+        // Preenche o formulário
+        crudState.metadata.formFields.forEach(field => {
+            const input = document.getElementById(`insert-${field.id}`);
+            if (!input) return;
+
+            if (field.isFk) {
+                input.dataset.id = fullRecord[field.id] || '';
+            }
+            input.value = fullRecord[field.id] ?? '';
+        });
+
+        scrollToCadastro();
+
+    } catch (error) {
+        erroRequestResponse(error);
+    }
 }
 
+
+function scrollToCadastro() {
+    const crudContainer = document.getElementById('crud-container');
+    if (!crudContainer) return;
+
+    // Rola o próprio container até o final
+    crudContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
 async function deleteRecord(item) {
 
     showConfirm(`Tem certeza que deseja excluir o registro com ID ${item.id}?`, async () => {

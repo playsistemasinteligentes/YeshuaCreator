@@ -40,7 +40,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET PerfilId = @PerfilId, GrantId = @GrantId, Grant = @Grant, Create = @Create, Read = @Read, Update = @Update, Delete = @Delete, ValidUntil = @ValidUntil, TenantID = @TenantID, Deleted = @Deleted, Changed = @Changed, UserId = @UserId WHERE  ";
+            this.Query = $@" UPDATE yPerfilGrant SET PerfilId = @PerfilId, GrantId = @GrantId, Grant = @Grant, Create = @Create, Read = @Read, Update = @Update, Delete = @Delete, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE  ";
             this.Parameters = new
             {
                 PerfilId = yPerfilGrant.PerfilId,
@@ -51,10 +51,8 @@ namespace Query.Write
                 Update = yPerfilGrant.Update,
                 Delete = yPerfilGrant.Delete,
                 ValidUntil = yPerfilGrant.ValidUntil,
-                TenantID = yPerfilGrant.TenantID,
-                Deleted = yPerfilGrant.Deleted,
                 Changed = yPerfilGrant.Changed,
-                UserId = yPerfilGrant.UserId,
+                UserId = _currentUser.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

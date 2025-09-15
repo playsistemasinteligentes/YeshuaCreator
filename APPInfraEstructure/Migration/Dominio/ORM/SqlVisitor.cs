@@ -177,12 +177,14 @@ namespace MyApp.QueryBuilder
 
                     if (leftMember != null && leftSqlResult != null)
                     {
+                        var printer = new ExpressionPrinter();
+
                         conditions.Add(new QueryCondition
                         {
                             Prefix = leftSqlResult.Alias, // 👈 sempre o alias correto
                             Field = leftMember.Member.Name,
                             Operator = op,
-                            RightExpression = be.Right.ToString(),
+                            RightExpression = printer.Print(be.Right),
                             RightExpressionValue = rightExpr,
                             FieldType = ((PropertyInfo)leftMember.Member).PropertyType,
                             EntityName = declaringType.Name

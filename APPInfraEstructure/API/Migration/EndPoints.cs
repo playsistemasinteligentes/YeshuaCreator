@@ -2041,6 +2041,7 @@ app.MapGet("/getMetaDataSesoes", (HttpContext context) =>
             filterFields = new[]
             {
                 new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
+                new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{} },
             },
             quickSearches = new[]
             {
