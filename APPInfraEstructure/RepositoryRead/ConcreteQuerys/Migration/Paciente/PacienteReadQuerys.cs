@@ -699,8 +699,8 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
 
             if (Command.Nome != null)
             {
-                dict["Nome"] = Command.Nome;
-                whereClauses.Add("t0.Nome = @Nome");
+                dict["Nome_0"] = Command.Nome;
+                whereClauses.Add("t0.Nome = @Nome_0");
             }
 
             dict["Deleted"] = 0;

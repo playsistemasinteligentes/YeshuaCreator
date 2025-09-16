@@ -341,15 +341,14 @@ namespace Dominio.Schemas.CQRS
                         foreach (var cond in wh.Value)
                         {
                             sb.AppendLine("");
-                            string param = cond.Field;
                             string param = $"{cond.Field}_{indexParam}";
 
-                            sb.AppendLine($"            if (Command.{param} != null)");
+                            sb.AppendLine($"            if (Command.{cond.Field} != null)");
                             sb.AppendLine("            {");
                             if (cond.Operator == "LIKE")
                             {
-                                sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{param}}}%\";");
-                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} LIKE @{param}\");");
+                                sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{cond.Field}}}%\";");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} LIKE @{param}\");");
                             }
                             else if (Type.GetTypeCode(cond.FieldType) == TypeCode.DateTime)
                             {
@@ -358,8 +357,8 @@ namespace Dominio.Schemas.CQRS
                             }
                             else
                             {
-                                sb.AppendLine($"                dict[\"{param}\"] = Command.{param};");
-                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{param} {cond.Operator} @{param}\");");
+                                sb.AppendLine($"                dict[\"{param}\"] = Command.{cond.Field};");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
                             }
 
                             sb.AppendLine("            }");

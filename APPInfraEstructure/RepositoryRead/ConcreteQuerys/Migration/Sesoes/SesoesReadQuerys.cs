@@ -1497,14 +1497,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
 
             if (Command.DataInicio != null)
             {
-                dict["DataInicio"] = DateTime.Today;
-                whereClauses.Add("t0.DataInicio >= @DataInicio");
+                dict["DataInicio_0"] = DateTime.Today;
+                whereClauses.Add("t0.DataInicio >= @DataInicio_0");
             }
 
             if (Command.DataFim != null)
             {
-                dict["DataFim"] = DateTime.Today;
-                whereClauses.Add("t0.DataFim <= @DataFim");
+                dict["DataFim_0"] = DateTime.Today;
+                whereClauses.Add("t0.DataFim <= @DataFim_0");
             }
 
             dict["Deleted"] = 0;
