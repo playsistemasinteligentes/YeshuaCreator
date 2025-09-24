@@ -6,8 +6,8 @@ namespace Command.Write
         public int? PacienteId { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
-        public int? Status { get; set; }
-        public int? MovimentacaoFinanceiraId { get; set; }
+        public int? StatusAgendamento { get; set; }
+        public int? StatusProntuario { get; set; }
         public string Prontuario { get; set; }
         public string QueixaPrincipal { get; set; }
         public string RegistroDocumental { get; set; }
@@ -29,6 +29,7 @@ namespace Command.Write
         public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
         public int? Id { get; set; }
         public int? ServicoId { get; set; }
+        public int? MovimentacaoFinanceiraId { get; set; }
         public int? ProfissionalId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

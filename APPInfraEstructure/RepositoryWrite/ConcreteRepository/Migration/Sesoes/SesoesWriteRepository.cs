@@ -56,14 +56,14 @@ namespace Input.Repository.Sesoes
             var query = _query.UpdateDataFim(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateStatus(ISesoesEntity entity)
+        public void UpdateStatusAgendamento(ISesoesEntity entity)
         {
-            var query = _query.UpdateStatus(entity);
+            var query = _query.UpdateStatusAgendamento(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateMovimentacaoFinanceiraId(ISesoesEntity entity)
+        public void UpdateStatusProntuario(ISesoesEntity entity)
         {
-            var query = _query.UpdateMovimentacaoFinanceiraId(entity);
+            var query = _query.UpdateStatusProntuario(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateProntuario(ISesoesEntity entity)
@@ -164,6 +164,11 @@ namespace Input.Repository.Sesoes
         public void UpdateServicoId(ISesoesEntity entity)
         {
             var query = _query.UpdateServicoId(entity);
+             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        }
+        public void UpdateMovimentacaoFinanceiraId(ISesoesEntity entity)
+        {
+            var query = _query.UpdateMovimentacaoFinanceiraId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateProfissionalId(ISesoesEntity entity)

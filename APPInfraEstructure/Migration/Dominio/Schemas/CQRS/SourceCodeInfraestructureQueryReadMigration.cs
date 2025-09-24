@@ -84,6 +84,7 @@ namespace Dominio.Schemas.CQRS
             else
             {
                 sb.AppendLine("using Shered.DB;");
+                sb.AppendLine("using System.Data.SqlTypes;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandRead};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIQueryRead};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
@@ -115,7 +116,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            this.Parameters = null;");
                 sb.AppendLine($"            var whereClauses = new List<string>();");
                 sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
-                sb.AppendLine($"            var parametersDict = (IDictionary<string, object>)parameters;");
+                sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
 
 
                 var columnsString = string.Join(", ", _entity.AddColumns.Select(x => x.Name));
@@ -133,8 +134,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            int page = Command.Paginacao?.Page ?? 1;");
                 sb.AppendLine("            int pageSize = Command.Paginacao?.PageSize ?? 20;");
                 sb.AppendLine("            int offset = (page - 1) * pageSize;");
-                sb.AppendLine("            parametersDict[\"Offset\"] = offset;");
-                sb.AppendLine("            parametersDict[\"PageSize\"] = pageSize;");
+                sb.AppendLine("            dict[\"Offset\"] = offset;");
+                sb.AppendLine("            dict[\"PageSize\"] = pageSize;");
                 sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
 
                 sb.AppendLine($"            this.Parameters = parameters;");
@@ -152,15 +153,15 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
-                    sb.AppendLine($"            var parametersDict = (IDictionary<string, object>)parameters;");
+                    sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
 
                     sb.AppendLine("            if (!string.IsNullOrEmpty(Command.searchFK)) ");
                     sb.AppendLine("            {");
                     sb.AppendLine("                 if (int.TryParse(Command.searchFK, out int numero)) ");
                     sb.AppendLine("                 {");
 
-                    sb.AppendLine($"                      parametersDict[\"{column.ColumnReference}\"] = numero; ");
-                    sb.AppendLine($"                      whereClauses.Add($\" {column.ColumnReference} = @{column.ColumnReference}\"); ");
+                    sb.AppendLine($"                      dict[\"{column.ColumnReference}\"] = numero; //01");
+                    sb.AppendLine($"                      whereClauses.Add($\" {column.ColumnReference} = @{column.ColumnReference}\");//01 ");
 
                     sb.AppendLine("                 }");
                     sb.AppendLine("                 else ");
@@ -168,8 +169,8 @@ namespace Dominio.Schemas.CQRS
 
                     foreach (var item in column.EntityFK.AddColumns.Where(x => x.DisplayFK))
                     {
-                        sb.AppendLine($"                      parametersDict[\"{item.Name}\"] = $\"%{{Command.searchFK}}%\"; ");
-                        sb.AppendLine($"                      whereClauses.Add($\" {item.Name} like @{item.Name} \");");
+                        sb.AppendLine($"                      dict[\"{item.Name}\"] = $\"%{{Command.searchFK}}%\";//02 ");
+                        sb.AppendLine($"                      whereClauses.Add($\" {item.Name} like @{item.Name} \");//02");
                     }
                     sb.AppendLine("                 }");
                     sb.AppendLine("           }");
@@ -177,7 +178,7 @@ namespace Dominio.Schemas.CQRS
                         Parameters(sb, item, true);
 
                     if (!string.IsNullOrEmpty(column.ClausesWhere))
-                        sb.AppendLine($"                      whereClauses.Add(\" {column.ClausesWhere} \"); ");
+                        sb.AppendLine($"                      whereClauses.Add(\" {column.ClausesWhere} \"); //03");
 
                     sb.AppendLine("            if (whereClauses.Any()) ");
                     sb.AppendLine("            this.Query += $\" WHERE ({string.Join(\" AND \", whereClauses)})\"; "); // pendencia OR
@@ -197,15 +198,15 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
-                    sb.AppendLine($"            var parametersDict = (IDictionary<string, object>)parameters;");
+                    sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
                     sb.AppendLine($"            this.Query = $\"SELECT 1 FROM {_entity.EntityName} \";");
 
                     foreach (var item in _entity.AddColumns.Where(x => x.WhereNeedBe))
                         Parameters(sb, item);
 
 
-                    sb.AppendLine($"                      parametersDict[\"{column.Name}\"] = value; ");
-                    sb.AppendLine($"                      whereClauses.Add($\" {column.Name} = @{column.Name} \");");
+                    sb.AppendLine($"                      dict[\"{column.Name}\"] = value; //04");
+                    sb.AppendLine($"                      whereClauses.Add($\" {column.Name} = @{column.Name} \");//04");
                     sb.AppendLine("            if (whereClauses.Any()) ");
                     sb.AppendLine("            this.Query += $\" WHERE ({string.Join(\" AND \", whereClauses)})\"; "); // pendencia OR
 
@@ -224,14 +225,14 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
-                    sb.AppendLine($"            var parametersDict = (IDictionary<string, object>)parameters;");
+                    sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
 
                     sb.AppendLine($"            this.Query = $\"SELECT * FROM {_entity.EntityName} \";");
                     foreach (var item in _entity.AddColumns.Where(x => x.WhereNeedBe))
                         Parameters(sb, item);
 
-                    sb.AppendLine($"                      parametersDict[\"{column.Name}\"] = value; ");
-                    sb.AppendLine($"                      whereClauses.Add($\" {column.Name} = @{column.Name} \");");
+                    sb.AppendLine($"                      dict[\"{column.Name}\"] = value; //06");
+                    sb.AppendLine($"                      whereClauses.Add($\" {column.Name} = @{column.Name} \");//06");
                     sb.AppendLine("            if (whereClauses.Any()) ");
                     sb.AppendLine("            this.Query += $\" WHERE ({string.Join(\" AND \", whereClauses)})\"; "); // pendencia OR
 
@@ -271,17 +272,17 @@ namespace Dominio.Schemas.CQRS
                             {
                                 case TypeCode.String:
                                     sb.AppendLine($"                dict[\"{param}\"] = $\"{{{rightExpr}}}\";");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//07");
                                     break;
 
                                 case TypeCode.Boolean:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr} ? 1 : 0;");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//07");
                                     break;
 
                                 case TypeCode.DateTime:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr};");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//07");
                                     break;
 
                                 case TypeCode.Int32:
@@ -289,7 +290,7 @@ namespace Dominio.Schemas.CQRS
                                 case TypeCode.Decimal:
                                 default:
                                     sb.AppendLine($"                dict[\"{param}\"] = {rightExpr};");
-                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
+                                    sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//07");
                                     break;
                             }
 
@@ -341,24 +342,38 @@ namespace Dominio.Schemas.CQRS
                         foreach (var cond in wh.Value)
                         {
                             sb.AppendLine("");
+
+                            if (cond.Column.Enum != null)
+                            {
+                                EnumParameters(sb, cond.Column);
+                                continue;
+                            }
+
+
+
                             string param = $"{cond.Field}_{indexParam}";
 
-                            sb.AppendLine($"            if (Command.{cond.Field} != null)");
-                            sb.AppendLine("            {");
                             if (cond.Operator == "LIKE")
                             {
+                                sb.AppendLine($"            if (Command.{cond.Field} != null)");
+                                sb.AppendLine("            {");
                                 sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{cond.Field}}}%\";");
-                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} LIKE @{param}\");");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} LIKE @{param}\");//08");
                             }
                             else if (Type.GetTypeCode(cond.FieldType) == TypeCode.DateTime)
                             {
-                                sb.AppendLine($"                dict[\"{param}\"] = {cond.RightExpression};");
-                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
+
+                                sb.AppendLine($"            if (Command.{cond.Field} != null  && Command.DataFim > (DateTime)SqlDateTime.MinValue)");
+                                sb.AppendLine("            {");
+                                sb.AppendLine($"                dict[\"{param}\"] = Command.{cond.Field};");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//08");
                             }
                             else
                             {
+                                sb.AppendLine($"            if (Command.{cond.Field} != null)");
+                                sb.AppendLine("            {");
                                 sb.AppendLine($"                dict[\"{param}\"] = Command.{cond.Field};");
-                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");");
+                                sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//08");
                             }
 
                             sb.AppendLine("            }");
@@ -400,35 +415,60 @@ namespace Dominio.Schemas.CQRS
 
         }
 
+        private void EnumParameters(StringBuilder sb, Column colunm)
+        {
+            if (colunm.Enum != null && colunm.Enum.Count() > 0)
+            {
+                sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name}.Any())");
+                sb.AppendLine("{");
+                sb.AppendLine($"    var paramList_{colunm.Name} = new List<string>();");
+                sb.AppendLine($"    for (int i = 0; i < Command.{colunm.Name}.Count; i++)");
+                sb.AppendLine("    {");
+                sb.AppendLine($"        string paramName = \"{colunm.Name}_\" + i;");
+                sb.AppendLine($"        dict[paramName] = Command.{colunm.Name}[i];");
+                sb.AppendLine($"        paramList_{colunm.Name}.Add(\"@\" + paramName);");
+                sb.AppendLine("    }");
+                sb.AppendLine($"    whereClauses.Add($\"t0.{colunm.Name} IN ({{string.Join(\", \", paramList_{colunm.Name})}})\");");
+                sb.AppendLine("}");
+            }
+        }
         private void Parameters(StringBuilder sb, Column colunm, bool suarchFK = false)
         {
             if (colunm.WhereNeedBe)
             {
                 if (colunm.ValueDefault.StartsWith("#"))
-                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} parametersDict[\"{colunm.Name}\"] = {colunm.ValueDefault.Substring(1)};");
+                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {colunm.ValueDefault.Substring(1)};");
 
                 else
-                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} parametersDict[\"{colunm.Name}\"] = {colunm.ValueDefault};");
+                    sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {colunm.ValueDefault};");
 
                 sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
             }
             else
             {
-                if (colunm.getCsharpType() == "string")
+
+                if (colunm.Enum != null && colunm.Enum.Count() > 0)
                 {
-                    sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{colunm.Name})) parametersDict[\"{colunm.Name}\"] = $\"%{{Command.{colunm.Name}}}%\";");
+                    EnumParameters(sb, colunm);
+                }
+                else if (colunm.getCsharpType() == "string")
+                {
+                    sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{colunm.Name})) dict[\"{colunm.Name}\"] = $\"%{{Command.{colunm.Name}}}%\";");
                     sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{colunm.Name})) whereClauses.Add($\"{colunm.Name} like @{colunm.Name}\");");
                 }
                 else if (colunm.getCsharpType() == "int")
                 {
-                    sb.AppendLine($"if (Command.{colunm.Name}.HasValue) parametersDict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
+                    sb.AppendLine($"if (Command.{colunm.Name}.HasValue) dict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
                     sb.AppendLine($"if (Command.{colunm.Name}.HasValue) whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
                 }
                 else if (colunm.getCsharpType() == "datetime")
                 {
-                    //sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name} > (DateTime)SqlDateTime.MinValue) parametersDict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
+                    //sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name} > (DateTime)SqlDateTime.MinValue) dict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
                     //sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name} > (DateTime)SqlDateTime.MinValue) whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
                 }
+
+
+
             }
         }
         protected override StringBuilder GenerateCustonCode()

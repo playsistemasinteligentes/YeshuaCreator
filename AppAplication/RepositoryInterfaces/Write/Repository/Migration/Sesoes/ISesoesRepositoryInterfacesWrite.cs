@@ -15,8 +15,8 @@ namespace IRepository.Write
         public void UpdatePacienteId(ISesoesEntity entity);
         public void UpdateDataInicio(ISesoesEntity entity);
         public void UpdateDataFim(ISesoesEntity entity);
-        public void UpdateStatus(ISesoesEntity entity);
-        public void UpdateMovimentacaoFinanceiraId(ISesoesEntity entity);
+        public void UpdateStatusAgendamento(ISesoesEntity entity);
+        public void UpdateStatusProntuario(ISesoesEntity entity);
         public void UpdateProntuario(ISesoesEntity entity);
         public void UpdateQueixaPrincipal(ISesoesEntity entity);
         public void UpdateRegistroDocumental(ISesoesEntity entity);
@@ -37,6 +37,7 @@ namespace IRepository.Write
         public void UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity);
         public void UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity);
         public void UpdateServicoId(ISesoesEntity entity);
+        public void UpdateMovimentacaoFinanceiraId(ISesoesEntity entity);
         public void UpdateProfissionalId(ISesoesEntity entity);
         public void UpdateTenantID(ISesoesEntity entity);
         public void UpdateDeleted(ISesoesEntity entity);

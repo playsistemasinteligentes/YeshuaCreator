@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.SesoesCrudCommand c) 
              {    
-                 var sesoes = new SesoesFactory(_logger).Create(c.PacienteId, c.DataInicio, c.DataFim, c.Status, c.MovimentacaoFinanceiraId, c.Prontuario, c.QueixaPrincipal, c.RegistroDocumental, c.SintomasRelatados, c.MudancasDesdeUltimaSessaao, c.ComportamentoObservado, c.EstadoEmocionalGeral, c.DiscursoPensamentos, c.UsoMedicacao, c.TecnicasUtilizadas, c.QuestionamentosReflexoesAbordadas, c.ExerciciosTarefasSugeridas, c.DiagnoosticoHipoteseDiagnoostica, c.ObjetivosCurtoPrazo, c.ObjetivosLongoPrazo, c.FrequenciaSugeridaSessooes, c.EncaminhamentoOutrosProfissionais, c.InformacoesRelevantesFuturasConsultas, c.FeedbackPacienteSobreProcessoTerapeeutico, c.Id, c.ServicoId, c.ProfissionalId);
+                 var sesoes = new SesoesFactory(_logger).Create(c.PacienteId, c.DataInicio, c.DataFim, c.StatusAgendamento, c.StatusProntuario, c.Prontuario, c.QueixaPrincipal, c.RegistroDocumental, c.SintomasRelatados, c.MudancasDesdeUltimaSessaao, c.ComportamentoObservado, c.EstadoEmocionalGeral, c.DiscursoPensamentos, c.UsoMedicacao, c.TecnicasUtilizadas, c.QuestionamentosReflexoesAbordadas, c.ExerciciosTarefasSugeridas, c.DiagnoosticoHipoteseDiagnoostica, c.ObjetivosCurtoPrazo, c.ObjetivosLongoPrazo, c.FrequenciaSugeridaSessooes, c.EncaminhamentoOutrosProfissionais, c.InformacoesRelevantesFuturasConsultas, c.FeedbackPacienteSobreProcessoTerapeeutico, c.Id, c.ServicoId, c.MovimentacaoFinanceiraId, c.ProfissionalId);
                  if (!sesoes.isValidDelete())
                      return ValidationError(sesoes.getErroMensagens(), comand);
 

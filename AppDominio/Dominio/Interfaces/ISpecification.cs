@@ -6,7 +6,7 @@
     public interface ISpecification<T>
     {
         bool IsSatisfiedBy(T entity);
-        string ErrorMessage { get; }
+        string Name { get; }
     }
     // Local: Domain.Specifications
     //Responsabilidade: Definir regras imutáveis da entidade.

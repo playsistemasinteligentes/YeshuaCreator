@@ -103,13 +103,18 @@ namespace AppClinicas
                 .AddColumn("PacienteId", "Paciente").FK("Paciente", "Id").Int().Group("Agenda")
                 .AddColumn("DataInicio", "Data Inicio").DateTime().NotNull().Group("Agenda")
                 .AddColumn("DataFim", "Data Fim").DateTime().NotNull().Group("Agenda")
-                .AddColumn("Status", "Status do Agendamento").Int().Group("Agenda")
-                .Enumerable(0, "Em Aberto")
-                .Enumerable(1, "Compareceu")
-                .Enumerable(2, "Não Compareceu")
-                .Enumerable(3, "Remarcado pelo proficional")
-                .Enumerable(4, "Remarcado pelo paciente")
-                .AddColumn("MovimentacaoFinanceiraId", "Financeiro").FK("MovimentacaoFinanceira", "Id").Int()
+                .AddColumn("StatusAgendamento", "Status do Agendamento").Int().Group("Agenda")
+
+                .Enumerable(0, "EmConciliacaoDeHorarios")
+                .Enumerable(1, "Confirmada")
+                .Enumerable(2, "Realizada")
+                .Enumerable(3, "Cancelada")
+
+                .AddColumn("StatusProntuario", "Status Prontuario").Int().Group("Agenda")
+                .Enumerable(0, "Cancelou")
+                .Enumerable(1, "Nao Compareceu")
+                .Enumerable(2, "Pendente")
+                .Enumerable(3, "Concluido")
 
                 .AddColumn("Prontuario", "Prontuario").Varchar(8000, true).Group("Atendimento")
                 .AddColumn("QueixaPrincipal", "Queixa Principal").Varchar(1000, true).Group("Atendimento")
@@ -152,20 +157,21 @@ namespace AppClinicas
 
                 .AddColumn("Id", "ID").Int().Incremento().Key().Group("IDs")
                 .AddColumn("ServicoId", "Serviço").FK("Servico", "Id").Int().Group("IDs")
+                .AddColumn("MovimentacaoFinanceiraId", "Financeiro").FK("MovimentacaoFinanceira", "Id").Int().Group("IDs")
                 .AddColumn("ProfissionalId", "Profissional").FK("Profissional", "Id").Int().Group("IDs");
 
-            var cmd = Sesoes.Query()
-            .Where(s => s.DataInicio == DateTime.Today && s.Paciente.Nome == "Angelo")
-            .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.Profissional.Especialidade.Descricao })
-            .ToCommand();
+            //var cmd = Sesoes.Query()
+            //.Where(s => s.DataInicio == DateTime.Today && s.Paciente.Nome == "Angelo")
+            //.Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.Profissional.Especialidade.Descricao })
+            //.ToCommand();
 
             AddQuery<Sesoes>("Standard", q => q
             .WhereContext("Hoje", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(1))
              .WhereContext("Semana", s => s.DataInicio >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && s.DataInicio < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek))
-             .WhereContext("Mes", s => s.DataInicio.Month == DateTime.Today.Month && s.DataInicio.Year == DateTime.Today.Year)
-             .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today)
+            .WhereContext("D30", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(30))
+             .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
 
-             .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome }));
+             .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.StatusAgendamento, s.StatusProntuario }));
 
 
 

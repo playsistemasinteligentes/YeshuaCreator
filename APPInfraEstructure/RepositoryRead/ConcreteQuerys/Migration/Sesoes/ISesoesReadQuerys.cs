@@ -5,16 +5,16 @@ namespace IQuery.Read
     {
         public QueryModel SesoesQuery(Command.Read.SesoesReadCommand Command );
         public QueryModel SesoesPacienteIdQuery(Command.Patterns.Command.SearchFKCommand Command );
-        public QueryModel SesoesMovimentacaoFinanceiraIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel SesoesServicoIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel SesoesMovimentacaoFinanceiraIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel SesoesProfissionalIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel SesoesTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel SesoesUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByPacienteIdQuery(int value );
         public QueryModel ExistsByDataInicioQuery(DateTime value );
         public QueryModel ExistsByDataFimQuery(DateTime value );
-        public QueryModel ExistsByStatusQuery(int value );
-        public QueryModel ExistsByMovimentacaoFinanceiraIdQuery(int value );
+        public QueryModel ExistsByStatusAgendamentoQuery(int value );
+        public QueryModel ExistsByStatusProntuarioQuery(int value );
         public QueryModel ExistsByProntuarioQuery(string value );
         public QueryModel ExistsByQueixaPrincipalQuery(string value );
         public QueryModel ExistsByRegistroDocumentalQuery(string value );
@@ -36,6 +36,7 @@ namespace IQuery.Read
         public QueryModel ExistsByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByServicoIdQuery(int value );
+        public QueryModel ExistsByMovimentacaoFinanceiraIdQuery(int value );
         public QueryModel ExistsByProfissionalIdQuery(int value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
@@ -44,8 +45,8 @@ namespace IQuery.Read
         public QueryModel FirstByPacienteIdQuery(int value );
         public QueryModel FirstByDataInicioQuery(DateTime value );
         public QueryModel FirstByDataFimQuery(DateTime value );
-        public QueryModel FirstByStatusQuery(int value );
-        public QueryModel FirstByMovimentacaoFinanceiraIdQuery(int value );
+        public QueryModel FirstByStatusAgendamentoQuery(int value );
+        public QueryModel FirstByStatusProntuarioQuery(int value );
         public QueryModel FirstByProntuarioQuery(string value );
         public QueryModel FirstByQueixaPrincipalQuery(string value );
         public QueryModel FirstByRegistroDocumentalQuery(string value );
@@ -67,6 +68,7 @@ namespace IQuery.Read
         public QueryModel FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByServicoIdQuery(int value );
+        public QueryModel FirstByMovimentacaoFinanceiraIdQuery(int value );
         public QueryModel FirstByProfissionalIdQuery(int value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
@@ -74,7 +76,7 @@ namespace IQuery.Read
         public QueryModel FirstByUserIdQuery(int value );
     public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command);
     public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command);
-    public QueryModel SesoesMesQuery(Command.Read.SesoesMesCommand Command);
+    public QueryModel SesoesD30Query(Command.Read.SesoesD30Command Command);
     public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command);
     }
 }

@@ -97,12 +97,19 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
                 {
+
                     if (string.IsNullOrWhiteSpace(column.getCsharpType()) || string.IsNullOrWhiteSpace(column.Name))
                         throw new InvalidOperationException("Column type or name cannot be null or empty.");
+
+
                     if (_commandType == CommandType.Read || _commandType == CommandType.ReadFK)
-                        sb.AppendLine($"        public {column.getCsharpType(true, true)} {column.Name} {{ get; set; }}");
+                        if (column.Enum != null)
+                            sb.AppendLine($"        public List<int> {column.Name} {{ get; set; }}");
+                        else
+                            sb.AppendLine($"        public {column.getCsharpType(true, true)} {column.Name} {{ get; set; }}");
                     else
                         sb.AppendLine($"        public {column.getCsharpType(true, false)} {column.Name} {{ get; set; }}");
+
 
                 }
             }

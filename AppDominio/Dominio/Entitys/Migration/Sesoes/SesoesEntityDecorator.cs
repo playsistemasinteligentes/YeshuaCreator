@@ -57,28 +57,28 @@
                                         }
                                     }
 
-                                    public int? Status
+                                    public int? StatusAgendamento
                                     {
-                                        get => _inner.Status;
+                                        get => _inner.StatusAgendamento;
                                         set
                                         {
-                                            if (_inner.Status != value)
+                                            if (_inner.StatusAgendamento != value)
                                             {
-                                                _logger.Info($"Propriedade Status: antes={_inner.Status}, depois={value}");
-                                                _inner.Status = value;
+                                                _logger.Info($"Propriedade StatusAgendamento: antes={_inner.StatusAgendamento}, depois={value}");
+                                                _inner.StatusAgendamento = value;
                                             }
                                         }
                                     }
 
-                                    public int? MovimentacaoFinanceiraId
+                                    public int? StatusProntuario
                                     {
-                                        get => _inner.MovimentacaoFinanceiraId;
+                                        get => _inner.StatusProntuario;
                                         set
                                         {
-                                            if (_inner.MovimentacaoFinanceiraId != value)
+                                            if (_inner.StatusProntuario != value)
                                             {
-                                                _logger.Info($"Propriedade MovimentacaoFinanceiraId: antes={_inner.MovimentacaoFinanceiraId}, depois={value}");
-                                                _inner.MovimentacaoFinanceiraId = value;
+                                                _logger.Info($"Propriedade StatusProntuario: antes={_inner.StatusProntuario}, depois={value}");
+                                                _inner.StatusProntuario = value;
                                             }
                                         }
                                     }
@@ -352,6 +352,19 @@
                                             {
                                                 _logger.Info($"Propriedade ServicoId: antes={_inner.ServicoId}, depois={value}");
                                                 _inner.ServicoId = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? MovimentacaoFinanceiraId
+                                    {
+                                        get => _inner.MovimentacaoFinanceiraId;
+                                        set
+                                        {
+                                            if (_inner.MovimentacaoFinanceiraId != value)
+                                            {
+                                                _logger.Info($"Propriedade MovimentacaoFinanceiraId: antes={_inner.MovimentacaoFinanceiraId}, depois={value}");
+                                                _inner.MovimentacaoFinanceiraId = value;
                                             }
                                         }
                                     }

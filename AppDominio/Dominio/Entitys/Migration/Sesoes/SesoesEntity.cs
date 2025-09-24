@@ -13,8 +13,8 @@
     public int? PacienteId { get; set; }
     public DateTime DataInicio { get; set; }
     public DateTime DataFim { get; set; }
-    public int? Status { get; set; }
-    public int? MovimentacaoFinanceiraId { get; set; }
+    public int? StatusAgendamento { get; set; }
+    public int? StatusProntuario { get; set; }
     public string Prontuario { get; set; }
     public string QueixaPrincipal { get; set; }
     public string RegistroDocumental { get; set; }
@@ -36,18 +36,19 @@
     public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
     public int? Id { get; set; }
     public int? ServicoId { get; set; }
+    public int? MovimentacaoFinanceiraId { get; set; }
     public int? ProfissionalId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal SesoesEntity(int? pacienteid, DateTime datainicio, DateTime datafim, int? status, int? movimentacaofinanceiraid, string prontuario, string queixaprincipal, string registrodocumental, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string usomedicacao, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico, int? id, int? servicoid, int? profissionalid ){
+ internal SesoesEntity(int? pacienteid, DateTime datainicio, DateTime datafim, int? statusagendamento, int? statusprontuario, string prontuario, string queixaprincipal, string registrodocumental, string sintomasrelatados, int? mudancasdesdeultimasessaao, string comportamentoobservado, string estadoemocionalgeral, string discursopensamentos, string usomedicacao, string tecnicasutilizadas, string questionamentosreflexoesabordadas, string exerciciostarefassugeridas, string diagnoosticohipotesediagnoostica, string objetivoscurtoprazo, string objetivoslongoprazo, string frequenciasugeridasessooes, string encaminhamentooutrosprofissionais, string informacoesrelevantesfuturasconsultas, string feedbackpacientesobreprocessoterapeeutico, int? id, int? servicoid, int? movimentacaofinanceiraid, int? profissionalid ){
  PacienteId = pacienteid; 
  DataInicio = (datainicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : datainicio; 
  DataFim = (datafim < (new DateTime(1800, 1, 1))) ? DateTime.Now : datafim; 
- Status = status; 
- MovimentacaoFinanceiraId = movimentacaofinanceiraid; 
+ StatusAgendamento = statusagendamento; 
+ StatusProntuario = statusprontuario; 
  Prontuario = prontuario; 
  QueixaPrincipal = queixaprincipal; 
  RegistroDocumental = registrodocumental; 
@@ -69,6 +70,7 @@
  FeedbackPacienteSobreProcessoTerapeeutico = feedbackpacientesobreprocessoterapeeutico; 
  Id = id; 
  ServicoId = servicoid; 
+ MovimentacaoFinanceiraId = movimentacaofinanceiraid; 
  ProfissionalId = profissionalid; 
 }
 public bool isValidData()

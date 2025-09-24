@@ -120,6 +120,8 @@ namespace Dominio
             string nulable = ((nulableTag && !this.IsNotNull) || search) ? "?" : "";
             switch (this.Type)
             {
+
+
                 case "int":
                     return "int" + nulable;
                 case "varchar":

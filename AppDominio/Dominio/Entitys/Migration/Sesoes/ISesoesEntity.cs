@@ -13,8 +13,8 @@
     int? PacienteId { get; set; }
     DateTime DataInicio { get; set; }
     DateTime DataFim { get; set; }
-    int? Status { get; set; }
-    int? MovimentacaoFinanceiraId { get; set; }
+    int? StatusAgendamento { get; set; }
+    int? StatusProntuario { get; set; }
     string Prontuario { get; set; }
     string QueixaPrincipal { get; set; }
     string RegistroDocumental { get; set; }
@@ -36,6 +36,7 @@
     string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
     int? Id { get; set; }
     int? ServicoId { get; set; }
+    int? MovimentacaoFinanceiraId { get; set; }
     int? ProfissionalId { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

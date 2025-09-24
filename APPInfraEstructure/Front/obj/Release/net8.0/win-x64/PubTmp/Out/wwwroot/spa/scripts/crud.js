@@ -110,13 +110,14 @@ function setStateCreate() {
     crudState.currentAction = Actions.CREATE;
     renderFormCrud();
 }
-function crudSearch(metadata = crudState.metadata, modoFk = false) {
-
+async function crudSearch(metadata = crudState.metadata, modoFk = false) {
+    await startProcess({ async: true, withProgress: false });
     const currentSearch = metadata.search?.[0]
-    resetPagination(currentSearch.endpoint);
-    fetchSearchResults(metadata, modoFk);
+    await resetPagination(currentSearch.endpoint);
+    await fetchSearchResults(metadata, modoFk);
+    await endProcess();
 }
-function resetPagination(endpoint) {
+async function resetPagination(endpoint) {
     crudState.fullUrl = `${environments.urlApi}${endpoint}`;
     crudState.pagination.page = 1;
 }
@@ -337,7 +338,6 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
 
     const currentSearch = metadata.search?.find(s => s.id === "Standard") || metadata.search[0];
 
-
     container.innerHTML = '';
 
     // --- DESKTOP TABLE ---
@@ -351,9 +351,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
     const headerRow = document.createElement('tr');
     headerRow.className = 'bg-gray-100';
 
-
     (currentSearch?.resultFields || []).forEach(field => {
-
         const th = document.createElement('th');
         th.className = 'px-4 py-2 border text-left text-sm font-semibold text-gray-700';
         th.textContent = field.label;
@@ -382,13 +380,28 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
         data.forEach(item => {
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
+            row.dataset.id = item.id; // ADICIONADO
 
             currentSearch?.resultFields.forEach(field => {
                 const cell = document.createElement('td');
                 cell.className = 'px-4 py-2 border text-sm text-gray-800';
-                cell.textContent = item[field.id.toLowerCase()] || '';
 
-                // 👉 Se for modoFk, transforma a célula em "Selecionar"
+                let value = item[field.id.toLowerCase()] || '';
+
+                if (value && (field.type?.toLowerCase() === "datetime" || field.id.toLowerCase().includes("data"))) {
+                    const date = new Date(value);
+                    if (!isNaN(date)) {
+                        const dia = String(date.getDate()).padStart(2, '0');
+                        const mes = String(date.getMonth() + 1).padStart(2, '0');
+                        const ano = String(date.getFullYear()).slice(-2);
+                        const hora = String(date.getHours()).padStart(2, '0');
+                        const minuto = String(date.getMinutes()).padStart(2, '0');
+                        value = `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+                    }
+                }
+
+                cell.textContent = value;
+
                 if (modoFk) {
                     cell.classList.add('cursor-pointer', 'hover:bg-green-50');
                     cell.onclick = () => {
@@ -406,8 +419,10 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             const actionsCell = document.createElement('td');
             actionsCell.className = 'px-4 py-2 border text-sm';
 
+            const actionsWrapper = document.createElement('div');
+            actionsWrapper.className = 'flex gap-2';
+
             if (modoFk) {
-                // Mantém compatibilidade, mas você pode remover se quiser
                 const selectBtn = document.createElement('button');
                 selectBtn.textContent = 'Selecionar';
                 selectBtn.className = 'text-green-600 hover:underline';
@@ -418,22 +433,36 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                     input.dataset.id = item.id;
                     hideFkModal();
                 };
-                actionsCell.appendChild(selectBtn);
+                actionsWrapper.appendChild(selectBtn);
             } else {
                 const editBtn = document.createElement('button');
-                editBtn.textContent = 'Editar';
-                editBtn.className = 'text-blue-600 hover:underline mr-2';
+                editBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" 
+                            d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
+                               1.5-4.5 12.362-12.326z" />
+                    </svg>`;
+                editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
+                editBtn.title = "Editar";
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Excluir';
-                deleteBtn.className = 'text-red-600 hover:underline';
+                deleteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" 
+                            d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
+                    </svg>`;
+                deleteBtn.className = 'p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600';
+                deleteBtn.title = "Excluir";
                 deleteBtn.onclick = () => deleteRecord(item);
 
-                actionsCell.appendChild(editBtn);
-                actionsCell.appendChild(deleteBtn);
+                actionsWrapper.appendChild(editBtn);
+                actionsWrapper.appendChild(deleteBtn);
             }
 
+            actionsCell.appendChild(actionsWrapper);
             row.appendChild(actionsCell);
             tbody.appendChild(row);
         });
@@ -456,13 +485,26 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
         data.forEach(item => {
             const card = document.createElement('div');
             card.className = 'bg-white border rounded p-4 shadow';
+            card.dataset.id = item.id; // ADICIONADO
 
             currentSearch?.resultFields.forEach(field => {
-                const fieldValue = item[field.id.toLowerCase()] || '';
-                const p = document.createElement('p');
-                p.innerHTML = `<strong>${field.label}:</strong> ${fieldValue}`;
+                let value = item[field.id.toLowerCase()] || '';
 
-                // 👉 Se for modoFk, transforma cada campo em clicável
+                if (value && (field.type?.toLowerCase() === "datetime" || field.id.toLowerCase().includes("data"))) {
+                    const date = new Date(value);
+                    if (!isNaN(date)) {
+                        const dia = String(date.getDate()).padStart(2, '0');
+                        const mes = String(date.getMonth() + 1).padStart(2, '0');
+                        const ano = String(date.getFullYear()).slice(-2);
+                        const hora = String(date.getHours()).padStart(2, '0');
+                        const minuto = String(date.getMinutes()).padStart(2, '0');
+                        value = `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+                    }
+                }
+
+                const p = document.createElement('p');
+                p.innerHTML = `<strong>${field.label}:</strong> ${value}`;
+
                 if (modoFk) {
                     p.classList.add('cursor-pointer', 'hover:text-green-600');
                     p.onclick = () => {
@@ -478,17 +520,30 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             });
 
             const actions = document.createElement('div');
-            actions.className = 'mt-2 flex gap-4';
+            actions.className = 'mt-3 flex gap-2';
 
             if (!modoFk) {
                 const editBtn = document.createElement('button');
-                editBtn.textContent = 'Editar';
-                editBtn.className = 'text-blue-600 hover:underline';
+                editBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" 
+                            d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
+                               1.5-4.5 12.362-12.326z" />
+                    </svg>`;
+                editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
+                editBtn.title = "Editar";
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Excluir';
-                deleteBtn.className = 'text-red-600 hover:underline';
+                deleteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" 
+                            d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
+                    </svg>`;
+                deleteBtn.className = 'p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600';
+                deleteBtn.title = "Excluir";
                 deleteBtn.onclick = () => deleteRecord(item);
 
                 actions.appendChild(editBtn);
@@ -914,8 +969,6 @@ async function editRecord(item) {
         erroRequestResponse(error);
     }
 }
-
-
 function scrollToCadastro() {
     const crudContainer = document.getElementById('crud-container');
     if (!crudContainer) return;
@@ -924,13 +977,12 @@ function scrollToCadastro() {
     crudContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 async function deleteRecord(item) {
-
+    startProcess({ async: true, withProgress: false });
     showConfirm(`Tem certeza que deseja excluir o registro com ID ${item.id}?`, async () => {
         const token = localStorage.getItem('token');
         const deleteEndpoint = `${environments.urlApi}${crudState.metadata.endpoints.delete.replace("{entidade.EntityName}", crudState.metadata.entityName)}`;
 
         try {
-
             const response = await fetch(deleteEndpoint, {
                 method: 'DELETE',
                 headers: {
@@ -940,15 +992,115 @@ async function deleteRecord(item) {
                 body: JSON.stringify({ id: item.id }),
             });
 
-
             if (response.ok) {
                 showAlert('Registro excluído com sucesso!', 'success');
+
+                // --- Desktop ---
+                const row = document.querySelector(`tr[data-id="${item.id}"]`);
+                if (row) {
+                    row.classList.add('bg-red-500', 'text-white', 'line-through', 'transition-all', 'duration-500', 'opacity-0', 'scale-y-0');
+                    setTimeout(() => row.remove(), 500);
+                }
+
+                // --- Mobile ---
+                const card = document.querySelector(`.md\\:hidden div[data-id="${item.id}"]`);
+                if (card) {
+                    card.classList.add('bg-red-500', 'text-white', 'line-through', 'transition-all', 'duration-500', 'opacity-0', 'scale-y-0');
+                    setTimeout(() => card.remove(), 500);
+                }
+
             } else {
                 const responseJson = await response.json();
-                showAlert(responseJson.data.message, 'error');//data.messageList
+                showAlert(responseJson.data?.message, 'error');
             }
         } catch (error) {
             erroRequestResponse(error);
         }
     });
+    endProcess();
 }
+
+
+function exemploBarraProgreco() {
+
+    startProcess({ async: true, withProgress: false });
+    setInterval(() => { endProcess(); }, 500);
+
+    //let p = 0;
+    //const interval = setInterval(() => {
+    //    p += 50;
+    //    updateProgress(p);
+    //    if (p >= 100) {
+    //        clearInterval(interval);
+    //        endProcess();
+    //    }
+    //}, 500);
+
+}
+async function startProcess({ async = true, withProgress = false }) {
+    const overlay = document.getElementById("process-overlay");
+    const processStatus = document.getElementById("process-status");
+    const processProgress = document.getElementById("process-progress");
+
+    // Reset
+    processProgress.classList.toggle("hidden", !withProgress);
+    document.getElementById("process-bar").style.width = "0%";
+
+    if (async) {
+        // 🔵 Animação da engrenagem do centro → barra superior
+        const gear = document.createElement("div");
+        gear.innerHTML = document.getElementById("process-gear").outerHTML;
+        const flyGear = gear.firstElementChild;
+        flyGear.classList.add("w-12", "h-12", "text-yellow-400", "fixed", "z-50", "animate-spin");
+        document.body.appendChild(flyGear);
+
+        // Posições
+        const startX = window.innerWidth / 2;
+        const startY = window.innerHeight / 2;
+        const target = document.getElementById("logout-header").getBoundingClientRect();
+        const endX = target.left - 40;
+        const endY = target.top + target.height / 2;
+
+        flyGear.style.left = `${startX}px`;
+        flyGear.style.top = `${startY}px`;
+
+        const duration = 400;
+        const startTime = performance.now();
+
+        function animate(time) {
+            const progress = Math.min((time - startTime) / duration, 1);
+            const x = startX + (endX - startX) * progress;
+            const y = startY + (endY - startY) * progress;
+            flyGear.style.left = `${x}px`;
+            flyGear.style.top = `${y}px`;
+            flyGear.style.transform = `scale(${1 - 0.5 * progress}) rotate(${progress * 360}deg)`;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                flyGear.remove();
+                processStatus.classList.remove("hidden"); // Fixa engrenagem no header
+            }
+        }
+        requestAnimationFrame(animate);
+
+    } else {
+        // 🔴 Síncrono = bloqueia tela
+        overlay.classList.remove("hidden");
+    }
+}
+
+function updateProgress(percent) {
+    document.getElementById("process-bar").style.width = `${percent}%`;
+}
+
+async function endProcess() {
+    setInterval(() => {
+        document.getElementById("process-overlay").classList.add("hidden");
+        document.getElementById("process-status").classList.add("hidden");
+
+    }, 500);
+}
+
+
+

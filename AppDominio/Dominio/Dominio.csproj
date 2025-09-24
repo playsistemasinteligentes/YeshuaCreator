@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entitys\" />
     <Folder Include="Enum\" />
   </ItemGroup>
 

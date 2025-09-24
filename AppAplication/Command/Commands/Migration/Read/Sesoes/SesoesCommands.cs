@@ -6,13 +6,13 @@ namespace Command.Read
         public int? PacienteId { get; set; }
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
-        public int? Status { get; set; }
-        public int? MovimentacaoFinanceiraId { get; set; }
+        public List<int> StatusAgendamento { get; set; }
+        public List<int> StatusProntuario { get; set; }
         public string Prontuario { get; set; }
         public string QueixaPrincipal { get; set; }
         public string RegistroDocumental { get; set; }
         public string SintomasRelatados { get; set; }
-        public int? MudancasDesdeUltimaSessaao { get; set; }
+        public List<int> MudancasDesdeUltimaSessaao { get; set; }
         public string ComportamentoObservado { get; set; }
         public string EstadoEmocionalGeral { get; set; }
         public string DiscursoPensamentos { get; set; }
@@ -29,6 +29,7 @@ namespace Command.Read
         public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
         public int? Id { get; set; }
         public int? ServicoId { get; set; }
+        public int? MovimentacaoFinanceiraId { get; set; }
         public int? ProfissionalId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

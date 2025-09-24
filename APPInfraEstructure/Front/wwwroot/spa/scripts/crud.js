@@ -110,14 +110,14 @@ function setStateCreate() {
     crudState.currentAction = Actions.CREATE;
     renderFormCrud();
 }
-function crudSearch(metadata = crudState.metadata, modoFk = false) {
-    startProcess({ async: true, withProgress: false });
+async function crudSearch(metadata = crudState.metadata, modoFk = false) {
+    await startProcess({ async: true, withProgress: false });
     const currentSearch = metadata.search?.[0]
-    resetPagination(currentSearch.endpoint);
-    fetchSearchResults(metadata, modoFk);
-    endProcess();
+    await resetPagination(currentSearch.endpoint);
+    await fetchSearchResults(metadata, modoFk);
+    await endProcess();
 }
-function resetPagination(endpoint) {
+async function resetPagination(endpoint) {
     crudState.fullUrl = `${environments.urlApi}${endpoint}`;
     crudState.pagination.page = 1;
 }
@@ -148,6 +148,7 @@ function renderQuickSearches(quickSearches) {
         container.appendChild(btn);
     });
 }
+
 async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
     const token = localStorage.getItem('token');
 
@@ -156,7 +157,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
     (currentSearch?.filterFields || []).forEach(field => {
 
         const input = document.getElementById(`search-${field.id}`);
-        if (!input || input.value === '') return;
+        if (!input) return;
 
         if (field.isFk) {
             if (input.dataset.id) {
@@ -164,10 +165,19 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
             } else {
                 input.value = "";
             }
+        } else if (field.type.toLowerCase() === "list" || field.type.toLowerCase() === "enum") {
+            // MULTI-SELECT: pega todos os valores selecionados
+            const selectedOptions = Array.from(input.selectedOptions).map(opt => parseInt(opt.value));
+            if (selectedOptions.length > 0) {
+                searchFilters[field.id] = selectedOptions;
+            }
         } else {
-            searchFilters[field.id] = input.value;
+            if (input.value !== "") {
+                searchFilters[field.id] = input.value;
+            }
         }
     });
+
 
     const payload = {
         ...searchFilters,
@@ -231,11 +241,8 @@ function renderSearch(metadata, modoFk = false) {
             input = document.createElement('select');
             input.id = `search-${field.id}`;
             input.className = 'border p-2 rounded bg-white text-sm';
+            input.multiple = true; // <-- MULTI-SELECT
 
-            const defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.textContent = `Selecione ${field.label}`;
-            input.appendChild(defaultOption);
 
             if (Array.isArray(field.options)) {
                 field.options.forEach(opt => {
@@ -388,7 +395,10 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
 
                 let value = item[field.id.toLowerCase()] || '';
 
-                if (value && (field.type?.toLowerCase() === "datetime" || field.id.toLowerCase().includes("data"))) {
+                if (field.type?.toLowerCase() === "enum" && field.options) {
+                    const opt = field.options.find(o => o.value == value);
+                    value = opt ? opt.display : value; // mostra a descrição, senão o valor
+                } else if (value && (field.type?.toLowerCase() === "datetime" || field.id.toLowerCase().includes("data"))) {
                     const date = new Date(value);
                     if (!isNaN(date)) {
                         const dia = String(date.getDate()).padStart(2, '0');
@@ -490,7 +500,10 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             currentSearch?.resultFields.forEach(field => {
                 let value = item[field.id.toLowerCase()] || '';
 
-                if (value && (field.type?.toLowerCase() === "datetime" || field.id.toLowerCase().includes("data"))) {
+                if (field.type?.toLowerCase() === "enum" && field.options) {
+                    const opt = field.options.find(o => o.value == value);
+                    value = opt ? opt.display : value; // mostra a descrição, senão o valor
+                } else if (value && (field.type?.toLowerCase() === "datetime" || field.id.toLowerCase().includes("data"))) {
                     const date = new Date(value);
                     if (!isNaN(date)) {
                         const dia = String(date.getDate()).padStart(2, '0');
@@ -1023,20 +1036,21 @@ async function deleteRecord(item) {
 
 function exemploBarraProgreco() {
 
-    startProcess({ async: true, withProgress: true });
-    let p = 0;
-    const interval = setInterval(() => {
-        p += 20;
-        updateProgress(p);
-        if (p >= 100) {
-            clearInterval(interval);
-            endProcess();
-        }
-    }, 500);
+    startProcess({ async: true, withProgress: false });
+    setInterval(() => { endProcess(); }, 500);
+
+    //let p = 0;
+    //const interval = setInterval(() => {
+    //    p += 50;
+    //    updateProgress(p);
+    //    if (p >= 100) {
+    //        clearInterval(interval);
+    //        endProcess();
+    //    }
+    //}, 500);
 
 }
-
-function startProcess({ async = true, withProgress = false }) {
+async function startProcess({ async = true, withProgress = false }) {
     const overlay = document.getElementById("process-overlay");
     const processStatus = document.getElementById("process-status");
     const processProgress = document.getElementById("process-progress");
@@ -1063,7 +1077,7 @@ function startProcess({ async = true, withProgress = false }) {
         flyGear.style.left = `${startX}px`;
         flyGear.style.top = `${startY}px`;
 
-        const duration = 800;
+        const duration = 400;
         const startTime = performance.now();
 
         function animate(time) {
@@ -1093,9 +1107,12 @@ function updateProgress(percent) {
     document.getElementById("process-bar").style.width = `${percent}%`;
 }
 
-function endProcess() {
-    document.getElementById("process-overlay").classList.add("hidden");
-    document.getElementById("process-status").classList.add("hidden");
+async function endProcess() {
+    setInterval(() => {
+        document.getElementById("process-overlay").classList.add("hidden");
+        document.getElementById("process-status").classList.add("hidden");
+
+    }, 500);
 }
 
 

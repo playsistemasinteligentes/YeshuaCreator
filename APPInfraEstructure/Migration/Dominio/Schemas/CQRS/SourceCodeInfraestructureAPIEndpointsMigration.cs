@@ -203,7 +203,9 @@ namespace Dominio.Schemas.CQRS
             }
             #endregion
 
-            // get meta data 
+            // get meta data
+
+            // get meta data
             foreach (var entidade in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapGet(\"/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
@@ -231,15 +233,13 @@ namespace Dominio.Schemas.CQRS
                         // resultFields
                         sb.AppendLine("            resultFields = new[]");
                         sb.AppendLine("            {");
-                        int conta = 0;
                         foreach (var item in query.Meta.SelectFields)
                         {
                             if (item.Column == null)
                                 item.Column = _migration.GetColumn(item.EntityName, item.Field);
 
-                            sb.AppendLine($"                new {{ id = \"{item.Column.Name.ToLower()}\", label = \"{item.Column.Description}\", type = \"{item.Column.getFrontType()}\" }},");
+                            sb.AppendLine($"                {BuildFieldMeta(item.Column)},");
                         }
-
                         sb.AppendLine("            },");
 
                         // filterFields
@@ -249,31 +249,19 @@ namespace Dominio.Schemas.CQRS
                         {
                             foreach (var item in wp.Value)
                             {
-                                string fksDisplay = "fksDisplayFields = new string[]{}";
-                                string endPontGetMetadata = string.Empty;
-
                                 if (item.Column == null)
-                                    item.Column = _migration.GetColumn(item.EntityName, item.Field); ;
+                                    item.Column = _migration.GetColumn(item.EntityName, item.Field);
 
-                                if (item.Column.IsFK)
-                                {
-                                    endPontGetMetadata = $"/getMetaData{item.Column.EntityFK.EntityName}";
-                                    fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", item.Column.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
-                                }
-
-                                sb.AppendLine($"                new {{ id = \"{item.Column.Name.ToLower()}\", label = \"{item.Column.Description}\", type = \"{item.Column.getFrontType()}\", isFk = {item.Column.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay} }},");
+                                sb.AppendLine($"                {BuildFieldMeta(item.Column)},");
                             }
                         }
-
                         sb.AppendLine("            },");
 
-                        // quickSearches (depois você pode carregar de config/tabela)
+                        // quickSearches
                         sb.AppendLine("            quickSearches = new[]");
                         sb.AppendLine("            {");
-
                         foreach (var wp in query.Meta.WhereContextParameters)
                             sb.AppendLine($"                new {{ id = \"{wp.Key}\", label = \"{wp.Key}\", icon = \"calendar-day\", endpoint = \"/{entidade.EntityName}/Read{entidade.EntityName}{wp.Key}\" }},");
-
                         sb.AppendLine("            },");
 
                         // fkEndpoints
@@ -296,60 +284,33 @@ namespace Dominio.Schemas.CQRS
                     // resultFields
                     sb.AppendLine("            resultFields = new[]");
                     sb.AppendLine("            {");
-                    int conta = 0;
                     foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
-                        sb.AppendLine($"                new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\" }},");
-
+                        sb.AppendLine($"                {BuildFieldMeta(item)},");
                     sb.AppendLine("            },");
 
                     // filterFields
                     sb.AppendLine("            filterFields = new[]");
                     sb.AppendLine("            {");
                     foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
-                    {
-                        string fksDisplay = "fksDisplayFields = new string[]{}";
-                        string endPontGetMetadata = string.Empty;
-
-                        if (item.IsFK)
-                        {
-                            endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
-                            fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name}\""))} }}";
-                        }
-
-                        sb.AppendLine($"                new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", type = \"{item.getFrontType()}\", isFk = {item.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay} }},");
-
-                    }
+                        sb.AppendLine($"                {BuildFieldMeta(item)},");
                     sb.AppendLine("            },");
 
-                    // quickSearches (depois você pode carregar de config/tabela)
-                    sb.AppendLine("             quickSearches = Array.Empty<object>(),");
-
+                    sb.AppendLine("            quickSearches = Array.Empty<object>(),");
                     sb.AppendLine("            fkEndpoints = new ");
                     sb.AppendLine("            {");
                     foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
                         sb.AppendLine($"                {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
                     sb.AppendLine("            }");
-
                     sb.AppendLine("            },");
                 }
-                sb.AppendLine("        },"); // fecha vetor search
 
+                sb.AppendLine("        },"); // fecha search
 
-                // 🔎 FORM FIELDS (igual ao anterior)
+                // 🔎 FORM FIELDS
                 sb.AppendLine("        formFields = new[]");
                 sb.AppendLine("        {");
                 foreach (var item in entidade.AddColumns.Where(x => x.FrontVisibol))
-                {
-                    string fksDisplay = "fksDisplayFields = new string[]{}";
-                    string endPontGetMetadata = string.Empty;
-                    if (item.IsFK)
-                    {
-                        endPontGetMetadata = $"/getMetaData{item.EntityFK.EntityName}";
-                        fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", item.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name.ToLower()}\""))} }}";
-                    }
-
-                    sb.AppendLine($"            new {{ id = \"{item.Name.ToLower()}\", label = \"{item.Description}\", displaygroup = \"{item.DisplayGroup}\", type = \"{item.getFrontType()}\", required = {item.required.ToString().ToLower()}, isFk = {item.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay} }},");
-                }
+                    sb.AppendLine($"            {BuildFieldMeta(item, includeRequired: true, displayGroup: item.DisplayGroup)},");
                 sb.AppendLine("        },");
 
                 // 🔎 ENDPOINTS CRUD
@@ -367,6 +328,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    return Results.Ok(metadatacrud);");
                 sb.AppendLine("}).RequireAuthorization();");
             }
+
 
             #region ServicesMethod
             sb.AppendLine("#region ServicesMethod");
@@ -420,5 +382,42 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("return Results.Problem(ex.Message);");
             sb.AppendLine("}");
         }
+        // Função para construir options de enum
+        string BuildOptions(Column col)
+        {
+            if (col.Enum != null && col.Enum.Count > 0)
+            {
+                var sbOpt = new StringBuilder();
+                sbOpt.Append("options = new[]{");
+                foreach (var e in col.Enum)
+                    sbOpt.Append($" new {{ value = {e.Key}, display = \"{e.Value}\" }},");
+                sbOpt.Append("},");
+                return sbOpt.ToString();
+            }
+            return "options = new[] { new { value = 0, display = \"\" } },";
+        }
+
+        // Função auxiliar para montar campo (FK, options, required, displaygroup)
+        string BuildFieldMeta(Column col, bool includeRequired = false, string displayGroup = null)
+        {
+            string fksDisplay = "fksDisplayFields = new string[]{}";
+            string endPontGetMetadata = string.Empty;
+
+            if (col.IsFK)
+            {
+                endPontGetMetadata = $"/getMetaData{col.EntityFK.EntityName}";
+                fksDisplay = $"fksDisplayFields = new string[]{{ {string.Join(", ", col.EntityFK.AddColumns.Where(x => x.DisplayFK && !x.IsKey).Select(n => $"\"{n.Name.ToLower()}\""))} }}";
+            }
+
+            var options = BuildOptions(col);
+
+            var requiredPart = includeRequired ? $", required = {col.required.ToString().ToLower()}" : string.Empty;
+            var groupPart = displayGroup != null ? $", displaygroup = \"{displayGroup}\"" : string.Empty;
+
+            return
+                $"new {{ id = \"{col.Name.ToLower()}\", label = \"{col.Description}\", type = \"{col.getFrontType()}\"{requiredPart}{groupPart}, isFk = {col.IsFK.ToString().ToLower()}, endPontGetMetadata = \"{endPontGetMetadata}\", {fksDisplay}, {options} }}";
+        }
+
     }
+
 }

@@ -1,4 +1,5 @@
 using Shered.DB;
+using System.Data.SqlTypes;
 using Command.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
@@ -23,19 +24,19 @@ namespace Query.Read
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
+            var dict = (IDictionary<string, object>)parameters;
             this.Query = $@" select Id, Description from yModule ";
-if (!string.IsNullOrEmpty(Command.Id)) parametersDict["Id"] = $"%{Command.Id}%";
+if (!string.IsNullOrEmpty(Command.Id)) dict["Id"] = $"%{Command.Id}%";
 if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"Id like @Id");
-if (!string.IsNullOrEmpty(Command.Description)) parametersDict["Description"] = $"%{Command.Description}%";
+if (!string.IsNullOrEmpty(Command.Description)) dict["Description"] = $"%{Command.Description}%";
 if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description like @Description");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
-            parametersDict["Offset"] = offset;
-            parametersDict["PageSize"] = pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
             Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
@@ -45,10 +46,10 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
+            var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yModule ";
-                      parametersDict["Id"] = value; 
-                      whereClauses.Add($" Id = @Id ");
+                      dict["Id"] = value; //04
+                      whereClauses.Add($" Id = @Id ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -59,10 +60,10 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
+            var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yModule ";
-                      parametersDict["Description"] = value; 
-                      whereClauses.Add($" Description = @Description ");
+                      dict["Description"] = value; //04
+                      whereClauses.Add($" Description = @Description ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -73,10 +74,10 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
+            var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yModule ";
-                      parametersDict["Id"] = value; 
-                      whereClauses.Add($" Id = @Id ");
+                      dict["Id"] = value; //06
+                      whereClauses.Add($" Id = @Id ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -87,10 +88,10 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
-            var parametersDict = (IDictionary<string, object>)parameters;
+            var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yModule ";
-                      parametersDict["Description"] = value; 
-                      whereClauses.Add($" Description = @Description ");
+                      dict["Description"] = value; //06
+                      whereClauses.Add($" Description = @Description ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

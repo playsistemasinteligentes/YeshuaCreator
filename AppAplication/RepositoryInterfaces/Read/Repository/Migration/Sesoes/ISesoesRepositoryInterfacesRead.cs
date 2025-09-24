@@ -13,16 +13,16 @@ namespace IRepository.Read
     {
         public DataPagination<SesoesDTO> getSesoes(ICommandRead command );
         public IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(object command );
-        public IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command );
         public IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(object command );
+        public IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(object command );
         public IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(object command );
         public IEnumerable<SesoesTenantIDDTO> getSesoesReadFKTenantID(object command );
         public IEnumerable<SesoesUserIdDTO> getSesoesReadFKUserId(object command );
         public bool ExistsByPacienteId(int value );
         public bool ExistsByDataInicio(DateTime value );
         public bool ExistsByDataFim(DateTime value );
-        public bool ExistsByStatus(int value );
-        public bool ExistsByMovimentacaoFinanceiraId(int value );
+        public bool ExistsByStatusAgendamento(int value );
+        public bool ExistsByStatusProntuario(int value );
         public bool ExistsByProntuario(string value );
         public bool ExistsByQueixaPrincipal(string value );
         public bool ExistsByRegistroDocumental(string value );
@@ -44,6 +44,7 @@ namespace IRepository.Read
         public bool ExistsByFeedbackPacienteSobreProcessoTerapeeutico(string value );
         public bool ExistsById(int value );
         public bool ExistsByServicoId(int value );
+        public bool ExistsByMovimentacaoFinanceiraId(int value );
         public bool ExistsByProfissionalId(int value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
@@ -52,8 +53,8 @@ namespace IRepository.Read
         public SesoesDTO FirstByPacienteId(int value );
         public SesoesDTO FirstByDataInicio(DateTime value );
         public SesoesDTO FirstByDataFim(DateTime value );
-        public SesoesDTO FirstByStatus(int value );
-        public SesoesDTO FirstByMovimentacaoFinanceiraId(int value );
+        public SesoesDTO FirstByStatusAgendamento(int value );
+        public SesoesDTO FirstByStatusProntuario(int value );
         public SesoesDTO FirstByProntuario(string value );
         public SesoesDTO FirstByQueixaPrincipal(string value );
         public SesoesDTO FirstByRegistroDocumental(string value );
@@ -75,6 +76,7 @@ namespace IRepository.Read
         public SesoesDTO FirstByFeedbackPacienteSobreProcessoTerapeeutico(string value );
         public SesoesDTO FirstById(int value );
         public SesoesDTO FirstByServicoId(int value );
+        public SesoesDTO FirstByMovimentacaoFinanceiraId(int value );
         public SesoesDTO FirstByProfissionalId(int value );
         public SesoesDTO FirstByTenantID(int value );
         public SesoesDTO FirstByDeleted(bool value );
@@ -83,8 +85,8 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value );
         public IEnumerable<SesoesDTO> GetAllByDataInicio(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByDataFim(DateTime value );
-        public IEnumerable<SesoesDTO> GetAllByStatus(int value );
-        public IEnumerable<SesoesDTO> GetAllByMovimentacaoFinanceiraId(int value );
+        public IEnumerable<SesoesDTO> GetAllByStatusAgendamento(int value );
+        public IEnumerable<SesoesDTO> GetAllByStatusProntuario(int value );
         public IEnumerable<SesoesDTO> GetAllByProntuario(string value );
         public IEnumerable<SesoesDTO> GetAllByQueixaPrincipal(string value );
         public IEnumerable<SesoesDTO> GetAllByRegistroDocumental(string value );
@@ -106,6 +108,7 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByFeedbackPacienteSobreProcessoTerapeeutico(string value );
         public IEnumerable<SesoesDTO> GetAllById(int value );
         public IEnumerable<SesoesDTO> GetAllByServicoId(int value );
+        public IEnumerable<SesoesDTO> GetAllByMovimentacaoFinanceiraId(int value );
         public IEnumerable<SesoesDTO> GetAllByProfissionalId(int value );
         public IEnumerable<SesoesDTO> GetAllByTenantID(int value );
         public IEnumerable<SesoesDTO> GetAllByDeleted(bool value );
@@ -113,7 +116,7 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByUserId(int value );
         public DataPagination<SesoesStandardDTO> GetSesoesHoje(ICommandRead command );
         public DataPagination<SesoesStandardDTO> GetSesoesSemana(ICommandRead command );
-        public DataPagination<SesoesStandardDTO> GetSesoesMes(ICommandRead command );
+        public DataPagination<SesoesStandardDTO> GetSesoesD30(ICommandRead command );
         public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command );
     }
 }

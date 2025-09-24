@@ -106,15 +106,15 @@ builder.Services.AddTransient<Command.Receivers.Write.UpdateSesoesReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteSesoesReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKPacienteIdReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKServicoIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKUserIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryGeralReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryHojeReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQuerySemanaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryMesReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryD30Receiver>();
 
 builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();
