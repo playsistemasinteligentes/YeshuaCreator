@@ -89,7 +89,7 @@ export async function loadDataCrud(fullUrl, type) {
 
     const token = localStorage.getItem('token');
     try {
-
+        beforeRequest();
         const response = await fetch(fullUrl, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -100,7 +100,7 @@ export async function loadDataCrud(fullUrl, type) {
             renderSearch(crudState.metadata);
             renderFormCrud();
         } else {
-            crudContainer.innerHTML = `<p>Erro ao carregar os dados.</p>`;
+            trataErroResponse('loadDataCrud', response);
         }
     } catch (error) {
         erroRequestResponse(error);
@@ -129,9 +129,9 @@ function renderQuickSearches(quickSearches) {
         const btn = document.createElement("button");
         btn.className = "p-2 rounded hover:bg-blue-100 text-blue-600 transition flex items-center";
         btn.innerHTML = `
-            <i class="fas fa-${qs.icon} mr-1"></i>
-            ${qs.label}
-        `;
+                <i class="fas fa-${qs.icon} mr-1"></i>
+                ${qs.label}
+            `;
 
         btn.addEventListener("click", async () => {
             // Guarda quick search selecionado
@@ -189,6 +189,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
     };
 
     try {
+        beforeRequest();
         const response = await fetch(`${crudState.fullUrl}`, {
             method: 'POST',
             headers: {
@@ -198,9 +199,9 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
             body: JSON.stringify(payload)
         });
 
-        const responseJson = await response.json();
 
         if (response.ok) {
+            const responseJson = await response.json();
             const paginatedData = responseJson.data || {};
             const items = paginatedData.items || [];
 
@@ -215,7 +216,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
             togglePaginationControls(metadata, modoFk);
 
         } else {
-            showAlert(responseJson.data?.message || "Erro na pesquisa", 'error');
+            trataErroResponse('fetchSearchResults', response);
         }
     } catch (error) {
         erroRequestResponse(error);
@@ -447,23 +448,23 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             } else {
                 const editBtn = document.createElement('button');
                 editBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
-                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" 
-                            d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
-                               1.5-4.5 12.362-12.326z" />
-                    </svg>`;
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                             viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
+                                   1.5-4.5 12.362-12.326z" />
+                        </svg>`;
                 editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
                 editBtn.title = "Editar";
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
-                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" 
-                            d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
-                    </svg>`;
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                             viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
+                        </svg>`;
                 deleteBtn.className = 'p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600';
                 deleteBtn.title = "Excluir";
                 deleteBtn.onclick = () => deleteRecord(item);
@@ -538,23 +539,23 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             if (!modoFk) {
                 const editBtn = document.createElement('button');
                 editBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
-                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" 
-                            d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
-                               1.5-4.5 12.362-12.326z" />
-                    </svg>`;
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                             viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
+                                   1.5-4.5 12.362-12.326z" />
+                        </svg>`;
                 editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
                 editBtn.title = "Editar";
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
-                         viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" 
-                            d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
-                    </svg>`;
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                             viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" 
+                                d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
+                        </svg>`;
                 deleteBtn.className = 'p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600';
                 deleteBtn.title = "Excluir";
                 deleteBtn.onclick = () => deleteRecord(item);
@@ -714,9 +715,9 @@ function buildAccordionMobile(tabsMap) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.innerHTML = `
-            <span class="font-semibold text-gray-700">${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</span>
-            <span class="ml-auto transform transition-transform text-gray-500">▸</span>
-        `;
+                <span class="font-semibold text-gray-700">${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</span>
+                <span class="ml-auto transform transition-transform text-gray-500">▸</span>
+            `;
         btn.className = 'tab-btn flex items-center justify-between w-full px-4 py-2 bg-gray-50 hover:bg-gray-100';
 
         // conteúdo da aba
@@ -776,7 +777,6 @@ export function renderFormCrud() {
         if (!tabsMap[tabKey]) tabsMap[tabKey] = [];
         tabsMap[tabKey].push(field);
     });
-
     const isMobile = window.innerWidth < 768;
     const layout = isMobile ? buildAccordionMobile(tabsMap) : buildTabsDesktop(tabsMap);
     formGroup.appendChild(layout);
@@ -787,6 +787,7 @@ export function renderFormCrud() {
             renderFormCrud();
         }
     });
+    atualizarFormName();
 }
 async function buildSearchFK(tipo, campoId, valor) {
     // tipo = "search" ou "insert"
@@ -795,6 +796,7 @@ async function buildSearchFK(tipo, campoId, valor) {
 
     try {
         const token = localStorage.getItem('token');
+        beforeRequest();
         const response = await fetch(`${environments.urlApi}${input.dataset.endPontGetMetadata}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -808,7 +810,7 @@ async function buildSearchFK(tipo, campoId, valor) {
             openSearchFK(metadata, inputId);
 
         } else {
-            showAlert('Erro ao carregar os dados.', 'error');
+            trataErroResponse('buildSearchFK', response);
         }
     } catch (error) {
         erroRequestResponse(error);
@@ -854,7 +856,7 @@ async function crudCreate() {
 
 
     try {
-
+        beforeRequest();
         const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.create}`, {
             method: 'POST',
             headers: {
@@ -867,16 +869,7 @@ async function crudCreate() {
         if (response.ok) {
             showAlert('Registro inserido com sucesso!', 'success');
         } else {
-            const responseJson = await response.json();
-
-            if (responseJson.messageList && Array.isArray(responseJson.messageList)) {
-                responseJson.messageList.forEach(msg => {
-                    showAlert(msg, 'error');
-                });
-            } else {
-                showAlert("Erro: " + responseJson.status, 'error');
-                console.log(responseJson.detail)
-            }
+            trataErroResponse('crudCreate', response);
         }
     } catch (error) {
         erroRequestResponse(error);
@@ -903,7 +896,7 @@ async function crudUpdate() {
 
 
     try {
-
+        beforeRequest();
         const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.update}`, {
             method: 'PUT',
             headers: {
@@ -916,8 +909,7 @@ async function crudUpdate() {
         if (response.ok) {
             showAlert('Registro atualizado com sucesso!', 'success');
         } else {
-            const responseJson = await response.json();
-            showAlert(responseJson.message, 'error');//data.messageList
+            trataErroResponse('crudUpdate', response);
         }
     } catch (error) {
         erroRequestResponse(error);
@@ -941,6 +933,7 @@ async function editRecord(item) {
     };
 
     try {
+        beforeRequest();
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -951,7 +944,7 @@ async function editRecord(item) {
         });
 
         if (!response.ok) {
-            showAlert("Erro ao carregar detalhes do registro.", "error");
+            trataErroResponse('editRecord', response);
             return;
         }
 
@@ -996,6 +989,7 @@ async function deleteRecord(item) {
         const deleteEndpoint = `${environments.urlApi}${crudState.metadata.endpoints.delete.replace("{entidade.EntityName}", crudState.metadata.entityName)}`;
 
         try {
+            beforeRequest();
             const response = await fetch(deleteEndpoint, {
                 method: 'DELETE',
                 headers: {
@@ -1023,8 +1017,7 @@ async function deleteRecord(item) {
                 }
 
             } else {
-                const responseJson = await response.json();
-                showAlert(responseJson.data?.message, 'error');
+                trataErroResponse('deleteRecord', response);
             }
         } catch (error) {
             erroRequestResponse(error);
@@ -1032,8 +1025,6 @@ async function deleteRecord(item) {
     });
     endProcess();
 }
-
-
 function exemploBarraProgreco() {
 
     startProcess({ async: true, withProgress: false });
@@ -1102,11 +1093,9 @@ async function startProcess({ async = true, withProgress = false }) {
         overlay.classList.remove("hidden");
     }
 }
-
 function updateProgress(percent) {
     document.getElementById("process-bar").style.width = `${percent}%`;
 }
-
 async function endProcess() {
     setInterval(() => {
         document.getElementById("process-overlay").classList.add("hidden");
@@ -1114,6 +1103,77 @@ async function endProcess() {
 
     }, 500);
 }
+async function trataErroResponse(metodo, response) {
+
+    showAlert('ERRO não tratao', 'error');
+
+
+    /*trataErroResponse('deleteRecord', response);
+    showAlert(responseJson.data?.message, 'error');
+
+    trataErroResponse('editRecord', response);
+    showAlert("Erro ao carregar detalhes do registro.", "error");
+
+    trataErroResponse('crudUpdate', response);
+    showAlert(responseJson.message, 'error');//data.messageList
+
+
+    trataErroResponse('crudCreate', response);
+
+    const responseJson = await response.json();
+
+    if (responseJson.messageList && Array.isArray(responseJson.messageList)) {
+        responseJson.messageList.forEach(msg => {
+            showAlert(msg, 'error');
+        });
+    } else {
+        showAlert("Erro: " + responseJson.status, 'error');
+        console.log(responseJson.detail)
+    }
 
 
 
+    trataErroResponse('buildSearchFK', response);
+    showAlert('Erro ao carregar os dados.', 'error');
+
+
+    trataErroResponse('fetchSearchResults', response);
+    showAlert(responseJson.data?.message || "Erro na pesquisa", 'error');
+    */
+}
+
+function beforeRequest() {
+    console.log('lllll');
+    const token = localStorage.getItem('token');
+    const tokenExp = localStorage.getItem('tokenExp');
+
+    if (!token || !tokenExp || Date.now() > Number(tokenExp)) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExp');
+        showAlert('Sessão expirada. Faça login novamente.');
+        location.hash = '#login';
+        return false; // bloqueia a requisição
+    }
+
+    return true; // token válido, continuar
+}
+
+function atualizarFormName() {
+    const resultadosContainer = document.getElementById('resultados-container');
+    const tableTitle = resultadosContainer.querySelector('h2');
+
+    if (crudState.metadata && crudState.metadata.entityDescription) {
+        tableTitle.textContent = `${crudState.metadata.entityDescription} Busca`;
+    } else {
+        tableTitle.textContent = 'Resultados';
+    }
+
+    const cadastroContainer = document.getElementById('form-container');
+    const cadastroTitle = cadastroContainer.querySelector('h2');
+
+    if (crudState.metadata && crudState.metadata.entityDescription) {
+        cadastroTitle.textContent = `${crudState.metadata.entityDescription} Cadastro`;
+    } else {
+        cadastroTitle.textContent = 'Cadastro';
+    }
+}

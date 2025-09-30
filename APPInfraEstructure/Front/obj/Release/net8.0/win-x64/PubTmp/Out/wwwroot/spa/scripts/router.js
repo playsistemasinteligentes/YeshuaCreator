@@ -6,7 +6,6 @@ import { buildForgot } from './viewsScripts/forgot.js';
 
 export async function handleRouting(hash) {
 
-    console.log('eee');
     const token = localStorage.getItem('token');
     const app = document.getElementById('app');
 
@@ -49,6 +48,8 @@ function attachEvents(route) {
                 const data = await res.json();
                 if (res.ok && data.token) {
                     localStorage.setItem('token', data.token);
+                    const payload = JSON.parse(atob(data.token.split('.')[1]));
+                    localStorage.setItem('tokenExp', payload.exp * 1000);
                     location.hash = '#dashboard';
                 } else {
                     alert('Login inválido');
