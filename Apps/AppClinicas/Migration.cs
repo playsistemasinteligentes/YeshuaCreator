@@ -3,6 +3,7 @@ using MyApp.Domain.Entities;
 using MyApp.QueryBuilder;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -54,7 +55,6 @@ namespace AppClinicas
                 .AddColumn("DataHora", "Horário Disponível").DateTime().NotNull();
 
             // recursos 
-
             AddEntity("GrupoServico").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("Descricao", "Descrição do Grupo de Serviços").Varchar(150).NotNull();
@@ -172,6 +172,14 @@ namespace AppClinicas
              .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
 
              .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.StatusAgendamento, s.StatusProntuario }));
+
+
+            saga eventos S001 sesao e financeiro 
+                => sesão concluida 0001
+                => movFinanceiro concluido 0002
+                => estornar ???
+
+                contrato de pacotes ??
 
 
 
