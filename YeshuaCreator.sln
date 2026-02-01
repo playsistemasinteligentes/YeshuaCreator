@@ -42,24 +42,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{640ED8C1-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "APPInfraEstructure\Front\Front.csproj", "{CEBE593F-EE77-4ECA-B745-B5F186DEDF55}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devops", "Devops", "{CA7159C1-2EC3-4212-84DD-746AA117C94A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{CA0B95F5-CA78-457E-8707-C0164461F44D}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bootstrap", "bootstrap", "{5CA371EF-EAA9-41F9-9EAD-F8895BCFE60A}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-		setup.sh = setup.sh
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{37CE4247-3FFE-4E56-8E05-5531FF280A2B}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,9 +113,6 @@ Global
 		{63A9AF5D-062A-4A05-A58E-526DB60D096E} = {C64F6101-F255-4C6B-B42F-8881E9063B84}
 		{6DDB15B2-4769-4F03-A6D7-CCB3D4F4920D} = {640ED8C1-1F90-4FEB-8F1C-5B94F0946393}
 		{CEBE593F-EE77-4ECA-B745-B5F186DEDF55} = {17E882F3-0C8F-4755-99A8-906C6F7EEDDE}
-		{CA0B95F5-CA78-457E-8707-C0164461F44D} = {CA7159C1-2EC3-4212-84DD-746AA117C94A}
-		{5CA371EF-EAA9-41F9-9EAD-F8895BCFE60A} = {CA0B95F5-CA78-457E-8707-C0164461F44D}
-		{37CE4247-3FFE-4E56-8E05-5531FF280A2B} = {CA0B95F5-CA78-457E-8707-C0164461F44D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7029C916-1051-464B-AFBA-2988B09103C9}
