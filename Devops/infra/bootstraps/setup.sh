@@ -4,7 +4,6 @@ set -e  # Para parar em caso de erro
 echo "==== Passo 1: Atualizando Ubuntu ===="
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive sudo apt upgrade -y
-sudo DEBIAN_FRONTEND=noninteractive sudo apt autoremove -y
 echo "==== Ubuntu atualizado com sucesso ===="
 
 echo "==== Passo 2: Instalando pacotes essenciais ===="
@@ -24,16 +23,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
     build-essential
 echo "==== Pacotes essenciais instalados ===="
 
-echo "==== Passo 3: Instalando Docker e Compose ===="
-sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-    docker-ce \
-    docker-ce-cli \
-    containerd.io \
-    docker-buildx-plugin \
-    docker-compose-plugin
-
-sudo systemctl enable docker
-sudo systemctl start docker
+echo "==== Passo 3: Instalando Docker e Compose (oficial) ===="
+curl -fsSL https://get.docker.com | sh
 
 # Permitir usuário atual rodar Docker sem sudo
 sudo usermod -aG docker $USER
