@@ -31,14 +31,14 @@ sudo usermod -aG docker $USER
 echo "==== Docker instalado com sucesso ===="
 
 echo "==== Passo 4: Preparando arquivos do Nginx ===="
-# Caminho absoluto para Docker/Nginx
+# Caminho absoluto para o diretório Docker/nginx
 NGINX_DIR="/root/infra/Docker/nginx"
 mkdir -p "$NGINX_DIR"
 
-# Baixar o nginx.conf do GitHub (raw)
+# Baixar nginx.conf do GitHub (raw)
 echo "==== Baixando nginx.conf ===="
 curl -fsSL -o "$NGINX_DIR/nginx.conf" \
-    https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
+https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
 
 # Criar Dockerfile mínimo para o container
 cat > "$NGINX_DIR/Dockerfile" <<EOL
