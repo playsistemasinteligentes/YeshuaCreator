@@ -30,9 +30,27 @@ curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
 echo "==== Docker instalado com sucesso ===="
 
-echo "==== Passo 4: Construindo e rodando container Nginx ===="
-# Caminho relativo do setup.sh para Docker/nginx
+echo "==== Passo 4: Preparando arquivos do Nginx ===="
+# Criar diretório para Docker/Nginx
 NGINX_DIR="$(dirname "$0")/../Docker/nginx"
+mkdir -p "$NGINX_DIR"
+
+# Baixar o nginx.conf do GitHub
+echo "==== Baixando nginx.conf ===="
+curl -fsSL -o "$NGINX_DIR/nginx.conf" \
+    https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
+
+# Criar Dockerfile básico se não existir
+if [ ! -f "$NGINX_DIR/Dockerfile" ]; then
+    cat > "$NGINX_DIR/Dockerfile" <<EOL
+FROM nginx:latest
+COPY nginx.conf /etc/nginx/nginx.conf
+EOL
+fi
+
+echo "==== Arquivos do Nginx preparados ===="
+
+echo "==== Passo 5: Construindo e rodando container Nginx ===="
 cd "$NGINX_DIR" || { echo "Diretório $NGINX_DIR não encontrado!"; exit 1; }
 
 # Construir imagem
