@@ -3,7 +3,7 @@ set -e  # Para parar em caso de erro
 
 echo "==== Passo 1: Atualizando Ubuntu ===="
 sudo apt update
-sudo DEBIAN_FRONTEND=noninteractive sudo apt upgrade -y
+sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 echo "==== Ubuntu atualizado com sucesso ===="
 
 echo "==== Passo 2: Instalando pacotes essenciais ===="
@@ -31,8 +31,8 @@ sudo usermod -aG docker $USER
 echo "==== Docker instalado com sucesso ===="
 
 echo "==== Passo 4: Preparando arquivos do Nginx ===="
-# Criar diretório para Docker/Nginx
-NGINX_DIR="$(dirname "$0")/../Docker/nginx"
+# Caminho absoluto para Docker/Nginx
+NGINX_DIR="/root/infra/Docker/nginx"
 mkdir -p "$NGINX_DIR"
 
 # Baixar o nginx.conf do GitHub (raw)
