@@ -142,8 +142,8 @@ var app = builder.Build();
 // Aplica a política CORS
 app.UseCors("AllowLocalhostAndNetwork");
 
-// Adiciona middleware de redirecionamento HTTPS
-app.UseHttpsRedirection();
+//// Adiciona middleware de redirecionamento HTTPS
+//app.UseHttpsRedirection();
 
 // Configura o Swagger e Swagger UI
 app.UseSwagger();
