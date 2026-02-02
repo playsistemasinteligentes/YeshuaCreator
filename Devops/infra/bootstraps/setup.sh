@@ -35,18 +35,16 @@ echo "==== Passo 4: Preparando arquivos do Nginx ===="
 NGINX_DIR="$(dirname "$0")/../Docker/nginx"
 mkdir -p "$NGINX_DIR"
 
-# Baixar o nginx.conf do GitHub
+# Baixar o nginx.conf do GitHub (raw)
 echo "==== Baixando nginx.conf ===="
 curl -fsSL -o "$NGINX_DIR/nginx.conf" \
     https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
 
-# Criar Dockerfile básico se não existir
-if [ ! -f "$NGINX_DIR/Dockerfile" ]; then
-    cat > "$NGINX_DIR/Dockerfile" <<EOL
+# Criar Dockerfile mínimo para o container
+cat > "$NGINX_DIR/Dockerfile" <<EOL
 FROM nginx:latest
 COPY nginx.conf /etc/nginx/nginx.conf
 EOL
-fi
 
 echo "==== Arquivos do Nginx preparados ===="
 
