@@ -33,26 +33,25 @@ echo "==== Docker instalado com sucesso ===="
 echo "==== Passo 4: Preparando arquivos do Nginx ===="
 # Caminho absoluto para Docker/nginx
 NGINX_DIR="/root/infra/Docker/nginx"
-mkdir -p "$NGINX_DIR"
 
-# Criar Dockerfile mínimo
-cat > "$NGINX_DIR/Dockerfile" <<EOL
-FROM nginx:latest
-COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
-EOL
-
-# Criar diretório conf.d
+# Criar diretórios necessários
 mkdir -p "$NGINX_DIR/conf.d"
 
 # Baixar default.conf do GitHub raw (já com bloco server válido)
 curl -fsSL -o "$NGINX_DIR/conf.d/default.conf" \
-https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/nginx/nginx.conf
+https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
 
 # Verifica se baixou corretamente
 if [ ! -f "$NGINX_DIR/conf.d/default.conf" ]; then
     echo "Erro: default.conf não foi baixado!"
     exit 1
 fi
+
+# Criar Dockerfile mínimo
+cat > "$NGINX_DIR/Dockerfile" <<EOL
+FROM nginx:latest
+COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+EOL
 
 echo "==== Arquivos do Nginx preparados ===="
 
