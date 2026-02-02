@@ -46,7 +46,7 @@ mkdir -p "$NGINX_DIR/conf.d"
 
 # Baixar default.conf do GitHub raw (já com bloco server válido)
 curl -fsSL -o "$NGINX_DIR/conf.d/default.conf" \
-https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/default.conf
+https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/nginx/nginx.conf
 
 # Verifica se baixou corretamente
 if [ ! -f "$NGINX_DIR/conf.d/default.conf" ]; then
