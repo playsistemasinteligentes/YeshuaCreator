@@ -31,27 +31,35 @@ sudo usermod -aG docker $USER
 echo "==== Docker instalado com sucesso ===="
 
 echo "==== Passo 4: Preparando arquivos do Nginx ===="
-# Caminho absoluto para o diretório Docker/nginx
+# Caminho absoluto para Docker/nginx
 NGINX_DIR="/root/infra/Docker/nginx"
 mkdir -p "$NGINX_DIR"
 
-# Baixar nginx.conf do GitHub (raw)
-echo "==== Baixando nginx.conf ===="
-curl -fsSL -o "$NGINX_DIR/nginx.conf" \
-https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
-
-# Criar Dockerfile mínimo para o container
+# Criar Dockerfile mínimo
 cat > "$NGINX_DIR/Dockerfile" <<EOL
 FROM nginx:latest
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
 EOL
+
+# Criar diretório conf.d
+mkdir -p "$NGINX_DIR/conf.d"
+
+# Baixar default.conf do GitHub raw (já com bloco server válido)
+curl -fsSL -o "$NGINX_DIR/conf.d/default.conf" \
+https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/default.conf
+
+# Verifica se baixou corretamente
+if [ ! -f "$NGINX_DIR/conf.d/default.conf" ]; then
+    echo "Erro: default.conf não foi baixado!"
+    exit 1
+fi
 
 echo "==== Arquivos do Nginx preparados ===="
 
 echo "==== Passo 5: Construindo e rodando container Nginx ===="
-cd "$NGINX_DIR" || { echo "Diretório $NGINX_DIR não encontrado!"; exit 1; }
+cd "$NGINX_DIR"
 
-# Construir imagem
+# Build da imagem
 docker build -t my-nginx .
 
 # Remove container antigo se existir
@@ -62,4 +70,4 @@ fi
 
 # Rodar container
 docker run -d --name nginx-container -p 80:80 my-nginx
-echo "==== Nginx rodando em container com proxy reverso para http://205.209.122.248:80 ===="
+echo "==== Nginx rodando em container com proxy reverso ===="
