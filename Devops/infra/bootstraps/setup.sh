@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # Para parar em caso de erro
+set -e
 
 echo "==== Passo 1: Atualizando Ubuntu ===="
 sudo apt update
@@ -23,50 +23,45 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
     build-essential
 echo "==== Pacotes essenciais instalados ===="
 
-echo "==== Passo 3: Instalando Docker e Compose (oficial) ===="
+echo "==== Passo 3: Instalando Docker ===="
 curl -fsSL https://get.docker.com | sh
-
-# Permitir usuário atual rodar Docker sem sudo
 sudo usermod -aG docker $USER
 echo "==== Docker instalado com sucesso ===="
 
-echo "==== Passo 4: Preparando arquivos do Nginx ===="
-# Caminho absoluto para Docker/nginx
-NGINX_DIR="/root/infra/Docker/nginx"
 
-# Criar diretórios necessários
+echo "==== Passo 5: Clonando repositório ===="
+if [ ! -d "/root/YeshuaCreator" ]; then
+    git clone https://github.com/playsistemasinteligentes/YeshuaCreator.git /root/YeshuaCreator
+else
+    echo "Repositório já existe, pulando clone"
+fi
+
+echo "==== Passo 6: Preparando arquivos do Nginx ===="
+NGINX_DIR="/root/infra/Docker/nginx"
 mkdir -p "$NGINX_DIR/conf.d"
 
-# Baixar default.conf do GitHub raw (já com bloco server válido)
 curl -fsSL -o "$NGINX_DIR/conf.d/default.conf" \
 https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
 
-# Verifica se baixou corretamente
 if [ ! -f "$NGINX_DIR/conf.d/default.conf" ]; then
     echo "Erro: default.conf não foi baixado!"
     exit 1
 fi
 
-# Criar Dockerfile mínimo
 cat > "$NGINX_DIR/Dockerfile" <<EOL
 FROM nginx:latest
 COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
 EOL
 
-echo "==== Arquivos do Nginx preparados ===="
-
-echo "==== Passo 5: Construindo e rodando container Nginx ===="
+echo "==== Passo 7: Construindo e rodando container Nginx ===="
 cd "$NGINX_DIR"
 
-# Build da imagem
 docker build -t my-nginx .
 
-# Remove container antigo se existir
 if [ "$(docker ps -aq -f name=nginx-container)" ]; then
-    echo "Removendo container Nginx antigo..."
     docker rm -f nginx-container
 fi
 
-# Rodar container
 docker run -d --name nginx-container -p 80:80 my-nginx
-echo "==== Nginx rodando em container com proxy reverso ===="
+
+echo "==== Setup concluído ===="
