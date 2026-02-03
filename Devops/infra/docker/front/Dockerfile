@@ -9,8 +9,8 @@ COPY . .
 RUN dotnet publish \
   APPInfraEstructure/Front/Front.csproj \
   -c Release \
-  -o /app/publish \
-  --no-restore
+  -o /app/publish
+
 
 
 # ===== Stage 2: Runtime =====
