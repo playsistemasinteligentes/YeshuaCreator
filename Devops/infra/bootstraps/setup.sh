@@ -1,12 +1,15 @@
 #!/bin/bash
 set -e
 
+APP_DIR="/root/YeshuaCreator"
+COMPOSE_DIR="$APP_DIR/Devops/infra/docker"
+
 echo "==== Atualizando sistema ===="
-sudo apt update
-sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
+apt update
+DEBIAN_FRONTEND=noninteractive apt upgrade -y
 
 echo "==== Instalando pacotes essenciais ===="
-sudo DEBIAN_FRONTEND=noninteractive apt install -y \
+DEBIAN_FRONTEND=noninteractive apt install -y \
   curl \
   wget \
   git \
@@ -20,21 +23,43 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
   lsb-release
 
 echo "==== Instalando Docker ===="
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
-
-echo "==== Instalando Docker Compose Plugin ===="
-sudo mkdir -p /usr/local/lib/docker/cli-plugins
-sudo curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 \
-  -o /usr/local/lib/docker/cli-plugins/docker-compose
-sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-
-echo "==== Clonando repositório ===="
-if [ ! -d "/root/YeshuaCreator" ]; then
-  git clone https://github.com/playsistemasinteligentes/YeshuaCreator.git /root/YeshuaCreator
-else
-  echo "Repositório já existe"
+if ! command -v docker >/dev/null 2>&1; then
+  curl -fsSL https://get.docker.com | sh
 fi
 
-echo "==== Setup do host concluído ===="
-echo "Agora use: docker compose up -d"
+# Garante docker no boot
+systemctl enable docker
+systemctl start docker
+
+# Root já tem acesso, mas deixamos padrão
+if ! getent group docker | grep -q root; then
+  usermod -aG docker root
+fi
+
+echo "==== Instalando Docker Compose Plugin ===="
+if ! docker compose version >/dev/null 2>&1; then
+  mkdir -p /usr/local/lib/docker/cli-plugins
+  curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 \
+    -o /usr/local/lib/docker/cli-plugins/docker-compose
+  chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+fi
+
+echo "==== Clonando / atualizando repositório ===="
+if [ ! -d "$APP_DIR/.git" ]; then
+  git clone https://github.com/playsistemasinteligentes/YeshuaCreator.git "$APP_DIR"
+else
+  cd "$APP_DIR"
+  git pull
+fi
+
+echo "==== Subindo aplicação com Docker Compose ===="
+cd "$COMPOSE_DIR"
+
+docker compose pull
+docker compose build
+docker compose up -d
+
+echo "=========================================="
+echo "Setup concluído com sucesso ??"
+echo "Containers em execução:"
+docker compose ps
