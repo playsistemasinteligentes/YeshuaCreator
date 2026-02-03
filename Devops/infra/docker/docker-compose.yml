@@ -11,17 +11,17 @@ services:
       - yeshua-net
 
   nginx:
-      container_name: yeshua-nginx
-      build:
-        context: .
-        dockerfile: nginx/Dockerfile
-      ports:
-        - "80:80"
-      depends_on:
-        - front
-      restart: unless-stopped
-      networks:
-        - yeshua-net
+    container_name: yeshua-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - front
+    restart: unless-stopped
+    networks:
+      - yeshua-net
 
 
 networks:
