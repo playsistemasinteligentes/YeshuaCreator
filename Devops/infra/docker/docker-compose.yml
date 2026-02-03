@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  front:
+    container_name: yeshua-front
+    build:
+      context: ../../..
+      dockerfile: Devops/infra/docker/front/Dockerfile
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  nginx:
+    container_name: yeshua-nginx
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - front
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+networks:
+  yeshua-net:
+    driver: bridge

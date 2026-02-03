@@ -1,67 +1,40 @@
 #!/bin/bash
 set -e
 
-echo "==== Passo 1: Atualizando Ubuntu ===="
+echo "==== Atualizando sistema ===="
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
-echo "==== Ubuntu atualizado com sucesso ===="
 
-echo "==== Passo 2: Instalando pacotes essenciais ===="
+echo "==== Instalando pacotes essenciais ===="
 sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-    curl \
-    wget \
-    git \
-    vim \
-    htop \
-    net-tools \
-    ufw \
-    openssh-server \
-    software-properties-common \
-    ca-certificates \
-    gnupg \
-    lsb-release \
-    build-essential
-echo "==== Pacotes essenciais instalados ===="
+  curl \
+  wget \
+  git \
+  vim \
+  htop \
+  net-tools \
+  ufw \
+  openssh-server \
+  ca-certificates \
+  gnupg \
+  lsb-release
 
-echo "==== Passo 3: Instalando Docker ===="
+echo "==== Instalando Docker ===="
 curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
-echo "==== Docker instalado com sucesso ===="
 
+echo "==== Instalando Docker Compose Plugin ===="
+sudo mkdir -p /usr/local/lib/docker/cli-plugins
+sudo curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 \
+  -o /usr/local/lib/docker/cli-plugins/docker-compose
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
-echo "==== Passo 5: Clonando repositório ===="
+echo "==== Clonando repositório ===="
 if [ ! -d "/root/YeshuaCreator" ]; then
-    git clone https://github.com/playsistemasinteligentes/YeshuaCreator.git /root/YeshuaCreator
+  git clone https://github.com/playsistemasinteligentes/YeshuaCreator.git /root/YeshuaCreator
 else
-    echo "Repositório já existe, pulando clone"
+  echo "Repositório já existe"
 fi
 
-echo "==== Passo 6: Preparando arquivos do Nginx ===="
-NGINX_DIR="/root/infra/Docker/nginx"
-mkdir -p "$NGINX_DIR/conf.d"
-
-curl -fsSL -o "$NGINX_DIR/conf.d/default.conf" \
-https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/docker/nginx/nginx.conf
-
-if [ ! -f "$NGINX_DIR/conf.d/default.conf" ]; then
-    echo "Erro: default.conf não foi baixado!"
-    exit 1
-fi
-
-cat > "$NGINX_DIR/Dockerfile" <<EOL
-FROM nginx:latest
-COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
-EOL
-
-echo "==== Passo 7: Construindo e rodando container Nginx ===="
-cd "$NGINX_DIR"
-
-docker build -t my-nginx .
-
-if [ "$(docker ps -aq -f name=nginx-container)" ]; then
-    docker rm -f nginx-container
-fi
-
-docker run -d --name nginx-container -p 80:80 my-nginx
-
-echo "==== Setup concluído ===="
+echo "==== Setup do host concluído ===="
+echo "Agora use: docker compose up -d"
