@@ -2,12 +2,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copia tudo do repositório
+# Copia todo o repositório (context já é a raiz)
 COPY . .
 
-# Publica somente o Front
+# Publica o Front
 RUN dotnet publish \
-  AppInfraEstructure/Front/Front.csproj \
+  YeshuaCreator/APPInfraEstructure/Front/Front.csproj \
   -c Release \
   -o /app/publish \
   --no-restore
