@@ -13,24 +13,24 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(8080);
 
 
-    // HTTPS só se certificado existir
-    if (
-        !string.IsNullOrWhiteSpace(GS.I.MYC.HttpsPathCertificado) &&
-        File.Exists(GS.I.MYC.HttpsPathCertificado)
-    )
-    {
-        options.Listen(
-            IPAddress.Parse(GS.I.MYC.HttpsIPListen),
-            GS.I.MYC.HttpsPortListen,
-            listenOptions =>
-            {
-                listenOptions.UseHttps(
-                    GS.I.MYC.HttpsPathCertificado,
-                    GS.I.MYC.HttpssenhaCertificado
-                );
-            }
-        );
-    }
+    //// HTTPS só se certificado existir
+    //if (
+    //    !string.IsNullOrWhiteSpace(GS.I.MYC.HttpsPathCertificado) &&
+    //    File.Exists(GS.I.MYC.HttpsPathCertificado)
+    //)
+    //{
+    //    options.Listen(
+    //        IPAddress.Parse(GS.I.MYC.HttpsIPListen),
+    //        GS.I.MYC.HttpsPortListen,
+    //        listenOptions =>
+    //        {
+    //            listenOptions.UseHttps(
+    //                GS.I.MYC.HttpsPathCertificado,
+    //                GS.I.MYC.HttpssenhaCertificado
+    //            );
+    //        }
+    //    );
+    //}
 
     options.Limits.MaxConcurrentConnections = GS.I.MYC.MaxConcurrentConnections;
     options.Limits.MaxConcurrentUpgradedConnections = GS.I.MYC.MaxConcurrentUpgradedConnections;
