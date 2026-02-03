@@ -7,10 +7,11 @@ COPY . .
 
 # Publica o Front
 RUN dotnet publish \
-  YeshuaCreator/APPInfraEstructure/Front/Front.csproj \
+  APPInfraEstructure/Front/Front.csproj \
   -c Release \
   -o /app/publish \
   --no-restore
+
 
 # ===== Stage 2: Runtime =====
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
