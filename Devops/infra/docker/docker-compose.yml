@@ -7,10 +7,10 @@ services:
       context: ../../..
       dockerfile: Devops/infra/docker/front/Dockerfile
     environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:5001"
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
       ASPNETCORE_ENVIRONMENT: "Production"
     expose:
-      - "5001"
+      - "8080"
     restart: unless-stopped
     networks:
       - yeshua-net

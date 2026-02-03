@@ -1,6 +1,10 @@
+apos ubunto server estar instalado  executar 
+sudo apt update && sudo apt install -y curl && \
+curl -sL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/bootstraps/setup.sh | bash
 
-par subir tudo 
 
-cd /root/YeshuaCreator/Devops/infra/docker
-docker compose build
-docker compose up -d
+
+deploy 
+
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/scripts/deploy.sh | bash
+
