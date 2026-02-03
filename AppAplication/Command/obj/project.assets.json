@@ -25,31 +25,6 @@
           "bin/placeholder/RepositoryInterfaces.dll": {}
         }
       }
-    },
-    "net8.0/win-x64": {
-      "Dominio/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "compile": {
-          "bin/placeholder/Dominio.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Dominio.dll": {}
-        }
-      },
-      "RepositoryInterfaces/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Dominio": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/RepositoryInterfaces.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/RepositoryInterfaces.dll": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -137,11 +112,6 @@
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
-      }
-    },
-    "runtimes": {
-      "win-x64": {
-        "#import": []
       }
     }
   }
