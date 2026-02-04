@@ -22,8 +22,7 @@ cd "$COMPOSE_DIR"
 echo ">> Recriando containers"
 docker compose down
 docker compose build
-docker compose up -d
-
+docker compose up -d --scale front=2
 echo ">> Status"
 docker compose ps
 

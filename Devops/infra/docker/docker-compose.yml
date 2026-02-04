@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   front:
-    container_name: yeshua-front
     build:
       context: ../../..
       dockerfile: Devops/infra/docker/front/Dockerfile

@@ -6,5 +6,7 @@ curl -sL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreato
 
 deploy 
 
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/scripts/deploy.sh | bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/deploy.sh | bash
+
+           
 
