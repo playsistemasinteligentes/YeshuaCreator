@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   front:
     build:
@@ -14,6 +12,23 @@ services:
     networks:
       - yeshua-net
 
+  api:
+    build:
+      context: ../../..
+      dockerfile: Devops/infra/docker/api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7214"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__Default: ${SQLSERVER_CONNECTION}
+      Redis__Host: redis
+    expose:
+      - "7214"
+    depends_on:
+      - sqlserver
+      - redis
+    restart: unless-stopped
+    networks:
+      - yeshua-net
 
   nginx:
     container_name: yeshua-nginx
@@ -24,10 +39,33 @@ services:
       - "80:80"
     depends_on:
       - front
+      - api
     restart: unless-stopped
     networks:
       - yeshua-net
 
+  redis:
+    image: redis:7-alpine
+    container_name: yeshua-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: yeshua-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${SQLSERVER_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./sql/data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - yeshua-net
 
 networks:
   yeshua-net:
