@@ -14,7 +14,10 @@ using RepositoryInterfaces.Services;
 using Shered.Services;
 
 
-
+for (int i = 0; i < 1000; i++)
+{
+    Console.WriteLine(GS.I.MYC.ReadConectionString);
+}
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Configuração do Kestrel para otimização de desempenho
 builder.WebHost.ConfigureKestrel(options =>
@@ -87,6 +90,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 
 
 
@@ -227,7 +231,10 @@ app.MapPost("/upload", async (HttpContext context) =>
         return Results.Problem("Erro ao processar o arquivo.");
     }
 });
-
+for (int i = 0; i < 1000; i++)
+{
+    Console.WriteLine(GS.I.MYC.ReadConectionString);
+}
 
 app.Run();
 
