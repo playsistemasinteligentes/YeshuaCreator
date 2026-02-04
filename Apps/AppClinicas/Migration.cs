@@ -173,7 +173,7 @@ namespace AppClinicas
 
              .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.StatusAgendamento, s.StatusProntuario }));
 
-
+            /*
             saga eventos S001 sesao e financeiro 
                 => sesão concluida 0001
                 => movFinanceiro concluido 0002
@@ -181,7 +181,7 @@ namespace AppClinicas
 
                 contrato de pacotes ??
 
-
+            */
 
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddUsecaseGroup("ClinicaPaciente")
