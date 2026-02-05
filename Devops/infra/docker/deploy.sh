@@ -19,10 +19,24 @@ git pull origin main
 
 cd "$COMPOSE_DIR"
 
-echo ">> Recriando containers"
+echo ">> Parando ambiente"
 docker compose down
+
+echo ">> Buildando imagens"
 docker compose build
+
+echo ">> Subindo infraestrutura base (db, redis)"
+docker compose up -d sqlserver redis
+
+echo ">> Aguardando SQL estabilizar"
+sleep 10
+
+echo ">> Rodando migrations"
+docker compose up migration
+
+echo ">> Subindo aplicação (API + Front + Nginx)"
 docker compose up -d --scale front=2
+
 echo ">> Status"
 docker compose ps
 

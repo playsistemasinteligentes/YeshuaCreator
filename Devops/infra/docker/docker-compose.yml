@@ -30,6 +30,21 @@ services:
     networks:
       - yeshua-net
 
+  
+  migration:
+      build:
+        context: ../../..
+        dockerfile: Devops/infra/docker/migration/Dockerfile
+      environment:
+        ConnectionStrings__Default: ${SQLSERVER_CONNECTION}
+      depends_on:
+        - sqlserver
+      networks:
+        - yeshua-net
+      restart: "no"
+    
+      
+      
   nginx:
     container_name: yeshua-nginx
     build:
@@ -67,6 +82,7 @@ services:
     restart: unless-stopped
     networks:
       - yeshua-net
+
 
 networks:
   yeshua-net:
