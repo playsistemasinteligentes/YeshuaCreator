@@ -1,4 +1,4 @@
-#!/bin/bash
+ï»¿#!/bin/bash
 set -e
 
 APP_DIR="/root/YeshuaCreator"
@@ -22,6 +22,17 @@ DEBIAN_FRONTEND=noninteractive apt install -y \
   gnupg \
   lsb-release
 
+
+echo "==== Preparando volume persistente do SQL Server ===="
+
+SQL_PERSIST_DIR="/root/YeshuaDB/persistent/sql"
+
+mkdir -p "$SQL_PERSIST_DIR"
+chown -R 10001:0 /root/YeshuaDB/persistent
+chmod -R 750 /root/YeshuaDB/persistent
+
+
+
 echo "==== Instalando Docker ===="
 if ! command -v docker >/dev/null 2>&1; then
   curl -fsSL https://get.docker.com | sh
@@ -31,7 +42,7 @@ fi
 systemctl enable docker
 systemctl start docker
 
-# Root já tem acesso, mas deixamos padrão
+# Root jÃ¡ tem acesso, mas deixamos padrÃ£o
 if ! getent group docker | grep -q root; then
   usermod -aG docker root
 fi
@@ -44,7 +55,7 @@ if ! docker compose version >/dev/null 2>&1; then
   chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 fi
 
-echo "==== Clonando / atualizando repositório ===="
+echo "==== Clonando / atualizando repositÃ³rio ===="
 if [ ! -d "$APP_DIR/.git" ]; then
   git clone https://github.com/playsistemasinteligentes/YeshuaCreator.git "$APP_DIR"
 else
@@ -52,7 +63,7 @@ else
   git pull
 fi
 
-echo "==== Subindo aplicação com Docker Compose ===="
+echo "==== Subindo aplicaÃ§Ã£o com Docker Compose ===="
 cd "$COMPOSE_DIR"
 
 docker compose pull
@@ -60,6 +71,6 @@ docker compose build
 docker compose up -d
 
 echo "=========================================="
-echo "Setup concluído com sucesso ??"
-echo "Containers em execução:"
+echo "Setup concluÃ­do com sucesso ðŸš€"
+echo "Containers em execuÃ§Ã£o:"
 docker compose ps

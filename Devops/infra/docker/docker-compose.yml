@@ -63,7 +63,7 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - ./sql/data:/var/opt/mssql
+      - /root/YeshuaDB/persistent/sql:/var/opt/mssql
     restart: unless-stopped
     networks:
       - yeshua-net
