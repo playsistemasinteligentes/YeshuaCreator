@@ -61,13 +61,13 @@ namespace Dominio.Schemas
             var alterColumnsString = string.Join("; ", alterColumns);
 
             var addForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
-                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
+                $"  ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName}_{c.Name} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
             ).ToArray();
             var addForingKeyString = string.Join("; ", addForingKey);
 
             var alterForingKey = entity.AlterColumns.Where(x => x.IsFK).Select(c =>
             $" IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_{c.FkEntityName}') BEGIN  " +
-            $"ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}([{c.Name}]); " +
+            $"ALTER TABLE {entity.EntityName} ADD CONSTRAINT FK_{c.FkEntityName}_{c.Name} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}([{c.Name}]); " +
             $"END ").ToArray();
             var alterForingKeyString = string.Join("; ", alterForingKey);
 
@@ -86,7 +86,7 @@ namespace Dominio.Schemas
             var columnsSqlString = string.Join(", ", columnsSql);
 
             var columsForingKey = entity.AddColumns.Where(x => x.IsFK).Select(c =>
-                $"  CONSTRAINT FK_{c.Entity.EntityName}_{c.FkEntityName} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
+                $"  CONSTRAINT FK_{c.Entity.EntityName}_{c.FkEntityName}_{c.Name} FOREIGN KEY([{c.Name}]) REFERENCES {c.FkEntityName}({c.ColumnReference}) "
             ).ToArray();
             var columsForingKeyString = string.Join(", ", columsForingKey);
             columsForingKeyString = string.IsNullOrEmpty(columsForingKeyString) ? "" : ($",{columsForingKeyString}");

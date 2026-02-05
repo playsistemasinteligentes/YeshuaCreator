@@ -1,0 +1,36 @@
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
+using Dominio.Entitys;
+using Dominio.Interfaces;
+using Repositorio.Outputs;
+using IRepository.Read;
+
+namespace Command.Receivers.Read
+{
+    public class PlanoContaReadReceiver : ReciverBase<DataPagination<PlanoContaDTO>>
+    {
+        private readonly IPlanoContaReadRepository _repository;
+        private readonly ILogger _logger;
+
+        public PlanoContaReadReceiver(IPlanoContaReadRepository repository,ILogger logger)
+        {
+            _repository = repository;
+            _logger = logger;
+        }
+
+        protected override State<DataPagination<PlanoContaDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Read.PlanoContaReadCommand c) 
+             {    
+                var PlanoContaReadRepository = _repository.getPlanoConta(c);
+                return Success("OK", PlanoContaReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

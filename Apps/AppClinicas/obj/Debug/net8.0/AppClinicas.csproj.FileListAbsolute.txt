@@ -58,3 +58,4 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClini
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\AppClinicas.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\AppClinicas.genruntimeconfig.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\obj\Debug\net8.0\ref\AppClinicas.dll
+C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\Apps\AppClinicas\bin\Debug\net8.0\appsettings.json

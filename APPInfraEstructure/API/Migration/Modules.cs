@@ -65,6 +65,9 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("MovimentacaoFinanceira"));
         Modules.LastOrDefault().Menus.Add(new Menu("Sesoes"));
         Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
+        Modules.Add(new Module("FIN", "Financeiro"));
+        Modules.LastOrDefault().Menus.Add(new Menu("PlanoConta"));
+        Modules.LastOrDefault().Menus.Add(new Menu("MovimentoFinanceiro"));
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));
         Modules.LastOrDefault().Menus.Add(new Menu("yUser"));
