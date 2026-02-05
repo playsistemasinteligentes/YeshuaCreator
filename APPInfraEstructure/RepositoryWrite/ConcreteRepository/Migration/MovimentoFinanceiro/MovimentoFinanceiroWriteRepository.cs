@@ -51,11 +51,6 @@ namespace Input.Repository.MovimentoFinanceiro
             var query = _query.UpdateContaDebitoId(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateContaCreditoId(IMovimentoFinanceiroEntity entity)
-        {
-            var query = _query.UpdateContaCreditoId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
         public void UpdateValor(IMovimentoFinanceiroEntity entity)
         {
             var query = _query.UpdateValor(entity);

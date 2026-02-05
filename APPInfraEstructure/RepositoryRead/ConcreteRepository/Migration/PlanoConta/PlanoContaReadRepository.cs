@@ -47,24 +47,6 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<PlanoContaContaPaiIdDTO> getPlanoContaReadFKContaPaiId(Command.Patterns.Command.SearchFKCommand command )
-        {
-            List<PlanoContaContaPaiIdDTO> lista;
-            var query = _query.PlanoContaContaPaiIdQuery(command );
-
-                lista = _connection.Query<PlanoContaContaPaiIdDTO>(query.Query,query.Parameters) as List<PlanoContaContaPaiIdDTO>;
-            return lista;
-        }
-
-        public IEnumerable<PlanoContaContaPaiIdDTO> getPlanoContaReadFKContaPaiId(object command )
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getPlanoContaReadFKContaPaiId(c );
-            }
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<PlanoContaTenantIDDTO> getPlanoContaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
             List<PlanoContaTenantIDDTO> lista;
@@ -128,14 +110,6 @@ namespace Read.Repository
         public bool ExistsByTipo(int value )
         {
             var query = _query.ExistsByTipoQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByContaPaiId(int value )
-        {
-            var query = _query.ExistsByContaPaiIdQuery(value );
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -205,14 +179,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public PlanoContaDTO FirstByContaPaiId(int value )
-        {
-            var query = _query.FirstByContaPaiIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public PlanoContaDTO FirstByTenantID(int value )
         {
             var query = _query.FirstByTenantIDQuery(value );
@@ -272,14 +238,6 @@ namespace Read.Repository
         public IEnumerable<PlanoContaDTO> GetAllByTipo(int value )
         {
             var query = _query.FirstByTipoQuery(value );
-
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
-                return result;
-        }
-
-        public IEnumerable<PlanoContaDTO> GetAllByContaPaiId(int value )
-        {
-            var query = _query.FirstByContaPaiIdQuery(value );
 
                 var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;

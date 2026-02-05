@@ -9,9 +9,9 @@
                                     public PlanoContaFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IPlanoContaEntity Create(int? id, string codigo, string nome, int tipo, int? contapaiid )
+                                    } public IPlanoContaEntity Create(int? id, string codigo, string nome, int tipo )
                             {
-                            var entity = new PlanoContaEntity(id, codigo, nome, tipo, contapaiid );
+                            var entity = new PlanoContaEntity(id, codigo, nome, tipo );
 
 
                             var decoratedEntity = new PlanoContaDecorator(entity, _logger);

@@ -12,7 +12,6 @@ namespace Repositorio.Outputs
     public string codigo { get; set; }
     public string nome { get; set; }
     public int tipo { get; set; }
-    public int contapaiid { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

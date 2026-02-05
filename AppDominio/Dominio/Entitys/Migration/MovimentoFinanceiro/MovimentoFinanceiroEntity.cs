@@ -13,7 +13,6 @@
     public int? Id { get; set; }
     public string IdOrigem { get; set; }
     public int ContaDebitoId { get; set; }
-    public int ContaCreditoId { get; set; }
     public Decimal Valor { get; set; }
     public DateTime DataMovimento { get; set; }
     public DateTime? DataVencimento { get; set; }
@@ -23,11 +22,10 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal MovimentoFinanceiroEntity(int? id, string idorigem, int contadebitoid, int contacreditoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status ){
+ internal MovimentoFinanceiroEntity(int? id, string idorigem, int contadebitoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status ){
  Id = id; 
  IdOrigem = idorigem; 
  ContaDebitoId = contadebitoid; 
- ContaCreditoId = contacreditoid; 
  Valor = valor; 
  DataMovimento = (datamovimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datamovimento; 
  DataVencimento = (datavencimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datavencimento; 
@@ -40,8 +38,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Identificador de Origem deve ser informado.");
    if (ContaDebitoId == null)
    this._erroMensagem.Add("Conta Débito deve ser informado.");
-   if (ContaCreditoId == null)
-   this._erroMensagem.Add("Conta Crédito deve ser informado.");
    if (Valor == null)
    this._erroMensagem.Add("Valor do Movimento deve ser informado.");
    if (DataMovimento == null || DataMovimento < (new DateTime(1800, 1, 1)))

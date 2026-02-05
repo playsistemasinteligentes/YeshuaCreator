@@ -124,7 +124,6 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>(
 builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKContaPaiIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
 
@@ -137,7 +136,6 @@ builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroR
 builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaCreditoIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
 

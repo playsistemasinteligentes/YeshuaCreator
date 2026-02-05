@@ -6,7 +6,6 @@ namespace Command.Write
         public int? Id { get; set; }
         public string IdOrigem { get; set; }
         public int ContaDebitoId { get; set; }
-        public int ContaCreditoId { get; set; }
         public Decimal Valor { get; set; }
         public DateTime DataMovimento { get; set; }
         public DateTime? DataVencimento { get; set; }

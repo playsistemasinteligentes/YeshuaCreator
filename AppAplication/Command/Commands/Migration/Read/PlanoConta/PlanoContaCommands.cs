@@ -7,7 +7,6 @@ namespace Command.Read
         public string Codigo { get; set; }
         public string Nome { get; set; }
         public List<int> Tipo { get; set; }
-        public int? ContaPaiId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

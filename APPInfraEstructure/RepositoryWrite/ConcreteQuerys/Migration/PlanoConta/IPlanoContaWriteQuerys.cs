@@ -10,7 +10,6 @@ namespace IQuery.Write
         public QueryModel UpdateCodigo(IPlanoContaEntity entity);
         public QueryModel UpdateNome(IPlanoContaEntity entity);
         public QueryModel UpdateTipo(IPlanoContaEntity entity);
-        public QueryModel UpdateContaPaiId(IPlanoContaEntity entity);
         public QueryModel UpdateTenantID(IPlanoContaEntity entity);
         public QueryModel UpdateDeleted(IPlanoContaEntity entity);
         public QueryModel UpdateChanged(IPlanoContaEntity entity);

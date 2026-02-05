@@ -56,11 +56,6 @@ namespace Input.Repository.PlanoConta
             var query = _query.UpdateTipo(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateContaPaiId(IPlanoContaEntity entity)
-        {
-            var query = _query.UpdateContaPaiId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
         public void UpdateTenantID(IPlanoContaEntity entity)
         {
             var query = _query.UpdateTenantID(entity);

@@ -232,15 +232,15 @@ namespace AppClinicas
                     .Enumerable(1, "Ativo")
                     .Enumerable(2, "Passivo")
                     .Enumerable(3, "Receita")
-                    .Enumerable(4, "Despesa")
-                .AddColumn("ContaPaiId", "Conta Pai").FK("PlanoConta", "Id").Int();
+                    .Enumerable(4, "Despesa");
+            //.AddColumn("ContaPaiId", "Conta Pai").FK("PlanoConta", "Id").Int(); pendencia
 
             // Movimentações financeiras
             AddEntity("MovimentoFinanceiro").AddModule("FIN")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("IdOrigem", "Identificador de Origem").Varchar(100).NotNull()
                 .AddColumn("ContaDebitoId", "Conta Débito").FK("PlanoConta", "Id").Int().NotNull()
-                .AddColumn("ContaCreditoId", "Conta Crédito").FK("PlanoConta", "Id").Int().NotNull()
+                //.AddColumn("ContaCreditoId", "Conta Crédito").FK("PlanoConta", "Id").Int().NotNull() pendencia estoura nomes duplicados
                 .AddColumn("Valor", "Valor do Movimento").Decimal(10, 2).NotNull()
                 .AddColumn("DataMovimento", "Data do Movimento").DateTime().NotNull()
                 .AddColumn("DataVencimento", "Data de Vencimento").DateTime()

@@ -15,7 +15,6 @@ namespace IRepository.Write
         public void UpdateCodigo(IPlanoContaEntity entity);
         public void UpdateNome(IPlanoContaEntity entity);
         public void UpdateTipo(IPlanoContaEntity entity);
-        public void UpdateContaPaiId(IPlanoContaEntity entity);
         public void UpdateTenantID(IPlanoContaEntity entity);
         public void UpdateDeleted(IPlanoContaEntity entity);
         public void UpdateChanged(IPlanoContaEntity entity);

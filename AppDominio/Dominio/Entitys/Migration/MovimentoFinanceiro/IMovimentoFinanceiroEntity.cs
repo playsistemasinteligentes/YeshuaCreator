@@ -13,7 +13,6 @@
     int? Id { get; set; }
     string IdOrigem { get; set; }
     int ContaDebitoId { get; set; }
-    int ContaCreditoId { get; set; }
     Decimal Valor { get; set; }
     DateTime DataMovimento { get; set; }
     DateTime? DataVencimento { get; set; }

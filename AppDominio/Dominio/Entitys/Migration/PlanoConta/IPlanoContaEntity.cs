@@ -14,7 +14,6 @@
     string Codigo { get; set; }
     string Nome { get; set; }
     int Tipo { get; set; }
-    int? ContaPaiId { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -57,19 +57,6 @@
                                         }
                                     }
 
-                                    public int ContaCreditoId
-                                    {
-                                        get => _inner.ContaCreditoId;
-                                        set
-                                        {
-                                            if (_inner.ContaCreditoId != value)
-                                            {
-                                                _logger.Info($"Propriedade ContaCreditoId: antes={_inner.ContaCreditoId}, depois={value}");
-                                                _inner.ContaCreditoId = value;
-                                            }
-                                        }
-                                    }
-
                                     public Decimal Valor
                                     {
                                         get => _inner.Valor;

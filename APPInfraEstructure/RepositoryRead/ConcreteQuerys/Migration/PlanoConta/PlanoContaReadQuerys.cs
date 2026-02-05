@@ -25,7 +25,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Codigo, Nome, Tipo, ContaPaiId, TenantID, Deleted, Changed, UserId from PlanoConta ";
+            this.Query = $@" select Id, Codigo, Nome, Tipo, TenantID, Deleted, Changed, UserId from PlanoConta ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.Codigo)) dict["Codigo"] = $"%{Command.Codigo}%";
@@ -43,8 +43,6 @@ if (Command.Tipo != null && Command.Tipo.Any())
     }
     whereClauses.Add($"t0.Tipo IN ({string.Join(", ", paramList_Tipo)})");
 }
-if (Command.ContaPaiId.HasValue) dict["ContaPaiId"] = Command.ContaPaiId.Value;
-if (Command.ContaPaiId.HasValue) whereClauses.Add($"ContaPaiId = @ContaPaiId");
  dict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -61,37 +59,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel PlanoContaContaPaiIdQuery(Command.Patterns.Command.SearchFKCommand Command )
-        {
-            this.Query = $@" select Id, Nome from PlanoConta ";
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            if (!string.IsNullOrEmpty(Command.searchFK)) 
-            {
-                 if (int.TryParse(Command.searchFK, out int numero)) 
-                 {
-                      dict["Id"] = numero; //01
-                      whereClauses.Add($" Id = @Id");//01 
-                 }
-                 else 
-                 {
-                      dict["Id"] = $"%{Command.searchFK}%";//02 
-                      whereClauses.Add($" Id like @Id ");//02
-                      dict["Nome"] = $"%{Command.searchFK}%";//02 
-                      whereClauses.Add($" Nome like @Nome ");//02
-                 }
-           }
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel PlanoContaTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
@@ -222,24 +189,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Tipo"] = value; //04
                       whereClauses.Add($" Tipo = @Tipo ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel ExistsByContaPaiIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM PlanoConta ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      dict["ContaPaiId"] = value; //04
-                      whereClauses.Add($" ContaPaiId = @ContaPaiId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -384,24 +333,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Tipo"] = value; //06
                       whereClauses.Add($" Tipo = @Tipo ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel FirstByContaPaiIdQuery(int value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM PlanoConta ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      dict["ContaPaiId"] = value; //06
-                      whereClauses.Add($" ContaPaiId = @ContaPaiId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

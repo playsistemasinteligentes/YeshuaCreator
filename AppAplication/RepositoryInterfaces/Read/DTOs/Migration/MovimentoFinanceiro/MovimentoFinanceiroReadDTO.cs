@@ -11,7 +11,6 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public string idorigem { get; set; }
     public int contadebitoid { get; set; }
-    public int contacreditoid { get; set; }
     public Decimal valor { get; set; }
     public DateTime datamovimento { get; set; }
     public DateTime datavencimento { get; set; }

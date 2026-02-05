@@ -13,13 +13,11 @@ namespace IRepository.Read
     {
         public DataPagination<MovimentoFinanceiroDTO> getMovimentoFinanceiro(ICommandRead command );
         public IEnumerable<MovimentoFinanceiroContaDebitoIdDTO> getMovimentoFinanceiroReadFKContaDebitoId(object command );
-        public IEnumerable<MovimentoFinanceiroContaCreditoIdDTO> getMovimentoFinanceiroReadFKContaCreditoId(object command );
         public IEnumerable<MovimentoFinanceiroTenantIDDTO> getMovimentoFinanceiroReadFKTenantID(object command );
         public IEnumerable<MovimentoFinanceiroUserIdDTO> getMovimentoFinanceiroReadFKUserId(object command );
         public bool ExistsById(int value );
         public bool ExistsByIdOrigem(string value );
         public bool ExistsByContaDebitoId(int value );
-        public bool ExistsByContaCreditoId(int value );
         public bool ExistsByValor(Decimal value );
         public bool ExistsByDataMovimento(DateTime value );
         public bool ExistsByDataVencimento(DateTime value );
@@ -31,7 +29,6 @@ namespace IRepository.Read
         public MovimentoFinanceiroDTO FirstById(int value );
         public MovimentoFinanceiroDTO FirstByIdOrigem(string value );
         public MovimentoFinanceiroDTO FirstByContaDebitoId(int value );
-        public MovimentoFinanceiroDTO FirstByContaCreditoId(int value );
         public MovimentoFinanceiroDTO FirstByValor(Decimal value );
         public MovimentoFinanceiroDTO FirstByDataMovimento(DateTime value );
         public MovimentoFinanceiroDTO FirstByDataVencimento(DateTime value );
@@ -43,7 +40,6 @@ namespace IRepository.Read
         public IEnumerable<MovimentoFinanceiroDTO> GetAllById(int value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByIdOrigem(string value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByContaDebitoId(int value );
-        public IEnumerable<MovimentoFinanceiroDTO> GetAllByContaCreditoId(int value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByValor(Decimal value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByDataMovimento(DateTime value );
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByDataVencimento(DateTime value );

@@ -70,19 +70,6 @@
                                         }
                                     }
 
-                                    public int? ContaPaiId
-                                    {
-                                        get => _inner.ContaPaiId;
-                                        set
-                                        {
-                                            if (_inner.ContaPaiId != value)
-                                            {
-                                                _logger.Info($"Propriedade ContaPaiId: antes={_inner.ContaPaiId}, depois={value}");
-                                                _inner.ContaPaiId = value;
-                                            }
-                                        }
-                                    }
-
                                     public int? TenantID
                                     {
                                         get => _inner.TenantID;

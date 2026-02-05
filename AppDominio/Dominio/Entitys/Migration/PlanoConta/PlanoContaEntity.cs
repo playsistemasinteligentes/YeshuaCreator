@@ -14,18 +14,16 @@
     public string Codigo { get; set; }
     public string Nome { get; set; }
     public int Tipo { get; set; }
-    public int? ContaPaiId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal PlanoContaEntity(int? id, string codigo, string nome, int tipo, int? contapaiid ){
+ internal PlanoContaEntity(int? id, string codigo, string nome, int tipo ){
  Id = id; 
  Codigo = codigo; 
  Nome = nome; 
  Tipo = tipo; 
- ContaPaiId = contapaiid; 
 }
 public bool isValidData()
 {

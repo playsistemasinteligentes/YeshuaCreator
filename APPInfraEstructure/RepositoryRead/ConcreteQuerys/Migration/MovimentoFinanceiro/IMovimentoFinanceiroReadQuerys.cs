@@ -5,13 +5,11 @@ namespace IQuery.Read
     {
         public QueryModel MovimentoFinanceiroQuery(Command.Read.MovimentoFinanceiroReadCommand Command );
         public QueryModel MovimentoFinanceiroContaDebitoIdQuery(Command.Patterns.Command.SearchFKCommand Command );
-        public QueryModel MovimentoFinanceiroContaCreditoIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel MovimentoFinanceiroTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel MovimentoFinanceiroUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByIdOrigemQuery(string value );
         public QueryModel ExistsByContaDebitoIdQuery(int value );
-        public QueryModel ExistsByContaCreditoIdQuery(int value );
         public QueryModel ExistsByValorQuery(Decimal value );
         public QueryModel ExistsByDataMovimentoQuery(DateTime value );
         public QueryModel ExistsByDataVencimentoQuery(DateTime value );
@@ -23,7 +21,6 @@ namespace IQuery.Read
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByIdOrigemQuery(string value );
         public QueryModel FirstByContaDebitoIdQuery(int value );
-        public QueryModel FirstByContaCreditoIdQuery(int value );
         public QueryModel FirstByValorQuery(Decimal value );
         public QueryModel FirstByDataMovimentoQuery(DateTime value );
         public QueryModel FirstByDataVencimentoQuery(DateTime value );

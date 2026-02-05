@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MovimentoFinanceiroCrudCommand c) 
              {    
-                 var movimentofinanceiro = new MovimentoFinanceiroFactory(_logger).Create(c.Id, c.IdOrigem, c.ContaDebitoId, c.ContaCreditoId, c.Valor, c.DataMovimento, c.DataVencimento, c.Status);
+                 var movimentofinanceiro = new MovimentoFinanceiroFactory(_logger).Create(c.Id, c.IdOrigem, c.ContaDebitoId, c.Valor, c.DataMovimento, c.DataVencimento, c.Status);
                  if (!movimentofinanceiro.isValidInsert())
                      return ValidationError(movimentofinanceiro.getErroMensagens(), comand);
 

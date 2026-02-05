@@ -20,12 +20,11 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
-            this.Query = $@" INSERT INTO MovimentoFinanceiro (IdOrigem, ContaDebitoId, ContaCreditoId, Valor, DataMovimento, DataVencimento, Status, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IdOrigem, @ContaDebitoId, @ContaCreditoId, @Valor, @DataMovimento, @DataVencimento, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO MovimentoFinanceiro (IdOrigem, ContaDebitoId, Valor, DataMovimento, DataVencimento, Status, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IdOrigem, @ContaDebitoId, @Valor, @DataMovimento, @DataVencimento, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IdOrigem = MovimentoFinanceiro.IdOrigem,
                 ContaDebitoId = MovimentoFinanceiro.ContaDebitoId,
-                ContaCreditoId = MovimentoFinanceiro.ContaCreditoId,
                 Valor = MovimentoFinanceiro.Valor,
                 DataMovimento = MovimentoFinanceiro.DataMovimento,
                 DataVencimento = MovimentoFinanceiro.DataVencimento,
@@ -39,12 +38,11 @@ namespace Query.Write
         }
         public QueryModel UpdateMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET IdOrigem = @IdOrigem, ContaDebitoId = @ContaDebitoId, ContaCreditoId = @ContaCreditoId, Valor = @Valor, DataMovimento = @DataMovimento, DataVencimento = @DataVencimento, Status = @Status, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE MovimentoFinanceiro SET IdOrigem = @IdOrigem, ContaDebitoId = @ContaDebitoId, Valor = @Valor, DataMovimento = @DataMovimento, DataVencimento = @DataVencimento, Status = @Status, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 IdOrigem = MovimentoFinanceiro.IdOrigem,
                 ContaDebitoId = MovimentoFinanceiro.ContaDebitoId,
-                ContaCreditoId = MovimentoFinanceiro.ContaCreditoId,
                 Valor = MovimentoFinanceiro.Valor,
                 DataMovimento = MovimentoFinanceiro.DataMovimento,
                 DataVencimento = MovimentoFinanceiro.DataVencimento,
@@ -71,16 +69,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 ContaDebitoId = entity.ContaDebitoId,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateContaCreditoId(IMovimentoFinanceiroEntity entity)
-        {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET ContaCreditoId = @ContaCreditoId WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                ContaCreditoId = entity.ContaCreditoId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

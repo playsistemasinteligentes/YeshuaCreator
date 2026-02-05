@@ -65,24 +65,6 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
-        private IEnumerable<MovimentoFinanceiroContaCreditoIdDTO> getMovimentoFinanceiroReadFKContaCreditoId(Command.Patterns.Command.SearchFKCommand command )
-        {
-            List<MovimentoFinanceiroContaCreditoIdDTO> lista;
-            var query = _query.MovimentoFinanceiroContaCreditoIdQuery(command );
-
-                lista = _connection.Query<MovimentoFinanceiroContaCreditoIdDTO>(query.Query,query.Parameters) as List<MovimentoFinanceiroContaCreditoIdDTO>;
-            return lista;
-        }
-
-        public IEnumerable<MovimentoFinanceiroContaCreditoIdDTO> getMovimentoFinanceiroReadFKContaCreditoId(object command )
-        {
-            if (command is Command.Patterns.Command.SearchFKCommand c)
-            {
-                return getMovimentoFinanceiroReadFKContaCreditoId(c );
-            }
-            throw new NotImplementedException();
-        }
-
         private IEnumerable<MovimentoFinanceiroTenantIDDTO> getMovimentoFinanceiroReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
             List<MovimentoFinanceiroTenantIDDTO> lista;
@@ -138,14 +120,6 @@ namespace Read.Repository
         public bool ExistsByContaDebitoId(int value )
         {
             var query = _query.ExistsByContaDebitoIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
-        public bool ExistsByContaCreditoId(int value )
-        {
-            var query = _query.ExistsByContaCreditoIdQuery(value );
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -239,14 +213,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public MovimentoFinanceiroDTO FirstByContaCreditoId(int value )
-        {
-            var query = _query.FirstByContaCreditoIdQuery(value );
-
-                var result = _connection.QueryFirstOrDefault<MovimentoFinanceiroDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public MovimentoFinanceiroDTO FirstByValor(Decimal value )
         {
             var query = _query.FirstByValorQuery(value );
@@ -330,14 +296,6 @@ namespace Read.Repository
         public IEnumerable<MovimentoFinanceiroDTO> GetAllByContaDebitoId(int value )
         {
             var query = _query.FirstByContaDebitoIdQuery(value );
-
-                var result = _connection.Query<MovimentoFinanceiroDTO>(query.Query,query.Parameters) as List<MovimentoFinanceiroDTO>;
-                return result;
-        }
-
-        public IEnumerable<MovimentoFinanceiroDTO> GetAllByContaCreditoId(int value )
-        {
-            var query = _query.FirstByContaCreditoIdQuery(value );
 
                 var result = _connection.Query<MovimentoFinanceiroDTO>(query.Query,query.Parameters) as List<MovimentoFinanceiroDTO>;
                 return result;

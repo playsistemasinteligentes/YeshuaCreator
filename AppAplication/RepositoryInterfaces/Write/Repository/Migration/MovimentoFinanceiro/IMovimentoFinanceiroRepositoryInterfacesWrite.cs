@@ -14,7 +14,6 @@ namespace IRepository.Write
         void Delete(IMovimentoFinanceiroEntity movimentofinanceiro);
         public void UpdateIdOrigem(IMovimentoFinanceiroEntity entity);
         public void UpdateContaDebitoId(IMovimentoFinanceiroEntity entity);
-        public void UpdateContaCreditoId(IMovimentoFinanceiroEntity entity);
         public void UpdateValor(IMovimentoFinanceiroEntity entity);
         public void UpdateDataMovimento(IMovimentoFinanceiroEntity entity);
         public void UpdateDataVencimento(IMovimentoFinanceiroEntity entity);

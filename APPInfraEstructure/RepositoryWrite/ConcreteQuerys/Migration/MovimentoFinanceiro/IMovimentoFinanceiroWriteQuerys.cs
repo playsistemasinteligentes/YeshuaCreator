@@ -9,7 +9,6 @@ namespace IQuery.Write
         public QueryModel UpdateMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro);
         public QueryModel UpdateIdOrigem(IMovimentoFinanceiroEntity entity);
         public QueryModel UpdateContaDebitoId(IMovimentoFinanceiroEntity entity);
-        public QueryModel UpdateContaCreditoId(IMovimentoFinanceiroEntity entity);
         public QueryModel UpdateValor(IMovimentoFinanceiroEntity entity);
         public QueryModel UpdateDataMovimento(IMovimentoFinanceiroEntity entity);
         public QueryModel UpdateDataVencimento(IMovimentoFinanceiroEntity entity);

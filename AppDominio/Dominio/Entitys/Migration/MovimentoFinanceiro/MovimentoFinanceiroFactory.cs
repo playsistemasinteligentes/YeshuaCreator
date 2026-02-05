@@ -9,9 +9,9 @@
                                     public MovimentoFinanceiroFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IMovimentoFinanceiroEntity Create(int? id, string idorigem, int contadebitoid, int contacreditoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status )
+                                    } public IMovimentoFinanceiroEntity Create(int? id, string idorigem, int contadebitoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status )
                             {
-                            var entity = new MovimentoFinanceiroEntity(id, idorigem, contadebitoid, contacreditoid, valor, datamovimento, datavencimento, status );
+                            var entity = new MovimentoFinanceiroEntity(id, idorigem, contadebitoid, valor, datamovimento, datavencimento, status );
 
 
                             var decoratedEntity = new MovimentoFinanceiroDecorator(entity, _logger);

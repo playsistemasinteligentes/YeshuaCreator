@@ -20,13 +20,12 @@ namespace Query.Write
         }
         public QueryModel InserirPlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
-            this.Query = $@" INSERT INTO PlanoConta (Codigo, Nome, Tipo, ContaPaiId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Codigo, @Nome, @Tipo, @ContaPaiId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO PlanoConta (Codigo, Nome, Tipo, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Codigo, @Nome, @Tipo, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Codigo = PlanoConta.Codigo,
                 Nome = PlanoConta.Nome,
                 Tipo = PlanoConta.Tipo,
-                ContaPaiId = PlanoConta.ContaPaiId,
                 TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -36,13 +35,12 @@ namespace Query.Write
         }
         public QueryModel UpdatePlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
-            this.Query = $@" UPDATE PlanoConta SET Codigo = @Codigo, Nome = @Nome, Tipo = @Tipo, ContaPaiId = @ContaPaiId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE PlanoConta SET Codigo = @Codigo, Nome = @Nome, Tipo = @Tipo, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 Codigo = PlanoConta.Codigo,
                 Nome = PlanoConta.Nome,
                 Tipo = PlanoConta.Tipo,
-                ContaPaiId = PlanoConta.ContaPaiId,
                 Changed = PlanoConta.Changed,
                 UserId = _currentUser.UserId,
                 Id = PlanoConta.Id,
@@ -75,16 +73,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 Tipo = entity.Tipo,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateContaPaiId(IPlanoContaEntity entity)
-        {
-            this.Query = $@" UPDATE PlanoConta SET ContaPaiId = @ContaPaiId WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                ContaPaiId = entity.ContaPaiId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

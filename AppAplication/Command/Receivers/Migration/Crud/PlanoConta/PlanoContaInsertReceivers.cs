@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PlanoContaCrudCommand c) 
              {    
-                 var planoconta = new PlanoContaFactory(_logger).Create(c.Id, c.Codigo, c.Nome, c.Tipo, c.ContaPaiId);
+                 var planoconta = new PlanoContaFactory(_logger).Create(c.Id, c.Codigo, c.Nome, c.Tipo);
                  if (!planoconta.isValidInsert())
                      return ValidationError(planoconta.getErroMensagens(), comand);
 
