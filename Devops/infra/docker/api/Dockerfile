@@ -1,13 +1,24 @@
+# ===== Stage 1: Build =====
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# Copia todo o repositório
 COPY . .
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app
 
+# Publica APENAS a API (explícito)
+RUN dotnet publish \
+  APPInfraEstructure/API/API.csproj \
+  -c Release \
+  -o /app/publish
+
+
+# ===== Stage 2: Runtime =====
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app .
 
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://0.0.0.0:7214
 EXPOSE 7214
+
 ENTRYPOINT ["dotnet", "API.dll"]
