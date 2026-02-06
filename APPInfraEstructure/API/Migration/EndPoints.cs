@@ -3003,8 +3003,9 @@ namespace API.Migrations
                 return Results.Ok(metadatacrud);
             }).RequireAuthorization();
             #region ServicesMethod
-            app.MapPost("/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
+            app.MapPost("/api/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
             {
+                Console.WriteLine("Tentando conta");
                 var result = receiver.Execute(command);
                 if (result.StatusCode == 200)
                     return Results.Ok(result.Data);
@@ -3014,7 +3015,7 @@ namespace API.Migrations
             });
 
 
-            app.MapPost("/Y/ContasLoginUseCase", async ([FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasLoginUseCaseInputCommand command) =>
+            app.MapPost("/api/Y/ContasLoginUseCase", async ([FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasLoginUseCaseInputCommand command) =>
             {
                 try
                 {
@@ -3031,8 +3032,11 @@ namespace API.Migrations
             });
 
 
-            app.MapPost("/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasRecoveryAccountUseCaseInputCommand command) =>
+            app.MapPost("/api/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasRecoveryAccountUseCaseInputCommand command) =>
             {
+                Console.WriteLine("Tentando ContasRecoveryAccountUseCase");
+
+
                 try
                 {
                     var result = receiver.Execute(command);
