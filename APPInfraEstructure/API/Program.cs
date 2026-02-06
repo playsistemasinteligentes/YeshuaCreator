@@ -18,9 +18,6 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Configuração do Kestrel para otimização de desempenho
 builder.WebHost.ConfigureKestrel(options =>
 {
-    // SEMPRE escutar em todas as interfaces
-    options.ListenAnyIP(GS.I.MYC.HttpPortListen);
-
     options.Limits.MaxConcurrentConnections = GS.I.MYC.MaxConcurrentConnections; // Ajuste conforme necessário
     options.Limits.MaxConcurrentUpgradedConnections = GS.I.MYC.MaxConcurrentUpgradedConnections; // Para WebSockets
     options.Limits.MaxRequestBodySize = GS.I.MYC.MaxRequestBodySize; // Limite do corpo da requisição
