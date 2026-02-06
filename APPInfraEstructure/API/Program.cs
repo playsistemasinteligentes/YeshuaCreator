@@ -14,21 +14,12 @@ using RepositoryInterfaces.Services;
 using Shered.Services;
 
 
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Configuração do Kestrel para otimização de desempenho
 builder.WebHost.ConfigureKestrel(options =>
 {
-    // HTTP (opcional)
-    options.Listen(IPAddress.Parse(GS.I.MYC.HttpIPListen), GS.I.MYC.HttpPortListen);
-
-    // HTTPS com certificado
-    options.Listen(IPAddress.Parse(GS.I.MYC.HttpsIPListen), GS.I.MYC.HttpsPortListen, listenOptions =>
-    {
-        listenOptions.UseHttps(GS.I.MYC.HttpsPathCertificado, GS.I.MYC.HttpssenhaCertificado);
-    });
-
-
+    // SEMPRE escutar em todas as interfaces
+    options.ListenAnyIP(GS.I.MYC.HttpPortListen);
 
     options.Limits.MaxConcurrentConnections = GS.I.MYC.MaxConcurrentConnections; // Ajuste conforme necessário
     options.Limits.MaxConcurrentUpgradedConnections = GS.I.MYC.MaxConcurrentUpgradedConnections; // Para WebSockets
@@ -142,8 +133,6 @@ var app = builder.Build();
 // Aplica a política CORS
 app.UseCors("AllowLocalhostAndNetwork");
 
-//// Adiciona middleware de redirecionamento HTTPS
-//app.UseHttpsRedirection();
 
 // Configura o Swagger e Swagger UI
 app.UseSwagger();
