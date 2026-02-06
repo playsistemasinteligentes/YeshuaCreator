@@ -3005,18 +3005,12 @@ namespace API.Migrations
             #region ServicesMethod
             app.MapPost("/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
             {
-                try
-                {
-                    var result = receiver.Execute(command);
-                    if (result.StatusCode == 200)
-                        return Results.Ok(result.Data);
-                    else
-                        return Results.BadRequest(result);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem(ex.Message);
-                }
+                var result = receiver.Execute(command);
+                if (result.StatusCode == 200)
+                    return Results.Ok(result.Data);
+                else
+                    return Results.BadRequest(result);
+
             });
 
 
