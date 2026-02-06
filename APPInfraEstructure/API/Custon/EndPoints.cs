@@ -20,6 +20,8 @@ namespace API.Migrations
                 [FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver) =>
             {
 
+                Console.WriteLine("Tentando login");
+
                 var command = new Command.UseCase.ContasLoginUseCaseInputCommand();
                 command.email = user.Login;
                 command.password = user.Password;
