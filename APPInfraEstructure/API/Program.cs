@@ -130,6 +130,7 @@ var app = builder.Build();
 // Aplica a política CORS
 app.UseCors("AllowLocalhostAndNetwork");
 
+app.UsePathBase("/api");
 
 // Configura o Swagger e Swagger UI
 app.UseSwagger();
