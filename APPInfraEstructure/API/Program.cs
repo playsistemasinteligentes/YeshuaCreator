@@ -136,7 +136,7 @@ app.UsePathBase("/api");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Example v1");
+    c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "API Example v1");
 });
 
 // Middleware de autenticação e autorização
