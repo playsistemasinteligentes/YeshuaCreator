@@ -12,12 +12,26 @@ echo
 echo "🌐 Domínio configurado: $DOMAIN"
 echo
 
-# Garante que está rodando como root
+# Root check
 if [ "$EUID" -ne 0 ]; then
   echo "❌ Execute este script como root."
   exit 1
 fi
 
+echo "🔍 Verificando containers usando a porta 80..."
+echo
+
+CONTAINERS_80=$(docker ps --format '{{.ID}} {{.Ports}}' | grep ':80->' | awk '{print $1}')
+
+if [ -n "$CONTAINERS_80" ]; then
+  echo "🛑 Parando containers na porta 80:"
+  echo "$CONTAINERS_80"
+  docker stop $CONTAINERS_80
+else
+  echo "✅ Nenhum container usando a porta 80"
+fi
+
+echo
 echo "🔧 Instalando dependências..."
 echo
 
@@ -26,8 +40,6 @@ apt install -y certbot
 
 echo
 echo "🔐 Emitindo certificado SSL (modo standalone)..."
-echo
-echo "⚠️ Certifique-se de que a porta 80 esteja LIVRE"
 echo
 
 certbot certonly \
@@ -38,24 +50,18 @@ certbot certonly \
   -m "$EMAIL"
 
 echo
-echo "📂 Certificados gerados em:"
-echo " /etc/letsencrypt/live/$DOMAIN/"
-echo
-
 echo "📅 Verificando renovação automática..."
 echo
 
-if systemctl list-timers | grep -q certbot; then
-  systemctl list-timers | grep certbot
-else
-  echo "⚠️ Timer do certbot não encontrado (normal em algumas distros)"
-fi
-
-echo
-echo "🔎 Teste de renovação (dry-run)..."
-echo
-
 certbot renew --dry-run
+
+echo
+echo "▶️ Restaurando containers Docker..."
+echo
+
+if [ -n "$CONTAINERS_80" ]; then
+  docker start $CONTAINERS_80
+fi
 
 echo
 echo "======================================"
