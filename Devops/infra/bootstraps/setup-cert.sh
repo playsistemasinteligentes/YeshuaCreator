@@ -1,6 +1,13 @@
 ﻿#!/usr/bin/env bash
 set -e
 
+
+
+ENV_FILE="/root/YeshuaCreator/Devops/infra/docker/.env"
+
+# Carrega variáveis do .env
+export $(grep -v '^#' "$ENV_FILE" | xargs)
+
 DOMAIN="${CERT__DOMAIN}"
 EMAIL="${CERT__EMAIL}"
 

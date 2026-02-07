@@ -113,6 +113,7 @@ else
 # === Banco de Dados ===
 MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;
 MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;
+SA_PASSWORD=123qwe!@#QWE
 
 # === Certificado / Domínio ===
 CERT__DOMAIN=playsis.com.br
