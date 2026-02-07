@@ -100,6 +100,10 @@ else
   echo ".env não encontrado. Criando novo arquivo de ambiente..."
   # Cria a pasta se não existir
   mkdir -p "$(dirname "$ENV_FILE")"
+  chown root:root /root/YeshuaDB/persistent/env
+  chmod 700 /root/YeshuaDB/persistent/env
+
+
   
   if [ -t 0 ]; then
     # ===== MODO INTERATIVO =====
