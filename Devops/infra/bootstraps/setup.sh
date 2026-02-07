@@ -86,6 +86,9 @@ fi
 
 ## aqui iremos evoluir para organizar atalhos e variaveis de ambiente
 echo "==== Verificando arquivo .env ===="
+SA_PASSWORD="123qwe!@#QWE"
+CERT_DOMAIN="playsis.com.br"
+CERT_EMAIL="contato@playsis.com.br"
 
 ENV_FILE="$COMPOSE_DIR/.env"
 
@@ -101,27 +104,24 @@ else
   else
     # ===== MODO NÃO-INTERATIVO (RECOVERY / CI / CLOUD) =====
     echo "⚠️ Ambiente não interativo detectado. Usando valores fixos."
-
-    SA_PASSWORD="123qwe!@#QWE"
   fi
 
-  cat <<EOF > "$ENV_FILE"
+ cat > "$ENV_FILE" <<EOF
 # ==============================
 # Arquivo gerado automaticamente
 # ==============================
 
 # === Banco de Dados ===
-MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;
-MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;
-SA_PASSWORD=123qwe!@#QWE
+SA_PASSWORD=$SA_PASSWORD
+MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
+MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
 
 # === Certificado / Domínio ===
-CERT__DOMAIN=playsis.com.br
-CERT__EMAIL=contato@playsis.com.br
-
+CERT__DOMAIN=$CERT_DOMAIN
+CERT__EMAIL=$CERT_EMAIL
 EOF
 
-  chmod 600 "$ENV_FILE"
+chmod 600 "$ENV_FILE"
 
   echo ".env criado com sucesso."
 fi

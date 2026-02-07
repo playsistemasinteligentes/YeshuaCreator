@@ -81,11 +81,11 @@ certbot certonly \
   --agree-tos \
   -m "$EMAIL"
 
-echo
-echo "📅 Verificando renovação automática..."
-echo
-
-certbot renew --dry-run
+#echo
+#echo "📅 Verificando renovação automática..."
+#echo
+#
+#certbot renew --dry-run
 
 echo
 echo "▶️ Restaurando containers Docker..."
