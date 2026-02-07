@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Migration")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Command")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8587ff944433f80956e35dbf5d59783765ba898f")]
-[assembly: System.Reflection.AssemblyProductAttribute("Migration")]
-[assembly: System.Reflection.AssemblyTitleAttribute("Migration")]
+[assembly: System.Reflection.AssemblyProductAttribute("Command")]
+[assembly: System.Reflection.AssemblyTitleAttribute("Command")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.
