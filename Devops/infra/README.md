@@ -1,6 +1,9 @@
 apos ubunto server estar instalado  executar 
 sudo apt update && sudo apt install -y curl && \
-curl -sL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/bootstraps/setup.sh | bash
+curl -sL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/bootstraps/setup.sh | sudo bash
+
+sudo curl -sL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/Devops/infra/bootstraps/setup.sh | sudo bash
+
 
 
 certificado

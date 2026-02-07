@@ -116,7 +116,7 @@ else
 # ==============================
 
 # === Banco de Dados ===
-SA_PASSWORD=$SA_PASSWORD
+SA__PASSWORD=$SA_PASSWORD
 MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
 MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
 

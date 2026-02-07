@@ -89,7 +89,7 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
-      SA_PASSWORD: ${SA_PASSWORD}
+      SA_PASSWORD: ${SA__PASSWORD}
     ports:
       - "1433:1433"
     volumes:
