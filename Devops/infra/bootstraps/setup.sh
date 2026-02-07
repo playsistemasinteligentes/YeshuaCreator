@@ -65,6 +65,23 @@ fi
 
 
 
+echo "💣 Recovery: removendo configuração HTTPS do Nginx (se existir)..."
+
+NGINX_CONF_DIR="$APP_DIR/Devops/infra/docker/nginx/conf.d"
+HTTPS_CONF="$NGINX_CONF_DIR/10-https.conf"
+
+if [ -f "$HTTPS_CONF" ]; then
+  rm -f "$HTTPS_CONF"
+  echo "✅ HTTPS removido para recovery inicial"
+else
+  echo "ℹ️ HTTPS não encontrado (ok)"
+fi
+
+
+
+
+
+
 
 
 ## aqui iremos evoluir para organizar atalhos e variaveis de ambiente
