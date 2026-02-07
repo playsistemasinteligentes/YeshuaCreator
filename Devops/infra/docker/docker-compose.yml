@@ -3,6 +3,8 @@ services:
     build:
       context: ../../..
       dockerfile: Devops/infra/docker/front/Dockerfile
+    env_file:
+      - .env
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -16,6 +18,8 @@ services:
     build:
       context: ../../..
       dockerfile: Devops/infra/docker/api/Dockerfile
+    env_file:
+      - .env
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -35,6 +39,8 @@ services:
       build:
         context: ../../..
         dockerfile: Devops/infra/docker/migration/Dockerfile
+      env_file:
+        - .env
       environment:
         ConnectionStrings__Default: ${SQLSERVER_CONNECTION}
       depends_on:
