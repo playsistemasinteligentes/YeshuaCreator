@@ -15,7 +15,7 @@ namespace API.Migrations
         public static void MapEndpoints(this WebApplication app)
         {
 
-            app.MapPost("/api/login", async (UserLogin user,
+            app.MapPost("/yapi/login", async (UserLogin user,
                 JwtSettings jwtSettings,
                 [FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver) =>
             {

@@ -1,3 +1,3 @@
 ﻿const environments = {
-    urlApi: "/api",
+    urlApi: "/yapi",
 };

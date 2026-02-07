@@ -46,7 +46,7 @@ namespace Dominio.Schemas.CQRS
             #region Insert 
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
+                sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
                 //setResultHttp(sb, "result");
@@ -63,7 +63,7 @@ namespace Dominio.Schemas.CQRS
             // update 
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPut(\"/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
+                sb.AppendLine($"app.MapPut(\"{getPrefixo()}/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
@@ -79,7 +79,7 @@ namespace Dominio.Schemas.CQRS
             // Delete
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapDelete(\"/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
+                sb.AppendLine($"app.MapDelete(\"{getPrefixo()}/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
@@ -93,10 +93,10 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("");
             }
 
-
+            string prefixo = getPrefixo();
             // menus 
             sb.AppendLine(@"
-                    app.MapGet(""/getMenu"", (HttpContext context) =>
+                    app.MapGet(""{PREFIXO}/getMenu"", (HttpContext context) =>
                     {
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == ""userModules"")?.Value;
                         if (modulesClaim == null)
@@ -121,7 +121,7 @@ namespace Dominio.Schemas.CQRS
 
                         return Results.Ok(result);
                     }).RequireAuthorization();
-            ");
+            ").Replace("{PREFIXO}", prefixo);
 
 
 
@@ -129,7 +129,7 @@ namespace Dominio.Schemas.CQRS
             #region Read  
             foreach (var entity in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
+                sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
                 sb.AppendLine("{");
 
                 sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
@@ -152,7 +152,7 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var wh in query.Meta.WhereParameters)
                     {
-                        sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}{wh.Key}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{wh.Key}Command command) =>");
+                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Read{entity.EntityName}{wh.Key}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{wh.Key}Command command) =>");
                         sb.AppendLine("{");
 
                         sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
@@ -167,7 +167,7 @@ namespace Dominio.Schemas.CQRS
                     }
                     foreach (var wh in query.Meta.WhereContextParameters)
                     {
-                        sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/Read{entity.EntityName}{wh.Key}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{wh.Key}Command command) =>");
+                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Read{entity.EntityName}{wh.Key}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadQuery}{wh.Key}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{wh.Key}Command command) =>");
                         sb.AppendLine("{");
 
                         sb.AppendLine(" return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));");
@@ -191,7 +191,7 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
-                    sb.AppendLine($"app.MapPost(\"/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}{column.Name}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>");
+                    sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/{entity.EntityName}{CommandType.ReadFK}{column.Name}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.ReadFK}{column.Name}Receiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>");
                     sb.AppendLine("{");
 
                     setResultHttp(sb, "result.Data");
@@ -208,7 +208,7 @@ namespace Dominio.Schemas.CQRS
             // get meta data
             foreach (var entidade in _migration.Entitys)
             {
-                sb.AppendLine($"app.MapGet(\"/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
+                sb.AppendLine($"app.MapGet(\"{getPrefixo()}/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
                 sb.AppendLine("{");
                 sb.AppendLine("    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;");
                 sb.AppendLine("    if (string.IsNullOrEmpty(userId))");
@@ -338,7 +338,7 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var useCase in subGroup.UseCases)
                     {
-                        sb.AppendLine($"app.MapPost(\"/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}InputCommand command) =>");
+                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}InputCommand command) =>");
                         sb.AppendLine("{");
 
                         setResultHttp(sb, "result.Data");
@@ -367,6 +367,11 @@ namespace Dominio.Schemas.CQRS
         {
             return new StringBuilder();
         }
+        private string getPrefixo()
+        {
+            return "/yapi";
+        }
+
         private void setResultHttp(StringBuilder sb, string result)
         {
             sb.AppendLine("try");
