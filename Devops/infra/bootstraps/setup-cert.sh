@@ -3,7 +3,7 @@
 set -e
 
 DOMAIN="playsis.com.br"
-EMAIL="admin@playsis.com.br"
+EMAIL="contato@playsis.com.br"
 
 echo "======================================"
 echo "  Setup de Certificado SSL (Let's Encrypt)"
@@ -22,34 +22,33 @@ echo "🔧 Instalando dependências..."
 echo
 
 apt update -y
-apt install -y certbot python3-certbot-nginx
+apt install -y certbot
 
 echo
-echo "🔐 Emitindo certificado SSL..."
+echo "🔐 Emitindo certificado SSL (modo standalone)..."
+echo
+echo "⚠️ Certifique-se de que a porta 80 esteja LIVRE"
 echo
 
-certbot --nginx \
+certbot certonly \
+  --standalone \
   -d "$DOMAIN" \
   --non-interactive \
   --agree-tos \
-  -m "$EMAIL" \
-  --redirect
+  -m "$EMAIL"
 
 echo
-echo "🔄 Validando e recarregando Nginx..."
+echo "📂 Certificados gerados em:"
+echo " /etc/letsencrypt/live/$DOMAIN/"
 echo
 
-nginx -t
-systemctl reload nginx
-
-echo
 echo "📅 Verificando renovação automática..."
 echo
 
 if systemctl list-timers | grep -q certbot; then
   systemctl list-timers | grep certbot
 else
-  echo "⚠️ Timer do certbot não encontrado"
+  echo "⚠️ Timer do certbot não encontrado (normal em algumas distros)"
 fi
 
 echo
