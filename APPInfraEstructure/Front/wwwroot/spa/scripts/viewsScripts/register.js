@@ -24,12 +24,7 @@ export function buildRegister() {
             return;
         }
 
-        // Convert CPF/CNPJ para número inteiro, se necessário
-        const cpfCnpj = parseInt(cpfCnpjValue, 10);
-        if (isNaN(cpfCnpj)) {
-            showAlert("CPF/CNPJ deve ser um número válido.", "Alert");
-            return;
-        }
+
 
         try {
             const response = await fetch(`${environments.urlApi}/Y/ContascreateContaUseCase`, {
