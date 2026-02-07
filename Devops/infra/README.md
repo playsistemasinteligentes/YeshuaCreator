@@ -4,7 +4,9 @@ curl -sL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreato
 
 
 certificado
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/bootstraps/setup-cert.sh | bash
+DOMAIN=playsis.com.br curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/bootstraps/setup-cert.sh | bash
+
+
 
 
 deploy 

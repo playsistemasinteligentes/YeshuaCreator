@@ -2,9 +2,14 @@
 
 set -e
 
+DOMAIN="playsis.com.br"
+EMAIL="admin@playsis.com.br"
+
 echo "======================================"
 echo "  Setup de Certificado SSL (Let's Encrypt)"
 echo "======================================"
+echo
+echo "🌐 Domínio configurado: $DOMAIN"
 echo
 
 # Garante que está rodando como root
@@ -13,26 +18,6 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Pergunta o domínio
-read -rp "Digite o domínio (ex: api.seudominio.com): " DOMAIN
-
-if [ -z "$DOMAIN" ]; then
-  echo "❌ Domínio não informado. Abortando."
-  exit 1
-fi
-
-echo
-echo "➡️ Domínio informado: $DOMAIN"
-echo
-
-# Confirmação
-read -rp "Deseja continuar? (y/n): " CONFIRM
-if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
-  echo "⏹ Operação cancelada pelo usuário."
-  exit 0
-fi
-
-echo
 echo "🔧 Instalando dependências..."
 echo
 
@@ -47,11 +32,13 @@ certbot --nginx \
   -d "$DOMAIN" \
   --non-interactive \
   --agree-tos \
-  -m "admin@$DOMAIN" \
+  -m "$EMAIL" \
   --redirect
 
 echo
 echo "🔄 Validando e recarregando Nginx..."
+echo
+
 nginx -t
 systemctl reload nginx
 
