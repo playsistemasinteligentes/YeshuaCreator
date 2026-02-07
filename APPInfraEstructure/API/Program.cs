@@ -41,14 +41,6 @@ builder.Services.AddCors(options =>
 
 
 
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-{
-    options.SerializerOptions.PropertyNameCaseInsensitive = true;
-    options.SerializerOptions.NumberHandling =
-        System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
-});
-
-
 // Adiciona suporte para endpoints e Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -146,7 +138,7 @@ app.UseCors("AllowLocalhostAndNetwork");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "API Example v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Example v1");
 });
 
 // Middleware de autenticação e autorização
