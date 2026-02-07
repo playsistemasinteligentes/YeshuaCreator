@@ -8,7 +8,6 @@ ENV_FILE="/root/YeshuaCreator/Devops/infra/docker/.env"
 # Carrega variáveis do .env
 #export $(grep -v '^#' "$ENV_FILE" | xargs)
 
-
 DOMAIN="playsis.com.br"
 EMAIL="contato@playsis.com.br"
 
