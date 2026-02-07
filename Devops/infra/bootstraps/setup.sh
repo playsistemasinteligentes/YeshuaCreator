@@ -94,25 +94,11 @@ CERT_DOMAIN="playsis.com.br"
 CERT_EMAIL="contato@playsis.com.br"
 
 
-if [ -f "$ENV_FILE" ]; then
-  echo ".env já existe, mantendo configurações atuais."
-else
-  echo ".env não encontrado. Criando novo arquivo de ambiente..."
+  echo "================== .env Criando novo arquivo de ambiente..."
   # Cria a pasta se não existir
   mkdir -p "$(dirname "$ENV_FILE")"
   chown root:root /root/YeshuaDB/persistent/env
   chmod 700 /root/YeshuaDB/persistent/env
-
-
-  
-  if [ -t 0 ]; then
-    # ===== MODO INTERATIVO =====
-    read -s -p "Senha do SQL Server (sa): " SA_PASSWORD
-    echo
-  else
-    # ===== MODO NÃO-INTERATIVO (RECOVERY / CI / CLOUD) =====
-    echo "⚠️ Ambiente não interativo detectado. Usando valores fixos."
-  fi
 
  cat > "$ENV_FILE" <<EOF
 # ==============================
@@ -132,11 +118,6 @@ EOF
 chmod 600 "$ENV_FILE"
 
   echo ".env criado com sucesso."
-fi
-
-
-
-
 
 
 
