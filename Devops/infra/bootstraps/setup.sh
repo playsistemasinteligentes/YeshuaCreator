@@ -3,6 +3,9 @@ set -e
 
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/Devops/infra/docker"
+ENV_FILE="/root/YeshuaDB/persistent/enviroment/.env"
+
+
 
 echo "==== Atualizando sistema ===="
 apt update
@@ -90,7 +93,6 @@ SA_PASSWORD="123qwe!@#QWE"
 CERT_DOMAIN="playsis.com.br"
 CERT_EMAIL="contato@playsis.com.br"
 
-ENV_FILE="$COMPOSE_DIR/.env"
 
 if [ -f "$ENV_FILE" ]; then
   echo ".env já existe, mantendo configurações atuais."
