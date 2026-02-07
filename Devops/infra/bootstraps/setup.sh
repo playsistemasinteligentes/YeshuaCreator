@@ -63,6 +63,63 @@ else
   git pull
 fi
 
+
+
+
+
+## aqui iremos evoluir para organizar atalhos e variaveis de ambiente
+echo "==== Verificando arquivo .env ===="
+
+ENV_FILE="$COMPOSE_DIR/.env"
+
+if [ -f "$ENV_FILE" ]; then
+  echo ".env já existe, mantendo configurações atuais."
+else
+  echo ".env não encontrado. Criando novo arquivo de ambiente..."
+
+  if [ -t 0 ]; then
+    # ===== MODO INTERATIVO =====
+    read -s -p "Senha do SQL Server (sa): " SA_PASSWORD
+    echo
+  else
+    # ===== MODO NÃO-INTERATIVO (RECOVERY / CI / CLOUD) =====
+    echo "⚠️ Ambiente não interativo detectado. Usando valores fixos."
+
+    SA_PASSWORD="123qwe!@#QWE"
+  fi
+
+  cat <<EOF > "$ENV_FILE"
+# ==============================
+# Arquivo gerado automaticamente
+# ==============================
+
+# === Banco de Dados ===
+MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;
+MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;
+
+# === Certificado / Domínio ===
+CERT__DOMAIN=playsis.com.br
+CERT__EMAIL=contato@playsis.com.br
+
+EOF
+
+  chmod 600 "$ENV_FILE"
+
+  echo ".env criado com sucesso."
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
 echo "==== Subindo aplicação com Docker Compose ===="
 cd "$COMPOSE_DIR"
 

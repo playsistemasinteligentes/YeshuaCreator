@@ -1,9 +1,34 @@
 ﻿#!/usr/bin/env bash
-
 set -e
 
-DOMAIN="playsis.com.br"
-EMAIL="contato@playsis.com.br"
+DOMAIN="${CERT__DOMAIN}"
+EMAIL="${CERT__EMAIL}"
+
+echo "======================================"
+echo "  Setup de Certificado SSL (Let's Encrypt)"
+echo "======================================"
+
+# Root check
+if [ "$EUID" -ne 0 ]; then
+  echo "❌ Execute este script como root."
+  exit 1
+fi
+
+# Validação explícita (importante!)
+if [ -z "$DOMAIN" ]; then
+  echo "❌ CERT__DOMAIN não definido"
+  exit 1
+fi
+
+if [ -z "$EMAIL" ]; then
+  echo "❌ CERT__EMAIL não definido"
+  exit 1
+fi
+
+echo "🌐 Domínio configurado: $DOMAIN"
+echo "📧 Email: $EMAIL"
+echo
+
 
 echo "======================================"
 echo "  Setup de Certificado SSL (Let's Encrypt)"
