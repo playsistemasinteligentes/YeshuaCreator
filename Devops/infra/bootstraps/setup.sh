@@ -96,9 +96,14 @@ CERT_EMAIL="contato@playsis.com.br"
 
   echo "================== .env Criando novo arquivo de ambiente..."
   # Cria a pasta se não existir
-  mkdir -p "$(dirname "$ENV_FILE")"
-  chown root:root /root/YeshuaDB/persistent/env
-  chmod 700 /root/YeshuaDB/persistent/env
+ # Garante que a pasta exista
+mkdir -p "$(dirname "$ENV_FILE")"
+
+# Ajusta dono e permissões da pasta
+chown root:root "$(dirname "$ENV_FILE")"
+chmod 700 "$(dirname "$ENV_FILE")"
+
+
 
  cat > "$ENV_FILE" <<EOF
 # ==============================
