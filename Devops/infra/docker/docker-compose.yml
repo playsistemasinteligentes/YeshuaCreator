@@ -3,11 +3,12 @@ services:
     build:
       context: ../../..
       dockerfile: Devops/infra/docker/front/Dockerfile
-    env_file:
-      - /root/YeshuaDB/persistent/enviroment/.env
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
       ASPNETCORE_ENVIRONMENT: "Production"
+      SA__PASSWORD: "123qwe!@#QWE"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     expose:
       - "8080"
     restart: unless-stopped
@@ -18,13 +19,14 @@ services:
     build:
       context: ../../..
       dockerfile: Devops/infra/docker/api/Dockerfile
-    env_file:
-      - /root/YeshuaDB/persistent/enviroment/.env
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__Default: ${SQLSERVER_CONNECTION}
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Redis__Host: redis
+      SA__PASSWORD: "123qwe!@#QWE"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     expose:
       - "7214"
     depends_on:
@@ -34,22 +36,21 @@ services:
     networks:
       - yeshua-net
 
-  
   migration:
-      build:
-        context: ../../..
-        dockerfile: Devops/infra/docker/migration/Dockerfile
-      env_file:
-        - /root/YeshuaDB/persistent/enviroment/.env
-      environment:
-        ConnectionStrings__Default: ${SQLSERVER_CONNECTION}
-      depends_on:
-        - sqlserver
-      networks:
-        - yeshua-net
-      restart: "no"
-    
-      
+    build:
+      context: ../../..
+      dockerfile: Devops/infra/docker/migration/Dockerfile
+    environment:
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      SA__PASSWORD: "123qwe!@#QWE"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+    depends_on:
+      - sqlserver
+    networks:
+      - yeshua-net
+    restart: "no"
+
   nginx:
     container_name: yeshua-nginx
     build:
@@ -67,10 +68,6 @@ services:
     networks:
       - yeshua-net
 
-
-
-
-
   redis:
     image: redis:7-alpine
     container_name: yeshua-redis
@@ -83,13 +80,10 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: yeshua-sqlserver
-    env_file:
-      - /root/YeshuaDB/persistent/enviroment/.env
-
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
-      SA_PASSWORD: ${SA__PASSWORD}
+      SA_PASSWORD: "123qwe!@#QWE"
     ports:
       - "1433:1433"
     volumes:
@@ -97,7 +91,6 @@ services:
     restart: unless-stopped
     networks:
       - yeshua-net
-
 
 networks:
   yeshua-net:

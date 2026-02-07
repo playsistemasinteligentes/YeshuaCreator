@@ -87,43 +87,43 @@ fi
 
 
 
-## aqui iremos evoluir para organizar atalhos e variaveis de ambiente
-echo "==== Verificando arquivo .env ===="
-SA_PASSWORD="123qwe!@#QWE"
-CERT_DOMAIN="playsis.com.br"
-CERT_EMAIL="contato@playsis.com.br"
-
-
-  echo "================== .env Criando novo arquivo de ambiente..."
-  # Cria a pasta se não existir
- # Garante que a pasta exista
-mkdir -p "$(dirname "$ENV_FILE")"
-
-# Ajusta dono e permissões da pasta
-chown root:root "$(dirname "$ENV_FILE")"
-chmod 700 "$(dirname "$ENV_FILE")"
-
-
-
- cat > "$ENV_FILE" <<EOF
-# ==============================
-# Arquivo gerado automaticamente
-# ==============================
-
-# === Banco de Dados ===
-SA__PASSWORD=$SA_PASSWORD
-MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
-MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
-
-# === Certificado / Domínio ===
-CERT__DOMAIN=$CERT_DOMAIN
-CERT__EMAIL=$CERT_EMAIL
-EOF
-
-chmod 600 "$ENV_FILE"
-
-  echo ".env criado com sucesso."
-
+#### aqui iremos evoluir para organizar atalhos e variaveis de ambiente
+##echo "==== Verificando arquivo .env ===="
+##SA_PASSWORD="123qwe!@#QWE"
+##CERT_DOMAIN="playsis.com.br"
+##CERT_EMAIL="contato@playsis.com.br"
+##
+##
+##  echo "================== .env Criando novo arquivo de ambiente..."
+##  # Cria a pasta se não existir
+## # Garante que a pasta exista
+##mkdir -p "$(dirname "$ENV_FILE")"
+##
+### Ajusta dono e permissões da pasta
+##chown root:root "$(dirname "$ENV_FILE")"
+##chmod 700 "$(dirname "$ENV_FILE")"
+##
+##
+##
+## cat > "$ENV_FILE" <<EOF
+### ==============================
+### Arquivo gerado automaticamente
+### ==============================
+##
+### === Banco de Dados ===
+##SA__PASSWORD=$SA_PASSWORD
+##MYCONFIG__READCONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
+##MYCONFIG__WRITECONECTIONSTRING=Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;
+##
+### === Certificado / Domínio ===
+##CERT__DOMAIN=$CERT_DOMAIN
+##CERT__EMAIL=$CERT_EMAIL
+##EOF
+##
+##chmod 600 "$ENV_FILE"
+##
+##  echo ".env criado com sucesso."
+##
 
 
 
