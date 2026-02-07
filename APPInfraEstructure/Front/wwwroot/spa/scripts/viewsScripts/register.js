@@ -24,7 +24,14 @@ export function buildRegister() {
             return;
         }
 
+        // Pega o valor do input e garante que seja uma string de dígitos
+        const cpfCnpj = String(cpfCnpjValue).replace(/\D/g, '');
 
+        // Validação rápida
+        if (!cpfCnpj) {
+            showAlert("CPF/CNPJ inválido.", "Alert");
+            return;
+        }
 
         try {
             const response = await fetch(`${environments.urlApi}/Y/ContascreateContaUseCase`, {
