@@ -98,7 +98,9 @@ if [ -f "$ENV_FILE" ]; then
   echo ".env já existe, mantendo configurações atuais."
 else
   echo ".env não encontrado. Criando novo arquivo de ambiente..."
-
+  # Cria a pasta se não existir
+  mkdir -p "$(dirname "$ENV_FILE")"
+  
   if [ -t 0 ]; then
     # ===== MODO INTERATIVO =====
     read -s -p "Senha do SQL Server (sa): " SA_PASSWORD
