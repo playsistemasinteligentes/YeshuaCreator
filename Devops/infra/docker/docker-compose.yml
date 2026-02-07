@@ -44,7 +44,6 @@ services:
       restart: "no"
     
       
-      
   nginx:
     container_name: yeshua-nginx
     build:
@@ -52,12 +51,19 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - front
       - api
     restart: unless-stopped
     networks:
       - yeshua-net
+
+
+
+
 
   redis:
     image: redis:7-alpine
