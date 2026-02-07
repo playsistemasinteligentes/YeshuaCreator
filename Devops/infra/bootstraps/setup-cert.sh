@@ -9,8 +9,8 @@ ENV_FILE="/root/YeshuaCreator/Devops/infra/docker/.env"
 #export $(grep -v '^#' "$ENV_FILE" | xargs)
 
 
-$DOMAIN="playsis.com.br"
-$EMAIL="contato@playsis.com.br"
+DOMAIN="playsis.com.br"
+EMAIL="contato@playsis.com.br"
 
 echo "======================================"
 echo "  Setup de Certificado SSL (Let's Encrypt)"
