@@ -3005,7 +3005,7 @@ namespace API.Migrations
             #region ServicesMethod
             app.MapPost("/api/Y/ContascreateContaUseCase", async (
                 [FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver,
-                [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand? command) =>
+                [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
             {
                 Console.WriteLine("Tentando conta");
                 var result = receiver.Execute(command);

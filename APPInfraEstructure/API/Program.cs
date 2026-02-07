@@ -39,6 +39,16 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.NumberHandling =
+        System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
+});
+
+
 // Adiciona suporte para endpoints e Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
