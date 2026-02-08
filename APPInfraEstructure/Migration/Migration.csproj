@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dominio\CodeGeneration\Templates\Command\NameCrudCommand.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Principios e objetos de arquitetura.txt" />
   </ItemGroup>
 
@@ -17,7 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Command\NameCrudCommand.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
   </ItemGroup>
 
@@ -25,6 +34,10 @@
     <Compile Update="Infra\SqlFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dominio\CodeGeneration\Model\" />
   </ItemGroup>
 
 </Project>

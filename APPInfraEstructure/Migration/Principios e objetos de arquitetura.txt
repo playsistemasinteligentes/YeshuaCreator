@@ -1,4 +1,83 @@
-﻿pendencia 
+﻿Os 3 únicos conceitos que você precisa cravar no DSL
+
+Command
+
+intenção
+
+Handler
+
+execução
+
+Execution Policy
+
+como isso acontece no tempo e na infraestrutura
+
+Tudo o resto:
+
+Outbox
+
+Saga
+
+Retry
+
+Worker
+
+Queue
+
+Polling
+
+👉 fica fora do DSL de domínio
+👉 ou entra só como policy declarativa
+
+8. A verdade dura (mas libertadora)
+
+❗ Não existe arquitetura 100% reaproveitável e eterna.
+
+E tudo bem.
+
+O que existe é:
+
+núcleo pequeno
+
+bordas substituíveis
+
+nomes fracos e comportamentos fortes
+
+Se o nome mudar amanhã (Job → Task → Dispatch),
+mas o contrato continuar, você ganhou.
+
+9. Se eu tivesse que te sugerir um primeiro passo concreto
+
+Sem desenhar tudo ainda:
+
+👉 Trave o conceito de Command como entidade central
+👉 NÃO crie Outbox como “tipo”
+👉 Trate Outbox como política de persistência/entrega
+👉 Deixe Saga nascer como coordenação de Commands, não como Command especial
+
+Isso mantém:
+
+DSL enxuta
+
+motor controlável
+
+complexidade empurrada para infra (onde ela pertence)
+
+Quando você mandar os outros modelos, aí sim dá pra:
+
+validar se algum conceito já existe escondido
+
+cortar duplicações
+
+e talvez até renomear menos coisas do que você imagina
+
+Você está no caminho certo.
+Esse desconforto é exatamente o sinal disso.
+
+
+
+
+pendencia 
 estudar semantckernall
 
 

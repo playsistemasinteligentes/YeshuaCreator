@@ -4,6 +4,8 @@ using Dominio.TiposPrimitivos;
 using Interfaces.Schemas;
 using Interfaces.Schemas.CQRS;
 using Microsoft.VisualBasic.FileIO;
+using Migration.CodeGeneration.Templates;
+using Migration.Dominio.CodeGeneration.Templates;
 using Migration.Dominio.Schemas.CQRS;
 using System;
 using System.Collections.Generic;
@@ -39,6 +41,26 @@ namespace Dominio.Schemas.CQRS
         {
 
             #region Migrations 
+
+            var parser = new CommandTemplateParser();
+            //var template = parser.Parse(File.ReadAllText("NameCrudCommand.cs"));
+            var templateSource = EmbeddedTemplateLoader.Load("Command.NameCrudCommand.cs");
+
+            var template = parser.Parse(templateSource);
+
+            var replicator = new CommandTemplateReplicator();
+
+            foreach (var entity in migration.Entitys)
+            {
+                var code = replicator.Replicate(template, entity);
+                string n = $"./{entity.EntityName}Commands.cs";
+                File.WriteAllText($"c:\\temp\\source\\{entity.EntityName}Commands.cs", code);
+            }
+
+
+
+
+
             // crud 
             foreach (var entity in migration.Entitys)
             {

@@ -170,6 +170,10 @@
               "target": "Package",
               "version": "[2.1.35, )"
             },
+            "Microsoft.CodeAnalysis.CSharp": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.Data.SqlClient": {
               "target": "Package",
               "version": "[5.2.1, )"

@@ -14,6 +14,26 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Migration.Dominio.Migration
 {
+    /*
+                Os 3 únicos conceitos que você precisa cravar no DSL
+Command
+intenção
+Handler receiver
+execução
+Execution Policy
+como isso acontece no tempo e na infraestrutura
+Tudo o resto:
+Outbox
+Saga
+Retry
+Worker
+Queue
+Polling
+👉 fica fora do DSL de domínio
+👉 ou entra só como policy declarativa*/
+
+
+
     [Migration(000001)]
     public class S000001 : MigrationBase
     {
