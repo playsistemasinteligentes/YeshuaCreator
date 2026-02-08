@@ -93,8 +93,6 @@ services:
       - yeshua-net
 
 
-
-
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: yeshua-rabbitmq
