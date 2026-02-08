@@ -21,7 +21,7 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-echo $DOMAIN
+
 # Validação explícita (importante!)
 if [ -z "$DOMAIN" ]; then
   echo "❌ CERT__DOMAIN .não definido"
