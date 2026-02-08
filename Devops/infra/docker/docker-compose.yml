@@ -92,21 +92,6 @@ services:
     networks:
       - yeshua-net
 
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: yeshua-rabbitmq
-    ports:
-      - "5672:5672"     # Porta AMQP para comunicação com workers e API
-      - "15672:15672"   # Porta da interface de gerenciamento web
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    networks:
-      - yeshua-net
-    restart: unless-stopped
-
-
 networks:
   yeshua-net:
     driver: bridge
