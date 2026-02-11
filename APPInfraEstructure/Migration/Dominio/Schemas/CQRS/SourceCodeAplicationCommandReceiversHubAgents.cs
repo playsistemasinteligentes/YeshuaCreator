@@ -36,7 +36,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace Comandos.Receivers.{_agent.Name.SourceType()}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_agent.Name.SourceType()}HubAgentReceiver : ReciverBase<ICommand>");
+            sb.AppendLine($"    public partial class {_agent.Name.SourceType()}HubAgentReceiver : ReciverBase<ICommand,{_agent.Name.SourceType()}HubAgentReceiver>");
             sb.AppendLine("    {");
             sb.AppendLine();
             sb.AppendLine($"        private readonly object _menssage;");
@@ -46,14 +46,14 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            _menssage = menssage;");
             sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine($"        protected override State<ICommand> Action(ICommand comand)");
+            sb.AppendLine($"        protected override State<{_agent.Name.SourceType()}HubAgentReceiver> Action(ICommand comand)");
             sb.AppendLine("        {");
             sb.AppendLine("            try");
             sb.AppendLine("            {");
             //sb.AppendLine("                comand = getMenu();");
-            sb.AppendLine("                return Success(\"OK\", comand);");
+            sb.AppendLine("                return Success(\"OK\", null);");
             sb.AppendLine("            }");
-            CQRSParam.I.AddExeptionReceiver(sb, "ICommand");
+            CQRSParam.I.AddExeptionReceiver(sb, $"{_agent.Name.SourceType()}HubAgentReceiver");
             sb.AppendLine("        }");
             foreach (var menu in _agent.Menus)
             {

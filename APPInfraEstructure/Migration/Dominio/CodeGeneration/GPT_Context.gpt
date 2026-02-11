@@ -1,0 +1,253 @@
+﻿using Dominio.CodeGeneration.Parsing;
+using Dominio.CodeGeneration.Replication;
+using Dominio.CodeGeneration.Templates;
+using Migration.Dominio;
+using Migration.Dominio.Schemas.CQRS;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Dominio.CodeGeneration.Generation
+{
+    public class CrudCommandGeneration
+    {
+        private readonly CodeTemplateParser _parser = new();
+        private readonly CodeTemplateReplicator _replicator = new();
+
+        public string Generate(Entity entity, CommandType commandType, string column)
+        {
+            var templateSource =
+            //EmbeddedTemplateLoader.Load("Command.NameCrudCommand.cs");
+            EmbeddedTemplateLoader.Load("Command.IClinicaRepositoryInterfacesRead.cs");
+
+
+
+            var template = _parser.Parse(templateSource);
+
+            var properties = BuildProperties(entity, commandType, column);
+
+            var interfaceName =
+                commandType == CommandType.Read || commandType == CommandType.ReadFK
+                    ? "ICommandRead"
+                    : "ICommand";
+
+            var commandName =
+                $"{entity.EntityName}{commandType}{column}Command";
+
+            var unit = _replicator.Replicate(
+                template,
+                CQRSParam.I.NameSpaceCommandWrite,
+                commandName,
+                interfaceName,
+                properties);
+
+            return unit.ToFullString();
+        }
+
+        private IEnumerable<PropertyDeclarationSyntax> BuildProperties(
+            Entity entity,
+            CommandType commandType,
+            string column)
+        {
+            if (commandType == CommandType.ReadFK)
+            {
+                var fk = entity.AddColumns
+                    .First(x => x.Name == column)
+                    .EntityFK;
+
+                foreach (var col in fk.AddColumns.Where(x => x.DisplayFK))
+                {
+                    yield return CreateProperty(
+                        col.getCsharpType(true, true),
+                        col.Name);
+                }
+                yield break;
+            }
+
+            foreach (var col in entity.AddColumns.Where(x => !x.IsBackEndField))
+            {
+                var type =
+                    commandType == CommandType.Read && col.Enum != null
+                        ? "List<int>"
+                        : col.getCsharpType(
+                            commandType != CommandType.Read,
+                            true);
+
+                yield return CreateProperty(type, col.Name);
+            }
+
+            if (commandType == CommandType.Read)
+            {
+                yield return CreateProperty("Pagination", "Paginacao");
+            }
+        }
+
+        private PropertyDeclarationSyntax CreateProperty(string type, string name)
+        {
+            return SyntaxFactory.PropertyDeclaration(
+                    SyntaxFactory.ParseTypeName(type),
+                    name)
+                .AddModifiers(
+                    SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddAccessorListAccessors(
+                    SyntaxFactory.AccessorDeclaration(
+                        SyntaxKind.GetAccessorDeclaration)
+                        .WithSemicolonToken(
+                            SyntaxFactory.Token(SyntaxKind.SemicolonToken)),
+                    SyntaxFactory.AccessorDeclaration(
+                        SyntaxKind.SetAccessorDeclaration)
+                        .WithSemicolonToken(
+                            SyntaxFactory.Token(SyntaxKind.SemicolonToken)));
+        }
+    }
+}
+
+
+
+
+
+
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Dominio.CodeGeneration.Parsing
+{
+    public sealed class CodeTemplate
+    {
+        public CompilationUnitSyntax Root { get; }
+        public TypeDeclarationSyntax Type { get; }
+
+        public CodeTemplate(
+            CompilationUnitSyntax root,
+            TypeDeclarationSyntax type)
+        {
+            Root = root;
+            Type = type;
+        }
+    }
+
+    public class CodeTemplateParser
+    {
+        public CodeTemplate Parse(string source)
+        {
+            var tree = CSharpSyntaxTree.ParseText(source);
+            var root = tree.GetCompilationUnitRoot();
+
+            var type = root
+                .DescendantNodes()
+                .OfType<TypeDeclarationSyntax>()
+                .FirstOrDefault()
+                ?? throw new InvalidOperationException("Template sem class/struct.");
+
+            return new CodeTemplate(root, type);
+        }
+    }
+}
+
+
+
+
+using System.Reflection;
+
+namespace Dominio.CodeGeneration.Templates
+{
+    public static class EmbeddedTemplateLoader
+    {
+        public static string Load(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fullName = assembly
+                .GetManifestResourceNames()
+                .First(x => x.EndsWith(resourceName));
+
+            using var stream = assembly.GetManifestResourceStream(fullName)
+                ?? throw new InvalidOperationException($"Template {resourceName} não encontrado.");
+
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
+    }
+}
+
+
+
+
+
+using Dominio.CodeGeneration.Parsing;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Dominio.CodeGeneration.Replication
+{
+    public class CodeTemplateReplicator
+    {
+        public CompilationUnitSyntax Replicate(
+            CodeTemplate template,
+            string @namespace,
+            string name,
+            string @interface,
+            IEnumerable<PropertyDeclarationSyntax> properties)
+        {
+            var newType = template.Type
+                .WithIdentifier(SyntaxFactory.Identifier(name))
+                .WithMembers(
+                    SyntaxFactory.List<MemberDeclarationSyntax>(properties))
+                .WithBaseList(
+                    SyntaxFactory.BaseList(
+                        SyntaxFactory.SingletonSeparatedList<BaseTypeSyntax>(
+                            SyntaxFactory.SimpleBaseType(
+                                SyntaxFactory.ParseTypeName(@interface)))));
+
+            var ns = SyntaxFactory.NamespaceDeclaration(
+                    SyntaxFactory.ParseName(@namespace))
+                .AddMembers(newType);
+
+            return SyntaxFactory.CompilationUnit()
+                .WithUsings(template.Root.Usings)
+                .AddMembers(ns)
+                .NormalizeWhitespace();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+aqui é uma template que foi usada pelo CrudComandGeneration para replicar codigo 
+
+
+namespace Command.Write
+{
+    public class CrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string Nome { get; set; }
+        public string Endereco { get; set; }
+        public string Telefone { get; set; }
+        public int? TenantID { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+    }
+}
+
+
+/*  aqui é como chamar a geração de codigo 
+        {
+
+            #region Migrations 
+            var generator = new CommandSimpleGenerator();
+
+            foreach (var entity in migration.Entitys)
+            {
+                var code = generator.Generate(entity, CommandType.Crud, "");
+                File.WriteAllText(
+                    $"c:\\temp\\source\\{entity.EntityName}Commands.cs",
+                    code);
+            }
+
+*/

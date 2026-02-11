@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class SesoesReadQuerySemanaReceiver : ReciverBase<DataPagination<SesoesStandardDTO>>
+    public class SesoesReadQuerySemanaReceiver : ReciverBase<ICommand, DataPagination<SesoesStandardDTO>>
     {
         private readonly ISesoesReadRepository _repository;
         private readonly ILogger _logger;

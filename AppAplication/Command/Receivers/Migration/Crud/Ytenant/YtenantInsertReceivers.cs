@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertyTenantReceiver : ReciverBase <IyTenantEntity>
+    public class InsertyTenantReceiver : ReciverBase<ICommand, IyTenantEntity>
     {
         private readonly IyTenantWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var ytenant = new yTenantFactory(_logger).Create(c.CnpjCpf, c.Nome, c.UserId);
                  if (!ytenant.isValidInsert())
-                     return ValidationError(ytenant.getErroMensagens(), comand);
+                     return ValidationError(ytenant.getErroMensagens(), null);
 
                  try
                  {

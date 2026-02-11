@@ -13,7 +13,7 @@ namespace Dominio.Schemas.CQRS
         private UseCaseGroup _hub;
         private CommandType _commandType;
         private UseCaseSubGroup _service;
-        private UseCase _method;
+        private UseCaseCommand _method;
         private string _classe;
         private string _nameSpace;
         private HashSet<string> _generatedTypes = new HashSet<string>();
@@ -25,7 +25,7 @@ namespace Dominio.Schemas.CQRS
             _commandType = CommandType.UseCaseGroup;
             _nameSpace = CQRSParam.I.NameSpaceCommandWrite;
         }
-        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCase method)
+        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseCommand method)
                     : base()
         {
             _hub = method.UseCaseGroup;

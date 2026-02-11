@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateMovimentacaoFinanceiraReceiver : ReciverBase <IMovimentacaoFinanceiraEntity>
+    public class UpdateMovimentacaoFinanceiraReceiver : ReciverBase<ICommand, IMovimentacaoFinanceiraEntity>
     {
         private readonly IMovimentacaoFinanceiraWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var movimentacaofinanceira = new MovimentacaoFinanceiraFactory(_logger).Create(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
                  if (!movimentacaofinanceira.isValidUpdate())
-                     return ValidationError(movimentacaofinanceira.getErroMensagens(), comand);
+                     return ValidationError(movimentacaofinanceira.getErroMensagens(), null);
 
                  try
                  {

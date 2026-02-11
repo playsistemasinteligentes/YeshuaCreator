@@ -145,14 +145,14 @@ Polling
             //AlterEntity("yTenant").AddColumn("UserIDAdmin", "Administrador").FK("yUser", "Id").Int();
 
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("createConta", new Account("", "", "", "", "", ""), new AccountResult(1, 1)).Authorization(Authorization.Free)
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCaseCommand("createConta", new Account("", "", "", "", "", ""), new AccountResult(1, 1)).Authorization(Authorization.Free)
             .AddEntity("yTenant").AddEntity("yUser").AddScope("Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.");
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("Login", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCaseCommand("Login", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
                 .AddEntity("yUser").AddEntity("yTenantModule").AddEntity("yUserModule");
 
 
-            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCase("RecoveryAccount", new RecoveryAccount("", TypeNotification.Email))
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Contas").AddUseCaseCommand("RecoveryAccount", new RecoveryAccount("", TypeNotification.Email))
                 .AddScope("Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook")
                 .Strategy(typeof(INotification)).AddAgregateStrategy(typeof(Message));
         }

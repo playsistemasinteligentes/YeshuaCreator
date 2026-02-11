@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteDisponibilidadeAgendaReceiver : ReciverBase <IDisponibilidadeAgendaEntity>
+    public class DeleteDisponibilidadeAgendaReceiver : ReciverBase<ICommand, IDisponibilidadeAgendaEntity>
     {
         private readonly IDisponibilidadeAgendaWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var disponibilidadeagenda = new DisponibilidadeAgendaFactory(_logger).Create(c.Id, c.ProfissionalId, c.DataHora);
                  if (!disponibilidadeagenda.isValidDelete())
-                     return ValidationError(disponibilidadeagenda.getErroMensagens(), comand);
+                     return ValidationError(disponibilidadeagenda.getErroMensagens(), null);
 
                  try
                  {

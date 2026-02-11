@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Comandos.Receivers.AgenteDeAgendamentoParaAdministrador
 {
-    public partial class AgenteDeAgendamentoParaAdministradorHubAgentReceiver : ReciverBase<ICommand>
+    public partial class AgenteDeAgendamentoParaAdministradorHubAgentReceiver : ReciverBase<ICommand,AgenteDeAgendamentoParaAdministradorHubAgentReceiver>
     {
 
         private readonly object _menssage;
@@ -19,13 +19,13 @@ namespace Comandos.Receivers.AgenteDeAgendamentoParaAdministrador
             _menssage = menssage;
         }
 
-        protected override State<ICommand> Action(ICommand comand)
+        protected override State<AgenteDeAgendamentoParaAdministradorHubAgentReceiver> Action(ICommand comand)
         {
             try
             {
-                return Success("OK", comand);
+                return Success("OK", null);
             }
-            catch (ReceiverException<ICommand> e)
+            catch (ReceiverException<AgenteDeAgendamentoParaAdministradorHubAgentReceiver> e)
             {
                 return e.State;
             }

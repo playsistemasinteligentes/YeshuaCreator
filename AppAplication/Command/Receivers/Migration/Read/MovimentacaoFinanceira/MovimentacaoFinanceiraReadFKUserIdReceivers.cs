@@ -8,7 +8,7 @@ using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {
-    public class MovimentacaoFinanceiraReadFKUserIdReceiver : ReciverBase<IEnumerable<MovimentacaoFinanceiraUserIdDTO>>
+    public class MovimentacaoFinanceiraReadFKUserIdReceiver : ReciverBase<ICommand, IEnumerable<MovimentacaoFinanceiraUserIdDTO>>
     {
         private readonly IMovimentacaoFinanceiraReadRepository _repository;
 

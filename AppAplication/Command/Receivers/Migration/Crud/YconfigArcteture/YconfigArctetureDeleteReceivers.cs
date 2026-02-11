@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteyConfigArctetureReceiver : ReciverBase <IyConfigArctetureEntity>
+    public class DeleteyConfigArctetureReceiver : ReciverBase<ICommand, IyConfigArctetureEntity>
     {
         private readonly IyConfigArctetureWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yconfigarcteture = new yConfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
                  if (!yconfigarcteture.isValidDelete())
-                     return ValidationError(yconfigarcteture.getErroMensagens(), comand);
+                     return ValidationError(yconfigarcteture.getErroMensagens(), null);
 
                  try
                  {

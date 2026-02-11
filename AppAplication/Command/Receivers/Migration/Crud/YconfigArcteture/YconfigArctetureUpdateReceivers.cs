@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateyConfigArctetureReceiver : ReciverBase <IyConfigArctetureEntity>
+    public class UpdateyConfigArctetureReceiver : ReciverBase<ICommand, IyConfigArctetureEntity>
     {
         private readonly IyConfigArctetureWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yconfigarcteture = new yConfigArctetureFactory(_logger).Create(c.Id, c.AuditTrackerActived, c.AuditCRUDActived);
                  if (!yconfigarcteture.isValidUpdate())
-                     return ValidationError(yconfigarcteture.getErroMensagens(), comand);
+                     return ValidationError(yconfigarcteture.getErroMensagens(), null);
 
                  try
                  {

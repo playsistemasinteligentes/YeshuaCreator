@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class ServicoReadReceiver : ReciverBase<DataPagination<ServicoDTO>>
+    public class ServicoReadReceiver : ReciverBase<ICommand, DataPagination<ServicoDTO>>
     {
         private readonly IServicoReadRepository _repository;
         private readonly ILogger _logger;

@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class DisponibilidadeAgendaReadReceiver : ReciverBase<DataPagination<DisponibilidadeAgendaDTO>>
+    public class DisponibilidadeAgendaReadReceiver : ReciverBase<ICommand, DataPagination<DisponibilidadeAgendaDTO>>
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
         private readonly ILogger _logger;

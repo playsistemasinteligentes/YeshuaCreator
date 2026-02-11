@@ -12,6 +12,10 @@ namespace API.Migrations
 {
     public static class EndpointsCuston
     {
+
+        public record UserLogin(string Login, string Password);
+        public record Account(string idcompany, string email, string phone, string password, string confirmpassword);
+
         public static void MapEndpoints(this WebApplication app)
         {
 
@@ -55,6 +59,54 @@ namespace API.Migrations
                 return Results.Unauthorized();
             });
 
+
+            app.MapPost("/CreateAccount", (Account company) =>
+            {
+            });
+
+
+            app.MapPost("/ForgotPassword", (string email) =>
+            {
+                return Results.Unauthorized();
+            });
+
+
+
+            app.MapPost("/upload", async (HttpContext context) =>
+            {
+                try
+                {
+                    var request = context.Request;
+                    if (!request.HasFormContentType)
+                        return Results.BadRequest("Requisição inválida. Esperado form-data.");
+
+                    var form = await request.ReadFormAsync();
+                    var file = form.Files["audio"];
+
+                    if (file == null || file.Length == 0)
+                        return Results.BadRequest("Nenhum arquivo foi enviado.");
+
+                    // Define o caminho onde os áudios serão salvos
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                    Directory.CreateDirectory(uploadsFolder); // Garante que a pasta existe
+
+                    var filePath = Path.Combine(uploadsFolder, file.FileName);
+
+                    // Salva o arquivo no servidor
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    Console.WriteLine($"Arquivo salvo em: {filePath}");
+                    return Results.Ok(new { message = "Arquivo recebido com sucesso!", filePath });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao receber arquivo: {ex.Message}");
+                    return Results.Problem("Erro ao processar o arquivo.");
+                }
+            });
         }
     }
 }

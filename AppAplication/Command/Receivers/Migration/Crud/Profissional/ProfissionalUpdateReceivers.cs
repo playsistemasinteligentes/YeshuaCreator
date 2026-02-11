@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateProfissionalReceiver : ReciverBase <IProfissionalEntity>
+    public class UpdateProfissionalReceiver : ReciverBase<ICommand, IProfissionalEntity>
     {
         private readonly IProfissionalWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var profissional = new ProfissionalFactory(_logger).Create(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
                  if (!profissional.isValidUpdate())
-                     return ValidationError(profissional.getErroMensagens(), comand);
+                     return ValidationError(profissional.getErroMensagens(), null);
 
                  try
                  {

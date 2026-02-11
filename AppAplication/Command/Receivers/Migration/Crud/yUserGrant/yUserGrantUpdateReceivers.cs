@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateyUserGrantReceiver : ReciverBase <IyUserGrantEntity>
+    public class UpdateyUserGrantReceiver : ReciverBase<ICommand, IyUserGrantEntity>
     {
         private readonly IyUserGrantWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yusergrant = new yUserGrantFactory(_logger).Create(c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
                  if (!yusergrant.isValidUpdate())
-                     return ValidationError(yusergrant.getErroMensagens(), comand);
+                     return ValidationError(yusergrant.getErroMensagens(), null);
 
                  try
                  {

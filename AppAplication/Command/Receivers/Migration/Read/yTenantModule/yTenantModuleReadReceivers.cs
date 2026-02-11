@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class yTenantModuleReadReceiver : ReciverBase<DataPagination<yTenantModuleDTO>>
+    public class yTenantModuleReadReceiver : ReciverBase<ICommand, DataPagination<yTenantModuleDTO>>
     {
         private readonly IyTenantModuleReadRepository _repository;
         private readonly ILogger _logger;

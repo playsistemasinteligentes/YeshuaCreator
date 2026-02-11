@@ -131,7 +131,7 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var useCase in subGroup.UseCases)
+                    foreach (var useCase in subGroup.UseCaseCommand)
                     {
                         sb.AppendLine("");
                         sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver>();");

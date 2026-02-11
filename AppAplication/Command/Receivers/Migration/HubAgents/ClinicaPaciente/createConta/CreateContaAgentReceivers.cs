@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Comandos.Receivers.CreateConta
 {
-    public partial class CreateContaHubAgentReceiver : ReciverBase<ICommand>
+    public partial class CreateContaHubAgentReceiver : ReciverBase<ICommand,CreateContaHubAgentReceiver>
     {
 
         private readonly object _menssage;
@@ -19,13 +19,13 @@ namespace Comandos.Receivers.CreateConta
             _menssage = menssage;
         }
 
-        protected override State<ICommand> Action(ICommand comand)
+        protected override State<CreateContaHubAgentReceiver> Action(ICommand comand)
         {
             try
             {
-                return Success("OK", comand);
+                return Success("OK", null);
             }
-            catch (ReceiverException<ICommand> e)
+            catch (ReceiverException<CreateContaHubAgentReceiver> e)
             {
                 return e.State;
             }

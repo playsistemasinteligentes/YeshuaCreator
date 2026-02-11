@@ -1,17 +1,19 @@
-﻿namespace Migration.Dominio.CodeGeneration.Templates
+﻿using System.Reflection;
+
+namespace Dominio.CodeGeneration.Templates
 {
     public static class EmbeddedTemplateLoader
     {
         public static string Load(string resourceName)
         {
-            var assembly = typeof(EmbeddedTemplateLoader).Assembly;
+            var assembly = Assembly.GetExecutingAssembly();
 
-            var fullName =
-                $"Migration.Dominio.CodeGeneration.Templates.{resourceName}";
+            var fullName = assembly
+                .GetManifestResourceNames()
+                .First(x => x.EndsWith(resourceName));
 
             using var stream = assembly.GetManifestResourceStream(fullName)
-                ?? throw new InvalidOperationException(
-                    $"Template não encontrado: {fullName}");
+                ?? throw new InvalidOperationException($"Template {resourceName} não encontrado.");
 
             using var reader = new StreamReader(stream);
             return reader.ReadToEnd();

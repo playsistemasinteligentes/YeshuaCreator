@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <Compile Remove="Dominio\CodeGeneration\Templates\Command\NameCrudCommand.cs" />
+    <Compile Remove="Dominio\CodeGeneration\Templates\Worker\ICommand.cs" />
+    <Compile Remove="Dominio\CodeGeneration\Templates\Worker\IWorker.cs" />
+    <Compile Remove="Dominio\CodeGeneration\Templates\Worker\WorkerBase.cs" />
+    <Compile Remove="Dominio\CodeGeneration\Templates\Worker\WorkerTemplate.cs" />
+    <Compile Remove="Dominio\CodeGeneration\Templates\Worker\WorkerTemplateCommand.cs" />
+    <Compile Remove="Dominio\CodeGeneration\Templates\Worker\WorkerTemplateReceiver.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +28,12 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Command\NameCrudCommand.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\ICommand.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\IWorker.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerBase.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerTemplate.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerTemplateCommand.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerTemplateReceiver.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +46,6 @@
     <Compile Update="Infra\SqlFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dominio\CodeGeneration\Model\" />
   </ItemGroup>
 
 </Project>

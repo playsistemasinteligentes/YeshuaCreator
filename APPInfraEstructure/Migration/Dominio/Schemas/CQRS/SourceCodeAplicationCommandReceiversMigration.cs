@@ -85,7 +85,7 @@ namespace Dominio.Schemas.CQRS
                 // Adiciona o namespace e a classe
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase <I{_entity.EntityName}Entity>");
+                sb.AppendLine($"    public class {action.ToString()}{_entity.EntityName}Receiver : ReciverBase<ICommand, I{_entity.EntityName}Entity>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
@@ -103,7 +103,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => "c." + c.Name))});");
                 sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
-                sb.AppendLine($"                     return ValidationError({_entity.EntityName.ToLower()}.getErroMensagens(), comand);");
+                sb.AppendLine($"                     return ValidationError({_entity.EntityName.ToLower()}.getErroMensagens(), null);");
                 sb.AppendLine();
                 sb.AppendLine("                 try");
                 sb.AppendLine("                 {");
@@ -136,7 +136,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<DataPagination<{_entity.EntityName}DTO>>");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<ICommand, DataPagination<{_entity.EntityName}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
@@ -176,7 +176,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}{_whereName}Receiver : ReciverBase<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>>");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_whereName}Receiver : ReciverBase<ICommand, DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
@@ -218,7 +218,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<IEnumerable<{_entity.EntityName}{_column}DTO>>");
+                sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<ICommand, IEnumerable<{_entity.EntityName}{_column}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();

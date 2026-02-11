@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteMovimentoFinanceiroReceiver : ReciverBase <IMovimentoFinanceiroEntity>
+    public class DeleteMovimentoFinanceiroReceiver : ReciverBase<ICommand, IMovimentoFinanceiroEntity>
     {
         private readonly IMovimentoFinanceiroWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var movimentofinanceiro = new MovimentoFinanceiroFactory(_logger).Create(c.Id, c.IdOrigem, c.ContaDebitoId, c.Valor, c.DataMovimento, c.DataVencimento, c.Status);
                  if (!movimentofinanceiro.isValidDelete())
-                     return ValidationError(movimentofinanceiro.getErroMensagens(), comand);
+                     return ValidationError(movimentofinanceiro.getErroMensagens(), null);
 
                  try
                  {

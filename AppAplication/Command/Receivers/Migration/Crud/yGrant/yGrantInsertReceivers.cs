@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertyGrantReceiver : ReciverBase <IyGrantEntity>
+    public class InsertyGrantReceiver : ReciverBase<ICommand, IyGrantEntity>
     {
         private readonly IyGrantWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var ygrant = new yGrantFactory(_logger).Create(c.Id, c.Description);
                  if (!ygrant.isValidInsert())
-                     return ValidationError(ygrant.getErroMensagens(), comand);
+                     return ValidationError(ygrant.getErroMensagens(), null);
 
                  try
                  {

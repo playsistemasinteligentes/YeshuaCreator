@@ -220,6 +220,73 @@ namespace MyApp.Domain.Entities
         public static MyApp.QueryBuilder.Query<Clinica> Query() => new MyApp.QueryBuilder.Query<Clinica>();
     }
 
+    public class yFileUpload
+    {
+        public int? Id { get; set; }
+        public string IdempotencyKey { get; set; }
+        public string Type { get; set; }
+        public int Status { get; set; }
+        public string FilePath { get; set; }
+        public int? FileSize { get; set; }
+        public string ContentType { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? CompletedAt { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yFileUpload> Query() => new MyApp.QueryBuilder.Query<yFileUpload>();
+    }
+
+    public class yOutbox
+    {
+        public int? Id { get; set; }
+        public string MessageId { get; set; }
+        public string JobId { get; set; }
+        public string CorrelationId { get; set; }
+        public string Type { get; set; }
+        public string Payload { get; set; }
+        public int Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? SentAt { get; set; }
+        public int RetryCount { get; set; }
+        public string LastError { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yOutbox> Query() => new MyApp.QueryBuilder.Query<yOutbox>();
+    }
+
+    public class yInbox
+    {
+        public int? Id { get; set; }
+        public string MessageId { get; set; }
+        public string JobId { get; set; }
+        public string CorrelationId { get; set; }
+        public string Type { get; set; }
+        public string Payload { get; set; }
+        public int Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? SentAt { get; set; }
+        public int RetryCount { get; set; }
+        public string LastError { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yInbox> Query() => new MyApp.QueryBuilder.Query<yInbox>();
+    }
+
     public class yTenant
     {
         public int? Id { get; set; }

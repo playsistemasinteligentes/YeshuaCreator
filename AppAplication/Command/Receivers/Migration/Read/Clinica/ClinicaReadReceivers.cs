@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class ClinicaReadReceiver : ReciverBase<DataPagination<ClinicaDTO>>
+    public class ClinicaReadReceiver : ReciverBase<ICommand, DataPagination<ClinicaDTO>>
     {
         private readonly IClinicaReadRepository _repository;
         private readonly ILogger _logger;

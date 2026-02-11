@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdatePlanoContaReceiver : ReciverBase <IPlanoContaEntity>
+    public class UpdatePlanoContaReceiver : ReciverBase<ICommand, IPlanoContaEntity>
     {
         private readonly IPlanoContaWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var planoconta = new PlanoContaFactory(_logger).Create(c.Id, c.Codigo, c.Nome, c.Tipo);
                  if (!planoconta.isValidUpdate())
-                     return ValidationError(planoconta.getErroMensagens(), comand);
+                     return ValidationError(planoconta.getErroMensagens(), null);
 
                  try
                  {

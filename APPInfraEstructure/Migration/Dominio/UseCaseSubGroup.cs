@@ -15,6 +15,6 @@ namespace Dominio
         public UseCaseGroup UseCaseGroup { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }
-        public List<UseCase> UseCases = new List<UseCase>();
+        public List<UseCaseCommand> UseCaseCommand = new List<UseCaseCommand>();
     }
 }

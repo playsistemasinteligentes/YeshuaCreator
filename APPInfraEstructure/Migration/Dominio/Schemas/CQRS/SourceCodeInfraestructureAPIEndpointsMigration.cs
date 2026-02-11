@@ -336,7 +336,7 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var useCase in subGroup.UseCases)
+                    foreach (var useCase in subGroup.UseCaseCommand)
                     {
                         sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}InputCommand command) =>");
                         sb.AppendLine("{");

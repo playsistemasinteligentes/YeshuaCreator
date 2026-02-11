@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertServicoReceiver : ReciverBase <IServicoEntity>
+    public class InsertServicoReceiver : ReciverBase<ICommand, IServicoEntity>
     {
         private readonly IServicoWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var servico = new ServicoFactory(_logger).Create(c.Id, c.GrupoServicoId, c.Nome, c.Valor);
                  if (!servico.isValidInsert())
-                     return ValidationError(servico.getErroMensagens(), comand);
+                     return ValidationError(servico.getErroMensagens(), null);
 
                  try
                  {

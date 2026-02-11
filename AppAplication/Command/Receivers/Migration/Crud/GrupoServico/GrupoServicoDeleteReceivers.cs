@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteGrupoServicoReceiver : ReciverBase <IGrupoServicoEntity>
+    public class DeleteGrupoServicoReceiver : ReciverBase<ICommand, IGrupoServicoEntity>
     {
         private readonly IGrupoServicoWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var gruposervico = new GrupoServicoFactory(_logger).Create(c.Id, c.Descricao);
                  if (!gruposervico.isValidDelete())
-                     return ValidationError(gruposervico.getErroMensagens(), comand);
+                     return ValidationError(gruposervico.getErroMensagens(), null);
 
                  try
                  {

@@ -150,6 +150,39 @@ builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyFileUploadQueryWrite, Query.Write.yFileUploadQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyFileUploadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyFileUploadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyFileUploadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yFileUploadReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yFileUploadReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yFileUploadReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IyOutboxWriteRepository, Input.Repository.yOutbox.yOutboxWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyOutboxReadRepository, Read.Repository.yOutboxReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyOutboxQueryRead, Query.Read.yOutboxQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyOutboxQueryWrite, Query.Write.yOutboxQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyOutboxReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyOutboxReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyOutboxReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IyInboxWriteRepository, Input.Repository.yInbox.yInboxWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyInboxReadRepository, Read.Repository.yInboxReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyInboxQueryRead, Query.Read.yInboxQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyInboxQueryWrite, Query.Write.yInboxQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyInboxReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyInboxReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyInboxReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yInboxReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IyTenantWriteRepository, Input.Repository.yTenant.yTenantWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyTenantReadRepository, Read.Repository.yTenantReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyTenantQueryRead, Query.Read.yTenantQueryRead>();
@@ -305,6 +338,10 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.WorkerInboxUseCaseReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.WorkerOutBoxUseCaseReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 

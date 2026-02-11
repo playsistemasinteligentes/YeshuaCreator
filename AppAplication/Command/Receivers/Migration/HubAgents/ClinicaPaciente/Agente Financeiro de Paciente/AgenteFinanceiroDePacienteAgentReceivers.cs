@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Comandos.Receivers.AgenteFinanceiroDePaciente
 {
-    public partial class AgenteFinanceiroDePacienteHubAgentReceiver : ReciverBase<ICommand>
+    public partial class AgenteFinanceiroDePacienteHubAgentReceiver : ReciverBase<ICommand,AgenteFinanceiroDePacienteHubAgentReceiver>
     {
 
         private readonly object _menssage;
@@ -19,13 +19,13 @@ namespace Comandos.Receivers.AgenteFinanceiroDePaciente
             _menssage = menssage;
         }
 
-        protected override State<ICommand> Action(ICommand comand)
+        protected override State<AgenteFinanceiroDePacienteHubAgentReceiver> Action(ICommand comand)
         {
             try
             {
-                return Success("OK", comand);
+                return Success("OK", null);
             }
-            catch (ReceiverException<ICommand> e)
+            catch (ReceiverException<AgenteFinanceiroDePacienteHubAgentReceiver> e)
             {
                 return e.State;
             }

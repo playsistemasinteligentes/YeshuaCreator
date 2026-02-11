@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class PlanoContaReadReceiver : ReciverBase<DataPagination<PlanoContaDTO>>
+    public class PlanoContaReadReceiver : ReciverBase<ICommand, DataPagination<PlanoContaDTO>>
     {
         private readonly IPlanoContaReadRepository _repository;
         private readonly ILogger _logger;

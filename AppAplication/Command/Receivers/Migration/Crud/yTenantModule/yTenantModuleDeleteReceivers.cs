@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteyTenantModuleReceiver : ReciverBase <IyTenantModuleEntity>
+    public class DeleteyTenantModuleReceiver : ReciverBase<ICommand, IyTenantModuleEntity>
     {
         private readonly IyTenantModuleWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var ytenantmodule = new yTenantModuleFactory(_logger).Create(c.Id, c.ModuleId, c.ValidUntil);
                  if (!ytenantmodule.isValidDelete())
-                     return ValidationError(ytenantmodule.getErroMensagens(), comand);
+                     return ValidationError(ytenantmodule.getErroMensagens(), null);
 
                  try
                  {

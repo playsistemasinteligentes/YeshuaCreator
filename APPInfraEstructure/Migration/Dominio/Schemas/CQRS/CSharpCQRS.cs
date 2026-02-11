@@ -4,8 +4,6 @@ using Dominio.TiposPrimitivos;
 using Interfaces.Schemas;
 using Interfaces.Schemas.CQRS;
 using Microsoft.VisualBasic.FileIO;
-using Migration.CodeGeneration.Templates;
-using Migration.Dominio.CodeGeneration.Templates;
 using Migration.Dominio.Schemas.CQRS;
 using System;
 using System.Collections.Generic;
@@ -41,26 +39,6 @@ namespace Dominio.Schemas.CQRS
         {
 
             #region Migrations 
-
-            var parser = new CommandTemplateParser();
-            //var template = parser.Parse(File.ReadAllText("NameCrudCommand.cs"));
-            var templateSource = EmbeddedTemplateLoader.Load("Command.NameCrudCommand.cs");
-
-            var template = parser.Parse(templateSource);
-
-            var replicator = new CommandTemplateReplicator();
-
-            foreach (var entity in migration.Entitys)
-            {
-                var code = replicator.Replicate(template, entity);
-                string n = $"./{entity.EntityName}Commands.cs";
-                File.WriteAllText($"c:\\temp\\source\\{entity.EntityName}Commands.cs", code);
-            }
-
-
-
-
-
             // crud 
             foreach (var entity in migration.Entitys)
             {
@@ -168,12 +146,28 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var method in subGroup.UseCases)
+                    foreach (var method in subGroup.UseCaseCommand)
                     {
                         filePath = Path.Combine(GetPathAppAplicationCommandCommandsUseCases("Migration"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{method.Name.SourceType()}{CommandType.UseCase}Commands.cs");
                         filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsUseCases("Custon"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{method.Name.SourceType()}{CommandType.UseCase}Commands.cs");
                         sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(method);
                         sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
+
+
+                        //aqui
+
+                        if (method.IsWorker)
+                        {
+                            var generator = new Dominio.CodeGeneration.Generation.WorkerGeneration();
+
+                            var code = generator.Generate(
+                                workerName: method.Name._value,
+                                @namespace: "WorkerTemp.Migration",
+                                commandInterface: "IInboxCommand",
+                                interval: TimeSpan.FromSeconds(5));
+
+                            File.WriteAllText($"c:\\temp\\temp\\{method.Name._value}.cs", code);
+                        }
                     }
                 }
 
@@ -261,7 +255,7 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var useCase in subGroup.UseCases)
+                    foreach (var useCase in subGroup.UseCaseCommand)
                     {
                         // use cases 
                         filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Migration"), $"{group.Name}\\{subGroup.Name}\\{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receivers.cs");

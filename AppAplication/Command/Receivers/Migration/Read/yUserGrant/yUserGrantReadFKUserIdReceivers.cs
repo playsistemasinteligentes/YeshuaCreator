@@ -8,7 +8,7 @@ using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {
-    public class yUserGrantReadFKUserIdReceiver : ReciverBase<IEnumerable<yUserGrantUserIdDTO>>
+    public class yUserGrantReadFKUserIdReceiver : ReciverBase<ICommand, IEnumerable<yUserGrantUserIdDTO>>
     {
         private readonly IyUserGrantReadRepository _repository;
 

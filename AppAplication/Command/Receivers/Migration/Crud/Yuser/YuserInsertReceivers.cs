@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertyUserReceiver : ReciverBase <IyUserEntity>
+    public class InsertyUserReceiver : ReciverBase<ICommand, IyUserEntity>
     {
         private readonly IyUserWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yuser = new yUserFactory(_logger).Create(c.Id, c.Nome, c.Email, c.Senha);
                  if (!yuser.isValidInsert())
-                     return ValidationError(yuser.getErroMensagens(), comand);
+                     return ValidationError(yuser.getErroMensagens(), null);
 
                  try
                  {

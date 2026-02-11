@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using static Migration.Dominio.Migration.S000002;
 
 namespace AppClinicas
 {
@@ -182,6 +183,11 @@ namespace AppClinicas
                 contrato de pacotes ??
 
             */
+
+
+
+
+
 
             // Agente para interação de agendamento de pacientes via WhatsApp
             AddUsecaseGroup("ClinicaPaciente")

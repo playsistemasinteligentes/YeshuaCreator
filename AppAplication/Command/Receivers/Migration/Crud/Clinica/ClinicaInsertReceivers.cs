@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertClinicaReceiver : ReciverBase <IClinicaEntity>
+    public class InsertClinicaReceiver : ReciverBase<ICommand, IClinicaEntity>
     {
         private readonly IClinicaWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var clinica = new ClinicaFactory(_logger).Create(c.Id, c.Nome, c.Endereco, c.Telefone);
                  if (!clinica.isValidInsert())
-                     return ValidationError(clinica.getErroMensagens(), comand);
+                     return ValidationError(clinica.getErroMensagens(), null);
 
                  try
                  {

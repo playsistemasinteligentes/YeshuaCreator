@@ -8,7 +8,7 @@ using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {
-    public class ProfissionalReadFKUserIdReceiver : ReciverBase<IEnumerable<ProfissionalUserIdDTO>>
+    public class ProfissionalReadFKUserIdReceiver : ReciverBase<ICommand, IEnumerable<ProfissionalUserIdDTO>>
     {
         private readonly IProfissionalReadRepository _repository;
 

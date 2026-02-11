@@ -13,17 +13,16 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
 {
-    public partial class ContasLoginUseCaseReceiver : ReciverBase<ContasLoginUseCaseOutputCommand>
+    public partial class ContasLoginUseCaseReceiver : ReciverBase< ContasLoginUseCaseInputCommand, ContasLoginUseCaseOutputCommand>
     {
 
 
-        protected override State<ContasLoginUseCaseOutputCommand> Action(ICommand comand)
+        protected override State<ContasLoginUseCaseOutputCommand> Action(ContasLoginUseCaseInputCommand comand)
         {
             try
             {
                  State<ContasLoginUseCaseOutputCommand> retorno = Success("OK", null);
-                 if (comand is Command.UseCase.ContasLoginUseCaseInputCommand specificCommand)
-                 CustomActionHook(ref retorno, specificCommand);
+                 CustomActionHook(ref retorno, comand);
                  return retorno;
             }
             catch (ReceiverException<ContasLoginUseCaseOutputCommand> e)

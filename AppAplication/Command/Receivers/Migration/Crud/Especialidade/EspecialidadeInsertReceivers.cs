@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertEspecialidadeReceiver : ReciverBase <IEspecialidadeEntity>
+    public class InsertEspecialidadeReceiver : ReciverBase<ICommand, IEspecialidadeEntity>
     {
         private readonly IEspecialidadeWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var especialidade = new EspecialidadeFactory(_logger).Create(c.Id, c.Descricao);
                  if (!especialidade.isValidInsert())
-                     return ValidationError(especialidade.getErroMensagens(), comand);
+                     return ValidationError(especialidade.getErroMensagens(), null);
 
                  try
                  {

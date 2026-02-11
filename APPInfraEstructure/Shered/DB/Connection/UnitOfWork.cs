@@ -11,11 +11,12 @@ namespace Shered.DB.Connection
     {
         private readonly IDbConnection _connection;
         private IDbTransaction _transaction;
-
+        private bool _disposed;
+        public IDbConnection Connection => _connection;
+        public IDbTransaction Transaction => _transaction;
         public UnitOfWork(IDbConnection connection)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            _connection.Open();
         }
 
         public UnitOfWork(IDbConnection connection, bool checkAndCreateDatabase = false)
@@ -89,14 +90,16 @@ namespace Shered.DB.Connection
 
         public void BeginTran()
         {
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
             _transaction = _connection.BeginTransaction();
         }
 
-        public IDbConnection Connection => _connection;
-        public IDbTransaction Transaction => _transaction;
-
         public void ExecuteCommand(string sql, object parameters = null)
         {
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
             _connection.Execute(sql, parameters, _transaction);
         }
 
@@ -105,22 +108,38 @@ namespace Shered.DB.Connection
             return _connection.QuerySingle<T>(sql, parameters, _transaction);
         }
 
-
         public void Commit()
         {
-            _transaction.Commit();
+            _transaction?.Commit();
+            DisposeTransaction();
         }
 
         public void Rollback()
         {
-            _transaction.Rollback();
+            _transaction?.Rollback();
+            DisposeTransaction();
+        }
+
+        private void DisposeTransaction()
+        {
+            _transaction?.Dispose();
+            _transaction = null;
         }
 
         public void Dispose()
         {
+            if (_disposed) return;
+
+            try
+            {
+                _transaction?.Rollback();
+            }
+            catch { }
+
             _transaction?.Dispose();
-            _connection?.Close();
             _connection?.Dispose();
+
+            _disposed = true;
         }
     }
 

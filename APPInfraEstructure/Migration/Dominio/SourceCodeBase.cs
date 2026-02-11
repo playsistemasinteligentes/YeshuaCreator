@@ -141,7 +141,7 @@ namespace Migration.Dominio
                 WriteContexto(code.ToString());
         }
         // Método público para gerar e salvar o código
-        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCase useCase = null)
+        public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCaseCommand useCase = null)
         {
             StringBuilder code = GenerateCode();
             bool context = false;

@@ -8,7 +8,7 @@ using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {
-    public class PlanoContaReadFKTenantIDReceiver : ReciverBase<IEnumerable<PlanoContaTenantIDDTO>>
+    public class PlanoContaReadFKTenantIDReceiver : ReciverBase<ICommand, IEnumerable<PlanoContaTenantIDDTO>>
     {
         private readonly IPlanoContaReadRepository _repository;
 

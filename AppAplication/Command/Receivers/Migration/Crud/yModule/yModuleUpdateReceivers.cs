@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateyModuleReceiver : ReciverBase <IyModuleEntity>
+    public class UpdateyModuleReceiver : ReciverBase<ICommand, IyModuleEntity>
     {
         private readonly IyModuleWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var ymodule = new yModuleFactory(_logger).Create(c.Id, c.Description);
                  if (!ymodule.isValidUpdate())
-                     return ValidationError(ymodule.getErroMensagens(), comand);
+                     return ValidationError(ymodule.getErroMensagens(), null);
 
                  try
                  {

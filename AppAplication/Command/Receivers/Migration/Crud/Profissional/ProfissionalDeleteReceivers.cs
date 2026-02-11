@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class DeleteProfissionalReceiver : ReciverBase <IProfissionalEntity>
+    public class DeleteProfissionalReceiver : ReciverBase<ICommand, IProfissionalEntity>
     {
         private readonly IProfissionalWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var profissional = new ProfissionalFactory(_logger).Create(c.Id, c.Nome, c.EspecialidadeId, c.Telefone);
                  if (!profissional.isValidDelete())
-                     return ValidationError(profissional.getErroMensagens(), comand);
+                     return ValidationError(profissional.getErroMensagens(), null);
 
                  try
                  {

@@ -8,7 +8,7 @@ using IRepository.Read;
 
 namespace Command.Receivers.Read
 {
-    public class MovimentoFinanceiroReadReceiver : ReciverBase<DataPagination<MovimentoFinanceiroDTO>>
+    public class MovimentoFinanceiroReadReceiver : ReciverBase<ICommand, DataPagination<MovimentoFinanceiroDTO>>
     {
         private readonly IMovimentoFinanceiroReadRepository _repository;
         private readonly ILogger _logger;

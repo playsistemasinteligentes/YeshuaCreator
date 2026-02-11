@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdatePacienteReceiver : ReciverBase <IPacienteEntity>
+    public class UpdatePacienteReceiver : ReciverBase<ICommand, IPacienteEntity>
     {
         private readonly IPacienteWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var paciente = new PacienteFactory(_logger).Create(c.Id, c.Nome, c.Telefone, c.DataNascimento, c.Genero, c.Escolaridade, c.Profissao, c.Endereco, c.NomeResponsavel, c.TelefoneResponsavel, c.Observacao);
                  if (!paciente.isValidUpdate())
-                     return ValidationError(paciente.getErroMensagens(), comand);
+                     return ValidationError(paciente.getErroMensagens(), null);
 
                  try
                  {

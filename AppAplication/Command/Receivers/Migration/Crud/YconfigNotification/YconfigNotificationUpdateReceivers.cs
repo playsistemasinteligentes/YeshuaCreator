@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateyConfigNotificationReceiver : ReciverBase <IyConfigNotificationEntity>
+    public class UpdateyConfigNotificationReceiver : ReciverBase<ICommand, IyConfigNotificationEntity>
     {
         private readonly IyConfigNotificationWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yconfignotification = new yConfigNotificationFactory(_logger).Create(c.Id, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword);
                  if (!yconfignotification.isValidUpdate())
-                     return ValidationError(yconfignotification.getErroMensagens(), comand);
+                     return ValidationError(yconfignotification.getErroMensagens(), null);
 
                  try
                  {

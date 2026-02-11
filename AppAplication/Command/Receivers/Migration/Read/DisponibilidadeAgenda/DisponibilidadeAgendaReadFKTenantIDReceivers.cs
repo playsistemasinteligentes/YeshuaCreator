@@ -8,7 +8,7 @@ using Repositorio.Outputs;
 
 namespace Command.Receivers.Read
 {
-    public class DisponibilidadeAgendaReadFKTenantIDReceiver : ReciverBase<IEnumerable<DisponibilidadeAgendaTenantIDDTO>>
+    public class DisponibilidadeAgendaReadFKTenantIDReceiver : ReciverBase<ICommand, IEnumerable<DisponibilidadeAgendaTenantIDDTO>>
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
 

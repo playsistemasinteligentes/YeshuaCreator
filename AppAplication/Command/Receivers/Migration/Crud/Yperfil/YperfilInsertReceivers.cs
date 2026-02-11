@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class InsertyPerfilReceiver : ReciverBase <IyPerfilEntity>
+    public class InsertyPerfilReceiver : ReciverBase<ICommand, IyPerfilEntity>
     {
         private readonly IyPerfilWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yperfil = new yPerfilFactory(_logger).Create(c.Id, c.Description);
                  if (!yperfil.isValidInsert())
-                     return ValidationError(yperfil.getErroMensagens(), comand);
+                     return ValidationError(yperfil.getErroMensagens(), null);
 
                  try
                  {

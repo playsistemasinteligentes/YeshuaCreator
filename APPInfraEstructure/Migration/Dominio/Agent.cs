@@ -12,12 +12,12 @@ namespace Dominio
             this.Name = name;
             this.Description = description;
             this.Hub = hub;
-            this.Methods = new List<UseCase>();
+            this.Methods = new List<UseCaseCommand>();
             this.Menus = new List<Menu>();
         }
 
         public UseCaseGroup Hub { get; set; }
-        public List<UseCase> Methods { get; set; }
+        public List<UseCaseCommand> Methods { get; set; }
         public List<Menu> Menus { get; set; }
         public Descricao Name { get; private set; }
         private string Description { get; set; }
@@ -29,7 +29,7 @@ namespace Dominio
         }
 
 
-        public UseCaseGroup AddMethod(UseCase method)
+        public UseCaseGroup AddMethod(UseCaseCommand method)
         {
             Methods.Add(method);
             return this.Hub;

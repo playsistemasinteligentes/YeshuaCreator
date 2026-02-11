@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
 {
-    public class UpdateyPerfilGrantReceiver : ReciverBase <IyPerfilGrantEntity>
+    public class UpdateyPerfilGrantReceiver : ReciverBase<ICommand, IyPerfilGrantEntity>
     {
         private readonly IyPerfilGrantWriteRepository _repository;
         private readonly ILogger _logger;
@@ -28,7 +28,7 @@ namespace Command.Receivers.Write
              {    
                  var yperfilgrant = new yPerfilGrantFactory(_logger).Create(c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
                  if (!yperfilgrant.isValidUpdate())
-                     return ValidationError(yperfilgrant.getErroMensagens(), comand);
+                     return ValidationError(yperfilgrant.getErroMensagens(), null);
 
                  try
                  {
