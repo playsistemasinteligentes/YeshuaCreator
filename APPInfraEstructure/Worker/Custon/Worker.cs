@@ -1,62 +1,82 @@
-﻿using RepositoryInterfaces.Patterns.Command;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RepositoryInterfaces.Patterns.Command;
 
-public class Worker<TCommand, TResponse>
-    where TCommand : ICommand
+public class Worker<TReceiver, TCommand, TResponse> : BackgroundService
+    where TReceiver : class, IReceiver<TCommand, TResponse>
+    where TCommand : class, ICommand, new()
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<Worker<TCommand, TResponse>> _logger;
+    private readonly ILogger<Worker<TReceiver, TCommand, TResponse>> _logger;
     private readonly TimeSpan _interval;
-    private readonly Func<TCommand> _commandFactory;
 
     public Worker(
         IServiceProvider serviceProvider,
-        Func<TCommand> commandFactory,
-        ILogger<Worker<TCommand, TResponse>> logger,
+        ILogger<Worker<TReceiver, TCommand, TResponse>> logger,
         TimeSpan interval)
     {
         _serviceProvider = serviceProvider;
-        _commandFactory = commandFactory;
         _logger = logger;
         _interval = interval;
     }
 
-    public async Task RunAsync(CancellationToken token)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Worker {Worker} iniciado.", typeof(TCommand).Name);
+        var workerName = typeof(TReceiver).Name;
 
-        while (!token.IsCancellationRequested)
+        _logger.LogInformation("Worker {Worker} iniciado.", workerName);
+
+        while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
-                using (var scope = _serviceProvider.CreateScope())
+                using var scope = _serviceProvider.CreateScope();
+
+                var receiver = scope.ServiceProvider
+                    .GetRequiredService<TReceiver>();
+
+                var command = new TCommand();
+
+                var result = receiver.Execute(command);
+
+                if (result.StatusCode >= 400)
                 {
-                    var receiver = scope.ServiceProvider
-                        .GetRequiredService<IReceiver<TCommand, TResponse>>();
-
-                    var command = _commandFactory();
-
-                    var result = receiver.Execute(command);
-
-                    if (result.StatusCode >= 400)
-                    {
-                        _logger.LogWarning("Erro no worker {Worker}: {Message}",
-                            typeof(TCommand).Name,
-                            result.Message);
-                    }
+                    _logger.LogWarning(
+                        "Worker {Worker} erro {StatusCode} - {Message}",
+                        workerName,
+                        result.StatusCode,
+                        result.Message);
                 }
+                else
+                {
+                    _logger.LogInformation(
+                        "Worker {Worker} executado com sucesso.",
+                        workerName);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                break;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro inesperado no worker {Worker}",
-                    typeof(TCommand).Name);
+                _logger.LogError(
+                    ex,
+                    "Erro inesperado no Worker {Worker}",
+                    workerName);
             }
 
-            await Task.Delay(_interval, token);
+            try
+            {
+                await Task.Delay(_interval, stoppingToken);
+            }
+            catch (TaskCanceledException)
+            {
+                break;
+            }
         }
 
-        _logger.LogInformation("Worker {Worker} finalizado.",
-            typeof(TCommand).Name);
+        _logger.LogInformation("Worker {Worker} finalizado.", workerName);
     }
 }

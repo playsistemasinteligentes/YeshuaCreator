@@ -1,57 +1,33 @@
+using Shered.DB.Connection;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using Worker.Migration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+builder.Services.AddMemoryCache();
+ConfigServices.MapIndependenceInjection(builder);
 var app = builder.Build();
 
-//var host = app.Services.GetRequiredService<WorkerHost>();
-
-//var inboxWorker = app.Services.GetRequiredService<Worker<InboxCommand, object>>();
-//var outboxWorker = app.Services.GetRequiredService<Worker<OutboxCommand, object>>();
-
-//host.Register(inboxWorker.RunAsync);
-//host.Register(outboxWorker.RunAsync);
-
-//var cts = new CancellationTokenSource();
-
-//app.Lifetime.ApplicationStopping.Register(() =>
-//{
-//    cts.Cancel();
-//});
-
-//_ = host.RunAsync(cts.Token);
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Configure the HTTP request pipeline.
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var process = System.Diagnostics.Process.GetCurrentProcess();
+
+    return new
+    {
+        ManagedMemoryMB = GC.GetTotalMemory(false) / 1024d / 1024d,
+        WorkingSetMB = process.WorkingSet64 / 1024d / 1024d,
+        Gen0 = GC.CollectionCount(0),
+        Gen1 = GC.CollectionCount(1),
+        Gen2 = GC.CollectionCount(2)
+    };
+
 });
+
+
+
+
 
 app.Run();
 
