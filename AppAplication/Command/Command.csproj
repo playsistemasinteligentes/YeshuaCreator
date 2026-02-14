@@ -16,6 +16,7 @@
     <Folder Include="Commands\Custon\Read\Sesoes\" />
     <Folder Include="Commands\Migration\Read\Sesoes\" />
     <Folder Include="Patterns\Command\Interface\" />
+    <Folder Include="Receivers\Custon\UseCases\Worker\Worker\" />
   </ItemGroup>
 
 </Project>

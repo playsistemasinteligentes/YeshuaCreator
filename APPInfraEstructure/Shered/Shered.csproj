@@ -11,11 +11,13 @@
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AppAplication\Command\Command.csproj" />
     <ProjectReference Include="..\..\AppAplication\RepositoryInterfaces\RepositoryInterfaces.csproj" />
     <ProjectReference Include="..\..\AppDominio\Dominio\Dominio.csproj" />
   </ItemGroup>
@@ -27,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="InterfacesConcret\Worker\" />
+    <Folder Include="ConcretInterfaces\Worker\" />
   </ItemGroup>
 
 </Project>

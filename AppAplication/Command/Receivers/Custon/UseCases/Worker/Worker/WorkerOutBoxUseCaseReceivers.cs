@@ -4,6 +4,9 @@ using RepositoryInterfaces.Patterns.UnitOfWork;
 using IRepository.Read;
 using IRepository.Write;
 using Command.UseCase;
+using Dominio.Entitys;
+using Command.Patterns.Queue;
+using Command.Interfaces.Patterns.Queue;
 
 namespace Command.Receivers.UseCase
 {
@@ -11,26 +14,33 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly IyUserReadRepository _repReadyUser;
-        private readonly IyUserWriteRepository _repWriteyUser;
-        private readonly IyTenantModuleReadRepository _repReadyTenantModule;
-        private readonly IyTenantModuleWriteRepository _repWriteyTenantModule;
-        private readonly IyUserModuleReadRepository _repReadyUserModule;
-        private readonly IyUserModuleWriteRepository _repWriteyUserModule;
-        public WorkerOutBoxUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,IyTenantModuleReadRepository repReadyTenantModule, IyTenantModuleWriteRepository repWriteyTenantModule,IyUserModuleReadRepository repReadyUserModule, IyUserModuleWriteRepository repWriteyUserModule)
+        private readonly IyOutboxReadRepository _repReadyOutbox;
+        private readonly IyOutboxWriteRepository _repWriteyOutbox;
+        private readonly IQueuePublisher _queuePublisher;
+        public WorkerOutBoxUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyOutboxReadRepository repReadyOutbox, IyOutboxWriteRepository repWriteyOutbox, IQueuePublisher queuePublisher)
         {
-           _unitOfWork = unitOfWork;
-           _logger = logger;
-            _repReadyUser = repReadyUser;
-            _repWriteyUser = repWriteyUser;
-            _repReadyTenantModule = repReadyTenantModule;
-            _repWriteyTenantModule = repWriteyTenantModule;
-            _repReadyUserModule = repReadyUserModule;
-            _repWriteyUserModule = repWriteyUserModule;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+            _repReadyOutbox = repReadyOutbox;
+            _repWriteyOutbox = repWriteyOutbox;
+            _queuePublisher = queuePublisher;
         }
-partial void CustomActionHook(ref State<WorkerOutBoxUseCaseOutputCommand> state, WorkerOutBoxUseCaseInputCommand comand)
-{
-}
+        partial void CustomActionHook(ref State<WorkerOutBoxUseCaseOutputCommand> state, WorkerOutBoxUseCaseInputCommand comand)
+        {
+            try
+            {
+                var outBox = _repReadyOutbox.FirstByStatus(0);// pendencia depender de enumerador
+                QueueMessage queueMessage = new QueueMessage(outBox.type, DateTime.Now, outBox.payload);
+                _queuePublisher.PublishAsync("teste", queueMessage);
+
+            }
+            catch (Exception)
+            {
+
+
+            }
+
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

@@ -6,7 +6,8 @@ using Worker.Migration;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMemoryCache();
-ConfigServices.MapIndependenceInjection(builder);
+IndependenceInjection.MapIndependenceInjection(builder);
+CustonIndependenceInjection.MapCustonIndependenceInjection(builder);
 var app = builder.Build();
 
 

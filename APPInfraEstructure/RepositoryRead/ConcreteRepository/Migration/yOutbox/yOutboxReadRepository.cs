@@ -443,6 +443,23 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<yOutboxStandardDTO> GetyOutboxProximaPendente(ICommandRead command )
+        {
+            if (command is Command.Read.yOutboxProximaPendenteCommand c)
+             {
+            var query = _query.yOutboxProximaPendenteQuery(c );
+
+                var itens = _connection.Query<yOutboxStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<yOutboxStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

@@ -154,20 +154,20 @@ namespace Dominio.Schemas.CQRS
                         sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
 
 
-                        //aqui
+                        ////aqui
 
-                        if (method.IsWorker)
-                        {
-                            var generator = new Dominio.CodeGeneration.Generation.WorkerGeneration();
+                        //if (method.IsWorker)
+                        //{
+                        //    var generator = new Dominio.CodeGeneration.Generation.WorkerGeneration();
 
-                            var code = generator.Generate(
-                                workerName: method.Name._value,
-                                @namespace: "WorkerTemp.Migration",
-                                commandInterface: "IInboxCommand",
-                                interval: TimeSpan.FromSeconds(5));
+                        //    var code = generator.Generate(
+                        //        workerName: method.Name._value,
+                        //        @namespace: "WorkerTemp.Migration",
+                        //        commandInterface: "IInboxCommand",
+                        //        interval: TimeSpan.FromSeconds(5));
 
-                            File.WriteAllText($"c:\\temp\\temp\\{method.Name._value}.cs", code);
-                        }
+                        //    File.WriteAllText($"c:\\temp\\temp\\{method.Name._value}.cs", code);
+                        //}
                     }
                 }
 

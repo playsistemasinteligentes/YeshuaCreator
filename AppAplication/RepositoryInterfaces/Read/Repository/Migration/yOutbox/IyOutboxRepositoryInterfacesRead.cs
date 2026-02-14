@@ -59,6 +59,7 @@ namespace IRepository.Read
         public IEnumerable<yOutboxDTO> GetAllByDeleted(bool value );
         public IEnumerable<yOutboxDTO> GetAllByChanged(DateTime value );
         public IEnumerable<yOutboxDTO> GetAllByUserId(int value );
+        public DataPagination<yOutboxStandardDTO> GetyOutboxProximaPendente(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

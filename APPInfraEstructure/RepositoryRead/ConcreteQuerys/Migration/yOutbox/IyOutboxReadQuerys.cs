@@ -36,6 +36,7 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+    public QueryModel yOutboxProximaPendenteQuery(Command.Read.yOutboxProximaPendenteCommand Command);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -13,6 +13,29 @@ public static void MapIndependenceInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
             
 
+builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IPlanoContaQueryRead, Query.Read.PlanoContaQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IPlanoContaQueryWrite, Query.Write.PlanoContaQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IMovimentoFinanceiroWriteRepository, Input.Repository.MovimentoFinanceiro.MovimentoFinanceiroWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IMovimentoFinanceiroReadRepository, Read.Repository.MovimentoFinanceiroReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IMovimentoFinanceiroQueryRead, Query.Read.MovimentoFinanceiroQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IMovimentoFinanceiroQueryWrite, Query.Write.MovimentoFinanceiroQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentoFinanceiroReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IEspecialidadeWriteRepository, Input.Repository.Especialidade.EspecialidadeWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IEspecialidadeReadRepository, Read.Repository.EspecialidadeReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IEspecialidadeQueryRead, Query.Read.EspecialidadeQueryRead>();
@@ -116,29 +139,6 @@ builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryHojeReceiver
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQuerySemanaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryD30Receiver>();
 
-builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IPlanoContaQueryRead, Query.Read.PlanoContaQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IPlanoContaQueryWrite, Query.Write.PlanoContaQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
-
-builder.Services.AddTransient<IRepository.Write.IMovimentoFinanceiroWriteRepository, Input.Repository.MovimentoFinanceiro.MovimentoFinanceiroWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IMovimentoFinanceiroReadRepository, Read.Repository.MovimentoFinanceiroReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IMovimentoFinanceiroQueryRead, Query.Read.MovimentoFinanceiroQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IMovimentoFinanceiroQueryWrite, Query.Write.MovimentoFinanceiroQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentoFinanceiroReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
-
 builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IClinicaQueryRead, Query.Read.ClinicaQueryRead>();
@@ -171,6 +171,7 @@ builder.Services.AddTransient<Command.Receivers.Write.DeleteyOutboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadQueryProximaPendenteReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IyInboxWriteRepository, Input.Repository.yInbox.yInboxWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyInboxReadRepository, Read.Repository.yInboxReadRepository>();
@@ -342,6 +343,8 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdRecei
 builder.Services.AddTransient<Command.Receivers.UseCase.WorkerInboxUseCaseReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.WorkerOutBoxUseCaseReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InfraSendFileUseCaseReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 

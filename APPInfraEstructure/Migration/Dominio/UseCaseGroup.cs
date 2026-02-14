@@ -4,6 +4,7 @@ using Migration.Dominio.Schemas;
 using Migration.Dominio.Schemas.CQRS;
 using System.Reflection;
 using System.Text;
+using static Dapper.SqlMapper;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace Dominio
@@ -242,6 +243,12 @@ Command
         public UseCaseGroup IsWorker()
         {
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().IsWorker = true;
+            return this;
+        }
+
+        public UseCaseGroup AddEntity<T>()
+        {
+            this.UseCaseSubGroup.Last().UseCaseCommand.Last().Entitys.Add(new Entity(typeof(T).Name));
             return this;
         }
     }

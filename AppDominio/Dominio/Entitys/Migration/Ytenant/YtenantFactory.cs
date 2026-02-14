@@ -1,22 +1,23 @@
 
 
-                            namespace Dominio.Entitys
-                            {
-                                public class yTenantFactory
-                                {
-                                    private readonly Dominio.Interfaces.ILogger _logger;
+namespace Dominio.Entitys
+{
+    public class yTenantFactory
+    {
+        private readonly Dominio.Interfaces.ILogger _logger;
 
-                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
-                                    {
-                                        _logger = logger;
-                                    } public IyTenantEntity Create(string cnpjcpf, string nome, int? userid )
-                            {
-                            var entity = new yTenantEntity(cnpjcpf, nome, userid );
+        public yTenantFactory(Dominio.Interfaces.ILogger logger)
+        {
+            _logger = logger;
+        }
+        public IyTenantEntity Create(string cnpjcpf, string nome, int? userid)
+        {
+            var entity = new yTenantEntity(cnpjcpf, nome, userid);
 
 
-                            var decoratedEntity = new yTenantDecorator(entity, _logger);
-                            return decoratedEntity;
-                                    }
-                                }
-                            }
+            var decoratedEntity = new yTenantDecorator(entity, _logger);
+            return decoratedEntity;
+        }
+    }
+}
 //Dominio.Schemas.CQRS.SourceCodeEntityMigration

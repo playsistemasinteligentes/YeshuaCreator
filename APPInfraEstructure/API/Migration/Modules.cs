@@ -55,6 +55,9 @@ public static class StaticModules
     static StaticModules()
     {
         Modules.Clear();
+        Modules.Add(new Module("FIN", "Financeiro"));
+        Modules.LastOrDefault().Menus.Add(new Menu("PlanoConta"));
+        Modules.LastOrDefault().Menus.Add(new Menu("MovimentoFinanceiro"));
         Modules.Add(new Module("PSI", "Clinica  Psicologia"));
         Modules.LastOrDefault().Menus.Add(new Menu("Especialidade"));
         Modules.LastOrDefault().Menus.Add(new Menu("Profissional"));
@@ -65,9 +68,6 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("MovimentacaoFinanceira"));
         Modules.LastOrDefault().Menus.Add(new Menu("Sesoes"));
         Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
-        Modules.Add(new Module("FIN", "Financeiro"));
-        Modules.LastOrDefault().Menus.Add(new Menu("PlanoConta"));
-        Modules.LastOrDefault().Menus.Add(new Menu("MovimentoFinanceiro"));
         Modules.Add(new Module("INFRA", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload"));
         Modules.LastOrDefault().Menus.Add(new Menu("yOutbox"));

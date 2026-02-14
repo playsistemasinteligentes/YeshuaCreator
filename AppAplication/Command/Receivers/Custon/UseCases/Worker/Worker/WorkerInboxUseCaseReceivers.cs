@@ -11,26 +11,24 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
-        private readonly IyUserReadRepository _repReadyUser;
-        private readonly IyUserWriteRepository _repWriteyUser;
-        private readonly IyTenantModuleReadRepository _repReadyTenantModule;
-        private readonly IyTenantModuleWriteRepository _repWriteyTenantModule;
-        private readonly IyUserModuleReadRepository _repReadyUserModule;
-        private readonly IyUserModuleWriteRepository _repWriteyUserModule;
-        public WorkerInboxUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,IyTenantModuleReadRepository repReadyTenantModule, IyTenantModuleWriteRepository repWriteyTenantModule,IyUserModuleReadRepository repReadyUserModule, IyUserModuleWriteRepository repWriteyUserModule)
+        private readonly IyInboxReadRepository _repReadyInbox;
+        private readonly IyInboxWriteRepository _repWriteyInbox;
+
+
+
+
+        public WorkerInboxUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyInboxReadRepository repReadyInbox, IyInboxWriteRepository repWriteyInbox)
         {
-           _unitOfWork = unitOfWork;
-           _logger = logger;
-            _repReadyUser = repReadyUser;
-            _repWriteyUser = repWriteyUser;
-            _repReadyTenantModule = repReadyTenantModule;
-            _repWriteyTenantModule = repWriteyTenantModule;
-            _repReadyUserModule = repReadyUserModule;
-            _repWriteyUserModule = repWriteyUserModule;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+            _repReadyInbox = repReadyInbox;
+            _repWriteyInbox = repWriteyInbox;
         }
-partial void CustomActionHook(ref State<WorkerInboxUseCaseOutputCommand> state, WorkerInboxUseCaseInputCommand comand)
-{
-}
+        partial void CustomActionHook(ref State<WorkerInboxUseCaseOutputCommand> state, WorkerInboxUseCaseInputCommand comand)
+        {
+            var teste = _repReadyInbox.FirstByStatus(0);
+
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

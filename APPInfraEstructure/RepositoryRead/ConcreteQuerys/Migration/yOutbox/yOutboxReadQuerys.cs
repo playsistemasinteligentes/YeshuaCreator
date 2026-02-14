@@ -672,6 +672,32 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel yOutboxProximaPendenteQuery(Command.Read.yOutboxProximaPendenteCommand Command)
+        {
+            this.Query = "SELECT t0.Id FROM yOutbox t0";
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+
+                dict["Status_1"] = 0;
+                whereClauses.Add("t0.Status = @Status_1");//07
+
+            dict["Deleted"] = 0;
+            dict["TenantID"] = _currentUser.TenantID;
+
+            whereClauses.Add("t0.TenantID = @TenantID");
+            whereClauses.Add("t0.Deleted = @Deleted");
+
+            if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

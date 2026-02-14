@@ -21,10 +21,10 @@ namespace AppClinicas
         {
 
             AddUsecaseGroup("Worker").AddUseCaseSubGrup("Worker").AddUseCaseCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
-            .AddEntity("yUser").AddEntity("yTenantModule").AddEntity("yUserModule").IsWorker();
+            .AddEntity<yInbox>().IsWorker();
 
             AddUsecaseGroup("Worker").AddUseCaseSubGrup("Worker").AddUseCaseCommand("OutBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
-            .AddEntity("yUser").AddEntity("yTenantModule").AddEntity("yUserModule").IsWorker();
+            .AddEntity<yOutbox>().IsWorker();
 
 
 

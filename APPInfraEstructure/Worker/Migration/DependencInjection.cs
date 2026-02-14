@@ -10,10 +10,12 @@ using System.Security.Claims;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Shered.DB.Connection;
+using Worker.Custon;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Worker.Migration
 {
-    public static class ConfigServices
+    public static class IndependenceInjection
     {
         public static void MapIndependenceInjection(WebApplicationBuilder builder)
         {
@@ -21,11 +23,7 @@ namespace Worker.Migration
             builder.Services.AddScoped<SqlFactory>(provader => { return new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString); });
             builder.Services.AddScoped<IDbConnection>(provader => { return new SqlConnection(GS.I.MYC.ReadConectionString); });
 
-            builder.Services.AddLogging();
 
-
-            builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<ICurrentUser, CurrentUserHttp>();
 
 
 
@@ -423,20 +421,27 @@ namespace Worker.Migration
                     TimeSpan.FromSeconds(5)
                 ));
 
-        }
-    }
 
-    public class CurrentUserHttp : ICurrentUser
-    {
-        public int UserId => throw new NotImplementedException();
 
-        public int TenantID => throw new NotImplementedException();
+            builder.Services.AddScoped<
+       WorkerOutBoxUseCaseReceiver>();
 
-        public IEnumerable<Claim> Claims => throw new NotImplementedException();
+            builder.Services.AddHostedService(sp =>
+                new Worker<
+                    WorkerOutBoxUseCaseReceiver,
+                    WorkerOutBoxUseCaseInputCommand,
+                    WorkerOutBoxUseCaseOutputCommand>(
+                    sp,
+                    sp.GetRequiredService<
+                        ILogger<Worker<
+                            WorkerOutBoxUseCaseReceiver,
+                            WorkerOutBoxUseCaseInputCommand,
+                            WorkerOutBoxUseCaseOutputCommand>>>(),
+                    TimeSpan.FromSeconds(5)
+                ));
 
-        public void SetTenantId(int id)
-        {
-            throw new NotImplementedException();
+
+
         }
     }
 }
