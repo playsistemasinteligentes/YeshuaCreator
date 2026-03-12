@@ -227,7 +227,7 @@ namespace MyApp.Domain.Entities
         public string Type { get; set; }
         public int Status { get; set; }
         public string FilePath { get; set; }
-        public int? FileSize { get; set; }
+        public long? FileSize { get; set; }
         public string ContentType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }

@@ -13,7 +13,7 @@ namespace Repositorio.Outputs
     public string type { get; set; }
     public int status { get; set; }
     public string filepath { get; set; }
-    public int filesize { get; set; }
+    public long filesize { get; set; }
     public string contenttype { get; set; }
     public DateTime createdat { get; set; }
     public DateTime completedat { get; set; }

@@ -83,7 +83,7 @@
                                         }
                                     }
 
-                                    public int? FileSize
+                                    public long? FileSize
                                     {
                                         get => _inner.FileSize;
                                         set

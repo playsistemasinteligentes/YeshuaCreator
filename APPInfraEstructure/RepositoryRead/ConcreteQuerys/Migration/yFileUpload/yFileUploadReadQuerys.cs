@@ -45,8 +45,6 @@ if (Command.Status != null && Command.Status.Any())
 }
 if (!string.IsNullOrEmpty(Command.FilePath)) dict["FilePath"] = $"%{Command.FilePath}%";
 if (!string.IsNullOrEmpty(Command.FilePath)) whereClauses.Add($"FilePath like @FilePath");
-if (Command.FileSize.HasValue) dict["FileSize"] = Command.FileSize.Value;
-if (Command.FileSize.HasValue) whereClauses.Add($"FileSize = @FileSize");
 if (!string.IsNullOrEmpty(Command.ContentType)) dict["ContentType"] = $"%{Command.ContentType}%";
 if (!string.IsNullOrEmpty(Command.ContentType)) whereClauses.Add($"ContentType like @ContentType");
  dict["TenantID"] = _currentUser.TenantID;
@@ -218,7 +216,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByFileSizeQuery(int value )
+        public QueryModel ExistsByFileSizeQuery(long value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -452,7 +450,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByFileSizeQuery(int value )
+        public QueryModel FirstByFileSizeQuery(long value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();

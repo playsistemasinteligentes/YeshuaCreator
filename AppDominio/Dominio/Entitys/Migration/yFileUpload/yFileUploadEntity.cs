@@ -15,7 +15,7 @@
     public string Type { get; set; }
     public int Status { get; set; }
     public string FilePath { get; set; }
-    public int? FileSize { get; set; }
+    public long? FileSize { get; set; }
     public string ContentType { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
@@ -24,7 +24,7 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yFileUploadEntity(int? id, string idempotencykey, string type, int status, string filepath, int? filesize, string contenttype, DateTime createdat, DateTime? completedat ){
+ internal yFileUploadEntity(int? id, string idempotencykey, string type, int status, string filepath, long? filesize, string contenttype, DateTime createdat, DateTime? completedat ){
  Id = id; 
  IdempotencyKey = idempotencykey; 
  Type = type; 

@@ -19,7 +19,7 @@ namespace IRepository.Read
         public bool ExistsByType(string value );
         public bool ExistsByStatus(int value );
         public bool ExistsByFilePath(string value );
-        public bool ExistsByFileSize(int value );
+        public bool ExistsByFileSize(long value );
         public bool ExistsByContentType(string value );
         public bool ExistsByCreatedAt(DateTime value );
         public bool ExistsByCompletedAt(DateTime value );
@@ -32,7 +32,7 @@ namespace IRepository.Read
         public yFileUploadDTO FirstByType(string value );
         public yFileUploadDTO FirstByStatus(int value );
         public yFileUploadDTO FirstByFilePath(string value );
-        public yFileUploadDTO FirstByFileSize(int value );
+        public yFileUploadDTO FirstByFileSize(long value );
         public yFileUploadDTO FirstByContentType(string value );
         public yFileUploadDTO FirstByCreatedAt(DateTime value );
         public yFileUploadDTO FirstByCompletedAt(DateTime value );
@@ -45,7 +45,7 @@ namespace IRepository.Read
         public IEnumerable<yFileUploadDTO> GetAllByType(string value );
         public IEnumerable<yFileUploadDTO> GetAllByStatus(int value );
         public IEnumerable<yFileUploadDTO> GetAllByFilePath(string value );
-        public IEnumerable<yFileUploadDTO> GetAllByFileSize(int value );
+        public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value );
         public IEnumerable<yFileUploadDTO> GetAllByContentType(string value );
         public IEnumerable<yFileUploadDTO> GetAllByCreatedAt(DateTime value );
         public IEnumerable<yFileUploadDTO> GetAllByCompletedAt(DateTime value );

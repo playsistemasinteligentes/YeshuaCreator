@@ -123,7 +123,7 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByFileSize(int value )
+        public bool ExistsByFileSize(long value )
         {
             var query = _query.ExistsByFileSizeQuery(value );
 
@@ -227,7 +227,7 @@ namespace Read.Repository
                 return result;
         }
 
-        public yFileUploadDTO FirstByFileSize(int value )
+        public yFileUploadDTO FirstByFileSize(long value )
         {
             var query = _query.FirstByFileSizeQuery(value );
 
@@ -331,7 +331,7 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByFileSize(int value )
+        public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value )
         {
             var query = _query.FirstByFileSizeQuery(value );
 

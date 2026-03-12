@@ -24,7 +24,7 @@ namespace Migration.Dominio.Migration
 
 
 
-            AddEntity("yFileUpload").AddModule("INFRA")
+            AddEntity("yFileUpload").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("IdempotencyKey", "Idempotency Key").Varchar(100).NotNull()// pendencia unic 
                 .AddColumn("Type", "Tipo do Arquivo").Varchar(50).NotNull()
@@ -33,7 +33,7 @@ namespace Migration.Dominio.Migration
                     .Enumerable(1, "Completed")
                     .Enumerable(2, "Failed")
                 .AddColumn("FilePath", "Caminho do Arquivo").Varchar(500)
-                .AddColumn("FileSize", "Tamanho do Arquivo").Int()
+                .AddColumn("FileSize", "Tamanho do Arquivo").Long()
                 .AddColumn("ContentType", "Content Type").Varchar(100)
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("CompletedAt", "Finalizado em").DateTime();
@@ -41,10 +41,10 @@ namespace Migration.Dominio.Migration
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("SendFile",
                 new SendFileCommand("", 0, false, "", "", null),
                 new SendFileResponse(true, 0, true))
-            .AddEntity<yFileUpload>().IsWorker();
+            .AddEntity<yFileUpload>();
 
 
-            AddEntity("yOutbox").AddModule("INFRA")
+            AddEntity("yOutbox").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
                 .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
@@ -66,7 +66,7 @@ namespace Migration.Dominio.Migration
             .Select(s => new { s.Id }));
 
 
-            AddEntity("yInbox").AddModule("INFRA")
+            AddEntity("yInbox").AddModule("ADM")
                .AddColumn("Id", "ID").Int().Incremento().Key()
                .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
                .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()

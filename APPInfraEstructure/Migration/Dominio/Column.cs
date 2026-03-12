@@ -62,6 +62,11 @@ namespace Dominio
             Type = "int";
             return this.Entity;
         }
+        public Entity Long()
+        {
+            Type = "long";
+            return this.Entity;
+        }
         public Entity SetGroup(string value)
         {
             DisplayGroup = value;
@@ -120,8 +125,6 @@ namespace Dominio
             string nulable = ((nulableTag && !this.IsNotNull) || search) ? "?" : "";
             switch (this.Type)
             {
-
-
                 case "int":
                     return "int" + nulable;
                 case "varchar":
@@ -134,6 +137,8 @@ namespace Dominio
                     return "Decimal" + nulable;
                 case "bool":
                     return "bool" + nulable;
+                case "long":
+                    return "long" + nulable;
 
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
@@ -167,6 +172,9 @@ namespace Dominio
                     return "Float" + (nulableTag && this.IsNotNull ? "?" : "");
                 case "decimal":
                     return "Decimal" + (nulableTag && this.IsNotNull ? "?" : "");
+                case "long":
+                    return "long" + (nulableTag && !this.IsNotNull ? "?" : "");
+
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
@@ -310,5 +318,6 @@ namespace Dominio
             this.ClausesWhere = whereClauses;
             return this.Entity;
         }
+
     }
 }

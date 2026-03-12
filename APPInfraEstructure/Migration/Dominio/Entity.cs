@@ -122,6 +122,14 @@ namespace Dominio
             else
                 return this.AlterColumns.Last().Int();
         }
+
+        public Entity Long()
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().Long();
+            else
+                return this.AlterColumns.Last().Long();
+        }
         public Entity Group(string value)
         {
             if (this.StatusColuns == 1)

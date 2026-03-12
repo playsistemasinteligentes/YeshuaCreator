@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\n.conf" />
+    <None Remove="Properties\nginx.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Shered\Shered.csproj" />
   </ItemGroup>
 

@@ -5,10 +5,11 @@ using IRepository.Read;
 using IRepository.Write;
 using Command.UseCase;
 using Command.Interfaces.Patterns.FileStore;
+using Dominio.Entitys;
 
 namespace Command.Receivers.UseCase
 {
-    public partial class InfraSendFileUseCaseReceiver
+    public partial class InfraSendFileUseCaseReceiver 
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
@@ -23,54 +24,103 @@ namespace Command.Receivers.UseCase
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
         }
-        partial void CustomActionHook(ref State<InfraSendFileUseCaseOutputCommand> state, InfraSendFileUseCaseInputCommand comand)
-        {/*
+        partial void CustomActionHook(
+            ref State<InfraSendFileUseCaseOutputCommand> state,
+            InfraSendFileUseCaseInputCommand comand)
+        {
             try
             {
-                var fileName = $"{comand.IdempotencyKey}_{comand.ChunkIndex}.webm";
+                // 🔎 Validações básicas
+                if (string.IsNullOrWhiteSpace(comand.IdempotencyKey))
+                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                        Error("IdempotencyKey é obrigatório.", default));
 
-                // 1️⃣ Salvar arquivo físico
+                if (comand.FileStream == null)
+                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                        Error("FileStream é obrigatório.", default));
 
+                // 🔁 Idempotência
+                var existing = _repReadyFileUpload
+                    .FirstByIdempotencyKey(comand.IdempotencyKey);
+
+                if (existing != null && existing.completedat != default(DateTime))
+                {
+                    state = Success("Upload já finalizado.",
+                        new InfraSendFileUseCaseOutputCommand
+                        {
+                            Success = true,
+                            ChunkIndex = comand.ChunkIndex,
+                            IsFinalized = true
+                        });
+
+                    return;
+                }
+
+                // 📁 Salva o chunk físico
+                var fileName = $"{comand.IdempotencyKey}_{comand.ChunkIndex}";
                 var result = _fileStorage
-                    .SaveAsync(comand.FileStream, fileName, new CancellationToken())
+                    .SaveAsync(comand.FileStream, fileName, CancellationToken.None)
                     .GetAwaiter()
                     .GetResult();
 
-                // 2️⃣ Se for último chunk → cria registro lógico
-                if (comand.IsFinalChunk)
+                // 🧩 Se não for último chunk → apenas confirma
+                if (!comand.IsFinalChunk)
                 {
-                    var upload = new yFileUpload
-                    {
-                        IdempotencyKey = comand.IdempotencyKey,
-                        Type = "Audio",
-                        Status = 0, // Pending
-                        FilePath = result.Path,
-                        FileSize = result.Size,
-                        ContentType = comand.ContentType,
-                        CreatedAt = DateTime.UtcNow
-                    };
+                    state = Success("Chunk recebido com sucesso.",
+                        new InfraSendFileUseCaseOutputCommand
+                        {
+                            Success = true,
+                            ChunkIndex = comand.ChunkIndex,
+                            IsFinalized = false
+                        });
 
-                    _repWriteyFileUpload.Add(upload);
-
-                    _unitOfWork.Commit();
+                    return;
                 }
 
-                state = Success("Chunk recebido com sucesso",
-                    new InfraSendFileUseCaseOutputCommand()
-                    {
-                        IsFinalized = true,
-                        ChunkIndex = comand.ChunkIndex,
-                        Success = comand.IsFinalChunk
-                    }
+                // 🏁 Último chunk → cria entidade via Factory
+                _unitOfWork.BeginTran();
+
+                var upload = new yFileUploadFactory(_logger).Create(
+                    0,
+                    comand.IdempotencyKey,
+                    "Audio",                 // ou comand.Type se existir
+                    1,                       // Status Finalizado
+                    result.Path,
+                    result.Size,
+                    comand.ContentType,
+                    DateTime.UtcNow,
+                    DateTime.UtcNow
                 );
+
+                if (!upload.isValidInsert())
+                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                        Error(string.Join("; ", upload.getErroMensagens()), default));
+
+                _repWriteyFileUpload.Insert(upload);
+
+                _unitOfWork.Commit();
+
+                state = Success("Upload finalizado com sucesso.",
+                    new InfraSendFileUseCaseOutputCommand
+                    {
+                        Success = true,
+                        ChunkIndex = comand.ChunkIndex,
+                        IsFinalized = true
+                    });
+            }
+            catch (ReceiverException<InfraSendFileUseCaseOutputCommand>)
+            {
+                _unitOfWork.Rollback();
+                throw;
             }
             catch (Exception ex)
             {
-                _logger.Info(ex.Message);
-                state = Error(ex, default);
+                _unitOfWork.Rollback();
+                throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                    Error(ex, default));
             }
-        */
         }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

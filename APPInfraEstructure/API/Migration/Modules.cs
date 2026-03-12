@@ -68,11 +68,10 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("MovimentacaoFinanceira"));
         Modules.LastOrDefault().Menus.Add(new Menu("Sesoes"));
         Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
-        Modules.Add(new Module("INFRA", ""));
+        Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload"));
         Modules.LastOrDefault().Menus.Add(new Menu("yOutbox"));
         Modules.LastOrDefault().Menus.Add(new Menu("yInbox"));
-        Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));
         Modules.LastOrDefault().Menus.Add(new Menu("yUser"));
         Modules.LastOrDefault().Menus.Add(new Menu("yConfigArcteture"));

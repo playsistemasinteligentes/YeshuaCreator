@@ -138,7 +138,7 @@ app.UseCors("AllowLocalhostAndNetwork");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/yapi/swagger/v1/swagger.json", "API Example v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Example v1");
 });
 
 // Middleware de autenticação e autorização
