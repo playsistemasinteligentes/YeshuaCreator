@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Command.Patterns.FileStore
+namespace Command.Interfaces.Patterns.FileStore
 {
     public class FileStorageResult
     {

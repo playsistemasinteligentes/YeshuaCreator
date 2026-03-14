@@ -3443,7 +3443,11 @@ namespace API.Migrations
             });
 
 
-            app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.InfraSendFileUseCaseReceiver receiver, [FromBody] Command.UseCase.InfraSendFileUseCaseInputCommand command) =>
+
+
+
+            app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.InfraSendFileUseCaseReceiver receiver
+                , [FromBody] Command.UseCase.InfraSendFileUseCaseInputCommand command) =>
             {
                 try
                 {
@@ -3458,7 +3462,6 @@ namespace API.Migrations
                     return Results.Problem(ex.Message);
                 }
             });
-
 
             app.MapPost("/yapi/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
             {

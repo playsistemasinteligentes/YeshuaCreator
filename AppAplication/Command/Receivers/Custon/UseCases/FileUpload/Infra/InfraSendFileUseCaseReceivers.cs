@@ -6,10 +6,12 @@ using IRepository.Write;
 using Command.UseCase;
 using Command.Interfaces.Patterns.FileStore;
 using Dominio.Entitys;
+using System.Threading;
+using Repositorio.Outputs;
 
 namespace Command.Receivers.UseCase
 {
-    public partial class InfraSendFileUseCaseReceiver 
+    public partial class InfraSendFileUseCaseReceiver
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
@@ -17,12 +19,13 @@ namespace Command.Receivers.UseCase
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly IFileStorage _fileStorage;
 
-        public InfraSendFileUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload)
+        public InfraSendFileUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
+            _fileStorage = fileStorage;
         }
         partial void CustomActionHook(
             ref State<InfraSendFileUseCaseOutputCommand> state,
@@ -35,9 +38,9 @@ namespace Command.Receivers.UseCase
                     throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
                         Error("IdempotencyKey é obrigatório.", default));
 
-                if (comand.FileStream == null)
-                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
-                        Error("FileStream é obrigatório.", default));
+                //if (comand.FileStream == null)
+                //    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                //        Error("FileStream é obrigatório.", default));
 
                 // 🔁 Idempotência
                 var existing = _repReadyFileUpload
@@ -56,12 +59,22 @@ namespace Command.Receivers.UseCase
                     return;
                 }
 
-                // 📁 Salva o chunk físico
+                //// 📁 Salva o chunk físico
                 var fileName = $"{comand.IdempotencyKey}_{comand.ChunkIndex}";
-                var result = _fileStorage
-                    .SaveAsync(comand.FileStream, fileName, CancellationToken.None)
-                    .GetAwaiter()
-                    .GetResult();
+
+                var result = _fileStorage.SaveAsync(
+               comand.FileStream, fileName,
+               new FileSaveOptions
+               {
+                   Tenant = "",
+                   Storage = StorageKeys.Images.Root,
+                   Prefix = "profile"
+               },
+               CancellationToken.None).GetAwaiter().GetResult();
+
+
+
+
 
                 // 🧩 Se não for último chunk → apenas confirma
                 if (!comand.IsFinalChunk)

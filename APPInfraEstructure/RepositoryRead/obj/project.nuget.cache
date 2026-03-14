@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "8Zr1ZGANzPc40pYfTpGS/0cnuhmMcZuxDZlKrriDU8IbO8SyON9DA9lj1PA0d5xCaL1zDvBb7WD5+s5kOwxnhQ==",
+  "dgSpecHash": "MQRoJRPr3keEBK4j+hQX5j3zZQ5LnHeC9TVOdArppzSjGyZs9JVw57qj0fbfds3nSOR5EbyQp1myyBd5DCPvWQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
+    "C:\\Users\\angel\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.data.sqlclient\\5.2.1\\microsoft.data.sqlclient.5.2.1.nupkg.sha512",

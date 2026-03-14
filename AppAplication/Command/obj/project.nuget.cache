@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ip5T0LSzMaAAWUIY/rJcK3+bIp0QHFngB/e9xooNxHIS3oCvAAFDOUCyK9zmCPmCA8dEBlN0dJCSzyREGy3c6A==",
+  "dgSpecHash": "2d1CK0d4hyJU6uOR307KMPvWjpyvtShoucpljqPyJqtLwiitqB3MdyPIFMypXjcF2epnpwupY6UKPUEQCbr8wQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Command\\Command.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\angel\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\angel\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\angel\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

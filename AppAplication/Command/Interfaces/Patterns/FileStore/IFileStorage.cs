@@ -1,4 +1,4 @@
-﻿using Command.Patterns.FileStore;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,9 @@ namespace Command.Interfaces.Patterns.FileStore
     public interface IFileStorage
     {
         Task<FileStorageResult> SaveAsync(
-            Stream stream,
+            IFormFile stream,
             string fileName,
+            FileSaveOptions options,
             CancellationToken cancellationToken);
 
         Task DeleteAsync(
@@ -22,5 +23,4 @@ namespace Command.Interfaces.Patterns.FileStore
             string path,
             CancellationToken cancellationToken);
     }
-
 }

@@ -72,6 +72,47 @@ namespace API.Migrations
 
 
 
+            app.MapPost("/yapi/FileUpload/InfraSendFileUseCase2", async (
+    HttpContext context,
+    [FromServices] Command.Receivers.UseCase.InfraSendFileUseCaseReceiver receiver
+) =>
+            {
+                try
+                {
+                    var request = context.Request;
+
+                    if (!request.HasFormContentType)
+                        return Results.BadRequest("Esperado multipart/form-data");
+
+                    var form = await request.ReadFormAsync();
+
+                    var file = form.Files["fileStream"];
+
+                    var command = new Command.UseCase.InfraSendFileUseCaseInputCommand
+                    {
+                        IdempotencyKey = form["idempotencyKey"],
+                        ChunkIndex = int.Parse(form["chunkIndex"]),
+                        IsFinalChunk = bool.Parse(form["isFinalChunk"]),
+                        FileName = form["fileName"],
+                        ContentType = form["contentType"],
+                        FileStream = file
+                    };
+
+                    var result = receiver.Execute(command);
+
+                    if (result.StatusCode == 200)
+                        return Results.Ok(result.Data);
+
+                    return Results.BadRequest(result);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            });
+
+
+
             app.MapPost("/upload", async (HttpContext context) =>
             {
                 try

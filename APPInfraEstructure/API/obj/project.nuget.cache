@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6d9KynAz4FYcRPISwbW5pEd6xgTx88jtyBzysYwMFGlah/fnCPpImRT+OlNnzxldAh0JEU+ncpWkz+/SNkdY2w==",
+  "dgSpecHash": "tkRsuShnf+PyEJhfpDkw4wKbxj39DC4Y4ZOvuyra6V16y+2g0/WaAoa1omxsPlBBIUQYG/+nPfPYd6TBJMzS9g==",
   "success": true,
   "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.14\\microsoft.aspnetcore.authentication.jwtbearer.8.0.14.nupkg.sha512",
+    "C:\\Users\\angel\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.data.sqlclient\\5.2.1\\microsoft.data.sqlclient.5.2.1.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\5.2.0\\microsoft.data.sqlclient.sni.runtime.5.2.0.nupkg.sha512",

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ugcjyoDq2rSARF/cdSn6R0QEV+KyXpagMLi18Q0Tce13xP1ERy9s/4puwrIUutMYl0NaEF+ShGqyvUH6Aq7NVg==",
+  "dgSpecHash": "OXEce1i+dJdQXWmAa2TRg/sGHCLlwC4A0L/b0GIOiIBq/AkDocdmpFGFZ7zEiPIFTcW2jdKKUzuLrnSj5bp08w==",
   "success": true,
   "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPTeste\\TestMigration\\TestMigration.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\angel\\.nuget\\packages\\azure.identity\\1.11.3\\azure.identity.1.11.3.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
+    "C:\\Users\\angel\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.codecoverage\\17.6.0\\microsoft.codecoverage.17.6.0.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

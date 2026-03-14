@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.Migration;
+using Microsoft.AspNetCore.Http;
 using Migration.Dominio.Schemas.CQRS;
 using MyApp.Domain.Entities;
 using System;
@@ -22,8 +23,6 @@ namespace Migration.Dominio.Migration
         {
             // AddModule("ADM", "Administrativo");
 
-
-
             AddEntity("yFileUpload").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("IdempotencyKey", "Idempotency Key").Varchar(100).NotNull()// pendencia unic 
@@ -41,7 +40,7 @@ namespace Migration.Dominio.Migration
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("SendFile",
                 new SendFileCommand("", 0, false, "", "", null),
                 new SendFileResponse(true, 0, true))
-            .AddEntity<yFileUpload>();
+            .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
 
             AddEntity("yOutbox").AddModule("ADM")
@@ -84,7 +83,7 @@ namespace Migration.Dominio.Migration
 
 
         }
-        public record SendFileCommand(string IdempotencyKey, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, Stream FileStream);
+        public record SendFileCommand(string IdempotencyKey, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);
         public record SendFileResponse(bool Success, int ChunkIndex, bool IsFinalized);
 
     }
