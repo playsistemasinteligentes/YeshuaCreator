@@ -41,11 +41,6 @@ namespace Input.Repository.yFileUpload
             var query = _query.DeleteyFileUploadQuery(yFileUpload);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
-        public void UpdateIdempotencyKey(IyFileUploadEntity entity)
-        {
-            var query = _query.UpdateIdempotencyKey(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
         public void UpdateType(IyFileUploadEntity entity)
         {
             var query = _query.UpdateType(entity);
@@ -64,11 +59,6 @@ namespace Input.Repository.yFileUpload
         public void UpdateFileSize(IyFileUploadEntity entity)
         {
             var query = _query.UpdateFileSize(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
-        }
-        public void UpdateContentType(IyFileUploadEntity entity)
-        {
-            var query = _query.UpdateContentType(entity);
              _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
         }
         public void UpdateCreatedAt(IyFileUploadEntity entity)

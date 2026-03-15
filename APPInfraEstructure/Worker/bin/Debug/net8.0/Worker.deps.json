@@ -79,6 +79,12 @@
           }
         }
       },
+      "Microsoft.AspNetCore.Http.Features/5.0.17": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "10.0.3",
+          "System.IO.Pipelines": "8.0.0"
+        }
+      },
       "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
@@ -461,6 +467,7 @@
       "Command/1.0.0": {
         "dependencies": {
           "Dominio": "1.0.0",
+          "Microsoft.AspNetCore.Http.Features": "5.0.17",
           "RepositoryInterfaces": "1.0.0"
         },
         "runtime": {
@@ -475,6 +482,7 @@
       "Migration/1.0.0": {
         "dependencies": {
           "Dapper": "2.1.35",
+          "Microsoft.AspNetCore.Http.Features": "5.0.17",
           "Microsoft.Data.SqlClient": "5.2.1"
         },
         "runtime": {
@@ -560,6 +568,13 @@
       "sha512": "sha512-e19jmWJAQucbPYk3/fihJMDCYfv6CO+Qwp34pOehUSCbaHROw6FZ551SN1D0s9Btl0U/QHfuwFq6Z8Oa2ktE6g==",
       "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.14",
       "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.8.0.14.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Http.Features/5.0.17": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3jG2xS+dx8DDCGV/F+STdPTg89lX3ao3dF/VEPvJaz3wzBIjuadipTtYNEXDIVuOPZwb6jdmhrX9jkzOIBm5cw==",
+      "path": "microsoft.aspnetcore.http.features/5.0.17",
+      "hashPath": "microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",

@@ -2,6 +2,8 @@ using Shered.DB.Connection;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Worker.Migration;
+using Command.Interfaces.Patterns.Queue;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +28,56 @@ app.MapGet("/weatherforecast", () =>
 
 });
 
+// pendencia montar via motor 
+var topology = new QueueTopology
+{
+    Exchanges =
+    {
+        new ExchangeDefinition
+        {
+            Name = "ai.tasks",
+            Type = "topic",
+            Bindings =
+            {
+                new QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribe.worker",
+                    RoutingKey = "audio.transcribe"
+                }
+            }
+        },
+        new ExchangeDefinition
+        {
+            Name = "ai.results",
+            Type = "topic",
+            Bindings =
+            {
+                new QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribed.inbox",
+                    RoutingKey = "audio.transcribed"
+                }
+            }
+        },
+        new ExchangeDefinition
+        {
+            Name = "ai.dead",
+            Type = "topic",
+            Bindings =
+            {
+                new QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribe.dead",
+                    RoutingKey = "audio.transcribe"
+                }
+            }
+        }
+    }
+};
 
 
-
+var initializer = app.Services.GetRequiredService<IQueueTopologyInitializer>();
+await initializer.InitializeAsync(topology);
 
 app.Run();
 

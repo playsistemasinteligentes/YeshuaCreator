@@ -25,7 +25,6 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yFileUpload").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("IdempotencyKey", "Idempotency Key").Varchar(100).NotNull()// pendencia unic 
                 .AddColumn("Type", "Tipo do Arquivo").Varchar(50).NotNull()
                 .AddColumn("Status", "Status do Upload").Int().NotNull()
                     .Enumerable(0, "Pending")
@@ -33,9 +32,14 @@ namespace Migration.Dominio.Migration
                     .Enumerable(2, "Failed")
                 .AddColumn("FilePath", "Caminho do Arquivo").Varchar(500)
                 .AddColumn("FileSize", "Tamanho do Arquivo").Long()
-                .AddColumn("ContentType", "Content Type").Varchar(100)
+                //.AddColumn("ContentType", "Content Type").Varchar(100)
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("CompletedAt", "Finalizado em").DateTime();
+
+            AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("StarSessionUpload",
+                new AutenticationToken(""),
+                new SessionUploadToken(""))
+            .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("SendFile",
                 new SendFileCommand("", 0, false, "", "", null),
@@ -83,8 +87,10 @@ namespace Migration.Dominio.Migration
 
 
         }
-        public record SendFileCommand(string IdempotencyKey, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);
+        public record SendFileCommand(string token, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);
         public record SendFileResponse(bool Success, int ChunkIndex, bool IsFinalized);
+        public record SessionUploadToken(string uploadToken);
+        public record AutenticationToken(string token);
 
     }
 }

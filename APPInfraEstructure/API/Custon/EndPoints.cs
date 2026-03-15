@@ -90,7 +90,7 @@ namespace API.Migrations
 
                     var command = new Command.UseCase.InfraSendFileUseCaseInputCommand
                     {
-                        IdempotencyKey = form["idempotencyKey"],
+                        token = form["token"],
                         ChunkIndex = int.Parse(form["chunkIndex"]),
                         IsFinalChunk = bool.Parse(form["isFinalChunk"]),
                         FileName = form["fileName"],

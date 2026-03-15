@@ -21,48 +21,19 @@ namespace Shered.ConcretInterfaces.FileStore
             Directory.CreateDirectory(_rootPath);
         }
 
-        public async Task<FileStorageResult> SaveAsync(
-            IFormFile stream,
-            string fileName,
-            FileSaveOptions options,
-            CancellationToken cancellationToken)
+        public async Task<FileStorageResult> SaveAsync(IFormFile file, StoragePath path, CancellationToken cancellationToken)
         {
-            // GUID usado para nome e sharding
-            var guid = Guid.NewGuid().ToString("N");
+            var fullPath = Path.Combine(_rootPath, path.Value);
 
-            var shard1 = guid[..2];
-            var shard2 = guid.Substring(2, 2);
+            var directory = Path.GetDirectoryName(fullPath);
 
-            var safeFileName = $"{guid}_{Path.GetFileName(fileName)}";
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory!);
 
-            var parts = new List<string>
-        {
-            _rootPath,
-            options.Tenant,
-            options.Storage.Value
-        };
-
-            if (!string.IsNullOrWhiteSpace(options.Prefix))
-                parts.Add(options.Prefix);
-
-            parts.Add(shard1);
-            parts.Add(shard2);
-
-            var folder = Path.Combine(parts.ToArray());
-
-            Directory.CreateDirectory(folder);
-
-            var fullPath = Path.Combine(folder, safeFileName);
-
-            await using var fileStream = new FileStream(
-                fullPath,
-                FileMode.CreateNew,
-                FileAccess.Write,
-                FileShare.None,
-                81920,
-                true);
-
-            await stream.CopyToAsync(fileStream, cancellationToken);
+            await using (var fileStream = new FileStream(fullPath, FileMode.CreateNew, FileAccess.Write, FileShare.None, 81920, true))
+            {
+                await file.CopyToAsync(fileStream, cancellationToken);
+            }
 
             var fileInfo = new FileInfo(fullPath);
 
@@ -72,20 +43,7 @@ namespace Shered.ConcretInterfaces.FileStore
                 throw new IOException("Arquivo salvo inválido (0 bytes).");
             }
 
-            var relativeParts = new List<string>
-        {
-            options.Tenant,
-            options.Storage.Value
-        };
-
-            if (!string.IsNullOrWhiteSpace(options.Prefix))
-                relativeParts.Add(options.Prefix);
-
-            relativeParts.Add(shard1);
-            relativeParts.Add(shard2);
-            relativeParts.Add(safeFileName);
-
-            var relativePath = Path.Combine(relativeParts.ToArray());
+            var relativePath = Path.Combine(path.Value);
 
             return new FileStorageResult
             {
@@ -94,9 +52,9 @@ namespace Shered.ConcretInterfaces.FileStore
             };
         }
 
-        public Task DeleteAsync(string path, CancellationToken cancellationToken)
+        public Task DeleteAsync(StoragePath path, CancellationToken cancellationToken)
         {
-            var fullPath = Path.Combine(_rootPath, path);
+            var fullPath = Path.Combine(_rootPath, path.Value);
 
             if (File.Exists(fullPath))
                 File.Delete(fullPath);
@@ -104,9 +62,9 @@ namespace Shered.ConcretInterfaces.FileStore
             return Task.CompletedTask;
         }
 
-        public Task<bool> ExistsAsync(string path, CancellationToken cancellationToken)
+        public Task<bool> ExistsAsync(StoragePath path, CancellationToken cancellationToken)
         {
-            var fullPath = Path.Combine(_rootPath, path);
+            var fullPath = Path.Combine(_rootPath, path.Value);
 
             return Task.FromResult(File.Exists(fullPath));
         }

@@ -1,102 +1,50 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Command.Interfaces.Patterns.Queue;
 using Command.Patterns.Queue;
-using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Shered.ConcretInterfaces.Queue.RabbitMQ;
 
-namespace Shared.InterfacesConcrete.Queue.RabbitMQ
+namespace Shared.InterfacesConcrete.Queue.RabbitMQ;
+
+public sealed class RabbitMQQueueListener : IQueueListener
 {
-    public sealed class RabbitMQQueueListener : IQueueListener
+    private readonly RabbitMqConnectionManager _connectionManager;
+
+    public RabbitMQQueueListener(RabbitMqConnectionManager connectionManager)
     {
-        private readonly RabbitMqOptions _options;
+        _connectionManager = connectionManager;
+    }
 
-        public RabbitMQQueueListener(IOptions<RabbitMqOptions> options)
-        {
-            _options = options.Value;
-        }
+    public async Task ListenAsync(string queueName, Func<QueueMessage, Task> handler, CancellationToken cancellationToken)
+    {
+        var connection = await _connectionManager.GetConnectionAsync(cancellationToken);
 
-        public void Listen(
-            string queueName,
-            Func<QueueMessage, Task> handler,
-            CancellationToken cancellationToken = default)
+        var channel = await connection.CreateChannelAsync();
+
+        await channel.BasicQosAsync(0, 1, false, cancellationToken);
+
+        var consumer = new AsyncEventingBasicConsumer(channel);
+
+        consumer.ReceivedAsync += async (_, args) =>
         {
-            // Fire-and-forget para respeitar void Listen
-            _ = Task.Run(async () =>
+            try
             {
-                var factory = new ConnectionFactory
-                {
-                    HostName = _options.HostName,
-                    Port = _options.Port,
-                    UserName = _options.UserName,
-                    Password = _options.Password
-                };
+                var json = Encoding.UTF8.GetString(args.Body.ToArray());
 
-                // Conexão async
-                var connection = await factory.CreateConnectionAsync(cancellationToken);
+                var message = JsonSerializer.Deserialize<QueueMessage>(json)!;
 
-                // Canal async (sem CancellationToken — CreateChannelAsync não aceita)
-                var channel = await connection.CreateChannelAsync();
+                await handler(message);
 
-                // Declara fila
-                await channel.QueueDeclareAsync(
-                    queue: queueName,
-                    durable: true,
-                    exclusive: false,
-                    autoDelete: false,
-                    arguments: null,
-                    cancellationToken: cancellationToken);
+                await channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken);
+            }
+            catch
+            {
+                await channel.BasicNackAsync(args.DeliveryTag, false, true, cancellationToken);
+            }
+        };
 
-                // QoS para processar 1 mensagem por vez
-                await channel.BasicQosAsync(
-                    prefetchSize: 0,
-                    prefetchCount: 1,
-                    global: false,
-                    cancellationToken: cancellationToken);
-
-                // Consumidor async
-                var consumer = new AsyncEventingBasicConsumer(channel);
-
-                consumer.ReceivedAsync += async (_, args) =>
-                {
-                    try
-                    {
-                        var json = Encoding.UTF8.GetString(args.Body.ToArray());
-
-                        // ⚠️ Assume que teu motor resolve o tipo concreto
-                        var message = JsonSerializer.Deserialize<QueueMessage>(json)!;
-
-                        await handler(message);
-
-                        // ACK manual
-                        await channel.BasicAckAsync(
-                            args.DeliveryTag,
-                            multiple: false,
-                            cancellationToken);
-                    }
-                    catch
-                    {
-                        // NACK com requeue automático
-                        await channel.BasicNackAsync(
-                            args.DeliveryTag,
-                            multiple: false,
-                            requeue: true,
-                            cancellationToken);
-                    }
-                };
-
-                // Começa a consumir
-                await channel.BasicConsumeAsync(
-                    queue: queueName,
-                    autoAck: false,
-                    consumer: consumer,
-                    cancellationToken: cancellationToken);
-
-            }, cancellationToken);
-        }
+        await channel.BasicConsumeAsync(queueName, false, consumer, cancellationToken);
     }
 }

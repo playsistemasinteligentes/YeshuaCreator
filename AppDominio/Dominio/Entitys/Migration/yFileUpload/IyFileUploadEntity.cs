@@ -11,12 +11,10 @@
                     public interface IyFileUploadEntity
 {
     int? Id { get; set; }
-    string IdempotencyKey { get; set; }
     string Type { get; set; }
     int Status { get; set; }
     string FilePath { get; set; }
     long? FileSize { get; set; }
-    string ContentType { get; set; }
     DateTime CreatedAt { get; set; }
     DateTime? CompletedAt { get; set; }
     int? TenantID { get; set; }

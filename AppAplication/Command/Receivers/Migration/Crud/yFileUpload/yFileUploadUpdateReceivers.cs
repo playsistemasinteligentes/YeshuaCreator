@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yFileUploadCrudCommand c) 
              {    
-                 var yfileupload = new yFileUploadFactory(_logger).Create(c.Id, c.IdempotencyKey, c.Type, c.Status, c.FilePath, c.FileSize, c.ContentType, c.CreatedAt, c.CompletedAt);
+                 var yfileupload = new yFileUploadFactory(_logger).Create(c.Id, c.Type, c.Status, c.FilePath, c.FileSize, c.CreatedAt, c.CompletedAt);
                  if (!yfileupload.isValidUpdate())
                      return ValidationError(yfileupload.getErroMensagens(), null);
 

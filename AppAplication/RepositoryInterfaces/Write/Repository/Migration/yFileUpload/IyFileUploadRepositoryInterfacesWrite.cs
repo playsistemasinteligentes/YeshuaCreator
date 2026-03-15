@@ -12,12 +12,10 @@ namespace IRepository.Write
         void Insert(IyFileUploadEntity yfileupload);
         void Update(IyFileUploadEntity yfileupload);
         void Delete(IyFileUploadEntity yfileupload);
-        public void UpdateIdempotencyKey(IyFileUploadEntity entity);
         public void UpdateType(IyFileUploadEntity entity);
         public void UpdateStatus(IyFileUploadEntity entity);
         public void UpdateFilePath(IyFileUploadEntity entity);
         public void UpdateFileSize(IyFileUploadEntity entity);
-        public void UpdateContentType(IyFileUploadEntity entity);
         public void UpdateCreatedAt(IyFileUploadEntity entity);
         public void UpdateCompletedAt(IyFileUploadEntity entity);
         public void UpdateTenantID(IyFileUploadEntity entity);

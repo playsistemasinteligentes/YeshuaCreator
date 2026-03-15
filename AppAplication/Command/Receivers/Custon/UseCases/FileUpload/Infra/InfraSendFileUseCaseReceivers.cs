@@ -8,6 +8,9 @@ using Command.Interfaces.Patterns.FileStore;
 using Dominio.Entitys;
 using System.Threading;
 using Repositorio.Outputs;
+using Aplication.Interfaces.Services;
+using Command.Receivers.Custon.UseCases.FileUpload.Infra;
+using Command.Patterns.OutBox;
 
 namespace Command.Receivers.UseCase
 {
@@ -18,14 +21,19 @@ namespace Command.Receivers.UseCase
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly IFileStorage _fileStorage;
+        private readonly ICurrentUser _CurrentUser;
+        private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
 
-        public InfraSendFileUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage)
+        public InfraSendFileUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage, ICurrentUser currentUser, IyOutboxWriteRepository yOutboxWriteRepository)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
             _fileStorage = fileStorage;
+            _CurrentUser = currentUser;
+            _yOutboxWriteRepository = yOutboxWriteRepository;
+
         }
         partial void CustomActionHook(
             ref State<InfraSendFileUseCaseOutputCommand> state,
@@ -33,50 +41,44 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                // 🔎 Validações básicas
-                if (string.IsNullOrWhiteSpace(comand.IdempotencyKey))
+                if (comand.FileStream == null)
                     throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
-                        Error("IdempotencyKey é obrigatório.", default));
+                        Error("FileStream é obrigatório.", default));
 
-                //if (comand.FileStream == null)
-                //    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
-                //        Error("FileStream é obrigatório.", default));
+                if (string.IsNullOrWhiteSpace(comand.token))
+                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                        Error("Token é obrigatório.", default));
 
-                // 🔁 Idempotência
-                var existing = _repReadyFileUpload
-                    .FirstByIdempotencyKey(comand.IdempotencyKey);
+                // 🔐 valida token
+                var tokenData = UploadTokenHelper.ValidateAndExtract(comand.token);
 
-                if (existing != null && existing.completedat != default(DateTime))
-                {
-                    state = Success("Upload já finalizado.",
-                        new InfraSendFileUseCaseOutputCommand
-                        {
-                            Success = true,
-                            ChunkIndex = comand.ChunkIndex,
-                            IsFinalized = true
-                        });
+                var uploadId = tokenData.uploadId;
+                var userId = tokenData.userId;
+                var tenantId = tokenData.tenantId;
 
-                    return;
-                }
-
-                //// 📁 Salva o chunk físico
-                var fileName = $"{comand.IdempotencyKey}_{comand.ChunkIndex}";
-
-                var result = _fileStorage.SaveAsync(
-               comand.FileStream, fileName,
-               new FileSaveOptions
-               {
-                   Tenant = "",
-                   Storage = StorageKeys.Images.Root,
-                   Prefix = "profile"
-               },
-               CancellationToken.None).GetAwaiter().GetResult();
+                // segurança
+                if (tenantId != _CurrentUser.TenantID)
+                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                        Error("Token inválido para o tenant atual.", default));
 
 
+                // 📁 nome do chunk
+                var chunkFileName = $"chunk_{comand.ChunkIndex}.part";
 
+                StoragePath path = StoragePathBuilder.Build(
+                    tenantId.ToString(),
+                    uploadId.ToString(),
+                    chunkFileName,
+                    false
+                );
 
+                // 💾 salva chunk
+                var result = _fileStorage
+                    .SaveAsync(comand.FileStream, path, CancellationToken.None)
+                    .GetAwaiter()
+                    .GetResult();
 
-                // 🧩 Se não for último chunk → apenas confirma
+                // 🧩 se não for último chunk
                 if (!comand.IsFinalChunk)
                 {
                     state = Success("Chunk recebido com sucesso.",
@@ -90,26 +92,48 @@ namespace Command.Receivers.UseCase
                     return;
                 }
 
-                // 🏁 Último chunk → cria entidade via Factory
-                _unitOfWork.BeginTran();
+                // --------------------------------
+                // FINALIZA UPLOAD
+                // --------------------------------
 
-                var upload = new yFileUploadFactory(_logger).Create(
-                    0,
-                    comand.IdempotencyKey,
-                    "Audio",                 // ou comand.Type se existir
-                    1,                       // Status Finalizado
-                    result.Path,
-                    result.Size,
-                    comand.ContentType,
-                    DateTime.UtcNow,
-                    DateTime.UtcNow
+
+                //// 🔎 busca upload criado no StartUpload
+                //var upload = _repReadyFileUpload.FirstById(uploadId);
+
+                //if (upload == null)
+                //    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                //        Error("Upload não encontrado.", default));
+
+                var finalFileName = comand.FileName;
+
+                StoragePath finalPath = StoragePathBuilder.Build(
+                    tenantId.ToString(),
+                    uploadId.ToString(),
+                    finalFileName,
+                    false
                 );
 
-                if (!upload.isValidInsert())
-                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
-                        Error(string.Join("; ", upload.getErroMensagens()), default));
+                // 🧩 aqui você pode juntar os chunks se necessário
+                // ex: CombineChunks(uploadId)
 
-                _repWriteyFileUpload.Insert(upload);
+                // atualiza registro criado no StartUpload
+                yFileUploadEntity upload = new yFileUploadEntity().getProxy(uploadId);
+                upload.FilePath = finalPath.Value;
+                upload.FileSize = result.Size;
+                upload.Status = 1; // Finalizado
+                upload.CompletedAt = DateTime.UtcNow;
+
+                if (!upload.isValidData())
+                    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
+                    Error(string.Join("; ", upload.getErroMensagens()), default));
+
+                var payload = new UploadCompletedEvent(upload.FilePath);
+
+                _unitOfWork.BeginTran();
+
+                _repWriteyFileUpload.UpdateFilePath(upload);
+
+                new OutboxService(_yOutboxWriteRepository, _logger).AddOutBoxEvent("yFileUploadEntity.Status.Completed", "", upload.Id.Value);
 
                 _unitOfWork.Commit();
 
@@ -133,7 +157,7 @@ namespace Command.Receivers.UseCase
                     Error(ex, default));
             }
         }
-
     }
+    public record UploadCompletedEvent(string FilePath);
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

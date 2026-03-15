@@ -31,19 +31,6 @@
                                         }
                                     }
 
-                                    public string IdempotencyKey
-                                    {
-                                        get => _inner.IdempotencyKey;
-                                        set
-                                        {
-                                            if (_inner.IdempotencyKey != value)
-                                            {
-                                                _logger.Info($"Propriedade IdempotencyKey: antes={_inner.IdempotencyKey}, depois={value}");
-                                                _inner.IdempotencyKey = value;
-                                            }
-                                        }
-                                    }
-
                                     public string Type
                                     {
                                         get => _inner.Type;
@@ -92,19 +79,6 @@
                                             {
                                                 _logger.Info($"Propriedade FileSize: antes={_inner.FileSize}, depois={value}");
                                                 _inner.FileSize = value;
-                                            }
-                                        }
-                                    }
-
-                                    public string ContentType
-                                    {
-                                        get => _inner.ContentType;
-                                        set
-                                        {
-                                            if (_inner.ContentType != value)
-                                            {
-                                                _logger.Info($"Propriedade ContentType: antes={_inner.ContentType}, depois={value}");
-                                                _inner.ContentType = value;
                                             }
                                         }
                                     }

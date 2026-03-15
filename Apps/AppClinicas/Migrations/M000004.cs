@@ -1,4 +1,5 @@
 ﻿using Dominio.Migration;
+using Migration.Dominio;
 using MyApp.Domain.Entities;
 using MyApp.QueryBuilder;
 using System;
@@ -19,12 +20,73 @@ namespace AppClinicas
     {
         public override void Up()
         {
+            var ai_tasks = new QueueTopology("ai.tasks", ExchangeType.Topic, "audio.transcribe.worker", "audio.transcribe");
+            var ai_results = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribed.inbox", "audio.transcribed");
+            var ai_dead = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribe.dead", "audio.transcribe");
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("Worker").AddUseCaseCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("OutBox", ai_tasks, new LoginOutput(new List<string>(), 1, "", 1))
+            .AddEntity<yOutbox>().IsWorker();
+
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yInbox>().IsWorker();
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("Worker").AddUseCaseCommand("OutBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
-            .AddEntity<yOutbox>().IsWorker();
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddUseCaseCommand("InBox", ai_results, new LoginOutput(new List<string>(), 1, "", 1))
+            .AddEntity<yInbox>().IsListener();
+
+
+
+
+
+            /*to
+             
+             // pendencia montar via motor 
+var topology = new QueueTopology
+{
+    Exchanges =
+    {
+        new ExchangeDefinition
+        {
+            Name = "ai.tasks",
+            Type = "topic",
+            Bindings =
+            {
+                new QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribe.worker",
+                    RoutingKey = "audio.transcribe"
+                }
+            }
+        },
+        new ExchangeDefinition
+        {
+            Name = "ai.results",
+            Type = "topic",
+            Bindings =
+            {
+                new QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribed.inbox",
+                    RoutingKey = "audio.transcribed"
+                }
+            }
+        },
+        new ExchangeDefinition
+        {
+            Name = "ai.dead",
+            Type = "topic",
+            Bindings =
+            {
+                new QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribe.dead",
+                    RoutingKey = "audio.transcribe"
+                }
+            }
+        }
+    }
+};
+             
+             */
 
 
 

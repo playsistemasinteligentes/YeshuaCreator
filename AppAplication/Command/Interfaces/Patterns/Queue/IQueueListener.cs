@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 namespace Command.Interfaces.Patterns.Queue;
 public interface IQueueListener
 {
-    void Listen(
-        string queueName,
-        Func<QueueMessage, Task> handler,
-        CancellationToken cancellationToken = default
-    );
+    Task ListenAsync(string queueName, Func<QueueMessage, Task> handler, CancellationToken cancellationToken);
 }
 

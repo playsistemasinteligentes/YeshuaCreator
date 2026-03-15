@@ -25,11 +25,9 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, IdempotencyKey, Type, Status, FilePath, FileSize, ContentType, CreatedAt, CompletedAt, TenantID, Deleted, Changed, UserId from yFileUpload ";
+            this.Query = $@" select Id, Type, Status, FilePath, FileSize, CreatedAt, CompletedAt, TenantID, Deleted, Changed, UserId from yFileUpload ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
-if (!string.IsNullOrEmpty(Command.IdempotencyKey)) dict["IdempotencyKey"] = $"%{Command.IdempotencyKey}%";
-if (!string.IsNullOrEmpty(Command.IdempotencyKey)) whereClauses.Add($"IdempotencyKey like @IdempotencyKey");
 if (!string.IsNullOrEmpty(Command.Type)) dict["Type"] = $"%{Command.Type}%";
 if (!string.IsNullOrEmpty(Command.Type)) whereClauses.Add($"Type like @Type");
 if (Command.Status != null && Command.Status.Any())
@@ -45,8 +43,6 @@ if (Command.Status != null && Command.Status.Any())
 }
 if (!string.IsNullOrEmpty(Command.FilePath)) dict["FilePath"] = $"%{Command.FilePath}%";
 if (!string.IsNullOrEmpty(Command.FilePath)) whereClauses.Add($"FilePath like @FilePath");
-if (!string.IsNullOrEmpty(Command.ContentType)) dict["ContentType"] = $"%{Command.ContentType}%";
-if (!string.IsNullOrEmpty(Command.ContentType)) whereClauses.Add($"ContentType like @ContentType");
  dict["TenantID"] = _currentUser.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -144,24 +140,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByIdempotencyKeyQuery(string value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      dict["IdempotencyKey"] = value; //04
-                      whereClauses.Add($" IdempotencyKey = @IdempotencyKey ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel ExistsByTypeQuery(string value )
         {
             this.Parameters = null;
@@ -229,24 +207,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FileSize"] = value; //04
                       whereClauses.Add($" FileSize = @FileSize ");//04
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel ExistsByContentTypeQuery(string value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      dict["ContentType"] = value; //04
-                      whereClauses.Add($" ContentType = @ContentType ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -378,24 +338,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByIdempotencyKeyQuery(string value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      dict["IdempotencyKey"] = value; //06
-                      whereClauses.Add($" IdempotencyKey = @IdempotencyKey ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
         public QueryModel FirstByTypeQuery(string value )
         {
             this.Parameters = null;
@@ -463,24 +405,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FileSize"] = value; //06
                       whereClauses.Add($" FileSize = @FileSize ");//06
-            if (whereClauses.Any()) 
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
-            this.Parameters = parameters;
-            return new QueryModel(this.Query, parameters);
-        }
-        public QueryModel FirstByContentTypeQuery(string value )
-        {
-            this.Parameters = null;
-            var whereClauses = new List<string>();
-            dynamic parameters = new ExpandoObject();
-            var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
- dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
-                      dict["ContentType"] = value; //06
-                      whereClauses.Add($" ContentType = @ContentType ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

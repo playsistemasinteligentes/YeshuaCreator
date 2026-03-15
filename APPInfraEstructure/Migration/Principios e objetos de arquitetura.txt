@@ -376,3 +376,58 @@ Use Strategy para definir como ela será feita.
 
 
 
+
+
+
+
+
+6️⃣ Estrutura refinada
+
+Agora vamos organizar sua arquitetura de forma clara.
+
+Application
+Command
+Receiver
+DTO
+
+Responsabilidade:
+
+orquestrar casos de uso
+Domain
+Entity
+ValueObject
+Factory
+DomainService
+
+Responsabilidade:
+
+regras de negócio
+Infrastructure
+Repository
+Service
+
+Responsabilidade:
+
+tecnologia externa
+
+
+
+
+Domain
+  Entity
+  ValueObject
+  Factory
+  DomainService
+
+Application
+  Command
+  Receiver
+  ApplicationService
+
+Infrastructure
+  Repository
+  Adapter  adaptando coisas para outras tecnologias 
+
+
+
+

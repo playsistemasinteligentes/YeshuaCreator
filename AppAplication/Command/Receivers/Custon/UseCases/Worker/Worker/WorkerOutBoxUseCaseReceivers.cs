@@ -29,17 +29,17 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                var outBox = _repReadyOutbox.FirstByStatus(0);// pendencia depender de enumerador
-                QueueMessage queueMessage = new QueueMessage(outBox.type, DateTime.Now, outBox.payload);
-                _queuePublisher.PublishAsync("teste", queueMessage);
+                var outBox = _repReadyOutbox.FirstByStatus(0);
+                if (outBox == null) return;
 
+                QueueMessage queueMessage = new QueueMessage(outBox.type, outBox.payload)
+                { CorrelationId = outBox.id.ToString(), Source = "worker-outbox" };
+
+                _queuePublisher.PublishAsync("ai.tasks", "audio.transcribe", queueMessage).GetAwaiter().GetResult();
             }
             catch (Exception)
             {
-
-
             }
-
         }
     }
 }

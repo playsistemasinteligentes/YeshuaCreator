@@ -13,6 +13,7 @@ using Shered.DB.Connection;
 using Command.Interfaces.Patterns.Queue;
 using Worker.Custon;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
+using Shered.ConcretInterfaces.Queue.RabbitMQ;
 
 namespace Worker.Migration
 {
@@ -24,12 +25,24 @@ namespace Worker.Migration
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrentUser, CurrentUser>();
             builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection("RabbitMq"));
-            builder.Services.AddScoped<Command.Interfaces.Patterns.Queue.IQueuePublisher, RabbitMQQueuePublisher>();
-            builder.Services.AddScoped<Command.Interfaces.Patterns.Queue.IQueueListener, RabbitMQQueueListener>();
+            builder.Services.AddSingleton<RabbitMqConnectionManager>();
+            builder.Services.AddSingleton<IQueueTopologyInitializer, RabbitMqTopologyInitializer>();
+            builder.Services.AddSingleton<Command.Interfaces.Patterns.Queue.IQueuePublisher, RabbitMQQueuePublisher>();
+            builder.Services.AddSingleton<Command.Interfaces.Patterns.Queue.IQueueListener, RabbitMQQueueListener>();
             /*
              pendencia Você está declarando a fila toda vez: await channel.QueueDeclareAsync(...)
              fabrica criada a toda ora          await using var connection = await factory.CreateConnectionAsync(cancellationToken);
              */
+
+
+
+
+
+
+
+
+
+
         }
     }
 }

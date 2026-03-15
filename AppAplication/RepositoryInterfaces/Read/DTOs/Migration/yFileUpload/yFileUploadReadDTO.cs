@@ -9,12 +9,10 @@ namespace Repositorio.Outputs
     public record yFileUploadDTO
     {
     public int id { get; set; }
-    public string idempotencykey { get; set; }
     public string type { get; set; }
     public int status { get; set; }
     public string filepath { get; set; }
     public long filesize { get; set; }
-    public string contenttype { get; set; }
     public DateTime createdat { get; set; }
     public DateTime completedat { get; set; }
     public int tenantid { get; set; }

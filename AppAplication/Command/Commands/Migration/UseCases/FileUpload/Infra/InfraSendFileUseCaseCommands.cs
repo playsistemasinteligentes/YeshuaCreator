@@ -6,7 +6,7 @@ namespace Command.UseCase
 {
     public partial record InfraSendFileUseCaseInputCommand : ICommand
     {
-        public string IdempotencyKey { get; set; }
+        public string token { get; set; }
         public int ChunkIndex { get; set; }
         public bool IsFinalChunk { get; set; }
         public string FileName { get; set; }

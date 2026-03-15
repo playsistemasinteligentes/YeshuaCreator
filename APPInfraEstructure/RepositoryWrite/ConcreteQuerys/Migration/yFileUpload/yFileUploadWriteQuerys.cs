@@ -20,15 +20,13 @@ namespace Query.Write
         }
         public QueryModel InseriryFileUploadQuery(IyFileUploadEntity yFileUpload)
         {
-            this.Query = $@" INSERT INTO yFileUpload (IdempotencyKey, Type, Status, FilePath, FileSize, ContentType, CreatedAt, CompletedAt, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IdempotencyKey, @Type, @Status, @FilePath, @FileSize, @ContentType, @CreatedAt, @CompletedAt, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yFileUpload (Type, Status, FilePath, FileSize, CreatedAt, CompletedAt, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Type, @Status, @FilePath, @FileSize, @CreatedAt, @CompletedAt, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
-                IdempotencyKey = yFileUpload.IdempotencyKey,
                 Type = yFileUpload.Type,
                 Status = yFileUpload.Status,
                 FilePath = yFileUpload.FilePath,
                 FileSize = yFileUpload.FileSize,
-                ContentType = yFileUpload.ContentType,
                 CreatedAt = yFileUpload.CreatedAt,
                 CompletedAt = yFileUpload.CompletedAt,
                 TenantID = _currentUser.TenantID,
@@ -40,30 +38,18 @@ namespace Query.Write
         }
         public QueryModel UpdateyFileUploadQuery(IyFileUploadEntity yFileUpload)
         {
-            this.Query = $@" UPDATE yFileUpload SET IdempotencyKey = @IdempotencyKey, Type = @Type, Status = @Status, FilePath = @FilePath, FileSize = @FileSize, ContentType = @ContentType, CreatedAt = @CreatedAt, CompletedAt = @CompletedAt, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yFileUpload SET Type = @Type, Status = @Status, FilePath = @FilePath, FileSize = @FileSize, CreatedAt = @CreatedAt, CompletedAt = @CompletedAt, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                IdempotencyKey = yFileUpload.IdempotencyKey,
                 Type = yFileUpload.Type,
                 Status = yFileUpload.Status,
                 FilePath = yFileUpload.FilePath,
                 FileSize = yFileUpload.FileSize,
-                ContentType = yFileUpload.ContentType,
                 CreatedAt = yFileUpload.CreatedAt,
                 CompletedAt = yFileUpload.CompletedAt,
                 Changed = yFileUpload.Changed,
                 UserId = _currentUser.UserId,
                 Id = yFileUpload.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateIdempotencyKey(IyFileUploadEntity entity)
-        {
-            this.Query = $@" UPDATE yFileUpload SET IdempotencyKey = @IdempotencyKey WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                IdempotencyKey = entity.IdempotencyKey,
-                Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -103,16 +89,6 @@ namespace Query.Write
             this.Parameters = new
             {
                 FileSize = entity.FileSize,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateContentType(IyFileUploadEntity entity)
-        {
-            this.Query = $@" UPDATE yFileUpload SET ContentType = @ContentType WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                ContentType = entity.ContentType,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -408,13 +408,13 @@ namespace Worker.Migration
        WorkerInboxUseCaseReceiver>();
 
             builder.Services.AddHostedService(sp =>
-                new Worker<
+                new PollingWorker<
                     WorkerInboxUseCaseReceiver,
                     WorkerInboxUseCaseInputCommand,
                     WorkerInboxUseCaseOutputCommand>(
                     sp,
                     sp.GetRequiredService<
-                        ILogger<Worker<
+                        ILogger<PollingWorker<
                             WorkerInboxUseCaseReceiver,
                             WorkerInboxUseCaseInputCommand,
                             WorkerInboxUseCaseOutputCommand>>>(),
@@ -423,20 +423,17 @@ namespace Worker.Migration
 
 
 
-            builder.Services.AddScoped<
-       WorkerOutBoxUseCaseReceiver>();
+            builder.Services.AddScoped<WorkerOutBoxUseCaseReceiver>();
 
             builder.Services.AddHostedService(sp =>
-                new Worker<
+                new PollingWorker<
                     WorkerOutBoxUseCaseReceiver,
                     WorkerOutBoxUseCaseInputCommand,
                     WorkerOutBoxUseCaseOutputCommand>(
                     sp,
                     sp.GetRequiredService<
-                        ILogger<Worker<
-                            WorkerOutBoxUseCaseReceiver,
-                            WorkerOutBoxUseCaseInputCommand,
-                            WorkerOutBoxUseCaseOutputCommand>>>(),
+                        ILogger<PollingWorker<WorkerOutBoxUseCaseReceiver, WorkerOutBoxUseCaseInputCommand
+                        , WorkerOutBoxUseCaseOutputCommand>>>(),
                     TimeSpan.FromSeconds(5)
                 ));
 

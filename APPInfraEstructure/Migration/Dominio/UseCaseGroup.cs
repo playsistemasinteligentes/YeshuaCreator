@@ -1,7 +1,9 @@
 ﻿
 using Dominio.TiposPrimitivos;
+using Migration.Dominio;
 using Migration.Dominio.Schemas;
 using Migration.Dominio.Schemas.CQRS;
+using System.Collections;
 using System.Reflection;
 using System.Text;
 using static Dapper.SqlMapper;
@@ -243,6 +245,11 @@ Command
         public UseCaseGroup IsWorker()
         {
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().IsWorker = true;
+            return this;
+        }
+        public UseCaseGroup IsListener()
+        {
+            this.UseCaseSubGroup.Last().UseCaseCommand.Last().IsListener = true;
             return this;
         }
 

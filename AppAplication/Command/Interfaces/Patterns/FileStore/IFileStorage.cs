@@ -11,16 +11,15 @@ namespace Command.Interfaces.Patterns.FileStore
     {
         Task<FileStorageResult> SaveAsync(
             IFormFile stream,
-            string fileName,
-            FileSaveOptions options,
+            StoragePath path,
             CancellationToken cancellationToken);
 
         Task DeleteAsync(
-            string path,
+            StoragePath path,
             CancellationToken cancellationToken);
 
         Task<bool> ExistsAsync(
-            string path,
+            StoragePath path,
             CancellationToken cancellationToken);
     }
 }

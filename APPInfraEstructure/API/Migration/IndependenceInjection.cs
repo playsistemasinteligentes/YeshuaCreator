@@ -344,6 +344,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.WorkerInboxUseCaseReceiv
 
 builder.Services.AddTransient<Command.Receivers.UseCase.WorkerOutBoxUseCaseReceiver>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.InfraStarSessionUploadUseCaseReceiver>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.InfraSendFileUseCaseReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();

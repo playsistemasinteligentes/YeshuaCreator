@@ -31,6 +31,7 @@ namespace Dominio
         public UseCaseSubGroup UseCaseSubGroup { get; set; }
         public Authorization Authorization { get; set; }
         public bool IsWorker { get; internal set; } = false;
+        public bool IsListener { get; internal set; } = false;
 
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();

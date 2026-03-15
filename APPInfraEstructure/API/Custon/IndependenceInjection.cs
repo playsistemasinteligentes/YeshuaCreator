@@ -20,6 +20,8 @@ namespace API.Migrations
             builder.Services.AddScoped<IFileStorage, FileSystemStorage>();
 
 
+
+
         }
     }
 }

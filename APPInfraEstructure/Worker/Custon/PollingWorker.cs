@@ -3,17 +3,17 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepositoryInterfaces.Patterns.Command;
 
-public class Worker<TReceiver, TCommand, TResponse> : BackgroundService
+public class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundService
     where TReceiver : class, IReceiver<TCommand, TResponse>
     where TCommand : class, ICommand, new()
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<Worker<TReceiver, TCommand, TResponse>> _logger;
+    private readonly ILogger<PollingWorker<TReceiver, TCommand, TResponse>> _logger;
     private readonly TimeSpan _interval;
 
-    public Worker(
+    public PollingWorker(
         IServiceProvider serviceProvider,
-        ILogger<Worker<TReceiver, TCommand, TResponse>> logger,
+        ILogger<PollingWorker<TReceiver, TCommand, TResponse>> logger,
         TimeSpan interval)
     {
         _serviceProvider = serviceProvider;
