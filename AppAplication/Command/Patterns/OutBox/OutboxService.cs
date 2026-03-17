@@ -17,7 +17,7 @@ namespace Command.Patterns.OutBox
 
         public OutboxService(IyOutboxWriteRepository yOutboxWriteRepository, ILogger logger)
         {
-            _yOutboxWriteRepository = _yOutboxWriteRepository;
+            _yOutboxWriteRepository = yOutboxWriteRepository;
             _logger = logger;
         }
 

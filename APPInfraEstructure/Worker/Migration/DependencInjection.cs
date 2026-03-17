@@ -12,6 +12,7 @@ using System.Data;
 using Shered.DB.Connection;
 using Worker.Custon;
 using Microsoft.Extensions.DependencyInjection;
+using Command.Interfaces.Patterns.Queue;
 
 namespace Worker.Migration
 {
@@ -360,9 +361,9 @@ namespace Worker.Migration
             builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
             builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerInboxUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerOutBoxUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver>();
 
             builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 
@@ -392,12 +393,12 @@ namespace Worker.Migration
             // =============================
 
             builder.Services.AddScoped<
-                IReceiver<WorkerInboxUseCaseInputCommand, WorkerInboxUseCaseOutputCommand>,
-                WorkerInboxUseCaseReceiver>();
+                IReceiver<WorkerPollingInboxUseCaseInputCommand, WorkerPollingInboxUseCaseOutputCommand>,
+                WorkerPollingInboxUseCaseReceiver>();
 
             builder.Services.AddScoped<
-                IReceiver<WorkerOutBoxUseCaseInputCommand, WorkerOutBoxUseCaseOutputCommand>,
-                WorkerOutBoxUseCaseReceiver>();
+                IReceiver<WorkerPollingOutBoxUseCaseInputCommand, WorkerPollingOutBoxUseCaseOutputCommand>,
+                WorkerPollingOutBoxUseCaseReceiver>();
 
 
             // =============================
@@ -405,37 +406,60 @@ namespace Worker.Migration
             // =============================
 
             builder.Services.AddScoped<
-       WorkerInboxUseCaseReceiver>();
+       WorkerPollingInboxUseCaseReceiver>();
 
             builder.Services.AddHostedService(sp =>
                 new PollingWorker<
-                    WorkerInboxUseCaseReceiver,
-                    WorkerInboxUseCaseInputCommand,
-                    WorkerInboxUseCaseOutputCommand>(
+                    WorkerPollingInboxUseCaseReceiver,
+                    WorkerPollingInboxUseCaseInputCommand,
+                    WorkerPollingInboxUseCaseOutputCommand>(
                     sp,
                     sp.GetRequiredService<
                         ILogger<PollingWorker<
-                            WorkerInboxUseCaseReceiver,
-                            WorkerInboxUseCaseInputCommand,
-                            WorkerInboxUseCaseOutputCommand>>>(),
+                            WorkerPollingInboxUseCaseReceiver,
+                            WorkerPollingInboxUseCaseInputCommand,
+                            WorkerPollingInboxUseCaseOutputCommand>>>(),
                     TimeSpan.FromSeconds(5)
                 ));
 
 
 
-            builder.Services.AddScoped<WorkerOutBoxUseCaseReceiver>();
+            builder.Services.AddScoped<WorkerPollingOutBoxUseCaseReceiver>();
 
             builder.Services.AddHostedService(sp =>
                 new PollingWorker<
-                    WorkerOutBoxUseCaseReceiver,
-                    WorkerOutBoxUseCaseInputCommand,
-                    WorkerOutBoxUseCaseOutputCommand>(
+                    WorkerPollingOutBoxUseCaseReceiver,
+                    WorkerPollingOutBoxUseCaseInputCommand,
+                    WorkerPollingOutBoxUseCaseOutputCommand>(
                     sp,
                     sp.GetRequiredService<
-                        ILogger<PollingWorker<WorkerOutBoxUseCaseReceiver, WorkerOutBoxUseCaseInputCommand
-                        , WorkerOutBoxUseCaseOutputCommand>>>(),
+                        ILogger<PollingWorker<WorkerPollingOutBoxUseCaseReceiver, WorkerPollingOutBoxUseCaseInputCommand
+                        , WorkerPollingOutBoxUseCaseOutputCommand>>>(),
                     TimeSpan.FromSeconds(5)
                 ));
+
+
+            builder.Services.AddScoped<WorkerListenerInBoxUseCaseInputCommand>();
+
+            // HostedService do Listener
+            builder.Services.AddHostedService(sp =>
+            {
+                var listener = sp.GetRequiredService<IQueueListener>();
+                var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
+                    WorkerListenerInBoxUseCaseReceiver,
+                    WorkerListenerInBoxUseCaseInputCommand,
+                    WorkerListenerInBoxUseCaseOutputCommand>>>();
+
+                return new QueueListenerWorker<
+                    WorkerListenerInBoxUseCaseReceiver,
+                    WorkerListenerInBoxUseCaseInputCommand,
+                    WorkerListenerInBoxUseCaseOutputCommand>(
+                        sp,
+                        listener,
+                        logger,
+                        queueName: "audio.transcribed.inbox"
+                );
+            });
 
 
 

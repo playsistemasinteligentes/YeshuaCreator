@@ -40,10 +40,6 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(string.IsNullOrEmpty(MessageId))
-   this._erroMensagem.Add("Message Id deve ser informado.");
-   if(string.IsNullOrEmpty(JobId))
-   this._erroMensagem.Add("Job Id deve ser informado.");
    if(string.IsNullOrEmpty(CorrelationId))
    this._erroMensagem.Add("Correlation Id deve ser informado.");
    if(string.IsNullOrEmpty(Type))

@@ -24,13 +24,13 @@ namespace AppClinicas
             var ai_results = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribed.inbox", "audio.transcribed");
             var ai_dead = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribe.dead", "audio.transcribe");
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("OutBox", ai_tasks, new LoginOutput(new List<string>(), 1, "", 1))
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("OutBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yOutbox>().IsWorker();
 
             AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yInbox>().IsWorker();
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddUseCaseCommand("InBox", ai_results, new LoginOutput(new List<string>(), 1, "", 1))
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddUseCaseCommand("InBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yInbox>().IsListener();
 
 

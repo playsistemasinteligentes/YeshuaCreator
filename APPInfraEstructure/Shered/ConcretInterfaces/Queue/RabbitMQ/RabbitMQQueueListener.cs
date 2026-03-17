@@ -33,9 +33,18 @@ public sealed class RabbitMQQueueListener : IQueueListener
             {
                 var json = Encoding.UTF8.GetString(args.Body.ToArray());
 
-                var message = JsonSerializer.Deserialize<QueueMessage>(json)!;
+                // pendencia tratar erro 
+                try
+                {
+                    var message = JsonSerializer.Deserialize<QueueMessage>(json)!;
 
-                await handler(message);
+                    await handler(message);
+
+                }
+                catch (Exception)
+                {
+
+                }
 
                 await channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken);
             }

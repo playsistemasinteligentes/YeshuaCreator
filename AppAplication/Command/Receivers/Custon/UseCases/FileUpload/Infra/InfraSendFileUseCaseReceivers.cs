@@ -79,15 +79,15 @@ namespace Command.Receivers.UseCase
                     .GetResult();
 
                 // 🧩 se não for último chunk
-                if (!comand.IsFinalChunk)
+                if (comand.IsFinalChunk)
                 {
                     state = Success("Chunk recebido com sucesso.",
-                        new InfraSendFileUseCaseOutputCommand
-                        {
-                            Success = true,
-                            ChunkIndex = comand.ChunkIndex,
-                            IsFinalized = false
-                        });
+                    new InfraSendFileUseCaseOutputCommand
+                    {
+                        Success = true,
+                        ChunkIndex = comand.ChunkIndex,
+                        IsFinalized = false
+                    });
 
                     return;
                 }
@@ -121,7 +121,9 @@ namespace Command.Receivers.UseCase
                 upload.FilePath = finalPath.Value;
                 upload.FileSize = result.Size;
                 upload.Status = 1; // Finalizado
-                upload.CompletedAt = DateTime.UtcNow;
+                upload.CreatedAt = DateTime.UtcNow;
+                upload.Type = "teste";
+
 
                 if (!upload.isValidData())
                     throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
@@ -133,7 +135,7 @@ namespace Command.Receivers.UseCase
 
                 _repWriteyFileUpload.UpdateFilePath(upload);
 
-                new OutboxService(_yOutboxWriteRepository, _logger).AddOutBoxEvent("yFileUploadEntity.Status.Completed", "", upload.Id.Value);
+                new OutboxService(_yOutboxWriteRepository, _logger).AddOutBoxEvent("yFileUploadEntity.Status.Completed", payload, upload.Id.Value);
 
                 _unitOfWork.Commit();
 

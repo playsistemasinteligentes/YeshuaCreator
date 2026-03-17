@@ -2719,6 +2719,8 @@ namespace API.Migrations
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "type", label = "Tipo da Mensagem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "payload", label = "Payload", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = new[]
             {
@@ -3402,7 +3404,7 @@ namespace API.Migrations
                 return Results.Ok(metadatacrud);
             }).RequireAuthorization();
             #region ServicesMethod
-            app.MapPost("/yapi/Worker/WorkerInboxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerInboxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerInboxUseCaseInputCommand command) =>
+            app.MapPost("/yapi/Worker/WorkerPollingOutBoxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerPollingOutBoxUseCaseInputCommand command) =>
             {
                 try
                 {
@@ -3419,7 +3421,24 @@ namespace API.Migrations
             });
 
 
-            app.MapPost("/yapi/Worker/WorkerOutBoxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerOutBoxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerOutBoxUseCaseInputCommand command) =>
+            app.MapPost("/yapi/Worker/WorkerPollingInboxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerPollingInboxUseCaseInputCommand command) =>
+            {
+                try
+                {
+                    var result = receiver.Execute(command);
+                    if (result.StatusCode == 200)
+                        return Results.Ok(result.Data);
+                    else
+                        return Results.BadRequest(result);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            });
+
+
+            app.MapPost("/yapi/Worker/WorkerListenerInBoxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerListenerInBoxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerListenerInBoxUseCaseInputCommand command) =>
             {
                 try
                 {

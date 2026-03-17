@@ -674,7 +674,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
         }
         public QueryModel yOutboxProximaPendenteQuery(Command.Read.yOutboxProximaPendenteCommand Command)
         {
-            this.Query = "SELECT t0.Id FROM yOutbox t0";
+            this.Query = "SELECT t0.Id, t0.Type, t0.Payload FROM yOutbox t0";
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

@@ -49,8 +49,8 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yOutbox").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
-                .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
+                .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
+                .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
                 .AddColumn("CorrelationId", "Correlation Id").Varchar(100).NotNull()
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
@@ -66,13 +66,13 @@ namespace Migration.Dominio.Migration
             AddQuery<yOutbox>("Standard", q => q
             .WhereContext("ProximaPendente", s => s.Status == 0)
             //.Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
-            .Select(s => new { s.Id }));
+            .Select(s => new { s.Id, s.Type,s.Payload }));
 
 
             AddEntity("yInbox").AddModule("ADM")
                .AddColumn("Id", "ID").Int().Incremento().Key()
-               .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
-               .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
+               .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
+               .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
                .AddColumn("CorrelationId", "Correlation Id").Varchar(100).NotNull()
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)

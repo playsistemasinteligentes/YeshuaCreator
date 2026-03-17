@@ -340,9 +340,11 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdRece
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 
-builder.Services.AddTransient<Command.Receivers.UseCase.WorkerInboxUseCaseReceiver>();
+builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver>();
 
-builder.Services.AddTransient<Command.Receivers.UseCase.WorkerOutBoxUseCaseReceiver>();
+builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.WorkerListenerInBoxUseCaseReceiver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.InfraStarSessionUploadUseCaseReceiver>();
 

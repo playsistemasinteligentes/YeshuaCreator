@@ -13,19 +13,19 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
 {
-    public partial class WorkerInboxUseCaseReceiver : ReciverBase< WorkerInboxUseCaseInputCommand, WorkerInboxUseCaseOutputCommand>
+    public partial class WorkerListenerInBoxUseCaseReceiver : ReciverBase< WorkerListenerInBoxUseCaseInputCommand, WorkerListenerInBoxUseCaseOutputCommand>
     {
 
 
-        protected override State<WorkerInboxUseCaseOutputCommand> Action(WorkerInboxUseCaseInputCommand comand)
+        protected override State<WorkerListenerInBoxUseCaseOutputCommand> Action(WorkerListenerInBoxUseCaseInputCommand comand)
         {
             try
             {
-                 State<WorkerInboxUseCaseOutputCommand> retorno = Success("OK", null);
+                 State<WorkerListenerInBoxUseCaseOutputCommand> retorno = Success("OK", null);
                  CustomActionHook(ref retorno, comand);
                  return retorno;
             }
-            catch (ReceiverException<WorkerInboxUseCaseOutputCommand> e)
+            catch (ReceiverException<WorkerListenerInBoxUseCaseOutputCommand> e)
             {
                 return e.State;
             }
@@ -34,7 +34,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<WorkerInboxUseCaseOutputCommand> state, Command.UseCase.WorkerInboxUseCaseInputCommand comand);
+partial void CustomActionHook(ref State<WorkerListenerInBoxUseCaseOutputCommand> state, Command.UseCase.WorkerListenerInBoxUseCaseInputCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

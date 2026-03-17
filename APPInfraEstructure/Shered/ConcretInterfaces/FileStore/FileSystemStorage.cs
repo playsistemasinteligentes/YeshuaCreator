@@ -30,7 +30,7 @@ namespace Shered.ConcretInterfaces.FileStore
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory!);
 
-            await using (var fileStream = new FileStream(fullPath, FileMode.CreateNew, FileAccess.Write, FileShare.None, 81920, true))
+            await using (var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true))
             {
                 await file.CopyToAsync(fileStream, cancellationToken);
             }
