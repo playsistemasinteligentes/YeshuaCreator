@@ -1,9 +1,9 @@
 import tempfile
 import requests
-from celery_app import celery_app
-from transcribe import transcribe_audio_file
-from summarize import summarize_text_content
-from mq import publish_message
+
+from app.celery_app import celery_app
+from app.transcribe import transcribe_audio_file
+from app.summarize import summarize_text_content
 
 
 def download_file(url: str) -> str:
@@ -19,7 +19,7 @@ def download_file(url: str) -> str:
 
 
 @celery_app.task(
-    name="tasks.transcribe_audio",
+    name="app.tasks.transcribe_audio",
     bind=True,
     autoretry_for=(Exception,),
     retry_backoff=True,
@@ -45,7 +45,7 @@ def transcribe_audio(self, job_id: str, file_url: str):
 
 
 @celery_app.task(
-    name="tasks.summarize_text",
+    name="app.tasks.summarize_text",
     bind=True,
     autoretry_for=(Exception,),
     retry_backoff=True,
