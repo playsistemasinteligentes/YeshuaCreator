@@ -25,8 +25,8 @@ docker compose down
 echo ">> Buildando imagens"
 docker compose build
 
-echo ">> Subindo infraestrutura base (db, redis)"
-docker compose up -d sqlserver redis
+echo ">> Subindo infraestrutura base (db, redis, rabbitmq)"
+docker compose up -d sqlserver redis rabbitmq
 
 echo ">> Aguardando SQL estabilizar"
 sleep 10
@@ -34,11 +34,13 @@ sleep 10
 echo ">> Rodando migrations"
 docker compose up migration
 
-echo ">> Subindo aplicação (API + Front + Nginx)"
+echo ">> Subindo aplicação (API + Front + Nginx + Workers)"
 docker compose up -d --scale front=2
 
 echo ">> Status"
 docker compose ps
+
+
 
 echo "====================================="
 echo " ✅ Deploy concluído"

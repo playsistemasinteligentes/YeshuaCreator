@@ -23,7 +23,9 @@ DEBIAN_FRONTEND=noninteractive apt install -y \
   openssh-server \
   ca-certificates \
   gnupg \
-  lsb-release
+  lsb-release \
+  python3 \
+  python3-pip
 
 
 echo "==== Preparando volume persistente do SQL Server ===="
@@ -33,6 +35,26 @@ SQL_PERSIST_DIR="/root/YeshuaDB/persistent/sql"
 mkdir -p "$SQL_PERSIST_DIR"
 chown -R 10001:0 /root/YeshuaDB/persistent
 chmod -R 750 /root/YeshuaDB/persistent
+
+
+echo "==== Preparando estrutura de storage ===="
+
+STORAGE_ROOT="/root/YeshuaStorage"
+
+# Volatile
+mkdir -p "$STORAGE_ROOT/volatile/ai_Worker/input"
+mkdir -p "$STORAGE_ROOT/volatile/ai_Worker/output"
+mkdir -p "$STORAGE_ROOT/volatile/ai_Worker/tmp"
+mkdir -p "$STORAGE_ROOT/volatile/API"
+mkdir -p "$STORAGE_ROOT/volatile/Migration"
+mkdir -p "$STORAGE_ROOT/volatile/Worker"
+
+# Persistent
+mkdir -p "$STORAGE_ROOT/persistent"
+
+# Permissões
+chmod -R 750 "$STORAGE_ROOT"
+
 
 
 

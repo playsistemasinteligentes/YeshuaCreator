@@ -1,47 +1,47 @@
+import tempfile
+import requests
 from celery_app import celery_app
 from transcribe import transcribe_audio_file
 from summarize import summarize_text_content
-from mq import publish_message
 
 
-@celery_app.task(name="tasks.transcribe_audio")
-def transcribe_audio(payload):
+def download_file(url: str) -> str:
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
 
-    job_id = payload.get("job_id")
-    file_path = payload.get("file_path")
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                tmp.write(chunk)
 
-    try:
-        text = transcribe_audio_file(file_path)
-
-        publish_message(
-            "audio.transcribed.inbox", {"job_id": job_id, "success": True, "text": text}
-        )
-
-    except Exception as ex:
-
-        publish_message(
-            "audio.transcribed.inbox",
-            {"job_id": job_id, "success": False, "error": str(ex)},
-        )
+        return tmp.name
 
 
-@celery_app.task(name="tasks.summarize_text")
-def summarize_text(payload):
+@celery_app.task(
+    name="tasks.transcribe_audio",
+    bind=True,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_kwargs={"max_retries": 3},
+)
+def transcribe_audio(self, job_id: str, file_url: str):
 
-    job_id = payload.get("job_id")
-    text = payload.get("text")
+    file_path = download_file(file_url)
 
-    try:
-        summary = summarize_text_content(text)
+    text = transcribe_audio_file(file_path)
 
-        publish_message(
-            "audio.summarize.inbox",
-            {"job_id": job_id, "success": True, "summary": summary},
-        )
+    return {"job_id": job_id, "success": True, "text": text}
 
-    except Exception as ex:
 
-        publish_message(
-            "audio.summarize.inbox",
-            {"job_id": job_id, "success": False, "error": str(ex)},
-        )
+@celery_app.task(
+    name="tasks.summarize_text",
+    bind=True,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_kwargs={"max_retries": 3},
+)
+def summarize_text(self, job_id: str, text: str):
+
+    summary = summarize_text_content(text)
+
+    return {"job_id": job_id, "success": True, "summary": summary}
