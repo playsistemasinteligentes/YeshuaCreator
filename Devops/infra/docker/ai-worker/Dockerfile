@@ -21,7 +21,4 @@ WORKDIR /app/app
 # Evita buffer de log (importante no Docker)
 ENV PYTHONUNBUFFERED=1
 
-CMD ["celery", "-A", "celery_app", "worker",
-     "-Q", "audio.transcribe.outbox,text.summarize.outbox",
-     "--concurrency=1",
-     "--loglevel=info"]
+CMD ["celery", "-A", "celery_app", "worker","-Q", "audio.transcribe.outbox,text.summarize.outbox","--concurrency=1","--loglevel=info"]
