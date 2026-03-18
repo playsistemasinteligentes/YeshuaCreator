@@ -20,7 +20,7 @@ namespace AppClinicas
     {
         public override void Up()
         {
-            var ai_tasks = new QueueTopology("ai.tasks", ExchangeType.Topic, "audio.transcribe.worker", "audio.transcribe");
+            var ai_tasks = new QueueTopology("ai.tasks", ExchangeType.Topic, "audio.transcribe.outbox", "audio.transcribe");
             var ai_results = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribed.inbox", "audio.transcribed");
             var ai_dead = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribe.dead", "audio.transcribe");
 
@@ -52,7 +52,7 @@ var topology = new QueueTopology
             {
                 new QueueBindingDefinition
                 {
-                    QueueName = "audio.transcribe.worker",
+                    QueueName = "audio.transcribe.outbox",
                     RoutingKey = "audio.transcribe"
                 }
             }

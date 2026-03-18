@@ -41,7 +41,7 @@ var topology = new QueueTopology
             {
                 new QueueBindingDefinition
                 {
-                    QueueName = "audio.transcribe.worker",
+                    QueueName = "audio.transcribe.outbox",
                     RoutingKey = "audio.transcribe"
                 }
             }
