@@ -3,6 +3,7 @@ import requests
 from celery_app import celery_app
 from transcribe import transcribe_audio_file
 from summarize import summarize_text_content
+from mq import publish_message
 
 
 def download_file(url: str) -> str:
@@ -25,12 +26,22 @@ def download_file(url: str) -> str:
     retry_kwargs={"max_retries": 3},
 )
 def transcribe_audio(self, job_id: str, file_url: str):
+    try:
+        file_path = download_file(file_url)
 
-    file_path = download_file(file_url)
+        text = transcribe_audio_file(file_path)
 
-    text = transcribe_audio_file(file_path)
+        publish_message(
+            "audio.transcribed.inbox",
+            {"job_id": job_id, "success": True, "text": text},
+        )
 
-    return {"job_id": job_id, "success": True, "text": text}
+    except Exception as ex:
+        publish_message(
+            "audio.transcribed.inbox",
+            {"job_id": job_id, "success": False, "error": str(ex)},
+        )
+        raise
 
 
 @celery_app.task(
@@ -41,7 +52,17 @@ def transcribe_audio(self, job_id: str, file_url: str):
     retry_kwargs={"max_retries": 3},
 )
 def summarize_text(self, job_id: str, text: str):
+    try:
+        summary = summarize_text_content(text)
 
-    summary = summarize_text_content(text)
+        publish_message(
+            "text.summarized.inbox",
+            {"job_id": job_id, "success": True, "summary": summary},
+        )
 
-    return {"job_id": job_id, "success": True, "summary": summary}
+    except Exception as ex:
+        publish_message(
+            "text.summarized.inbox",
+            {"job_id": job_id, "success": False, "error": str(ex)},
+        )
+        raise
