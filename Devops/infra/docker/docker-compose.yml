@@ -124,7 +124,7 @@
 
       ai-worker:
         build:
-            context: ./Devops/infra/docker/ai-worker
+            context: ./ai-worker
             dockerfile: Dockerfile
         depends_on:
             - rabbitmq
