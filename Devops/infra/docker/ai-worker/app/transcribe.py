@@ -1,4 +1,4 @@
-import whisper
+﻿import whisper
 from threading import Lock
 
 _model = None
@@ -11,8 +11,7 @@ def _get_model():
     if _model is None:
         with _model_lock:
             if _model is None:
-                # carrega apenas uma vez (thread-safe)
-                _model = whisper.load_model("base")
+                _model = whisper.load_model("tiny")
 
     return _model
 
@@ -20,6 +19,10 @@ def _get_model():
 def transcribe_audio_file(path: str) -> str:
     model = _get_model()
 
-    result = model.transcribe(path)
+    try:
+        result = model.transcribe(path, fp16=False)  # 🔥 evita warning no CPU
 
-    return result["text"]
+        return result["text"]
+
+    except Exception as e:
+        raise RuntimeError(f"Erro ao transcrever áudio: {e}")
