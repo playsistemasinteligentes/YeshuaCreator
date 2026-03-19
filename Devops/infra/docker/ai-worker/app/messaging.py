@@ -5,12 +5,16 @@ import time
 from threading import Lock
 
 RABBITMQ_URL = os.environ.get(
-    "CELERY_BROKER_URL", "amqp://yeshua:yeshua123@rabbitmq:5672//"
+    "CELERY_BROKER_URL", "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
 )
 
-# 🔥 CORREÇÃO: pika NÃO aceita pyamqp
+# 🔥 converter schema
 if RABBITMQ_URL.startswith("pyamqp://"):
     RABBITMQ_URL = RABBITMQ_URL.replace("pyamqp://", "amqp://", 1)
+
+# 🔥 corrigir vhost vazio
+if RABBITMQ_URL.endswith("//"):
+    RABBITMQ_URL = RABBITMQ_URL[:-2] + "/%2F"
 
 _connection = None
 _channel = None
