@@ -5,6 +5,7 @@ import os
 from app.celery_app import celery_app
 from app.transcribe import transcribe_audio_file
 from app.summarize import summarize_text_content
+from app.messaging import publish_message
 
 
 def download_file(url: str) -> str:
@@ -35,6 +36,11 @@ def transcribe_audio(self, job_id: str, file_url: str):
 
         text = transcribe_audio_file(file_path)
 
+        # ✅ ENVIA PRA INBOX
+        publish_message(
+            "audio.transcribed.inbox", {"job_id": job_id, "success": True, "text": text}
+        )
+
         # ✅ AGORA NÃO CHAMA MAIS O SUMMARIZE
         print({"job_id": job_id, "success": True, "text": text})
 
@@ -58,4 +64,7 @@ def summarize_text(self, job_id: str, text: str):
 
     print({"job_id": job_id, "success": True, "summary": summary})
 
+    publish_message(
+        "text.summarized.inbox", {"job_id": job_id, "success": True, "summary": summary}
+    )
     return summary
