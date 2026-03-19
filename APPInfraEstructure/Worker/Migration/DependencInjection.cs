@@ -21,19 +21,34 @@ namespace Worker.Migration
         public static void MapIndependenceInjection(WebApplicationBuilder builder)
         {
 
-            builder.Services.AddScoped<SqlFactory>(provader => { return new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString); });
-            builder.Services.AddScoped<IDbConnection>(provader => { return new SqlConnection(GS.I.MYC.ReadConectionString); });
-
-
-
-
-
             builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
             builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
             builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
             builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
 
 
+            builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
+            builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
+            builder.Services.AddTransient<IQuery.Read.IPlanoContaQueryRead, Query.Read.PlanoContaQueryRead>();
+            builder.Services.AddTransient<IQuery.Write.IPlanoContaQueryWrite, Query.Write.PlanoContaQueryWrite>();
+            builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
+
+            builder.Services.AddTransient<IRepository.Write.IMovimentoFinanceiroWriteRepository, Input.Repository.MovimentoFinanceiro.MovimentoFinanceiroWriteRepository>();
+            builder.Services.AddTransient<IRepository.Read.IMovimentoFinanceiroReadRepository, Read.Repository.MovimentoFinanceiroReadRepository>();
+            builder.Services.AddTransient<IQuery.Read.IMovimentoFinanceiroQueryRead, Query.Read.MovimentoFinanceiroQueryRead>();
+            builder.Services.AddTransient<IQuery.Write.IMovimentoFinanceiroQueryWrite, Query.Write.MovimentoFinanceiroQueryWrite>();
+            builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentoFinanceiroReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
 
             builder.Services.AddTransient<IRepository.Write.IEspecialidadeWriteRepository, Input.Repository.Especialidade.EspecialidadeWriteRepository>();
             builder.Services.AddTransient<IRepository.Read.IEspecialidadeReadRepository, Read.Repository.EspecialidadeReadRepository>();
@@ -138,29 +153,6 @@ namespace Worker.Migration
             builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQuerySemanaReceiver>();
             builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryD30Receiver>();
 
-            builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
-            builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
-            builder.Services.AddTransient<IQuery.Read.IPlanoContaQueryRead, Query.Read.PlanoContaQueryRead>();
-            builder.Services.AddTransient<IQuery.Write.IPlanoContaQueryWrite, Query.Write.PlanoContaQueryWrite>();
-            builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
-
-            builder.Services.AddTransient<IRepository.Write.IMovimentoFinanceiroWriteRepository, Input.Repository.MovimentoFinanceiro.MovimentoFinanceiroWriteRepository>();
-            builder.Services.AddTransient<IRepository.Read.IMovimentoFinanceiroReadRepository, Read.Repository.MovimentoFinanceiroReadRepository>();
-            builder.Services.AddTransient<IQuery.Read.IMovimentoFinanceiroQueryRead, Query.Read.MovimentoFinanceiroQueryRead>();
-            builder.Services.AddTransient<IQuery.Write.IMovimentoFinanceiroQueryWrite, Query.Write.MovimentoFinanceiroQueryWrite>();
-            builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentoFinanceiroReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
-            builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
-
             builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
             builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();
             builder.Services.AddTransient<IQuery.Read.IClinicaQueryRead, Query.Read.ClinicaQueryRead>();
@@ -193,6 +185,7 @@ namespace Worker.Migration
             builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadReceiver>();
             builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKTenantIDReceiver>();
             builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKUserIdReceiver>();
+            builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadQueryProximaPendenteReceiver>();
 
             builder.Services.AddTransient<IRepository.Write.IyInboxWriteRepository, Input.Repository.yInbox.yInboxWriteRepository>();
             builder.Services.AddTransient<IRepository.Read.IyInboxReadRepository, Read.Repository.yInboxReadRepository>();
@@ -361,9 +354,15 @@ namespace Worker.Migration
             builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
             builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 
+            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver>();
+
             builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerListenerInBoxUseCaseReceiver>();
+
+            builder.Services.AddTransient<Command.Receivers.UseCase.InfraStarSessionUploadUseCaseReceiver>();
+
+            builder.Services.AddTransient<Command.Receivers.UseCase.InfraSendFileUseCaseReceiver>();
 
             builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
 
@@ -384,82 +383,6 @@ namespace Worker.Migration
 
 
 
-
-
-
-
-            // =============================
-            // RECEIVERS (Scoped)
-            // =============================
-
-            builder.Services.AddScoped<
-                IReceiver<WorkerPollingInboxUseCaseInputCommand, WorkerPollingInboxUseCaseOutputCommand>,
-                WorkerPollingInboxUseCaseReceiver>();
-
-            builder.Services.AddScoped<
-                IReceiver<WorkerPollingOutBoxUseCaseInputCommand, WorkerPollingOutBoxUseCaseOutputCommand>,
-                WorkerPollingOutBoxUseCaseReceiver>();
-
-
-            // =============================
-            // WORKERS (Hosted Services)
-            // =============================
-
-            builder.Services.AddScoped<
-       WorkerPollingInboxUseCaseReceiver>();
-
-            builder.Services.AddHostedService(sp =>
-                new PollingWorker<
-                    WorkerPollingInboxUseCaseReceiver,
-                    WorkerPollingInboxUseCaseInputCommand,
-                    WorkerPollingInboxUseCaseOutputCommand>(
-                    sp,
-                    sp.GetRequiredService<
-                        ILogger<PollingWorker<
-                            WorkerPollingInboxUseCaseReceiver,
-                            WorkerPollingInboxUseCaseInputCommand,
-                            WorkerPollingInboxUseCaseOutputCommand>>>(),
-                    TimeSpan.FromSeconds(5)
-                ));
-
-
-
-            builder.Services.AddScoped<WorkerPollingOutBoxUseCaseReceiver>();
-
-            builder.Services.AddHostedService(sp =>
-                new PollingWorker<
-                    WorkerPollingOutBoxUseCaseReceiver,
-                    WorkerPollingOutBoxUseCaseInputCommand,
-                    WorkerPollingOutBoxUseCaseOutputCommand>(
-                    sp,
-                    sp.GetRequiredService<
-                        ILogger<PollingWorker<WorkerPollingOutBoxUseCaseReceiver, WorkerPollingOutBoxUseCaseInputCommand
-                        , WorkerPollingOutBoxUseCaseOutputCommand>>>(),
-                    TimeSpan.FromSeconds(5)
-                ));
-
-
-            builder.Services.AddScoped<WorkerListenerInBoxUseCaseInputCommand>();
-
-            // HostedService do Listener
-            builder.Services.AddHostedService(sp =>
-            {
-                var listener = sp.GetRequiredService<IQueueListener>();
-                var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
-                    WorkerListenerInBoxUseCaseReceiver,
-                    WorkerListenerInBoxUseCaseInputCommand,
-                    WorkerListenerInBoxUseCaseOutputCommand>>>();
-
-                return new QueueListenerWorker<
-                    WorkerListenerInBoxUseCaseReceiver,
-                    WorkerListenerInBoxUseCaseInputCommand,
-                    WorkerListenerInBoxUseCaseOutputCommand>(
-                        sp,
-                        listener,
-                        logger,
-                        queueName: "audio.transcribed.inbox"
-                );
-            });
 
 
 
