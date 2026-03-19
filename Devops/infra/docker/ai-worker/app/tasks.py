@@ -32,19 +32,26 @@ def transcribe_audio(self, job_id: str, file_url: str):
     file_path = None
 
     try:
+        print(">>> INICIO TASK")
+
         file_path = download_file(file_url)
 
         text = transcribe_audio_file(file_path)
 
-        # ✅ ENVIA PRA INBOX
+        print(">>> VOU PUBLICAR")
+
         publish_message(
-            "audio.transcribed.inbox", {"job_id": job_id, "success": True, "text": text}
+            "audio.transcribed.inbox",
+            {"job_id": job_id, "success": True, "text": text},
         )
 
-        # ✅ AGORA NÃO CHAMA MAIS O SUMMARIZE
-        print({"job_id": job_id, "success": True, "text": text})
+        print(">>> PUBLICADO COM SUCESSO")
 
         return {"job_id": job_id, "success": True, "text": text}
+
+    except Exception as e:
+        print(">>> ERRO NA TASK:", str(e))
+        raise
 
     finally:
         if file_path and os.path.exists(file_path):
