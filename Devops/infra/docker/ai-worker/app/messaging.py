@@ -8,6 +8,10 @@ RABBITMQ_URL = os.environ.get(
     "CELERY_BROKER_URL", "amqp://yeshua:yeshua123@rabbitmq:5672//"
 )
 
+# 🔥 CORREÇÃO: pika NÃO aceita pyamqp
+if RABBITMQ_URL.startswith("pyamqp://"):
+    RABBITMQ_URL = RABBITMQ_URL.replace("pyamqp://", "amqp://", 1)
+
 _connection = None
 _channel = None
 _lock = Lock()
@@ -49,23 +53,23 @@ def publish_message(queue: str, message: dict, retries: int = 3):
                 routing_key=queue,
                 body=json.dumps(message),
                 properties=pika.BasicProperties(
-                    delivery_mode=2,  # persistente
+                    delivery_mode=2,
                 ),
             )
 
-            return  # sucesso
+            return
 
         except Exception as e:
             attempt += 1
 
-            # 🔥 força reconexão
             _reset_connection()
 
             if attempt >= retries:
                 print(f"[RabbitMQ] Falha ao publicar após {retries} tentativas: {e}")
                 raise
 
-            time.sleep(2**attempt)  # backoff exponencial
+            time.sleep(2**attempt)
+            time.sleep(2**attempt)
 
 
 def _reset_connection():
@@ -79,4 +83,5 @@ def _reset_connection():
             pass
 
         _connection = None
+        _channel = None
         _channel = None
