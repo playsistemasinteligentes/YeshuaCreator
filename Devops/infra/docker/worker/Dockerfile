@@ -7,10 +7,9 @@ COPY . .
 
 # Publica APENAS a API (explícito)
 RUN dotnet publish \
-  APPInfraEstructure/API/API.csproj \
+  APPInfraEstructure/Worker/Worker.csproj \
   -c Release \
   -o /app/publish
-
 
 # ===== Stage 2: Runtime =====
 FROM mcr.microsoft.com/dotnet/aspnet:8.0

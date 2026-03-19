@@ -7,7 +7,7 @@ COPY . .
 
 # Publica APENAS a API (explícito)
 RUN dotnet publish \
-  APPInfraEstructure/Worker/Worker.csproj \
+  APPInfraEstructure/API/API.csproj \
   -c Release \
   -o /app/publish
 
