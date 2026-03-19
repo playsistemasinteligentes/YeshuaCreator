@@ -144,7 +144,7 @@
           - "15672:15672"
         environment:
           RABBITMQ_DEFAULT_USER: yeshua
-          RABBITMQ_DEFAULT_PASS: 123qwe!@#QWE
+          RABBITMQ_DEFAULT_PASS: yeshua123
         networks:
           - yeshua-net
         restart: unless-stopped
