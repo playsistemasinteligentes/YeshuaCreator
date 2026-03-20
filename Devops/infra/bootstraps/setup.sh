@@ -174,7 +174,7 @@ echo "🔧 Configurando aliases do Yeshua..."
 cat << 'EOF' > /root/.bash_aliases
 alias ycd='cd ~/YeshuaCreator/Devops/infra/docker'
 alias yps='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml ps'
-alias ylogs='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml logs'
+alias ylogs='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml logs -f'
 alias yup='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml up -d'
 alias ydown='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml down'
 EOF

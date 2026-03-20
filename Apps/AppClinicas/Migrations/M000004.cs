@@ -18,6 +18,8 @@ namespace AppClinicas
     [Migration(000004)]
     public class M000004 : MigrationBase
     {
+        public record Menssage(string text);
+
         public override void Up()
         {
             var ai_tasks = new QueueTopology("ai.tasks", ExchangeType.Topic, "audio.transcribe.outbox", "audio.transcribe");
@@ -30,7 +32,8 @@ namespace AppClinicas
             AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yInbox>().IsWorker();
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddUseCaseCommand("InBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
+
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddUseCaseCommand("InBox", new Menssage(""), new Menssage(""))
             .AddEntity<yInbox>().IsListener();
 
 

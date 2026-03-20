@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using System.Windows.Input;
 using Command.Interfaces.Patterns.Queue;
 using Command.Patterns.Queue;
 using RabbitMQ.Client;
@@ -17,10 +18,12 @@ public sealed class RabbitMQQueueListener : IQueueListener
         _connectionManager = connectionManager;
     }
 
-    public async Task ListenAsync(string queueName, Func<QueueMessage, Task> handler, CancellationToken cancellationToken)
+
+
+    public async Task ListenAsync<TCommand>(string queueName, Func<TCommand, Task> handler, CancellationToken cancellationToken)
+       where TCommand : class
     {
         var connection = await _connectionManager.GetConnectionAsync(cancellationToken);
-
         var channel = await connection.CreateChannelAsync();
 
         await channel.BasicQosAsync(0, 1, false, cancellationToken);
@@ -33,27 +36,29 @@ public sealed class RabbitMQQueueListener : IQueueListener
             {
                 var json = Encoding.UTF8.GetString(args.Body.ToArray());
 
-                // pendencia tratar erro 
-                try
-                {
-                    var message = JsonSerializer.Deserialize<QueueMessage>(json)!;
+                // 🔥 desserializa para o tipo correto
+                var message = JsonSerializer.Deserialize<TCommand>(json);
 
-                    await handler(message);
+                if (message == null)
+                    throw new Exception("Mensagem inválida ou nula");
 
-                }
-                catch (Exception)
-                {
-
-                }
-
-                await channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken);
+                await handler(message);
             }
-            catch
+            catch (Exception ex)
             {
-                await channel.BasicNackAsync(args.DeliveryTag, false, true, cancellationToken);
+                // loga erro (não quebra o worker)
+                Console.WriteLine($"Erro ao processar mensagem: {ex}");
             }
+
+            // 🔥 ACK SEMPRE (ou você pode sofisticar depois)
+            await channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken);
         };
 
-        await channel.BasicConsumeAsync(queueName, false, consumer, cancellationToken);
+        await channel.BasicConsumeAsync(
+            queue: queueName,
+            autoAck: false,
+            consumer: consumer,
+            cancellationToken: cancellationToken
+        );
     }
 }

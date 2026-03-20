@@ -34,7 +34,7 @@ namespace Worker.Custon
 
             _logger.LogInformation("QueueListenerWorker {Worker} iniciado.", workerName);
 
-            await _listener.ListenAsync(_queueName, async message =>
+            await _listener.ListenAsync<TCommand>(_queueName, async message =>
             {
                 try
                 {
@@ -42,9 +42,9 @@ namespace Worker.Custon
 
                     var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
 
-                    var command = new TCommand();
+                    //var command = new TCommand();
 
-                    var result = receiver.Execute(command);
+                    var result = receiver.Execute(message);
 
                     if (result.StatusCode >= 400)
                     {

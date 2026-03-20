@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Command.Interfaces.Patterns.Queue;
 public interface IQueueListener
 {
-    Task ListenAsync(string queueName, Func<QueueMessage, Task> handler, CancellationToken cancellationToken);
+    Task ListenAsync<TCommand>(
+        string queueName,
+        Func<TCommand, Task> handler,
+        CancellationToken cancellationToken
+    ) where TCommand : class;
 }
-

@@ -22,7 +22,7 @@ namespace Command.Receivers.UseCase
         }
         partial void CustomActionHook(ref State<WorkerListenerInBoxUseCaseOutputCommand> state, WorkerListenerInBoxUseCaseInputCommand comand)
         {
-            _logger.Info("Listener inbox .......");
+            _logger.Info($"Listener inbox .......:{comand.text}");
         }
     }
 }
