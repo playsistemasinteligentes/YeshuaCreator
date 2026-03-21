@@ -154,3 +154,13 @@
         </div>
     </div>
 </div>
+
+
+<div id="action-modal-container"></div>
+
+<script>
+    fetch("/components/action-modal.html")
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById("action-modal-container").innerHTML = html;
+        });</script>

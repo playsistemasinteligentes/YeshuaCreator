@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\index.html"
     },
     {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\action-modal.html",
+      "PackagePath": "staticwebassets\\spa\\components\\action-modal.html"
+    },
+    {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\fk-modal.html",
       "PackagePath": "staticwebassets\\spa\\components\\fk-modal.html"
     },
@@ -15,6 +19,10 @@
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\recording\\audio.html",
       "PackagePath": "staticwebassets\\spa\\components\\recording\\audio.html"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\recording\\audio_oud.html",
+      "PackagePath": "staticwebassets\\spa\\components\\recording\\audio_oud.html"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\enum\\enumerators",
@@ -47,6 +55,14 @@
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\alerts.js",
       "PackagePath": "staticwebassets\\spa\\scripts\\alerts.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\components\\actionModal.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\components\\actionModal.js"
+    },
+    {
+      "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\components\\crudActions.js",
+      "PackagePath": "staticwebassets\\spa\\scripts\\components\\crudActions.js"
     },
     {
       "Id": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\scripts\\components\\fk-modal.js",

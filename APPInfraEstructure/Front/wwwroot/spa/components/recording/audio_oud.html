@@ -1,0 +1,431 @@
+<!--<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravação de Áudio em Intervalos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #audioList {
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+            #audioList li {
+                margin: 10px 0;
+            }
+    </style>
+</head>
+<body>
+    <h2>Gravação de Áudio em Intervalos</h2>
+    <button id="startRecord">🎙️ Iniciar Gravação</button>
+    <button id="stopRecord" disabled>⏹️ Parar Gravação</button>
+    <button id="sendChunks">📤 Enviar Chunks para o Servidor</button>
+    <button id="clearChunks">🗑️ Limpar Chunks Gravados</button>
+    <button id="combineChunks">🔀 Juntar Áudios</button>-->
+<!-- Botão para juntar os áudios -->
+<!--<h3>Áudios Gravados</h3>
+    <ul id="audioList"></ul>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = []; // Esta lista manterá os chunks de áudio
+        let recordingInterval;
+        let uploadToken = null;
+        let chunkIndex = 0;
+        const CHUNK_TIME = 5000; // Tempo em milissegundos para gravar cada chunk (5 segundos)
+        const endpoint = "/yapi/FileUpload/InfraSendFileUseCase2";  // Exemplo de endpoint
+
+        document.getElementById("startRecord").addEventListener("click", startRecording);
+        document.getElementById("stopRecord").addEventListener("click", stopRecording);
+        document.getElementById("sendChunks").addEventListener("click", sendAllChunks);
+        document.getElementById("clearChunks").addEventListener("click", clearAllChunks);
+        document.getElementById("combineChunks").addEventListener("click", combineAudioChunks); // Adicionando evento para juntar os áudios
+
+        // Inicializa o banco IndexedDB
+        let db;
+        const dbRequest = indexedDB.open("audioChunksDB", 1);
+        dbRequest.onupgradeneeded = function (event) {
+            db = event.target.result;
+            const objectStore = db.createObjectStore("chunks", { keyPath: "id", autoIncrement: true });
+        };
+        dbRequest.onsuccess = function (event) {
+            db = event.target.result;
+            loadSavedChunks(); // Carregar os chunks gravados do IndexedDB
+        };
+
+
+        async function startRecording() {
+            try {
+                console.log("Tentando iniciar a gravação...");
+
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error("Seu navegador não suporta gravação de áudio.");
+                }
+
+                // Configurações para melhorar a qualidade do áudio
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        sampleRate: 44100,   // Taxa de amostragem de alta qualidade (44100 Hz)
+                        channelCount: 2,     // Estéreo
+                        volume: 1.0          // Volume máximo
+                    }
+                });
+
+                // Configuração do MediaRecorder para usar codec Opus
+                mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+                audioChunks = []; // Garante que o array esteja limpo antes de começar
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        console.log("Gravando chunk...");
+                        audioChunks.push(event.data); // Adiciona o chunk ao array
+                        const audioUrl = URL.createObjectURL(event.data);
+                        addAudioToList(audioUrl, event.data); // Adiciona à lista de áudios gravados
+                        saveChunkLocally(event.data); // Salva o chunk no IndexedDB
+                    }
+                };
+
+                mediaRecorder.onstart = () => console.log("Gravação iniciada.");
+                mediaRecorder.onerror = event => console.error("Erro na gravação:", event.error);
+                mediaRecorder.onstop = () => console.log("Gravação parada.");
+
+                mediaRecorder.start();
+                console.log("MediaRecorder iniciado.");
+
+                // Intervalo para reiniciar a gravação periodicamente
+                recordingInterval = setInterval(() => {
+                    if (mediaRecorder.state === "recording") {
+                        console.log("Parando e reiniciando a gravação...");
+                        mediaRecorder.stop(); // Para a gravação
+
+                        setTimeout(() => {
+                            if (stream.active) {
+                                mediaRecorder.start(); // Reinicia a gravação apenas se o stream ainda estiver ativo
+                            }
+                        }, 100); // Pequeno delay para evitar conflitos
+                    }
+
+
+                }, CHUNK_TIME);
+
+                // Atualiza botões na interface
+                document.getElementById("startRecord").disabled = true;
+                document.getElementById("stopRecord").disabled = false;
+
+            } catch (error) {
+                console.error("Erro ao acessar o microfone:", error.message);
+                alert("Erro ao acessar o microfone: " + error.message);
+            }
+        }
+
+
+
+        async function startRecording__() {
+            try {
+                console.log("Tentando iniciar a gravação...");
+
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error("Seu navegador não suporta gravação de áudio.");
+                }
+
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = []; // Garante que o array esteja limpo antes de começar
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        console.log("Gravando chunk...");
+                        audioChunks.push(event.data); // Adiciona o chunk ao array
+                        const audioUrl = URL.createObjectURL(event.data);
+                        addAudioToList(audioUrl, event.data); // Adiciona à lista de áudios gravados
+                        saveChunkLocally(event.data); // Salva o chunk no IndexedDB
+                    }
+                };
+
+                mediaRecorder.onstart = () => console.log("Gravação iniciada.");
+                mediaRecorder.onerror = event => console.error("Erro na gravação:", event.error);
+                mediaRecorder.onstop = () => console.log("Gravação parada.");
+
+                mediaRecorder.start();
+                console.log("MediaRecorder iniciado.");
+
+                // Intervalo para reiniciar a gravação periodicamente
+                recordingInterval = setInterval(() => {
+                    if (mediaRecorder.state === "recording") {
+                        console.log("Parando e reiniciando a gravação...");
+                        mediaRecorder.stop(); // Para a gravação
+
+                        setTimeout(() => {
+                            if (stream.active) {
+                                mediaRecorder.start(); // Reinicia a gravação apenas se o stream ainda estiver ativo
+                            }
+                        }, 100); // Pequeno delay para evitar conflitos
+                    }
+                }, CHUNK_TIME);
+
+                // Atualiza botões na interface
+                document.getElementById("startRecord").disabled = true;
+                document.getElementById("stopRecord").disabled = false;
+
+            } catch (error) {
+                console.error("Erro ao acessar o microfone:", error.message);
+                alert("Erro ao acessar o microfone: " + error.message);
+            }
+        }
+
+        function stopRecording() {
+            console.log("Parando a gravação...");
+            if (mediaRecorder) {
+                clearInterval(recordingInterval); // Para o intervalo de gravação
+                mediaRecorder.stop();
+                mediaRecorder.onstop = () => {
+                    console.log("Gravação parada.");
+                    document.getElementById("startRecord").disabled = false;
+                    document.getElementById("stopRecord").disabled = true;
+                };
+            }
+        }
+
+        function addAudioToList(audioUrl, audioBlob) {
+            console.log("Adicionando áudio à lista...");
+            const li = document.createElement("li");
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = audioUrl;
+            li.appendChild(audio);
+
+            // Botão de envio para o servidor
+            const sendButton = document.createElement("button");
+            sendButton.textContent = "📤 Enviar";
+            sendButton.onclick = () => sendAudioChunk(audioBlob, li);
+
+            // Botão de download
+            const downloadButton = document.createElement("button");
+            downloadButton.textContent = "📥 Baixar";
+            downloadButton.onclick = () => downloadAudio(audioUrl);
+
+            li.appendChild(sendButton);
+            li.appendChild(downloadButton);
+            document.getElementById("audioList").appendChild(li);
+        }
+
+        function downloadAudio(audioUrl) {
+            console.log("Baixando áudio...");
+            const link = document.createElement("a");
+            link.href = audioUrl;
+            link.download = `audio_${Date.now()}.webm`; // Define o nome do arquivo de áudio
+            link.click();
+        }
+
+
+        async function sendAudioChunk(audioBlob, listItem, isFinalChunk = false) {
+
+            console.log("Enviando chunk para o servidor...");
+
+            if (!uploadToken)
+                await startUploadSession();
+
+            const formData = new FormData();
+
+            formData.append("token", uploadToken);
+            formData.append("chunkIndex", chunkIndex);
+            formData.append("isFinalChunk", isFinalChunk);
+            formData.append("fileName", "teste_audio.webm");
+            formData.append("contentType", audioBlob.type);
+            formData.append("fileStream", audioBlob);
+
+            try {
+
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const text = await response.text();
+
+                console.log("Resposta servidor:", text);
+
+                if (!response.ok)
+                    throw new Error("Erro ao enviar chunk");
+
+                chunkIndex++;
+
+                if (listItem)
+                    listItem.remove();
+
+            }
+            catch (error) {
+
+                console.error("Falha ao enviar chunk:", error.message);
+            }
+        }
+
+        async function startUploadSession() {
+
+            if (uploadToken)
+                return uploadToken;
+
+            const response = await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            });
+
+            if (!response.ok)
+                throw new Error("Erro ao iniciar sessão de upload");
+
+            const data = await response.json();
+
+            uploadToken = data.uploadToken;
+
+            console.log("UploadToken:", uploadToken);
+
+            return uploadToken;
+        }
+
+        async function sendAllChunks_() {
+
+
+            const transaction = db.transaction(["chunks"], "readonly");
+            const objectStore = transaction.objectStore("chunks");
+            const request = objectStore.getAll();
+
+            request.onsuccess = function () {
+                const chunks = request.result;
+                chunks.forEach(chunk => {
+                    const audioBlob = dataURItoBlob(chunk.data);
+                    sendAudioChunk(audioBlob, null); // Envia cada chunk para a API
+                });
+                console.log("Chunks carregados com sucesso.");
+            };
+
+
+            //  console.log("Enviando todos os chunks...");
+            //  const transaction = db.transaction(["chunks"], "readonly");
+            //  const objectStore = transaction.objectStore("chunks");
+            //  const chunks = await objectStore.getAll();
+            //
+            //  for (const chunk of chunks) {
+            //      const audioBlob = dataURItoBlob(chunk.data);
+            //      await sendAudioChunk(audioBlob, null); // Envia cada chunk para a API
+            //  }
+            //
+            //  alert("Todos os chunks foram enviados!");
+        }
+        async function sendAllChunks() {
+
+            const transaction = db.transaction(["chunks"], "readonly");
+            const objectStore = transaction.objectStore("chunks");
+            const request = objectStore.getAll();
+
+            request.onsuccess = async function () {
+
+                const chunks = request.result;
+
+                for (let i = 0; i < chunks.length; i++) {
+
+                    const audioBlob = dataURItoBlob(chunks[i].data);
+
+                    const isFinalChunk = (i === chunks.length - 1);
+
+                    await sendAudioChunk(audioBlob, null, isFinalChunk);
+                }
+
+                console.log("Todos os chunks enviados.");
+            };
+        }
+        function clearAllChunks() {
+            if (confirm("Tem certeza que deseja apagar todos os chunks gravados?")) {
+                const transaction = db.transaction(["chunks"], "readwrite");
+                const objectStore = transaction.objectStore("chunks");
+                objectStore.clear();
+                document.getElementById("audioList").innerHTML = "";
+                alert("Todos os chunks foram apagados.");
+                console.log("Todos os chunks foram apagados.");
+            }
+        }
+
+        function combineAudioChunks() {
+            console.log("Juntando os áudios...");
+
+            if (audioChunks.length === 0) {
+                alert("Não há áudios para combinar.");
+                return;
+            }
+
+            // Cria um novo objeto Blob com todos os chunks gravados
+            const combinedBlob = new Blob(audioChunks, { type: "audio/webm" });
+
+            // Cria uma URL para o áudio combinado
+            const audioUrl = URL.createObjectURL(combinedBlob);
+
+            // Adiciona o áudio combinado na lista
+            addAudioToList(audioUrl, combinedBlob);
+            saveChunkLocally(combinedBlob); // Salva o áudio combinado no IndexedDB
+
+            // Limpa os áudios gravados anteriores para começar a combinar novamente
+            audioChunks = [];
+
+            console.log("Áudios combinados com sucesso.");
+        }
+
+        function saveChunkLocally(audioBlob) {
+            console.log("Salvando chunk no IndexedDB...");
+            const reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = function () {
+                const transaction = db.transaction(["chunks"], "readwrite");
+                const objectStore = transaction.objectStore("chunks");
+                const chunk = { data: reader.result };
+                objectStore.add(chunk);
+                console.log("Chunk salvo no IndexedDB.");
+            };
+        }
+
+        function loadSavedChunks() {
+            console.log("Carregando chunks gravados...");
+            const transaction = db.transaction(["chunks"], "readonly");
+            const objectStore = transaction.objectStore("chunks");
+            const request = objectStore.getAll();
+
+            request.onsuccess = function () {
+                const chunks = request.result;
+                chunks.forEach(chunk => {
+                    const audioBlob = dataURItoBlob(chunk.data);
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    addAudioToList(audioUrl, audioBlob);
+                });
+                console.log("Chunks carregados com sucesso.");
+            };
+        }
+
+        function dataURItoBlob(dataURI) {
+            console.log("Convertendo dataURI para Blob...");
+            let byteString = atob(dataURI.split(',')[1]);
+            let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            let arrayBuffer = new ArrayBuffer(byteString.length);
+            let uint8Array = new Uint8Array(arrayBuffer);
+            for (let i = 0; i < byteString.length; i++) {
+                uint8Array[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([uint8Array], { type: mimeString });
+        }
+    </script>
+</body>
+</html>-->

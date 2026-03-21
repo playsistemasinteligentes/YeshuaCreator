@@ -13,16 +13,17 @@ namespace Command.Receivers.UseCase
         private readonly ILogger _logger;
         private readonly IyInboxReadRepository _repReadyInbox;
         private readonly IyInboxWriteRepository _repWriteyInbox;
-        public WorkerPollingInboxUseCaseReceiver(IUnitOfWork unitOfWork,ILogger logger,IyInboxReadRepository repReadyInbox, IyInboxWriteRepository repWriteyInbox)
+        public WorkerPollingInboxUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyInboxReadRepository repReadyInbox, IyInboxWriteRepository repWriteyInbox)
         {
-           _unitOfWork = unitOfWork;
-           _logger = logger;
+            _unitOfWork = unitOfWork;
+            _logger = logger;
             _repReadyInbox = repReadyInbox;
             _repWriteyInbox = repWriteyInbox;
         }
-partial void CustomActionHook(ref State<WorkerPollingInboxUseCaseOutputCommand> state, WorkerPollingInboxUseCaseInputCommand comand)
-{
-}
+        partial void CustomActionHook(ref State<WorkerPollingInboxUseCaseOutputCommand> state, WorkerPollingInboxUseCaseInputCommand comand)
+        {
+
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

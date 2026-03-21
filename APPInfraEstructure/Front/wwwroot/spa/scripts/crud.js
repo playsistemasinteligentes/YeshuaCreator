@@ -4,6 +4,7 @@ import { showAlert } from './alerts.js';
 import { showConfirm } from './menssagensConfirm.js';
 import { showFkModal, hideFkModal } from './components/fk-modal.js';
 import { apiFetch } from './ServicesGlobal/apiFetch.js';
+import { setupCrudActions } from "./components/crudActions.js";
 
 export function buildCrud() {
 
@@ -38,6 +39,7 @@ export function buildCrud() {
     document.getElementById('chkCountTotal').addEventListener('change', (e) => {
         crudState.pagination.PageWhithCount = e.target.checked;
     });
+
 }
 function togglePaginationControls(metadata = crudState.metadata, modoFk = false) {
     const container = modoFk
@@ -99,6 +101,9 @@ export async function loadDataCrud(fullUrl, type) {
             crudState.fullUrl = fullUrl;
             renderSearch(crudState.metadata);
             renderFormCrud();
+
+            setupCrudActions(crudState.metadata, getCurrentFormData);
+
         } else {
             trataErroResponse('loadDataCrud', response);
         }
@@ -149,6 +154,9 @@ function renderQuickSearches(quickSearches) {
     });
 }
 
+function getCurrentFormData() {
+    return crudState.metadata;
+}
 async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
     const token = localStorage.getItem('token');
 

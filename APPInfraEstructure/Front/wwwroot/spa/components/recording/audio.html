@@ -2,430 +2,333 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gravação de Áudio em Intervalos</title>
+    <title>Recorder Pro Debug</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: Arial;
+            background: #111;
+            color: #0f0;
             padding: 20px;
+            text-align: center;
         }
 
         button {
-            margin: 10px;
             padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
         }
 
-        #audioList {
+        #log {
             margin-top: 20px;
-            list-style: none;
-            padding: 0;
+            background: black;
+            color: #00ff88;
+            padding: 10px;
+            height: 220px;
+            overflow: auto;
+            text-align: left;
+            font-family: monospace;
         }
 
-            #audioList li {
-                margin: 10px 0;
-            }
+        #recIndicator {
+            width: 12px;
+            height: 12px;
+            background: #500;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        #timer {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        #vu {
+            width: 300px;
+            height: 10px;
+            background: #222;
+            margin: 10px auto;
+            position: relative;
+        }
+
+        #vuBar {
+            height: 10px;
+            width: 0%;
+            background: #0f0;
+        }
     </style>
 </head>
 <body>
-    <h2>Gravação de Áudio em Intervalos</h2>
-    <button id="startRecord">🎙️ Iniciar Gravação</button>
-    <button id="stopRecord" disabled>⏹️ Parar Gravação</button>
-    <button id="sendChunks">📤 Enviar Chunks para o Servidor</button>
-    <button id="clearChunks">🗑️ Limpar Chunks Gravados</button>
-    <button id="combineChunks">🔀 Juntar Áudios</button> <!-- Botão para juntar os áudios -->
 
-    <h3>Áudios Gravados</h3>
-    <ul id="audioList"></ul>
+    <h2>🎙️ Recorder Pro – Debug</h2>
+
+    <button onclick="Recorder.start()">▶️ Start</button>
+    <button onclick="Recorder.pause()">⏸️ Pause</button>
+    <button onclick="Recorder.resume()">⏯️ Resume</button>
+    <button onclick="Recorder.stop()">⏹️ Stop</button>
+    <button onclick="Recorder.state()">📊 State</button>
+
+    <div id="timer">00:00</div>
+    <div id="recIndicator"></div>
+
+    <div id="vu"><div id="vuBar"></div></div>
+
+    <br>
+
+    <button onclick="Recorder.playLast()">▶️ Último</button>
+    <button onclick="Recorder.playAll()">🎧 Todos</button>
+    <button onclick="Recorder.list()">📋 Listar</button>
+    <button onclick="Recorder.downloadAll()">⬇️ Download</button>
+    <button onclick="Recorder.clear()">🗑️ Limpar</button>
+
+    <div id="log"></div>
 
     <script>
-        let mediaRecorder;
-        let audioChunks = []; // Esta lista manterá os chunks de áudio
-        let recordingInterval;
-        let uploadToken = null;
-        let chunkIndex = 0;
-        const CHUNK_TIME = 5000; // Tempo em milissegundos para gravar cada chunk (5 segundos)
-        const endpoint = "/yapi/FileUpload/InfraSendFileUseCase2";  // Exemplo de endpoint
+        function log(msg) {
+            const el = document.getElementById("log");
+            el.innerHTML += msg + "<br>";
+            el.scrollTop = el.scrollHeight;
+            console.log(msg);
+        }
 
-        document.getElementById("startRecord").addEventListener("click", startRecording);
-        document.getElementById("stopRecord").addEventListener("click", stopRecording);
-        document.getElementById("sendChunks").addEventListener("click", sendAllChunks);
-        document.getElementById("clearChunks").addEventListener("click", clearAllChunks);
-        document.getElementById("combineChunks").addEventListener("click", combineAudioChunks); // Adicionando evento para juntar os áudios
+        if (!window.AudioRecorderApp) {
+            window.AudioRecorderApp = {
+                mediaRecorder: null,
+                stream: null,
+                db: null,
+                chunkIndex: 0,
+                chunksRecorded: 0,
+                wakeLock: null,
+                timerInterval: null,
+                startTime: null,
+                audioContext: null,
+                analyser: null,
+                CHUNK_TIME: 5000
+            };
+        }
+        const app = window.AudioRecorderApp;
 
-        // Inicializa o banco IndexedDB
-        let db;
-        const dbRequest = indexedDB.open("audioChunksDB", 1);
-        dbRequest.onupgradeneeded = function (event) {
-            db = event.target.result;
-            const objectStore = db.createObjectStore("chunks", { keyPath: "id", autoIncrement: true });
-        };
-        dbRequest.onsuccess = function (event) {
-            db = event.target.result;
-            loadSavedChunks(); // Carregar os chunks gravados do IndexedDB
-        };
+        //////////////////// MIME ////////////////////
+        function getSupportedMimeType() {
+            const types = [
+                "audio/webm;codecs=opus",
+                "audio/webm",
+                "audio/ogg;codecs=opus",
+                "audio/mp4"
+            ];
+            for (const t of types) {
+                if (MediaRecorder.isTypeSupported(t)) return t;
+            }
+            return "";
+        }
 
-
-        async function startRecording() {
+        //////////////////// WAKE LOCK ////////////////////
+        async function enableWakeLock() {
             try {
-                console.log("Tentando iniciar a gravação...");
+                app.wakeLock = await navigator.wakeLock.request("screen");
+                log("WakeLock ativo");
+            } catch (e) {
+                log("WakeLock não suportado");
+            }
+        }
 
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error("Seu navegador não suporta gravação de áudio.");
-                }
+        //////////////////// TIMER ////////////////////
+        function startTimer() {
+            app.startTime = Date.now();
+            app.timerInterval = setInterval(() => {
+                const s = Math.floor((Date.now() - app.startTime) / 1000);
+                const m = Math.floor(s / 60);
+                const ss = s % 60;
+                document.getElementById("timer").innerText =
+                    String(m).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
+            }, 1000);
+        }
+        function stopTimer() {
+            clearInterval(app.timerInterval);
+        }
 
-                // Configurações para melhorar a qualidade do áudio
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    audio: {
-                        sampleRate: 44100,   // Taxa de amostragem de alta qualidade (44100 Hz)
-                        channelCount: 2,     // Estéreo
-                        volume: 1.0          // Volume máximo
-                    }
-                });
+        //////////////////// VU METER ////////////////////
+        function startVU() {
+            app.audioContext = new AudioContext();
+            const source = app.audioContext.createMediaStreamSource(app.stream);
+            app.analyser = app.audioContext.createAnalyser();
+            source.connect(app.analyser);
 
-                // Configuração do MediaRecorder para usar codec Opus
-                mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
-                audioChunks = []; // Garante que o array esteja limpo antes de começar
+            const data = new Uint8Array(app.analyser.frequencyBinCount);
 
-                mediaRecorder.ondataavailable = event => {
-                    if (event.data.size > 0) {
-                        console.log("Gravando chunk...");
-                        audioChunks.push(event.data); // Adiciona o chunk ao array
-                        const audioUrl = URL.createObjectURL(event.data);
-                        addAudioToList(audioUrl, event.data); // Adiciona à lista de áudios gravados
-                        saveChunkLocally(event.data); // Salva o chunk no IndexedDB
-                    }
+            function draw() {
+                app.analyser.getByteFrequencyData(data);
+                let sum = 0;
+                for (let i = 0; i < data.length; i++) sum += data[i];
+                let avg = sum / data.length;
+                document.getElementById("vuBar").style.width = (avg / 255 * 100) + "%";
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        //////////////////// DB ////////////////////
+        function initDB() {
+            return new Promise((resolve) => {
+                const request = indexedDB.open("RecorderDB", 1);
+                request.onupgradeneeded = e => {
+                    e.target.result.createObjectStore("chunks", { keyPath: "index" });
                 };
-
-                mediaRecorder.onstart = () => console.log("Gravação iniciada.");
-                mediaRecorder.onerror = event => console.error("Erro na gravação:", event.error);
-                mediaRecorder.onstop = () => console.log("Gravação parada.");
-
-                mediaRecorder.start();
-                console.log("MediaRecorder iniciado.");
-
-                // Intervalo para reiniciar a gravação periodicamente
-                recordingInterval = setInterval(() => {
-                    if (mediaRecorder.state === "recording") {
-                        console.log("Parando e reiniciando a gravação...");
-                        mediaRecorder.stop(); // Para a gravação
-
-                        setTimeout(() => {
-                            if (stream.active) {
-                                mediaRecorder.start(); // Reinicia a gravação apenas se o stream ainda estiver ativo
-                            }
-                        }, 100); // Pequeno delay para evitar conflitos
-                    }
-
-
-                }, CHUNK_TIME);
-
-                // Atualiza botões na interface
-                document.getElementById("startRecord").disabled = true;
-                document.getElementById("stopRecord").disabled = false;
-
-            } catch (error) {
-                console.error("Erro ao acessar o microfone:", error.message);
-                alert("Erro ao acessar o microfone: " + error.message);
-            }
-        }
-
-
-
-        async function startRecording__() {
-            try {
-                console.log("Tentando iniciar a gravação...");
-
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error("Seu navegador não suporta gravação de áudio.");
-                }
-
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = []; // Garante que o array esteja limpo antes de começar
-
-                mediaRecorder.ondataavailable = event => {
-                    if (event.data.size > 0) {
-                        console.log("Gravando chunk...");
-                        audioChunks.push(event.data); // Adiciona o chunk ao array
-                        const audioUrl = URL.createObjectURL(event.data);
-                        addAudioToList(audioUrl, event.data); // Adiciona à lista de áudios gravados
-                        saveChunkLocally(event.data); // Salva o chunk no IndexedDB
-                    }
+                request.onsuccess = e => {
+                    app.db = e.target.result;
+                    resolve();
                 };
-
-                mediaRecorder.onstart = () => console.log("Gravação iniciada.");
-                mediaRecorder.onerror = event => console.error("Erro na gravação:", event.error);
-                mediaRecorder.onstop = () => console.log("Gravação parada.");
-
-                mediaRecorder.start();
-                console.log("MediaRecorder iniciado.");
-
-                // Intervalo para reiniciar a gravação periodicamente
-                recordingInterval = setInterval(() => {
-                    if (mediaRecorder.state === "recording") {
-                        console.log("Parando e reiniciando a gravação...");
-                        mediaRecorder.stop(); // Para a gravação
-
-                        setTimeout(() => {
-                            if (stream.active) {
-                                mediaRecorder.start(); // Reinicia a gravação apenas se o stream ainda estiver ativo
-                            }
-                        }, 100); // Pequeno delay para evitar conflitos
-                    }
-                }, CHUNK_TIME);
-
-                // Atualiza botões na interface
-                document.getElementById("startRecord").disabled = true;
-                document.getElementById("stopRecord").disabled = false;
-
-            } catch (error) {
-                console.error("Erro ao acessar o microfone:", error.message);
-                alert("Erro ao acessar o microfone: " + error.message);
-            }
-        }
-
-        function stopRecording() {
-            console.log("Parando a gravação...");
-            if (mediaRecorder) {
-                clearInterval(recordingInterval); // Para o intervalo de gravação
-                mediaRecorder.stop();
-                mediaRecorder.onstop = () => {
-                    console.log("Gravação parada.");
-                    document.getElementById("startRecord").disabled = false;
-                    document.getElementById("stopRecord").disabled = true;
-                };
-            }
-        }
-
-        function addAudioToList(audioUrl, audioBlob) {
-            console.log("Adicionando áudio à lista...");
-            const li = document.createElement("li");
-            const audio = document.createElement("audio");
-            audio.controls = true;
-            audio.src = audioUrl;
-            li.appendChild(audio);
-
-            // Botão de envio para o servidor
-            const sendButton = document.createElement("button");
-            sendButton.textContent = "📤 Enviar";
-            sendButton.onclick = () => sendAudioChunk(audioBlob, li);
-
-            // Botão de download
-            const downloadButton = document.createElement("button");
-            downloadButton.textContent = "📥 Baixar";
-            downloadButton.onclick = () => downloadAudio(audioUrl);
-
-            li.appendChild(sendButton);
-            li.appendChild(downloadButton);
-            document.getElementById("audioList").appendChild(li);
-        }
-
-        function downloadAudio(audioUrl) {
-            console.log("Baixando áudio...");
-            const link = document.createElement("a");
-            link.href = audioUrl;
-            link.download = `audio_${Date.now()}.webm`; // Define o nome do arquivo de áudio
-            link.click();
-        }
-
-
-        async function sendAudioChunk(audioBlob, listItem, isFinalChunk = false) {
-
-            console.log("Enviando chunk para o servidor...");
-
-            if (!uploadToken)
-                await startUploadSession();
-
-            const formData = new FormData();
-
-            formData.append("token", uploadToken);
-            formData.append("chunkIndex", chunkIndex);
-            formData.append("isFinalChunk", isFinalChunk);
-            formData.append("fileName", "teste_audio.webm");
-            formData.append("contentType", audioBlob.type);
-            formData.append("fileStream", audioBlob);
-
-            try {
-
-                const response = await fetch(endpoint, {
-                    method: "POST",
-                    body: formData
-                });
-
-                const text = await response.text();
-
-                console.log("Resposta servidor:", text);
-
-                if (!response.ok)
-                    throw new Error("Erro ao enviar chunk");
-
-                chunkIndex++;
-
-                if (listItem)
-                    listItem.remove();
-
-            }
-            catch (error) {
-
-                console.error("Falha ao enviar chunk:", error.message);
-            }
-        }
-
-        async function startUploadSession() {
-
-            if (uploadToken)
-                return uploadToken;
-
-            const response = await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({})
             });
-
-            if (!response.ok)
-                throw new Error("Erro ao iniciar sessão de upload");
-
-            const data = await response.json();
-
-            uploadToken = data.uploadToken;
-
-            console.log("UploadToken:", uploadToken);
-
-            return uploadToken;
         }
 
-        async function sendAllChunks_() {
-
-
-            const transaction = db.transaction(["chunks"], "readonly");
-            const objectStore = transaction.objectStore("chunks");
-            const request = objectStore.getAll();
-
-            request.onsuccess = function () {
-                const chunks = request.result;
-                chunks.forEach(chunk => {
-                    const audioBlob = dataURItoBlob(chunk.data);
-                    sendAudioChunk(audioBlob, null); // Envia cada chunk para a API
-                });
-                console.log("Chunks carregados com sucesso.");
-            };
-
-
-            //  console.log("Enviando todos os chunks...");
-            //  const transaction = db.transaction(["chunks"], "readonly");
-            //  const objectStore = transaction.objectStore("chunks");
-            //  const chunks = await objectStore.getAll();
-            //
-            //  for (const chunk of chunks) {
-            //      const audioBlob = dataURItoBlob(chunk.data);
-            //      await sendAudioChunk(audioBlob, null); // Envia cada chunk para a API
-            //  }
-            //
-            //  alert("Todos os chunks foram enviados!");
+        function saveChunkDB(blob, index) {
+            return new Promise((resolve) => {
+                const tx = app.db.transaction(["chunks"], "readwrite");
+                tx.objectStore("chunks").put({ index, blob });
+                tx.oncomplete = resolve;
+            });
         }
-        async function sendAllChunks() {
 
-            const transaction = db.transaction(["chunks"], "readonly");
-            const objectStore = transaction.objectStore("chunks");
-            const request = objectStore.getAll();
+        function getAllChunksOrdered() {
+            return new Promise((resolve) => {
+                const tx = app.db.transaction(["chunks"], "readonly");
+                const req = tx.objectStore("chunks").getAll();
+                req.onsuccess = () => {
+                    resolve(req.result.sort((a, b) => a.index - b.index));
+                };
+            });
+        }
 
-            request.onsuccess = async function () {
+        //////////////////// RECORDER ////////////////////
+        window.Recorder = {
 
-                const chunks = request.result;
+            async start() {
+                await initDB();
+                await enableWakeLock();
 
-                for (let i = 0; i < chunks.length; i++) {
-
-                    const audioBlob = dataURItoBlob(chunks[i].data);
-
-                    const isFinalChunk = (i === chunks.length - 1);
-
-                    await sendAudioChunk(audioBlob, null, isFinalChunk);
+                if (!app.stream) {
+                    app.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    startVU();
                 }
 
-                console.log("Todos os chunks enviados.");
-            };
-        }
-        function clearAllChunks() {
-            if (confirm("Tem certeza que deseja apagar todos os chunks gravados?")) {
-                const transaction = db.transaction(["chunks"], "readwrite");
-                const objectStore = transaction.objectStore("chunks");
-                objectStore.clear();
-                document.getElementById("audioList").innerHTML = "";
-                alert("Todos os chunks foram apagados.");
-                console.log("Todos os chunks foram apagados.");
-            }
-        }
+                const mimeType = getSupportedMimeType();
+                log("MimeType: " + mimeType);
 
-        function combineAudioChunks() {
-            console.log("Juntando os áudios...");
+                app.mediaRecorder = new MediaRecorder(app.stream, { mimeType });
 
-            if (audioChunks.length === 0) {
-                alert("Não há áudios para combinar.");
-                return;
-            }
+                app.mediaRecorder.ondataavailable = async (e) => {
+                    log("ondataavailable");
+                    if (e.data.size > 0) {
+                        const index = app.chunkIndex++;
+                        await saveChunkDB(e.data, index);
+                        app.chunksRecorded++;
+                        log("Chunk " + index + " salvo (" + (e.data.size / 1024).toFixed(1) + " KB)");
+                    }
+                };
 
-            // Cria um novo objeto Blob com todos os chunks gravados
-            const combinedBlob = new Blob(audioChunks, { type: "audio/webm" });
+                app.mediaRecorder.start(app.CHUNK_TIME);
+                app.chunkTimer = setInterval(() => {
+                    if (app.mediaRecorder.state === "recording") {
+                        app.mediaRecorder.requestData();
+                    }
+                }, app.CHUNK_TIME);
 
-            // Cria uma URL para o áudio combinado
-            const audioUrl = URL.createObjectURL(combinedBlob);
+                document.getElementById("recIndicator").style.background = "red";
 
-            // Adiciona o áudio combinado na lista
-            addAudioToList(audioUrl, combinedBlob);
-            saveChunkLocally(combinedBlob); // Salva o áudio combinado no IndexedDB
+                startTimer();
+                log("Gravando...");
+            },
 
-            // Limpa os áudios gravados anteriores para começar a combinar novamente
-            audioChunks = [];
+            pause() {
+                if (app.mediaRecorder?.state === "recording") {
+                    app.mediaRecorder.pause();
+                    log("Pausado");
+                }
+            },
 
-            console.log("Áudios combinados com sucesso.");
-        }
+            resume() {
+                if (app.mediaRecorder?.state === "paused") {
+                    app.mediaRecorder.resume();
+                    log("Continuando...");
+                }
+            },
 
-        function saveChunkLocally(audioBlob) {
-            console.log("Salvando chunk no IndexedDB...");
-            const reader = new FileReader();
-            reader.readAsDataURL(audioBlob);
-            reader.onloadend = function () {
-                const transaction = db.transaction(["chunks"], "readwrite");
-                const objectStore = transaction.objectStore("chunks");
-                const chunk = { data: reader.result };
-                objectStore.add(chunk);
-                console.log("Chunk salvo no IndexedDB.");
-            };
-        }
+            stop() {
+                if (app.mediaRecorder) {
+                    app.mediaRecorder.stop();
+                    clearInterval(app.chunkTimer);
+                    stopTimer();
+                    document.getElementById("recIndicator").style.background = "#500";
+                    log("Finalizado");
+                }
+            },
 
-        function loadSavedChunks() {
-            console.log("Carregando chunks gravados...");
-            const transaction = db.transaction(["chunks"], "readonly");
-            const objectStore = transaction.objectStore("chunks");
-            const request = objectStore.getAll();
+            async state() {
+                const chunks = await getAllChunksOrdered();
+                log("Chunks: " + chunks.length);
+                log("Index atual: " + app.chunkIndex);
+            },
 
-            request.onsuccess = function () {
-                const chunks = request.result;
-                chunks.forEach(chunk => {
-                    const audioBlob = dataURItoBlob(chunk.data);
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    addAudioToList(audioUrl, audioBlob);
+            //////////////////// DEBUG ////////////////////
+
+            async playLast() {
+                const chunks = await getAllChunksOrdered();
+                if (!chunks.length) return log("Sem chunks");
+
+                const last = chunks[chunks.length - 1];
+                const url = URL.createObjectURL(last.blob);
+                const audio = new Audio(url);
+                audio.onended = () => URL.revokeObjectURL(url);
+                audio.play();
+            },
+
+            async playAll() {
+                const chunks = await getAllChunksOrdered();
+                if (!chunks.length) return log("Sem chunks");
+
+                // Junta todos os blobs em um só
+                const blobs = chunks.map(c => c.blob);
+                const mimeType = blobs[0].type;
+
+                const combinedBlob = new Blob(blobs, { type: mimeType });
+                const url = URL.createObjectURL(combinedBlob);
+
+                const audio = new Audio(url);
+                audio.onended = () => URL.revokeObjectURL(url);
+                audio.play();
+
+                log("Tocando áudio concatenado (" + chunks.length + " chunks)");
+            },
+
+            async list() {
+                const chunks = await getAllChunksOrdered();
+                chunks.forEach(c => {
+                    log("Chunk " + c.index + " | " + (c.blob.size / 1024).toFixed(1) + " KB");
                 });
-                console.log("Chunks carregados com sucesso.");
-            };
-        }
+            },
 
-        function dataURItoBlob(dataURI) {
-            console.log("Convertendo dataURI para Blob...");
-            let byteString = atob(dataURI.split(',')[1]);
-            let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-            let arrayBuffer = new ArrayBuffer(byteString.length);
-            let uint8Array = new Uint8Array(arrayBuffer);
-            for (let i = 0; i < byteString.length; i++) {
-                uint8Array[i] = byteString.charCodeAt(i);
+            async downloadAll() {
+                const chunks = await getAllChunksOrdered();
+                for (const c of chunks) {
+                    const url = URL.createObjectURL(c.blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "chunk_" + c.index + ".webm";
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+            },
+
+            async clear() {
+                const tx = app.db.transaction(["chunks"], "readwrite");
+                tx.objectStore("chunks").clear();
+                app.chunkIndex = 0;
+                log("DB limpo");
             }
-            return new Blob([uint8Array], { type: mimeString });
-        }
+
+        };
     </script>
+
 </body>
 </html>
