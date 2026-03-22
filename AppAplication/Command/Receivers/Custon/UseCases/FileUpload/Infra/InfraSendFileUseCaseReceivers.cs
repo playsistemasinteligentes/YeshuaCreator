@@ -79,7 +79,7 @@ namespace Command.Receivers.UseCase
                     .GetResult();
 
                 // 🧩 se não for último chunk
-                if (comand.IsFinalChunk)
+                if (!comand.IsFinalChunk)
                 {
                     state = Success("Chunk recebido com sucesso.",
                     new InfraSendFileUseCaseOutputCommand

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "0YaakMgkbtvWvC1+XPRENxkFY3MXLzbOtnHQOzEoQtc=",
+  "Hash": "mq3nXlIBgcdsx9ILMzLLyH1ZC5863DU42ZuKFRcydd4=",
   "Source": "Front",
   "BasePath": "_content/Front",
   "Mode": "Default",
@@ -110,6 +110,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\spa\\components\\recording\\audio.html"
+    },
+    {
+      "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\recording\\audio_oud - Cópia.html",
+      "SourceId": "Front",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\",
+      "BasePath": "_content/Front",
+      "RelativePath": "spa/components/recording/audio_oud - Cópia.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\spa\\components\\recording\\audio_oud - Cópia.html"
     },
     {
       "Identity": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Front\\wwwroot\\spa\\components\\recording\\audio_oud.html",

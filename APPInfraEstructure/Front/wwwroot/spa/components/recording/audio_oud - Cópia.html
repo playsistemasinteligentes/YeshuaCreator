@@ -69,8 +69,8 @@
 
     <button onclick="Recorder.start()">▶️ Start</button>
     <button onclick="Recorder.pause()">⏸️ Pause</button>
-    <!--<button onclick="Recorder.resume()">⏯️ Resume</button>-->
-    <button onclick="Recorder.stop()">⏹️ Finalizar</button>
+    <button onclick="Recorder.resume()">⏯️ Resume</button>
+    <button onclick="Recorder.stop()">⏹️ Stop</button>
     <button onclick="Recorder.state()">📊 State</button>
 
     <div id="timer">00:00</div>
@@ -110,8 +110,7 @@
                 CHUNK_TIME: 5000,
                 uploadToken: null,
                 MAX_RETRIES: 3,
-                uploadEnabled: true,
-                isFinal: false
+                uploadEnabled: true
             };
         }
         const app = window.AudioRecorderApp;
@@ -234,13 +233,10 @@
 
             for (let i = 0; i < chunks.length; i++) {
                 const chunk = chunks[i];
-                if ((i === chunks.length - 1) && app.isFinal == false) {
-                    setTimeout(uploadWorker, 1000);
-                    return;
-                }
+                const isFinal = (i === chunks.length - 1);
+
                 if (chunk.status === "pending" || chunk.status === "error") {
                     let ok = false;
-                    let isFinal = ((i === chunks.length - 1) && app.isFinal == true);
 
                     while (chunk.retries < app.MAX_RETRIES && !ok && app.uploadEnabled) {
 
@@ -259,12 +255,6 @@
 
                             const tx2 = app.db.transaction(["chunks"], "readwrite");
                             tx2.objectStore("chunks").delete(chunk.index);
-
-                            if (isFinal) {
-                                await Recorder.clear();
-                                return;
-                            }
-
                         } else {
                             log("❌ Erro upload chunk " + chunk.index);
 
@@ -287,7 +277,6 @@
                 if (!app.stream) { app.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); startVU(); }
                 const mimeType = getSupportedMimeType();
                 log("MimeType: " + mimeType);
-                app.isFinal = false;
                 app.mediaRecorder = new MediaRecorder(app.stream, { mimeType });
                 app.mediaRecorder.ondataavailable = async e => {
                     if (e.data.size > 0) {
@@ -310,15 +299,12 @@
 
             async stop() {
                 if (app.mediaRecorder) {
-                    if (app.mediaRecorder?.state === "recording") {
-                        app.mediaRecorder.pause(); log("Pausado");
-                    }
-                    app.isFinal = true;
                     app.mediaRecorder.stop();
                     clearInterval(app.chunkTimer);
                     stopTimer();
                     document.getElementById("recIndicator").style.background = "#500";
                     log("Finalizando gravação...");
+                    await finishSession();
                 }
             },
 
