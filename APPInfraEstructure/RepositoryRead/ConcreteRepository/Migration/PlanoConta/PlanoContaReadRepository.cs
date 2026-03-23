@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class PlanoContaReadRepository : IPlanoContaReadRepository
+    public partial class PlanoContaReadRepository : IPlanoContaReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

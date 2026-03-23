@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IyTenantModuleReadRepository
+    public partial interface IyTenantModuleReadRepository
     {
         public DataPagination<yTenantModuleDTO> getyTenantModule(ICommandRead command );
         public IEnumerable<yTenantModuleModuleIdDTO> getyTenantModuleReadFKModuleId(object command );

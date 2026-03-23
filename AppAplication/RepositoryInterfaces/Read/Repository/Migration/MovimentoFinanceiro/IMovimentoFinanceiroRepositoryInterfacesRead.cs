@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IMovimentoFinanceiroReadRepository
+    public partial interface IMovimentoFinanceiroReadRepository
     {
         public DataPagination<MovimentoFinanceiroDTO> getMovimentoFinanceiro(ICommandRead command );
         public IEnumerable<MovimentoFinanceiroContaDebitoIdDTO> getMovimentoFinanceiroReadFKContaDebitoId(object command );

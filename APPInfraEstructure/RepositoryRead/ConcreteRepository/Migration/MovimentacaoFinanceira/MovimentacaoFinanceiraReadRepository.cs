@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class MovimentacaoFinanceiraReadRepository : IMovimentacaoFinanceiraReadRepository
+    public partial class MovimentacaoFinanceiraReadRepository : IMovimentacaoFinanceiraReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

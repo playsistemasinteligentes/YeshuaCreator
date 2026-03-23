@@ -2666,6 +2666,7 @@ namespace API.Migrations
                 new { id = "filesize", label = "Tamanho do Arquivo", type = "long", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "createdat", label = "Criado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "completedat", label = "Finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -2676,10 +2677,12 @@ namespace API.Migrations
                 new { id = "filesize", label = "Tamanho do Arquivo", type = "long", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "createdat", label = "Criado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "completedat", label = "Finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new
             {
+                tenantid = "/yFileUpload/yFileUploadReadFKTenantID",
             }
             },
                     },
@@ -2692,9 +2695,11 @@ namespace API.Migrations
             new { id = "filesize", label = "Tamanho do Arquivo", type = "long", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                     },
                     endpoints = new
                     {
+                        tenantid = "/yFileUpload/yFileUploadReadFKTenantID",
                         create = "/yFileUpload/PostyFileUpload",
                         read = "/yFileUpload/ReadyFileUpload",
                         update = "/yFileUpload/PutyFileUpload",
@@ -2722,13 +2727,13 @@ namespace API.Migrations
                 new { id = "type", label = "Tipo da Mensagem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "payload", label = "Payload", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
-
             quickSearches = new[]
             {
                 new { id = "ProximaPendente", label = "ProximaPendente", icon = "calendar-day", endpoint = "/yOutbox/ReadyOutboxProximaPendente" },
             },
             fkEndpoints = new
             {
+                tenantid = "/yOutbox/yOutboxReadFKTenantID",
             }
             },
                     },
@@ -2745,9 +2750,11 @@ namespace API.Migrations
             new { id = "sentat", label = "Enviado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "lasterror", label = "Último Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                     },
                     endpoints = new
                     {
+                        tenantid = "/yOutbox/yOutboxReadFKTenantID",
                         create = "/yOutbox/PostyOutbox",
                         read = "/yOutbox/ReadyOutbox",
                         update = "/yOutbox/PutyOutbox",
@@ -2782,6 +2789,7 @@ namespace API.Migrations
                 new { id = "sentat", label = "Enviado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "retrycount", label = "Tentativas", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "lasterror", label = "Último Erro", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -2796,10 +2804,12 @@ namespace API.Migrations
                 new { id = "sentat", label = "Enviado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "retrycount", label = "Tentativas", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "lasterror", label = "Último Erro", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tenantid", label = "TenantID", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new
             {
+                tenantid = "/yInbox/yInboxReadFKTenantID",
             }
             },
                     },
@@ -2816,9 +2826,11 @@ namespace API.Migrations
             new { id = "sentat", label = "Enviado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "lasterror", label = "Último Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                     },
                     endpoints = new
                     {
+                        tenantid = "/yInbox/yInboxReadFKTenantID",
                         create = "/yInbox/PostyInbox",
                         read = "/yInbox/ReadyInbox",
                         update = "/yInbox/PutyInbox",
@@ -3419,7 +3431,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             app.MapPost("/yapi/Worker/WorkerPollingInboxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerPollingInboxUseCaseInputCommand command) =>
@@ -3436,7 +3448,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             app.MapPost("/yapi/Worker/WorkerListenerInBoxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerListenerInBoxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerListenerInBoxUseCaseInputCommand command) =>
@@ -3453,7 +3465,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.InfraStarSessionUploadUseCaseReceiver receiver, [FromBody] Command.UseCase.InfraStarSessionUploadUseCaseInputCommand command) =>
@@ -3470,7 +3482,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.InfraSendFileUseCaseReceiver receiver, [FromBody] Command.UseCase.InfraSendFileUseCaseInputCommand command) =>
@@ -3487,7 +3499,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             app.MapPost("/yapi/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
@@ -3521,7 +3533,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             app.MapPost("/yapi/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasRecoveryAccountUseCaseInputCommand command) =>
@@ -3538,7 +3550,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
             #endregion

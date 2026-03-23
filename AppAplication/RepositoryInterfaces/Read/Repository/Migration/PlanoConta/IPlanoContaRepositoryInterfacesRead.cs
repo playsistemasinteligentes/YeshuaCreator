@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IPlanoContaReadRepository
+    public partial interface IPlanoContaReadRepository
     {
         public DataPagination<PlanoContaDTO> getPlanoConta(ICommandRead command );
         public IEnumerable<PlanoContaTenantIDDTO> getPlanoContaReadFKTenantID(object command );

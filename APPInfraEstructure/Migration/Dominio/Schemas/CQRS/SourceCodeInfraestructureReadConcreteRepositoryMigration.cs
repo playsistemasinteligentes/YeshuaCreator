@@ -44,7 +44,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
                 sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepository}");
                 sb.AppendLine("{");
-                sb.AppendLine($"    public class {_entity.EntityName}ReadRepositoryCacheDecorator : I{_entity.EntityName}ReadRepository");
+                sb.AppendLine($"    public partial class {_entity.EntityName}ReadRepositoryCacheDecorator : I{_entity.EntityName}ReadRepository");
                 sb.AppendLine("    {");
                 sb.AppendLine($"    private readonly I{_entity.EntityName}ReadRepository _inner;");
                 sb.AppendLine($"    private readonly ICacheService<{_entity.EntityName}DTO> _cacheById;");
@@ -206,7 +206,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine($"namespace {CQRSParam.I.NameSpaceReadRepository}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public class {_entity.EntityName}ReadRepository : I{_entity.EntityName}ReadRepository");
+            sb.AppendLine($"    public partial class {_entity.EntityName}ReadRepository : I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
             sb.AppendLine("        protected readonly IDbConnection _connection;");
             sb.AppendLine("        protected readonly ICurrentUser _currentUser;");

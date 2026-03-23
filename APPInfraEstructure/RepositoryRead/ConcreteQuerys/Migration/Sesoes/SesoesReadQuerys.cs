@@ -1458,7 +1458,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command)
+        public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command )
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome, t0.StatusAgendamento, t0.StatusProntuario FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
@@ -1490,7 +1490,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command)
+        public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command )
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome, t0.StatusAgendamento, t0.StatusProntuario FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
@@ -1522,7 +1522,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel SesoesD30Query(Command.Read.SesoesD30Command Command)
+        public QueryModel SesoesD30Query(Command.Read.SesoesD30Command Command )
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome, t0.StatusAgendamento, t0.StatusProntuario FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();
@@ -1554,7 +1554,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command)
+        public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command )
         {
             this.Query = "SELECT t0.Id, t0.DataInicio, t1.Nome, t0.StatusAgendamento, t0.StatusProntuario FROM Sesoes t0 INNER JOIN Paciente t1 ON t1.Id = t0.PacienteId";
             var whereClauses = new List<string>();

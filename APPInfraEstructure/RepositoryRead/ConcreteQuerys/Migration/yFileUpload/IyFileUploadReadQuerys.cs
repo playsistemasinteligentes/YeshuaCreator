@@ -3,31 +3,31 @@ namespace IQuery.Read
 {
     public interface IyFileUploadQueryRead 
     {
-        public QueryModel yFileUploadQuery(Command.Read.yFileUploadReadCommand Command );
-        public QueryModel yFileUploadTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
-        public QueryModel yFileUploadUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
-        public QueryModel ExistsByIdQuery(int value );
-        public QueryModel ExistsByTypeQuery(string value );
-        public QueryModel ExistsByStatusQuery(int value );
-        public QueryModel ExistsByFilePathQuery(string value );
-        public QueryModel ExistsByFileSizeQuery(long value );
-        public QueryModel ExistsByCreatedAtQuery(DateTime value );
-        public QueryModel ExistsByCompletedAtQuery(DateTime value );
-        public QueryModel ExistsByTenantIDQuery(int value );
-        public QueryModel ExistsByDeletedQuery(bool value );
-        public QueryModel ExistsByChangedQuery(DateTime value );
-        public QueryModel ExistsByUserIdQuery(int value );
-        public QueryModel FirstByIdQuery(int value );
-        public QueryModel FirstByTypeQuery(string value );
-        public QueryModel FirstByStatusQuery(int value );
-        public QueryModel FirstByFilePathQuery(string value );
-        public QueryModel FirstByFileSizeQuery(long value );
-        public QueryModel FirstByCreatedAtQuery(DateTime value );
-        public QueryModel FirstByCompletedAtQuery(DateTime value );
-        public QueryModel FirstByTenantIDQuery(int value );
-        public QueryModel FirstByDeletedQuery(bool value );
-        public QueryModel FirstByChangedQuery(DateTime value );
-        public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel yFileUploadQuery(Command.Read.yFileUploadReadCommand Command , bool TakeOffTenantID = false);
+        public QueryModel yFileUploadTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false);
+        public QueryModel yFileUploadUserIdQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false);
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByTypeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByFilePathQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByFileSizeQuery(long value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCompletedAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByTypeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByFilePathQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByFileSizeQuery(long value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCompletedAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -38,7 +38,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a interface
             sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIRepositoryRead}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public interface I{_entity.EntityName}ReadRepository");
+            sb.AppendLine($"    public partial interface I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
 
             //--trocar ICommand comando por um DTO apenas pra não gerar dependencia do Repositorio para o command

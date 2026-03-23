@@ -3,39 +3,39 @@ namespace IQuery.Read
 {
     public interface IyInboxQueryRead 
     {
-        public QueryModel yInboxQuery(Command.Read.yInboxReadCommand Command );
-        public QueryModel yInboxTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
-        public QueryModel yInboxUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
-        public QueryModel ExistsByIdQuery(int value );
-        public QueryModel ExistsByMessageIdQuery(string value );
-        public QueryModel ExistsByJobIdQuery(string value );
-        public QueryModel ExistsByCorrelationIdQuery(string value );
-        public QueryModel ExistsByTypeQuery(string value );
-        public QueryModel ExistsByPayloadQuery(string value );
-        public QueryModel ExistsByStatusQuery(int value );
-        public QueryModel ExistsByCreatedAtQuery(DateTime value );
-        public QueryModel ExistsBySentAtQuery(DateTime value );
-        public QueryModel ExistsByRetryCountQuery(int value );
-        public QueryModel ExistsByLastErrorQuery(string value );
-        public QueryModel ExistsByTenantIDQuery(int value );
-        public QueryModel ExistsByDeletedQuery(bool value );
-        public QueryModel ExistsByChangedQuery(DateTime value );
-        public QueryModel ExistsByUserIdQuery(int value );
-        public QueryModel FirstByIdQuery(int value );
-        public QueryModel FirstByMessageIdQuery(string value );
-        public QueryModel FirstByJobIdQuery(string value );
-        public QueryModel FirstByCorrelationIdQuery(string value );
-        public QueryModel FirstByTypeQuery(string value );
-        public QueryModel FirstByPayloadQuery(string value );
-        public QueryModel FirstByStatusQuery(int value );
-        public QueryModel FirstByCreatedAtQuery(DateTime value );
-        public QueryModel FirstBySentAtQuery(DateTime value );
-        public QueryModel FirstByRetryCountQuery(int value );
-        public QueryModel FirstByLastErrorQuery(string value );
-        public QueryModel FirstByTenantIDQuery(int value );
-        public QueryModel FirstByDeletedQuery(bool value );
-        public QueryModel FirstByChangedQuery(DateTime value );
-        public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel yInboxQuery(Command.Read.yInboxReadCommand Command , bool TakeOffTenantID = false);
+        public QueryModel yInboxTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false);
+        public QueryModel yInboxUserIdQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false);
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByMessageIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByJobIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByTypeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByPayloadQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsBySentAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByRetryCountQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByLastErrorQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByMessageIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByJobIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByTypeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByPayloadQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstBySentAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByRetryCountQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByLastErrorQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false);
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

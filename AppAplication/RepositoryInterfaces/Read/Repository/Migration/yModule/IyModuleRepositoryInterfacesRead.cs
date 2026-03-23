@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IyModuleReadRepository
+    public partial interface IyModuleReadRepository
     {
         public DataPagination<yModuleDTO> getyModule(ICommandRead command );
         public bool ExistsById(string value );

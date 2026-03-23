@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class ClinicaReadRepository : IClinicaReadRepository
+    public partial class ClinicaReadRepository : IClinicaReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

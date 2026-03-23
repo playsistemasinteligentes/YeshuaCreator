@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IyUserGrantReadRepository
+    public partial interface IyUserGrantReadRepository
     {
         public DataPagination<yUserGrantDTO> getyUserGrant(ICommandRead command );
         public IEnumerable<yUserGrantPerfilIdDTO> getyUserGrantReadFKPerfilId(object command );

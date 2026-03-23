@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class DisponibilidadeAgendaReadRepository : IDisponibilidadeAgendaReadRepository
+    public partial class DisponibilidadeAgendaReadRepository : IDisponibilidadeAgendaReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

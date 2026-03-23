@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IEspecialidadeReadRepository
+    public partial interface IEspecialidadeReadRepository
     {
         public DataPagination<EspecialidadeDTO> getEspecialidade(ICommandRead command );
         public IEnumerable<EspecialidadeTenantIDDTO> getEspecialidadeReadFKTenantID(object command );

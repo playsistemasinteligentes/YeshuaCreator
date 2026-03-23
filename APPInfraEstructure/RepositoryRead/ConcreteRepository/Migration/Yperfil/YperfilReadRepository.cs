@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class yPerfilReadRepository : IyPerfilReadRepository
+    public partial class yPerfilReadRepository : IyPerfilReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

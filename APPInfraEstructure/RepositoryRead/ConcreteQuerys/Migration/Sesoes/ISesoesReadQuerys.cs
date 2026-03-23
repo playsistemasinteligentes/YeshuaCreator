@@ -74,10 +74,10 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
-    public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command);
-    public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command);
-    public QueryModel SesoesD30Query(Command.Read.SesoesD30Command Command);
-    public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command);
+    public QueryModel SesoesHojeQuery(Command.Read.SesoesHojeCommand Command );
+    public QueryModel SesoesSemanaQuery(Command.Read.SesoesSemanaCommand Command );
+    public QueryModel SesoesD30Query(Command.Read.SesoesD30Command Command );
+    public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

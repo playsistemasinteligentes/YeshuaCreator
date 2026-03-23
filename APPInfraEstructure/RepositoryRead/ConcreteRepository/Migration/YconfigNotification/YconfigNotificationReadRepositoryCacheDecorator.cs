@@ -6,7 +6,7 @@ using RepositoryInterfaces.Services;
 
 namespace Read.Repository
 {
-    public class yConfigNotificationReadRepositoryCacheDecorator : IyConfigNotificationReadRepository
+    public partial class yConfigNotificationReadRepositoryCacheDecorator : IyConfigNotificationReadRepository
     {
     private readonly IyConfigNotificationReadRepository _inner;
     private readonly ICacheService<yConfigNotificationDTO> _cacheById;

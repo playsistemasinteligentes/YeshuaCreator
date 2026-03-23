@@ -55,6 +55,7 @@ namespace Command.Receivers.UseCase
                 var uploadId = tokenData.uploadId;
                 var userId = tokenData.userId;
                 var tenantId = tokenData.tenantId;
+                string pathParts = Path.Combine(uploadId.ToString(), "pending_merge");
 
                 // segurança
                 if (tenantId != _CurrentUser.TenantID)
@@ -67,7 +68,7 @@ namespace Command.Receivers.UseCase
 
                 StoragePath path = StoragePathBuilder.Build(
                     tenantId.ToString(),
-                    uploadId.ToString(),
+                    pathParts,
                     chunkFileName,
                     false
                 );
@@ -104,12 +105,10 @@ namespace Command.Receivers.UseCase
                 //    throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
                 //        Error("Upload não encontrado.", default));
 
-                var finalFileName = comand.FileName;
-
                 StoragePath finalPath = StoragePathBuilder.Build(
                     tenantId.ToString(),
                     uploadId.ToString(),
-                    finalFileName,
+                    $"{Guid.NewGuid():N}.webm",
                     false
                 );
 
@@ -120,9 +119,9 @@ namespace Command.Receivers.UseCase
                 yFileUploadEntity upload = new yFileUploadEntity().getProxy(uploadId);
                 upload.FilePath = finalPath.Value;
                 upload.FileSize = result.Size;
-                upload.Status = 1; // Finalizado
+                upload.Status = 1;
                 upload.CreatedAt = DateTime.UtcNow;
-                upload.Type = "teste";
+                upload.Type = "audio.transcribe";
 
 
                 if (!upload.isValidData())
@@ -135,7 +134,7 @@ namespace Command.Receivers.UseCase
 
                 _repWriteyFileUpload.UpdateFilePath(upload);
 
-                new OutboxService(_yOutboxWriteRepository, _logger).AddOutBoxEvent("yFileUploadEntity.Status.Completed", payload, upload.Id.Value);
+                new OutboxService(_yOutboxWriteRepository, _logger).AddOutBoxEvent(upload.Type, payload, upload.Id.Value);
 
                 _unitOfWork.Commit();
 

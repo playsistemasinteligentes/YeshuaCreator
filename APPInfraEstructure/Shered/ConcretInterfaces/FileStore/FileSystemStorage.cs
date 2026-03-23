@@ -68,5 +68,71 @@ namespace Shered.ConcretInterfaces.FileStore
 
             return Task.FromResult(File.Exists(fullPath));
         }
+        public Task<bool> HasFilesInDirectoryAsync(StoragePath path, CancellationToken cancellationToken)
+        {
+            // Verifica se existe pelo menos 1 arquivo dentro
+            var hasFiles = Directory.EnumerateFiles(Path.Combine(_rootPath, path.Directory)).Any();
+
+            return Task.FromResult(hasFiles);
+        }
+        public object ListFiles(string pendingPath, string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object OpenWrite(string finalPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DirectoryExists(StoragePath path)
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+
+            return Directory.Exists(path.Value);
+        }
+
+        public IEnumerable<StoragePath> ListFiles(StoragePath path)
+        {
+            if (path == null || string.IsNullOrWhiteSpace(path.Value))
+                yield break;
+            string fullPath = Path.Combine(_rootPath, path.Directory);
+
+            if (!Directory.Exists(fullPath))
+                yield break;
+
+            foreach (var filePath in Directory.GetFiles(fullPath))
+            {
+                // Criando StoragePath via builder
+                yield return StoragePathBuilder.Build(filePath);
+            }
+        }
+        public Stream OpenRead(StoragePath path)
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
+
+            // Combina com a raiz do storage
+            var fullPath = Path.Combine(_rootPath, path.Value);
+
+            if (!File.Exists(fullPath))
+                throw new FileNotFoundException($"File not found: {fullPath}", fullPath);
+
+            // Abre para leitura compartilhada
+            return new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        }
+
+        public Stream OpenWrite(StoragePath path)
+        {
+            var fullPath = Path.Combine(_rootPath, path.Value);
+
+            var directory = Path.GetDirectoryName(fullPath)!;
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            return new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+        }
     }
 }

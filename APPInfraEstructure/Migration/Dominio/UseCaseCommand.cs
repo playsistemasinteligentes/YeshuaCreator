@@ -29,7 +29,7 @@ namespace Dominio
         public StringBuilder VersaoAtualCodigo { get; set; }
         public StringBuilder VersaoAlterada { get; set; }
         public UseCaseSubGroup UseCaseSubGroup { get; set; }
-        public Authorization Authorization { get; set; }
+        public Authorization Authorization { get; set; } = Authorization.User;
         public bool IsWorker { get; internal set; } = false;
         public bool IsListener { get; internal set; } = false;
 

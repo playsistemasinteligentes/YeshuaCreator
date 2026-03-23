@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IyConfigNotificationReadRepository
+    public partial interface IyConfigNotificationReadRepository
     {
         public DataPagination<yConfigNotificationDTO> getyConfigNotification(ICommandRead command );
         public IEnumerable<yConfigNotificationTenantIDDTO> getyConfigNotificationReadFKTenantID(object command );

@@ -19,7 +19,7 @@ namespace Query.Read
         {
             _currentUser = currentUser;
         }
-        public QueryModel yFileUploadQuery(Command.Read.yFileUploadReadCommand Command )
+        public QueryModel yFileUploadQuery(Command.Read.yFileUploadReadCommand Command , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -43,8 +43,8 @@ if (Command.Status != null && Command.Status.Any())
 }
 if (!string.IsNullOrEmpty(Command.FilePath)) dict["FilePath"] = $"%{Command.FilePath}%";
 if (!string.IsNullOrEmpty(Command.FilePath)) whereClauses.Add($"FilePath like @FilePath");
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
@@ -60,7 +60,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel yFileUploadTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
+        public QueryModel yFileUploadTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false)
         {
             this.Query = $@" select Id, Nome from yTenant ";
             this.Parameters = null;
@@ -91,7 +91,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
         }
-        public QueryModel yFileUploadUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
+        public QueryModel yFileUploadUserIdQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false)
         {
             this.Query = $@" select Id, Nome from yUser ";
             this.Parameters = null;
@@ -122,15 +122,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
         }
-        public QueryModel ExistsByIdQuery(int value )
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Id"] = value; //04
@@ -140,15 +140,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByTypeQuery(string value )
+        public QueryModel ExistsByTypeQuery(string value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Type"] = value; //04
@@ -158,15 +158,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByStatusQuery(int value )
+        public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Status"] = value; //04
@@ -176,15 +176,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByFilePathQuery(string value )
+        public QueryModel ExistsByFilePathQuery(string value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FilePath"] = value; //04
@@ -194,15 +194,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByFileSizeQuery(long value )
+        public QueryModel ExistsByFileSizeQuery(long value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FileSize"] = value; //04
@@ -212,15 +212,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByCreatedAtQuery(DateTime value )
+        public QueryModel ExistsByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["CreatedAt"] = value; //04
@@ -230,15 +230,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByCompletedAtQuery(DateTime value )
+        public QueryModel ExistsByCompletedAtQuery(DateTime value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["CompletedAt"] = value; //04
@@ -248,15 +248,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByTenantIDQuery(int value )
+        public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["TenantID"] = value; //04
@@ -266,15 +266,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByDeletedQuery(bool value )
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Deleted"] = value; //04
@@ -284,15 +284,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByChangedQuery(DateTime value )
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Changed"] = value; //04
@@ -302,15 +302,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByUserIdQuery(int value )
+        public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["UserId"] = value; //04
@@ -320,15 +320,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByIdQuery(int value )
+        public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Id"] = value; //06
@@ -338,15 +338,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByTypeQuery(string value )
+        public QueryModel FirstByTypeQuery(string value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Type"] = value; //06
@@ -356,15 +356,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByStatusQuery(int value )
+        public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Status"] = value; //06
@@ -374,15 +374,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByFilePathQuery(string value )
+        public QueryModel FirstByFilePathQuery(string value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FilePath"] = value; //06
@@ -392,15 +392,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByFileSizeQuery(long value )
+        public QueryModel FirstByFileSizeQuery(long value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FileSize"] = value; //06
@@ -410,15 +410,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByCreatedAtQuery(DateTime value )
+        public QueryModel FirstByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["CreatedAt"] = value; //06
@@ -428,15 +428,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByCompletedAtQuery(DateTime value )
+        public QueryModel FirstByCompletedAtQuery(DateTime value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["CompletedAt"] = value; //06
@@ -446,15 +446,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByTenantIDQuery(int value )
+        public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["TenantID"] = value; //06
@@ -464,15 +464,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByDeletedQuery(bool value )
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Deleted"] = value; //06
@@ -482,15 +482,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByChangedQuery(DateTime value )
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Changed"] = value; //06
@@ -500,15 +500,15 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByUserIdQuery(int value )
+        public QueryModel FirstByUserIdQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yFileUpload ";
- dict["TenantID"] = _currentUser.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["UserId"] = value; //06

@@ -1,4 +1,4 @@
-using Dominio.Interfaces;
+﻿using Dominio.Interfaces;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using IRepository.Read;
@@ -9,6 +9,8 @@ using Command.Patterns.Queue;
 using Command.Read;
 using Repositorio.Outputs;
 using Dominio.Entitys;
+using Command.Interfaces.Patterns.FileStore;
+using System.Threading;
 
 namespace Command.Receivers.UseCase
 {
@@ -17,29 +19,47 @@ namespace Command.Receivers.UseCase
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _logger;
         private readonly IyOutboxReadRepository _repReadyOutbox;
+        private readonly IyFileUploadReadRepository _repReadyUpload;
         private readonly IyOutboxWriteRepository _repWriteyOutbox;
         private readonly IQueuePublisher _queuePublisher;
-
-        public WorkerPollingOutBoxUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyOutboxReadRepository repReadyOutbox, IyOutboxWriteRepository repWriteyOutbox, IQueuePublisher queuePublisher)
+        private readonly IFileStorage _fileStorage;
+        public WorkerPollingOutBoxUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyOutboxReadRepository repReadyOutbox, IyOutboxWriteRepository repWriteyOutbox, IQueuePublisher queuePublisher, IyFileUploadReadRepository repReadyUpload, IFileStorage fileStorage)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _repReadyOutbox = repReadyOutbox;
             _repWriteyOutbox = repWriteyOutbox;
             _queuePublisher = queuePublisher;
+            _repReadyUpload = repReadyUpload;
+            _fileStorage = fileStorage;
         }
         partial void CustomActionHook(ref State<WorkerPollingOutBoxUseCaseOutputCommand> state, WorkerPollingOutBoxUseCaseInputCommand comand)
         {
             try
             {
-                var command = new yOutboxProximaPendenteCommand
+                var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
+                foreach (int outBoxId in outBoxListJob)
                 {
-                    Paginacao = new Pagination(1, 10)
-                };
+                    yOutboxDTO outBox = _repReadyOutbox.FirstById(outBoxId, true);
+                    yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.correlationid), true);
 
-                var outBoxData = _repReadyOutbox.GetyOutboxProximaPendente(command);
-                foreach (yOutboxStandardDTO outBox in outBoxData.Items)
-                {
+                    StoragePath finalPath = StoragePathBuilder.Build(upload.filepath);
+                    StoragePath pendingMergePath = StoragePathBuilder.Build(Path.Combine(finalPath.Directory, "pending_merge/"));
+
+                    // 🔎 não existe o arquivo final?
+                    if (!_fileStorage.HasFilesInDirectoryAsync(finalPath, CancellationToken.None).GetAwaiter().GetResult())
+                    {
+
+                        var merged = MergeChunksFromStorage(pendingMergePath, finalPath); // usar FFMpeg.exe
+
+                        if (!merged)
+                            throw new Exception("Falha ao reconstruir arquivo a partir dos chunks.");
+
+                        // 🧹 opcional: limpar chunks
+                        // TryDeletePending(pendingPath);
+
+                    }
+
                     QueueMessage queueMessage = new QueueMessage(outBox.type, outBox.payload)
                     { CorrelationId = outBox.id.ToString(), Source = "worker-outbox" };
                     _queuePublisher.PublishAsync("ai.tasks", "audio.transcribe", queueMessage).GetAwaiter().GetResult();
@@ -51,6 +71,36 @@ namespace Command.Receivers.UseCase
             {
             }
         }
+
+        private bool MergeChunksFromStorage(StoragePath pendingPath, StoragePath finalPath)
+        {
+            var chunks = _fileStorage
+                .ListFiles(pendingPath)
+                .Where(f => Path.GetFileName(f.Value).StartsWith("chunk_"))
+                .OrderBy(f =>
+                {
+                    var fileName = Path.GetFileName(f.Value); // chunk_0.part
+                    var numberPart = fileName.Split('_')[1];  // 0.part
+                    var index = int.Parse(numberPart.Split('.')[0]); // 0
+
+                    return index;
+                })
+                .ToList();
+
+            if (!chunks.Any())
+                return false;
+
+            using var output = _fileStorage.OpenWrite(finalPath);
+
+            foreach (var chunk in chunks)
+            {
+                using var input = _fileStorage.OpenRead(chunk);
+                input.CopyTo(output);
+            }
+
+            return true;
+        }
     }
+
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

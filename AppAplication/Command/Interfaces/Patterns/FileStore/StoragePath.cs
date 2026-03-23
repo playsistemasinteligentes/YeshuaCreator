@@ -15,8 +15,18 @@ namespace Command.Interfaces.Patterns.FileStore
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("StoragePath cannot be empty.", nameof(value));
 
-            Value = value.Replace("\\", "/");
+            // Normaliza para o separador do sistema
+            Value = value.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
         }
+
+        public string FileName => Path.GetFileName(Value);
+        public string FileNameWithoutExtension => Path.GetFileNameWithoutExtension(Value);
+        public string? Directory => Path.GetDirectoryName(Value)?.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+        public string Extension => Path.GetExtension(Value);
+
+        public bool HasExtension => !string.IsNullOrEmpty(Extension);
+        public bool IsFile => HasExtension;
+        public bool IsDirectory => !HasExtension;
 
         public override string ToString() => Value;
     }

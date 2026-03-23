@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class ProfissionalReadRepository : IProfissionalReadRepository
+    public partial class ProfissionalReadRepository : IProfissionalReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

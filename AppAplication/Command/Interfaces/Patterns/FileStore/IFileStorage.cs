@@ -21,5 +21,17 @@ namespace Command.Interfaces.Patterns.FileStore
         Task<bool> ExistsAsync(
             StoragePath path,
             CancellationToken cancellationToken);
+
+        Task<bool> HasFilesInDirectoryAsync(
+            StoragePath path,
+            CancellationToken cancellationToken);
+
+        IEnumerable<StoragePath> ListFiles(StoragePath path);
+
+        Stream OpenRead(StoragePath path);
+
+        Stream OpenWrite(StoragePath path);
+
+        bool DirectoryExists(StoragePath path);
     }
 }

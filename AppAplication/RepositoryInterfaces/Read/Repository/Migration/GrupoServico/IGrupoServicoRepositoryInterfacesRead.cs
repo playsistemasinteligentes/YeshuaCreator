@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IGrupoServicoReadRepository
+    public partial interface IGrupoServicoReadRepository
     {
         public DataPagination<GrupoServicoDTO> getGrupoServico(ICommandRead command );
         public IEnumerable<GrupoServicoTenantIDDTO> getGrupoServicoReadFKTenantID(object command );

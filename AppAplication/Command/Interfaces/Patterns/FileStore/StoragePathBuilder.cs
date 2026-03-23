@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Command.Interfaces.Patterns.FileStore
 {
@@ -10,7 +8,7 @@ namespace Command.Interfaces.Patterns.FileStore
     {
         public static StoragePath Build(
             string tenant,
-            string? prefix,
+            string? pathParts,
             string fileName,
             bool useShard = false,
             string? shardSeed = null)
@@ -23,26 +21,45 @@ namespace Command.Interfaces.Patterns.FileStore
 
             var parts = new List<string> { tenant };
 
-            if (!string.IsNullOrWhiteSpace(prefix))
-                parts.Add(prefix);
+            // Se houver pathParts, adiciona como segmento limpo
+            if (!string.IsNullOrWhiteSpace(pathParts))
+            {
+                var splitParts = pathParts.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+                parts.AddRange(splitParts);
+            }
 
+            // Adiciona shards se necessário
             if (useShard)
             {
                 var seed = shardSeed ?? Guid.NewGuid().ToString("N");
-
-                var shard1 = seed[..2];
+                var shard1 = seed.Substring(0, 2);
                 var shard2 = seed.Substring(2, 2);
-
                 parts.Add(shard1);
                 parts.Add(shard2);
             }
 
             parts.Add(fileName);
 
-            var path = Path.Combine(parts.ToArray());
+            // Combina todos os segmentos
+            var combinedPath = Path.Combine(parts.ToArray());
 
-            return new StoragePath(path);
+            // Normaliza barras para o separador do sistema
+            combinedPath = combinedPath.Replace('/', Path.DirectorySeparatorChar)
+                                       .Replace('\\', Path.DirectorySeparatorChar);
+
+            return new StoragePath(combinedPath);
+        }
+
+        public static StoragePath Build(string filepath)
+        {
+            if (string.IsNullOrWhiteSpace(filepath))
+                throw new ArgumentException("Filepath is required.", nameof(filepath));
+
+            // Normaliza barras para o separador do sistema
+            var normalized = filepath.Replace('/', Path.DirectorySeparatorChar)
+                                     .Replace('\\', Path.DirectorySeparatorChar);
+
+            return new StoragePath(normalized);
         }
     }
 }
-

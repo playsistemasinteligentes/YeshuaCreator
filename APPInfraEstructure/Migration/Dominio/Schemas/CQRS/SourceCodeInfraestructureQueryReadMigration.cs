@@ -66,14 +66,14 @@ namespace Dominio.Schemas.CQRS
                     foreach (var ctxName in query.Meta.WhereContextParameters.Keys)
                     {
                         string methodName = $"{_entity.EntityName}{ctxName}Query";
-                        sb.AppendLine($"    public QueryModel {methodName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{ctxName}Command Command);");
+                        sb.AppendLine($"    public QueryModel {methodName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{ctxName}Command Command {takeOff});");
                     }
 
                     // Wheres
                     foreach (var whName in query.Meta.WhereParameters.Keys)
                     {
                         string methodName = $"{_entity.EntityName}{whName}";
-                        sb.AppendLine($"    public QueryModel {methodName}Query({CQRSParam.I.NameSpaceCommandRead}.{methodName}Command Command);");
+                        sb.AppendLine($"    public QueryModel {methodName}Query({CQRSParam.I.NameSpaceCommandRead}.{methodName}Command Command {takeOff});");
                     }
                 }
 
@@ -251,7 +251,7 @@ namespace Dominio.Schemas.CQRS
                     {
                         string commandName = $"{_entity.EntityName}{ctxName}Command";
                         string methodName = $"{_entity.EntityName}{ctxName}Query";
-                        sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command)");
+                        sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command {takeOff})");
                         sb.AppendLine("        {");
                         sb.AppendLine($"            this.Query = \"{query.Meta.SqlBase}\";");
                         sb.AppendLine("            var whereClauses = new List<string>();");
@@ -297,14 +297,30 @@ namespace Dominio.Schemas.CQRS
                         }
 
                         // Condições fixas
-                        sb.AppendLine("");
-                        sb.AppendLine("            dict[\"Deleted\"] = 0;");
-                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
-                        foreach (var prefix in prefixoList)
+                        if (string.IsNullOrWhiteSpace(takeOff))
                         {
                             sb.AppendLine("");
-                            sb.AppendLine($"            whereClauses.Add(\"{prefix}.TenantID = @TenantID\");");
-                            sb.AppendLine($"            whereClauses.Add(\"{prefix}.Deleted = @Deleted\");");
+                            sb.AppendLine("            dict[\"Deleted\"] = 0;");
+                            sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                            foreach (var prefix in prefixoList)
+                            {
+                                sb.AppendLine("");
+                                sb.AppendLine($"            whereClauses.Add(\"{prefix}.TenantID = @TenantID\");");
+                                sb.AppendLine($"            whereClauses.Add(\"{prefix}.Deleted = @Deleted\");");
+                            }
+                        }
+                        else
+                        {
+                            sb.AppendLine("");
+                            sb.AppendLine("            dict[\"Deleted\"] = 0;");
+                            sb.AppendLine("            if (!TakeOffTenantID) dict[\"TenantID\"] = _currentUser.TenantID;");
+
+                            foreach (var prefix in prefixoList)
+                            {
+                                sb.AppendLine("");
+                                sb.AppendLine($"            if (!TakeOffTenantID) whereClauses.Add(\"{prefix}.TenantID = @TenantID\");");
+                                sb.AppendLine($"            whereClauses.Add(\"{prefix}.Deleted = @Deleted\");");
+                            }
                         }
 
                         sb.AppendLine("");
@@ -331,7 +347,7 @@ namespace Dominio.Schemas.CQRS
                         string methodName = $"{_entity.EntityName}{wh.Key}Query";
                         string commandName = $"{_entity.EntityName}{wh.Key}Command";
 
-                        sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command)");
+                        sb.AppendLine($"        public QueryModel {methodName}(Command.Read.{commandName} Command {takeOff})");
                         sb.AppendLine("        {");
                         sb.AppendLine($"            this.Query = \"{query.Meta.SqlBase}\";");
                         sb.AppendLine("            var whereClauses = new List<string>();");

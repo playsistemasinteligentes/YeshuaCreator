@@ -179,28 +179,50 @@
 
         async function startSession() {
             if (app.uploadToken) return app.uploadToken;
-            const res = await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) });
+
+            const token = localStorage.getItem("token");
+
+            const res = await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({})
+            });
+
             const data = await res.json();
             app.uploadToken = data.uploadToken;
             log("Token sessão: " + app.uploadToken);
             return app.uploadToken;
         }
 
-        async function finishSession() {
+        async function finishSession() { // obsoleta
             if (!app.uploadToken) return;
+
+            const token = localStorage.getItem("token");
+
             log("Finalizando sessão...");
             await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: app.uploadToken, IsFinalChunk: true })
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    token: app.uploadToken,
+                    IsFinalChunk: true
+                })
             });
+
             log("Sessão finalizada");
         }
 
         async function uploadChunk(chunk, isFinal = false) {
             try {
-                const fd = new FormData();
+                const token = localStorage.getItem("token");
 
+                const fd = new FormData();
                 const fileName = `audio_chunk_${chunk.index}.webm`;
 
                 fd.append("token", app.uploadToken);
@@ -212,6 +234,9 @@
 
                 const res = await fetch("/yapi/FileUpload/InfraSendFileUseCase2", {
                     method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}` // 👈 aqui
+                    },
                     body: fd
                 });
 
@@ -221,7 +246,6 @@
                 return false;
             }
         }
-
         async function uploadWorker() {
 
             if (!app.uploadEnabled) {

@@ -109,7 +109,7 @@ namespace API.Migrations
                 {
                     return Results.Problem(ex.Message);
                 }
-            });
+            }).RequireAuthorization();
 
 
 

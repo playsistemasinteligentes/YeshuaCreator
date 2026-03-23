@@ -34,7 +34,8 @@ namespace Migration.Dominio.Migration
                 .AddColumn("FileSize", "Tamanho do Arquivo").Long()
                 //.AddColumn("ContentType", "Content Type").Varchar(100)
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
-                .AddColumn("CompletedAt", "Finalizado em").DateTime();
+                .AddColumn("CompletedAt", "Finalizado em").DateTime()
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("StarSessionUpload",
                 new AutenticationToken(""),
@@ -61,12 +62,14 @@ namespace Migration.Dominio.Migration
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("SentAt", "Enviado em").DateTime()
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
-                .AddColumn("LastError", "Último Erro").Varchar(2000);
+                .AddColumn("LastError", "Último Erro").Varchar(2000)
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
+
 
             AddQuery<yOutbox>("Standard", q => q
             .WhereContext("ProximaPendente", s => s.Status == 0)
             //.Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
-            .Select(s => new { s.Id, s.Type,s.Payload }));
+            .Select(s => new { s.Id, s.Type, s.Payload }));
 
 
             AddEntity("yInbox").AddModule("ADM")
@@ -83,7 +86,8 @@ namespace Migration.Dominio.Migration
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("SentAt", "Enviado em").DateTime()
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
-                .AddColumn("LastError", "Último Erro").Varchar(2000);
+                .AddColumn("LastError", "Último Erro").Varchar(2000)
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
         }

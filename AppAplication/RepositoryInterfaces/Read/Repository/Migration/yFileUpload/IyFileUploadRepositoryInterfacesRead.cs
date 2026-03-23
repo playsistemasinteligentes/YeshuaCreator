@@ -9,44 +9,44 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IyFileUploadReadRepository
+    public partial interface IyFileUploadReadRepository
     {
-        public DataPagination<yFileUploadDTO> getyFileUpload(ICommandRead command );
-        public IEnumerable<yFileUploadTenantIDDTO> getyFileUploadReadFKTenantID(object command );
-        public IEnumerable<yFileUploadUserIdDTO> getyFileUploadReadFKUserId(object command );
-        public bool ExistsById(int value );
-        public bool ExistsByType(string value );
-        public bool ExistsByStatus(int value );
-        public bool ExistsByFilePath(string value );
-        public bool ExistsByFileSize(long value );
-        public bool ExistsByCreatedAt(DateTime value );
-        public bool ExistsByCompletedAt(DateTime value );
-        public bool ExistsByTenantID(int value );
-        public bool ExistsByDeleted(bool value );
-        public bool ExistsByChanged(DateTime value );
-        public bool ExistsByUserId(int value );
-        public yFileUploadDTO FirstById(int value );
-        public yFileUploadDTO FirstByType(string value );
-        public yFileUploadDTO FirstByStatus(int value );
-        public yFileUploadDTO FirstByFilePath(string value );
-        public yFileUploadDTO FirstByFileSize(long value );
-        public yFileUploadDTO FirstByCreatedAt(DateTime value );
-        public yFileUploadDTO FirstByCompletedAt(DateTime value );
-        public yFileUploadDTO FirstByTenantID(int value );
-        public yFileUploadDTO FirstByDeleted(bool value );
-        public yFileUploadDTO FirstByChanged(DateTime value );
-        public yFileUploadDTO FirstByUserId(int value );
-        public IEnumerable<yFileUploadDTO> GetAllById(int value );
-        public IEnumerable<yFileUploadDTO> GetAllByType(string value );
-        public IEnumerable<yFileUploadDTO> GetAllByStatus(int value );
-        public IEnumerable<yFileUploadDTO> GetAllByFilePath(string value );
-        public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value );
-        public IEnumerable<yFileUploadDTO> GetAllByCreatedAt(DateTime value );
-        public IEnumerable<yFileUploadDTO> GetAllByCompletedAt(DateTime value );
-        public IEnumerable<yFileUploadDTO> GetAllByTenantID(int value );
-        public IEnumerable<yFileUploadDTO> GetAllByDeleted(bool value );
-        public IEnumerable<yFileUploadDTO> GetAllByChanged(DateTime value );
-        public IEnumerable<yFileUploadDTO> GetAllByUserId(int value );
+        public DataPagination<yFileUploadDTO> getyFileUpload(ICommandRead command , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadTenantIDDTO> getyFileUploadReadFKTenantID(object command , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadUserIdDTO> getyFileUploadReadFKUserId(object command , bool TakeOffTenantID = false);
+        public bool ExistsById(int value , bool TakeOffTenantID = false);
+        public bool ExistsByType(string value , bool TakeOffTenantID = false);
+        public bool ExistsByStatus(int value , bool TakeOffTenantID = false);
+        public bool ExistsByFilePath(string value , bool TakeOffTenantID = false);
+        public bool ExistsByFileSize(long value , bool TakeOffTenantID = false);
+        public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByCompletedAt(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
+        public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
+        public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstById(int value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByType(string value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByStatus(int value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByFilePath(string value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByFileSize(long value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByCompletedAt(DateTime value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByUserId(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllById(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByType(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByStatus(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByFilePath(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByCreatedAt(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByCompletedAt(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

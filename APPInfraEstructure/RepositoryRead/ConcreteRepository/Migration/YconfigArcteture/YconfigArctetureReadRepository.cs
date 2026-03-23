@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class yConfigArctetureReadRepository : IyConfigArctetureReadRepository
+    public partial class yConfigArctetureReadRepository : IyConfigArctetureReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

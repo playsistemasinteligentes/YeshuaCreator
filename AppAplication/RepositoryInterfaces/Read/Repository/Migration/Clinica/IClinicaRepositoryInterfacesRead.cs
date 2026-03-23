@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IClinicaReadRepository
+    public partial interface IClinicaReadRepository
     {
         public DataPagination<ClinicaDTO> getClinica(ICommandRead command );
         public IEnumerable<ClinicaTenantIDDTO> getClinicaReadFKTenantID(object command );

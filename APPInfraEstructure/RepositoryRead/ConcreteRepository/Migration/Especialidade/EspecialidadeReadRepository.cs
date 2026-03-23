@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class EspecialidadeReadRepository : IEspecialidadeReadRepository
+    public partial class EspecialidadeReadRepository : IEspecialidadeReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

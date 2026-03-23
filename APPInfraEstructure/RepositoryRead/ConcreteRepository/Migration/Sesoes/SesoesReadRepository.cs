@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class SesoesReadRepository : ISesoesReadRepository
+    public partial class SesoesReadRepository : ISesoesReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

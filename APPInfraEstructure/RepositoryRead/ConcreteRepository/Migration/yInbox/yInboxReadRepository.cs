@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class yInboxReadRepository : IyInboxReadRepository
+    public partial class yInboxReadRepository : IyInboxReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;
@@ -29,15 +29,15 @@ namespace Read.Repository
             _query = query;
         }
 
-        public DataPagination<yInboxDTO> getyInbox(ICommandRead command )
+        public DataPagination<yInboxDTO> getyInbox(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.yInboxReadCommand c)
-                return getyInbox(c );
+                return getyInbox(c , TakeOffTenantID);
             throw new NotImplementedException();
         }
-        private DataPagination<yInboxDTO> getyInbox(Command.Read.yInboxReadCommand command )
+        private DataPagination<yInboxDTO> getyInbox(Command.Read.yInboxReadCommand command , bool TakeOffTenantID = false)
         {
-            var query = _query.yInboxQuery(command );
+            var query = _query.yInboxQuery(command , TakeOffTenantID);
 
                 var itens = _connection.Query<yInboxDTO>(query.Query,query.Parameters);
                 return new DataPagination<yInboxDTO>(
@@ -47,397 +47,397 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<yInboxTenantIDDTO> getyInboxReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
+        private IEnumerable<yInboxTenantIDDTO> getyInboxReadFKTenantID(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
             List<yInboxTenantIDDTO> lista;
-            var query = _query.yInboxTenantIDQuery(command );
+            var query = _query.yInboxTenantIDQuery(command , TakeOffTenantID);
 
                 lista = _connection.Query<yInboxTenantIDDTO>(query.Query,query.Parameters) as List<yInboxTenantIDDTO>;
             return lista;
         }
 
-        public IEnumerable<yInboxTenantIDDTO> getyInboxReadFKTenantID(object command )
+        public IEnumerable<yInboxTenantIDDTO> getyInboxReadFKTenantID(object command , bool TakeOffTenantID = false)
         {
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
-                return getyInboxReadFKTenantID(c );
+                return getyInboxReadFKTenantID(c , TakeOffTenantID);
             }
             throw new NotImplementedException();
         }
 
-        private IEnumerable<yInboxUserIdDTO> getyInboxReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
+        private IEnumerable<yInboxUserIdDTO> getyInboxReadFKUserId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
             List<yInboxUserIdDTO> lista;
-            var query = _query.yInboxUserIdQuery(command );
+            var query = _query.yInboxUserIdQuery(command , TakeOffTenantID);
 
                 lista = _connection.Query<yInboxUserIdDTO>(query.Query,query.Parameters) as List<yInboxUserIdDTO>;
             return lista;
         }
 
-        public IEnumerable<yInboxUserIdDTO> getyInboxReadFKUserId(object command )
+        public IEnumerable<yInboxUserIdDTO> getyInboxReadFKUserId(object command , bool TakeOffTenantID = false)
         {
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
-                return getyInboxReadFKUserId(c );
+                return getyInboxReadFKUserId(c , TakeOffTenantID);
             }
             throw new NotImplementedException();
         }
 
-        public bool ExistsById(int value )
+        public bool ExistsById(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByIdQuery(value );
+            var query = _query.ExistsByIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByMessageId(string value )
+        public bool ExistsByMessageId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByMessageIdQuery(value );
+            var query = _query.ExistsByMessageIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByJobId(string value )
+        public bool ExistsByJobId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByJobIdQuery(value );
+            var query = _query.ExistsByJobIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByCorrelationId(string value )
+        public bool ExistsByCorrelationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByCorrelationIdQuery(value );
+            var query = _query.ExistsByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByType(string value )
+        public bool ExistsByType(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByTypeQuery(value );
+            var query = _query.ExistsByTypeQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByPayload(string value )
+        public bool ExistsByPayload(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByPayloadQuery(value );
+            var query = _query.ExistsByPayloadQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByStatus(int value )
+        public bool ExistsByStatus(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByStatusQuery(value );
+            var query = _query.ExistsByStatusQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByCreatedAt(DateTime value )
+        public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByCreatedAtQuery(value );
+            var query = _query.ExistsByCreatedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsBySentAt(DateTime value )
+        public bool ExistsBySentAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsBySentAtQuery(value );
+            var query = _query.ExistsBySentAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByRetryCount(int value )
+        public bool ExistsByRetryCount(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByRetryCountQuery(value );
+            var query = _query.ExistsByRetryCountQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByLastError(string value )
+        public bool ExistsByLastError(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByLastErrorQuery(value );
+            var query = _query.ExistsByLastErrorQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByTenantID(int value )
+        public bool ExistsByTenantID(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByTenantIDQuery(value );
+            var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByDeleted(bool value )
+        public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByDeletedQuery(value );
+            var query = _query.ExistsByDeletedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByChanged(DateTime value )
+        public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByChangedQuery(value );
+            var query = _query.ExistsByChangedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByUserId(int value )
+        public bool ExistsByUserId(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByUserIdQuery(value );
+            var query = _query.ExistsByUserIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public yInboxDTO FirstById(int value )
+        public yInboxDTO FirstById(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByIdQuery(value );
+            var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByMessageId(string value )
+        public yInboxDTO FirstByMessageId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByMessageIdQuery(value );
+            var query = _query.FirstByMessageIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByJobId(string value )
+        public yInboxDTO FirstByJobId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByJobIdQuery(value );
+            var query = _query.FirstByJobIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByCorrelationId(string value )
+        public yInboxDTO FirstByCorrelationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCorrelationIdQuery(value );
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByType(string value )
+        public yInboxDTO FirstByType(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTypeQuery(value );
+            var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByPayload(string value )
+        public yInboxDTO FirstByPayload(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByPayloadQuery(value );
+            var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByStatus(int value )
+        public yInboxDTO FirstByStatus(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByStatusQuery(value );
+            var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByCreatedAt(DateTime value )
+        public yInboxDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCreatedAtQuery(value );
+            var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstBySentAt(DateTime value )
+        public yInboxDTO FirstBySentAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstBySentAtQuery(value );
+            var query = _query.FirstBySentAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByRetryCount(int value )
+        public yInboxDTO FirstByRetryCount(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByRetryCountQuery(value );
+            var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByLastError(string value )
+        public yInboxDTO FirstByLastError(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByLastErrorQuery(value );
+            var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByTenantID(int value )
+        public yInboxDTO FirstByTenantID(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTenantIDQuery(value );
+            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByDeleted(bool value )
+        public yInboxDTO FirstByDeleted(bool value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByDeletedQuery(value );
+            var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByChanged(DateTime value )
+        public yInboxDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByChangedQuery(value );
+            var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yInboxDTO FirstByUserId(int value )
+        public yInboxDTO FirstByUserId(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByUserIdQuery(value );
+            var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllById(int value )
+        public IEnumerable<yInboxDTO> GetAllById(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByIdQuery(value );
+            var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByMessageId(string value )
+        public IEnumerable<yInboxDTO> GetAllByMessageId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByMessageIdQuery(value );
+            var query = _query.FirstByMessageIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByJobId(string value )
+        public IEnumerable<yInboxDTO> GetAllByJobId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByJobIdQuery(value );
+            var query = _query.FirstByJobIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByCorrelationId(string value )
+        public IEnumerable<yInboxDTO> GetAllByCorrelationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCorrelationIdQuery(value );
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByType(string value )
+        public IEnumerable<yInboxDTO> GetAllByType(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTypeQuery(value );
+            var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByPayload(string value )
+        public IEnumerable<yInboxDTO> GetAllByPayload(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByPayloadQuery(value );
+            var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByStatus(int value )
+        public IEnumerable<yInboxDTO> GetAllByStatus(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByStatusQuery(value );
+            var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByCreatedAt(DateTime value )
+        public IEnumerable<yInboxDTO> GetAllByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCreatedAtQuery(value );
+            var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllBySentAt(DateTime value )
+        public IEnumerable<yInboxDTO> GetAllBySentAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstBySentAtQuery(value );
+            var query = _query.FirstBySentAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByRetryCount(int value )
+        public IEnumerable<yInboxDTO> GetAllByRetryCount(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByRetryCountQuery(value );
+            var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByLastError(string value )
+        public IEnumerable<yInboxDTO> GetAllByLastError(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByLastErrorQuery(value );
+            var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByTenantID(int value )
+        public IEnumerable<yInboxDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTenantIDQuery(value );
+            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByDeleted(bool value )
+        public IEnumerable<yInboxDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByDeletedQuery(value );
+            var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByChanged(DateTime value )
+        public IEnumerable<yInboxDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByChangedQuery(value );
+            var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByUserId(int value )
+        public IEnumerable<yInboxDTO> GetAllByUserId(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByUserIdQuery(value );
+            var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;

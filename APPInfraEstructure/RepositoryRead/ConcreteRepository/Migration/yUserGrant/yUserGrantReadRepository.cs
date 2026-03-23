@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class yUserGrantReadRepository : IyUserGrantReadRepository
+    public partial class yUserGrantReadRepository : IyUserGrantReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

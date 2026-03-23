@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class yFileUploadReadRepository : IyFileUploadReadRepository
+    public partial class yFileUploadReadRepository : IyFileUploadReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;
@@ -29,15 +29,15 @@ namespace Read.Repository
             _query = query;
         }
 
-        public DataPagination<yFileUploadDTO> getyFileUpload(ICommandRead command )
+        public DataPagination<yFileUploadDTO> getyFileUpload(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.yFileUploadReadCommand c)
-                return getyFileUpload(c );
+                return getyFileUpload(c , TakeOffTenantID);
             throw new NotImplementedException();
         }
-        private DataPagination<yFileUploadDTO> getyFileUpload(Command.Read.yFileUploadReadCommand command )
+        private DataPagination<yFileUploadDTO> getyFileUpload(Command.Read.yFileUploadReadCommand command , bool TakeOffTenantID = false)
         {
-            var query = _query.yFileUploadQuery(command );
+            var query = _query.yFileUploadQuery(command , TakeOffTenantID);
 
                 var itens = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters);
                 return new DataPagination<yFileUploadDTO>(
@@ -47,301 +47,301 @@ namespace Read.Repository
                 command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
         }
 
-        private IEnumerable<yFileUploadTenantIDDTO> getyFileUploadReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
+        private IEnumerable<yFileUploadTenantIDDTO> getyFileUploadReadFKTenantID(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
             List<yFileUploadTenantIDDTO> lista;
-            var query = _query.yFileUploadTenantIDQuery(command );
+            var query = _query.yFileUploadTenantIDQuery(command , TakeOffTenantID);
 
                 lista = _connection.Query<yFileUploadTenantIDDTO>(query.Query,query.Parameters) as List<yFileUploadTenantIDDTO>;
             return lista;
         }
 
-        public IEnumerable<yFileUploadTenantIDDTO> getyFileUploadReadFKTenantID(object command )
+        public IEnumerable<yFileUploadTenantIDDTO> getyFileUploadReadFKTenantID(object command , bool TakeOffTenantID = false)
         {
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
-                return getyFileUploadReadFKTenantID(c );
+                return getyFileUploadReadFKTenantID(c , TakeOffTenantID);
             }
             throw new NotImplementedException();
         }
 
-        private IEnumerable<yFileUploadUserIdDTO> getyFileUploadReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
+        private IEnumerable<yFileUploadUserIdDTO> getyFileUploadReadFKUserId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
             List<yFileUploadUserIdDTO> lista;
-            var query = _query.yFileUploadUserIdQuery(command );
+            var query = _query.yFileUploadUserIdQuery(command , TakeOffTenantID);
 
                 lista = _connection.Query<yFileUploadUserIdDTO>(query.Query,query.Parameters) as List<yFileUploadUserIdDTO>;
             return lista;
         }
 
-        public IEnumerable<yFileUploadUserIdDTO> getyFileUploadReadFKUserId(object command )
+        public IEnumerable<yFileUploadUserIdDTO> getyFileUploadReadFKUserId(object command , bool TakeOffTenantID = false)
         {
             if (command is Command.Patterns.Command.SearchFKCommand c)
             {
-                return getyFileUploadReadFKUserId(c );
+                return getyFileUploadReadFKUserId(c , TakeOffTenantID);
             }
             throw new NotImplementedException();
         }
 
-        public bool ExistsById(int value )
+        public bool ExistsById(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByIdQuery(value );
+            var query = _query.ExistsByIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByType(string value )
+        public bool ExistsByType(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByTypeQuery(value );
+            var query = _query.ExistsByTypeQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByStatus(int value )
+        public bool ExistsByStatus(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByStatusQuery(value );
+            var query = _query.ExistsByStatusQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByFilePath(string value )
+        public bool ExistsByFilePath(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByFilePathQuery(value );
+            var query = _query.ExistsByFilePathQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByFileSize(long value )
+        public bool ExistsByFileSize(long value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByFileSizeQuery(value );
+            var query = _query.ExistsByFileSizeQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByCreatedAt(DateTime value )
+        public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByCreatedAtQuery(value );
+            var query = _query.ExistsByCreatedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByCompletedAt(DateTime value )
+        public bool ExistsByCompletedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByCompletedAtQuery(value );
+            var query = _query.ExistsByCompletedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByTenantID(int value )
+        public bool ExistsByTenantID(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByTenantIDQuery(value );
+            var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByDeleted(bool value )
+        public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByDeletedQuery(value );
+            var query = _query.ExistsByDeletedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByChanged(DateTime value )
+        public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByChangedQuery(value );
+            var query = _query.ExistsByChangedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByUserId(int value )
+        public bool ExistsByUserId(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByUserIdQuery(value );
+            var query = _query.ExistsByUserIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public yFileUploadDTO FirstById(int value )
+        public yFileUploadDTO FirstById(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByIdQuery(value );
+            var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByType(string value )
+        public yFileUploadDTO FirstByType(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTypeQuery(value );
+            var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByStatus(int value )
+        public yFileUploadDTO FirstByStatus(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByStatusQuery(value );
+            var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByFilePath(string value )
+        public yFileUploadDTO FirstByFilePath(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByFilePathQuery(value );
+            var query = _query.FirstByFilePathQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByFileSize(long value )
+        public yFileUploadDTO FirstByFileSize(long value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByFileSizeQuery(value );
+            var query = _query.FirstByFileSizeQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByCreatedAt(DateTime value )
+        public yFileUploadDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCreatedAtQuery(value );
+            var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByCompletedAt(DateTime value )
+        public yFileUploadDTO FirstByCompletedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCompletedAtQuery(value );
+            var query = _query.FirstByCompletedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByTenantID(int value )
+        public yFileUploadDTO FirstByTenantID(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTenantIDQuery(value );
+            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByDeleted(bool value )
+        public yFileUploadDTO FirstByDeleted(bool value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByDeletedQuery(value );
+            var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByChanged(DateTime value )
+        public yFileUploadDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByChangedQuery(value );
+            var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yFileUploadDTO FirstByUserId(int value )
+        public yFileUploadDTO FirstByUserId(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByUserIdQuery(value );
+            var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllById(int value )
+        public IEnumerable<yFileUploadDTO> GetAllById(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByIdQuery(value );
+            var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByType(string value )
+        public IEnumerable<yFileUploadDTO> GetAllByType(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTypeQuery(value );
+            var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByStatus(int value )
+        public IEnumerable<yFileUploadDTO> GetAllByStatus(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByStatusQuery(value );
+            var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByFilePath(string value )
+        public IEnumerable<yFileUploadDTO> GetAllByFilePath(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByFilePathQuery(value );
+            var query = _query.FirstByFilePathQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value )
+        public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByFileSizeQuery(value );
+            var query = _query.FirstByFileSizeQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByCreatedAt(DateTime value )
+        public IEnumerable<yFileUploadDTO> GetAllByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCreatedAtQuery(value );
+            var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByCompletedAt(DateTime value )
+        public IEnumerable<yFileUploadDTO> GetAllByCompletedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByCompletedAtQuery(value );
+            var query = _query.FirstByCompletedAtQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByTenantID(int value )
+        public IEnumerable<yFileUploadDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByTenantIDQuery(value );
+            var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByDeleted(bool value )
+        public IEnumerable<yFileUploadDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByDeletedQuery(value );
+            var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByChanged(DateTime value )
+        public IEnumerable<yFileUploadDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByChangedQuery(value );
+            var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
-        public IEnumerable<yFileUploadDTO> GetAllByUserId(int value )
+        public IEnumerable<yFileUploadDTO> GetAllByUserId(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByUserIdQuery(value );
+            var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
                 var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;

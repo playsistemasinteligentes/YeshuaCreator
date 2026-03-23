@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IyConfigArctetureReadRepository
+    public partial interface IyConfigArctetureReadRepository
     {
         public DataPagination<yConfigArctetureDTO> getyConfigArcteture(ICommandRead command );
         public IEnumerable<yConfigArctetureTenantIDDTO> getyConfigArctetureReadFKTenantID(object command );

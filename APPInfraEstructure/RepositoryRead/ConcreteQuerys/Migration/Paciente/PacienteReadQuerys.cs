@@ -674,7 +674,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel PacienteMesQuery(Command.Read.PacienteMesCommand Command)
+        public QueryModel PacienteMesQuery(Command.Read.PacienteMesCommand Command )
         {
             this.Query = "SELECT t0.Id, t0.Nome FROM Paciente t0";
             var whereClauses = new List<string>();
@@ -700,7 +700,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel PacienteGeralQuery(Command.Read.PacienteGeralCommand Command)
+        public QueryModel PacienteGeralQuery(Command.Read.PacienteGeralCommand Command )
         {
             this.Query = "SELECT t0.Id, t0.Nome FROM Paciente t0";
             var whereClauses = new List<string>();

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Read.Repository
 {
-    public class GrupoServicoReadRepository : IGrupoServicoReadRepository
+    public partial class GrupoServicoReadRepository : IGrupoServicoReadRepository
     {
         protected readonly IDbConnection _connection;
         protected readonly ICurrentUser _currentUser;

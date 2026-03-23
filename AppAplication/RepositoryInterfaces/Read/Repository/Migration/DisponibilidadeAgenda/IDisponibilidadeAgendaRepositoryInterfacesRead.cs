@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IRepository.Read
 {
-    public interface IDisponibilidadeAgendaReadRepository
+    public partial interface IDisponibilidadeAgendaReadRepository
     {
         public DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(ICommandRead command );
         public IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(object command );
