@@ -7,8 +7,8 @@
           ASPNETCORE_URLS: "http://0.0.0.0:8080"
           ASPNETCORE_ENVIRONMENT: "Production"
           SA__PASSWORD: "123qwe!@#QWE"
-          MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-          MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
         expose:
           - "8080"
         restart: unless-stopped
@@ -22,11 +22,11 @@
         environment:
           ASPNETCORE_URLS: "http://0.0.0.0:7214"
           ASPNETCORE_ENVIRONMENT: "Production"
-          ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           Redis__Host: redis
           SA__PASSWORD: "123qwe!@#QWE"
-          MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-          MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           FileSystem__RootPath: "/storage"
         expose:
           - "7214"
@@ -49,11 +49,11 @@
             ASPNETCORE_URLS: "http://0.0.0.0:7215"
             ASPNETCORE_ENVIRONMENT: "Production"
 
-            ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+            ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
             Redis__Host: redis
 
-            MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-            MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+            MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+            MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
             FileSystem__RootPath: "/storage"
         expose:
             - "7215"
@@ -74,10 +74,10 @@
           context: ../../..
           dockerfile: Devops/infra/docker/migration/Dockerfile
         environment:
-          ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           SA__PASSWORD: "123qwe!@#QWE"
-          MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-          MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
         depends_on:
           - sqlserver
         networks:
