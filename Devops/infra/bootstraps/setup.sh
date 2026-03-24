@@ -42,18 +42,19 @@ echo "==== Preparando estrutura de storage ===="
 STORAGE_ROOT="/root/YeshuaStorage"
 
 # Volatile
-mkdir -p "$STORAGE_ROOT/volatile/ai_Worker/input"
-mkdir -p "$STORAGE_ROOT/volatile/ai_Worker/output"
-mkdir -p "$STORAGE_ROOT/volatile/ai_Worker/tmp"
-mkdir -p "$STORAGE_ROOT/volatile/API"
-mkdir -p "$STORAGE_ROOT/volatile/Migration"
-mkdir -p "$STORAGE_ROOT/volatile/Worker"
+mkdir -p "$STORAGE_ROOT/volatile/ia/transcriptions/input"
+mkdir -p "$STORAGE_ROOT/volatile/ia/transcriptions/output"
+mkdir -p "$STORAGE_ROOT/volatile/reports/input"
+mkdir -p "$STORAGE_ROOT/volatile/reports/output"
 
 # Persistent
 mkdir -p "$STORAGE_ROOT/persistent"
+mkdir -p "$STORAGE_ROOT/persistent/Docs/input"
+mkdir -p "$STORAGE_ROOT/persistent/Docs/output"
 
 # Permissões
 chmod -R 750 "$STORAGE_ROOT"
+
 
 
 

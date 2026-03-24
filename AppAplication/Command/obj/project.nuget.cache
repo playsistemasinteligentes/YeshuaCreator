@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "2d1CK0d4hyJU6uOR307KMPvWjpyvtShoucpljqPyJqtLwiitqB3MdyPIFMypXjcF2epnpwupY6UKPUEQCbr8wQ==",
+  "dgSpecHash": "jJSrgv1alZI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Command\\Command.csproj",
+  "projectFilePath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppAplication\\Command\\Command.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\angel\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
-    "C:\\Users\\angel\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
-    "C:\\Users\\angel\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
+    "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
   ],
   "logs": []
 }

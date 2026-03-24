@@ -7,8 +7,9 @@ namespace Command.Interfaces.Patterns.FileStore
     public static class StoragePathBuilder
     {
         public static StoragePath Build(
+             StorageLocation location,
             string tenant,
-            string? pathParts,
+            string? idEntity,
             string fileName,
             bool useShard = false,
             string? shardSeed = null)
@@ -19,16 +20,16 @@ namespace Command.Interfaces.Patterns.FileStore
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("FileName is required.", nameof(fileName));
 
-            var parts = new List<string> { tenant };
+            var parts = new List<string>();
 
-            // Se houver pathParts, adiciona como segmento limpo
-            if (!string.IsNullOrWhiteSpace(pathParts))
-            {
-                var splitParts = pathParts.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
-                parts.AddRange(splitParts);
-            }
+            parts.AddRange(SplitPath(location.Path));
 
-            // Adiciona shards se necessário
+            if (!string.IsNullOrWhiteSpace(tenant))
+                parts.Add(tenant);
+
+            if (!string.IsNullOrWhiteSpace(idEntity))
+                parts.AddRange(SplitPath(idEntity));
+
             if (useShard)
             {
                 var seed = shardSeed ?? Guid.NewGuid().ToString("N");
@@ -50,7 +51,22 @@ namespace Command.Interfaces.Patterns.FileStore
             return new StoragePath(combinedPath);
         }
 
-        public static StoragePath Build(string filepath)
+        public static StoragePath Build(StorageLocation location, string relativePath)
+        {
+            if (location == null)
+                throw new ArgumentNullException(nameof(location));
+
+            if (string.IsNullOrWhiteSpace(relativePath))
+                throw new ArgumentException(nameof(relativePath));
+
+                relativePath = relativePath.TrimStart('/', '\\');
+
+            var combined = Path.Combine(location.Path, relativePath);
+
+            return new StoragePath(combined);
+        }
+
+        private static StoragePath Build(string filepath)
         {
             if (string.IsNullOrWhiteSpace(filepath))
                 throw new ArgumentException("Filepath is required.", nameof(filepath));
@@ -60,6 +76,10 @@ namespace Command.Interfaces.Patterns.FileStore
                                      .Replace('\\', Path.DirectorySeparatorChar);
 
             return new StoragePath(normalized);
+        }
+        private static IEnumerable<string> SplitPath(string path)
+        {
+            return path.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

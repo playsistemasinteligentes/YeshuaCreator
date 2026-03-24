@@ -55,7 +55,7 @@ namespace Command.Receivers.UseCase
                 var uploadId = tokenData.uploadId;
                 var userId = tokenData.userId;
                 var tenantId = tokenData.tenantId;
-                string pathParts = Path.Combine(uploadId.ToString(), "pending_merge");
+                string idEntity = Path.Combine(uploadId.ToString(), "pending_merge");
 
                 // segurança
                 if (tenantId != _CurrentUser.TenantID)
@@ -67,8 +67,9 @@ namespace Command.Receivers.UseCase
                 var chunkFileName = $"chunk_{comand.ChunkIndex}.part";
 
                 StoragePath path = StoragePathBuilder.Build(
+                    StorageLocation.Volatile.TranscriptionsInput,
                     tenantId.ToString(),
-                    pathParts,
+                    idEntity,
                     chunkFileName,
                     false
                 );
@@ -106,6 +107,7 @@ namespace Command.Receivers.UseCase
                 //        Error("Upload não encontrado.", default));
 
                 StoragePath finalPath = StoragePathBuilder.Build(
+                    StorageLocation.Volatile.TranscriptionsInput,
                     tenantId.ToString(),
                     uploadId.ToString(),
                     $"{Guid.NewGuid():N}.webm",

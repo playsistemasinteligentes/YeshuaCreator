@@ -2083,23 +2083,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\angel\\.nuget\\packages\\": {},
+    "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Worker\\Worker.csproj",
+      "projectUniqueName": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Worker\\Worker.csproj",
       "projectName": "Worker",
-      "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Worker\\Worker.csproj",
-      "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Worker\\obj\\",
+      "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Worker\\Worker.csproj",
+      "packagesPath": "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Worker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\angel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\AngeloRicardoFontana\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2114,26 +2114,26 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Command\\Command.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\Command\\Command.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppAplication\\Command\\Command.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppAplication\\Command\\Command.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppAplication\\RepositoryInterfaces\\RepositoryInterfaces.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\AppDominio\\Dominio\\Dominio.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Migration.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Migration.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Migration\\Migration.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Migration\\Migration.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\RepositoryRead\\RepositoryRead.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\RepositoryWrite\\RepositoryWrite.csproj"
             },
-            "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
-              "projectPath": "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
+            "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj": {
+              "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Shered\\Shered.csproj"
             }
           }
         }
@@ -2142,7 +2142,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -2188,7 +2194,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

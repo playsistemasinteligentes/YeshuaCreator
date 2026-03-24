@@ -169,3 +169,10 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\Test
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.genruntimeconfig.cache
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\ref\TestMigration.dll
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\bin\Debug\net8.0\CoverletSourceRootsMapping_TestMigration
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.csproj.AssemblyReference.cache
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.AssemblyInfoInputs.cache
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.AssemblyInfo.cs
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.csproj.CoreCompileInputs.cache
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPTeste\TestMigration\obj\Debug\net8.0\TestMigration.sourcelink.json

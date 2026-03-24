@@ -424,7 +424,10 @@
           "Microsoft.Data.SqlClient": "5.2.1"
         },
         "runtime": {
-          "Migration.dll": {}
+          "Migration.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

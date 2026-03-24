@@ -43,8 +43,8 @@ namespace Command.Receivers.UseCase
                     yOutboxDTO outBox = _repReadyOutbox.FirstById(outBoxId, true);
                     yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.correlationid), true);
 
-                    StoragePath finalPath = StoragePathBuilder.Build(upload.filepath);
-                    StoragePath pendingMergePath = StoragePathBuilder.Build(Path.Combine(finalPath.Directory, "pending_merge/"));
+                    StoragePath finalPath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,upload.filepath);
+                    StoragePath pendingMergePath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,Path.Combine(finalPath.Directory, "pending_merge/"));
 
                     // 🔎 não existe o arquivo final?
                     if (!_fileStorage.HasFilesInDirectoryAsync(finalPath, CancellationToken.None).GetAwaiter().GetResult())

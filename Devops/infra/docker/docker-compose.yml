@@ -27,11 +27,14 @@
           SA__PASSWORD: "123qwe!@#QWE"
           MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+          FileSystem__RootPath: "/storage"
         expose:
           - "7214"
         depends_on:
           - sqlserver
           - redis
+        volumes:
+          - /root/YeshuaStorage:/storage
         restart: unless-stopped
         networks:
           - yeshua-net
@@ -51,7 +54,7 @@
 
             MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
             MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-
+            FileSystem__RootPath: "/storage"
         expose:
             - "7215"
 
@@ -59,7 +62,8 @@
             - sqlserver
             - redis
             - rabbitmq
-
+        volumes:
+            - /root/YeshuaStorage:/storage
         restart: unless-stopped
         networks:
             - yeshua-net
@@ -130,6 +134,10 @@
             - rabbitmq
         environment:
             CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+            STORAGE_ROOT: "/storage"
+        volumes:
+            - /root/YeshuaStorage:/storage
+
         restart: unless-stopped
         networks:
             - yeshua-net
