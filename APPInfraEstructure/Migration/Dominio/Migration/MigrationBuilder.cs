@@ -196,6 +196,7 @@ namespace Dominio.Migration
                 unitOfWork.BeginTran();
                 foreach (var q in migrationQueries)
                 {
+                    Console.Write(q.Query);
                     unitOfWork.ExecuteCommand(q.Query);
                 }
                 setMigrationVersion(migration.ID, migration.MigrationName, unitOfWork);

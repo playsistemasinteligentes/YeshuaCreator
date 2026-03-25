@@ -28,6 +28,9 @@ DEBIAN_FRONTEND=noninteractive apt install -y \
   python3-pip
 
 
+  sudo apt-get install htop
+
+
 echo "==== Preparando volume persistente do SQL Server ===="
 
 SQL_PERSIST_DIR="/root/YeshuaDB/persistent/sql"

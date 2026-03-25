@@ -34,7 +34,6 @@ namespace Dominio.Schemas
                 querys.Add(InsertModules(mod));
             }
 
-
             return querys;
         }
 

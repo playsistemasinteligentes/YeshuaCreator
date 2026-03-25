@@ -35,7 +35,8 @@ namespace Migration.Dominio.Migration
                 //.AddColumn("ContentType", "Content Type").Varchar(100)
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("CompletedAt", "Finalizado em").DateTime()
-                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("StarSessionUpload",
                 new AutenticationToken(""),
@@ -63,7 +64,7 @@ namespace Migration.Dominio.Migration
                 .AddColumn("SentAt", "Enviado em").DateTime()
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
-                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
             AddQuery<yOutbox>("Standard", q => q
