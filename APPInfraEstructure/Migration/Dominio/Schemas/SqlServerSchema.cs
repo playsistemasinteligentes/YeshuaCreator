@@ -105,6 +105,8 @@ namespace Dominio.Schemas
             {
                 case "INT":
                     return "INT";
+                case "LONG":
+                    return "BIGINT";
                 case "TINYINT":
                     return "TINYINT";
                 case "SMALLINT":

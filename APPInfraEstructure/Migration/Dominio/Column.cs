@@ -1,6 +1,7 @@
 ﻿using Migration.Dominio.Schemas.CQRS;
 using System.Collections.Generic;
 using System.Data.Common;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dominio
 {
@@ -201,6 +202,8 @@ namespace Dominio
                     return "Float";
                 case "decimal":
                     return "Decimal";
+                case "long":
+                    return "long";
                 default:
                     throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
             }
