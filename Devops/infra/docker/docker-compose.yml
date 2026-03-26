@@ -54,7 +54,18 @@
 
             MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
             MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+
             FileSystem__RootPath: "/storage"
+
+            RabbitMq__HostName: rabbitmq
+            RabbitMq__Port: 5672
+            RabbitMq__Username: yeshua
+            RabbitMq__Password: yeshua123
+            RabbitMq__VirtualHost: /
+            RabbitMq__Exchange: kiwi.exchange
+            RabbitMq__Queue: kiwi.queue
+            RabbitMq__RoutingKey: kiwi.routing
+
         expose:
             - "7215"
 
@@ -135,6 +146,16 @@
         environment:
             CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
             STORAGE_ROOT: "/storage"
+        
+            RabbitMq__HostName: rabbitmq
+            RabbitMq__Port: 5672
+            RabbitMq__Username: yeshua
+            RabbitMq__Password: yeshua123
+            RabbitMq__VirtualHost: /
+            RabbitMq__Exchange: kiwi.exchange
+            RabbitMq__Queue: kiwi.queue
+            RabbitMq__RoutingKey: kiwi.routing
+            
         volumes:
             - /root/YeshuaStorage:/storage
 

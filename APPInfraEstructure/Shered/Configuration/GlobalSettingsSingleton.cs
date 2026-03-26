@@ -34,6 +34,8 @@ public sealed class GS
             OverrideIfExists("MYCONFIG__READCONECTIONSTRING", v => MYC.ReadConectionString = v);
             OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", v => MYC.WriteConectionString = v);
 
+
+
         }
         catch (Exception ex)
         {
