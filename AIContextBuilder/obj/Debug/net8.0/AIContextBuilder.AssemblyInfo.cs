@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AIContextBuilder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e032d71fedbcb9cb4756bfe0734ef3d81158f262")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cccb276d9757bc78930792dd5b76a57ab8ce95c3")]
 [assembly: System.Reflection.AssemblyProductAttribute("AIContextBuilder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AIContextBuilder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

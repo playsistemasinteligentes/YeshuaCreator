@@ -89,7 +89,7 @@ namespace Dominio.Migration
             {
                 var (maxID, minID) = GetLastVersion(schema._unitOfWork);
 
-                foreach (var item in migration.Where(x => x.ID < minID))
+                foreach (var item in migration.Where(x => x.ID < minID).OrderByDescending(x=>x.ID) )
                     AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
                 foreach (var item in migration.Where(x => x.ID > maxID))
                     AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
