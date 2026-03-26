@@ -22,6 +22,8 @@ public sealed class RabbitMQQueuePublisher : IQueuePublisher
         QueueMessage message,
         CancellationToken cancellationToken = default)
     {
+
+        Console.WriteLine("MEnsagem");
         var channel = await _connectionManager.CreateChannelAsync(cancellationToken);
 
         var body = Encoding.UTF8.GetBytes(
