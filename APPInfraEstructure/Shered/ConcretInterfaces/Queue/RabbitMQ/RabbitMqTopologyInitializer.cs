@@ -33,11 +33,17 @@ namespace Shered.ConcretInterfaces.Queue.RabbitMQ
                 VirtualHost = _options.VirtualHost
             };
 
+
+            Console.WriteLine($"host{_options.HostName}");
+            Console.WriteLine("factory inicializando ");
+
             await using var connection =
                 await factory.CreateConnectionAsync(cancellationToken);
 
             await using var channel =
                 await connection.CreateChannelAsync();
+
+            Console.WriteLine("factory inicializando bindins");
 
             foreach (var exchange in topology.Exchanges)
             {
@@ -64,6 +70,7 @@ namespace Shered.ConcretInterfaces.Queue.RabbitMQ
                         cancellationToken: cancellationToken);
                 }
             }
+            Console.WriteLine("factory fim bindins");
         }
     }
 }
