@@ -59,7 +59,16 @@ namespace Command.Interfaces.Patterns.FileStore
             if (string.IsNullOrWhiteSpace(relativePath))
                 throw new ArgumentException(nameof(relativePath));
 
-                relativePath = relativePath.TrimStart('/', '\\');
+            // 🔒 proteção contra path duplicado
+            if (relativePath.StartsWith(location.Path))
+            {
+                throw new InvalidOperationException(
+                    $"RelativePath já contém o caminho base: {relativePath}");
+            }
+
+
+
+            relativePath = relativePath.TrimStart('/', '\\');
 
             var combined = Path.Combine(location.Path, relativePath);
 

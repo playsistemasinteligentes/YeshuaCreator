@@ -38,19 +38,21 @@ namespace Command.Receivers.UseCase
             try
             {
 
-                Console.Write("01");
-
                 var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
-                Console.Write("02"); 
+
                 foreach (int outBoxId in outBoxListJob)
                 {
-                    Console.Write("03");
                     yOutboxDTO outBox = _repReadyOutbox.FirstById(outBoxId, true);
                     yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.correlationid), true);
 
                     StoragePath finalPath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,upload.filepath);
-                    StoragePath pendingMergePath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,Path.Combine(finalPath.Directory, "pending_merge/"));
-                    Console.Write("04");
+                    Console.WriteLine($"finalPath:{finalPath.Directory}");
+                    Console.WriteLine($"upload.filepath:{upload.filepath}");
+                    
+
+                    StoragePath pendingMergePath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,Path.Combine(upload.filepath, "pending_merge"));
+                    
+                    Console.WriteLine($"pendingMergePath:{pendingMergePath.Directory}");
                     // 🔎 não existe o arquivo final?
                     if (!_fileStorage.HasFilesInDirectoryAsync(finalPath, CancellationToken.None).GetAwaiter().GetResult())
                     {

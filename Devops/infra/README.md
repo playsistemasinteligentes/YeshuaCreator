@@ -13,10 +13,16 @@ deploy
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/deploy.sh | bash
 
 
-segundo plano 
-
+roda em segundo plano 
 nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/deploy.sh | bash" > /root/deploy.log 2>&1 &
+
+ve rodando em segundo plano 
 tail -f /root/deploy.log
+
+
+logs aotomaticos 
+docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml logs --tail=100 -f --timestamps
+
 
 
 
