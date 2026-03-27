@@ -117,6 +117,10 @@ namespace Command.Interfaces.Patterns.FileStore
 
             var combined = Path.Combine(baseDir, directoryName);
 
+            // Garante que seja tratado como diretório
+            if (!combined.EndsWith(Path.DirectorySeparatorChar))
+                combined += Path.DirectorySeparatorChar;
+            
             return BuildFromFullPath(location, combined);
         }
 
