@@ -73,8 +73,9 @@ namespace Command.Receivers.UseCase
                     _repWriteyOutbox.UpdateStatus(outboxEntity);
                 }
             }
-            catch (Exception)
+            catch (Exception )
             {
+                throw;
             }
         }
 
