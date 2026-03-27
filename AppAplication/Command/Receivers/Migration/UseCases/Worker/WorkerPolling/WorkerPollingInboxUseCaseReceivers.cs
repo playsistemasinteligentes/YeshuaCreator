@@ -21,7 +21,8 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<WorkerPollingInboxUseCaseOutputCommand> retorno = Success("OK", null);
+                Console.Write("0999999");
+                State<WorkerPollingInboxUseCaseOutputCommand> retorno = Success("OK", null);
                  CustomActionHook(ref retorno, comand);
                  return retorno;
             }

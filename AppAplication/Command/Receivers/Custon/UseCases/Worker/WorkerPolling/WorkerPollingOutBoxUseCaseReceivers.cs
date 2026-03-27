@@ -37,19 +37,24 @@ namespace Command.Receivers.UseCase
         {
             try
             {
+
+                Console.Write("01");
+
                 var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
+                Console.Write("02"); 
                 foreach (int outBoxId in outBoxListJob)
                 {
+                    Console.Write("03");
                     yOutboxDTO outBox = _repReadyOutbox.FirstById(outBoxId, true);
                     yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.correlationid), true);
 
                     StoragePath finalPath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,upload.filepath);
                     StoragePath pendingMergePath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,Path.Combine(finalPath.Directory, "pending_merge/"));
-
+                    Console.Write("04");
                     // 🔎 não existe o arquivo final?
                     if (!_fileStorage.HasFilesInDirectoryAsync(finalPath, CancellationToken.None).GetAwaiter().GetResult())
                     {
-
+                        Console.Write("06");
                         var merged = MergeChunksFromStorage(pendingMergePath, finalPath); // usar FFMpeg.exe
 
                         if (!merged)
@@ -59,9 +64,10 @@ namespace Command.Receivers.UseCase
                         // TryDeletePending(pendingPath);
 
                     }
-
+                    Console.Write("07");
                     QueueMessage queueMessage = new QueueMessage(outBox.type, outBox.payload)
                     { CorrelationId = outBox.id.ToString(), Source = "worker-outbox" };
+                    Console.Write("08");
                     _queuePublisher.PublishAsync("ai.tasks", "audio.transcribe", queueMessage).GetAwaiter().GetResult();
                     yOutboxEntity outboxEntity = new yOutboxEntity() { Id = outBox.id, Status = 1 };
                     _repWriteyOutbox.UpdateStatus(outboxEntity);
