@@ -45,12 +45,11 @@ namespace Command.Receivers.UseCase
                     yOutboxDTO outBox = _repReadyOutbox.FirstById(outBoxId, true);
                     yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.correlationid), true);
 
-                    StoragePath finalPath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,upload.filepath);
+                    StoragePath finalPath = StoragePathBuilder.BuildFromFullPath(StorageLocation.Volatile.TranscriptionsInput,upload.filepath);
                     Console.WriteLine($"finalPath:{finalPath.Directory}");
                     Console.WriteLine($"upload.filepath:{upload.filepath}");
                     
-
-                    StoragePath pendingMergePath = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,Path.Combine(upload.filepath, "pending_merge"));
+                    StoragePath pendingMergePath = StoragePathBuilder.AppendDirectory(StorageLocation.Volatile.TranscriptionsInput,finalPath ,"pending_merge");
                     
                     Console.WriteLine($"pendingMergePath:{pendingMergePath.Directory}");
                     // 🔎 não existe o arquivo final?

@@ -50,7 +50,27 @@ namespace Command.Interfaces.Patterns.FileStore
 
             return new StoragePath(combinedPath);
         }
+        public static StoragePath BuildFromFullPath(StorageLocation location, string fullPath)
+        {
+            if (location == null)
+                throw new ArgumentNullException(nameof(location));
 
+            if (string.IsNullOrWhiteSpace(fullPath))
+                throw new ArgumentException(nameof(fullPath));
+
+            var normalizedFullPath = fullPath
+                .Replace('/', Path.DirectorySeparatorChar)
+                .Replace('\\', Path.DirectorySeparatorChar);
+
+            var normalizedBasePath = location.Path
+                .Replace('/', Path.DirectorySeparatorChar)
+                .Replace('\\', Path.DirectorySeparatorChar);
+
+            if (!normalizedFullPath.StartsWith(normalizedBasePath, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("The provided path does not belong to the specified StorageLocation.");
+
+            return new StoragePath(normalizedFullPath);
+        }
         public static StoragePath Build(StorageLocation location, string relativePath)
         {
             if (location == null)
@@ -78,6 +98,51 @@ namespace Command.Interfaces.Patterns.FileStore
 
             return new StoragePath(normalized);
         }
+
+        public static StoragePath AppendDirectory(StorageLocation location,StoragePath originalPath,string directoryName)
+        {
+            if (location == null)
+                throw new ArgumentNullException(nameof(location));
+
+            if (originalPath == null)
+                throw new ArgumentNullException(nameof(originalPath));
+
+            if (string.IsNullOrWhiteSpace(directoryName))
+                throw new ArgumentException(nameof(directoryName));
+
+            var baseDir = originalPath.Directory;
+
+            if (string.IsNullOrWhiteSpace(baseDir))
+                throw new InvalidOperationException("StoragePath does not contain a valid directory.");
+
+            var combined = Path.Combine(baseDir, directoryName);
+
+            return BuildFromFullPath(location, combined);
+        }
+
+        public static StoragePath AppendFile(StorageLocation location,StoragePath originalPath,string fileName)
+        {
+            if (location == null)
+                throw new ArgumentNullException(nameof(location));
+
+            if (originalPath == null)
+                throw new ArgumentNullException(nameof(originalPath));
+
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentException(nameof(fileName));
+
+            var baseDir = originalPath.Directory;
+
+            if (string.IsNullOrWhiteSpace(baseDir))
+                throw new InvalidOperationException("StoragePath does not contain a valid directory.");
+
+            var combined = Path.Combine(baseDir, fileName);
+
+            return BuildFromFullPath(location, combined);
+        }
+
+
+
         private static IEnumerable<string> SplitPath(string path)
         {
             return path.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
