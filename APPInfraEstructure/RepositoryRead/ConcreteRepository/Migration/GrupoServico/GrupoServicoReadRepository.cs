@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IGrupoServicoQueryRead _query;
 
-        public GrupoServicoReadRepository(SqlFactory factory, ICurrentUser currentUser,IGrupoServicoQueryRead query)
+        public GrupoServicoReadRepository(ISqlFactory factory, ICurrentUser currentUser,IGrupoServicoQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

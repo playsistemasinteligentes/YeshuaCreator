@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly ISesoesQueryRead _query;
 
-        public SesoesReadRepository(SqlFactory factory, ICurrentUser currentUser,ISesoesQueryRead query)
+        public SesoesReadRepository(ISqlFactory factory, ICurrentUser currentUser,ISesoesQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

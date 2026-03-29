@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IProfissionalQueryRead _query;
 
-        public ProfissionalReadRepository(SqlFactory factory, ICurrentUser currentUser,IProfissionalQueryRead query)
+        public ProfissionalReadRepository(ISqlFactory factory, ICurrentUser currentUser,IProfissionalQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

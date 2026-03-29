@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IEspecialidadeQueryRead _query;
 
-        public EspecialidadeReadRepository(SqlFactory factory, ICurrentUser currentUser,IEspecialidadeQueryRead query)
+        public EspecialidadeReadRepository(ISqlFactory factory, ICurrentUser currentUser,IEspecialidadeQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IyModuleQueryRead _query;
 
-        public yModuleReadRepository(SqlFactory factory, ICurrentUser currentUser,IyModuleQueryRead query)
+        public yModuleReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyModuleQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

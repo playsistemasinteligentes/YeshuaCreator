@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IClinicaQueryRead _query;
 
-        public ClinicaReadRepository(SqlFactory factory, ICurrentUser currentUser,IClinicaQueryRead query)
+        public ClinicaReadRepository(ISqlFactory factory, ICurrentUser currentUser,IClinicaQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

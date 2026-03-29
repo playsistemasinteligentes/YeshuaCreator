@@ -16,6 +16,7 @@ using Shared.InterfacesConcrete.Queue.RabbitMQ;
 using Shered.ConcretInterfaces.Queue.RabbitMQ;
 using Command.Interfaces.Patterns.FileStore;
 using Shered.ConcretInterfaces.FileStore;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 
 namespace Worker.Migration
 {
@@ -47,9 +48,12 @@ namespace Worker.Migration
 
 
             // pendencia retirar e aotomatizar 
-            builder.Services.AddScoped<SqlFactory>(provader => { return new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString); });
-            builder.Services.AddScoped<IDbConnection>(provader => { return new SqlConnection(GS.I.MYC.ReadConectionString); });
+            builder.Services.AddScoped<ISqlFactory>(provader => new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
 
+            //builder.Services.AddScoped<ISqlFactory>(_ =>new SqlFactoryMokSqlite("Data Source=app.db"));
+            //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
             // =============================

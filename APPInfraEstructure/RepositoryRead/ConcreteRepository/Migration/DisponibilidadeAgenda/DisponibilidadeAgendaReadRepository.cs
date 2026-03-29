@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IDisponibilidadeAgendaQueryRead _query;
 
-        public DisponibilidadeAgendaReadRepository(SqlFactory factory, ICurrentUser currentUser,IDisponibilidadeAgendaQueryRead query)
+        public DisponibilidadeAgendaReadRepository(ISqlFactory factory, ICurrentUser currentUser,IDisponibilidadeAgendaQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

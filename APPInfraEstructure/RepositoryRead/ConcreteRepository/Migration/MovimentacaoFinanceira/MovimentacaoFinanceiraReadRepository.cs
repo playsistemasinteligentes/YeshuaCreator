@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IMovimentacaoFinanceiraQueryRead _query;
 
-        public MovimentacaoFinanceiraReadRepository(SqlFactory factory, ICurrentUser currentUser,IMovimentacaoFinanceiraQueryRead query)
+        public MovimentacaoFinanceiraReadRepository(ISqlFactory factory, ICurrentUser currentUser,IMovimentacaoFinanceiraQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

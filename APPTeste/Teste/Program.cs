@@ -14,15 +14,15 @@ var gbs = GlobalSettingsSingleton.Instance
     .SetStringConetionWrite(conectionString)
     .SetStringConetionRead(conectionString);
 
-using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gbs.GetConnectionStringWrite()).SqlConnection())
-{
-    using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
-    {
-        //  new MigrationBuilder()
-        //      .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))
-        //      .ADDSchema(new SqlServerSchema(unitOfWork))
-        //      .Build().Run();
-    }
-}
+//using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, gbs.GetConnectionStringWrite()).SqlConnection())
+//{
+//    using (IUnitOfWork unitOfWork = new UnitOfWork(connection))
+//    {
+//        //  new MigrationBuilder()
+//        //      .ADDSchema(new CSharpCQRS("Clinica", "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator"))
+//        //      .ADDSchema(new SqlServerSchema(unitOfWork))
+//        //      .Build().Run();
+//    }
+//}
 
 

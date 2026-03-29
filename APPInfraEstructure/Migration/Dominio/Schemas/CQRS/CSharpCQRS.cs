@@ -481,9 +481,8 @@ namespace Dominio.Schemas.CQRS
 
         private void AppInternalEntitys(MigrationBase migration)
         {
-
-            var filePath = "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Dominio\\ORM\\entities.cs";
-            var filePathCuston = "C:\\Users\\angel\\source\\repos\\playsistemasinteligentes\\YeshuaCreator\\APPInfraEstructure\\Migration\\Dominio\\ORM\\Custonentities.cs";
+            var filePath = Path.Combine(GetPathAppInfraestructure(), $"Migration\\Dominio\\ORM\\entities.cs");
+            var filePathCuston = Path.Combine(GetPathAppInfraestructure(), $"Migration\\Dominio\\ORM\\Custonentities.cs");
             var sourceCodeMigration = new SourceCodeEntityInternalMigration(migration.Entitys);
             sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
         }

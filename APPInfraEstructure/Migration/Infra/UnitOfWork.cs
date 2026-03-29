@@ -103,7 +103,7 @@ namespace Infra
                 _connection.Execute(sql, parameters, _transaction);
 
             }
-            catch (Exception e)
+            catch (Exception )
             {
 
                 throw;

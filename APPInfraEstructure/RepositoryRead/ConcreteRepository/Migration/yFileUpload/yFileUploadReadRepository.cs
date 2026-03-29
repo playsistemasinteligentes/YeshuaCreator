@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IyFileUploadQueryRead _query;
 
-        public yFileUploadReadRepository(SqlFactory factory, ICurrentUser currentUser,IyFileUploadQueryRead query)
+        public yFileUploadReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyFileUploadQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IyConfigNotificationQueryRead _query;
 
-        public yConfigNotificationReadRepository(SqlFactory factory, ICurrentUser currentUser,IyConfigNotificationQueryRead query)
+        public yConfigNotificationReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyConfigNotificationQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

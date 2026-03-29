@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IPlanoContaQueryRead _query;
 
-        public PlanoContaReadRepository(SqlFactory factory, ICurrentUser currentUser,IPlanoContaQueryRead query)
+        public PlanoContaReadRepository(ISqlFactory factory, ICurrentUser currentUser,IPlanoContaQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

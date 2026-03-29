@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IyInboxQueryRead _query;
 
-        public yInboxReadRepository(SqlFactory factory, ICurrentUser currentUser,IyInboxQueryRead query)
+        public yInboxReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyInboxQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

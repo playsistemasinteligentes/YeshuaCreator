@@ -37,6 +37,17 @@ namespace Command.Receivers.UseCase
         {
             try
             {
+                /*StoragePath finalPath_ = StoragePathBuilder.BuildFromFullPath(StorageLocation.Volatile.TranscriptionsInput, "volatile/ia/transcriptions/input/1/8003/teste.txt");
+
+                StoragePath pendingMergePath_ = StoragePathBuilder.AppendDirectory(StorageLocation.Volatile.TranscriptionsInput, finalPath_, "pending_merge");
+
+                Console.WriteLine($"pendingMergePath:{pendingMergePath_.Directory}");
+                // 🔎 não existe o arquivo final?
+                var merged_ = MergeChunksFromStorage(pendingMergePath_, finalPath_); // usar FFMpeg.exe
+                if (!_fileStorage.HasFilesInDirectoryAsync(finalPath_, CancellationToken.None).GetAwaiter().GetResult())
+                {
+                }
+                */
 
                 var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
 
@@ -102,6 +113,8 @@ namespace Command.Receivers.UseCase
 
             foreach (var chunk in chunks)
             {
+                _logger.Info($"Chunks{chunk}");
+
                 using var input = _fileStorage.OpenRead(chunk);
                 input.CopyTo(output);
             }

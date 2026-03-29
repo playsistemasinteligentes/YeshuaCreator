@@ -430,6 +430,10 @@
               "target": "Package",
               "version": "[5.2.1, )"
             },
+            "Microsoft.Data.Sqlite": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
             "Microsoft.Extensions.Caching.Abstractions": {
               "target": "Package",
               "version": "[9.0.6, )"

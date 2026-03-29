@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Shered.DB.Connection
 {
-    public class SqlFactory
+    public class SqlFactory: ISqlFactory
     {
         private readonly EnumSqlConections _typeConnection;
         private readonly string _stringConection;
@@ -27,7 +27,7 @@ namespace Shered.DB.Connection
             {
                 return new SqlConnection(_stringConection);
             }
-            return null;
+            throw new NotSupportedException($"Tipo de conexão {_typeConnection} não suportado.");
         }
     }
 }

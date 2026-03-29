@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IyTenantModuleQueryRead _query;
 
-        public yTenantModuleReadRepository(SqlFactory factory, ICurrentUser currentUser,IyTenantModuleQueryRead query)
+        public yTenantModuleReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyTenantModuleQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;

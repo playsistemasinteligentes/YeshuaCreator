@@ -15,4 +15,10 @@
     <Folder Include="Write\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Patterns\UnitOfWork\ISqlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

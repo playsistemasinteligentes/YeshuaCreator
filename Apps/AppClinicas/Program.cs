@@ -14,7 +14,7 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, co
 {
     Console.WriteLine("Try Conection");
 
-    using (IUnitOfWork unitOfWork = new UnitOfWork(connection, true))
+    using (IUnitOfWork unitOfWork = new UnitOfWorkMok(connection, true))
     {
         Console.WriteLine("Try Migrations");
 

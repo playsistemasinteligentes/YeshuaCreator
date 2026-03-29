@@ -212,7 +212,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        protected readonly ICurrentUser _currentUser;");
             sb.AppendLine($"       protected readonly I{_entity.EntityName}QueryRead _query;");
             sb.AppendLine();
-            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(SqlFactory factory, ICurrentUser currentUser,I{_entity.EntityName}QueryRead query)");
+            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(ISqlFactory factory, ICurrentUser currentUser,I{_entity.EntityName}QueryRead query)");
             sb.AppendLine("        {");
             sb.AppendLine("            _connection = factory.SqlConnection();");
             sb.AppendLine("            _currentUser = currentUser;");

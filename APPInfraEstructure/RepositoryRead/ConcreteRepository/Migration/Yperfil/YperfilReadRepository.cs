@@ -22,7 +22,7 @@ namespace Read.Repository
         protected readonly ICurrentUser _currentUser;
        protected readonly IyPerfilQueryRead _query;
 
-        public yPerfilReadRepository(SqlFactory factory, ICurrentUser currentUser,IyPerfilQueryRead query)
+        public yPerfilReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyPerfilQueryRead query)
         {
             _connection = factory.SqlConnection();
             _currentUser = currentUser;
