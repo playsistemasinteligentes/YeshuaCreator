@@ -1,10 +1,12 @@
-using Shered.Services;
 using Aplication.Interfaces.Services;
-using Shared.InterfacesConcrete.Queue.RabbitMQ;
-using Shered.ConcretInterfaces.FileStore;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Interfaces.Patterns.Queue;
+using Shared.InterfacesConcrete.Queue.RabbitMQ;
+using Shered.ConcretInterfaces.FileStore;
 using Shered.ConcretInterfaces.Queue.RabbitMQ;
+using Shered.DB.Connection;
+using Shered.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 namespace API.Migrations
 {
     public static class IndependenceInjectionCuston
@@ -24,7 +26,8 @@ namespace API.Migrations
             builder.Services.AddScoped<IFileStorage, FileSystemStorage>();
 
 
-
+            builder.Services.AddScoped<ISqlFactory>(provader => new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         }
     }

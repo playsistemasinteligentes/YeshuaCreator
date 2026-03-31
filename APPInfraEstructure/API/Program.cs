@@ -79,19 +79,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-
-
-builder.Services.AddScoped<SqlFactory>(provader =>
-{
-    return new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString);
-});
-
-
-builder.Services.AddScoped<IDbConnection>(provader =>
-{
-    return new SqlConnection(GS.I.MYC.ReadConectionString);
-});
-
 IndependenceInjection.MapIndependenceInjection(builder);
 IndependenceInjectionCuston.MapIndependenceInjection(builder);
 
