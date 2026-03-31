@@ -28,43 +28,43 @@ namespace Input.Repository.yPerfil
         public void Insert(IyPerfilEntity yPerfil)
         {
             var query = _query.InseriryPerfilQuery(yPerfil);
-        yPerfil.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        yPerfil.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IyPerfilEntity yPerfil)
         {
             var query = _query.UpdateyPerfilQuery(yPerfil);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IyPerfilEntity yPerfil)
         {
             var query = _query.DeleteyPerfilQuery(yPerfil);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDescription(IyPerfilEntity entity)
         {
             var query = _query.UpdateDescription(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IyPerfilEntity entity)
         {
             var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(IyPerfilEntity entity)
         {
             var query = _query.UpdateDeleted(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateChanged(IyPerfilEntity entity)
         {
             var query = _query.UpdateChanged(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateUserId(IyPerfilEntity entity)
         {
             var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

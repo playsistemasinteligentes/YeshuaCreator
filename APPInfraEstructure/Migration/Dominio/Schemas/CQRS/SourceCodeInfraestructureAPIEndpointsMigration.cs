@@ -243,20 +243,26 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("            },");
 
                         // filterFields
-                        sb.AppendLine("            filterFields = new[]");
-                        sb.AppendLine("            {");
-                        foreach (var wp in query.Meta.WhereParameters)
+                        if (query.Meta.WhereParameters.Count() == 0)
                         {
-                            foreach (var item in wp.Value)
-                            {
-                                if (item.Column == null)
-                                    item.Column = _migration.GetColumn(item.EntityName, item.Field);
-
-                                sb.AppendLine($"                {BuildFieldMeta(item.Column)},");
-                            }
+                            sb.AppendLine("            filterFields = Array.Empty<object>(),");
                         }
-                        sb.AppendLine("            },");
+                        else
+                        {
+                            sb.AppendLine("            filterFields = new[]");
+                            sb.AppendLine("            {");
+                            foreach (var wp in query.Meta.WhereParameters)
+                            {
+                                foreach (var item in wp.Value)
+                                {
+                                    if (item.Column == null)
+                                        item.Column = _migration.GetColumn(item.EntityName, item.Field);
 
+                                    sb.AppendLine($"                {BuildFieldMeta(item.Column)},");
+                                }
+                            }
+                            sb.AppendLine("            },");
+                        }
                         // quickSearches
                         sb.AppendLine("            quickSearches = new[]");
                         sb.AppendLine("            {");

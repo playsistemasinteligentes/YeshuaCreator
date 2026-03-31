@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yFileUploadReadRepository : IyFileUploadReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyFileUploadQueryRead _query;
 
-        public yFileUploadReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyFileUploadQueryRead query)
+        public yFileUploadReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyFileUploadQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yFileUploadQuery(command , TakeOffTenantID);
 
-                var itens = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters);
                 return new DataPagination<yFileUploadDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<yFileUploadTenantIDDTO> lista;
             var query = _query.yFileUploadTenantIDQuery(command , TakeOffTenantID);
 
-                lista = _connection.Query<yFileUploadTenantIDDTO>(query.Query,query.Parameters) as List<yFileUploadTenantIDDTO>;
+                lista = _unitOfWork.Query<yFileUploadTenantIDDTO>(query.Query,query.Parameters) as List<yFileUploadTenantIDDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<yFileUploadUserIdDTO> lista;
             var query = _query.yFileUploadUserIdQuery(command , TakeOffTenantID);
 
-                lista = _connection.Query<yFileUploadUserIdDTO>(query.Query,query.Parameters) as List<yFileUploadUserIdDTO>;
+                lista = _unitOfWork.Query<yFileUploadUserIdDTO>(query.Query,query.Parameters) as List<yFileUploadUserIdDTO>;
             return lista;
         }
 
@@ -87,7 +88,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -95,7 +96,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTypeQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -103,7 +104,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByStatusQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -111,7 +112,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByFilePathQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -119,7 +120,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByFileSizeQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -127,7 +128,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -135,7 +136,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCompletedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -143,7 +144,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -151,7 +152,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -159,7 +160,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -167,7 +168,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -175,7 +176,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -183,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -191,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -199,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFilePathQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -207,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFileSizeQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -215,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -223,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCompletedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -231,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -239,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -247,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -255,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -263,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -271,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -279,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -287,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFilePathQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -295,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFileSizeQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -303,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -311,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCompletedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -319,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -327,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -335,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 
@@ -343,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;
         }
 

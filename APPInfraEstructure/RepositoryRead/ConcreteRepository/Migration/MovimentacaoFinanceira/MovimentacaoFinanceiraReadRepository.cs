@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class MovimentacaoFinanceiraReadRepository : IMovimentacaoFinanceiraReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IMovimentacaoFinanceiraQueryRead _query;
 
-        public MovimentacaoFinanceiraReadRepository(ISqlFactory factory, ICurrentUser currentUser,IMovimentacaoFinanceiraQueryRead query)
+        public MovimentacaoFinanceiraReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IMovimentacaoFinanceiraQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.MovimentacaoFinanceiraQuery(command );
 
-                var itens = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters);
                 return new DataPagination<MovimentacaoFinanceiraDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<MovimentacaoFinanceiraPacienteIdDTO> lista;
             var query = _query.MovimentacaoFinanceiraPacienteIdQuery(command );
 
-                lista = _connection.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraPacienteIdDTO>;
+                lista = _unitOfWork.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraPacienteIdDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<MovimentacaoFinanceiraServicoIdDTO> lista;
             var query = _query.MovimentacaoFinanceiraServicoIdQuery(command );
 
-                lista = _connection.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraServicoIdDTO>;
+                lista = _unitOfWork.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraServicoIdDTO>;
             return lista;
         }
 
@@ -88,7 +89,7 @@ namespace Read.Repository
             List<MovimentacaoFinanceiraTenantIDDTO> lista;
             var query = _query.MovimentacaoFinanceiraTenantIDQuery(command );
 
-                lista = _connection.Query<MovimentacaoFinanceiraTenantIDDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraTenantIDDTO>;
+                lista = _unitOfWork.Query<MovimentacaoFinanceiraTenantIDDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraTenantIDDTO>;
             return lista;
         }
 
@@ -106,7 +107,7 @@ namespace Read.Repository
             List<MovimentacaoFinanceiraUserIdDTO> lista;
             var query = _query.MovimentacaoFinanceiraUserIdQuery(command );
 
-                lista = _connection.Query<MovimentacaoFinanceiraUserIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraUserIdDTO>;
+                lista = _unitOfWork.Query<MovimentacaoFinanceiraUserIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraUserIdDTO>;
             return lista;
         }
 
@@ -123,7 +124,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -131,7 +132,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByPacienteIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -139,7 +140,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByServicoIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -147,7 +148,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByValorQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -155,7 +156,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTipoMovimentacaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -163,7 +164,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDataMovimentacaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -171,7 +172,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsBySaldoAtualQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -179,7 +180,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -187,7 +188,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -195,7 +196,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -203,7 +204,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -211,7 +212,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -219,7 +220,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPacienteIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -227,7 +228,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByServicoIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -235,7 +236,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -243,7 +244,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoMovimentacaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -251,7 +252,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataMovimentacaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -259,7 +260,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySaldoAtualQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -267,7 +268,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -275,7 +276,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -283,7 +284,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -291,7 +292,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<MovimentacaoFinanceiraDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -299,7 +300,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -307,7 +308,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPacienteIdQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -315,7 +316,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByServicoIdQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -323,7 +324,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -331,7 +332,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoMovimentacaoQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -339,7 +340,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataMovimentacaoQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -347,7 +348,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySaldoAtualQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -355,7 +356,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -363,7 +364,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -371,7 +372,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 
@@ -379,7 +380,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
                 return result;
         }
 

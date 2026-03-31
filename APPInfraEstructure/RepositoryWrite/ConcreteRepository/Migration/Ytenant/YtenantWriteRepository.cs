@@ -28,43 +28,43 @@ namespace Input.Repository.yTenant
         public void Insert(IyTenantEntity yTenant)
         {
             var query = _query.InseriryTenantQuery(yTenant);
-        yTenant.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        yTenant.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IyTenantEntity yTenant)
         {
             var query = _query.UpdateyTenantQuery(yTenant);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IyTenantEntity yTenant)
         {
             var query = _query.DeleteyTenantQuery(yTenant);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateCnpjCpf(IyTenantEntity entity)
         {
             var query = _query.UpdateCnpjCpf(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateNome(IyTenantEntity entity)
         {
             var query = _query.UpdateNome(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateUserId(IyTenantEntity entity)
         {
             var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(IyTenantEntity entity)
         {
             var query = _query.UpdateDeleted(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateChanged(IyTenantEntity entity)
         {
             var query = _query.UpdateChanged(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

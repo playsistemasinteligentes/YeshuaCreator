@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yConfigNotificationReadRepository : IyConfigNotificationReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyConfigNotificationQueryRead _query;
 
-        public yConfigNotificationReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyConfigNotificationQueryRead query)
+        public yConfigNotificationReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyConfigNotificationQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yConfigNotificationQuery(command );
 
-                var itens = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters);
                 return new DataPagination<yConfigNotificationDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<yConfigNotificationTenantIDDTO> lista;
             var query = _query.yConfigNotificationTenantIDQuery(command );
 
-                lista = _connection.Query<yConfigNotificationTenantIDDTO>(query.Query,query.Parameters) as List<yConfigNotificationTenantIDDTO>;
+                lista = _unitOfWork.Query<yConfigNotificationTenantIDDTO>(query.Query,query.Parameters) as List<yConfigNotificationTenantIDDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<yConfigNotificationUserIdDTO> lista;
             var query = _query.yConfigNotificationUserIdQuery(command );
 
-                lista = _connection.Query<yConfigNotificationUserIdDTO>(query.Query,query.Parameters) as List<yConfigNotificationUserIdDTO>;
+                lista = _unitOfWork.Query<yConfigNotificationUserIdDTO>(query.Query,query.Parameters) as List<yConfigNotificationUserIdDTO>;
             return lista;
         }
 
@@ -87,7 +88,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -95,7 +96,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -103,7 +104,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByEmailSmtpClientQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -111,7 +112,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByEmailPortQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -119,7 +120,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByEmailUserNameQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -127,7 +128,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByEmailPasswordQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -135,7 +136,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -143,7 +144,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -151,7 +152,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -159,7 +160,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -167,7 +168,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -175,7 +176,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailSmtpClientQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -183,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailPortQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -191,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailUserNameQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -199,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailPasswordQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -207,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -215,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -223,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yConfigNotificationDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -231,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -239,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -247,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailSmtpClientQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -255,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailPortQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -263,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailUserNameQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -271,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailPasswordQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -279,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -287,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 
@@ -295,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
                 return result;
         }
 

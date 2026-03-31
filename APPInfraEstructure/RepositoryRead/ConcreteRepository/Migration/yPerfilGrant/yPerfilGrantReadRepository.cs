@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yPerfilGrantReadRepository : IyPerfilGrantReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyPerfilGrantQueryRead _query;
 
-        public yPerfilGrantReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyPerfilGrantQueryRead query)
+        public yPerfilGrantReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyPerfilGrantQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yPerfilGrantQuery(command );
 
-                var itens = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters);
                 return new DataPagination<yPerfilGrantDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<yPerfilGrantPerfilIdDTO> lista;
             var query = _query.yPerfilGrantPerfilIdQuery(command );
 
-                lista = _connection.Query<yPerfilGrantPerfilIdDTO>(query.Query,query.Parameters) as List<yPerfilGrantPerfilIdDTO>;
+                lista = _unitOfWork.Query<yPerfilGrantPerfilIdDTO>(query.Query,query.Parameters) as List<yPerfilGrantPerfilIdDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<yPerfilGrantGrantIdDTO> lista;
             var query = _query.yPerfilGrantGrantIdQuery(command );
 
-                lista = _connection.Query<yPerfilGrantGrantIdDTO>(query.Query,query.Parameters) as List<yPerfilGrantGrantIdDTO>;
+                lista = _unitOfWork.Query<yPerfilGrantGrantIdDTO>(query.Query,query.Parameters) as List<yPerfilGrantGrantIdDTO>;
             return lista;
         }
 
@@ -88,7 +89,7 @@ namespace Read.Repository
             List<yPerfilGrantTenantIDDTO> lista;
             var query = _query.yPerfilGrantTenantIDQuery(command );
 
-                lista = _connection.Query<yPerfilGrantTenantIDDTO>(query.Query,query.Parameters) as List<yPerfilGrantTenantIDDTO>;
+                lista = _unitOfWork.Query<yPerfilGrantTenantIDDTO>(query.Query,query.Parameters) as List<yPerfilGrantTenantIDDTO>;
             return lista;
         }
 
@@ -106,7 +107,7 @@ namespace Read.Repository
             List<yPerfilGrantUserIdDTO> lista;
             var query = _query.yPerfilGrantUserIdQuery(command );
 
-                lista = _connection.Query<yPerfilGrantUserIdDTO>(query.Query,query.Parameters) as List<yPerfilGrantUserIdDTO>;
+                lista = _unitOfWork.Query<yPerfilGrantUserIdDTO>(query.Query,query.Parameters) as List<yPerfilGrantUserIdDTO>;
             return lista;
         }
 
@@ -123,7 +124,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByPerfilIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -131,7 +132,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByGrantIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -139,7 +140,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByGrantQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -147,7 +148,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCreateQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -155,7 +156,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByReadQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -163,7 +164,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUpdateQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -171,7 +172,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeleteQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -179,7 +180,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByValidUntilQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -187,7 +188,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -195,7 +196,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -203,7 +204,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -211,7 +212,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -219,7 +220,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPerfilIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -227,7 +228,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrantIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -235,7 +236,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrantQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -243,7 +244,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreateQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -251,7 +252,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByReadQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -259,7 +260,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUpdateQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -267,7 +268,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeleteQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -275,7 +276,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidUntilQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -283,7 +284,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -291,7 +292,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -299,7 +300,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -307,7 +308,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -315,7 +316,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPerfilIdQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -323,7 +324,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrantIdQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -331,7 +332,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrantQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -339,7 +340,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreateQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -347,7 +348,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByReadQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -355,7 +356,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUpdateQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -363,7 +364,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeleteQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -371,7 +372,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidUntilQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -379,7 +380,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -387,7 +388,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -395,7 +396,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
@@ -403,7 +404,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
+                var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 

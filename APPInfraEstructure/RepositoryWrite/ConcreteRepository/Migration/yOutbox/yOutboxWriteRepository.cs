@@ -28,88 +28,88 @@ namespace Input.Repository.yOutbox
         public void Insert(IyOutboxEntity yOutbox)
         {
             var query = _query.InseriryOutboxQuery(yOutbox);
-        yOutbox.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        yOutbox.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IyOutboxEntity yOutbox)
         {
             var query = _query.UpdateyOutboxQuery(yOutbox);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IyOutboxEntity yOutbox)
         {
             var query = _query.DeleteyOutboxQuery(yOutbox);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateMessageId(IyOutboxEntity entity)
         {
             var query = _query.UpdateMessageId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateJobId(IyOutboxEntity entity)
         {
             var query = _query.UpdateJobId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateCorrelationId(IyOutboxEntity entity)
         {
             var query = _query.UpdateCorrelationId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateType(IyOutboxEntity entity)
         {
             var query = _query.UpdateType(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdatePayload(IyOutboxEntity entity)
         {
             var query = _query.UpdatePayload(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateStatus(IyOutboxEntity entity)
         {
             var query = _query.UpdateStatus(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateCreatedAt(IyOutboxEntity entity)
         {
             var query = _query.UpdateCreatedAt(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateSentAt(IyOutboxEntity entity)
         {
             var query = _query.UpdateSentAt(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateRetryCount(IyOutboxEntity entity)
         {
             var query = _query.UpdateRetryCount(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateLastError(IyOutboxEntity entity)
         {
             var query = _query.UpdateLastError(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IyOutboxEntity entity)
         {
             var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(IyOutboxEntity entity)
         {
             var query = _query.UpdateDeleted(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateChanged(IyOutboxEntity entity)
         {
             var query = _query.UpdateChanged(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateUserId(IyOutboxEntity entity)
         {
             var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

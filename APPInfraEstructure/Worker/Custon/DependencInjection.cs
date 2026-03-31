@@ -87,8 +87,8 @@ namespace Worker.Migration
                             WorkerPollingInboxUseCaseReceiver,
                             WorkerPollingInboxUseCaseInputCommand,
                             WorkerPollingInboxUseCaseOutputCommand>>>(),
-                    TimeSpan.FromSeconds(5)
-                ));
+                        TimeSpan.FromSeconds(5)
+                    ));
 
 
 

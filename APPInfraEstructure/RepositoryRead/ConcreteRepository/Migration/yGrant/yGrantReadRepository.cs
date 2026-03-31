@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yGrantReadRepository : IyGrantReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyGrantQueryRead _query;
 
-        public yGrantReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyGrantQueryRead query)
+        public yGrantReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyGrantQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yGrantQuery(command );
 
-                var itens = _connection.Query<yGrantDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters);
                 return new DataPagination<yGrantDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<yGrantTenantIDDTO> lista;
             var query = _query.yGrantTenantIDQuery(command );
 
-                lista = _connection.Query<yGrantTenantIDDTO>(query.Query,query.Parameters) as List<yGrantTenantIDDTO>;
+                lista = _unitOfWork.Query<yGrantTenantIDDTO>(query.Query,query.Parameters) as List<yGrantTenantIDDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<yGrantUserIdDTO> lista;
             var query = _query.yGrantUserIdQuery(command );
 
-                lista = _connection.Query<yGrantUserIdDTO>(query.Query,query.Parameters) as List<yGrantUserIdDTO>;
+                lista = _unitOfWork.Query<yGrantUserIdDTO>(query.Query,query.Parameters) as List<yGrantUserIdDTO>;
             return lista;
         }
 
@@ -87,7 +88,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -95,7 +96,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDescriptionQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -103,7 +104,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -111,7 +112,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -119,7 +120,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -127,7 +128,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -135,7 +136,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -143,7 +144,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -151,7 +152,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -159,7 +160,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -167,7 +168,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -175,7 +176,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -183,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
                 return result;
         }
 
@@ -191,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value );
 
-                var result = _connection.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
                 return result;
         }
 
@@ -199,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
                 return result;
         }
 
@@ -207,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
                 return result;
         }
 
@@ -215,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
                 return result;
         }
 
@@ -223,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
+                var result = _unitOfWork.Query<yGrantDTO>(query.Query,query.Parameters) as List<yGrantDTO>;
                 return result;
         }
 

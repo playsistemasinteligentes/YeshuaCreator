@@ -31,68 +31,68 @@ namespace Input.Repository.yConfigNotification
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.InseriryConfigNotificationQuery(yConfigNotification);
-                _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
         }
 
         public void Update(IyConfigNotificationEntity yConfigNotification)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateyConfigNotificationQuery(yConfigNotification);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IyConfigNotificationEntity yConfigNotification)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.DeleteyConfigNotificationQuery(yConfigNotification);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateEmailSmtpClient(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateEmailSmtpClient(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateEmailPort(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateEmailPort(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateEmailUserName(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateEmailUserName(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateEmailPassword(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateEmailPassword(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateDeleted(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateChanged(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateChanged(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateUserId(IyConfigNotificationEntity entity)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
             var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

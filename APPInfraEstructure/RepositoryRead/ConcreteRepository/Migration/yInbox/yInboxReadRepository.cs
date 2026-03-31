@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yInboxReadRepository : IyInboxReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyInboxQueryRead _query;
 
-        public yInboxReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyInboxQueryRead query)
+        public yInboxReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyInboxQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yInboxQuery(command , TakeOffTenantID);
 
-                var itens = _connection.Query<yInboxDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters);
                 return new DataPagination<yInboxDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<yInboxTenantIDDTO> lista;
             var query = _query.yInboxTenantIDQuery(command , TakeOffTenantID);
 
-                lista = _connection.Query<yInboxTenantIDDTO>(query.Query,query.Parameters) as List<yInboxTenantIDDTO>;
+                lista = _unitOfWork.Query<yInboxTenantIDDTO>(query.Query,query.Parameters) as List<yInboxTenantIDDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<yInboxUserIdDTO> lista;
             var query = _query.yInboxUserIdQuery(command , TakeOffTenantID);
 
-                lista = _connection.Query<yInboxUserIdDTO>(query.Query,query.Parameters) as List<yInboxUserIdDTO>;
+                lista = _unitOfWork.Query<yInboxUserIdDTO>(query.Query,query.Parameters) as List<yInboxUserIdDTO>;
             return lista;
         }
 
@@ -87,7 +88,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -95,7 +96,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByMessageIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -103,7 +104,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByJobIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -111,7 +112,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCorrelationIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -119,7 +120,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTypeQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -127,7 +128,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByPayloadQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -135,7 +136,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByStatusQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -143,7 +144,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -151,7 +152,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsBySentAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -159,7 +160,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByRetryCountQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -167,7 +168,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByLastErrorQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -175,7 +176,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -183,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -191,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -199,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -207,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -215,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMessageIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -223,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByJobIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -231,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -239,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -247,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -255,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -263,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -271,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySentAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -279,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -287,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -295,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -303,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -311,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -319,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -327,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -335,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMessageIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -343,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByJobIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -351,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -359,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -367,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -375,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -383,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -391,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySentAtQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -399,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -407,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -415,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -423,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -431,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 
@@ -439,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _connection.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;
         }
 

@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yModuleReadRepository : IyModuleReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyModuleQueryRead _query;
 
-        public yModuleReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyModuleQueryRead query)
+        public yModuleReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyModuleQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yModuleQuery(command );
 
-                var itens = _connection.Query<yModuleDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters);
                 return new DataPagination<yModuleDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -51,7 +52,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -59,7 +60,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDescriptionQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -67,7 +68,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yModuleDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yModuleDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -75,7 +76,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<yModuleDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yModuleDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -83,7 +84,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
+                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
                 return result;
         }
 
@@ -91,7 +92,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value );
 
-                var result = _connection.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
+                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
                 return result;
         }
 

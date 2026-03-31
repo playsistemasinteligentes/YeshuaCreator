@@ -28,53 +28,53 @@ namespace Input.Repository.Clinica
         public void Insert(IClinicaEntity Clinica)
         {
             var query = _query.InserirClinicaQuery(Clinica);
-        Clinica.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        Clinica.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IClinicaEntity Clinica)
         {
             var query = _query.UpdateClinicaQuery(Clinica);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IClinicaEntity Clinica)
         {
             var query = _query.DeleteClinicaQuery(Clinica);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateNome(IClinicaEntity entity)
         {
             var query = _query.UpdateNome(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateEndereco(IClinicaEntity entity)
         {
             var query = _query.UpdateEndereco(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTelefone(IClinicaEntity entity)
         {
             var query = _query.UpdateTelefone(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IClinicaEntity entity)
         {
             var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(IClinicaEntity entity)
         {
             var query = _query.UpdateDeleted(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateChanged(IClinicaEntity entity)
         {
             var query = _query.UpdateChanged(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateUserId(IClinicaEntity entity)
         {
             var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

@@ -28,68 +28,68 @@ namespace Input.Repository.MovimentacaoFinanceira
         public void Insert(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = _query.InserirMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-        MovimentacaoFinanceira.Id =  _UnitOfWork.Connection.ExecuteScalar<int>(query.Query, query.Parameters,_UnitOfWork.Transaction);
+        MovimentacaoFinanceira.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = _query.UpdateMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
             var query = _query.DeleteMovimentacaoFinanceiraQuery(MovimentacaoFinanceira);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdatePacienteId(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdatePacienteId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateServicoId(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateServicoId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateValor(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateValor(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateTipoMovimentacao(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateDataMovimentacao(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateSaldoAtual(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateTenantID(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDeleted(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateDeleted(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateChanged(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateChanged(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateUserId(IMovimentacaoFinanceiraEntity entity)
         {
             var query = _query.UpdateUserId(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

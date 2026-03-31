@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class ServicoReadRepository : IServicoReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IServicoQueryRead _query;
 
-        public ServicoReadRepository(ISqlFactory factory, ICurrentUser currentUser,IServicoQueryRead query)
+        public ServicoReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IServicoQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.ServicoQuery(command );
 
-                var itens = _connection.Query<ServicoDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters);
                 return new DataPagination<ServicoDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<ServicoGrupoServicoIdDTO> lista;
             var query = _query.ServicoGrupoServicoIdQuery(command );
 
-                lista = _connection.Query<ServicoGrupoServicoIdDTO>(query.Query,query.Parameters) as List<ServicoGrupoServicoIdDTO>;
+                lista = _unitOfWork.Query<ServicoGrupoServicoIdDTO>(query.Query,query.Parameters) as List<ServicoGrupoServicoIdDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<ServicoTenantIDDTO> lista;
             var query = _query.ServicoTenantIDQuery(command );
 
-                lista = _connection.Query<ServicoTenantIDDTO>(query.Query,query.Parameters) as List<ServicoTenantIDDTO>;
+                lista = _unitOfWork.Query<ServicoTenantIDDTO>(query.Query,query.Parameters) as List<ServicoTenantIDDTO>;
             return lista;
         }
 
@@ -88,7 +89,7 @@ namespace Read.Repository
             List<ServicoUserIdDTO> lista;
             var query = _query.ServicoUserIdQuery(command );
 
-                lista = _connection.Query<ServicoUserIdDTO>(query.Query,query.Parameters) as List<ServicoUserIdDTO>;
+                lista = _unitOfWork.Query<ServicoUserIdDTO>(query.Query,query.Parameters) as List<ServicoUserIdDTO>;
             return lista;
         }
 
@@ -105,7 +106,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -113,7 +114,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByGrupoServicoIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -121,7 +122,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByNomeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -129,7 +130,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByValorQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -137,7 +138,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -145,7 +146,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -153,7 +154,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -161,7 +162,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -169,7 +170,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -177,7 +178,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoServicoIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -185,7 +186,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -193,7 +194,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -201,7 +202,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -209,7 +210,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -217,7 +218,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -225,7 +226,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -233,7 +234,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -241,7 +242,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrupoServicoIdQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -249,7 +250,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -257,7 +258,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -265,7 +266,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -273,7 +274,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -281,7 +282,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 
@@ -289,7 +290,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters) as List<ServicoDTO>;
                 return result;
         }
 

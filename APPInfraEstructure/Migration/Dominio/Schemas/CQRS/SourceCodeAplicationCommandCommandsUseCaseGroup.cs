@@ -44,6 +44,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceEnumStrategy};");
+            sb.AppendLine($"using Microsoft.AspNetCore.Http;");
+            
+
 
             // using Microsoft.AspNetCore.Http;
 

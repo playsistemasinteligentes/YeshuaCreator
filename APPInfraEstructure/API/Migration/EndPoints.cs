@@ -2722,9 +2722,8 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
                 new { id = "type", label = "Tipo da Mensagem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "payload", label = "Payload", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
-            filterFields = new[]
-            {
-            },
+             filterFields = Array.Empty<object>(),
+
             quickSearches = new[]
             {
                 new { id = "ProximaPendente", label = "ProximaPendente", icon = "calendar-day", endpoint = "/yOutbox/ReadyOutboxProximaPendente" },
@@ -3552,4 +3551,4 @@ return Results.Problem(ex.Message);
 }
 }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration 

@@ -28,23 +28,23 @@ namespace Input.Repository.yModule
         public void Insert(IyModuleEntity yModule)
         {
             var query = _query.InseriryModuleQuery(yModule);
-                _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+                _UnitOfWork.Execute(query.Query, query.Parameters);
         }
 
         public void Update(IyModuleEntity yModule)
         {
             var query = _query.UpdateyModuleQuery(yModule);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void Delete(IyModuleEntity yModule)
         {
             var query = _query.DeleteyModuleQuery(yModule);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateDescription(IyModuleEntity entity)
         {
             var query = _query.UpdateDescription(entity);
-             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using global::RabbitMQ.Client;
 using Microsoft.Extensions.Options;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
+using System.Collections.Concurrent;
 
 namespace Shered.ConcretInterfaces.Queue.RabbitMQ;
 
@@ -9,7 +10,10 @@ public sealed class RabbitMqConnectionManager : IDisposable
     private readonly RabbitMqOptions _options;
 
     private IConnection? _connection;
-    private readonly SemaphoreSlim _lock = new(1, 1);
+    private readonly SemaphoreSlim _connectionLock = new(1, 1);
+
+    private readonly ConcurrentDictionary<string, IChannel> _channels = new();
+    private readonly ConcurrentDictionary<string, SemaphoreSlim> _channelLocks = new();
 
     public RabbitMqConnectionManager(IOptions<RabbitMqOptions> options)
     {
@@ -21,8 +25,7 @@ public sealed class RabbitMqConnectionManager : IDisposable
         if (_connection != null && _connection.IsOpen)
             return _connection;
 
-        await _lock.WaitAsync(ct);
-
+        await _connectionLock.WaitAsync(ct);
         try
         {
             if (_connection != null && _connection.IsOpen)
@@ -40,24 +43,65 @@ public sealed class RabbitMqConnectionManager : IDisposable
             };
 
             _connection = await factory.CreateConnectionAsync(ct);
-
             return _connection;
         }
         finally
         {
-            _lock.Release();
+            _connectionLock.Release();
         }
     }
 
-    public async Task<IChannel> CreateChannelAsync(CancellationToken ct = default)
+    // pendencia implementar o confirmar RabbitMqConfirmListener
+    /*ConnectionManager
+    Channel
+    ConfirmTracker
+    Ack/Nack Listener
+Publisher
+    Register DeliveryTag
+    Publish
+    Await Confirm
+Worker
+    Update Outbox*/
+
+    public async Task<IChannel> GetChannelAsync(string channelId, CancellationToken ct = default)
     {
-        var connection = await GetConnectionAsync(ct);
+        if (_channels.TryGetValue(channelId, out var existingChannel))
+        {
+            if (existingChannel.IsOpen)
+                return existingChannel;
+        }
 
-        return await connection.CreateChannelAsync();
+        var channelLock = _channelLocks.GetOrAdd(channelId, _ => new SemaphoreSlim(1, 1));
+
+        await channelLock.WaitAsync(ct);
+        try
+        {
+            if (_channels.TryGetValue(channelId, out existingChannel))
+            {
+                if (existingChannel.IsOpen)
+                    return existingChannel;
+
+                existingChannel.Dispose();
+            }
+
+            var connection = await GetConnectionAsync(ct);
+
+            var channel = await connection.CreateChannelAsync(null, ct);
+
+            _channels[channelId] = channel;
+
+            return channel;
+        }
+        finally
+        {
+            channelLock.Release();
+        }
     }
-
     public void Dispose()
     {
+        foreach (var ch in _channels.Values)
+            ch.Dispose();
+
         _connection?.Dispose();
     }
 }

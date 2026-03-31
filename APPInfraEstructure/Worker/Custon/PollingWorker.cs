@@ -25,7 +25,7 @@ public class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundService
     {
         var workerName = typeof(TReceiver).Name;
 
-        _logger.LogInformation("Worker {Worker} iniciado.", workerName);
+        _logger.LogInformation("Worker {Worker} inicmiado.", workerName);
 
         while (!stoppingToken.IsCancellationRequested)
         {

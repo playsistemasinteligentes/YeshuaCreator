@@ -37,17 +37,13 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                /*StoragePath finalPath_ = StoragePathBuilder.BuildFromFullPath(StorageLocation.Volatile.TranscriptionsInput, "volatile/ia/transcriptions/input/1/8003/teste.txt");
-
-                StoragePath pendingMergePath_ = StoragePathBuilder.AppendDirectory(StorageLocation.Volatile.TranscriptionsInput, finalPath_, "pending_merge");
-
-                Console.WriteLine($"pendingMergePath:{pendingMergePath_.Directory}");
-                // 🔎 não existe o arquivo final?
-                var merged_ = MergeChunksFromStorage(pendingMergePath_, finalPath_); // usar FFMpeg.exe
-                if (!_fileStorage.HasFilesInDirectoryAsync(finalPath_, CancellationToken.None).GetAwaiter().GetResult())
-                {
-                }
-                */
+                /* pendencia
+                ✅ Seu UPDATE TOP OUTPUT (já fez)
+                🔲 RetryCount
+                🔲 ProcessingDate (timeout)
+                🔲 Publisher Confirm (muito importante)
+                🔲 Idempotência no consumer
+                🔲 DeadLetter*/
 
                 var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
 
@@ -80,9 +76,12 @@ namespace Command.Receivers.UseCase
                     QueueMessage queueMessage = new QueueMessage(outBox.type, outBox.payload)
                     { CorrelationId = outBox.id.ToString(), Source = "worker-outbox" };
                     Console.Write("08");
-                    _queuePublisher.PublishAsync("ai.tasks", "audio.transcribe", queueMessage).GetAwaiter().GetResult();
-                    yOutboxEntity outboxEntity = new yOutboxEntity() { Id = outBox.id, Status = 1 };
-                    _repWriteyOutbox.UpdateStatus(outboxEntity);
+                    
+                    if (_queuePublisher.PublishCeleryAsync("ai.tasks.audio.transcribe","ai.tasks", "audio.transcribe", queueMessage).GetAwaiter().GetResult())
+                    {
+                        yOutboxEntity outboxEntity = new yOutboxEntity() { Id = outBox.id, Status = 1 };
+                        _repWriteyOutbox.UpdateStatus(outboxEntity);
+                    }
                 }
             }
             catch (Exception )

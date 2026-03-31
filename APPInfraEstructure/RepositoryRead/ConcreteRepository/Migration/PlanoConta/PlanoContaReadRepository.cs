@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class PlanoContaReadRepository : IPlanoContaReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IPlanoContaQueryRead _query;
 
-        public PlanoContaReadRepository(ISqlFactory factory, ICurrentUser currentUser,IPlanoContaQueryRead query)
+        public PlanoContaReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IPlanoContaQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.PlanoContaQuery(command );
 
-                var itens = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters);
                 return new DataPagination<PlanoContaDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<PlanoContaTenantIDDTO> lista;
             var query = _query.PlanoContaTenantIDQuery(command );
 
-                lista = _connection.Query<PlanoContaTenantIDDTO>(query.Query,query.Parameters) as List<PlanoContaTenantIDDTO>;
+                lista = _unitOfWork.Query<PlanoContaTenantIDDTO>(query.Query,query.Parameters) as List<PlanoContaTenantIDDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<PlanoContaUserIdDTO> lista;
             var query = _query.PlanoContaUserIdQuery(command );
 
-                lista = _connection.Query<PlanoContaUserIdDTO>(query.Query,query.Parameters) as List<PlanoContaUserIdDTO>;
+                lista = _unitOfWork.Query<PlanoContaUserIdDTO>(query.Query,query.Parameters) as List<PlanoContaUserIdDTO>;
             return lista;
         }
 
@@ -87,7 +88,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -95,7 +96,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCodigoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -103,7 +104,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByNomeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -111,7 +112,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTipoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -119,7 +120,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -127,7 +128,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -135,7 +136,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -143,7 +144,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -151,7 +152,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -159,7 +160,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCodigoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -167,7 +168,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -175,7 +176,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -183,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -191,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -199,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -207,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PlanoContaDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -215,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -223,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCodigoQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -231,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -239,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -247,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -255,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -263,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 
@@ -271,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
+                var result = _unitOfWork.Query<PlanoContaDTO>(query.Query,query.Parameters) as List<PlanoContaDTO>;
                 return result;
         }
 

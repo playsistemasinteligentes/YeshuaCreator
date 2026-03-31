@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class yTenantReadRepository : IyTenantReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IyTenantQueryRead _query;
 
-        public yTenantReadRepository(ISqlFactory factory, ICurrentUser currentUser,IyTenantQueryRead query)
+        public yTenantReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyTenantQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.yTenantQuery(command , TakeOffId);
 
-                var itens = _connection.Query<yTenantDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters);
                 return new DataPagination<yTenantDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -51,7 +52,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -59,7 +60,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByCnpjCpfQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -67,7 +68,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByNomeQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -75,7 +76,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -83,7 +84,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -91,7 +92,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -99,7 +100,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -107,7 +108,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -115,7 +116,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -123,7 +124,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -131,7 +132,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -139,7 +140,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffId);
 
-                var result = _connection.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -147,7 +148,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffId);
 
-                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
                 return result;
         }
 
@@ -155,7 +156,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
 
-                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
                 return result;
         }
 
@@ -163,7 +164,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value , TakeOffId);
 
-                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
                 return result;
         }
 
@@ -171,7 +172,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffId);
 
-                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
                 return result;
         }
 
@@ -179,7 +180,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffId);
 
-                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
                 return result;
         }
 
@@ -187,7 +188,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffId);
 
-                var result = _connection.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
                 return result;
         }
 

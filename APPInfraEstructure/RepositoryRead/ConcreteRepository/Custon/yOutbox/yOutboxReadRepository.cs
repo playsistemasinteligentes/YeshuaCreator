@@ -18,7 +18,7 @@ namespace Read.Repository
                               AND Deleted = 0
                         ";
 
-            var result = _connection.Query<int>(sql, new
+            var result = _unitOfWork.Query<int>(sql, new
             {
                 Type = tipo,
                 Limit = limite

@@ -4,10 +4,8 @@ namespace Command.Interfaces.Patterns.Queue;
 
 public interface IQueuePublisher
 {
-    Task PublishAsync(
-        string exchange,
-        string routingKey,
-        QueueMessage message,
-        CancellationToken cancellationToken = default
-    );
+    Task<bool> PublishAsync(string channelId, string exchange, string routingKey, QueueMessage message, CancellationToken cancellationToken = default);
+    Task<bool> PublishCeleryAsync(string channelId, string exchange, string routingKey, QueueMessage message, CancellationToken cancellationToken = default);
+    
+
 }

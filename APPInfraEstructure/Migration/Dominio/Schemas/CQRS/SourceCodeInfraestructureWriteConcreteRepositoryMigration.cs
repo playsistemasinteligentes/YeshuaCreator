@@ -71,9 +71,9 @@ namespace Dominio.Schemas.CQRS
 
             var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
             if (incremento != null)
-                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _UnitOfWork.Connection.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters,_UnitOfWork.Transaction);");
+                sb.AppendLine($"        {_entity.EntityName}.{incremento.Name} =  _UnitOfWork.ExecuteScalar<{incremento.getCsharpType()}>(query.Query, query.Parameters);");
             else
-                sb.AppendLine("                _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
+                sb.AppendLine("                _UnitOfWork.Execute(query.Query, query.Parameters);");
 
             sb.AppendLine("        }");
             sb.AppendLine();
@@ -82,14 +82,14 @@ namespace Dominio.Schemas.CQRS
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
             sb.AppendLine($"            var query = _query.Update{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
+            sb.AppendLine("             _UnitOfWork.Execute(query.Query, query.Parameters);");
             sb.AppendLine("        }");
             sb.AppendLine($"        public void Delete(I{_entity.EntityName}Entity {_entity.EntityName})");
             sb.AppendLine("        {");
             if (_entity.CachedTable)
                 sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
             sb.AppendLine($"            var query = _query.Delete{_entity.EntityName}Query({_entity.EntityName});");
-            sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
+            sb.AppendLine("             _UnitOfWork.Execute(query.Query, query.Parameters);");
             sb.AppendLine("        }");
 
 
@@ -100,7 +100,7 @@ namespace Dominio.Schemas.CQRS
                 if (_entity.CachedTable)
                     sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
                 sb.AppendLine($"            var query = _query.Update{column.Name}(entity);");
-                sb.AppendLine("             _UnitOfWork.Connection.Execute(query.Query, query.Parameters,_UnitOfWork.Transaction);");
+                sb.AppendLine("             _UnitOfWork.Execute(query.Query, query.Parameters);");
                 sb.AppendLine("        }");
             }
 

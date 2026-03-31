@@ -6,6 +6,7 @@ using Read.Repository;
 using IRepository.Read;
 using IQuery.Read;
 using Aplication.Interfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace Read.Repository
 {
     public partial class PacienteReadRepository : IPacienteReadRepository
     {
-        protected readonly IDbConnection _connection;
+        protected readonly IUnitOfWork _unitOfWork;
         protected readonly ICurrentUser _currentUser;
        protected readonly IPacienteQueryRead _query;
 
-        public PacienteReadRepository(ISqlFactory factory, ICurrentUser currentUser,IPacienteQueryRead query)
+        public PacienteReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IPacienteQueryRead query)
         {
-            _connection = factory.SqlConnection();
+            _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _query = query;
         }
@@ -39,7 +40,7 @@ namespace Read.Repository
         {
             var query = _query.PacienteQuery(command );
 
-                var itens = _connection.Query<PacienteDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters);
                 return new DataPagination<PacienteDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -52,7 +53,7 @@ namespace Read.Repository
             List<PacienteTenantIDDTO> lista;
             var query = _query.PacienteTenantIDQuery(command );
 
-                lista = _connection.Query<PacienteTenantIDDTO>(query.Query,query.Parameters) as List<PacienteTenantIDDTO>;
+                lista = _unitOfWork.Query<PacienteTenantIDDTO>(query.Query,query.Parameters) as List<PacienteTenantIDDTO>;
             return lista;
         }
 
@@ -70,7 +71,7 @@ namespace Read.Repository
             List<PacienteUserIdDTO> lista;
             var query = _query.PacienteUserIdQuery(command );
 
-                lista = _connection.Query<PacienteUserIdDTO>(query.Query,query.Parameters) as List<PacienteUserIdDTO>;
+                lista = _unitOfWork.Query<PacienteUserIdDTO>(query.Query,query.Parameters) as List<PacienteUserIdDTO>;
             return lista;
         }
 
@@ -87,7 +88,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -95,7 +96,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByNomeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -103,7 +104,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTelefoneQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -111,7 +112,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDataNascimentoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -119,7 +120,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByGeneroQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -127,7 +128,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByEscolaridadeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -135,7 +136,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByProfissaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -143,7 +144,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByEnderecoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -151,7 +152,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByNomeResponsavelQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -159,7 +160,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTelefoneResponsavelQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -167,7 +168,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByObservacaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -175,7 +176,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -183,7 +184,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -191,7 +192,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -199,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.ExistsByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
@@ -207,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -215,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -223,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTelefoneQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -231,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataNascimentoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -239,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGeneroQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -247,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEscolaridadeQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -255,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProfissaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -263,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEnderecoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -271,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeResponsavelQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -279,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTelefoneResponsavelQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -287,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObservacaoQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -295,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -303,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -311,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -319,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
+                var result = _unitOfWork.QueryFirstOrDefault<PacienteDTO>(query.Query, query.Parameters);
                 return result;
         }
 
@@ -327,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -335,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -343,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTelefoneQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -351,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataNascimentoQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -359,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGeneroQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -367,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEscolaridadeQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -375,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProfissaoQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -383,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEnderecoQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -391,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeResponsavelQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -399,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTelefoneResponsavelQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -407,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObservacaoQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -415,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -423,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -431,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -439,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _connection.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
+                var result = _unitOfWork.Query<PacienteDTO>(query.Query,query.Parameters) as List<PacienteDTO>;
                 return result;
         }
 
@@ -449,7 +450,7 @@ namespace Read.Repository
              {
             var query = _query.PacienteMesQuery(c );
 
-                var itens = _connection.Query<PacienteStandardDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<PacienteStandardDTO>(query.Query,query.Parameters);
                 return new DataPagination<PacienteStandardDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,
@@ -466,7 +467,7 @@ namespace Read.Repository
              {
                 var query = _query.PacienteGeralQuery(c );
 
-                var itens = _connection.Query<PacienteStandardDTO>(query.Query,query.Parameters);
+                var itens = _unitOfWork.Query<PacienteStandardDTO>(query.Query,query.Parameters);
                 return new DataPagination<PacienteStandardDTO>(
                                 itens,
                 command.Paginacao?.Page ?? 0,

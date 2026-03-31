@@ -194,6 +194,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceIQueryRead};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
+            sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
 
 
             sb.AppendLine("using Shered.DB.Connection;");
@@ -208,13 +209,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
             sb.AppendLine($"    public partial class {_entity.EntityName}ReadRepository : I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
-            sb.AppendLine("        protected readonly IDbConnection _connection;");
+            sb.AppendLine("        protected readonly IUnitOfWork _unitOfWork;");
             sb.AppendLine("        protected readonly ICurrentUser _currentUser;");
             sb.AppendLine($"       protected readonly I{_entity.EntityName}QueryRead _query;");
             sb.AppendLine();
-            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(ISqlFactory factory, ICurrentUser currentUser,I{_entity.EntityName}QueryRead query)");
+            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,I{_entity.EntityName}QueryRead query)");
             sb.AppendLine("        {");
-            sb.AppendLine("            _connection = factory.SqlConnection();");
+            sb.AppendLine("            _unitOfWork = unitOfWork;");
             sb.AppendLine("            _currentUser = currentUser;");
             sb.AppendLine("            _query = query;");
             sb.AppendLine("        }");
@@ -230,8 +231,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        {");
             sb.AppendLine($"            var query = _query.{_entity.EntityName}Query(command {VariavaltakeOff});");
             sb.AppendLine();
-            sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters);");
-            //var itens = _connection.Query<GrupoServicoDTO>(query.Query, query.Parameters);
+            sb.AppendLine($"                var itens = _unitOfWork.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters);");
             sb.AppendLine($"                return new DataPagination<{_entity.EntityName}DTO>(");
             sb.AppendLine($"                                itens,");
             sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
@@ -248,7 +248,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            List<{_entity.EntityName}{column.Name}DTO> lista;");
                 sb.AppendLine($"            var query = _query.{_entity.EntityName}{column.Name}Query(command {VariavaltakeOff});");
                 sb.AppendLine();
-                sb.AppendLine($"                lista = _connection.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{column.Name}DTO>;");
+                sb.AppendLine($"                lista = _unitOfWork.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{column.Name}DTO>;");
                 sb.AppendLine("            return lista;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -275,7 +275,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine($"            var query = _query.ExistsBy{column.Name}Query(value {VariavaltakeOff});");
                 sb.AppendLine();
-                sb.AppendLine("                var result = _connection.QueryFirstOrDefault<int>(query.Query, query.Parameters);");
+                sb.AppendLine("                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);");
                 sb.AppendLine("                return result == 1;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -288,7 +288,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine($"            var query = _query.FirstBy{column.Name}Query(value {VariavaltakeOff});");
                 sb.AppendLine();
-                sb.AppendLine($"                var result = _connection.QueryFirstOrDefault<{_entity.EntityName}DTO>(query.Query, query.Parameters);");
+                sb.AppendLine($"                var result = _unitOfWork.QueryFirstOrDefault<{_entity.EntityName}DTO>(query.Query, query.Parameters);");
                 sb.AppendLine("                return result;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -301,7 +301,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine($"            var query = _query.FirstBy{column.Name}Query(value {VariavaltakeOff});");
                 sb.AppendLine();
-                sb.AppendLine($"                var result = _connection.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
+                sb.AppendLine($"                var result = _unitOfWork.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
                 sb.AppendLine("                return result;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -321,7 +321,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("             {");
                     sb.AppendLine($"            var query = _query.{methodName}Query(c {VariavaltakeOff});");
                     sb.AppendLine();
-                    sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
+                    sb.AppendLine($"                var itens = _unitOfWork.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
                     sb.AppendLine($"                return new DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO>(");
                     sb.AppendLine($"                                itens,");
                     sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
@@ -346,7 +346,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"                var query = _query.{methodName}Query(c {VariavaltakeOff});");
                     sb.AppendLine();
 
-                    sb.AppendLine($"                var itens = _connection.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
+                    sb.AppendLine($"                var itens = _unitOfWork.Query<{_entity.EntityName}{query.Meta.QueryName}DTO>(query.Query,query.Parameters);");
                     sb.AppendLine($"                return new DataPagination<{_entity.EntityName}{query.Meta.QueryName}DTO>(");
                     sb.AppendLine($"                                itens,");
                     sb.AppendLine($"                command.Paginacao?.Page ?? 0,");
