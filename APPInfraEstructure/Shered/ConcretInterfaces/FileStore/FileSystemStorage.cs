@@ -14,10 +14,12 @@ namespace Shered.ConcretInterfaces.FileStore
     public class FileSystemStorage : IFileStorage
     {
         private readonly string _rootPath;
+        private readonly string _baseUrl;
 
         public FileSystemStorage(IOptions<FileSystemOptions> options)
         {
             _rootPath = options.Value.RootPath;
+            _baseUrl = options.Value.BaseUrl;
             Directory.CreateDirectory(_rootPath);
         }
 
@@ -121,6 +123,11 @@ namespace Shered.ConcretInterfaces.FileStore
 
             // Abre para leitura compartilhada
             return new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        }
+
+        public string GetBaseUrl()
+        {
+            return _baseUrl;
         }
 
         public Stream OpenWrite(StoragePath path)

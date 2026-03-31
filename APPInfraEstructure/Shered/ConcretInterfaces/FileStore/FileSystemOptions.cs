@@ -10,5 +10,6 @@ namespace Shered.ConcretInterfaces.FileStore
     public class FileSystemOptions
     {
         public string RootPath { get; set; } = "storage";
+        public string BaseUrl { get; set; }
     }
 }

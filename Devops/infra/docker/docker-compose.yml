@@ -28,6 +28,7 @@
           MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           FileSystem__RootPath: "/storage"
+          FileSystem__BaseUrl: "https://playsis.com.br"
         expose:
           - "7214"
         depends_on:
@@ -56,6 +57,7 @@
             MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
 
             FileSystem__RootPath: "/storage"
+            FileSystem__BaseUrl: "https://playsis.com.br"
 
             RabbitMq__HostName: rabbitmq
             RabbitMq__Port: 5672

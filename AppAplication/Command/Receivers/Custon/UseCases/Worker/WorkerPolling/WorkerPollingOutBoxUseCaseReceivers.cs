@@ -23,6 +23,7 @@ namespace Command.Receivers.UseCase
         private readonly IyOutboxWriteRepository _repWriteyOutbox;
         private readonly IQueuePublisher _queuePublisher;
         private readonly IFileStorage _fileStorage;
+
         public WorkerPollingOutBoxUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyOutboxReadRepository repReadyOutbox, IyOutboxWriteRepository repWriteyOutbox, IQueuePublisher queuePublisher, IyFileUploadReadRepository repReadyUpload, IFileStorage fileStorage)
         {
             _unitOfWork = unitOfWork;

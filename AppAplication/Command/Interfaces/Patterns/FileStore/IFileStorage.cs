@@ -31,7 +31,8 @@ namespace Command.Interfaces.Patterns.FileStore
         Stream OpenRead(StoragePath path);
 
         Stream OpenWrite(StoragePath path);
-
+        string GetBaseUrl();
+        
         bool DirectoryExists(StoragePath path);
     }
 }
