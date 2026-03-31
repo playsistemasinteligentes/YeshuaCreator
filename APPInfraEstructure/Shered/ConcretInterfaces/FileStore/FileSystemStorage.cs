@@ -107,7 +107,7 @@ namespace Shered.ConcretInterfaces.FileStore
             foreach (var filePath in Directory.GetFiles(fullPath))
             {
                 // Criando StoragePath via builder
-                yield return StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput, filePath);
+                yield return StoragePathBuilder.BuildFromFullPath(filePath);
             }
         }
         public Stream OpenRead(StoragePath path)
