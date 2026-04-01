@@ -130,7 +130,7 @@ namespace Command.Receivers.UseCase
                     throw new ReceiverException<InfraSendFileUseCaseOutputCommand>(
                     Error(string.Join("; ", upload.getErroMensagens()), default));
 
-                var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}/{upload.FilePath}");
+                var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
                 _unitOfWork.BeginTran();
 
