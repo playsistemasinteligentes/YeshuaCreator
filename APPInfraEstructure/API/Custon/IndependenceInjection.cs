@@ -1,12 +1,12 @@
 using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Interfaces.Patterns.Queue;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
-using Shered.ConcretInterfaces.FileStore;
 using Shered.ConcretInterfaces.Queue.RabbitMQ;
 using Shered.DB.Connection;
+using Shered.Patterns.FileStore;
 using Shered.Services;
-using RepositoryInterfaces.Patterns.UnitOfWork;
 namespace API.Migrations
 {
     public static class IndependenceInjectionCuston
@@ -22,8 +22,10 @@ namespace API.Migrations
             builder.Services.AddSingleton<Command.Interfaces.Patterns.Queue.IQueuePublisher, RabbitMQQueuePublisher>();
             builder.Services.AddSingleton<Command.Interfaces.Patterns.Queue.IQueueListener, RabbitMQQueueListener>();
 
-            builder.Services.Configure<FileSystemOptions>(builder.Configuration.GetSection("FileSystem"));
-            builder.Services.AddScoped<IFileStorage, FileSystemStorage>();
+            builder.Services.Configure<StorageSettings>(builder.Configuration.GetSection("Storage"));
+            builder.Services.AddScoped<IFileStorage, StorageService>();
+            builder.Services.AddScoped<IStorageProvider, DiskStorageProvider>();
+            builder.Services.AddScoped<StorageResolver>();
 
 
             builder.Services.AddScoped<ISqlFactory>(provader => new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));

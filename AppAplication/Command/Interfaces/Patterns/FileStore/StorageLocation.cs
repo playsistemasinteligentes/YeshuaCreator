@@ -1,6 +1,6 @@
 namespace Command.Interfaces.Patterns.FileStore
 {
-	public sealed class StorageLocation
+	public sealed class StorageLocation 
 	{
 		public string Path { get; }
 

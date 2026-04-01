@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Command.Interfaces.Patterns.FileStore
 {
-    public readonly record struct StorageKey(string Value)
+    public readonly record struct StorageKey_(string Value)
     {
         public override string ToString() => Value;
     }

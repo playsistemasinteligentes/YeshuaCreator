@@ -10,7 +10,7 @@ namespace Command.Interfaces.Patterns.FileStore
     {
         public string Value { get; }
 
-        internal StoragePath(string value)
+        public StoragePath(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("StoragePath cannot be empty.", nameof(value));

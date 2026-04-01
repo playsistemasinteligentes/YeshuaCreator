@@ -1,22 +1,22 @@
-﻿using Shered.Services;
-using RepositoryInterfaces.Services;
-using RepositoryInterfaces.Patterns.Command;
+﻿using Aplication.Interfaces.Services;
+using Command.Interfaces.Patterns.FileStore;
+using Command.Interfaces.Patterns.Queue;
 using Command.Receivers.UseCase;
 using Command.UseCase;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Aplication.Interfaces.Services;
-using System.Security.Claims;
-using Microsoft.Data.SqlClient;
-using System.Data;
-using Shered.DB.Connection;
-using Command.Interfaces.Patterns.Queue;
-using Worker.Custon;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Services;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
 using Shered.ConcretInterfaces.Queue.RabbitMQ;
-using Command.Interfaces.Patterns.FileStore;
-using Shered.ConcretInterfaces.FileStore;
-using RepositoryInterfaces.Patterns.UnitOfWork;
+using Shered.DB.Connection;
+using Shered.Patterns.FileStore;
+using Shered.Services;
+using System.Data;
+using System.Security.Claims;
+using Worker.Custon;
 
 namespace Worker.Migration
 {
@@ -33,11 +33,13 @@ namespace Worker.Migration
             builder.Services.AddSingleton<Command.Interfaces.Patterns.Queue.IQueuePublisher, RabbitMQQueuePublisher>();
             builder.Services.AddSingleton<Command.Interfaces.Patterns.Queue.IQueueListener, RabbitMQQueueListener>();
 
-            builder.Services.Configure<FileSystemOptions>(builder.Configuration.GetSection("FileSystem"));
-            builder.Services.AddScoped<IFileStorage, FileSystemStorage>();
+            //builder.Services.Configure<FileSystemOptions>(builder.Configuration.GetSection("FileSystem"));
+            //builder.Services.AddScoped<IFileStorage, FileSystemStorage>();
 
-
-
+            builder.Services.Configure<StorageSettings>(builder.Configuration.GetSection("Storage"));
+            builder.Services.AddScoped<IFileStorage, StorageService>();
+            builder.Services.AddScoped<IStorageProvider, DiskStorageProvider>();
+            builder.Services.AddScoped<StorageResolver>();
 
 
             /*

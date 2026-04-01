@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Command - Backup")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9108ad45094b81c8ad484a8b08649b353b2e0016")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aea6675c0f3f9af918582eebd15cdae255c7b93c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Command - Backup")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Command - Backup")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

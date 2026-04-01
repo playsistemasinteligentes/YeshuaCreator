@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Command.Interfaces.Patterns.FileStore
 {
-    public interface IFileStorage
+    public interface IStorageProvider
     {
+        string Name { get; } // "Disk", "S3"
+
         Task<FileStorageResult> SaveAsync(
-            IFormFile file,
+            Stream stream,
             StoragePath path,
             CancellationToken cancellationToken);
 
