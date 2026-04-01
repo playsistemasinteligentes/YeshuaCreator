@@ -27,8 +27,19 @@
           SA__PASSWORD: "123qwe!@#QWE"
           MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-          FileSystem__RootPath: "/storage"
-          FileSystem__BaseUrl: "https://playsis.com.br"
+          
+          Storage__Providers__Disk__Root: "/storage"
+          Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
+          Storage__Providers__S3__Bucket: my-bucket
+          Storage__Providers__S3__Region: us-east-1
+          Storage__Providers__S3__BaseUrl: https://cdn.seusite.com
+
+          Storage__Locations__volatile/ia/transcriptions/input: "Disk"
+          Storage__Locations__volatile/ia/transcriptions/output: "Disk"
+          Storage__Locations__volatile/reports/input: "Disk"
+          Storage__Locations__volatile/reports/output: "Disk"
+          Storage__Locations__persistent/docs/input: "Disk"
+          Storage__Locations__persistent/docs/output: "Disk"
         expose:
           - "7214"
         depends_on:
@@ -56,8 +67,18 @@
             MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
             MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA1;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
 
-            FileSystem__RootPath: "/storage"
-            FileSystem__BaseUrl: "https://playsis.com.br"
+            Storage__Providers__Disk__Root: "/storage"
+            Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
+            Storage__Providers__S3__Bucket: my-bucket
+            Storage__Providers__S3__Region: us-east-1
+            Storage__Providers__S3__BaseUrl: https://cdn.seusite.com
+
+            Storage__Locations__volatile/ia/transcriptions/input: "Disk"
+            Storage__Locations__volatile/ia/transcriptions/output: "Disk"
+            Storage__Locations__volatile/reports/input: "Disk"
+            Storage__Locations__volatile/reports/output: "Disk"
+            Storage__Locations__persistent/docs/input: "Disk"
+            Storage__Locations__persistent/docs/output: "Disk"
 
             RabbitMq__HostName: rabbitmq
             RabbitMq__Port: 5672

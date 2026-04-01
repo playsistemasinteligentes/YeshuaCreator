@@ -46,6 +46,7 @@ namespace Command.Receivers.UseCase
                 🔲 Idempotência no consumer
                 🔲 DeadLetter*/
 
+
                 var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
 
                 foreach (int outBoxId in outBoxListJob)
