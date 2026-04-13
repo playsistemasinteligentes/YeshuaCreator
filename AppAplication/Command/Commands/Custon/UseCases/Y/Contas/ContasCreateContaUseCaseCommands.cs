@@ -1,1 +1,2 @@
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup
+//Dominio.Schemas.CQRS.
+//

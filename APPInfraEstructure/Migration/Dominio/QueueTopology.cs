@@ -4,23 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Migration.Dominio
+namespace Dominio
 {
-    public class QueueTopology
-    {
-        public QueueTopology(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
-        {
-            ExchangeName = exchangeName;
-            ExchangeType = exchangeType;
-            QueueName = queueName;
-            RoutingKey = routingKey;
-        }
 
-        public string ExchangeName { get; set; }
-        public ExchangeType ExchangeType { get; set; }
-        public string QueueName { get; set; }
-        public string RoutingKey { get; set; }
+
+    public sealed class QueueTopology
+    {
+        public List<ExchangeDefinition> Exchanges { get; init; } = new();
     }
+    public sealed class ExchangeDefinition
+    {
+        public string Name { get; init; } = default!;
+
+        public ExchangeType Type { get; init; } = ExchangeType.Topic;
+
+        public bool Durable { get; init; } = true;
+
+        public List<QueueBindingDefinition> Bindings { get; init; } = new();
+    }
+    public sealed class QueueBindingDefinition
+    {
+        public string QueueName { get; init; } = default!;
+
+        public string RoutingKey { get; init; } = default!;
+
+        public bool Durable { get; init; } = true;
+    }
+
 
     public enum ExchangeType
     {

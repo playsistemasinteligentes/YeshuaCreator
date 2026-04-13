@@ -1,4 +1,5 @@
-﻿using Dominio.Migration;
+﻿using Dominio;
+using Dominio.Migration;
 using Migration.Dominio;
 using MyApp.Domain.Entities;
 using MyApp.QueryBuilder;
@@ -22,84 +23,137 @@ namespace AppClinicas
 
         public override void Up()
         {
-            var ai_tasks = new QueueTopology("ai.tasks", ExchangeType.Topic, "audio.transcribe.outbox", "audio.transcribe");
-            var ai_results = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribed.inbox", "audio.transcribed");
-            var ai_dead = new QueueTopology("ai.results", ExchangeType.Topic, "audio.transcribe.dead", "audio.transcribe");
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("OutBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddCommand("OutBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yOutbox>().IsWorker();
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddUseCaseCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
             .AddEntity<yInbox>().IsWorker();
 
 
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddUseCaseCommand("InBox", new Menssage(""), new Menssage(""))
+            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddCommand("InBox", new Menssage(""), new Menssage(""))
             .AddEntity<yInbox>().IsListener();
 
+            AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
+                            AddSaga("PsychologySessionInsight").
+                            AddSagaStep("audioTranscript").
+                                AddInternalEvent("audio.transcript.requested").
+                                    AddOutBoxPollingWorker().
+                                    AddQueueListenerWorker(
+                                        new QueueTopology
+                                        {
+                                            Exchanges ={
+                                    new ExchangeDefinition{
+                                        Name = "ai.tasks",
+                                        Type = ExchangeType.Topic,
+                                        Bindings ={
+                                            new QueueBindingDefinition{
+                                                QueueName = "audio.transcript.CeleryWorker",
+                                                RoutingKey = "audio.transcript.requested"
+                                            }
+                                        }
+                                    }
+                                            }
+                                        }).
+                                AddExternalEvent("audio.transcript.generated").
+                                    AddInBoxPollingWorker().
+                                    AddQueueListenerWorker(
+                                        new QueueTopology
+                                        {
+                                            Exchanges ={
+                                    new ExchangeDefinition{
+                                        Name = "ai.tasks",
+                                        Type = ExchangeType.Topic,
+                                        Bindings ={
+                                            new QueueBindingDefinition{
+                                                QueueName = "audio.transcript.ConsumerWorker",
+                                                RoutingKey = "audio.transcript.generated"
+                                            }
+                                        }
+                                    }
+                                            }
+                                        });
+
+            //AddInternalEvent(prontuary.sumary.requested).
+            //    OutBoxWorker().
+            //    Publish(Exchange: "ai.tasks", Queue: { prontuary.sumary.CeleryWorker}, Binding: prontuary.sumary.requested).
+
+            //AddExternalEvent(audio.transcript.generated).
+            //    Consumer(Exchange: "ai.tasks", Queue: { prontuary.sumary.ConsumerWorker},Binding: prontuary.sumary.generated).
+            //    InboxWorker().
+
+            //AddInternalEvent(report.sumary.requested).
+            //    OutBoxWorker().
+            //    Publish(Exchange: "ai.tasks", Queue: { report.sumary.CeleryWorker}, Binding: report.sumary.requested).
+
+            //AddExternalEvent(audio.transcript.generated).
+            //    Consumer(Exchange: "ai.tasks", Queue: { report.sumary.ConsumerWorker},Binding: report.sumary.generated).
+            //    InboxWorker().
+
+
+            /* 
+            
+            step inbox   
+            step outbox 
+            topologia de filas 
+            var topology = new QueueTopology
+ {
+     Exchanges =
+     {
+         new ExchangeDefinition
+         {
+             Name = "ai.tasks",
+             Type = "topic",
+             Bindings =
+             {
+                 new QueueBindingDefinition
+                 {
+                     QueueName = "audio.transcribe.outbox",
+                     RoutingKey = "audio.transcribe"
+                 }
+             }
+         },
+         new ExchangeDefinition
+         {
+             Name = "ai.results",
+             Type = "topic",
+             Bindings =
+             {
+                 new QueueBindingDefinition
+                 {
+                     QueueName = "audio.transcribed.inbox",
+                     RoutingKey = "audio.transcribed"
+                 }
+             }
+         },
+         new ExchangeDefinition
+         {
+             Name = "ai.dead",
+             Type = "topic",
+             Bindings =
+             {
+                 new QueueBindingDefinition
+                 {
+                     QueueName = "audio.transcribe.dead",
+                     RoutingKey = "audio.transcribe"
+                 }
+             }
+         }
+     }
+ };
 
 
 
 
-            /*to
-             
-             // pendencia montar via motor 
-var topology = new QueueTopology
-{
-    Exchanges =
-    {
-        new ExchangeDefinition
-        {
-            Name = "ai.tasks",
-            Type = "topic",
-            Bindings =
-            {
-                new QueueBindingDefinition
-                {
-                    QueueName = "audio.transcribe.outbox",
-                    RoutingKey = "audio.transcribe"
-                }
-            }
-        },
-        new ExchangeDefinition
-        {
-            Name = "ai.results",
-            Type = "topic",
-            Bindings =
-            {
-                new QueueBindingDefinition
-                {
-                    QueueName = "audio.transcribed.inbox",
-                    RoutingKey = "audio.transcribed"
-                }
-            }
-        },
-        new ExchangeDefinition
-        {
-            Name = "ai.dead",
-            Type = "topic",
-            Bindings =
-            {
-                new QueueBindingDefinition
-                {
-                    QueueName = "audio.transcribe.dead",
-                    RoutingKey = "audio.transcribe"
-                }
-            }
-        }
-    }
-};
-             
              */
 
 
 
-            //AddQuery<Sesoes>("Standard", q => q
-            //.WhereContext("Hoje", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(1))
-            // .WhereContext("Semana", s => s.DataInicio >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && s.DataInicio < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek))
-            //.WhereContext("D30", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(30))
-            // .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
 
-            // .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.StatusAgendamento, s.StatusProntuario }));
+
+
+
+
 
         }
     }

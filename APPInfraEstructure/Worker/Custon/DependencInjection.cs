@@ -63,12 +63,12 @@ namespace Worker.Migration
             // =============================
 
             builder.Services.AddScoped<
-                IReceiver<WorkerPollingInboxUseCaseInputCommand, WorkerPollingInboxUseCaseOutputCommand>,
-                WorkerPollingInboxUseCaseReceiver>();
+                IReceiver<InboxInputCommand, InboxOutputCommand>,
+                InboxHandler>();
 
             builder.Services.AddScoped<
-                IReceiver<WorkerPollingOutBoxUseCaseInputCommand, WorkerPollingOutBoxUseCaseOutputCommand>,
-                WorkerPollingOutBoxUseCaseReceiver>();
+                IReceiver<OutBoxInputCommand, OutBoxOutputCommand>,
+                OutBoxHandler>();
 
 
             // =============================
@@ -76,66 +76,60 @@ namespace Worker.Migration
             // =============================
 
             builder.Services.AddScoped<
-       WorkerPollingInboxUseCaseReceiver>();
+       InboxHandler>();
 
             builder.Services.AddHostedService(sp =>
                 new PollingWorker<
-                    WorkerPollingInboxUseCaseReceiver,
-                    WorkerPollingInboxUseCaseInputCommand,
-                    WorkerPollingInboxUseCaseOutputCommand>(
+                    InboxHandler,
+                    InboxInputCommand,
+                    InboxOutputCommand>(
                     sp,
                     sp.GetRequiredService<
                         ILogger<PollingWorker<
-                            WorkerPollingInboxUseCaseReceiver,
-                            WorkerPollingInboxUseCaseInputCommand,
-                            WorkerPollingInboxUseCaseOutputCommand>>>(),
+                            InboxHandler,
+                            InboxInputCommand,
+                            InboxOutputCommand>>>(),
                         TimeSpan.FromSeconds(5)
                     ));
 
 
 
-            builder.Services.AddScoped<WorkerPollingOutBoxUseCaseReceiver>();
+            builder.Services.AddScoped<OutBoxHandler>();
 
             builder.Services.AddHostedService(sp =>
                 new PollingWorker<
-                    WorkerPollingOutBoxUseCaseReceiver,
-                    WorkerPollingOutBoxUseCaseInputCommand,
-                    WorkerPollingOutBoxUseCaseOutputCommand>(
+                    OutBoxHandler,
+                    OutBoxInputCommand,
+                    OutBoxOutputCommand>(
                     sp,
                     sp.GetRequiredService<
-                        ILogger<PollingWorker<WorkerPollingOutBoxUseCaseReceiver, WorkerPollingOutBoxUseCaseInputCommand
-                        , WorkerPollingOutBoxUseCaseOutputCommand>>>(),
+                        ILogger<PollingWorker<OutBoxHandler, OutBoxInputCommand
+                        , OutBoxOutputCommand>>>(),
                     TimeSpan.FromSeconds(5)
                 ));
 
 
-            builder.Services.AddScoped<WorkerListenerInBoxUseCaseInputCommand>();
+            builder.Services.AddScoped<InBoxInputCommand>();
 
             // HostedService do Listener
             builder.Services.AddHostedService(sp =>
             {
                 var listener = sp.GetRequiredService<IQueueListener>();
                 var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
-                    WorkerListenerInBoxUseCaseReceiver,
-                    WorkerListenerInBoxUseCaseInputCommand,
-                    WorkerListenerInBoxUseCaseOutputCommand>>>();
+                    InBoxHandler,
+                    InBoxInputCommand,
+                    InBoxOutputCommand>>>();
 
                 return new QueueListenerWorker<
-                    WorkerListenerInBoxUseCaseReceiver,
-                    WorkerListenerInBoxUseCaseInputCommand,
-                    WorkerListenerInBoxUseCaseOutputCommand>(
+                    InBoxHandler,
+                    InBoxInputCommand,
+                    InBoxOutputCommand>(
                         sp,
                         listener,
                         logger,
                         queueName: "audio.transcribed.inbox"
                 );
             });
-
-
-
-
-
-
         }
     }
 }

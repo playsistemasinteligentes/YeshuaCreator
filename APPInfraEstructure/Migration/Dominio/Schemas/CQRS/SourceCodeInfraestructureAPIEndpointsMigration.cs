@@ -344,7 +344,7 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var useCase in subGroup.UseCaseCommand)
                     {
-                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}InputCommand command) =>");
+                        sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{group.Name}/{subGroup.Name}{useCase.Name}{CommandType.UseCase}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversUseCase}.{useCase.Name.SourceType()}Handler receiver, [FromBody] {CQRSParam.I.NameSpaceCommandCommandsUseCases}.{useCase.Name.SourceType()}InputCommand command) =>");
                         sb.AppendLine("{");
 
                         setResultHttp(sb, "result.Data");

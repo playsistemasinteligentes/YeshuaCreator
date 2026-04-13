@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Templates;
 using static Migration.Dominio.Migration.S000002;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -38,12 +39,12 @@ namespace Migration.Dominio.Migration
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
-            AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("StarSessionUpload",
+            AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddCommand("StarSessionUpload",
                 new AutenticationToken(""),
                 new SessionUploadToken(""))
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
-            AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddUseCaseCommand("SendFile",
+            AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddCommand("SendFile",
                 new SendFileCommand("", 0, false, "", "", null),
                 new SendFileResponse(true, 0, true))
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia

@@ -354,21 +354,21 @@ namespace Worker.Migration
             builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
             builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.OutBoxHandler>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.InboxHandler>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.WorkerListenerInBoxUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.InBoxHandler>();
+            
+            builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.InfraStarSessionUploadUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.InfraSendFileUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.CreateContaHandler>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.LoginHandler>();
 
-            builder.Services.AddTransient<Command.Receivers.UseCase.ContasLoginUseCaseReceiver>();
-
-            builder.Services.AddTransient<Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver>();
+            builder.Services.AddTransient<Command.Receivers.UseCase.RecoveryAccountHandler>();
             builder.Services.AddTransient<Shered.Patterns.Strategy.EmailNotification>();
             builder.Services.AddTransient<Shered.Patterns.Strategy.SMSNotification>();
             builder.Services.AddTransient<Shered.Patterns.Strategy.WhatsappNotification>();

@@ -2722,8 +2722,7 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
                 new { id = "type", label = "Tipo da Mensagem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "payload", label = "Payload", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
-             filterFields = Array.Empty<object>(),
-
+            filterFields = Array.Empty<object>(),
             quickSearches = new[]
             {
                 new { id = "ProximaPendente", label = "ProximaPendente", icon = "calendar-day", endpoint = "/yOutbox/ReadyOutboxProximaPendente" },
@@ -3411,7 +3410,7 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
 #region ServicesMethod
-app.MapPost("/yapi/Worker/WorkerPollingOutBoxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerPollingOutBoxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerPollingOutBoxUseCaseInputCommand command) =>
+app.MapPost("/yapi/Worker/WorkerPollingOutBoxUseCase", async ([FromServices] Command.Receivers.UseCase.OutBoxHandler receiver, [FromBody] Command.UseCase.OutBoxInputCommand command) =>
 {
 try
 {
@@ -3428,7 +3427,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/Worker/WorkerPollingInboxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerPollingInboxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerPollingInboxUseCaseInputCommand command) =>
+app.MapPost("/yapi/Worker/WorkerPollingInboxUseCase", async ([FromServices] Command.Receivers.UseCase.InboxHandler receiver, [FromBody] Command.UseCase.InboxInputCommand command) =>
 {
 try
 {
@@ -3445,7 +3444,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/Worker/WorkerListenerInBoxUseCase", async ([FromServices] Command.Receivers.UseCase.WorkerListenerInBoxUseCaseReceiver receiver, [FromBody] Command.UseCase.WorkerListenerInBoxUseCaseInputCommand command) =>
+app.MapPost("/yapi/Worker/WorkerListenerInBoxUseCase", async ([FromServices] Command.Receivers.UseCase.InBoxHandler receiver, [FromBody] Command.UseCase.InBoxInputCommand command) =>
 {
 try
 {
@@ -3462,7 +3461,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.InfraStarSessionUploadUseCaseReceiver receiver, [FromBody] Command.UseCase.InfraStarSessionUploadUseCaseInputCommand command) =>
+app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.StarSessionUploadHandler receiver, [FromBody] Command.UseCase.StarSessionUploadInputCommand command) =>
 {
 try
 {
@@ -3479,7 +3478,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.InfraSendFileUseCaseReceiver receiver, [FromBody] Command.UseCase.InfraSendFileUseCaseInputCommand command) =>
+app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.SendFileHandler receiver, [FromBody] Command.UseCase.SendFileInputCommand command) =>
 {
 try
 {
@@ -3496,7 +3495,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.ContasCreateContaUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasCreateContaUseCaseInputCommand command) =>
+app.MapPost("/yapi/Y/ContascreateContaUseCase", async ([FromServices] Command.Receivers.UseCase.CreateContaHandler receiver, [FromBody] Command.UseCase.CreateContaInputCommand command) =>
 {
 try
 {
@@ -3513,7 +3512,7 @@ return Results.Problem(ex.Message);
 });
 
 
-app.MapPost("/yapi/Y/ContasLoginUseCase", async ([FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasLoginUseCaseInputCommand command) =>
+app.MapPost("/yapi/Y/ContasLoginUseCase", async ([FromServices] Command.Receivers.UseCase.LoginHandler receiver, [FromBody] Command.UseCase.LoginInputCommand command) =>
 {
 try
 {
@@ -3530,7 +3529,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.ContasRecoveryAccountUseCaseReceiver receiver, [FromBody] Command.UseCase.ContasRecoveryAccountUseCaseInputCommand command) =>
+app.MapPost("/yapi/Y/ContasRecoveryAccountUseCase", async ([FromServices] Command.Receivers.UseCase.RecoveryAccountHandler receiver, [FromBody] Command.UseCase.RecoveryAccountInputCommand command) =>
 {
 try
 {
@@ -3551,4 +3550,4 @@ return Results.Problem(ex.Message);
 }
 }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration 
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration

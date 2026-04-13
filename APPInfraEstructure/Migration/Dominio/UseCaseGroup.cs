@@ -127,6 +127,7 @@ Command
         public List<Agent> Agents = new List<Agent>();
 
         public List<UseCaseSubGroup> UseCaseSubGroup = new List<UseCaseSubGroup>();
+        public List<Saga> Saga = new List<Saga>();
 
         public Descricao Name { get; set; }
 
@@ -139,7 +140,7 @@ Command
             this.UseCaseSubGroup.Add(new UseCaseSubGroup(name));
             return this;
         }
-        public UseCaseGroup AddUseCaseCommand(string method, params object[] input)
+        public UseCaseGroup AddCommand(string method, params object[] input)
         {
             UseCaseCommand _Method = new UseCaseCommand(method);
             _Method.UseCaseGroup = this;
@@ -150,38 +151,61 @@ Command
                 _Method.Inputs = new object[] { input.First() };
                 _Method.Outputs = new object[] { input.Last() };
             }
-            /*
-                        foreach (var param in input)
-                        {
-                            if (_Method.Inputs == null)
-                                _Method.Inputs = new object[] { param };
-                            else
-                            {
-                                var imput = _Method.Inputs;
-                                Array.Resize(ref imput, _Method.Inputs.Length + 1);
-                                _Method.Inputs[_Method.Inputs.Length - 1] = param;
-                            }
-
-                            if (param == null) continue;
-                            Type type = param.GetType();
-                            if (type.IsClass || type.IsValueType)
-                            {
-                                //codeBuilder.AppendLine($"// Classe/Struct/Record: {type.Name}");
-                                //codeBuilder.AppendLine($"public class {type.Name} {{");
-
-                                foreach (PropertyInfo prop in type.GetProperties())
-                                {
-                                    //codeBuilder.AppendLine($"    public {prop.PropertyType.Name} {prop.Name} {{ get; set; }}");
-                                }
-
-                                //codeBuilder.AppendLine("}");
-                            }
-
-                        }
-                        */
             this.UseCaseSubGroup.Last().UseCaseCommand.Add(_Method);
             return this;
         }
+
+
+        public UseCaseGroup AddSaga(string sagaName)
+        {
+            Saga _Saga = new Saga(sagaName);
+            _Saga.UseCaseGroup = this;
+            _Saga.UseCaseSubGroup = this.UseCaseSubGroup.Last();
+
+            this.UseCaseSubGroup.Last().Saga.Add(_Saga);
+            return this;
+        }
+
+        public UseCaseGroup AddSagaStep(string step)
+        {
+            SagaStep _SagaStep = new SagaStep(step);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Add(_SagaStep);
+            return this;
+        }
+        public UseCaseGroup AddInternalEvent(string EventName)
+        {
+            SagaStepEvent _Event = new SagaStepEvent(EventName);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().InternalEvent.Add(_Event);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent = _Event;
+            return this;
+        }
+        public UseCaseGroup AddExternalEvent(string EventName)
+        {
+            SagaStepEvent _Event = new SagaStepEvent(EventName);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().ExternalEvent.Add(_Event);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent = _Event;
+            return this;
+        }
+
+        public UseCaseGroup AddOutBoxPollingWorker()
+        {
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.IsOutBoxPollingWorker = true;
+            return this;
+        }
+        public UseCaseGroup AddInBoxPollingWorker()
+        {
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.IsInBoxPollingWorker = true;
+            return this;
+        }
+
+
+        public UseCaseGroup AddQueueListenerWorker(QueueTopology queueTopology)
+        {
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.queueTopology = queueTopology;
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.IsQueueListenerWorker = true;
+            return this;
+        }
+
 
         public UseCaseGroup AddAgent(string name)
         {

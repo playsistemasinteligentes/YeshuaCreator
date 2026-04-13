@@ -21,19 +21,19 @@ namespace API.Migrations
 
             app.MapPost("/yapi/login", async (UserLogin user,
                 JwtSettings jwtSettings,
-                [FromServices] Command.Receivers.UseCase.ContasLoginUseCaseReceiver receiver) =>
+                [FromServices] Command.Receivers.UseCase.LoginHandler receiver) =>
             {
 
                 Console.WriteLine("Tentando login");
 
-                var command = new Command.UseCase.ContasLoginUseCaseInputCommand();
+                var command = new Command.UseCase.LoginInputCommand();
                 command.email = user.Login;
                 command.password = user.Password;
                 var result = StateResults.Try(() => receiver.Execute(command));
 
-                if (result.Result is Ok<State<Command.UseCase.ContasLoginUseCaseOutputCommand>> okResult)
+                if (result.Result is Ok<State<Command.UseCase.LoginOutputCommand>> okResult)
                 {
-                    Command.UseCase.ContasLoginUseCaseOutputCommand _user = okResult.Value.Data;
+                    Command.UseCase.LoginOutputCommand _user = okResult.Value.Data;
                     var modulesClaim = string.Join(",", _user.modulos);
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
@@ -74,7 +74,7 @@ namespace API.Migrations
 
             app.MapPost("/yapi/FileUpload/InfraSendFileUseCase2", async (
     HttpContext context,
-    [FromServices] Command.Receivers.UseCase.InfraSendFileUseCaseReceiver receiver
+    [FromServices] Command.Receivers.UseCase.SendFileHandler receiver
 ) =>
             {
                 try
@@ -88,7 +88,7 @@ namespace API.Migrations
 
                     var file = form.Files["fileStream"];
 
-                    var command = new Command.UseCase.InfraSendFileUseCaseInputCommand
+                    var command = new Command.UseCase.SendFileInputCommand
                     {
                         token = form["token"],
                         ChunkIndex = int.Parse(form["chunkIndex"]),

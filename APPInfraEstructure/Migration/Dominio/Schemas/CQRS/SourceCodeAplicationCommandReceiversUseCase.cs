@@ -39,9 +39,9 @@ namespace Dominio.Schemas.CQRS
             _useCase = useCase;
             _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
             _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsUseCases;
-            _classeReceiver = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Receiver";
-            _classeInputCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}InputCommand";
-            _classeOutputCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}OutputCommand";
+            _classeReceiver = $"{_useCase.Name.SourceType()}Handler";
+            _classeInputCommand = $"{_useCase.Name.SourceType()}InputCommand";
+            _classeOutputCommand = $"{_useCase.Name.SourceType()}OutputCommand";
         }
         public SourceCodeAplicationCommandReceiversUseCase(UseCaseCommand useCase, Strategy strategy, ExportPathsSourceCodeAplicationCommandReceiversUseCase exportPath, ref List<CodigoGerado> CodigoGerado)
             : base()
@@ -54,9 +54,9 @@ namespace Dominio.Schemas.CQRS
             _useCase = useCase;
             _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
             _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsUseCases;
-            _classeReceiver = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}Receiver";
-            _classeInputCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}InputCommand";
-            _classeOutputCommand = $"{_useCaseSubGroup.Name.SourceType()}{_useCase.Name.SourceType()}{_commandType}OutputCommand";
+            _classeReceiver = $"{_useCase.Name.SourceType()}Handler";
+            _classeInputCommand = $"{_useCase.Name.SourceType()}InputCommand";
+            _classeOutputCommand = $"{_useCase.Name.SourceType()}OutputCommand";
             _exportPath = exportPath;
 
             CodigoGerado = new List<CodigoGerado>();
@@ -186,7 +186,7 @@ namespace Dominio.Schemas.CQRS
             StringBuilder sb = new StringBuilder();
             // Adiciona os usings
             foreach (var scope in _useCase.Scopes)
-                sb.AppendLine($"//using using Repositorio.Inputs.Repositorio.{scope};");
+                sb.AppendLine($"//scope;");
 
             sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
@@ -205,8 +205,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public partial class {_classeReceiver}");
             sb.AppendLine("    {");
 
-            foreach (var scope in _useCase.Scopes)
-                sb.AppendLine($"private readonly I{scope} _{scope};");
+            //foreach (var scope in _useCase.Scopes)
+            //    sb.AppendLine($"private readonly I{scope} _{scope};");
+            
             if (_useCase != null && _useCase.Entitys.Count > 0)
             {
                 sb.AppendLine("        private readonly IUnitOfWork _unitOfWork;");
@@ -292,7 +293,6 @@ namespace Dominio.Schemas.CQRS
         {
             private static readonly HashSet<Type> ProcessedTypes = new();
             private static readonly List<string> AggregatedClassNames = new();
-
             public static List<CodigoGerado> ExportFromRootInterface(Type rootInterface, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 if (!rootInterface.IsInterface)
@@ -304,7 +304,6 @@ namespace Dominio.Schemas.CQRS
                 codigos.AddRange(GenerateDependencyInjectionFile(rootInterface, paths));
                 return codigos;
             }
-
             public static List<CodigoGerado> ExportTypes(IEnumerable<Type> types, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 ProcessedTypes.Clear();
@@ -320,7 +319,6 @@ namespace Dominio.Schemas.CQRS
                 codigos.AddRange(GenerateDependencyInjectionFile(types.First(), paths));
                 return codigos;
             }
-
             private static void ExportTypeRecursive(Type type, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths, List<CodigoGerado> codigos)
             {
                 if (ProcessedTypes.Contains(type) || type.Namespace?.StartsWith("System") == true)
@@ -442,7 +440,6 @@ namespace Dominio.Schemas.CQRS
 
                 }
             }
-
             private static HashSet<string> CollectDependencies(Type type, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 HashSet<string> namespaces = new();
@@ -471,7 +468,6 @@ namespace Dominio.Schemas.CQRS
 
                 return namespaces;
             }
-
             private static List<CodigoGerado> GenerateConcreteClassesForEnum(Type interfaceType, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 List<CodigoGerado> codigos = new();
@@ -601,9 +597,6 @@ namespace Dominio.Schemas.CQRS
 
                 return codigos;
             }
-
-
-
             private static List<CodigoGerado> GenerateDependencyInjectionFile(Type interfaceType, ExportPathsSourceCodeAplicationCommandReceiversUseCase paths)
             {
                 List<CodigoGerado> codigos = new();
@@ -619,8 +612,5 @@ namespace Dominio.Schemas.CQRS
                 return codigos;
             }
         }
-
-
-
     }
 }

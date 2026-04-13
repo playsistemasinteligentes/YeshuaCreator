@@ -134,7 +134,7 @@ namespace Dominio.Schemas.CQRS
                     foreach (var useCase in subGroup.UseCaseCommand)
                     {
                         sb.AppendLine("");
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversUseCase}.{subGroup.Name.SourceType()}{useCase.Name.SourceType()}{CommandType.UseCase}Receiver>();");
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversUseCase}.{useCase.Name.SourceType()}Handler>();");
 
                         //strategy 
                         foreach (var strategy in useCase.Estrategys)

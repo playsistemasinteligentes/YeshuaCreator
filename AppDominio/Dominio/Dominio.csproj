@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Saga\Custom\" />
     <Folder Include="Enum\" />
+    <Folder Include="Saga\" />
+    <Folder Include="Saga\Migration\" />
   </ItemGroup>
 
 </Project>

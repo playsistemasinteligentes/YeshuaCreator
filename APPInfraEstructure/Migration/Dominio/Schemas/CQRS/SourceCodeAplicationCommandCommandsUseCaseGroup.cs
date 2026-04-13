@@ -80,14 +80,14 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var param in _method.Inputs)
                 {
-                    _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}InputCommand";
+                    _classe = $"{_method.Name.SourceType()}InputCommand";
                     if (param == null) continue;
                     GenerateClass(param.GetType(), sb, _classe);
                 }
 
                 foreach (var param in _method.Outputs)
                 {
-                    _classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}OutputCommand";
+                    _classe = $"{_method.Name.SourceType()}OutputCommand";
                     if (param == null) continue;
                     GenerateClass(param.GetType(), sb, _classe);
                 }
