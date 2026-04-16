@@ -4,17 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
+
+/*
+ 
+ 1. Define o fluxo
+Step1 → Step2 → Step3 → Step4
+2. Controla estado
+Pending → InProgress → Completed → Failed
+3. Emite intenção (eventos)
+
+👉 isso é o que está faltando no teu código hoje
+ */
+
+
 namespace Dominio.Patterns.Saga
 {
     public abstract class SagaBase
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
+
         public SagaStatus Status { get; protected set; } = SagaStatus.NotStarted;
 
         protected readonly List<SagaStepBase> _steps = new();
+
         private readonly List<string> _events = new();
 
         public IReadOnlyCollection<SagaStepBase> Steps => _steps;
+
         public IReadOnlyCollection<string> Events => _events;
 
         protected void AddStep(SagaStepBase step)
@@ -65,5 +83,4 @@ namespace Dominio.Patterns.Saga
             return _steps.FirstOrDefault(s => s.Status == SagaStepStatus.Pending);
         }
     }
-
 }

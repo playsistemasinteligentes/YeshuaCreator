@@ -12,6 +12,9 @@ namespace Dominio
         public UseCaseCommand(string name)
         {
             Name = name;
+            HandlerName = $"{Name.SourceType()}Handler";
+            InputCommandName = $"{Name.SourceType()}InputCommand";
+            OutputCommandName = $"{Name.SourceType()}OutputCommand";
         }
 
         public UseCaseCommand(UseCaseGroup group, string name, string description)
@@ -19,11 +22,19 @@ namespace Dominio
             UseCaseGroup = group;
             Name = name;
             Description = description;
+            HandlerName = $"{Name.SourceType()}Handler";
+            InputCommandName = $"{Name.SourceType()}InputCommand";
+            OutputCommandName = $"{Name.SourceType()}OutputCommand";
         }
 
         public UseCaseGroup UseCaseGroup { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }
+        public string HandlerName { get; set; }
+        public string InputCommandName { get; set; }
+        public string OutputCommandName { get; set; }
+
+        
         public object[] Inputs { get; set; }
         public object[] Outputs { get; set; }
         public StringBuilder VersaoAtualCodigo { get; set; }

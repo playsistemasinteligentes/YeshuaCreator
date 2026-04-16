@@ -13,6 +13,7 @@ namespace Interfaces.Schemas.CQRS
         void AppSolutionGenerate(Dominio.Migration.MigrationBase migration);
 
         void AppInfraestructureGenerateAPI(Dominio.Migration.MigrationBase migration);
+        void AppInfraestructureGenerateWorker(Dominio.Migration.MigrationBase migration);
 
         void AppInfraestructureGenerateMigration(Dominio.Migration.MigrationBase migration);
         

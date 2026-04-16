@@ -1,7 +1,6 @@
 ﻿using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Interfaces.Patterns.Queue;
-using Command.Receivers.UseCase;
 using Command.UseCase;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Hosting;
@@ -18,11 +17,11 @@ using System.Data;
 using System.Security.Claims;
 using Worker.Custon;
 
-namespace Worker.Migration
+namespace Migration
 {
-    public static class CustonIndependenceInjection
+    public static class CustonDependenceInjection
     {
-        public static void MapCustonIndependenceInjection(WebApplicationBuilder builder)
+        public static void MapCustonDependenceInjection(WebApplicationBuilder builder)
         {
             builder.Services.AddLogging();
             builder.Services.AddHttpContextAccessor();
@@ -62,74 +61,72 @@ namespace Worker.Migration
             // RECEIVERS (Scoped)
             // =============================
 
-            builder.Services.AddScoped<
-                IReceiver<InboxInputCommand, InboxOutputCommand>,
-                InboxHandler>();
+           // builder.Services.AddScoped<
+           //     IReceiver<InboxInputCommand, InboxOutputCommand>,
+           //     InboxHandler>();
 
-            builder.Services.AddScoped<
-                IReceiver<OutBoxInputCommand, OutBoxOutputCommand>,
-                OutBoxHandler>();
+           // builder.Services.AddScoped<
+           //     IReceiver<OutBoxInputCommand, OutBoxOutputCommand>,
+           //     OutBoxHandler>();
 
 
-            // =============================
-            // WORKERS (Hosted Services)
-            // =============================
+           // // =============================
+           // // WORKERS (Hosted Services)
+           // // =============================
 
-            builder.Services.AddScoped<
-       InboxHandler>();
-
-            builder.Services.AddHostedService(sp =>
-                new PollingWorker<
-                    InboxHandler,
-                    InboxInputCommand,
-                    InboxOutputCommand>(
-                    sp,
-                    sp.GetRequiredService<
-                        ILogger<PollingWorker<
-                            InboxHandler,
-                            InboxInputCommand,
-                            InboxOutputCommand>>>(),
-                        TimeSpan.FromSeconds(5)
-                    ));
+           //// builder.Services.AddScoped<InboxHandler>();
+            
+           // builder.Services.AddHostedService(sp =>
+           //     new PollingWorker<InboxHandler,
+           //         InboxInputCommand,
+           //         InboxOutputCommand>(
+           //         sp,
+           //         sp.GetRequiredService<
+           //             ILogger<PollingWorker<
+           //                 InboxHandler,
+           //                 InboxInputCommand,
+           //                 InboxOutputCommand>>>(),
+           //             TimeSpan.FromSeconds(5)
+           //         ));
 
 
 
-            builder.Services.AddScoped<OutBoxHandler>();
+           // builder.Services.AddScoped<OutBoxHandler>();
 
-            builder.Services.AddHostedService(sp =>
-                new PollingWorker<
-                    OutBoxHandler,
-                    OutBoxInputCommand,
-                    OutBoxOutputCommand>(
-                    sp,
-                    sp.GetRequiredService<
-                        ILogger<PollingWorker<OutBoxHandler, OutBoxInputCommand
-                        , OutBoxOutputCommand>>>(),
-                    TimeSpan.FromSeconds(5)
-                ));
+           // builder.Services.AddHostedService(sp =>
+           //     new PollingWorker<
+           //         OutBoxHandler,
+           //         OutBoxInputCommand,
+           //         OutBoxOutputCommand>(
+           //         sp,
+           //         sp.GetRequiredService<
+           //             ILogger<PollingWorker<OutBoxHandler, OutBoxInputCommand
+           //             , OutBoxOutputCommand>>>(),
+           //         TimeSpan.FromSeconds(5)
+           //     ));
 
 
-            builder.Services.AddScoped<InBoxInputCommand>();
+           // builder.Services.AddScoped<InBoxInputCommand>();
 
-            // HostedService do Listener
-            builder.Services.AddHostedService(sp =>
-            {
-                var listener = sp.GetRequiredService<IQueueListener>();
-                var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
-                    InBoxHandler,
-                    InBoxInputCommand,
-                    InBoxOutputCommand>>>();
+           // // HostedService do Listener
+           // builder.Services.AddHostedService(sp =>
+           // {
+           //     var listener = sp.GetRequiredService<IQueueListener>();
+           //     var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
+           //         InBoxHandler,
+           //         InBoxInputCommand,
+           //         InBoxOutputCommand>>>();
 
-                return new QueueListenerWorker<
-                    InBoxHandler,
-                    InBoxInputCommand,
-                    InBoxOutputCommand>(
-                        sp,
-                        listener,
-                        logger,
-                        queueName: "audio.transcribed.inbox"
-                );
-            });
+           //     return new QueueListenerWorker<
+           //         InBoxHandler,
+           //         InBoxInputCommand,
+           //         InBoxOutputCommand>(
+           //             sp,
+           //             listener,
+           //             logger,
+           //             queueName: "audio.transcribed.inbox"
+           //     );
+           // });
         }
     }
 }

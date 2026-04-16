@@ -12,6 +12,7 @@ namespace Dominio.Schemas.CQRS
     {
         private UseCaseGroup _hub;
         private CommandType _commandType;
+
         private UseCaseSubGroup _service;
         private UseCaseCommand _method;
         private string _classe;
@@ -25,13 +26,15 @@ namespace Dominio.Schemas.CQRS
             _commandType = CommandType.UseCaseGroup;
             _nameSpace = CQRSParam.I.NameSpaceCommandWrite;
         }
-        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseCommand method)
-                    : base()
+        public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseCommand method, CommandType commandType) : base()
         {
             _hub = method.UseCaseGroup;
             _service = method.UseCaseSubGroup;
-            _commandType = CommandType.UseCase;
-            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsUseCases;
+            _commandType = commandType;
+            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsSaga;
+            if (commandType == CommandType.UseCaseCommandHandler)
+                _nameSpace = CQRSParam.I.NameSpaceCommandCommandsUseCases;
+            
             _method = method;
             //_classe = $"{_service.Name.SourceType()}{_method.Name.SourceType()}{_commandType}Command";
             _generatedTypes = new HashSet<string>();
@@ -55,7 +58,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
 
-            if (_commandType == CommandType.UseCase)
+            if (_commandType == CommandType.UseCaseGroup)
+            {
+                sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubCommand : ICommand");
+                sb.AppendLine("    {");
+                sb.AppendLine("    }");
+            }
+            else// if (_commandType == CommandType.UseCaseCommandHandler)
             {
                 //foreach (var param in _method.Inputs)
                 //{
@@ -80,23 +89,17 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var param in _method.Inputs)
                 {
-                    _classe = $"{_method.Name.SourceType()}InputCommand";
+                    _classe = $"{_method.InputCommandName}";
                     if (param == null) continue;
                     GenerateClass(param.GetType(), sb, _classe);
                 }
 
                 foreach (var param in _method.Outputs)
                 {
-                    _classe = $"{_method.Name.SourceType()}OutputCommand";
+                    _classe = $"{_method.OutputCommandName}";
                     if (param == null) continue;
                     GenerateClass(param.GetType(), sb, _classe);
                 }
-            }
-            else if (_commandType == CommandType.UseCaseGroup)
-            {
-                sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubCommand : ICommand");
-                sb.AppendLine("    {");
-                sb.AppendLine("    }");
             }
 
 

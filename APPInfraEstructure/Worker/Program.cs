@@ -1,15 +1,19 @@
-using Shered.DB.Connection;
-using Microsoft.Data.SqlClient;
-using System.Data;
-using Worker.Migration;
 using Command.Interfaces.Patterns.Queue;
+using Microsoft.Data.SqlClient;
+using Migration;
+using Migrations;
 using RabbitMQ.Client;
+using Shered.DB.Connection;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMemoryCache();
-IndependenceInjection.MapIndependenceInjection(builder);
-CustonIndependenceInjection.MapCustonIndependenceInjection(builder);
+DependencInjection.MapDependencInjection(builder);
+CustonDependenceInjection.MapCustonDependenceInjection(builder);
+
+
+
 var app = builder.Build();
 
 

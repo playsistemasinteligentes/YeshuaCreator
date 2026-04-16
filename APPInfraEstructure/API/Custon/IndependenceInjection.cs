@@ -7,11 +7,11 @@ using Shered.ConcretInterfaces.Queue.RabbitMQ;
 using Shered.DB.Connection;
 using Shered.Patterns.FileStore;
 using Shered.Services;
-namespace API.Migrations
+namespace Migrations
 {
-    public static class IndependenceInjectionCuston
+    public static class DependenceInjectionCuston
     {
-        public static void MapIndependenceInjection(WebApplicationBuilder builder)
+        public static void MapDependenceInjection(WebApplicationBuilder builder)
         {
 
             builder.Services.AddHttpContextAccessor();
@@ -34,4 +34,4 @@ namespace API.Migrations
         }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIIndependenceInjectionMigration
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureDependencInjectionInjectionMigration

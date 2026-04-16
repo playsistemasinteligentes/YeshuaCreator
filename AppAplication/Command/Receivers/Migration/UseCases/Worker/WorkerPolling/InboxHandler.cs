@@ -5,6 +5,7 @@ using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Dominio.Interfaces;
 using Command.UseCase;
+using Command.Saga;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<InboxOutputCommand> state, Command.UseCase.InboxInputCommand comand);
+partial void CustomActionHook(ref State<InboxOutputCommand> state, InboxInputCommand comand);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase

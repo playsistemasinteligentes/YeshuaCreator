@@ -9,7 +9,7 @@ namespace Dominio.Patterns.Saga
     public abstract class SagaStepBase
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
-        public SagaStepStatus Status { get; private set; } = SagaStepStatus.Pending;
+        public SagaStepStatus Status { get; private set; } = SagaStepStatus.Created;
 
         protected SagaBase Saga { get; private set; }
 
@@ -50,7 +50,9 @@ namespace Dominio.Patterns.Saga
         }
 
         protected abstract void OnStart();
+        
         protected abstract void OnComplete();
+        
         protected abstract void OnFail();
     }
 }

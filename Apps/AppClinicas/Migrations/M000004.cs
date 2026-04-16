@@ -1,14 +1,17 @@
 ﻿using Dominio;
 using Dominio.Migration;
+using Dominio.Schemas.CQRS.Abstraction;
 using Migration.Dominio;
 using MyApp.Domain.Entities;
 using MyApp.QueryBuilder;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static Migration.Dominio.Migration.S000002;
 
@@ -34,47 +37,51 @@ namespace AppClinicas
             AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddCommand("InBox", new Menssage(""), new Menssage(""))
             .AddEntity<yInbox>().IsListener();
 
-            AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
-                            AddSaga("PsychologySessionInsight").
-                            AddSagaStep("audioTranscript").
-                                AddInternalEvent("audio.transcript.requested").
-                                    AddOutBoxPollingWorker().
-                                    AddQueueListenerWorker(
-                                        new QueueTopology
-                                        {
-                                            Exchanges ={
-                                    new ExchangeDefinition{
-                                        Name = "ai.tasks",
-                                        Type = ExchangeType.Topic,
-                                        Bindings ={
-                                            new QueueBindingDefinition{
-                                                QueueName = "audio.transcript.CeleryWorker",
-                                                RoutingKey = "audio.transcript.requested"
-                                            }
-                                        }
-                                    }
-                                            }
-                                        }).
-                                AddExternalEvent("audio.transcript.generated").
-                                    AddInBoxPollingWorker().
-                                    AddQueueListenerWorker(
-                                        new QueueTopology
-                                        {
-                                            Exchanges ={
-                                    new ExchangeDefinition{
-                                        Name = "ai.tasks",
-                                        Type = ExchangeType.Topic,
-                                        Bindings ={
-                                            new QueueBindingDefinition{
-                                                QueueName = "audio.transcript.ConsumerWorker",
-                                                RoutingKey = "audio.transcript.generated"
-                                            }
-                                        }
-                                    }
-                                            }
-                                        });
+            /*
 
-            //AddInternalEvent(prontuary.sumary.requested).
+1.Produces → evento de intenção(comando disfarçado)
+audio.transcript.requested
+👉 Significa: “alguém precisa fazer isso”
+
+
+2.Consumes → evento de resultado(fato)
+audio.transcript.generated
+
+👉 Significa:“isso já aconteceu”
+
+
+
+
+Tipo Natureza    Quem dispara    Pra quê
+Produces intenção    Saga mandar executar
+Consumes    fato sistema externo continuar fluxo
+
+🎯 Regra de ouro(essa aqui é crucial)
+❗ O step NÃO É o evento
+❗ Ele só representa o ponto do fluxo onde aquele evento acontece
+
+            */
+
+                AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
+                                AddSaga("PsychologySessionInsight").
+                                AddStepGroup("audioTranscript").
+                                    AddStep("audio_transcript_requested"). // “faça isso”
+                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.CeleryWorker", "audio.transcript.requested").
+                                    AddStep("audio_transcript_generated"). //“isso aconteceu”
+                                        AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
+                                        AddInBoxPollingWorker().
+
+                                AddStepGroup("prontuarySumary").
+                                    AddStep("prontuary_sumary_requested"). // “faça isso”
+                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "prontuary.sumary.CeleryWorker", "prontuary.sumary.requested").
+                                    AddStep("prontuary_sumary_generated"). //“isso aconteceu”
+                                        AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "prontuary.sumary.ConsumerWorker", "prontuary.sumary.generated").
+                                        AddInBoxPollingWorker();
+
+
+            
+
+            //AddStep(prontuary.sumary.requested).
             //    OutBoxWorker().
             //    Publish(Exchange: "ai.tasks", Queue: { prontuary.sumary.CeleryWorker}, Binding: prontuary.sumary.requested).
 
@@ -82,7 +89,7 @@ namespace AppClinicas
             //    Consumer(Exchange: "ai.tasks", Queue: { prontuary.sumary.ConsumerWorker},Binding: prontuary.sumary.generated).
             //    InboxWorker().
 
-            //AddInternalEvent(report.sumary.requested).
+            //AddStep(report.sumary.requested).
             //    OutBoxWorker().
             //    Publish(Exchange: "ai.tasks", Queue: { report.sumary.CeleryWorker}, Binding: report.sumary.requested).
 

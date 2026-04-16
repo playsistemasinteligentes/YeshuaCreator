@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using API.Migrations;
 using System.Net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -79,8 +78,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-IndependenceInjection.MapIndependenceInjection(builder);
-IndependenceInjectionCuston.MapIndependenceInjection(builder);
+Migrations.DependencInjection.MapDependencInjection(builder);
+Migrations.DependenceInjectionCuston.MapDependenceInjection(builder);
 
 
 // Configurações do JWT
@@ -150,6 +149,6 @@ app.Use(async (context, next) =>
 });
 
 
-Endpoints.MapEndpoints(app);
-EndpointsCuston.MapEndpoints(app);
+API.Migrations.Endpoints.MapEndpoints(app);
+API.Migrations.EndpointsCuston.MapEndpoints(app);
 app.Run();

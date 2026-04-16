@@ -12,6 +12,9 @@ namespace Dominio
         public SagaStepEvent(string name)
         {
             Name = name;
+            NameInBoxPollingWorker = $"{name}InboxHandler"; 
+            NameOutBoxPollingWorker = $"{name}InboxHandler";
+            NameQueueListenerWorker = $"{name}QueueListenerHandler";
         }
 
         public SagaStepEvent(SagaStep sagaStep, string name, string description)
@@ -24,10 +27,17 @@ namespace Dominio
         public SagaStep SagaStep { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }
-        public bool IsOutBoxPollingWorker { get; set; }
-        public bool IsInBoxPollingWorker { get; set; }
-        public QueueTopology queueTopology { get; set; }
-        public bool IsQueueListenerWorker { get; set; }
+        public Descricao NameSpace { get; set; }
+        public Descricao NameOutBoxPollingWorker { get; set; }
+        public Descricao NameInBoxPollingWorker { get; set; }
+        public Descricao NameQueueListenerWorker { get; set; }
+
+        public UseCaseCommand OutBoxPollingWorker { get; set; }
+
+        public UseCaseCommand InBoxPollingWorker { get; set; }
+        public UseCaseCommand QueueListenerWorker { get; set; }
+        public QueueTopology queueTopologyConsumer { get; set; }
+        public QueueTopology queueTopologyProducer { get; set; }
 
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();

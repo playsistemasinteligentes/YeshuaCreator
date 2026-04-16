@@ -15,10 +15,7 @@ namespace Dominio.Schemas.CQRS
         private UseCaseCommand _useCase;
         private string _nameSpace;
         private string _nameSpaceCommand;
-        private string _classeReceiver;
-        private string _classeInputCommand;
-        private string _classeOutputCommand;
-
+        
         private Strategy _strategy;
         private Type _type;
         private ExportPathsSourceCodeAplicationCommandReceiversUseCase _exportPath;
@@ -30,33 +27,34 @@ namespace Dominio.Schemas.CQRS
             _nameSpace = CQRSParam.I.NameSpaceCommandReceiversHub;
             _commandType = CommandType.UseCaseGroup;
         }
-        public SourceCodeAplicationCommandReceiversUseCase(UseCaseCommand useCase)
+        public SourceCodeAplicationCommandReceiversUseCase(UseCaseCommand useCase, CommandType commandType)
             : base()
         {
             _useCaseGroup = useCase.UseCaseGroup;
             _useCaseSubGroup = useCase.UseCaseSubGroup;
-            _commandType = CommandType.UseCase;
+            _commandType = commandType;
             _useCase = useCase;
-            _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
+            
+            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsSaga;
+            if (commandType == CommandType.UseCaseCommandHandler)
+                _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
+            
+
             _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsUseCases;
-            _classeReceiver = $"{_useCase.Name.SourceType()}Handler";
-            _classeInputCommand = $"{_useCase.Name.SourceType()}InputCommand";
-            _classeOutputCommand = $"{_useCase.Name.SourceType()}OutputCommand";
         }
-        public SourceCodeAplicationCommandReceiversUseCase(UseCaseCommand useCase, Strategy strategy, ExportPathsSourceCodeAplicationCommandReceiversUseCase exportPath, ref List<CodigoGerado> CodigoGerado)
+        public SourceCodeAplicationCommandReceiversUseCase(UseCaseCommand useCase, Strategy strategy, ExportPathsSourceCodeAplicationCommandReceiversUseCase exportPath, ref List<CodigoGerado> CodigoGerado, CommandType commandType)
             : base()
         {
             _strategy = strategy;
             _type = strategy.Type;
             _useCaseGroup = useCase.UseCaseGroup;
             _useCaseSubGroup = useCase.UseCaseSubGroup;
-            _commandType = CommandType.UseCase;
+            _commandType = commandType;
             _useCase = useCase;
-            _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
+            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsSaga;
+            if (commandType == CommandType.UseCaseCommandHandler)
+                _nameSpace = CQRSParam.I.NameSpaceCommandReceiversUseCase;
             _nameSpaceCommand = CQRSParam.I.NameSpaceCommandCommandsUseCases;
-            _classeReceiver = $"{_useCase.Name.SourceType()}Handler";
-            _classeInputCommand = $"{_useCase.Name.SourceType()}InputCommand";
-            _classeOutputCommand = $"{_useCase.Name.SourceType()}OutputCommand";
             _exportPath = exportPath;
 
             CodigoGerado = new List<CodigoGerado>();
@@ -87,6 +85,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsUseCases};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
 
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");
@@ -99,7 +98,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
 
-                sb.AppendLine($"    public partial class {_classeReceiver} : ReciverBase< {_classeInputCommand}, {_classeOutputCommand}>");
+                sb.AppendLine($"    public partial class {_useCase.HandlerName} : ReciverBase< {_useCase.InputCommandName}, {_useCase.OutputCommandName}>");
                 sb.AppendLine("    {");
                 sb.AppendLine();
 
@@ -110,7 +109,7 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("            _menssage = menssage;");
                 //sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<{_classeOutputCommand}> Action({_classeInputCommand} comand)");
+                sb.AppendLine($"        protected override State<{_useCase.OutputCommandName}> Action({_useCase.InputCommandName} comand)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            try");
                 sb.AppendLine("            {");
@@ -119,7 +118,7 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("                 Agent = getAgent(comand);    ");
                 //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
-                sb.AppendLine($"                 State<{_classeOutputCommand}> retorno = Success(\"OK\", null);");
+                sb.AppendLine($"                 State<{_useCase.OutputCommandName}> retorno = Success(\"OK\", null);");
 
 
                 sb.AppendLine("                 CustomActionHook(ref retorno, comand);");
@@ -127,10 +126,10 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("            }");
 
-                CQRSParam.I.AddExeptionReceiver(sb, $"{_classeOutputCommand}");
+                CQRSParam.I.AddExeptionReceiver(sb, $"{_useCase.OutputCommandName}");
 
                 sb.AppendLine("        }");
-                sb.AppendLine($"partial void CustomActionHook(ref State<{_classeOutputCommand}> state, {_nameSpaceCommand}.{_classeInputCommand} comand);");
+                sb.AppendLine($"partial void CustomActionHook(ref State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand);");
                 sb.AppendLine("}");
                 //foreach (var menu in _agent.Menus)
                 //{
@@ -202,7 +201,7 @@ namespace Dominio.Schemas.CQRS
             // Adiciona o namespace e a classe
             sb.AppendLine($"namespace {_nameSpace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {_classeReceiver}");
+            sb.AppendLine($"    public partial class {_useCase.HandlerName}");
             sb.AppendLine("    {");
 
             //foreach (var scope in _useCase.Scopes)
@@ -218,7 +217,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName};");
                 }
 
-                sb.Append($"        public {_classeReceiver}(IUnitOfWork unitOfWork,ILogger logger");
+                sb.Append($"        public {_useCase.HandlerName}(IUnitOfWork unitOfWork,ILogger logger");
                 for (int i = 0; i < _useCase.Entitys.Count; i++)
                 {
                     var entity = _useCase.Entitys[i];
@@ -240,7 +239,7 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-            sb.AppendLine($"partial void CustomActionHook(ref State<{_classeOutputCommand}> state, {_classeInputCommand} comand)");
+            sb.AppendLine($"partial void CustomActionHook(ref State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand)");
             sb.AppendLine("{");
             sb.AppendLine("}");
 

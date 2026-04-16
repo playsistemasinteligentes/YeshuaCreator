@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Migration.Dominio.Schemas.CQRS
 {
     public enum CommandType
@@ -24,6 +18,9 @@ namespace Migration.Dominio.Schemas.CQRS
         Factory = 12,
         DependencyIngection = 13,
         ReadQuery = 14,
+        WorkerPollingHandler = 15,
+        WorkerListenerHandler = 16,
+        UseCaseCommandHandler = 17,
     }
 
 
@@ -32,4 +29,15 @@ namespace Migration.Dominio.Schemas.CQRS
         Free = 0,
         User = 1
     }
+    public enum InfraEstrutctureType
+    {
+        API = 0,
+        Worker = 1
+    }
+    public enum WorkerType
+    {
+        Pooling = 0,
+        Listener = 1
+    }
+
 }

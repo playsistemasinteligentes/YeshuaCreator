@@ -7,6 +7,7 @@ using System.Collections;
 using System.Reflection;
 using System.Text;
 using static Dapper.SqlMapper;
+using static Migration.Dominio.Migration.S000002;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace Dominio
@@ -120,6 +121,8 @@ Command
 📌 Infra só enxerga comandos
 📌 Entidade nunca “executa” nada*/
 
+        public record Lista(List<int> lst);
+
         public UseCaseGroup(string name)
         {
             Name = name;
@@ -166,17 +169,18 @@ Command
             return this;
         }
 
-        public UseCaseGroup AddSagaStep(string step)
+        public UseCaseGroup AddStepGroup(string step)
         {
             SagaStep _SagaStep = new SagaStep(step);
             this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Add(_SagaStep);
             return this;
         }
-        public UseCaseGroup AddInternalEvent(string EventName)
+        public UseCaseGroup AddStep(string EventName)
         {
             SagaStepEvent _Event = new SagaStepEvent(EventName);
             this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().InternalEvent.Add(_Event);
             this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent = _Event;
+
             return this;
         }
         public UseCaseGroup AddExternalEvent(string EventName)
@@ -187,24 +191,105 @@ Command
             return this;
         }
 
-        public UseCaseGroup AddOutBoxPollingWorker()
+        public UseCaseGroup AddOutBoxPollingWorker(QueueTopology queueTopology = null)
         {
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.IsOutBoxPollingWorker = true;
+            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.Name._value}{"OutBoxPollingWorker"}");
+            _Method.UseCaseGroup = this;
+            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
+            
+            object[] input = new object[2];
+            input[0] = new Lista(new List<int>());
+            input[1] = new Lista(new List<int>());
+            _Method.Inputs = new object[] { input.First() };
+            _Method.Outputs = new object[] { input.Last() };
+
+
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.OutBoxPollingWorker = _Method;
+            if (queueTopology != null)
+                this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.queueTopologyProducer = queueTopology;
+            
             return this;
         }
+
         public UseCaseGroup AddInBoxPollingWorker()
         {
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.IsInBoxPollingWorker = true;
+            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.Name._value}{"InBoxPollingWorker"}");
+            _Method.UseCaseGroup = this;
+            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
+            
+            object[] input = new object[2];
+            input[0] = new Lista(new List<int>());
+            input[1] = new Lista(new List<int>());
+            _Method.Inputs = new object[] { input.First() };
+            _Method.Outputs = new object[] { input.Last() };
+
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.InBoxPollingWorker = _Method;
             return this;
         }
 
 
+        public UseCaseGroup AddOutBoxPollingWorker(String exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
+        {
+
+            QueueTopology queueTopology = new QueueTopology
+            {
+                Exchanges ={
+                    new ExchangeDefinition{
+                        Name = exchangeName,
+                        Type = exchangeType,
+                        Bindings ={
+                            new QueueBindingDefinition{
+                                QueueName = queueName,
+                                RoutingKey = routingKey
+                            }
+                        }
+                    }
+                }
+            };
+
+            return AddOutBoxPollingWorker(queueTopology);
+        }
+
+        public UseCaseGroup AddQueueListenerWorker(String exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
+        {
+
+            QueueTopology queueTopology = new QueueTopology
+            {
+                Exchanges ={
+                    new ExchangeDefinition{
+                        Name = exchangeName,
+                        Type = exchangeType,
+                        Bindings ={
+                            new QueueBindingDefinition{
+                                QueueName = queueName,
+                                RoutingKey = routingKey
+                            }
+                        }
+                    }
+                }
+            };
+
+            return AddQueueListenerWorker(queueTopology);
+        }
         public UseCaseGroup AddQueueListenerWorker(QueueTopology queueTopology)
         {
             this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.queueTopology = queueTopology;
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.IsQueueListenerWorker = true;
+
+            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.Name._value}{"QueueListenerWorker"}");
+            _Method.UseCaseGroup = this;
+            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
+
+            object[] input = new object[2];
+            input[0] = new Lista(new List<int>());
+            input[1] = new Lista(new List<int>());
+            _Method.Inputs = new object[] { input.First() };
+            _Method.Outputs = new object[] { input.Last() };
+
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.QueueListenerWorker = _Method;
             return this;
         }
+
+
 
 
         public UseCaseGroup AddAgent(string name)
