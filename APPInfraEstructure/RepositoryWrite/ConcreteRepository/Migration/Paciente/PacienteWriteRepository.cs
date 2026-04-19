@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.Paciente
 {
-    public class PacienteWriteRepository : IPacienteWriteRepository
+    public partial class PacienteWriteRepository : IPacienteWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IPacienteQueryWrite _query; 

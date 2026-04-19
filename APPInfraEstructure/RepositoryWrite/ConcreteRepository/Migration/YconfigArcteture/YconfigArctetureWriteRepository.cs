@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yConfigArcteture
 {
-    public class yConfigArctetureWriteRepository : IyConfigArctetureWriteRepository
+    public partial class yConfigArctetureWriteRepository : IyConfigArctetureWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyConfigArctetureQueryWrite _query; 

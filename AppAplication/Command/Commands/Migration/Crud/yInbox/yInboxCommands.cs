@@ -5,15 +5,17 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public string MessageId { get; set; }
-        public string JobId { get; set; }
-        public string CorrelationId { get; set; }
         public string Type { get; set; }
+        public string EntityType { get; set; }
+        public string EntityId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int RetryCount { get; set; }
         public string LastError { get; set; }
+        public int? SagaId { get; set; }
+        public int? SagaStepId { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

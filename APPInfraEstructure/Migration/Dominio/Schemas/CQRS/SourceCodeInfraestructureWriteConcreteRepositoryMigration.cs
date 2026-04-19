@@ -35,7 +35,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine($"namespace Input.Repository.{_entity.EntityName}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public class {_entity.EntityName}WriteRepository : I{_entity.EntityName}WriteRepository");
+            sb.AppendLine($"    public partial class {_entity.EntityName}WriteRepository : I{_entity.EntityName}WriteRepository");
             sb.AppendLine("    {");
             sb.AppendLine("        private readonly IUnitOfWork _UnitOfWork;");
             sb.AppendLine($"       private readonly I{_entity.EntityName}QueryWrite _query; ");

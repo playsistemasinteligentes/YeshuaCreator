@@ -1,5 +1,7 @@
 using Shered.Services;
 using RepositoryInterfaces.Services;
+using Command.Patterns;
+using Command.Interfaces;
 namespace Migrations
 {
 public static class DependencInjection
@@ -11,6 +13,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
+                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
             
 
 builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
@@ -161,6 +164,29 @@ builder.Services.AddTransient<Command.Receivers.Read.yFileUploadReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yFileUploadReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yFileUploadReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IySagaWriteRepository, Input.Repository.ySaga.ySagaWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IySagaReadRepository, Read.Repository.ySagaReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IySagaQueryRead, Query.Read.ySagaQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IySagaQueryWrite, Query.Write.ySagaQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertySagaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateySagaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteySagaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IySagaStepWriteRepository, Input.Repository.ySagaStep.ySagaStepWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IySagaStepReadRepository, Read.Repository.ySagaStepReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IySagaStepQueryRead, Query.Read.ySagaStepQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IySagaStepQueryWrite, Query.Write.ySagaStepQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertySagaStepReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateySagaStepReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteySagaStepReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaStepReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaStepReadFKSagaIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaStepReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ySagaStepReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IyOutboxWriteRepository, Input.Repository.yOutbox.yOutboxWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyOutboxReadRepository, Read.Repository.yOutboxReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyOutboxQueryRead, Query.Read.yOutboxQueryRead>();
@@ -169,6 +195,8 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertyOutboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateyOutboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteyOutboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKSagaIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKSagaStepIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadFKUserIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yOutboxReadQueryProximaPendenteReceiver>();
@@ -181,6 +209,8 @@ builder.Services.AddTransient<Command.Receivers.Write.InsertyInboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.UpdateyInboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Write.DeleteyInboxReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yInboxReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKSagaIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKSagaStepIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKUserIdReceiver>();
 
@@ -345,6 +375,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.OutBoxHandler>();
 builder.Services.AddTransient<Command.Receivers.UseCase.InboxHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.InBoxHandler>();
+builder.Services.AddTransient<Dominio.Saga.PsychologySessionInsightSaga>();
+builder.Services.AddTransient<Command.Receivers.PsychologySessionInsightSagaHandlerResolver>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

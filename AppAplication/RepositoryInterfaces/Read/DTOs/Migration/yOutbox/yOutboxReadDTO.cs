@@ -10,15 +10,17 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public string messageid { get; set; }
-    public string jobid { get; set; }
-    public string correlationid { get; set; }
     public string type { get; set; }
+    public string entitytype { get; set; }
+    public string entityid { get; set; }
     public string payload { get; set; }
     public int status { get; set; }
     public DateTime createdat { get; set; }
     public DateTime sentat { get; set; }
     public int retrycount { get; set; }
     public string lasterror { get; set; }
+    public int sagaid { get; set; }
+    public int sagastepid { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

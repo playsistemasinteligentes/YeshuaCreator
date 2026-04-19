@@ -20,19 +20,21 @@ namespace Query.Write
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" INSERT INTO yInbox (MessageId, JobId, CorrelationId, Type, Payload, Status, CreatedAt, SentAt, RetryCount, LastError, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @JobId, @CorrelationId, @Type, @Payload, @Status, @CreatedAt, @SentAt, @RetryCount, @LastError, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yInbox (MessageId, Type, EntityType, EntityId, Payload, Status, CreatedAt, SentAt, RetryCount, LastError, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @Payload, @Status, @CreatedAt, @SentAt, @RetryCount, @LastError, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = Guid.NewGuid(),
-                JobId = Guid.NewGuid(),
-                CorrelationId = yInbox.CorrelationId,
                 Type = yInbox.Type,
+                EntityType = yInbox.EntityType,
+                EntityId = yInbox.EntityId,
                 Payload = yInbox.Payload,
                 Status = yInbox.Status,
                 CreatedAt = yInbox.CreatedAt,
                 SentAt = yInbox.SentAt,
                 RetryCount = yInbox.RetryCount,
                 LastError = yInbox.LastError,
+                SagaId = yInbox.SagaId,
+                SagaStepId = yInbox.SagaStepId,
                 TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -42,19 +44,21 @@ namespace Query.Write
         }
         public QueryModel UpdateyInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" UPDATE yInbox SET MessageId = @MessageId, JobId = @JobId, CorrelationId = @CorrelationId, Type = @Type, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, SentAt = @SentAt, RetryCount = @RetryCount, LastError = @LastError, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yInbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, SentAt = @SentAt, RetryCount = @RetryCount, LastError = @LastError, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
-                JobId = yInbox.JobId,
-                CorrelationId = yInbox.CorrelationId,
                 Type = yInbox.Type,
+                EntityType = yInbox.EntityType,
+                EntityId = yInbox.EntityId,
                 Payload = yInbox.Payload,
                 Status = yInbox.Status,
                 CreatedAt = yInbox.CreatedAt,
                 SentAt = yInbox.SentAt,
                 RetryCount = yInbox.RetryCount,
                 LastError = yInbox.LastError,
+                SagaId = yInbox.SagaId,
+                SagaStepId = yInbox.SagaStepId,
                 Changed = yInbox.Changed,
                 UserId = _currentUser.UserId,
                 Id = yInbox.Id,
@@ -71,32 +75,32 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateJobId(IyInboxEntity entity)
-        {
-            this.Query = $@" UPDATE yInbox SET JobId = @JobId WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                JobId = entity.JobId,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
-        public QueryModel UpdateCorrelationId(IyInboxEntity entity)
-        {
-            this.Query = $@" UPDATE yInbox SET CorrelationId = @CorrelationId WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                CorrelationId = entity.CorrelationId,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateType(IyInboxEntity entity)
         {
             this.Query = $@" UPDATE yInbox SET Type = @Type WHERE Id = @Id ";
             this.Parameters = new
             {
                 Type = entity.Type,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateEntityType(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET EntityType = @EntityType WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                EntityType = entity.EntityType,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateEntityId(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET EntityId = @EntityId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                EntityId = entity.EntityId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -157,6 +161,26 @@ namespace Query.Write
             this.Parameters = new
             {
                 LastError = entity.LastError,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateSagaId(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET SagaId = @SagaId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                SagaId = entity.SagaId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateSagaStepId(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET SagaStepId = @SagaStepId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                SagaStepId = entity.SagaStepId,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

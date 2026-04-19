@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "APPInfraEstructure\\API\\API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "APPInfraEstructure\\Front\\Front.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "APPInfraEstructure\\Worker\\Worker.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

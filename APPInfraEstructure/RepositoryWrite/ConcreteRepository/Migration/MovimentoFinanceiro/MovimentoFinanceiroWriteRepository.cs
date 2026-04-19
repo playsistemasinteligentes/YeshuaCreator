@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.MovimentoFinanceiro
 {
-    public class MovimentoFinanceiroWriteRepository : IMovimentoFinanceiroWriteRepository
+    public partial class MovimentoFinanceiroWriteRepository : IMovimentoFinanceiroWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IMovimentoFinanceiroQueryWrite _query; 

@@ -1,21 +1,20 @@
-using Command.UseCase;
-using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
-using IRepository.Read;
-using IRepository.Write;
-using RepositoryInterfaces.Patterns.Command;
-using RepositoryInterfaces.Patterns.UnitOfWork;
 
-namespace Dominio.Saga.Migration.PsychologySessionInsight
+namespace Dominio.Saga
 {
     public class PsychologySessionInsightSaga : SagaBase
     {
+        public const string STEP_1 = "audio_transcript_requested";
+        public const string STEP_2 = "audio_transcript_generated";
+        //public const string STEP_3 = "summary_requested";
+        //public const string STEP_4 = "summary_generated";
+
         public PsychologySessionInsightSaga()
         {
-            AddStep(new SagaStep("audio_transcript_requested"));
-            AddStep(new SagaStep("audio_transcript_generated"));
-            AddStep(new SagaStep("prontuary_summary_requested"));
-            AddStep(new SagaStep("prontuary_summary_generated"));
+            AddStep(new PsychologyStep(STEP_1));
+            AddStep(new PsychologyStep(STEP_2));
+            //  AddStep(new PsychologyStep(STEP_3));
+            //  AddStep(new PsychologyStep(STEP_4));
         }
     }
 }

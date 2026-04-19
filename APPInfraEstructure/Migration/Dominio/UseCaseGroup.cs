@@ -130,7 +130,7 @@ Command
         public List<Agent> Agents = new List<Agent>();
 
         public List<UseCaseSubGroup> UseCaseSubGroup = new List<UseCaseSubGroup>();
-        public List<Saga> Saga = new List<Saga>();
+        public List<Dominio.Saga.Migration.Saga> Saga = new List<Dominio.Saga.Migration.Saga>();
 
         public Descricao Name { get; set; }
 
@@ -161,7 +161,7 @@ Command
 
         public UseCaseGroup AddSaga(string sagaName)
         {
-            Saga _Saga = new Saga(sagaName);
+            Dominio.Saga.Migration.Saga _Saga = new Dominio.Saga.Migration.Saga(sagaName);
             _Saga.UseCaseGroup = this;
             _Saga.UseCaseSubGroup = this.UseCaseSubGroup.Last();
 
@@ -171,29 +171,21 @@ Command
 
         public UseCaseGroup AddStepGroup(string step)
         {
-            SagaStep _SagaStep = new SagaStep(step);
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Add(_SagaStep);
+            SagaStepGroup _SagaStep = new SagaStepGroup(step);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Add(_SagaStep);
             return this;
         }
         public UseCaseGroup AddStep(string EventName)
         {
-            SagaStepEvent _Event = new SagaStepEvent(EventName);
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().InternalEvent.Add(_Event);
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent = _Event;
-
-            return this;
-        }
-        public UseCaseGroup AddExternalEvent(string EventName)
-        {
-            SagaStepEvent _Event = new SagaStepEvent(EventName);
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().ExternalEvent.Add(_Event);
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent = _Event;
+            SagaStep _Event = new SagaStep(EventName);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().Steps.Add(_Event);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep = _Event;
             return this;
         }
 
         public UseCaseGroup AddOutBoxPollingWorker(QueueTopology queueTopology = null)
         {
-            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.Name._value}{"OutBoxPollingWorker"}");
+            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"OutBoxPollingWorker"}");
             _Method.UseCaseGroup = this;
             _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
             
@@ -204,16 +196,16 @@ Command
             _Method.Outputs = new object[] { input.Last() };
 
 
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.OutBoxPollingWorker = _Method;
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.OutBoxPollingWorker = _Method;
             if (queueTopology != null)
-                this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.queueTopologyProducer = queueTopology;
+                this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.queueTopology = queueTopology;
             
             return this;
         }
 
         public UseCaseGroup AddInBoxPollingWorker()
         {
-            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.Name._value}{"InBoxPollingWorker"}");
+            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"InBoxPollingWorker"}");
             _Method.UseCaseGroup = this;
             _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
             
@@ -223,12 +215,12 @@ Command
             _Method.Inputs = new object[] { input.First() };
             _Method.Outputs = new object[] { input.Last() };
 
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.InBoxPollingWorker = _Method;
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.InBoxPollingWorker = _Method;
             return this;
         }
 
 
-        public UseCaseGroup AddOutBoxPollingWorker(String exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
+        public UseCaseGroup AddOutBoxPollingWorker(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
         {
 
             QueueTopology queueTopology = new QueueTopology
@@ -250,7 +242,7 @@ Command
             return AddOutBoxPollingWorker(queueTopology);
         }
 
-        public UseCaseGroup AddQueueListenerWorker(String exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
+        public UseCaseGroup AddQueueListenerWorker(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
         {
 
             QueueTopology queueTopology = new QueueTopology
@@ -273,9 +265,9 @@ Command
         }
         public UseCaseGroup AddQueueListenerWorker(QueueTopology queueTopology)
         {
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.queueTopology = queueTopology;
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.queueTopology = queueTopology;
 
-            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.Name._value}{"QueueListenerWorker"}");
+            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"QueueListenerWorker"}");
             _Method.UseCaseGroup = this;
             _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
 
@@ -285,7 +277,7 @@ Command
             _Method.Inputs = new object[] { input.First() };
             _Method.Outputs = new object[] { input.Last() };
 
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStep.Last().LastEvent.QueueListenerWorker = _Method;
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.QueueListenerWorker = _Method;
             return this;
         }
 

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.Sesoes
 {
-    public class SesoesWriteRepository : ISesoesWriteRepository
+    public partial class SesoesWriteRepository : ISesoesWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly ISesoesQueryWrite _query; 

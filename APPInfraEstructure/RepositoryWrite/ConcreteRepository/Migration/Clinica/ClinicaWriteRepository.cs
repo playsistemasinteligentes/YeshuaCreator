@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.Clinica
 {
-    public class ClinicaWriteRepository : IClinicaWriteRepository
+    public partial class ClinicaWriteRepository : IClinicaWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IClinicaQueryWrite _query; 

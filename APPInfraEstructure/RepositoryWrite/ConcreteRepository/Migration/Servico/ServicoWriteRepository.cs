@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.Servico
 {
-    public class ServicoWriteRepository : IServicoWriteRepository
+    public partial class ServicoWriteRepository : IServicoWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IServicoQueryWrite _query; 

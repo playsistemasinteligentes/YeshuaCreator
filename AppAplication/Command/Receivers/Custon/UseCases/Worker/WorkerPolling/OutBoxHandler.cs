@@ -47,13 +47,12 @@ namespace Command.Receivers.UseCase
                 🔲 Idempotência no consumer
                 🔲 DeadLetter*/
 
-
                 var outBoxListJob = _repReadyOutbox.getToWorker("audio.transcribe", 10);
 
                 foreach (int outBoxId in outBoxListJob)
                 {
                     yOutboxDTO outBox = _repReadyOutbox.FirstById(outBoxId, true);
-                    yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.correlationid), true);
+                    yFileUploadDTO upload = _repReadyUpload.FirstById(int.Parse(outBox.entityid), true);
 
                     StoragePath finalPath = StoragePathBuilder.BuildFromFullPath(StorageLocation.Volatile.TranscriptionsInput, upload.filepath);
                     Console.WriteLine($"finalPath:{finalPath.Directory}");
@@ -86,6 +85,7 @@ namespace Command.Receivers.UseCase
                         _repWriteyOutbox.UpdateStatus(outboxEntity);
                     }
                 }
+
             }
             catch (Exception)
             {

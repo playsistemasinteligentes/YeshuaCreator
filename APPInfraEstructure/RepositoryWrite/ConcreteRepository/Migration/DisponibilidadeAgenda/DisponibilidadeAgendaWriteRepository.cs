@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.DisponibilidadeAgenda
 {
-    public class DisponibilidadeAgendaWriteRepository : IDisponibilidadeAgendaWriteRepository
+    public partial class DisponibilidadeAgendaWriteRepository : IDisponibilidadeAgendaWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IDisponibilidadeAgendaQueryWrite _query; 

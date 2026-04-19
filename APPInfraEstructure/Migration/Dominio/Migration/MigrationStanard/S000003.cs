@@ -50,12 +50,58 @@ namespace Migration.Dominio.Migration
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
 
+            AddEntity("ySaga").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("SagaId", "Saga Id").Varchar(100)
+            .AddColumn("Type", "Type").Varchar(200).NotNull()
+            .AddColumn("Status", "Status").Int().NotNull()
+                .Enumerable(0, "NotStarted")
+                .Enumerable(1, "InProgress")
+                .Enumerable(2, "Completed")
+                .Enumerable(3, "Failed")
+            .AddColumn("KeyCurrentStep", "Key Step Atual").Varchar(200)
+            .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
+            .AddColumn("CompletedAt", "Finalizado em").DateTime()
+            .AddColumn("EntityType", "Entity Type").Varchar(100)
+            .AddColumn("EntityId", "Entity Id").Varchar(100)
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+
+            AddEntity("ySagaStep").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
+            .AddColumn("SagaId", "Saga").Int().FK("ySaga", "Id").NotNull()
+            .AddColumn("Key", "Step Key").Varchar(200).NotNull()
+            .AddColumn("Order", "Ordem").Int().NotNull()
+            .AddColumn("CorrelationId", "CorrelationId").Varchar(100).DefaultValue("#Guid.NewGuid()").NotNull()
+            .AddColumn("Status", "Status").Int().NotNull()
+                .Enumerable(0, "Created")
+                .Enumerable(1, "Pending")
+                .Enumerable(2, "InProgress")
+                .Enumerable(3, "WaitingResponse")
+                .Enumerable(4, "Completed")
+                .Enumerable(5, "Failed")
+            .AddColumn("ExecutionCount", "Execuções").Int().NotNull()
+            .AddColumn("LastExecutionAt", "Última Execução").DateTime()
+            .AddColumn("CompletedAt", "Finalizado em").DateTime()
+            .AddColumn("ErrorMessage", "Erro").Varchar(2000)
+            .AddColumn("Payload", "Payload").Varchar(8000)
+            .AddColumn("RetryCount", "Tentativas").Int().NotNull()
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+
+
+
+
+
+
+
+
+
             AddEntity("yOutbox").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
-                .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
-                .AddColumn("CorrelationId", "Correlation Id").Varchar(100).NotNull()
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
+                .AddColumn("EntityType", "Entity Type").Varchar(100)
+                .AddColumn("EntityId", "Entity Id").Varchar(100)
+
                 .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
@@ -65,9 +111,10 @@ namespace Migration.Dominio.Migration
                 .AddColumn("SentAt", "Enviado em").DateTime()
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
+                .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
+                .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
-
-
+            
             AddQuery<yOutbox>("Standard", q => q
             .WhereContext("ProximaPendente", s => s.Status == 0)
             //.Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
@@ -75,11 +122,11 @@ namespace Migration.Dominio.Migration
 
 
             AddEntity("yInbox").AddModule("ADM")
-               .AddColumn("Id", "ID").Int().Incremento().Key()
-               .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
-               .AddColumn("JobId", "Job Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
-               .AddColumn("CorrelationId", "Correlation Id").Varchar(100).NotNull()
+                .AddColumn("Id", "ID").Int().Incremento().Key()
+                .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
+                .AddColumn("EntityType", "Entity Type").Varchar(100)
+                .AddColumn("EntityId", "Entity Id").Varchar(100)
                 .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
@@ -89,6 +136,8 @@ namespace Migration.Dominio.Migration
                 .AddColumn("SentAt", "Enviado em").DateTime()
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
+                .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
+                .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
 
 

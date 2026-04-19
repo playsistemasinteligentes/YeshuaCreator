@@ -5,7 +5,7 @@ using Migration.Dominio.Schemas.CQRS;
 using System.Reflection;
 using System.Text;
 
-namespace Dominio
+namespace Dominio.Saga.Migration
 {
     public class Saga
     {
@@ -26,7 +26,7 @@ namespace Dominio
         public string Description { get; set; }
         public Descricao Name { get; set; }
 
-        public List<SagaStep> SagaStep { get; set; } = new List<SagaStep>();
+        public List<SagaStepGroup> SagaStepGroup { get; set; } = new List<SagaStepGroup>();
 
 
         //public object[] Inputs { get; set; }

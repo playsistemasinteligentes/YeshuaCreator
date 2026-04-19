@@ -70,6 +70,8 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload"));
+        Modules.LastOrDefault().Menus.Add(new Menu("ySaga"));
+        Modules.LastOrDefault().Menus.Add(new Menu("ySagaStep"));
         Modules.LastOrDefault().Menus.Add(new Menu("yOutbox"));
         Modules.LastOrDefault().Menus.Add(new Menu("yInbox"));
         Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));

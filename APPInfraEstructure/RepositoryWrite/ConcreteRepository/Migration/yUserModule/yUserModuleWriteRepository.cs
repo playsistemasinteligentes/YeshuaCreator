@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yUserModule
 {
-    public class yUserModuleWriteRepository : IyUserModuleWriteRepository
+    public partial class yUserModuleWriteRepository : IyUserModuleWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyUserModuleQueryWrite _query; 

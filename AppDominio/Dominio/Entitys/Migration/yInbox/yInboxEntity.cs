@@ -12,36 +12,39 @@
 {
     public int? Id { get; set; }
     public string MessageId { get; set; }
-    public string JobId { get; set; }
-    public string CorrelationId { get; set; }
     public string Type { get; set; }
+    public string EntityType { get; set; }
+    public string EntityId { get; set; }
     public string Payload { get; set; }
     public int Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? SentAt { get; set; }
     public int RetryCount { get; set; }
     public string LastError { get; set; }
+    public int? SagaId { get; set; }
+    public int? SagaStepId { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yInboxEntity(int? id, string correlationid, string type, string payload, int status, DateTime createdat, DateTime? sentat, int retrycount, string lasterror ){
+ internal yInboxEntity(int? id, string type, string entitytype, string entityid, string payload, int status, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, int? sagaid, int? sagastepid ){
  Id = id; 
- CorrelationId = correlationid; 
  Type = type; 
+ EntityType = entitytype; 
+ EntityId = entityid; 
  Payload = payload; 
  Status = status; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
  SentAt = (sentat < (new DateTime(1800, 1, 1))) ? DateTime.Now : sentat; 
  RetryCount = retrycount; 
  LastError = lasterror; 
+ SagaId = sagaid; 
+ SagaStepId = sagastepid; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if(string.IsNullOrEmpty(CorrelationId))
-   this._erroMensagem.Add("Correlation Id deve ser informado.");
    if(string.IsNullOrEmpty(Type))
    this._erroMensagem.Add("Tipo da Mensagem deve ser informado.");
    if(string.IsNullOrEmpty(Payload))

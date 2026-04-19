@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yPerfilGrant
 {
-    public class yPerfilGrantWriteRepository : IyPerfilGrantWriteRepository
+    public partial class yPerfilGrantWriteRepository : IyPerfilGrantWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyPerfilGrantQueryWrite _query; 

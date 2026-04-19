@@ -149,67 +149,36 @@ namespace Dominio.Schemas.CQRS
                     
                     foreach (var saga in subGroup.Saga)
                     {
-                        foreach (var step in saga.SagaStep)
+                        foreach (var stepGroup in saga.SagaStepGroup)
                         {
-                            foreach (var internalEvent in step.InternalEvent)
+                            foreach (var step in stepGroup.Steps)
                             {
-                                if (internalEvent.OutBoxPollingWorker != null)
+                                if (step.OutBoxPollingWorker != null)
                                 {
-                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.OutBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.OutBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(internalEvent.OutBoxPollingWorker, CommandType.WorkerListenerHandler);
+                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Commands.cs");
+                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Commands.cs");
+                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(step.OutBoxPollingWorker, CommandType.WorkerListenerHandler);
                                     sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
                                 }
 
-                                if (internalEvent.QueueListenerWorker != null)
+                                if (step.QueueListenerWorker != null)
                                 {
-                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.QueueListenerWorker.Name.SourceType()}Commands.cs");
-                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.QueueListenerWorker.Name.SourceType()}Commands.cs");
-                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(internalEvent.QueueListenerWorker, CommandType.WorkerListenerHandler);
+                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Commands.cs");
+                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Commands.cs");
+                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(step.QueueListenerWorker, CommandType.WorkerListenerHandler);
                                     sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
                                 }
 
-                                if (internalEvent.InBoxPollingWorker != null)
+                                if (step.InBoxPollingWorker != null)
                                 {
-                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.InBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.InBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(internalEvent.InBoxPollingWorker, CommandType.WorkerListenerHandler);
-                                    sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
-                                }
-
-                            }
-
-                            foreach (var externalEvent in step.ExternalEvent)
-                            {
-                                if (externalEvent.OutBoxPollingWorker != null)
-                                {
-                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.OutBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.OutBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(externalEvent.OutBoxPollingWorker, CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
-                                }
-
-                                if (externalEvent.QueueListenerWorker != null)
-                                {
-                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.QueueListenerWorker.Name.SourceType()}Commands.cs");
-                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.QueueListenerWorker.Name.SourceType()}Commands.cs");
-                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(externalEvent.QueueListenerWorker, CommandType.WorkerListenerHandler);
-                                    sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
-                                }
-
-                                if (externalEvent.InBoxPollingWorker != null)
-                                {
-                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.InBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.InBoxPollingWorker.Name.SourceType()}Commands.cs");
-                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(externalEvent.InBoxPollingWorker, CommandType.WorkerPollingHandler);
+                                    filePath = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Commands.cs");
+                                    filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Commands.cs");
+                                    sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(step.InBoxPollingWorker, CommandType.WorkerListenerHandler);
                                     sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
                                 }
                             }
                         }
                     }
-
-
-
 
                     foreach (var method in subGroup.UseCaseCommand)
                     {
@@ -300,65 +269,34 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var saga in subGroup.Saga)
                     {
-                        foreach (var step in saga.SagaStep)
+                        foreach (var stepGroup in saga.SagaStepGroup)
                         {
-                            foreach (var internalEvent in step.InternalEvent)
+                            foreach (var step in stepGroup.Steps)
                             {
-                                if (internalEvent.OutBoxPollingWorker != null)
+                                if (step.OutBoxPollingWorker != null)
                                 {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(internalEvent.OutBoxPollingWorker,CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, internalEvent.OutBoxPollingWorker);
+                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(step.OutBoxPollingWorker,CommandType.WorkerPollingHandler);
+                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.OutBoxPollingWorker);
                                 }
 
-                                if (internalEvent.QueueListenerWorker != null)
+                                if (step.QueueListenerWorker != null)
                                 {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.QueueListenerWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.QueueListenerWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(internalEvent.QueueListenerWorker, CommandType.WorkerListenerHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, internalEvent.QueueListenerWorker);
+                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Handler.cs");
+                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Handler.cs");
+                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(step.QueueListenerWorker, CommandType.WorkerListenerHandler);
+                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.QueueListenerWorker);
                                 }
 
-                                if (internalEvent.InBoxPollingWorker != null)
+                                if (step.InBoxPollingWorker != null)
                                 {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.InBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"InternalEvent"}\\{internalEvent.InBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(internalEvent.InBoxPollingWorker, CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, internalEvent.InBoxPollingWorker);
+                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(step.InBoxPollingWorker, CommandType.WorkerPollingHandler);
+                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.InBoxPollingWorker);
                                 }
-
                             }
-
-                            foreach (var externalEvent in step.ExternalEvent)
-                            {
-                                if (externalEvent.OutBoxPollingWorker != null)
-                                {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(externalEvent.OutBoxPollingWorker, CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, externalEvent.OutBoxPollingWorker);
-                                }
-
-                                if (externalEvent.QueueListenerWorker != null)
-                                {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.QueueListenerWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.QueueListenerWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(externalEvent.QueueListenerWorker, CommandType.WorkerListenerHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, externalEvent.QueueListenerWorker);
-                                }
-
-                                if (externalEvent.InBoxPollingWorker != null)
-                                {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.InBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{step.Name}\\{"ExternalEvent"}\\{externalEvent.InBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(externalEvent.InBoxPollingWorker, CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, externalEvent.InBoxPollingWorker);
-                                }
-
-                            }
-
-
                         }
                     }
 
@@ -526,8 +464,8 @@ namespace Dominio.Schemas.CQRS
         {
             foreach (var entity in migration.Entitys)
             {
-                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Migration\\{entity.EntityName}\\I{entity.EntityName}RepositoryInterfacesWrite.cs");
-                var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Custon\\{entity.EntityName}\\I{entity.EntityName}RepositoryInterfacesWrite.cs");
+                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Migration\\{entity.EntityName}\\I{entity.EntityName}WriteRepository.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Custon\\{entity.EntityName}\\I{entity.EntityName}WriteRepository.cs");
                 var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesWriteMigration(entity);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }

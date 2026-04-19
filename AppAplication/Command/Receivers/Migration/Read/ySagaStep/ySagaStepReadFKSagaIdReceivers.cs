@@ -1,0 +1,34 @@
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using Dominio.Entitys;
+using Dominio.Interfaces;
+using IRepository.Read;
+using IRepository.Write;
+using Repositorio.Outputs;
+
+namespace Command.Receivers.Read
+{
+    public class ySagaStepReadFKSagaIdReceiver : ReciverBase<ICommand, IEnumerable<ySagaStepSagaIdDTO>>
+    {
+        private readonly IySagaStepReadRepository _repository;
+
+        public ySagaStepReadFKSagaIdReceiver(IySagaStepReadRepository repository)
+        {
+            _repository = repository;
+        }
+
+        protected override State <IEnumerable<ySagaStepSagaIdDTO>> Action(ICommand comand)
+        {
+            if(comand is SearchFKCommand c) 
+             {    
+                var ySagaStepReadRepository = _repository.getySagaStepReadFKSagaId(c);
+                return Success("OK", ySagaStepReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

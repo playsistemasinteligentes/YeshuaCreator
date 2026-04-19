@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.Especialidade
 {
-    public class EspecialidadeWriteRepository : IEspecialidadeWriteRepository
+    public partial class EspecialidadeWriteRepository : IEspecialidadeWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IEspecialidadeQueryWrite _query; 

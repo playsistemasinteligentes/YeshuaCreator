@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yConfigNotification
 {
-    public class yConfigNotificationWriteRepository : IyConfigNotificationWriteRepository
+    public partial class yConfigNotificationWriteRepository : IyConfigNotificationWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyConfigNotificationQueryWrite _query; 

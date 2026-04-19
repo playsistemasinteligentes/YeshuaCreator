@@ -239,19 +239,69 @@ namespace MyApp.Domain.Entities
         public static MyApp.QueryBuilder.Query<yFileUpload> Query() => new MyApp.QueryBuilder.Query<yFileUpload>();
     }
 
+    public class ySaga
+    {
+        public int? Id { get; set; }
+        public string SagaId { get; set; }
+        public string Type { get; set; }
+        public int Status { get; set; }
+        public string KeyCurrentStep { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? CompletedAt { get; set; }
+        public string EntityType { get; set; }
+        public string EntityId { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<ySaga> Query() => new MyApp.QueryBuilder.Query<ySaga>();
+    }
+
+    public class ySagaStep
+    {
+        public int? Id { get; set; }
+        public int SagaId { get; set; }
+        public ySaga ySaga { get; set; }
+        public string Key { get; set; }
+        public int Order { get; set; }
+        public string CorrelationId { get; set; }
+        public int Status { get; set; }
+        public int ExecutionCount { get; set; }
+        public DateTime? LastExecutionAt { get; set; }
+        public DateTime? CompletedAt { get; set; }
+        public string ErrorMessage { get; set; }
+        public string Payload { get; set; }
+        public int RetryCount { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<ySagaStep> Query() => new MyApp.QueryBuilder.Query<ySagaStep>();
+    }
+
     public class yOutbox
     {
         public int? Id { get; set; }
         public string MessageId { get; set; }
-        public string JobId { get; set; }
-        public string CorrelationId { get; set; }
         public string Type { get; set; }
+        public string EntityType { get; set; }
+        public string EntityId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int RetryCount { get; set; }
         public string LastError { get; set; }
+        public int? SagaId { get; set; }
+        public ySaga ySaga { get; set; }
+        public int? SagaStepId { get; set; }
+        public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -266,15 +316,19 @@ namespace MyApp.Domain.Entities
     {
         public int? Id { get; set; }
         public string MessageId { get; set; }
-        public string JobId { get; set; }
-        public string CorrelationId { get; set; }
         public string Type { get; set; }
+        public string EntityType { get; set; }
+        public string EntityId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int RetryCount { get; set; }
         public string LastError { get; set; }
+        public int? SagaId { get; set; }
+        public ySaga ySaga { get; set; }
+        public int? SagaStepId { get; set; }
+        public ySagaStep ySagaStep { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }

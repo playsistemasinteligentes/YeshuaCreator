@@ -1,4 +1,5 @@
 ﻿using Dominio.Migration;
+using Dominio.Schemas.CQRS.Abstraction;
 using Interfaces.Schemas;
 using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
@@ -32,6 +33,12 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("using Shered.Services;");
             sb.AppendLine("using RepositoryInterfaces.Services;");
+            sb.AppendLine("using Command.Patterns;");
+            sb.AppendLine("using Command.Interfaces;");
+            
+            
+
+
             sb.AppendLine("namespace Migrations");
             sb.AppendLine("{");
             sb.AppendLine("public static class DependencInjection");
@@ -44,9 +51,9 @@ namespace Dominio.Schemas.CQRS
                     builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
+                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
             ");
-
-
+        
 
             // ingeção dependencia 
             foreach (var entity in _migration.Entitys)
@@ -130,6 +137,13 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
+
+                    foreach (var saga in subGroup.Saga)
+                    {
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceDominioSaga}.{saga.Name.SourceType()}Saga>();");
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceSagaHandlerResolver}.{saga.Name.SourceType()}SagaHandlerResolver>();");
+                    }
+
                     foreach (var useCase in subGroup.UseCaseCommand)
                     {
                         sb.AppendLine("");

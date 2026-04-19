@@ -1,6 +1,5 @@
 ﻿
 using Dominio.TiposPrimitivos;
-using Migration.Dominio;
 using Migration.Dominio.Schemas;
 using Migration.Dominio.Schemas.CQRS;
 using System.Reflection;
@@ -13,21 +12,32 @@ namespace Dominio
         public SagaStep(string name)
         {
             Name = name;
+            NameInBoxPollingWorker = $"{name}InboxHandler"; 
+            NameOutBoxPollingWorker = $"{name}InboxHandler";
+            NameQueueListenerWorker = $"{name}QueueListenerHandler";
         }
 
-        public SagaStep(Saga saga, string name, string description)
+        public SagaStep(SagaStepGroup sagaStep, string name, string description)
         {
-            Saga = saga;
+            SagaStepGroup = sagaStep;
             Name = name;
             Description = description;
         }
 
-        public Saga Saga { get; set; }
+        public SagaStepGroup SagaStepGroup { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }
-        public List<SagaStepEvent> InternalEvent { get; set; } = new List<SagaStepEvent>();
-        public List<SagaStepEvent> ExternalEvent { get; set; } = new List<SagaStepEvent>();
-        public SagaStepEvent LastEvent { get; set; }
+        public Descricao NameSpace { get; set; }
+        public Descricao NameOutBoxPollingWorker { get; set; }
+        public Descricao NameInBoxPollingWorker { get; set; }
+        public Descricao NameQueueListenerWorker { get; set; }
+
+        public UseCaseCommand SagaStepUseCaseCommand { get; set; }
+        public UseCaseCommand OutBoxPollingWorker { get; set; }
+        public UseCaseCommand InBoxPollingWorker { get; set; }
+        public UseCaseCommand QueueListenerWorker { get; set; }
+        //public QueueTopology queueTopologyConsumer { get; set; }
+        public QueueTopology queueTopology { get; set; }
 
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();
@@ -38,4 +48,5 @@ namespace Dominio
             Scopes.Add(scope);
         }
     }
+
 }

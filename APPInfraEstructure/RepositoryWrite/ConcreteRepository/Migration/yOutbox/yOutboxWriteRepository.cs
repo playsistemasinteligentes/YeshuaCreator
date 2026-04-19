@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yOutbox
 {
-    public class yOutboxWriteRepository : IyOutboxWriteRepository
+    public partial class yOutboxWriteRepository : IyOutboxWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyOutboxQueryWrite _query; 
@@ -46,19 +46,19 @@ namespace Input.Repository.yOutbox
             var query = _query.UpdateMessageId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateJobId(IyOutboxEntity entity)
-        {
-            var query = _query.UpdateJobId(entity);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateCorrelationId(IyOutboxEntity entity)
-        {
-            var query = _query.UpdateCorrelationId(entity);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateType(IyOutboxEntity entity)
         {
             var query = _query.UpdateType(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateEntityType(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateEntityType(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateEntityId(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateEntityId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdatePayload(IyOutboxEntity entity)
@@ -89,6 +89,16 @@ namespace Input.Repository.yOutbox
         public void UpdateLastError(IyOutboxEntity entity)
         {
             var query = _query.UpdateLastError(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateSagaId(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateSagaId(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateSagaStepId(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateSagaStepId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IyOutboxEntity entity)

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yUser
 {
-    public class yUserWriteRepository : IyUserWriteRepository
+    public partial class yUserWriteRepository : IyUserWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyUserQueryWrite _query; 

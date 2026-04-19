@@ -1,10 +1,13 @@
 ﻿using Aplication.Interfaces.Services;
+using Command.Interfaces;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Patterns.OutBox;
 using Command.Receivers.Custon.UseCases.FileUpload.Infra;
+using Command.Receivers.Migration.Saga.PsychologySessionInsight;
 using Command.UseCase;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Saga;
 using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
@@ -22,8 +25,15 @@ namespace Command.Receivers.UseCase
         private readonly IFileStorage _fileStorage;
         private readonly ICurrentUser _CurrentUser;
         private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
+        private readonly IySagaWriteRepository _ySagaWriteRepository;
+        private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
+        private readonly ISagaExecutor _sagaExecutor;
+        private readonly PsychologySessionInsightSagaHandlerResolver _psychologySagaHandlerResolver;
+        
 
-        public SendFileHandler(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage, ICurrentUser currentUser, IyOutboxWriteRepository yOutboxWriteRepository)
+
+
+        public SendFileHandler(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage, ICurrentUser currentUser, IyOutboxWriteRepository yOutboxWriteRepository, IySagaWriteRepository ySagaWriteRepository, PsychologySessionInsightSaga psychologySessionInsightSaga,ISagaExecutor sagaExecutor, PsychologySessionInsightSagaHandlerResolver psychologySagaHandlerResolver)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
@@ -32,7 +42,10 @@ namespace Command.Receivers.UseCase
             _fileStorage = fileStorage;
             _CurrentUser = currentUser;
             _yOutboxWriteRepository = yOutboxWriteRepository;
-
+            _ySagaWriteRepository = ySagaWriteRepository;
+            _psychologySessionInsightSaga = psychologySessionInsightSaga;
+            _sagaExecutor = sagaExecutor;
+            _psychologySagaHandlerResolver = psychologySagaHandlerResolver;
         }
 
 
@@ -133,11 +146,13 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
 
                 var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
+                _psychologySessionInsightSaga.Start();
+                _sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
+                
                 _unitOfWork.BeginTran();
 
                 _repWriteyFileUpload.UpdateFilePath(upload);
-
-                new OutboxService(_yOutboxWriteRepository, _logger).AddOutBoxEvent(upload.Type, payload, upload.Id.Value);
+                _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
 
                 _unitOfWork.Commit();
 

@@ -8,51 +8,86 @@ namespace Dominio.Patterns.Saga
 {
     public abstract class SagaStepBase
     {
-        public Guid Id { get; private set; } = Guid.NewGuid();
-        public SagaStepStatus Status { get; private set; } = SagaStepStatus.Created;
+        // 🔥 persistência
+        public int Id { get; set; }
+        public int SagaId { get; set; }
+        public string Key { get; protected set; }
+        public int Order { get; protected set; }
+        public SagaStepStatus Status { get; protected set; }
+        public DateTime? CompletedAt { get; protected set; }
+        public string ErrorMessage { get; protected set; }
+        public string Payload { get; protected set; }
 
-        protected SagaBase Saga { get; private set; }
+        public int ExecutionCount { get; protected set; }
+        public DateTime? LastExecutionAt { get; protected set; }
+        public DateTime? NextExecutionAt { get; protected set; }
+        public int RetryCount { get; protected set; } = 0;
+        public int MaxRetries { get; protected set; } = 3;
 
-        internal void SetSaga(SagaBase saga)
+        public string CorrelationId { get; protected set; }
+        public bool IsNew { get; private set; } = true;
+        public bool IsDirty { get; private set; } = false;
+
+
+
+        protected SagaStepBase(string key)
         {
-            Saga = saga;
+            Key = key;
+            Status = SagaStepStatus.Created;
+            IsDirty = true; // novo já nasce dirty
         }
 
-        public void Start()
+        private void MarkDirty()
         {
-            if (Status != SagaStepStatus.Pending)
-                throw new Exception("Step inválido para iniciar.");
+            IsDirty = true;
+        }
 
+        public void SetInProgress()
+        {
             Status = SagaStepStatus.InProgress;
-
-            OnStart();
+            MarkDirty();
         }
 
-        public void Complete()
+        // 🔥 async flow
+        public void SetWaiting(string correlationId)
         {
-            if (Status != SagaStepStatus.InProgress)
-                throw new Exception("Step inválido para completar.");
-
-            Status = SagaStepStatus.Completed;
-
-            OnComplete();
-
-            Saga.NotifyStepCompleted(this);
+            Status = SagaStepStatus.WaitingResponse;
+            CorrelationId = correlationId;
+            MarkDirty();
         }
 
-        public void Fail()
+        public void SetCompleted()
+        {
+            Status = SagaStepStatus.Completed;
+            CorrelationId = null;
+            MarkDirty();
+        }
+
+        public void SetFailed()
         {
             Status = SagaStepStatus.Failed;
-
-            OnFail();
-
-            Saga.NotifyStepFailed(this);
+            MarkDirty();
         }
 
-        protected abstract void OnStart();
-        
-        protected abstract void OnComplete();
-        
-        protected abstract void OnFail();
+        public void ClearDirty()
+        {
+            IsDirty = false;
+        }
+        public void MarkPersisted()
+        {
+            IsNew = false;
+            IsDirty = false;
+        }
+        public void SetPending(DateTime? nextExecution = null)
+        {
+            Status = SagaStepStatus.Pending;
+            NextExecutionAt = nextExecution;
+            MarkDirty();
+        }
+        public void IncrementRetry()
+        {
+            RetryCount++;
+        }
+        public bool CanRetry() => RetryCount < MaxRetries;
     }
 }

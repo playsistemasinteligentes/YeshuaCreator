@@ -16,6 +16,6 @@ namespace Dominio
         public string Description { get; set; }
         public Descricao Name { get; set; }
         public List<UseCaseCommand> UseCaseCommand = new List<UseCaseCommand>();
-        public List<Saga> Saga = new List<Saga>();
+        public List<Dominio.Saga.Migration.Saga> Saga = new List<Dominio.Saga.Migration.Saga>();
     }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yGrant
 {
-    public class yGrantWriteRepository : IyGrantWriteRepository
+    public partial class yGrantWriteRepository : IyGrantWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyGrantQueryWrite _query; 

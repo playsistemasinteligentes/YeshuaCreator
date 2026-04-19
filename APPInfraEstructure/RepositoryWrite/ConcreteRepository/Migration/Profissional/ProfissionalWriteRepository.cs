@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.Profissional
 {
-    public class ProfissionalWriteRepository : IProfissionalWriteRepository
+    public partial class ProfissionalWriteRepository : IProfissionalWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IProfissionalQueryWrite _query; 

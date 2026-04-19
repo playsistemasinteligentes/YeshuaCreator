@@ -19,7 +19,7 @@ namespace Dominio.Patterns.Saga
         Created, // stap registrado mas ninguem nenhum worker pega ele apenas next step movimenta ele para inProgress 
         Pending, // Worker pega pra executar 
         InProgress, // Worker marca que vai executar  
-        WaitingResponse // espera confirmação ao confirmar chama next step e move para completed 
+        WaitingResponse, // espera confirmação ao confirmar chama next step e move para completed 
         Completed,// completo 
         Failed // retry 
 

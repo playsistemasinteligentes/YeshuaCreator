@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yFileUpload
 {
-    public class yFileUploadWriteRepository : IyFileUploadWriteRepository
+    public partial class yFileUploadWriteRepository : IyFileUploadWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyFileUploadQueryWrite _query; 

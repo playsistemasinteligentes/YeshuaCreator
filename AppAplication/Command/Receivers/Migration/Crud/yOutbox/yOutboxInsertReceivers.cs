@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yOutboxCrudCommand c) 
              {    
-                 var youtbox = new yOutboxFactory(_logger).Create(c.Id, c.CorrelationId, c.Type, c.Payload, c.Status, c.CreatedAt, c.SentAt, c.RetryCount, c.LastError);
+                 var youtbox = new yOutboxFactory(_logger).Create(c.Id, c.Type, c.EntityType, c.EntityId, c.Payload, c.Status, c.CreatedAt, c.SentAt, c.RetryCount, c.LastError, c.SagaId, c.SagaStepId);
                  if (!youtbox.isValidInsert())
                      return ValidationError(youtbox.getErroMensagens(), null);
 

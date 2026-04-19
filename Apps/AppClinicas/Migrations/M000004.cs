@@ -67,6 +67,10 @@ Consumes    fato sistema externo continuar fluxo
                                 AddStepGroup("audioTranscript").
                                     AddStep("audio_transcript_requested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.CeleryWorker", "audio.transcript.requested").
+                                    //.LazyWorker vai ser executado apenas no loopingWorker 
+                                    //.AsyncFirt   vai executar a primeira vez caso falhe sera executada pelo loopingWorker  
+                                    //.StandardOutBox   um outbox por saga ou por sistema ou por step
+
                                     AddStep("audio_transcript_generated"). //“isso aconteceu”
                                         AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
                                         AddInBoxPollingWorker().

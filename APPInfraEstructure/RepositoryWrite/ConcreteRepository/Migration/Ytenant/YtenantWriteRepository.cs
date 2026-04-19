@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yTenant
 {
-    public class yTenantWriteRepository : IyTenantWriteRepository
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyTenantQueryWrite _query; 

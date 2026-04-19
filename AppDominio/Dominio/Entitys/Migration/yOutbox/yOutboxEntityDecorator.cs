@@ -44,32 +44,6 @@
                                         }
                                     }
 
-                                    public string JobId
-                                    {
-                                        get => _inner.JobId;
-                                        set
-                                        {
-                                            if (_inner.JobId != value)
-                                            {
-                                                _logger.Info($"Propriedade JobId: antes={_inner.JobId}, depois={value}");
-                                                _inner.JobId = value;
-                                            }
-                                        }
-                                    }
-
-                                    public string CorrelationId
-                                    {
-                                        get => _inner.CorrelationId;
-                                        set
-                                        {
-                                            if (_inner.CorrelationId != value)
-                                            {
-                                                _logger.Info($"Propriedade CorrelationId: antes={_inner.CorrelationId}, depois={value}");
-                                                _inner.CorrelationId = value;
-                                            }
-                                        }
-                                    }
-
                                     public string Type
                                     {
                                         get => _inner.Type;
@@ -79,6 +53,32 @@
                                             {
                                                 _logger.Info($"Propriedade Type: antes={_inner.Type}, depois={value}");
                                                 _inner.Type = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string EntityType
+                                    {
+                                        get => _inner.EntityType;
+                                        set
+                                        {
+                                            if (_inner.EntityType != value)
+                                            {
+                                                _logger.Info($"Propriedade EntityType: antes={_inner.EntityType}, depois={value}");
+                                                _inner.EntityType = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string EntityId
+                                    {
+                                        get => _inner.EntityId;
+                                        set
+                                        {
+                                            if (_inner.EntityId != value)
+                                            {
+                                                _logger.Info($"Propriedade EntityId: antes={_inner.EntityId}, depois={value}");
+                                                _inner.EntityId = value;
                                             }
                                         }
                                     }
@@ -157,6 +157,32 @@
                                             {
                                                 _logger.Info($"Propriedade LastError: antes={_inner.LastError}, depois={value}");
                                                 _inner.LastError = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? SagaId
+                                    {
+                                        get => _inner.SagaId;
+                                        set
+                                        {
+                                            if (_inner.SagaId != value)
+                                            {
+                                                _logger.Info($"Propriedade SagaId: antes={_inner.SagaId}, depois={value}");
+                                                _inner.SagaId = value;
+                                            }
+                                        }
+                                    }
+
+                                    public int? SagaStepId
+                                    {
+                                        get => _inner.SagaStepId;
+                                        set
+                                        {
+                                            if (_inner.SagaStepId != value)
+                                            {
+                                                _logger.Info($"Propriedade SagaStepId: antes={_inner.SagaStepId}, depois={value}");
+                                                _inner.SagaStepId = value;
                                             }
                                         }
                                     }

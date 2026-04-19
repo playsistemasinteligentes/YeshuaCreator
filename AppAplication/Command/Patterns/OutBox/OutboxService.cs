@@ -21,19 +21,15 @@ namespace Command.Patterns.OutBox
             _logger = logger;
         }
 
-        public void AddOutBoxEvent(string type, object payload, string correlationId)
+        public void AddOutBoxEvent(string type, object payload, string entityType, string entityID)
         {
-            AddOutbox(type, payload, correlationId);
-        }
-        public void AddOutBoxEvent(string type, object payload, int correlationId)
-        {
-            AddOutbox(type, payload, correlationId.ToString());
+            AddOutbox(type, payload, entityType, entityID);
         }
 
-        private void AddOutbox(string type, object payload, string correlationId)
+        private void AddOutbox(string type, object payload, string entityType, string entityID)
         {
 
-            var youtbox = new yOutboxFactory(_logger).Create(0, correlationId, type, JsonSerializer.Serialize(payload), 0, DateTime.UtcNow, null, 0, string.Empty);
+            var youtbox = new yOutboxFactory(_logger).Create(0, type, entityType, entityID,JsonSerializer.Serialize(payload), 0, DateTime.UtcNow, null, 0, string.Empty,null,null);
             if (!youtbox.isValidInsert())
                 throw new ApplicationException(string.Join("; ", youtbox.getErroMensagens()));
 

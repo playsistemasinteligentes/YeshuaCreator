@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.GrupoServico
 {
-    public class GrupoServicoWriteRepository : IGrupoServicoWriteRepository
+    public partial class GrupoServicoWriteRepository : IGrupoServicoWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IGrupoServicoQueryWrite _query; 

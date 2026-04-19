@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.yInbox
 {
-    public class yInboxWriteRepository : IyInboxWriteRepository
+    public partial class yInboxWriteRepository : IyInboxWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IyInboxQueryWrite _query; 
@@ -46,19 +46,19 @@ namespace Input.Repository.yInbox
             var query = _query.UpdateMessageId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateJobId(IyInboxEntity entity)
-        {
-            var query = _query.UpdateJobId(entity);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateCorrelationId(IyInboxEntity entity)
-        {
-            var query = _query.UpdateCorrelationId(entity);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateType(IyInboxEntity entity)
         {
             var query = _query.UpdateType(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateEntityType(IyInboxEntity entity)
+        {
+            var query = _query.UpdateEntityType(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateEntityId(IyInboxEntity entity)
+        {
+            var query = _query.UpdateEntityId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdatePayload(IyInboxEntity entity)
@@ -89,6 +89,16 @@ namespace Input.Repository.yInbox
         public void UpdateLastError(IyInboxEntity entity)
         {
             var query = _query.UpdateLastError(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateSagaId(IyInboxEntity entity)
+        {
+            var query = _query.UpdateSagaId(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateSagaStepId(IyInboxEntity entity)
+        {
+            var query = _query.UpdateSagaStepId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateTenantID(IyInboxEntity entity)

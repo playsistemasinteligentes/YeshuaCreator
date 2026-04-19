@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Input.Repository.PlanoConta
 {
-    public class PlanoContaWriteRepository : IPlanoContaWriteRepository
+    public partial class PlanoContaWriteRepository : IPlanoContaWriteRepository
     {
         private readonly IUnitOfWork _UnitOfWork;
        private readonly IPlanoContaQueryWrite _query; 

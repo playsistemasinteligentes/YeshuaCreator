@@ -49,44 +49,30 @@ namespace Dominio.Schemas.CQRS
                 {
                     foreach (var saga in subGroup.Saga)
                     {
-                        foreach (var step in saga.SagaStep)
+                        foreach (var stepGroup in saga.SagaStepGroup)
                         {
-                            foreach (var internalEvent in step.InternalEvent)
+                            foreach (var step in stepGroup.Steps)
                             {
-                                if (internalEvent.OutBoxPollingWorker != null)
-                                    AppendPollingWorker(sb, internalEvent.OutBoxPollingWorker);
+                                //avaliar pois o outbox pode ser mais padronizado sem necessidade de um por step ou por saga podendo eventualmente ser um apenas 
+                                //padronizar o outbox ou seja um outbox por sistema  eventualmente por saga mas tem que ter codigo padrao  
 
-                                if (internalEvent.InBoxPollingWorker != null)
-                                    AppendPollingWorker(sb, internalEvent.InBoxPollingWorker);
+                                if (step.SagaStepUseCaseCommand != null)
+                                    AppendPollingWorker(sb, step.SagaStepUseCaseCommand);
+                                
+                                if (step.OutBoxPollingWorker != null)
+                                    AppendPollingWorker(sb, step.OutBoxPollingWorker);
 
-                                if (internalEvent.QueueListenerWorker != null)
+                                if (step.InBoxPollingWorker != null)
+                                    AppendPollingWorker(sb, step.InBoxPollingWorker);
+
+                                if (step.QueueListenerWorker != null)
                                 {
-                                    foreach (var exchange in internalEvent.queueTopology.Exchanges)
+                                    foreach (var exchange in step.queueTopology.Exchanges)
                                     {
                                         foreach (var binding in exchange.Bindings)
                                         {
                                             var queueName = binding.QueueName;
-                                            AppendQueueListenerWorker(sb, queueName, internalEvent.QueueListenerWorker);
-                                        }
-                                    }
-                                }
-                            }
-                            foreach (var externalEvent in step.ExternalEvent)
-                            {
-                                if (externalEvent.OutBoxPollingWorker != null)
-                                    AppendPollingWorker(sb, externalEvent.OutBoxPollingWorker);
-
-                                if (externalEvent.QueueListenerWorker != null)
-                                    AppendPollingWorker(sb, externalEvent.InBoxPollingWorker);
-
-                                if (externalEvent.InBoxPollingWorker != null)
-                                {
-                                    foreach (var exchange in externalEvent.queueTopology.Exchanges)
-                                    {
-                                        foreach (var binding in exchange.Bindings)
-                                        {
-                                            var queueName = binding.QueueName;
-                                            AppendQueueListenerWorker(sb, queueName, externalEvent.QueueListenerWorker);
+                                            AppendQueueListenerWorker(sb, queueName, step.QueueListenerWorker);
                                         }
                                     }
                                 }
