@@ -12,8 +12,8 @@
 {
     int? Id { get; set; }
     int SagaId { get; set; }
-    string Key { get; set; }
-    int Order { get; set; }
+    string StepKey { get; set; }
+    int IndexOrder { get; set; }
     string CorrelationId { get; set; }
     int Status { get; set; }
     int ExecutionCount { get; set; }

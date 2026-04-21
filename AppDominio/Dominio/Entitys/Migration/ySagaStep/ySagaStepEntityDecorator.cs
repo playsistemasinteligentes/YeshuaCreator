@@ -44,28 +44,28 @@
                                         }
                                     }
 
-                                    public string Key
+                                    public string StepKey
                                     {
-                                        get => _inner.Key;
+                                        get => _inner.StepKey;
                                         set
                                         {
-                                            if (_inner.Key != value)
+                                            if (_inner.StepKey != value)
                                             {
-                                                _logger.Info($"Propriedade Key: antes={_inner.Key}, depois={value}");
-                                                _inner.Key = value;
+                                                _logger.Info($"Propriedade StepKey: antes={_inner.StepKey}, depois={value}");
+                                                _inner.StepKey = value;
                                             }
                                         }
                                     }
 
-                                    public int Order
+                                    public int IndexOrder
                                     {
-                                        get => _inner.Order;
+                                        get => _inner.IndexOrder;
                                         set
                                         {
-                                            if (_inner.Order != value)
+                                            if (_inner.IndexOrder != value)
                                             {
-                                                _logger.Info($"Propriedade Order: antes={_inner.Order}, depois={value}");
-                                                _inner.Order = value;
+                                                _logger.Info($"Propriedade IndexOrder: antes={_inner.IndexOrder}, depois={value}");
+                                                _inner.IndexOrder = value;
                                             }
                                         }
                                     }

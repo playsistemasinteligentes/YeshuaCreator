@@ -20,13 +20,13 @@ namespace Query.Write
         }
         public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep)
         {
-            this.Query = $@" INSERT INTO ySagaStep (SagaId, Key, Order, CorrelationId, Status, ExecutionCount, LastExecutionAt, CompletedAt, ErrorMessage, Payload, RetryCount, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SagaId, @Key, @Order, @CorrelationId, @Status, @ExecutionCount, @LastExecutionAt, @CompletedAt, @ErrorMessage, @Payload, @RetryCount, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO ySagaStep (SagaId, StepKey, IndexOrder, CorrelationId, Status, ExecutionCount, LastExecutionAt, CompletedAt, ErrorMessage, Payload, RetryCount, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SagaId, @StepKey, @IndexOrder, @CorrelationId, @Status, @ExecutionCount, @LastExecutionAt, @CompletedAt, @ErrorMessage, @Payload, @RetryCount, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SagaId = ySagaStep.SagaId,
-                Key = ySagaStep.Key,
-                Order = ySagaStep.Order,
-                CorrelationId = Guid.NewGuid(),
+                StepKey = ySagaStep.StepKey,
+                IndexOrder = ySagaStep.IndexOrder,
+                CorrelationId = ySagaStep.CorrelationId,
                 Status = ySagaStep.Status,
                 ExecutionCount = ySagaStep.ExecutionCount,
                 LastExecutionAt = ySagaStep.LastExecutionAt,
@@ -43,12 +43,12 @@ namespace Query.Write
         }
         public QueryModel UpdateySagaStepQuery(IySagaStepEntity ySagaStep)
         {
-            this.Query = $@" UPDATE ySagaStep SET SagaId = @SagaId, Key = @Key, Order = @Order, CorrelationId = @CorrelationId, Status = @Status, ExecutionCount = @ExecutionCount, LastExecutionAt = @LastExecutionAt, CompletedAt = @CompletedAt, ErrorMessage = @ErrorMessage, Payload = @Payload, RetryCount = @RetryCount, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE ySagaStep SET SagaId = @SagaId, StepKey = @StepKey, IndexOrder = @IndexOrder, CorrelationId = @CorrelationId, Status = @Status, ExecutionCount = @ExecutionCount, LastExecutionAt = @LastExecutionAt, CompletedAt = @CompletedAt, ErrorMessage = @ErrorMessage, Payload = @Payload, RetryCount = @RetryCount, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 SagaId = ySagaStep.SagaId,
-                Key = ySagaStep.Key,
-                Order = ySagaStep.Order,
+                StepKey = ySagaStep.StepKey,
+                IndexOrder = ySagaStep.IndexOrder,
                 CorrelationId = ySagaStep.CorrelationId,
                 Status = ySagaStep.Status,
                 ExecutionCount = ySagaStep.ExecutionCount,
@@ -73,22 +73,22 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateKey(IySagaStepEntity entity)
+        public QueryModel UpdateStepKey(IySagaStepEntity entity)
         {
-            this.Query = $@" UPDATE ySagaStep SET Key = @Key WHERE Id = @Id ";
+            this.Query = $@" UPDATE ySagaStep SET StepKey = @StepKey WHERE Id = @Id ";
             this.Parameters = new
             {
-                Key = entity.Key,
+                StepKey = entity.StepKey,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateOrder(IySagaStepEntity entity)
+        public QueryModel UpdateIndexOrder(IySagaStepEntity entity)
         {
-            this.Query = $@" UPDATE ySagaStep SET Order = @Order WHERE Id = @Id ";
+            this.Query = $@" UPDATE ySagaStep SET IndexOrder = @IndexOrder WHERE Id = @Id ";
             this.Parameters = new
             {
-                Order = entity.Order,
+                IndexOrder = entity.IndexOrder,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

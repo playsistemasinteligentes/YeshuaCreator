@@ -29,20 +29,24 @@ public abstract class SagaBase
     protected readonly List<SagaStepBase> _steps = new();
     public IReadOnlyCollection<SagaStepBase> Steps => _steps;
     // 🔥 NOVO: controle de persistência
-    public bool IsNew { get; private set; } = true;
     public bool IsDirty { get; private set; } = false;
 
+    public void SetSagaId(string guid)
+    {
+        this.SagaId = Guid.Parse(guid);
+    }
+    public void SetStatus(int status)
+    {
+        this.Status = (SagaStatus)(status);
+    }
     protected void MarkDirty()
     {
-        if (!IsNew)
-            IsDirty = true;
+        IsDirty = true;
     }
 
     public void MarkPersisted()
     {
-        IsNew = false;
         IsDirty = false;
-
         foreach (var s in _steps)
             s.MarkPersisted();
     }
@@ -64,6 +68,7 @@ public abstract class SagaBase
         _steps.FirstOrDefault()?.SetPending();
 
         MarkDirty();
+        UpdateCurrentStepKey();
     }
 
     // 🔥 RESTAURADO: NextStep explícito
@@ -83,6 +88,8 @@ public abstract class SagaBase
 
         if (_steps.All(s => s.Status == SagaStepStatus.Completed))
             Status = SagaStatus.Completed;
+
+        UpdateCurrentStepKey();
     }
 
     public SagaStepBase GetCurrent()
@@ -114,6 +121,7 @@ public abstract class SagaBase
     {
         Status = SagaStatus.Failed;
         MarkDirty();
+        UpdateCurrentStepKey();
     }
 
     public void Resume(string correlationId)
@@ -129,5 +137,10 @@ public abstract class SagaBase
         NextStep();
 
         MarkDirty();
+        UpdateCurrentStepKey();
+    }
+    private void UpdateCurrentStepKey()
+    {
+        KeyCurrentStep = GetCurrent()?.Key;
     }
 }

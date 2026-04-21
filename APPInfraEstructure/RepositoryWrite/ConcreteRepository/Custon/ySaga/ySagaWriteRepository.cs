@@ -36,18 +36,16 @@ namespace Input.Repository.ySaga
                 throw new ArgumentNullException(nameof(saga));
 
             var sagaEntity = MapSaga(saga);
-
-            
-
             // =========================================
             // SAGA
             // =========================================
 
-            if (saga.IsNew)
+            if (saga.Id == 0)
             {
                 if (!sagaEntity.isValidInsert())
                     throw new Exception(string.Join(", ", sagaEntity.getErroMensagens()));
                 Insert(sagaEntity);
+                saga.Id = (int) sagaEntity.Id;
             }
             else if (saga.IsDirty)
             {
@@ -62,10 +60,12 @@ namespace Input.Repository.ySaga
 
             foreach (var step in saga.Steps)
             {
-                var stepEntity = MapStep(step, step.Id);
+                step.SagaId = (int) sagaEntity.Id;
+                var stepEntity = MapStep(step, step.SagaId);
                 
                 if (step.IsNew)
                 {
+                    stepEntity.CorrelationId = Guid.NewGuid().ToString();
                     if (!stepEntity.isValidInsert())
                         throw new Exception(string.Join(", ", stepEntity.getErroMensagens()));
                     _stepWriteRepository.Insert(stepEntity);
@@ -99,29 +99,13 @@ namespace Input.Repository.ySaga
             return new ySagaFactory(_logger).Create(saga.Id, saga.SagaId.ToString(), saga.Type, (int)saga.Status, saga.KeyCurrentStep, saga.CreatedAt, saga.CompletedAt, saga.EntityType, saga.EntityId);
         }
 
-        private ySagaStepEntity MapStep(SagaStepBase step, int sagaId)
+        private IySagaStepEntity MapStep(SagaStepBase step , int sagaId)
         {
-            var entity = new ySagaStepFactory(_logger).Create(step.Id, sagaId, step.Key, step.Order, (int)step.Status, step.ExecutionCount, step.LastExecutionAt, step.CompletedAt, step.ErrorMessage, step.Payload, step.RetryCount); 
-
-            if (step.Status == SagaStepStatus.InProgress)
-            {
-                entity.ExecutionCount += 1;
-            }
-
-            if (step.Status == SagaStepStatus.Completed)
-            {
-                entity.CompletedAt = DateTime.UtcNow;
-            }
-
-            if (step.Status == SagaStepStatus.Failed)
-            {
-                entity.ErrorMessage = "Erro na execução do step";
-            }
-
-            return entity as ySagaStepEntity;
+            var entity = new ySagaStepFactory(_logger).Create(step.Id, sagaId, step.Key, step.Order, step.CorrelationId, (int)step.Status, step.ExecutionCount, step.LastExecutionAt, step.CompletedAt, step.ErrorMessage, step.Payload, step.RetryCount);
+            return entity;
         }
 
-        private void CreateOutbox(ySagaStepEntity step)
+        private void CreateOutbox(IySagaStepEntity step)
         {
             // placeholder
         }

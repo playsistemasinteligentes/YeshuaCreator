@@ -25,15 +25,15 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, SagaId, Key, Order, CorrelationId, Status, ExecutionCount, LastExecutionAt, CompletedAt, ErrorMessage, Payload, RetryCount, TenantID, Deleted, Changed, UserId from ySagaStep ";
+            this.Query = $@" select Id, SagaId, StepKey, IndexOrder, CorrelationId, Status, ExecutionCount, LastExecutionAt, CompletedAt, ErrorMessage, Payload, RetryCount, TenantID, Deleted, Changed, UserId from ySagaStep ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.SagaId.HasValue) dict["SagaId"] = Command.SagaId.Value;
 if (Command.SagaId.HasValue) whereClauses.Add($"SagaId = @SagaId");
-if (!string.IsNullOrEmpty(Command.Key)) dict["Key"] = $"%{Command.Key}%";
-if (!string.IsNullOrEmpty(Command.Key)) whereClauses.Add($"Key like @Key");
-if (Command.Order.HasValue) dict["Order"] = Command.Order.Value;
-if (Command.Order.HasValue) whereClauses.Add($"Order = @Order");
+if (!string.IsNullOrEmpty(Command.StepKey)) dict["StepKey"] = $"%{Command.StepKey}%";
+if (!string.IsNullOrEmpty(Command.StepKey)) whereClauses.Add($"StepKey like @StepKey");
+if (Command.IndexOrder.HasValue) dict["IndexOrder"] = Command.IndexOrder.Value;
+if (Command.IndexOrder.HasValue) whereClauses.Add($"IndexOrder = @IndexOrder");
 if (!string.IsNullOrEmpty(Command.CorrelationId)) dict["CorrelationId"] = $"%{Command.CorrelationId}%";
 if (!string.IsNullOrEmpty(Command.CorrelationId)) whereClauses.Add($"CorrelationId like @CorrelationId");
 if (Command.Status != null && Command.Status.Any())
@@ -199,7 +199,7 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByKeyQuery(string value , bool TakeOffTenantID = false)
+        public QueryModel ExistsByStepKeyQuery(string value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -210,14 +210,14 @@ if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
 if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Key"] = value; //04
-                      whereClauses.Add($" Key = @Key ");//04
+                      dict["StepKey"] = value; //04
+                      whereClauses.Add($" StepKey = @StepKey ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByOrderQuery(int value , bool TakeOffTenantID = false)
+        public QueryModel ExistsByIndexOrderQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -228,8 +228,8 @@ if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
 if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Order"] = value; //04
-                      whereClauses.Add($" Order = @Order ");//04
+                      dict["IndexOrder"] = value; //04
+                      whereClauses.Add($" IndexOrder = @IndexOrder ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -487,7 +487,7 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByKeyQuery(string value , bool TakeOffTenantID = false)
+        public QueryModel FirstByStepKeyQuery(string value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -498,14 +498,14 @@ if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
 if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Key"] = value; //06
-                      whereClauses.Add($" Key = @Key ");//06
+                      dict["StepKey"] = value; //06
+                      whereClauses.Add($" StepKey = @StepKey ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByOrderQuery(int value , bool TakeOffTenantID = false)
+        public QueryModel FirstByIndexOrderQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -516,8 +516,8 @@ if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
 if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Order"] = value; //06
-                      whereClauses.Add($" Order = @Order ");//06
+                      dict["IndexOrder"] = value; //06
+                      whereClauses.Add($" IndexOrder = @IndexOrder ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

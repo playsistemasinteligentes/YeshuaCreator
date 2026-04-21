@@ -10,8 +10,8 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int sagaid { get; set; }
-    public string key { get; set; }
-    public int order { get; set; }
+    public string stepkey { get; set; }
+    public int indexorder { get; set; }
     public string correlationid { get; set; }
     public int status { get; set; }
     public int executioncount { get; set; }

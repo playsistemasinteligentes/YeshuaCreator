@@ -265,8 +265,8 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int SagaId { get; set; }
         public ySaga ySaga { get; set; }
-        public string Key { get; set; }
-        public int Order { get; set; }
+        public string StepKey { get; set; }
+        public int IndexOrder { get; set; }
         public string CorrelationId { get; set; }
         public int Status { get; set; }
         public int ExecutionCount { get; set; }

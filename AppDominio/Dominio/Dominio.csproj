@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Enum\" />
+    <Folder Include="Interfaces\Saga\" />
     <Folder Include="Saga\Custom\" />
   </ItemGroup>
 

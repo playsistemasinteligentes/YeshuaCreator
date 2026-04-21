@@ -16,6 +16,8 @@ using Shered.Services;
 using System.Data;
 using System.Security.Claims;
 using Worker.Custon;
+using Command.Patterns.Saga;
+using Command.Patterns;
 
 namespace Migration
 {
@@ -52,7 +54,10 @@ namespace Migration
             //   pendencia mok sql lite       builder.Services.AddScoped<ISqlFactory>(_ =>new SqlFactoryMokSqlite("Data Source=app.db"));
             //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-             builder.Services.AddHostedService(sp =>
+
+            builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>,SagaWorkerCommandHandler>();
+            builder.Services.AddScoped<SagaWorkerCommandHandler>();
+            builder.Services.AddHostedService(sp =>
                  new PollingWorker<
                      SagaWorkerCommandHandler,
                      InputCommand,
@@ -62,6 +67,31 @@ namespace Migration
                          ILogger<PollingWorker<SagaWorkerCommandHandler, InputCommand, OutputCommand>>>(),
                      TimeSpan.FromSeconds(5)
                  ));
+
+
+
+            builder.Services.AddScoped<SagaResumeCommandHandler>();
+             // HostedService do Listener
+             builder.Services.AddHostedService(sp =>
+             {
+                 var listener = sp.GetRequiredService<IQueueListener>();
+                 var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
+                     SagaResumeCommandHandler,
+                     InputSagaResumeCommand,
+                     OutputCommand>>>();
+
+                 return new QueueListenerWorker<
+                     SagaResumeCommandHandler,
+                     InputSagaResumeCommand,
+                     OutputCommand>(
+                         sp,
+                         listener,
+                         logger,
+                         queueName: "audio.transcribed.inbox"
+                 );
+             });
+
+
 
 
 

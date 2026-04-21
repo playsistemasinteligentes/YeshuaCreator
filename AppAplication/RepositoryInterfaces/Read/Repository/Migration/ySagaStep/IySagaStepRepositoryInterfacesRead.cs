@@ -17,8 +17,8 @@ namespace IRepository.Read
         public IEnumerable<ySagaStepUserIdDTO> getySagaStepReadFKUserId(object command , bool TakeOffTenantID = false);
         public bool ExistsById(int value , bool TakeOffTenantID = false);
         public bool ExistsBySagaId(int value , bool TakeOffTenantID = false);
-        public bool ExistsByKey(string value , bool TakeOffTenantID = false);
-        public bool ExistsByOrder(int value , bool TakeOffTenantID = false);
+        public bool ExistsByStepKey(string value , bool TakeOffTenantID = false);
+        public bool ExistsByIndexOrder(int value , bool TakeOffTenantID = false);
         public bool ExistsByCorrelationId(string value , bool TakeOffTenantID = false);
         public bool ExistsByStatus(int value , bool TakeOffTenantID = false);
         public bool ExistsByExecutionCount(int value , bool TakeOffTenantID = false);
@@ -33,8 +33,8 @@ namespace IRepository.Read
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstById(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
-        public ySagaStepDTO FirstByKey(string value , bool TakeOffTenantID = false);
-        public ySagaStepDTO FirstByOrder(int value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByStepKey(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByIndexOrder(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByCorrelationId(string value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByStatus(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByExecutionCount(int value , bool TakeOffTenantID = false);
@@ -49,8 +49,8 @@ namespace IRepository.Read
         public ySagaStepDTO FirstByUserId(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllById(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);
-        public IEnumerable<ySagaStepDTO> GetAllByKey(string value , bool TakeOffTenantID = false);
-        public IEnumerable<ySagaStepDTO> GetAllByOrder(int value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByStepKey(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByIndexOrder(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByCorrelationId(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByStatus(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByExecutionCount(int value , bool TakeOffTenantID = false);

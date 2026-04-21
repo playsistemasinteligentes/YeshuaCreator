@@ -12,8 +12,8 @@
 {
     public int? Id { get; set; }
     public int SagaId { get; set; }
-    public string Key { get; set; }
-    public int Order { get; set; }
+    public string StepKey { get; set; }
+    public int IndexOrder { get; set; }
     public string CorrelationId { get; set; }
     public int Status { get; set; }
     public int ExecutionCount { get; set; }
@@ -27,11 +27,12 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal ySagaStepEntity(int? id, int sagaid, string key, int order, int status, int executioncount, DateTime? lastexecutionat, DateTime? completedat, string errormessage, string payload, int retrycount ){
+ internal ySagaStepEntity(int? id, int sagaid, string stepkey, int indexorder, string correlationid, int status, int executioncount, DateTime? lastexecutionat, DateTime? completedat, string errormessage, string payload, int retrycount ){
  Id = id; 
  SagaId = sagaid; 
- Key = key; 
- Order = order; 
+ StepKey = stepkey; 
+ IndexOrder = indexorder; 
+ CorrelationId = correlationid; 
  Status = status; 
  ExecutionCount = executioncount; 
  LastExecutionAt = (lastexecutionat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lastexecutionat; 
@@ -45,10 +46,10 @@ public bool isValidData()
 _erroMensagem = new List<string>();
    if (SagaId == null)
    this._erroMensagem.Add("Saga deve ser informado.");
-   if(string.IsNullOrEmpty(Key))
+   if(string.IsNullOrEmpty(StepKey))
    this._erroMensagem.Add("Step Key deve ser informado.");
-   if (Order == null)
-   this._erroMensagem.Add("Ordem deve ser informado.");
+   if (IndexOrder == null)
+   this._erroMensagem.Add("Index Order deve ser informado.");
    if(string.IsNullOrEmpty(CorrelationId))
    this._erroMensagem.Add("CorrelationId deve ser informado.");
    if (Status == null)

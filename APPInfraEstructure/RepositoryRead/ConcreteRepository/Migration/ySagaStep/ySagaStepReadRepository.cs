@@ -118,17 +118,17 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByKey(string value , bool TakeOffTenantID = false)
+        public bool ExistsByStepKey(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByKeyQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByStepKeyQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByOrder(int value , bool TakeOffTenantID = false)
+        public bool ExistsByIndexOrder(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsByOrderQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByIndexOrderQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -246,17 +246,17 @@ namespace Read.Repository
                 return result;
         }
 
-        public ySagaStepDTO FirstByKey(string value , bool TakeOffTenantID = false)
+        public ySagaStepDTO FirstByStepKey(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByKeyQuery(value , TakeOffTenantID);
+            var query = _query.FirstByStepKeyQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public ySagaStepDTO FirstByOrder(int value , bool TakeOffTenantID = false)
+        public ySagaStepDTO FirstByIndexOrder(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByOrderQuery(value , TakeOffTenantID);
+            var query = _query.FirstByIndexOrderQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
                 return result;
@@ -374,17 +374,17 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<ySagaStepDTO> GetAllByKey(string value , bool TakeOffTenantID = false)
+        public IEnumerable<ySagaStepDTO> GetAllByStepKey(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByKeyQuery(value , TakeOffTenantID);
+            var query = _query.FirstByStepKeyQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
                 return result;
         }
 
-        public IEnumerable<ySagaStepDTO> GetAllByOrder(int value , bool TakeOffTenantID = false)
+        public IEnumerable<ySagaStepDTO> GetAllByIndexOrder(int value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstByOrderQuery(value , TakeOffTenantID);
+            var query = _query.FirstByIndexOrderQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
                 return result;

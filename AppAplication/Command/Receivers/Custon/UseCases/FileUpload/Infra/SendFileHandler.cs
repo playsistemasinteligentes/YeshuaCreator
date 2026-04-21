@@ -147,13 +147,11 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
                 _psychologySessionInsightSaga.Start();
-                _sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
-                
-                _unitOfWork.BeginTran();
+                //_sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
 
+                _unitOfWork.BeginTran();
                 _repWriteyFileUpload.UpdateFilePath(upload);
                 _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
-
                 _unitOfWork.Commit();
 
                 state = Success("Upload finalizado com sucesso.",

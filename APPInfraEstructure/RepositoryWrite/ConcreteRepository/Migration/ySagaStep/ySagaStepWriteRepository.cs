@@ -46,14 +46,14 @@ namespace Input.Repository.ySagaStep
             var query = _query.UpdateSagaId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateKey(IySagaStepEntity entity)
+        public void UpdateStepKey(IySagaStepEntity entity)
         {
-            var query = _query.UpdateKey(entity);
+            var query = _query.UpdateStepKey(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOrder(IySagaStepEntity entity)
+        public void UpdateIndexOrder(IySagaStepEntity entity)
         {
-            var query = _query.UpdateOrder(entity);
+            var query = _query.UpdateIndexOrder(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateCorrelationId(IySagaStepEntity entity)

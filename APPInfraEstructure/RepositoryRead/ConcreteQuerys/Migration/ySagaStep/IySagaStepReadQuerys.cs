@@ -9,8 +9,8 @@ namespace IQuery.Read
         public QueryModel ySagaStepUserIdQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false);
         public QueryModel ExistsByIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsBySagaIdQuery(int value , bool TakeOffTenantID = false);
-        public QueryModel ExistsByKeyQuery(string value , bool TakeOffTenantID = false);
-        public QueryModel ExistsByOrderQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByStepKeyQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByIndexOrderQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByExecutionCountQuery(int value , bool TakeOffTenantID = false);
@@ -25,8 +25,8 @@ namespace IQuery.Read
         public QueryModel ExistsByUserIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstBySagaIdQuery(int value , bool TakeOffTenantID = false);
-        public QueryModel FirstByKeyQuery(string value , bool TakeOffTenantID = false);
-        public QueryModel FirstByOrderQuery(int value , bool TakeOffTenantID = false);
+        public QueryModel FirstByStepKeyQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByIndexOrderQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByExecutionCountQuery(int value , bool TakeOffTenantID = false);

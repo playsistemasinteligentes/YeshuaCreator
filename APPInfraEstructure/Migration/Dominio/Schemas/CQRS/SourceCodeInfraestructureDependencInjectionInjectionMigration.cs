@@ -52,6 +52,8 @@ namespace Dominio.Schemas.CQRS
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
+                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+
             ");
         
 

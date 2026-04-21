@@ -13,8 +13,8 @@ namespace IRepository.Write
         void Update(IySagaStepEntity ysagastep);
         void Delete(IySagaStepEntity ysagastep);
         public void UpdateSagaId(IySagaStepEntity entity);
-        public void UpdateKey(IySagaStepEntity entity);
-        public void UpdateOrder(IySagaStepEntity entity);
+        public void UpdateStepKey(IySagaStepEntity entity);
+        public void UpdateIndexOrder(IySagaStepEntity entity);
         public void UpdateCorrelationId(IySagaStepEntity entity);
         public void UpdateStatus(IySagaStepEntity entity);
         public void UpdateExecutionCount(IySagaStepEntity entity);

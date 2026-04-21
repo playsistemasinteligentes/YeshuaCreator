@@ -88,6 +88,18 @@ namespace Dominio.Patterns.Saga
         {
             RetryCount++;
         }
+        public void Hydrate(int id,int status,string correlationId,DateTime? completedAt,int retryCount)
+        {
+            Id = id;
+            Status = (SagaStepStatus)status;
+            CorrelationId = correlationId;
+            CompletedAt = completedAt;
+            RetryCount = retryCount;
+            //NextExecutionAt = nextExecutionAt;
+
+            IsNew = false;
+            IsDirty = false;
+        }
         public bool CanRetry() => RetryCount < MaxRetries;
     }
 }

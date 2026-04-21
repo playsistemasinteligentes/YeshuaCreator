@@ -37,7 +37,7 @@ namespace Command.Patterns
             if (handler.IsAsync && step.Status == SagaStepStatus.Pending && step.RetryCount == 0)
             {
                 // primeira execução → deixa para worker
-                return;
+                //return;
             }
 
             try

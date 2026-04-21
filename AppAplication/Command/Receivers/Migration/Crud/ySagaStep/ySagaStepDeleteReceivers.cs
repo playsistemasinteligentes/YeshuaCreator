@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ySagaStepCrudCommand c) 
              {    
-                 var ysagastep = new ySagaStepFactory(_logger).Create(c.Id, c.SagaId, c.Key, c.Order, c.Status, c.ExecutionCount, c.LastExecutionAt, c.CompletedAt, c.ErrorMessage, c.Payload, c.RetryCount);
+                 var ysagastep = new ySagaStepFactory(_logger).Create(c.Id, c.SagaId, c.StepKey, c.IndexOrder, c.CorrelationId, c.Status, c.ExecutionCount, c.LastExecutionAt, c.CompletedAt, c.ErrorMessage, c.Payload, c.RetryCount);
                  if (!ysagastep.isValidDelete())
                      return ValidationError(ysagastep.getErroMensagens(), null);
 

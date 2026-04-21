@@ -47,7 +47,7 @@ namespace Dominio.Schemas.CQRS
             switch (_commandType)
             {
                 case CommandType.Read:
-                    sb.AppendLine($"    public record {_entity.EntityName}{_column}DTO");
+                    sb.AppendLine($"    public partial record {_entity.EntityName}{_column}DTO");
                     sb.AppendLine("    {");
 
                     foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
@@ -55,7 +55,7 @@ namespace Dominio.Schemas.CQRS
 
                     break;
                 case CommandType.ReadQuery:
-                    sb.AppendLine($"    public record {_entity.EntityName}{_query.Meta.QueryName}DTO");
+                    sb.AppendLine($"    public partial record {_entity.EntityName}{_query.Meta.QueryName}DTO");
                     sb.AppendLine("    {");
 
                     foreach (var column in _query.Meta.SelectFields)
@@ -64,7 +64,7 @@ namespace Dominio.Schemas.CQRS
                     break;
                 case CommandType.ReadFK:
 
-                    sb.AppendLine($"    public record {_entity.EntityName}{_column}DTO");
+                    sb.AppendLine($"    public partial record {_entity.EntityName}{_column}DTO");
                     sb.AppendLine("    {");
 
                     Column columnFK = _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault();

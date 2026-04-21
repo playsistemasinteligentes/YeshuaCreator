@@ -8,8 +8,8 @@ namespace IQuery.Write
         public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep);
         public QueryModel UpdateySagaStepQuery(IySagaStepEntity ySagaStep);
         public QueryModel UpdateSagaId(IySagaStepEntity entity);
-        public QueryModel UpdateKey(IySagaStepEntity entity);
-        public QueryModel UpdateOrder(IySagaStepEntity entity);
+        public QueryModel UpdateStepKey(IySagaStepEntity entity);
+        public QueryModel UpdateIndexOrder(IySagaStepEntity entity);
         public QueryModel UpdateCorrelationId(IySagaStepEntity entity);
         public QueryModel UpdateStatus(IySagaStepEntity entity);
         public QueryModel UpdateExecutionCount(IySagaStepEntity entity);

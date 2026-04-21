@@ -8,20 +8,20 @@ namespace Dominio.Patterns.Saga
 {
     public enum SagaStatus
     {
-        NotStarted,
-        InProgress,
-        Completed,
-        Failed
+        NotStarted = 0,
+        InProgress = 1,
+        Completed = 2,
+        Failed = 3
     }
 
     public enum SagaStepStatus
     {
-        Created, // stap registrado mas ninguem nenhum worker pega ele apenas next step movimenta ele para inProgress 
-        Pending, // Worker pega pra executar 
-        InProgress, // Worker marca que vai executar  
-        WaitingResponse, // espera confirmação ao confirmar chama next step e move para completed 
-        Completed,// completo 
-        Failed // retry 
+        Created = 0, // stap registrado mas ninguem nenhum worker pega ele apenas next step movimenta ele para inProgress 
+        Pending = 1, // Worker pega pra executar 
+        InProgress = 2, // Worker marca que vai executar  
+        WaitingResponse = 3, // espera confirmação ao confirmar chama next step e move para completed 
+        Completed = 4,// completo 
+        Failed = 5 // retry 
 
         /*variação doc 
             
