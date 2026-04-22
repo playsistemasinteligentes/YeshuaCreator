@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record yPerfilGrantDTO
+    public partial record yPerfilGrantDTO
     {
     public int perfilid { get; set; }
     public string grantid { get; set; }

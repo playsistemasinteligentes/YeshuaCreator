@@ -14,133 +14,136 @@ Pending → InProgress → Completed → Failed
 👉 isso é o que está faltando no teu código hoje
  */
 
-public abstract class SagaBase
+namespace Dominio.Patterns.Saga
 {
-    public int Id { get; set; }
-    public Guid SagaId { get; protected set; } = Guid.NewGuid();
-    public string Type { get; set; }
-    public SagaStatus Status { get; protected set; } = SagaStatus.NotStarted;
-    public string KeyCurrentStep { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime CompletedAt { get; set; }
-    public string EntityType { get; set; }
-    public string EntityId { get; set; }
-
-    protected readonly List<SagaStepBase> _steps = new();
-    public IReadOnlyCollection<SagaStepBase> Steps => _steps;
-    // 🔥 NOVO: controle de persistência
-    public bool IsDirty { get; private set; } = false;
-
-    public void SetSagaId(string guid)
+    public abstract class SagaBase
     {
-        this.SagaId = Guid.Parse(guid);
-    }
-    public void SetStatus(int status)
-    {
-        this.Status = (SagaStatus)(status);
-    }
-    protected void MarkDirty()
-    {
-        IsDirty = true;
-    }
+        public int Id { get; set; }
+        public Guid SagaId { get; protected set; } = Guid.NewGuid();
+        public string Type { get; set; }
+        public SagaStatus Status { get; protected set; } = SagaStatus.NotStarted;
+        public string KeyCurrentStep { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime CompletedAt { get; set; }
+        public string EntityType { get; set; }
+        public string EntityId { get; set; }
 
-    public void MarkPersisted()
-    {
-        IsDirty = false;
-        foreach (var s in _steps)
-            s.MarkPersisted();
-    }
+        protected readonly List<SagaStepBase> _steps = new();
+        public IReadOnlyCollection<SagaStepBase> Steps => _steps;
+        // 🔥 NOVO: controle de persistência
+        public bool IsDirty { get; private set; } = false;
 
-    protected void AddStep(SagaStepBase step)
-    {
-        _steps.Add(step);
-        MarkDirty();
-    }
+        public void SetSagaId(string guid)
+        {
+            this.SagaId = Guid.Parse(guid);
+        }
+        public void SetStatus(int status)
+        {
+            this.Status = (SagaStatus)(status);
+        }
+        protected void MarkDirty()
+        {
+            IsDirty = true;
+        }
 
-    public void Start()
-    {
-        Type = this.GetType().Name;
+        public void MarkPersisted()
+        {
+            IsDirty = false;
+            foreach (var s in _steps)
+                s.MarkPersisted();
+        }
 
-        if (Status != SagaStatus.NotStarted)
-            throw new Exception("Saga já iniciada");
+        protected void AddStep(SagaStepBase step)
+        {
+            _steps.Add(step);
+            MarkDirty();
+        }
 
-        Status = SagaStatus.InProgress;
-        _steps.FirstOrDefault()?.SetPending();
+        public void Start()
+        {
+            Type = this.GetType().Name;
 
-        MarkDirty();
-        UpdateCurrentStepKey();
-    }
+            if (Status != SagaStatus.NotStarted)
+                throw new Exception("Saga já iniciada");
 
-    // 🔥 RESTAURADO: NextStep explícito
-    private void NextStep()
-    {
-        var current = GetCurrent();
-        if (current == null)
-            return;
+            Status = SagaStatus.InProgress;
+            _steps.FirstOrDefault()?.SetPending();
 
-        current.SetCompleted();
+            MarkDirty();
+            UpdateCurrentStepKey();
+        }
 
-        var next = _steps.FirstOrDefault(s => s.Status == SagaStepStatus.Created);
-        if (next != null)
-            next.SetPending();
+        // 🔥 RESTAURADO: NextStep explícito
+        private void NextStep()
+        {
+            var current = GetCurrent();
+            if (current == null)
+                return;
 
-        MarkDirty();
+            current.SetCompleted();
 
-        if (_steps.All(s => s.Status == SagaStepStatus.Completed))
-            Status = SagaStatus.Completed;
+            var next = _steps.FirstOrDefault(s => s.Status == SagaStepStatus.Created);
+            if (next != null)
+                next.SetPending();
 
-        UpdateCurrentStepKey();
-    }
+            MarkDirty();
 
-    public SagaStepBase GetCurrent()
-    {
-        return _steps.FirstOrDefault(s =>
-            s.Status == SagaStepStatus.Pending ||
-            s.Status == SagaStepStatus.InProgress ||
-            s.Status == SagaStepStatus.WaitingResponse);
-    }
+            if (_steps.All(s => s.Status == SagaStepStatus.Completed))
+                Status = SagaStatus.Completed;
 
-    public void MarkInProgress()
-    {
-        GetCurrent()?.SetInProgress();
-        MarkDirty();
-    }
+            UpdateCurrentStepKey();
+        }
 
-    public void MarkWaiting(string correlationId)
-    {
-        GetCurrent()?.SetWaiting(correlationId);
-        MarkDirty();
-    }
+        public SagaStepBase GetCurrent()
+        {
+            return _steps.FirstOrDefault(s =>
+                s.Status == SagaStepStatus.Pending ||
+                s.Status == SagaStepStatus.InProgress ||
+                s.Status == SagaStepStatus.WaitingResponse);
+        }
 
-    public void MarkCompleted()
-    {
-        NextStep();
-    }
+        public void MarkInProgress()
+        {
+            GetCurrent()?.SetInProgress();
+            MarkDirty();
+        }
 
-    public void MarkFailed()
-    {
-        Status = SagaStatus.Failed;
-        MarkDirty();
-        UpdateCurrentStepKey();
-    }
+        public void MarkWaiting(string correlationId)
+        {
+            GetCurrent()?.SetWaiting(correlationId);
+            MarkDirty();
+        }
 
-    public void Resume(string correlationId)
-    {
-        var step = _steps.FirstOrDefault(s =>
-            s.Status == SagaStepStatus.WaitingResponse &&
-            s.CorrelationId == correlationId);
+        public void MarkCompleted()
+        {
+            NextStep();
+        }
 
-        if (step == null)
-            throw new Exception("Step não encontrado para resume");
+        public void MarkFailed(string menssage) // pendencia propagar menssagem para banco e pra outros 
+        {
+            Status = SagaStatus.Failed;
+            MarkDirty();
+            UpdateCurrentStepKey();
+        }
 
-        step.SetCompleted();
-        NextStep();
+        public void Resume(string correlationId)
+        {
+            var step = _steps.FirstOrDefault(s =>
+                s.Status == SagaStepStatus.WaitingResponse &&
+                s.CorrelationId == correlationId);
 
-        MarkDirty();
-        UpdateCurrentStepKey();
-    }
-    private void UpdateCurrentStepKey()
-    {
-        KeyCurrentStep = GetCurrent()?.Key;
+            if (step == null)
+                throw new Exception("Step não encontrado para resume");
+
+            step.SetCompleted();
+            NextStep();
+
+            MarkDirty();
+            UpdateCurrentStepKey();
+        }
+        private void UpdateCurrentStepKey()
+        {
+            KeyCurrentStep = GetCurrent()?.Key;
+        }
     }
 }

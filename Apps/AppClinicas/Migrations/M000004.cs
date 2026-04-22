@@ -65,20 +65,20 @@ Consumes    fato sistema externo continuar fluxo
                 AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
                                 AddSaga("PsychologySessionInsight").
                                 AddStepGroup("audioTranscript").
-                                    AddStep("audio_transcript_requested"). // “faça isso”
+                                    AddStep("audioTranscriptRequested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.CeleryWorker", "audio.transcript.requested").
                                     //.LazyWorker vai ser executado apenas no loopingWorker 
                                     //.AsyncFirt   vai executar a primeira vez caso falhe sera executada pelo loopingWorker  
                                     //.StandardOutBox   um outbox por saga ou por sistema ou por step
 
-                                    AddStep("audio_transcript_generated"). //“isso aconteceu”
+                                    AddStep("audioTranscriptGenerated"). //“isso aconteceu”
                                         AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
                                         AddInBoxPollingWorker().
 
                                 AddStepGroup("prontuarySumary").
-                                    AddStep("prontuary_sumary_requested"). // “faça isso”
+                                    AddStep("prontuarySumaryRequested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "prontuary.sumary.CeleryWorker", "prontuary.sumary.requested").
-                                    AddStep("prontuary_sumary_generated"). //“isso aconteceu”
+                                    AddStep("prontuarySumaryGenerated"). //“isso aconteceu”
                                         AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "prontuary.sumary.ConsumerWorker", "prontuary.sumary.generated").
                                         AddInBoxPollingWorker();
 

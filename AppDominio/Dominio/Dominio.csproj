@@ -18,7 +18,7 @@
   <ItemGroup>
     <Folder Include="Enum\" />
     <Folder Include="Interfaces\Saga\" />
-    <Folder Include="Saga\Custom\" />
+    <Folder Include="Saga\Migration\PsychologySessionInsight\" />
   </ItemGroup>
 
 </Project>

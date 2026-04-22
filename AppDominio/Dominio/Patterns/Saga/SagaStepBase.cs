@@ -63,7 +63,7 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
 
-        public void SetFailed()
+        public void SetFailed(string menssage)
         {
             Status = SagaStepStatus.Failed;
             MarkDirty();

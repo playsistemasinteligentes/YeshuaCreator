@@ -9,4 +9,4 @@ public interface IMessage
     String Subject { get; set; }
     Byte[] Attachment { get; set; }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

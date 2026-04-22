@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record yOutboxSagaIdDTO
+    public partial record yOutboxSagaIdDTO
     {
     public int id { get; set; }
     }

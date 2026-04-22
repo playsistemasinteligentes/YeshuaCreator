@@ -21,6 +21,7 @@ namespace Dominio.Saga.Migration
             Description = description;
         }
 
+        public UseCaseCommand SagaResolverRegistry { get; set; }
         public UseCaseGroup UseCaseGroup { get; set; }
         public UseCaseSubGroup UseCaseSubGroup { get; set; }
         public string Description { get; set; }

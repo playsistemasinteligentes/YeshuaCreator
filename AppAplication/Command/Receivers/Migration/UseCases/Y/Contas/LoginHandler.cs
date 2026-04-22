@@ -38,4 +38,4 @@ namespace Command.Receivers.UseCase
 partial void CustomActionHook(ref State<LoginOutputCommand> state, LoginInputCommand comand);
 }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

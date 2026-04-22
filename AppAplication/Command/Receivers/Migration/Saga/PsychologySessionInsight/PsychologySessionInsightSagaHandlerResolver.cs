@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dominio.Saga;
+using Command.Saga;
 using RepositoryInterfaces.Patterns.Saga;
+using Dominio.Saga;
+using System;
+using System.Collections.Generic;
 
 namespace Command.Receivers
 {
@@ -13,13 +11,13 @@ namespace Command.Receivers
         public Dictionary<string, ISagaStepHandler> GetHandlers()
         {
             return new Dictionary<string, ISagaStepHandler>
-        {
-            { PsychologySessionInsightSaga.STEP_1, new Command.Receivers.Migration.Saga.PsychologySessionInsight.audioTranscript.audio_transcript_requested.AudioTranscriptRequestedHandler() },
-            { PsychologySessionInsightSaga.STEP_2, new Command.Receivers.Migration.Saga.PsychologySessionInsight.audioTranscript.audio_transcript_generated.AudioTranscriptGeneratedHandler() }
-            //{ PsychologySessionInsightSaga.STEP_3, new SummaryRequestedHandler() },
-            //{ PsychologySessionInsightSaga.STEP_4, new SummaryGeneratedHandler() }
-
-        };
+            {
+                { PsychologySessionInsightSaga.STEP_1, new audioTranscriptRequestedHandler() },
+                { PsychologySessionInsightSaga.STEP_2, new audioTranscriptGeneratedHandler() },
+                { PsychologySessionInsightSaga.STEP_3, new prontuarySumaryRequestedHandler() },
+                { PsychologySessionInsightSaga.STEP_4, new prontuarySumaryGeneratedHandler() },
+            };
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

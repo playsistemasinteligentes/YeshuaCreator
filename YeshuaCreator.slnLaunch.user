@@ -1,6 +1,6 @@
 [
   {
-    "Name": "New Profile",
+    "Name": "Full",
     "Projects": [
       {
         "Path": "APPInfraEstructure\\API\\API.csproj",

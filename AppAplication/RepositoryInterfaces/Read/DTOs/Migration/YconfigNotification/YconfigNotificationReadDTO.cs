@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record yConfigNotificationDTO
+    public partial record yConfigNotificationDTO
     {
     public int id { get; set; }
     public int tenantid { get; set; }

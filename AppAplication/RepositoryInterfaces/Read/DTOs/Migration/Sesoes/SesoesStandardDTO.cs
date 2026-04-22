@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record SesoesStandardDTO
+    public partial record SesoesStandardDTO
     {
     public Nullable<int> id { get; set; }//01
     public DateTime datainicio { get; set; }//01

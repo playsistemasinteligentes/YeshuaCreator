@@ -3,7 +3,6 @@ using Command.Interfaces;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Patterns.OutBox;
 using Command.Receivers.Custon.UseCases.FileUpload.Infra;
-using Command.Receivers.Migration.Saga.PsychologySessionInsight;
 using Command.UseCase;
 using Dominio.Entitys;
 using Dominio.Interfaces;
@@ -28,12 +27,12 @@ namespace Command.Receivers.UseCase
         private readonly IySagaWriteRepository _ySagaWriteRepository;
         private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
         private readonly ISagaExecutor _sagaExecutor;
-        private readonly PsychologySessionInsightSagaHandlerResolver _psychologySagaHandlerResolver;
+        //private readonly PsychologySessionInsightSagaHandlerResolver _psychologySagaHandlerResolver;
         
 
 
 
-        public SendFileHandler(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage, ICurrentUser currentUser, IyOutboxWriteRepository yOutboxWriteRepository, IySagaWriteRepository ySagaWriteRepository, PsychologySessionInsightSaga psychologySessionInsightSaga,ISagaExecutor sagaExecutor, PsychologySessionInsightSagaHandlerResolver psychologySagaHandlerResolver)
+        public SendFileHandler(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage, ICurrentUser currentUser, IyOutboxWriteRepository yOutboxWriteRepository, IySagaWriteRepository ySagaWriteRepository, PsychologySessionInsightSaga psychologySessionInsightSaga,ISagaExecutor sagaExecutor)//, PsychologySessionInsightSagaHandlerResolver psychologySagaHandlerResolver)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
@@ -45,7 +44,7 @@ namespace Command.Receivers.UseCase
             _ySagaWriteRepository = ySagaWriteRepository;
             _psychologySessionInsightSaga = psychologySessionInsightSaga;
             _sagaExecutor = sagaExecutor;
-            _psychologySagaHandlerResolver = psychologySagaHandlerResolver;
+            //_psychologySagaHandlerResolver = psychologySagaHandlerResolver;
         }
 
 

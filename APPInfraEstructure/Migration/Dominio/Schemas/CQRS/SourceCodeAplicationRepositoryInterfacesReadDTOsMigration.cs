@@ -41,7 +41,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
 
             // Adiciona o namespace e a struct
-            sb.AppendLine($"namespace Repositorio.Outputs");
+            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceRepositorioOutputs}");
             sb.AppendLine("{");
 
             switch (_commandType)

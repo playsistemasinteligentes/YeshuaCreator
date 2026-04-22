@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record yConfigArctetureDTO
+    public partial record yConfigArctetureDTO
     {
     public int id { get; set; }
     public int audittrackeractived { get; set; }

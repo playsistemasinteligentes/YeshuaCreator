@@ -6,7 +6,7 @@ using Migration.Dominio.Schemas.CQRS;
 using System.Net.Http;
 using System.Text;
 using static Dapper.SqlMapper;
-using static Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase;
+using static Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Dominio.Schemas.CQRS
@@ -35,8 +35,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using RepositoryInterfaces.Services;");
             sb.AppendLine("using Command.Patterns;");
             sb.AppendLine("using Command.Interfaces;");
-            
-            
+            sb.AppendLine("using RepositoryInterfaces.Patterns.Saga;");
+            sb.AppendLine("using Command.Receivers.Migration.Saga;");
+
+
 
 
             sb.AppendLine("namespace Migrations");
@@ -159,7 +161,7 @@ namespace Dominio.Schemas.CQRS
 
 
                             List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
-                            SourceCodeAplicationCommandReceiversUseCase strategys = new SourceCodeAplicationCommandReceiversUseCase(useCase, strategy, paths, ref CodigoGerado, CommandType.UseCaseCommandHandler);
+                            SourceCodeAplicationHandlesAndResolvers strategys = new SourceCodeAplicationHandlesAndResolvers(useCase, strategy, paths, ref CodigoGerado, CommandType.UseCaseCommandHandler);
                             bool contexto = false;
                             if (strategy.Type.Name == "INotification")
                                 contexto = true;

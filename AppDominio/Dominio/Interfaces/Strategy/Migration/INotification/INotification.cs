@@ -7,4 +7,4 @@ public interface INotification
     TypeNotification Type { get; }
     void SendNotification(IMessage menssege);
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

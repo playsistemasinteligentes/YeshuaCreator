@@ -1,10 +1,12 @@
 ﻿using Dominio.Migration;
+using Dominio.Saga.Migration;
 using Dominio.Schemas.CQRS.Abstraction;
 using Dominio.TiposPrimitivos;
 using Interfaces.Schemas;
 using Interfaces.Schemas.CQRS;
 using Microsoft.VisualBasic.FileIO;
 using Migration.Dominio.Schemas.CQRS;
+using MyApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
-using static Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase;
+using static Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers;
 using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
 
 namespace Dominio.Schemas.CQRS
@@ -263,39 +265,93 @@ namespace Dominio.Schemas.CQRS
                 }
             }
 
+
+
+            var sagas = migration.UseCaseGroup
+                .SelectMany(g => g.UseCaseSubGroup)
+                .SelectMany(sg => sg.Saga)
+                .ToList();
+
+            if (sagas.Count() > 0)
+            {
+                var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"SagaResolverRegistry.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"SagaResolverRegistry.cs");
+                var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(sagas);
+                sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, null);
+            }
+
+
+
             foreach (var group in migration.UseCaseGroup)
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
+
                     foreach (var saga in subGroup.Saga)
                     {
+                        var steps = saga.SagaStepGroup
+                                    .SelectMany(g => g.Steps)
+                                    .ToList();
+
+                        if (steps != null)
+                        {
+                            var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{saga.Name}SagaHandlerResolver.cs");
+                            var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{saga.Name}SagaHandlerResolver.cs");
+                            var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(saga, steps);
+                            sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
+
+                            filePath = Path.Combine(GetPathAppDominioSaga("Migration"), $"{saga.Name}\\{saga.Name}Saga.cs");
+                            filePathCuston = Path.Combine(GetPathAppDominioSaga("Custon"), $"{saga.Name}\\{saga.Name}Saga.cs");
+                            sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(saga, CommandType.SagaBase);
+                            sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
+
+                            filePath = Path.Combine(GetPathAppDominioSaga("Migration"), $"{saga.Name}\\{saga.Name}SagaStep.cs");
+                            filePathCuston = Path.Combine(GetPathAppDominioSaga("Custon"), $"{saga.Name}\\{saga.Name}SagaStep.cs");
+                            sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(saga, CommandType.SagaStepBase);
+                            sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
+
+
+
+                        }
+
+
+
+
                         foreach (var stepGroup in saga.SagaStepGroup)
                         {
                             foreach (var step in stepGroup.Steps)
                             {
-                                if (step.OutBoxPollingWorker != null)
+                                if (step != null)
                                 {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(step.OutBoxPollingWorker,CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.OutBoxPollingWorker);
+                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.SagaStepUseCaseCommand.Name.SourceType()}Handler.cs");
+                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.SagaStepUseCaseCommand.Name.SourceType()}Handler.cs");
+                                    var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(saga, step);
+                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
                                 }
 
-                                if (step.QueueListenerWorker != null)
-                                {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(step.QueueListenerWorker, CommandType.WorkerListenerHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.QueueListenerWorker);
-                                }
-
-                                if (step.InBoxPollingWorker != null)
-                                {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Handler.cs");
-                                    var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(step.InBoxPollingWorker, CommandType.WorkerPollingHandler);
-                                    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.InBoxPollingWorker);
-                                }
+                                //if (step.OutBoxPollingWorker != null)
+                                //{
+                                //    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                //    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.OutBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                //    var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(step.OutBoxPollingWorker,CommandType.WorkerPollingHandler);
+                                //    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.OutBoxPollingWorker);
+                                //}
+                                //
+                                //if (step.QueueListenerWorker != null)
+                                //{
+                                //    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Handler.cs");
+                                //    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.QueueListenerWorker.Name.SourceType()}Handler.cs");
+                                //    var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(step.QueueListenerWorker, CommandType.WorkerListenerHandler);
+                                //    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.QueueListenerWorker);
+                                //}
+                                //
+                                //if (step.InBoxPollingWorker != null)
+                                //{
+                                //    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                //    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.InBoxPollingWorker.Name.SourceType()}Handler.cs");
+                                //    var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(step.InBoxPollingWorker, CommandType.WorkerPollingHandler);
+                                //    sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, step.InBoxPollingWorker);
+                                //}
                             }
                         }
                     }
@@ -305,7 +361,7 @@ namespace Dominio.Schemas.CQRS
                         // use cases 
                         var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Migration"), $"{group.Name}\\{subGroup.Name}\\{useCase.Name.SourceType()}Handler.cs");
                         var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCases("Custon"), $"{group.Name}\\{subGroup.Name}\\{useCase.Name.SourceType()}Handler.cs");
-                        var sourceCodeMigrationAgent = new SourceCodeAplicationCommandReceiversUseCase(useCase, CommandType.UseCaseCommandHandler);
+                        var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(useCase, CommandType.UseCaseCommandHandler);
                         sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, useCase);
 
                         //strategy 
@@ -322,7 +378,7 @@ namespace Dominio.Schemas.CQRS
                                 DependencyInjectionPath = GetPathAppInfraestructureSheredStrategy($"Migration\\{strategy.Type.Name}"),
                             };
                             List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
-                            SourceCodeAplicationCommandReceiversUseCase strategys = new SourceCodeAplicationCommandReceiversUseCase(useCase, strategy, paths, ref CodigoGerado, CommandType.UseCaseCommandHandler);
+                            SourceCodeAplicationHandlesAndResolvers strategys = new SourceCodeAplicationHandlesAndResolvers(useCase, strategy, paths, ref CodigoGerado, CommandType.UseCaseCommandHandler);
                             bool contexto = false;
                             if (strategy.Type.Name == "INotification")
                                 contexto = true;
@@ -485,6 +541,11 @@ namespace Dominio.Schemas.CQRS
         {
             return Path.Combine(GetPathAppDominio(), "Entitys");
         }
+        private string GetPathAppDominioSaga(string diretorioPosterior)
+        {
+            return Path.Combine(Path.Combine(GetPathAppDominio(), "Saga"), diretorioPosterior);
+        }
+
         private string GetPathAppDominioStrategyEnum(string diretorio)
         {
             return Path.Combine(Path.Combine(GetPathAppDominio(), "Enum\\Strategy"), diretorio);

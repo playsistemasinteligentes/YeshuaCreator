@@ -9,4 +9,4 @@ public partial class SMSNotification : INotification
 
     public partial void SendNotification(IMessage menssege);
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

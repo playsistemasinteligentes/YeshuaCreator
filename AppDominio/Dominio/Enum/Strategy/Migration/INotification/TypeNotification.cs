@@ -7,4 +7,4 @@ public enum TypeNotification
     SMS = 2,
     Whatsapp = 3,
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

@@ -6,7 +6,7 @@ using Migration.Dominio.Schemas.CQRS;
 using System.Net.Http;
 using System.Text;
 using static Dapper.SqlMapper;
-using static Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase;
+using static Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Dominio.Schemas.CQRS
@@ -56,26 +56,26 @@ namespace Dominio.Schemas.CQRS
                                 //avaliar pois o outbox pode ser mais padronizado sem necessidade de um por step ou por saga podendo eventualmente ser um apenas 
                                 //padronizar o outbox ou seja um outbox por sistema  eventualmente por saga mas tem que ter codigo padrao  
 
-                                if (step.SagaStepUseCaseCommand != null)
-                                    AppendPollingWorker(sb, step.SagaStepUseCaseCommand);
-                                
-                                if (step.OutBoxPollingWorker != null)
-                                    AppendPollingWorker(sb, step.OutBoxPollingWorker);
-
-                                if (step.InBoxPollingWorker != null)
-                                    AppendPollingWorker(sb, step.InBoxPollingWorker);
-
-                                if (step.QueueListenerWorker != null)
-                                {
-                                    foreach (var exchange in step.queueTopology.Exchanges)
-                                    {
-                                        foreach (var binding in exchange.Bindings)
-                                        {
-                                            var queueName = binding.QueueName;
-                                            AppendQueueListenerWorker(sb, queueName, step.QueueListenerWorker);
-                                        }
-                                    }
-                                }
+                                //if (step.SagaStepUseCaseCommand != null)
+                                //    AppendPollingWorker(sb, step.SagaStepUseCaseCommand);
+                                //
+                                //if (step.OutBoxPollingWorker != null)
+                                //    AppendPollingWorker(sb, step.OutBoxPollingWorker);
+                                //
+                                //if (step.InBoxPollingWorker != null)
+                                //    AppendPollingWorker(sb, step.InBoxPollingWorker);
+                                //
+                                //if (step.QueueListenerWorker != null)
+                                //{
+                                //    foreach (var exchange in step.queueTopology.Exchanges)
+                                //    {
+                                //        foreach (var binding in exchange.Bindings)
+                                //        {
+                                //            var queueName = binding.QueueName;
+                                //            AppendQueueListenerWorker(sb, queueName, step.QueueListenerWorker);
+                                //        }
+                                //    }
+                                //}
                             }
                         }
                     }

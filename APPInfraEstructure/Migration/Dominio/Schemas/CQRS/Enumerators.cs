@@ -21,6 +21,13 @@ namespace Migration.Dominio.Schemas.CQRS
         WorkerPollingHandler = 15,
         WorkerListenerHandler = 16,
         UseCaseCommandHandler = 17,
+        SagaResolverRegistry=18,
+        SagaHandlerResolver = 19,
+        SagaStepHandler = 20,
+        SagaBase = 21,
+        SagaStepBase = 22,
+
+
     }
 
 

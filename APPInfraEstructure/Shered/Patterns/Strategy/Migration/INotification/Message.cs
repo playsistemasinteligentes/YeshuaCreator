@@ -9,4 +9,4 @@ public partial class Message : IMessage
     public string Subject { get; set; }
     public byte[] Attachment { get; set; }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

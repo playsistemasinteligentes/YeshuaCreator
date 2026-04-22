@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record yFileUploadDTO
+    public partial record yFileUploadDTO
     {
     public int id { get; set; }
     public string type { get; set; }

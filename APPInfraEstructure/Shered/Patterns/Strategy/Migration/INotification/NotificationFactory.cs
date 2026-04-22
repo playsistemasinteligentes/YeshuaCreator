@@ -32,4 +32,4 @@ public class NotificationFactory : IINotificationFactory
         };
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

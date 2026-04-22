@@ -44,7 +44,7 @@ namespace Command.Patterns
             {
                 handler.Execute(saga, step);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 step.IncrementRetry();
 
@@ -57,8 +57,8 @@ namespace Command.Patterns
                 }
                 else
                 {
-                    step.SetFailed();
-                    saga.MarkFailed();
+                    step.SetFailed(e.Message);
+                    saga.MarkFailed(e.Message);
                 }
             }
         }

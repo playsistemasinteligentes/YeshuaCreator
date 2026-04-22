@@ -1,14 +1,16 @@
-﻿using Command.Receivers.Migration.Saga.PsychologySessionInsight;
-using Dominio.Patterns.Saga;
+using Command.Saga;
 using Dominio.Saga;
-using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Saga;
+using Dominio.Patterns.Saga;
+using Repositorio.Outputs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Command.Receivers.Migration.Saga
 {
     public class SagaResolverRegistry : ISagaResolverRegistry
     {
-        // 🔥 agora tudo por string
         private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;
         private readonly Dictionary<string, Func<SagaBase>> _factoryMap;
 
@@ -16,26 +18,25 @@ namespace Command.Receivers.Migration.Saga
         {
             _resolverMap = new Dictionary<string, ISagaHandlerResolver>
             {
-                { nameof(PsychologySessionInsightSaga), new PsychologySessionInsightSagaHandlerResolver() }
+                { nameof(PsychologySessionInsightSaga), new PsychologySessionInsightSagaHandlerResolver() },
             };
 
             _factoryMap = new Dictionary<string, Func<SagaBase>>
             {
-                { nameof(PsychologySessionInsightSaga), () => new PsychologySessionInsightSaga() }
+                { nameof(PsychologySessionInsightSaga), () => new PsychologySessionInsightSaga() },
             };
         }
 
-        // 🔥 resolve handler
         public ISagaHandlerResolver Resolve(SagaBase saga)
         {
-            var key = saga.Type; // 👈 usa o Type salvo
+            var key = saga.Type;
 
             if (!_resolverMap.TryGetValue(key, out var resolver))
                 throw new Exception($"Resolver não encontrado para {key}");
 
             return resolver;
         }
-        // 🔥 cria saga
+
         public SagaBase Create(string type)
         {
             if (!_factoryMap.TryGetValue(type, out var factory))
@@ -58,7 +59,6 @@ namespace Command.Receivers.Migration.Saga
             saga.EntityType = dto.entitytype;
             saga.EntityId = dto.entityid;
 
-            // 🔥 hidrata steps
             if (dto.Steps != null && dto.Steps.Any())
             {
                 foreach (var step in saga.Steps)
@@ -68,7 +68,7 @@ namespace Command.Receivers.Migration.Saga
                     if (dtoStep == null)
                         continue;
 
-                    step.Hydrate(dtoStep.id,dtoStep.status,dtoStep.correlationid,dtoStep.completedat,dtoStep.retrycount);
+                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount);
                 }
             }
 
@@ -76,3 +76,4 @@ namespace Command.Receivers.Migration.Saga
         }
     }
 }
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

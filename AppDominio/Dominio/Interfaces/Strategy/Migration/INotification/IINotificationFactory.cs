@@ -7,4 +7,4 @@ public interface IINotificationFactory
 {
     INotification GetType(TypeNotification type);
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

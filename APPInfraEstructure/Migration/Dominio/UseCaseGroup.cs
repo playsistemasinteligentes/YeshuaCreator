@@ -177,7 +177,9 @@ Command
         }
         public UseCaseGroup AddStep(string EventName)
         {
-            SagaStep _Event = new SagaStep(EventName);
+            int ordem = this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.SelectMany(g => g.Steps).Count() + 1; 
+            SagaStep _Event = new SagaStep(EventName, ordem);
+            _Event.SagaStepUseCaseCommand = new UseCaseCommand(EventName);
             this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().Steps.Add(_Event);
             this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep = _Event;
             return this;

@@ -9,21 +9,24 @@ namespace Dominio
 {
     public class SagaStep
     {
-        public SagaStep(string name)
+        public SagaStep(string name, int orden)
         {
             Name = name;
             NameInBoxPollingWorker = $"{name}InboxHandler"; 
             NameOutBoxPollingWorker = $"{name}InboxHandler";
             NameQueueListenerWorker = $"{name}QueueListenerHandler";
+            Orden = orden;
         }
 
-        public SagaStep(SagaStepGroup sagaStep, string name, string description)
+        public SagaStep(SagaStepGroup sagaStep, string name, string description, int orden)
         {
             SagaStepGroup = sagaStep;
             Name = name;
             Description = description;
+            Orden = orden;
         }
 
+        public int Orden { get; set; }
         public SagaStepGroup SagaStepGroup { get; set; }
         public string Description { get; set; }
         public Descricao Name { get; set; }

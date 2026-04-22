@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Outputs
 {
-    public record yUserGrantGrantIdDTO
+    public partial record yUserGrantGrantIdDTO
     {
     public string id { get; set; }
     }
