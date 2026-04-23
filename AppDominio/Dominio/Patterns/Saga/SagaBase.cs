@@ -27,6 +27,9 @@ namespace Dominio.Patterns.Saga
         public DateTime CompletedAt { get; set; }
         public string EntityType { get; set; }
         public string EntityId { get; set; }
+        public DateTime NextExecutionAt { get; set; }
+        public DateTime LockedAt { get; set; }
+        public string LockedBy { get; set; }
 
         protected readonly List<SagaStepBase> _steps = new();
         public IReadOnlyCollection<SagaStepBase> Steps => _steps;

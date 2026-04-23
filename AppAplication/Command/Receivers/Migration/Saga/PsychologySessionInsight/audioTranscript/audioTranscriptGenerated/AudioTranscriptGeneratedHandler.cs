@@ -7,7 +7,7 @@ using System;
 
 namespace Command.Receivers
 {
-    public partial class audioTranscriptGeneratedHandler : ISagaStepHandler
+    public partial class audioTranscriptGeneratedHandler : ISagaStepHandler 
     {
         public string Key => PsychologySessionInsightSaga.STEP_2;
 
@@ -33,4 +33,4 @@ namespace Command.Receivers
         partial void CustomExecute(SagaBase saga, SagaStepBase step);
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers          

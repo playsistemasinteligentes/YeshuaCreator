@@ -20,6 +20,9 @@ namespace IRepository.Write
         public void UpdateCompletedAt(IySagaEntity entity);
         public void UpdateEntityType(IySagaEntity entity);
         public void UpdateEntityId(IySagaEntity entity);
+        public void UpdateNextExecutionAt(IySagaEntity entity);
+        public void UpdateLockedAt(IySagaEntity entity);
+        public void UpdateLockedBy(IySagaEntity entity);
         public void UpdateTenantID(IySagaEntity entity);
         public void UpdateDeleted(IySagaEntity entity);
         public void UpdateChanged(IySagaEntity entity);

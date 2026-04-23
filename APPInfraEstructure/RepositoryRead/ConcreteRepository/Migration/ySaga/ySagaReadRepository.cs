@@ -156,6 +156,30 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByNextExecutionAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByNextExecutionAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByLockedAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByLockedAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByLockedBy(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByLockedByQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByTenantIDQuery(value , TakeOffTenantID);
@@ -260,6 +284,30 @@ namespace Read.Repository
                 return result;
         }
 
+        public ySagaDTO FirstByNextExecutionAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByNextExecutionAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaDTO FirstByLockedAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByLockedAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaDTO FirstByLockedBy(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByLockedByQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public ySagaDTO FirstByTenantID(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
@@ -359,6 +407,30 @@ namespace Read.Repository
         public IEnumerable<ySagaDTO> GetAllByEntityId(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                return result;
+        }
+
+        public IEnumerable<ySagaDTO> GetAllByNextExecutionAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByNextExecutionAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                return result;
+        }
+
+        public IEnumerable<ySagaDTO> GetAllByLockedAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByLockedAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                return result;
+        }
+
+        public IEnumerable<ySagaDTO> GetAllByLockedBy(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByLockedByQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
                 return result;

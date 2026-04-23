@@ -23,6 +23,9 @@ namespace IRepository.Read
         public bool ExistsByCompletedAt(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByEntityType(string value , bool TakeOffTenantID = false);
         public bool ExistsByEntityId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByNextExecutionAt(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByLockedAt(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByLockedBy(string value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
         public bool ExistsByDeleted(bool value , bool TakeOffTenantID = false);
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
@@ -36,6 +39,9 @@ namespace IRepository.Read
         public ySagaDTO FirstByCompletedAt(DateTime value , bool TakeOffTenantID = false);
         public ySagaDTO FirstByEntityType(string value , bool TakeOffTenantID = false);
         public ySagaDTO FirstByEntityId(string value , bool TakeOffTenantID = false);
+        public ySagaDTO FirstByNextExecutionAt(DateTime value , bool TakeOffTenantID = false);
+        public ySagaDTO FirstByLockedAt(DateTime value , bool TakeOffTenantID = false);
+        public ySagaDTO FirstByLockedBy(string value , bool TakeOffTenantID = false);
         public ySagaDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
         public ySagaDTO FirstByDeleted(bool value , bool TakeOffTenantID = false);
         public ySagaDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
@@ -49,6 +55,9 @@ namespace IRepository.Read
         public IEnumerable<ySagaDTO> GetAllByCompletedAt(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByEntityType(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByEntityId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaDTO> GetAllByNextExecutionAt(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaDTO> GetAllByLockedAt(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaDTO> GetAllByLockedBy(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByDeleted(bool value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);

@@ -15,6 +15,9 @@ namespace IQuery.Write
         public QueryModel UpdateCompletedAt(IySagaEntity entity);
         public QueryModel UpdateEntityType(IySagaEntity entity);
         public QueryModel UpdateEntityId(IySagaEntity entity);
+        public QueryModel UpdateNextExecutionAt(IySagaEntity entity);
+        public QueryModel UpdateLockedAt(IySagaEntity entity);
+        public QueryModel UpdateLockedBy(IySagaEntity entity);
         public QueryModel UpdateTenantID(IySagaEntity entity);
         public QueryModel UpdateDeleted(IySagaEntity entity);
         public QueryModel UpdateChanged(IySagaEntity entity);

@@ -2,10 +2,7 @@
 using Dominio.Patterns.Saga;
 using RepositoryInterfaces.Patterns.Saga;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Command.Patterns
 {
@@ -13,18 +10,49 @@ namespace Command.Patterns
     {
         public void Execute(SagaBase saga, ISagaHandlerResolver resolver)
         {
-            var step = saga.GetCurrent();
-            if (step == null) return;
+            Process(saga, resolver, payload: null, isResponse: false);
+        }
 
-            // 1. Se está esperando resposta externa → não faz nada
-            if (step.Status == SagaStepStatus.WaitingResponse)
+        public void ApplyResponse(SagaBase saga, ISagaHandlerResolver resolver, string payload)
+        {
+            Process(saga, resolver, payload, isResponse: true);
+        }
+
+        private void Process(
+            SagaBase saga,
+            ISagaHandlerResolver resolver,
+            string payload,
+            bool isResponse)
+        {
+            var step = isResponse
+                ? saga.GetWaitingResponseStep() // 🔥 importante
+                : saga.GetCurrent();
+
+            if (step == null)
                 return;
 
-            // 2. Se tem agendamento futuro → respeita
-            if (step.Status == SagaStepStatus.Pending &&
-                step.NextExecutionAt.HasValue &&
-                step.NextExecutionAt.Value > DateTime.UtcNow)
-                return;
+            // =============================
+            // 🔒 VALIDAÇÕES DE ESTADO
+            // =============================
+
+            if (isResponse)
+            {
+                // só processa se estiver esperando resposta
+                if (step.Status != SagaStepStatus.WaitingResponse)
+                    return;
+            }
+            else
+            {
+                // não executa se está aguardando resposta
+                if (step.Status == SagaStepStatus.WaitingResponse)
+                    return;
+
+                // respeita agendamento
+                if (step.Status == SagaStepStatus.Pending &&
+                    step.NextExecutionAt.HasValue &&
+                    step.NextExecutionAt.Value > DateTime.UtcNow)
+                    return;
+            }
 
             var handlers = resolver.GetHandlers();
 
@@ -33,33 +61,59 @@ namespace Command.Patterns
 
             var handler = handlers[step.Key];
 
-            // 3. Decide se vai para worker (defer)
-            if (handler.IsAsync && step.Status == SagaStepStatus.Pending && step.RetryCount == 0)
-            {
-                // primeira execução → deixa para worker
-                //return;
-            }
-
             try
             {
-                handler.Execute(saga, step);
-            }
-            catch (Exception e)
-            {
-                step.IncrementRetry();
-
-                if (step.CanRetry())
+                if (isResponse)
                 {
-                    // backoff simples (pode evoluir)
-                    var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
+                    // =============================
+                    // 📥 PROCESSA RESPOSTA (INBOX)
+                    // =============================
 
-                    step.SetPending(DateTime.UtcNow.Add(delay));
+                    handler.ApplyResponse(saga, step, payload);
+
+                    step.MarkAsCompleted();
+
+                    var next = saga.GetNext();
+                    next?.SetPending();
                 }
                 else
                 {
-                    step.SetFailed(e.Message);
-                    saga.MarkFailed(e.Message);
+                    // =============================
+                    // 📤 EXECUTA STEP (OUTGOING)
+                    // =============================
+
+                    // defer opcional
+                    if (handler.IsAsync &&
+                        step.Status == SagaStepStatus.Pending &&
+                        step.RetryCount == 0)
+                    {
+                        // se quiser reativar:
+                        // return;
+                    }
+
+                    handler.Execute(saga, step);
                 }
+            }
+            catch (Exception e)
+            {
+                HandleFailure(saga, step, e);
+            }
+        }
+
+        private void HandleFailure(SagaBase saga, SagaStep step, Exception e)
+        {
+            step.IncrementRetry();
+
+            if (step.CanRetry())
+            {
+                var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
+
+                step.SetPending(DateTime.UtcNow.Add(delay));
+            }
+            else
+            {
+                step.SetFailed(e.Message);
+                saga.MarkFailed(e.Message);
             }
         }
     }

@@ -96,7 +96,7 @@ namespace Input.Repository.ySaga
 
         private IySagaEntity MapSaga(SagaBase saga)
         {
-            return new ySagaFactory(_logger).Create(saga.Id, saga.SagaId.ToString(), saga.Type, (int)saga.Status, saga.KeyCurrentStep, saga.CreatedAt, saga.CompletedAt, saga.EntityType, saga.EntityId);
+            return new ySagaFactory(_logger).Create(saga.Id, saga.SagaId.ToString(), saga.Type, (int)saga.Status, saga.KeyCurrentStep, saga.CreatedAt, saga.CompletedAt, saga.EntityType, saga.EntityId,saga.NextExecutionAt,saga.LockedAt,saga.LockedBy);
         }
 
         private IySagaStepEntity MapStep(SagaStepBase step , int sagaId)

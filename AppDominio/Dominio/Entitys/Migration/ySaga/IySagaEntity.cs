@@ -19,6 +19,9 @@
     DateTime? CompletedAt { get; set; }
     string EntityType { get; set; }
     string EntityId { get; set; }
+    DateTime? NextExecutionAt { get; set; }
+    DateTime? LockedAt { get; set; }
+    string LockedBy { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

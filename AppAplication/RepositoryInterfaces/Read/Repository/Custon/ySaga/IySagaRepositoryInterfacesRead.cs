@@ -8,7 +8,7 @@ namespace IRepository.Read
         /// <summary>
         /// Busca e trava (claim) sagas prontas para execução
         /// </summary>
-        IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string workerId);
+        IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
 
         /// <summary>
         /// Libera o lock de uma saga

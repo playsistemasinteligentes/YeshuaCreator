@@ -1,6 +1,9 @@
-﻿using Dominio;
+﻿using Azure.Core;
+using Dominio;
 using Dominio.Migration;
+using Dominio.Saga.Migration;
 using Dominio.Schemas.CQRS.Abstraction;
+using Microsoft.Win32;
 using Migration.Dominio;
 using MyApp.Domain.Entities;
 using MyApp.QueryBuilder;
@@ -9,10 +12,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Templates;
 using static Migration.Dominio.Migration.S000002;
 
 namespace AppClinicas
@@ -62,15 +68,49 @@ Consumes    fato sistema externo continuar fluxo
 
             */
 
-                AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
+
+            /*
+
+
+
+
+             1. Saga.Start
+
+             2. SagaWorker
+               → executa step
+               → se externo → Outbox
+               → se interno → Resume direto
+
+            3. OutboxWorker
+               → envia mensagem
+
+            4. QueueListener
+               → grava Inbox
+
+            5. InboxWorker 
+               → despacha saga correto
+               → saga.Resume(event)
+
+            6. SagaWorker continua
+
+
+
+
+
+
+             */
+
+
+
+
+
+
+            AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
                                 AddSaga("PsychologySessionInsight").
                                 AddStepGroup("audioTranscript").
                                     AddStep("audioTranscriptRequested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.CeleryWorker", "audio.transcript.requested").
-                                    //.LazyWorker vai ser executado apenas no loopingWorker 
-                                    //.AsyncFirt   vai executar a primeira vez caso falhe sera executada pelo loopingWorker  
-                                    //.StandardOutBox   um outbox por saga ou por sistema ou por step
-
+           
                                     AddStep("audioTranscriptGenerated"). //“isso aconteceu”
                                         AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
                                         AddInBoxPollingWorker().

@@ -19,12 +19,15 @@
     public DateTime? CompletedAt { get; set; }
     public string EntityType { get; set; }
     public string EntityId { get; set; }
+    public DateTime? NextExecutionAt { get; set; }
+    public DateTime? LockedAt { get; set; }
+    public string LockedBy { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal ySagaEntity(int? id, string sagaid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid ){
+ internal ySagaEntity(int? id, string sagaid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid, DateTime? nextexecutionat, DateTime? lockedat, string lockedby ){
  Id = id; 
  SagaId = sagaid; 
  Type = type; 
@@ -34,6 +37,9 @@
  CompletedAt = (completedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : completedat; 
  EntityType = entitytype; 
  EntityId = entityid; 
+ NextExecutionAt = (nextexecutionat < (new DateTime(1800, 1, 1))) ? DateTime.Now : nextexecutionat; 
+ LockedAt = (lockedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lockedat; 
+ LockedBy = lockedby; 
 }
 public bool isValidData()
 {

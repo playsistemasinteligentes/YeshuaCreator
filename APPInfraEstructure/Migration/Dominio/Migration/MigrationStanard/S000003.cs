@@ -64,6 +64,9 @@ namespace Migration.Dominio.Migration
             .AddColumn("CompletedAt", "Finalizado em").DateTime()
             .AddColumn("EntityType", "Entity Type").Varchar(100)
             .AddColumn("EntityId", "Entity Id").Varchar(100)
+            .AddColumn("NextExecutionAt", "Proxima execucao").DateTime()
+            .AddColumn("LockedAt", "LockedAt").DateTime()
+            .AddColumn("LockedBy", "LockedBy").Varchar(100)
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
             AddEntity("ySagaStep").AddModule("ADM")
@@ -97,7 +100,7 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yOutbox").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
+                .AddColumn("MessageId", "Message Id").Varchar(100)
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("EntityType", "Entity Type").Varchar(100)
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
@@ -122,24 +125,46 @@ namespace Migration.Dominio.Migration
 
 
             AddEntity("yInbox").AddModule("ADM")
+
                 .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("MessageId", "Message Id").Varchar(100).DefaultValue("#Guid.NewGuid()")
+
+                // 🔑 Idempotência / rastreio externo
+                .AddColumn("MessageId", "Message Id").Varchar(100)
+
+                // 🔀 Roteamento
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("EntityType", "Entity Type").Varchar(100)
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
-                .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
+
+                // 📦 Payload (IMPORTANTE aumentar)
+                .AddColumn("Payload", "Payload").Varchar(8000).NotNull()
+
+                // 🔄 Estado
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
-                    .Enumerable(1, "Sent")
+                    .Enumerable(1, "Processed")
                     .Enumerable(2, "Failed")
+                    .Enumerable(3, "Processing")
+
+                // ⏱️ Controle de fluxo
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
-                .AddColumn("SentAt", "Enviado em").DateTime()
+                .AddColumn("ProcessedAt", "Processado em").DateTime()
+
+                // 🔁 Retry
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
+
+                // 🔗 Integração com Saga (mantém)
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
-                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).NeedBeWhere().CanTakeOffWhere();
 
+                // 🏢 Multi-tenant
+                .AddColumn("TenantID", "TenantID").Int()
+                    .FK("yTenant", "Id")
+                    .DefaultValue("#_currentUser.TenantID")
+                    .EditFront(false)
+                    .NeedBeWhere()
+                    .CanTakeOffWhere();
 
         }
         public record SendFileCommand(string token, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);

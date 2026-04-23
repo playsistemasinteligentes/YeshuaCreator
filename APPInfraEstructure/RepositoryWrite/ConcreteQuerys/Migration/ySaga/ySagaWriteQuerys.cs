@@ -20,7 +20,7 @@ namespace Query.Write
         }
         public QueryModel InserirySagaQuery(IySagaEntity ySaga)
         {
-            this.Query = $@" INSERT INTO ySaga (SagaId, Type, Status, KeyCurrentStep, CreatedAt, CompletedAt, EntityType, EntityId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SagaId, @Type, @Status, @KeyCurrentStep, @CreatedAt, @CompletedAt, @EntityType, @EntityId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO ySaga (SagaId, Type, Status, KeyCurrentStep, CreatedAt, CompletedAt, EntityType, EntityId, NextExecutionAt, LockedAt, LockedBy, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SagaId, @Type, @Status, @KeyCurrentStep, @CreatedAt, @CompletedAt, @EntityType, @EntityId, @NextExecutionAt, @LockedAt, @LockedBy, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SagaId = ySaga.SagaId,
@@ -31,6 +31,9 @@ namespace Query.Write
                 CompletedAt = ySaga.CompletedAt,
                 EntityType = ySaga.EntityType,
                 EntityId = ySaga.EntityId,
+                NextExecutionAt = ySaga.NextExecutionAt,
+                LockedAt = ySaga.LockedAt,
+                LockedBy = ySaga.LockedBy,
                 TenantID = _currentUser.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
@@ -40,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateySagaQuery(IySagaEntity ySaga)
         {
-            this.Query = $@" UPDATE ySaga SET SagaId = @SagaId, Type = @Type, Status = @Status, KeyCurrentStep = @KeyCurrentStep, CreatedAt = @CreatedAt, CompletedAt = @CompletedAt, EntityType = @EntityType, EntityId = @EntityId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE ySaga SET SagaId = @SagaId, Type = @Type, Status = @Status, KeyCurrentStep = @KeyCurrentStep, CreatedAt = @CreatedAt, CompletedAt = @CompletedAt, EntityType = @EntityType, EntityId = @EntityId, NextExecutionAt = @NextExecutionAt, LockedAt = @LockedAt, LockedBy = @LockedBy, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 SagaId = ySaga.SagaId,
@@ -51,6 +54,9 @@ namespace Query.Write
                 CompletedAt = ySaga.CompletedAt,
                 EntityType = ySaga.EntityType,
                 EntityId = ySaga.EntityId,
+                NextExecutionAt = ySaga.NextExecutionAt,
+                LockedAt = ySaga.LockedAt,
+                LockedBy = ySaga.LockedBy,
                 Changed = ySaga.Changed,
                 UserId = _currentUser.UserId,
                 Id = ySaga.Id,
@@ -133,6 +139,36 @@ namespace Query.Write
             this.Parameters = new
             {
                 EntityId = entity.EntityId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNextExecutionAt(IySagaEntity entity)
+        {
+            this.Query = $@" UPDATE ySaga SET NextExecutionAt = @NextExecutionAt WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                NextExecutionAt = entity.NextExecutionAt,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateLockedAt(IySagaEntity entity)
+        {
+            this.Query = $@" UPDATE ySaga SET LockedAt = @LockedAt WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                LockedAt = entity.LockedAt,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateLockedBy(IySagaEntity entity)
+        {
+            this.Query = $@" UPDATE ySaga SET LockedBy = @LockedBy WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                LockedBy = entity.LockedBy,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

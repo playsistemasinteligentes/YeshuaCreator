@@ -55,7 +55,7 @@ namespace Migration
             //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
-            builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>,SagaWorkerCommandHandler>();
+            builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>, SagaWorkerCommandHandler>();
             builder.Services.AddScoped<SagaWorkerCommandHandler>();
             builder.Services.AddHostedService(sp =>
                  new PollingWorker<
@@ -65,6 +65,20 @@ namespace Migration
                      sp,
                      sp.GetRequiredService<
                          ILogger<PollingWorker<SagaWorkerCommandHandler, InputCommand, OutputCommand>>>(),
+                     TimeSpan.FromSeconds(5)
+                 ));
+
+
+            //builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>, SagaInboxWorkerCommandHandler>();
+            builder.Services.AddScoped<SagaInboxWorkerCommandHandler>();
+            builder.Services.AddHostedService(sp =>
+                 new PollingWorker<
+                     SagaInboxWorkerCommandHandler,
+                     InputCommand,
+                     OutputCommand>(
+                     sp,
+                     sp.GetRequiredService<
+                         ILogger<PollingWorker<SagaInboxWorkerCommandHandler, InputCommand, OutputCommand>>>(),
                      TimeSpan.FromSeconds(5)
                  ));
 
@@ -90,8 +104,6 @@ namespace Migration
                          queueName: "audio.transcribed.inbox"
                  );
              });
-
-
 
 
 

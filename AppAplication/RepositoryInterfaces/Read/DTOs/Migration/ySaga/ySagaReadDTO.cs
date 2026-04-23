@@ -17,6 +17,9 @@ namespace Repositorio.Outputs
     public DateTime completedat { get; set; }
     public string entitytype { get; set; }
     public string entityid { get; set; }
+    public DateTime nextexecutionat { get; set; }
+    public DateTime lockedat { get; set; }
+    public string lockedby { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

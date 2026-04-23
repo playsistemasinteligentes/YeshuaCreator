@@ -25,7 +25,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, SagaId, Type, Status, KeyCurrentStep, CreatedAt, CompletedAt, EntityType, EntityId, TenantID, Deleted, Changed, UserId from ySaga ";
+            this.Query = $@" select Id, SagaId, Type, Status, KeyCurrentStep, CreatedAt, CompletedAt, EntityType, EntityId, NextExecutionAt, LockedAt, LockedBy, TenantID, Deleted, Changed, UserId from ySaga ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.SagaId)) dict["SagaId"] = $"%{Command.SagaId}%";
@@ -49,6 +49,8 @@ if (!string.IsNullOrEmpty(Command.EntityType)) dict["EntityType"] = $"%{Command.
 if (!string.IsNullOrEmpty(Command.EntityType)) whereClauses.Add($"EntityType like @EntityType");
 if (!string.IsNullOrEmpty(Command.EntityId)) dict["EntityId"] = $"%{Command.EntityId}%";
 if (!string.IsNullOrEmpty(Command.EntityId)) whereClauses.Add($"EntityId like @EntityId");
+if (!string.IsNullOrEmpty(Command.LockedBy)) dict["LockedBy"] = $"%{Command.LockedBy}%";
+if (!string.IsNullOrEmpty(Command.LockedBy)) whereClauses.Add($"LockedBy like @LockedBy");
 if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
 if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -290,6 +292,60 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByNextExecutionAtQuery(DateTime value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM ySaga ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["NextExecutionAt"] = value; //04
+                      whereClauses.Add($" NextExecutionAt = @NextExecutionAt ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByLockedAtQuery(DateTime value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM ySaga ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["LockedAt"] = value; //04
+                      whereClauses.Add($" LockedAt = @LockedAt ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByLockedByQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM ySaga ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["LockedBy"] = value; //04
+                      whereClauses.Add($" LockedBy = @LockedBy ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false)
         {
             this.Parameters = null;
@@ -519,6 +575,60 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EntityId"] = value; //06
                       whereClauses.Add($" EntityId = @EntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByNextExecutionAtQuery(DateTime value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM ySaga ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["NextExecutionAt"] = value; //06
+                      whereClauses.Add($" NextExecutionAt = @NextExecutionAt ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByLockedAtQuery(DateTime value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM ySaga ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["LockedAt"] = value; //06
+                      whereClauses.Add($" LockedAt = @LockedAt ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByLockedByQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM ySaga ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["LockedBy"] = value; //06
+                      whereClauses.Add($" LockedBy = @LockedBy ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

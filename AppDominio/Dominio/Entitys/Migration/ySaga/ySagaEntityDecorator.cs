@@ -135,6 +135,45 @@
                                         }
                                     }
 
+                                    public DateTime? NextExecutionAt
+                                    {
+                                        get => _inner.NextExecutionAt;
+                                        set
+                                        {
+                                            if (_inner.NextExecutionAt != value)
+                                            {
+                                                _logger.Info($"Propriedade NextExecutionAt: antes={_inner.NextExecutionAt}, depois={value}");
+                                                _inner.NextExecutionAt = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? LockedAt
+                                    {
+                                        get => _inner.LockedAt;
+                                        set
+                                        {
+                                            if (_inner.LockedAt != value)
+                                            {
+                                                _logger.Info($"Propriedade LockedAt: antes={_inner.LockedAt}, depois={value}");
+                                                _inner.LockedAt = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string LockedBy
+                                    {
+                                        get => _inner.LockedBy;
+                                        set
+                                        {
+                                            if (_inner.LockedBy != value)
+                                            {
+                                                _logger.Info($"Propriedade LockedBy: antes={_inner.LockedBy}, depois={value}");
+                                                _inner.LockedBy = value;
+                                            }
+                                        }
+                                    }
+
                                     public int? TenantID
                                     {
                                         get => _inner.TenantID;

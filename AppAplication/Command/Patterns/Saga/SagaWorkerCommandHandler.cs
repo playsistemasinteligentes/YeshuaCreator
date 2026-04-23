@@ -6,6 +6,7 @@ using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Saga;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 
 namespace Command.Patterns
 {
@@ -15,34 +16,42 @@ namespace Command.Patterns
         private readonly ISagaExecutor _executor;
         private readonly IySagaReadRepository _sagaReadRepository;
         private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public SagaWorkerCommandHandler(
             ISagaResolverRegistry registry,
             ISagaExecutor executor,
             IySagaReadRepository sagaReadRepository,
-            IySagaWriteRepository sagaWriteRepository)
+            IySagaWriteRepository sagaWriteRepository,
+            IUnitOfWork unitOfWork)
         {
             _registry = registry;
             _executor = executor;
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
+            _unitOfWork = unitOfWork;
         }
 
         protected override State<OutputCommand> Action(InputCommand comand)
         {
             try
             {
-                var workerID = "Worker_0001";
-                var sagas = _sagaReadRepository.ClaimRunnableSagas(5, workerID); 
-
-
+                var LockedBy = "Worker_0001";
+                DateTime LockedAt = DateTime.UtcNow;
+                DateTime NextExecutionAt = DateTime.UtcNow.AddMinutes(5); 
+                var sagas = _sagaReadRepository.ClaimRunnableSagas(5, LockedBy, LockedAt, NextExecutionAt);
+                
                 foreach (var sagaDto in sagas)
                 {
                     string SagaId = string.Empty;
                     try
                     {
                         var saga = _registry.Map(sagaDto);
-                         SagaId = saga.SagaId.ToString();
+                        SagaId = saga.SagaId.ToString();
+
+                        saga.LockedBy = LockedBy;
+                        saga.LockedAt = LockedAt;
+                        saga.NextExecutionAt = NextExecutionAt;
 
                         if (saga.Status != SagaStatus.InProgress)
                             continue;
@@ -56,14 +65,17 @@ namespace Command.Patterns
 
                         _executor.Execute(saga, resolver);
 
+                        _unitOfWork.BeginTran();
                         _sagaWriteRepository.Save(saga);
-
-                        _sagaReadRepository.ReleaseLock(saga.Id, workerID);
-
+                        _unitOfWork.Commit();
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Erro na saga {SagaId}: {ex.Message}");
+                    }
+                    finally
+                    {
+                        _sagaReadRepository.ReleaseLock(saga.Id, LockedBy);
                     }
                 }
 

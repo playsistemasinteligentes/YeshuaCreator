@@ -12,23 +12,30 @@ namespace Read.Repository
         /// <summary>
         /// ClaimRunnableSagas = pegar e travar sagas executáveis
         /// </summary>
-        public IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string workerId)
+        public IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt)
         {
             var sql = @" UPDATE TOP (@Limit) ySaga
                             SET 
-                                LockedBy = @WorkerId, 
-                                LockedAt = GETUTCDATE()
+                                LockedBy = @LockedBy, 
+                                LockedAt = @LockedAt,
+                                NextExecutionAt = @NextExecutionAt
+
                             OUTPUT inserted.*
                             WHERE 
                                 Status = 1 -- InProgress
-                                AND (LockedBy IS NULL OR LockedAt < DATEADD(MINUTE, -1, GETUTCDATE()))
-                                AND (NextExecutionAt IS NULL OR NextExecutionAt <= GETUTCDATE())";
+                                AND (LockedBy IS NULL OR LockedAt < @DtNowlockedAt)
+                                AND (NextExecutionAt IS NULL OR NextExecutionAt <= @DtNow)";
 
 
             var sagas = _unitOfWork.Query<ySagaDTO>(sql, new
             {
                 Limit = limit,
-                WorkerId = workerId
+                LockedBy = lockedBy,
+                LockedAt = lockedAt,
+                NextExecutionAt = nextExecutionAt,
+                DtNow = DateTime.Now,
+                DtNowlockedAt = lockedAt.AddMinutes(-1)
+
             }).ToList();
 
             if (!sagas.Any())
@@ -69,8 +76,7 @@ namespace Read.Repository
                             LockedBy = NULL,
                             LockedAt = NULL
                         WHERE Id = @SagaId
-                          AND LockedBy = @WorkerId
-                        ";
+                          AND LockedBy = @WorkerId ";
 
             _unitOfWork.Execute(sql, new
             {

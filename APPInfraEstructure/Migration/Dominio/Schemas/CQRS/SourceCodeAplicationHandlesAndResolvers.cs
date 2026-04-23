@@ -265,7 +265,32 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("        }");
                     sb.AppendLine();
 
+                    sb.AppendLine("        public void ApplyResponse(SagaBase saga, SagaStepBase step, string payload)");
+                    sb.AppendLine("        {");
+                    sb.AppendLine("            try");
+                    sb.AppendLine("            {");
+                    sb.AppendLine("                step.Apply(payload);");
+                    sb.AppendLine();
+
+                    sb.AppendLine("                CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload);");
+                    sb.AppendLine("                saga.MarkStepCompleted(step);");
+                    sb.AppendLine();
+
+                    sb.AppendLine("                saga.MoveNext();");
+
+                    sb.AppendLine("            }");
+                    sb.AppendLine("            catch (Exception ex)");
+                    sb.AppendLine("            {");
+                    sb.AppendLine("                saga.MarkFailed(ex.Message);");
+                    sb.AppendLine("                throw;");
+                    sb.AppendLine("            }");
+                    sb.AppendLine("        }");
+                    sb.AppendLine();
+
+
+
                     sb.AppendLine("        partial void CustomExecute(SagaBase saga, SagaStepBase step);");
+                    sb.AppendLine("        partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload);");
 
                     sb.AppendLine("    }");
                 }

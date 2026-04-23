@@ -81,6 +81,21 @@ namespace Input.Repository.ySaga
             var query = _query.UpdateEntityId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateNextExecutionAt(IySagaEntity entity)
+        {
+            var query = _query.UpdateNextExecutionAt(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateLockedAt(IySagaEntity entity)
+        {
+            var query = _query.UpdateLockedAt(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateLockedBy(IySagaEntity entity)
+        {
+            var query = _query.UpdateLockedBy(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(IySagaEntity entity)
         {
             var query = _query.UpdateTenantID(entity);
