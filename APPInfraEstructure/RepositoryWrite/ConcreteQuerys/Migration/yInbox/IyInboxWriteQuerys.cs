@@ -14,7 +14,7 @@ namespace IQuery.Write
         public QueryModel UpdatePayload(IyInboxEntity entity);
         public QueryModel UpdateStatus(IyInboxEntity entity);
         public QueryModel UpdateCreatedAt(IyInboxEntity entity);
-        public QueryModel UpdateSentAt(IyInboxEntity entity);
+        public QueryModel UpdateProcessedAt(IyInboxEntity entity);
         public QueryModel UpdateRetryCount(IyInboxEntity entity);
         public QueryModel UpdateLastError(IyInboxEntity entity);
         public QueryModel UpdateSagaId(IyInboxEntity entity);

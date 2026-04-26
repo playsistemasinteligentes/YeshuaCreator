@@ -15,10 +15,14 @@ namespace Repositorio.Outputs
     public string entityid { get; set; }
     public string payload { get; set; }
     public int status { get; set; }
+    public int transporttype { get; set; }
+    public string transportdata { get; set; }
     public DateTime createdat { get; set; }
     public DateTime sentat { get; set; }
     public int retrycount { get; set; }
     public string lasterror { get; set; }
+    public DateTime processingat { get; set; }
+    public DateTime nextattemptat { get; set; }
     public int sagaid { get; set; }
     public int sagastepid { get; set; }
     public int tenantid { get; set; }

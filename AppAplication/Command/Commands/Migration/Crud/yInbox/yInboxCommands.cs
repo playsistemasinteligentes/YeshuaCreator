@@ -11,7 +11,7 @@ namespace Command.Write
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime? SentAt { get; set; }
+        public DateTime? ProcessedAt { get; set; }
         public int RetryCount { get; set; }
         public string LastError { get; set; }
         public int? SagaId { get; set; }

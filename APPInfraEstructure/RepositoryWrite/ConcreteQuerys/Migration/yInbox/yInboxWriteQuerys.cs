@@ -20,17 +20,17 @@ namespace Query.Write
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" INSERT INTO yInbox (MessageId, Type, EntityType, EntityId, Payload, Status, CreatedAt, SentAt, RetryCount, LastError, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @Payload, @Status, @CreatedAt, @SentAt, @RetryCount, @LastError, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yInbox (MessageId, Type, EntityType, EntityId, Payload, Status, CreatedAt, ProcessedAt, RetryCount, LastError, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @Payload, @Status, @CreatedAt, @ProcessedAt, @RetryCount, @LastError, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
-                MessageId = Guid.NewGuid(),
+                MessageId = yInbox.MessageId,
                 Type = yInbox.Type,
                 EntityType = yInbox.EntityType,
                 EntityId = yInbox.EntityId,
                 Payload = yInbox.Payload,
                 Status = yInbox.Status,
                 CreatedAt = yInbox.CreatedAt,
-                SentAt = yInbox.SentAt,
+                ProcessedAt = yInbox.ProcessedAt,
                 RetryCount = yInbox.RetryCount,
                 LastError = yInbox.LastError,
                 SagaId = yInbox.SagaId,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" UPDATE yInbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, SentAt = @SentAt, RetryCount = @RetryCount, LastError = @LastError, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yInbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, ProcessedAt = @ProcessedAt, RetryCount = @RetryCount, LastError = @LastError, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
@@ -54,7 +54,7 @@ namespace Query.Write
                 Payload = yInbox.Payload,
                 Status = yInbox.Status,
                 CreatedAt = yInbox.CreatedAt,
-                SentAt = yInbox.SentAt,
+                ProcessedAt = yInbox.ProcessedAt,
                 RetryCount = yInbox.RetryCount,
                 LastError = yInbox.LastError,
                 SagaId = yInbox.SagaId,
@@ -135,12 +135,12 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSentAt(IyInboxEntity entity)
+        public QueryModel UpdateProcessedAt(IyInboxEntity entity)
         {
-            this.Query = $@" UPDATE yInbox SET SentAt = @SentAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE yInbox SET ProcessedAt = @ProcessedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                SentAt = entity.SentAt,
+                ProcessedAt = entity.ProcessedAt,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

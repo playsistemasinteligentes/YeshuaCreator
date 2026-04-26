@@ -109,6 +109,32 @@
                                         }
                                     }
 
+                                    public int TransportType
+                                    {
+                                        get => _inner.TransportType;
+                                        set
+                                        {
+                                            if (_inner.TransportType != value)
+                                            {
+                                                _logger.Info($"Propriedade TransportType: antes={_inner.TransportType}, depois={value}");
+                                                _inner.TransportType = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string TransportData
+                                    {
+                                        get => _inner.TransportData;
+                                        set
+                                        {
+                                            if (_inner.TransportData != value)
+                                            {
+                                                _logger.Info($"Propriedade TransportData: antes={_inner.TransportData}, depois={value}");
+                                                _inner.TransportData = value;
+                                            }
+                                        }
+                                    }
+
                                     public DateTime CreatedAt
                                     {
                                         get => _inner.CreatedAt;
@@ -157,6 +183,32 @@
                                             {
                                                 _logger.Info($"Propriedade LastError: antes={_inner.LastError}, depois={value}");
                                                 _inner.LastError = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? ProcessingAt
+                                    {
+                                        get => _inner.ProcessingAt;
+                                        set
+                                        {
+                                            if (_inner.ProcessingAt != value)
+                                            {
+                                                _logger.Info($"Propriedade ProcessingAt: antes={_inner.ProcessingAt}, depois={value}");
+                                                _inner.ProcessingAt = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? NextAttemptAt
+                                    {
+                                        get => _inner.NextAttemptAt;
+                                        set
+                                        {
+                                            if (_inner.NextAttemptAt != value)
+                                            {
+                                                _logger.Info($"Propriedade NextAttemptAt: antes={_inner.NextAttemptAt}, depois={value}");
+                                                _inner.NextAttemptAt = value;
                                             }
                                         }
                                     }

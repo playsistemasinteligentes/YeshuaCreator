@@ -45,9 +45,10 @@ namespace Dominio.Patterns.Saga
         public void SetInProgress()
         {
             Status = SagaStepStatus.InProgress;
+            LastExecutionAt = DateTime.UtcNow;
+            ExecutionCount++;
             MarkDirty();
         }
-
         // 🔥 async flow
         public void SetWaiting(string correlationId)
         {
@@ -55,11 +56,23 @@ namespace Dominio.Patterns.Saga
             CorrelationId = correlationId;
             MarkDirty();
         }
+        public void SetPayload(string payload)
+        {
+            Payload = payload;
+            MarkDirty();
+        }
 
         public void SetCompleted()
         {
             Status = SagaStepStatus.Completed;
+            CompletedAt = DateTime.UtcNow;
             CorrelationId = null;
+            MarkDirty();
+        }
+
+        public void SetPendingApply()
+        {
+            Status = SagaStepStatus.PendingApply;
             MarkDirty();
         }
 

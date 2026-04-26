@@ -2,9 +2,8 @@ wwwroot\index.html
 wwwroot\spa\components\action-modal.html
 wwwroot\spa\components\fk-modal.html
 wwwroot\spa\components\recording\APP gravação.txt
+wwwroot\spa\components\recording\audio - Copy.html
 wwwroot\spa\components\recording\audio.html
-wwwroot\spa\components\recording\audio_oud - Cópia.html
-wwwroot\spa\components\recording\audio_oud.html
 wwwroot\spa\enum\enumerators
 wwwroot\spa\enum\enumerators.js
 wwwroot\spa\environments.js

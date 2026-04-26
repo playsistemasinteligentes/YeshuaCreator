@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yInboxCrudCommand c) 
              {    
-                 var yinbox = new yInboxFactory(_logger).Create(c.Id, c.Type, c.EntityType, c.EntityId, c.Payload, c.Status, c.CreatedAt, c.SentAt, c.RetryCount, c.LastError, c.SagaId, c.SagaStepId);
+                 var yinbox = new yInboxFactory(_logger).Create(c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.Payload, c.Status, c.CreatedAt, c.ProcessedAt, c.RetryCount, c.LastError, c.SagaId, c.SagaStepId);
                  if (!yinbox.isValidInsert())
                      return ValidationError(yinbox.getErroMensagens(), null);
 

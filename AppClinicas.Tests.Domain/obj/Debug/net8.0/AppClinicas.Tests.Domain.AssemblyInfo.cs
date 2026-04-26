@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppClinicas.Tests.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f6ee1e0d0f1b5dd65ab1262f72392efdb869702")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d5dc6c955a8f41bc500621b792a8cae8370beeb")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppClinicas.Tests.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppClinicas.Tests.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

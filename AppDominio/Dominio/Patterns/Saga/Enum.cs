@@ -20,10 +20,16 @@ namespace Dominio.Patterns.Saga
         Pending = 1, // Worker pega pra executar 
         InProgress = 2, // Worker marca que vai executar  
         WaitingResponse = 3, // espera confirmação ao confirmar chama next step e move para completed 
+        PendingApply = 4,   // executa o resultado no dominio 
+        Completed = 5,
+        Failed = 6 // retry 
+
+
+        /*
         Completed = 4,// completo 
         Failed = 5 // retry 
 
-        /*variação doc 
+        variação doc 
             
             Created ou Inactive  → ainda não começou
             Pending disponivel para worker  

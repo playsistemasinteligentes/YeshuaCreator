@@ -4,10 +4,10 @@ namespace Dominio.Saga
 {
     public class PsychologySessionInsightSaga : SagaBase
     {
-        public const string STEP_1 = "audioTranscriptRequested";
-        public const string STEP_2 = "audioTranscriptGenerated";
-        public const string STEP_3 = "prontuarySumaryRequested";
-        public const string STEP_4 = "prontuarySumaryGenerated";
+        public const string STEP_1 = "AudioTranscriptRequested";
+        public const string STEP_2 = "AudioTranscriptGenerated";
+        public const string STEP_3 = "ProntuarySumaryRequested";
+        public const string STEP_4 = "ProntuarySumaryGenerated";
 
         public PsychologySessionInsightSaga()
         {

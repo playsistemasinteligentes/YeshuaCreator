@@ -16,7 +16,7 @@ namespace Repositorio.Outputs
     public string payload { get; set; }
     public int status { get; set; }
     public DateTime createdat { get; set; }
-    public DateTime sentat { get; set; }
+    public DateTime processedat { get; set; }
     public int retrycount { get; set; }
     public string lasterror { get; set; }
     public int sagaid { get; set; }

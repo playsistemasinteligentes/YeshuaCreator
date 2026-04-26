@@ -24,7 +24,7 @@ namespace IRepository.Read
         public bool ExistsByPayload(string value , bool TakeOffTenantID = false);
         public bool ExistsByStatus(int value , bool TakeOffTenantID = false);
         public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false);
-        public bool ExistsBySentAt(DateTime value , bool TakeOffTenantID = false);
+        public bool ExistsByProcessedAt(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByRetryCount(int value , bool TakeOffTenantID = false);
         public bool ExistsByLastError(string value , bool TakeOffTenantID = false);
         public bool ExistsBySagaId(int value , bool TakeOffTenantID = false);
@@ -41,7 +41,7 @@ namespace IRepository.Read
         public yInboxDTO FirstByPayload(string value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByStatus(int value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false);
-        public yInboxDTO FirstBySentAt(DateTime value , bool TakeOffTenantID = false);
+        public yInboxDTO FirstByProcessedAt(DateTime value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByRetryCount(int value , bool TakeOffTenantID = false);
         public yInboxDTO FirstByLastError(string value , bool TakeOffTenantID = false);
         public yInboxDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
@@ -58,7 +58,7 @@ namespace IRepository.Read
         public IEnumerable<yInboxDTO> GetAllByPayload(string value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByStatus(int value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByCreatedAt(DateTime value , bool TakeOffTenantID = false);
-        public IEnumerable<yInboxDTO> GetAllBySentAt(DateTime value , bool TakeOffTenantID = false);
+        public IEnumerable<yInboxDTO> GetAllByProcessedAt(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByRetryCount(int value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllByLastError(string value , bool TakeOffTenantID = false);
         public IEnumerable<yInboxDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);

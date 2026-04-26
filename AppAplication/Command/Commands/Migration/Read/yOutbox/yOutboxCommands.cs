@@ -10,10 +10,14 @@ namespace Command.Read
         public string EntityId { get; set; }
         public string Payload { get; set; }
         public List<int> Status { get; set; }
+        public List<int> TransportType { get; set; }
+        public string TransportData { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int? RetryCount { get; set; }
         public string LastError { get; set; }
+        public DateTime? ProcessingAt { get; set; }
+        public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }
         public int? SagaStepId { get; set; }
         public int? TenantID { get; set; }

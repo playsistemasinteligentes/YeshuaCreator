@@ -10,88 +10,35 @@ namespace Command.Patterns
     {
         public void Execute(SagaBase saga, ISagaHandlerResolver resolver)
         {
-            Process(saga, resolver, payload: null, isResponse: false);
-        }
-
-        public void ApplyResponse(SagaBase saga, ISagaHandlerResolver resolver, string payload)
-        {
-            Process(saga, resolver, payload, isResponse: true);
-        }
-
-        private void Process(
-            SagaBase saga,
-            ISagaHandlerResolver resolver,
-            string payload,
-            bool isResponse)
-        {
-            var step = isResponse
-                ? saga.GetWaitingResponseStep() // 🔥 importante
-                : saga.GetCurrent();
+            var step = saga.GetCurrent();
 
             if (step == null)
                 return;
 
-            // =============================
-            // 🔒 VALIDAÇÕES DE ESTADO
-            // =============================
-
-            if (isResponse)
-            {
-                // só processa se estiver esperando resposta
-                if (step.Status != SagaStepStatus.WaitingResponse)
-                    return;
-            }
-            else
-            {
-                // não executa se está aguardando resposta
-                if (step.Status == SagaStepStatus.WaitingResponse)
-                    return;
-
-                // respeita agendamento
-                if (step.Status == SagaStepStatus.Pending &&
-                    step.NextExecutionAt.HasValue &&
-                    step.NextExecutionAt.Value > DateTime.UtcNow)
-                    return;
-            }
-
             var handlers = resolver.GetHandlers();
 
-            if (!handlers.ContainsKey(step.Key))
+            if (!handlers.TryGetValue(step.Key, out var handler))
                 throw new Exception($"Handler não encontrado: {step.Key}");
-
-            var handler = handlers[step.Key];
 
             try
             {
-                if (isResponse)
+                // 🔒 não faz nada
+                if (step.Status == SagaStepStatus.WaitingResponse)
+                    return;
+
+                // ▶ EXECUTA
+                if (step.Status == SagaStepStatus.Pending)
                 {
-                    // =============================
-                    // 📥 PROCESSA RESPOSTA (INBOX)
-                    // =============================
-
-                    handler.ApplyResponse(saga, step, payload);
-
-                    step.MarkAsCompleted();
-
-                    var next = saga.GetNext();
-                    next?.SetPending();
-                }
-                else
-                {
-                    // =============================
-                    // 📤 EXECUTA STEP (OUTGOING)
-                    // =============================
-
-                    // defer opcional
-                    if (handler.IsAsync &&
-                        step.Status == SagaStepStatus.Pending &&
-                        step.RetryCount == 0)
-                    {
-                        // se quiser reativar:
-                        // return;
-                    }
-
+                    step.SetInProgress(); 
                     handler.Execute(saga, step);
+                }
+
+                // 📥 APLICA
+                if (step.Status == SagaStepStatus.PendingApply)
+                {
+                    handler.ApplyResponse(saga, step, step.Payload);
+
+                    saga.CompleteCurrentStep();
                 }
             }
             catch (Exception e)
@@ -100,14 +47,13 @@ namespace Command.Patterns
             }
         }
 
-        private void HandleFailure(SagaBase saga, SagaStep step, Exception e)
+        private void HandleFailure(SagaBase saga, SagaStepBase step, Exception e)
         {
             step.IncrementRetry();
 
             if (step.CanRetry())
             {
                 var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
-
                 step.SetPending(DateTime.UtcNow.Add(delay));
             }
             else

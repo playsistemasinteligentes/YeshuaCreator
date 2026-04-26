@@ -62,8 +62,10 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
 
-        public void Start()
+        public void Start(string entityId)
         {
+            EntityId = entityId;
+
             Type = this.GetType().Name;
 
             if (Status != SagaStatus.NotStarted)
@@ -76,33 +78,37 @@ namespace Dominio.Patterns.Saga
             UpdateCurrentStepKey();
         }
 
-        // 🔥 RESTAURADO: NextStep explícito
         private void NextStep()
         {
             var current = GetCurrent();
+
             if (current == null)
                 return;
 
-            current.SetCompleted();
+            var next = _steps
+                .Where(s => s.Order > current.Order)
+                .OrderBy(s => s.Order)
+                .FirstOrDefault();
 
-            var next = _steps.FirstOrDefault(s => s.Status == SagaStepStatus.Created);
             if (next != null)
                 next.SetPending();
-
-            MarkDirty();
 
             if (_steps.All(s => s.Status == SagaStepStatus.Completed))
                 Status = SagaStatus.Completed;
 
+            MarkDirty();
             UpdateCurrentStepKey();
         }
 
         public SagaStepBase GetCurrent()
         {
-            return _steps.FirstOrDefault(s =>
-                s.Status == SagaStepStatus.Pending ||
-                s.Status == SagaStepStatus.InProgress ||
-                s.Status == SagaStepStatus.WaitingResponse);
+            return _steps
+                .OrderBy(s => s.Order)
+                .FirstOrDefault(s =>
+                    s.Status == SagaStepStatus.Pending ||
+                    s.Status == SagaStepStatus.PendingApply ||
+                    s.Status == SagaStepStatus.InProgress ||
+                    s.Status == SagaStepStatus.WaitingResponse);
         }
 
         public void MarkInProgress()
@@ -128,25 +134,37 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
             UpdateCurrentStepKey();
         }
-
-        public void Resume(string correlationId)
-        {
-            var step = _steps.FirstOrDefault(s =>
-                s.Status == SagaStepStatus.WaitingResponse &&
-                s.CorrelationId == correlationId);
-
-            if (step == null)
-                throw new Exception("Step não encontrado para resume");
-
-            step.SetCompleted();
-            NextStep();
-
-            MarkDirty();
-            UpdateCurrentStepKey();
-        }
+        
         private void UpdateCurrentStepKey()
         {
             KeyCurrentStep = GetCurrent()?.Key;
         }
+
+        public SagaStepBase GetWaitingStep(int stepId)
+        {
+            return _steps.FirstOrDefault(s =>
+                s.Status == SagaStepStatus.WaitingResponse &&
+                s.Id == stepId);
+        }
+
+
+        public void CompleteCurrentStep()
+        {
+            var current = GetCurrent();
+
+            if (current == null)
+                return;
+
+            current.SetCompleted();
+            NextStep();
+        }
+
+        public SagaStepBase GetWaitingStep(string correlationId)
+        {
+            return _steps.FirstOrDefault(s =>
+                s.Status == SagaStepStatus.WaitingResponse &&
+                s.CorrelationId == correlationId);
+        }
+
     }
 }

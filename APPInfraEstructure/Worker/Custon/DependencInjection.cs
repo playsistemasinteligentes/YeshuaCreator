@@ -1,10 +1,16 @@
 ﻿using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Interfaces.Patterns.Queue;
+using Command.Patterns;
+using Command.Patterns.Command;
+using Command.Patterns.OutBox;
+using Command.Receivers;
+using Command.Receivers.UseCase;
 using Command.UseCase;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MyApp.Domain.Entities;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using RepositoryInterfaces.Services;
@@ -16,8 +22,6 @@ using Shered.Services;
 using System.Data;
 using System.Security.Claims;
 using Worker.Custon;
-using Command.Patterns.Saga;
-using Command.Patterns;
 
 namespace Migration
 {
@@ -69,7 +73,19 @@ namespace Migration
                  ));
 
 
-            //builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>, SagaInboxWorkerCommandHandler>();
+
+            //builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>, SagaWorkerCommandHandler>();
+            builder.Services.AddScoped<yOutBoxWorkerHandler>();
+            builder.Services.AddHostedService(sp =>
+                 new PollingWorker< yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>(
+                     sp,
+                     sp.GetRequiredService<
+                         ILogger<PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
+                     TimeSpan.FromSeconds(5)
+                 ));
+
+
+            //builder.Services.AddScoped<IReceiver<InboxInputCommand, OutputCommand>, SagaInboxWorkerCommandHandler>();
             builder.Services.AddScoped<SagaInboxWorkerCommandHandler>();
             builder.Services.AddHostedService(sp =>
                  new PollingWorker<
@@ -81,9 +97,38 @@ namespace Migration
                          ILogger<PollingWorker<SagaInboxWorkerCommandHandler, InputCommand, OutputCommand>>>(),
                      TimeSpan.FromSeconds(5)
                  ));
+             
 
+                var queues = new[]
+                {
+                    "audio.transcribed.inbox",
+                    "payment.approved.inbox",
+                    "email.sent.inbox"
+                };
+            builder.Services.AddScoped<InboxListenerHandler>();
+            
+                foreach (var queue in queues)
+                {
+                    builder.Services.AddHostedService(sp =>
+                    {
+                        var listener = sp.GetRequiredService<IQueueListener>();
+                        var logger = sp.GetRequiredService<ILogger<
+                            QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>>>();
 
+                        return new QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>(
+                                sp,
+                                listener,
+                                logger,
+                                queueName: queue
+                        );
+                    });
+                }
+            /*
+             * 
+             * 
+             */
 
+            /*
             builder.Services.AddScoped<SagaResumeCommandHandler>();
              // HostedService do Listener
              builder.Services.AddHostedService(sp =>
@@ -105,7 +150,7 @@ namespace Migration
                  );
              });
 
-
+            */
 
             // =============================
             // RECEIVERS (Scoped)

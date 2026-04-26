@@ -19,6 +19,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Templates;
+
 using static Migration.Dominio.Migration.S000002;
 
 namespace AppClinicas
@@ -32,16 +33,6 @@ namespace AppClinicas
 
         public override void Up()
         {
-
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddCommand("OutBox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
-            .AddEntity<yOutbox>().IsWorker();
-
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerPolling").AddCommand("Inbox", new LoginInput("", ""), new LoginOutput(new List<string>(), 1, "", 1))
-            .AddEntity<yInbox>().IsWorker();
-
-
-            AddUsecaseGroup("Worker").AddUseCaseSubGrup("WorkerListener").AddCommand("InBox", new Menssage(""), new Menssage(""))
-            .AddEntity<yInbox>().IsListener();
 
             /*
 
@@ -69,36 +60,6 @@ Consumes    fato sistema externo continuar fluxo
             */
 
 
-            /*
-
-
-
-
-             1. Saga.Start
-
-             2. SagaWorker
-               → executa step
-               → se externo → Outbox
-               → se interno → Resume direto
-
-            3. OutboxWorker
-               → envia mensagem
-
-            4. QueueListener
-               → grava Inbox
-
-            5. InboxWorker 
-               → despacha saga correto
-               → saga.Resume(event)
-
-            6. SagaWorker continua
-
-
-
-
-
-
-             */
 
 
 
@@ -109,17 +70,18 @@ Consumes    fato sistema externo continuar fluxo
                                 AddSaga("PsychologySessionInsight").
                                 AddStepGroup("audioTranscript").
                                     AddStep("audioTranscriptRequested"). // “faça isso”
-                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.CeleryWorker", "audio.transcript.requested").
-           
+                                        AddOutBoxPollingWorker("ai.tasks",ExchangeType.topic,"audio.transcribe.outbox","audio.transcribe").
+                                        AddInboxListenerWorker("ai.results",ExchangeType.topic,"audio.transcribed.inbox","audio.transcribed").
+
                                     AddStep("audioTranscriptGenerated"). //“isso aconteceu”
-                                        AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
+                                        AddInboxListenerWorker("ai.tasks", ExchangeType.topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
                                         AddInBoxPollingWorker().
 
                                 AddStepGroup("prontuarySumary").
                                     AddStep("prontuarySumaryRequested"). // “faça isso”
-                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.Topic, "prontuary.sumary.CeleryWorker", "prontuary.sumary.requested").
+                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "prontuary.sumary.CeleryWorker", "prontuary.sumary.requested").
                                     AddStep("prontuarySumaryGenerated"). //“isso aconteceu”
-                                        AddQueueListenerWorker("ai.tasks", ExchangeType.Topic, "prontuary.sumary.ConsumerWorker", "prontuary.sumary.generated").
+                                        AddInboxListenerWorker("ai.tasks", ExchangeType.topic, "prontuary.sumary.ConsumerWorker", "prontuary.sumary.generated").
                                         AddInBoxPollingWorker();
 
 

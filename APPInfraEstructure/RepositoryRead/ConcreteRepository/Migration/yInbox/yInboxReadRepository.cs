@@ -184,9 +184,9 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsBySentAt(DateTime value , bool TakeOffTenantID = false)
+        public bool ExistsByProcessedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsBySentAtQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByProcessedAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -320,9 +320,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public yInboxDTO FirstBySentAt(DateTime value , bool TakeOffTenantID = false)
+        public yInboxDTO FirstByProcessedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstBySentAtQuery(value , TakeOffTenantID);
+            var query = _query.FirstByProcessedAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
@@ -456,9 +456,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllBySentAt(DateTime value , bool TakeOffTenantID = false)
+        public IEnumerable<yInboxDTO> GetAllByProcessedAt(DateTime value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstBySentAtQuery(value , TakeOffTenantID);
+            var query = _query.FirstByProcessedAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;

@@ -71,6 +71,16 @@ namespace Input.Repository.yOutbox
             var query = _query.UpdateStatus(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateTransportType(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateTransportType(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateTransportData(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateTransportData(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateCreatedAt(IyOutboxEntity entity)
         {
             var query = _query.UpdateCreatedAt(entity);
@@ -89,6 +99,16 @@ namespace Input.Repository.yOutbox
         public void UpdateLastError(IyOutboxEntity entity)
         {
             var query = _query.UpdateLastError(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateProcessingAt(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateProcessingAt(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNextAttemptAt(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateNextAttemptAt(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateSagaId(IyOutboxEntity entity)

@@ -147,7 +147,7 @@ namespace Dominio.Schemas.CQRS
                         {
                             foreach (var step in group.Steps)
                             {
-                                sb.AppendLine($"        public const string STEP_{step.Orden} = \"{step.Name}\";");
+                                sb.AppendLine($"        public const string STEP_{step.Orden} = \"{step.Name.SourceType()}\";");
                             }
                         }
                     }
@@ -233,7 +233,7 @@ namespace Dominio.Schemas.CQRS
                     var sagaComandHandler = new UseCaseCommand(_saga.Name.ToString());
 
                     var sagaName = $"{sagaComandHandler.Name.SourceType()}Saga";
-                    var handlerName = $"{_step.Name}Handler";
+                    var handlerName = $"{_step.Name.SourceType()}Handler";
                     var stepConst = $"{sagaName}.STEP_{_step.Orden}";
 
                     sb.AppendLine($"    public partial class {handlerName} : ISagaStepHandler");
@@ -244,17 +244,32 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"        public bool IsAsync => true;");
                     sb.AppendLine();
 
+                    // =============================
+                    // EXECUTE
+                    // =============================
                     sb.AppendLine("        public void Execute(SagaBase saga, SagaStepBase step)");
                     sb.AppendLine("        {");
                     sb.AppendLine("            try");
                     sb.AppendLine("            {");
-                    sb.AppendLine("                saga.MarkInProgress();");
+
+                    sb.AppendLine("                // marca execução");
+                    sb.AppendLine("                step.SetInProgress();");
                     sb.AppendLine();
 
+                    sb.AppendLine("                // lógica de domínio");
                     sb.AppendLine("                CustomExecute(saga, step);");
                     sb.AppendLine();
 
-                    sb.AppendLine("                saga.MarkWaiting(step.CorrelationId);");
+                    sb.AppendLine("                // define próximo estado");
+                    sb.AppendLine("                if (IsAsync)");
+                    sb.AppendLine("                {");
+                    sb.AppendLine("                    var correlationId = Guid.NewGuid().ToString();");
+                    sb.AppendLine("                    step.SetWaiting(correlationId);");
+                    sb.AppendLine("                }");
+                    sb.AppendLine("                else");
+                    sb.AppendLine("                {");
+                    sb.AppendLine("                    step.SetPendingApply();");
+                    sb.AppendLine("                }");
 
                     sb.AppendLine("            }");
                     sb.AppendLine("            catch (Exception ex)");
@@ -265,18 +280,20 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("        }");
                     sb.AppendLine();
 
+                    // =============================
+                    // APPLY RESPONSE
+                    // =============================
                     sb.AppendLine("        public void ApplyResponse(SagaBase saga, SagaStepBase step, string payload)");
                     sb.AppendLine("        {");
                     sb.AppendLine("            try");
                     sb.AppendLine("            {");
-                    sb.AppendLine("                step.Apply(payload);");
+
+                    sb.AppendLine("                // aplica no domínio");
+                    sb.AppendLine("                CustomApplyResponse(saga, step, payload);");
                     sb.AppendLine();
 
-                    sb.AppendLine("                CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload);");
-                    sb.AppendLine("                saga.MarkStepCompleted(step);");
-                    sb.AppendLine();
-
-                    sb.AppendLine("                saga.MoveNext();");
+                    sb.AppendLine("                // finaliza step");
+                    sb.AppendLine("                saga.CompleteCurrentStep();");
 
                     sb.AppendLine("            }");
                     sb.AppendLine("            catch (Exception ex)");
@@ -287,8 +304,9 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("        }");
                     sb.AppendLine();
 
-
-
+                    // =============================
+                    // EXTENSÕES
+                    // =============================
                     sb.AppendLine("        partial void CustomExecute(SagaBase saga, SagaStepBase step);");
                     sb.AppendLine("        partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload);");
 
@@ -304,169 +322,234 @@ namespace Dominio.Schemas.CQRS
             }
             else if (_commandType == CommandType.SagaHandlerResolver)
             {
-                    sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfacePatternsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioSaga};");
-                    sb.AppendLine($"using System;");
-                    sb.AppendLine($"using System.Collections.Generic;");
-                    sb.AppendLine();
+                sb.AppendLine("using System;");
+                sb.AppendLine("using System.Collections.Generic;");
+                sb.AppendLine();
 
-                    sb.AppendLine($"namespace {_nameSpace}");
-                    sb.AppendLine("{");
+                sb.AppendLine($"namespace {_nameSpace}");
+                sb.AppendLine("{");
 
-                    var sagaName = $"{_saga.Name}Saga";
-                    var resolverName = $"{sagaName}HandlerResolver";
+                var sagaName = $"{_saga.Name}Saga";
+                var resolverName = $"{sagaName}HandlerResolver";
 
-                    sb.AppendLine($"    public class {resolverName} : ISagaHandlerResolver");
-                    sb.AppendLine("    {");
+                sb.AppendLine($"    public class {resolverName} : ISagaHandlerResolver");
+                sb.AppendLine("    {");
 
-                    sb.AppendLine("        public Dictionary<string, ISagaStepHandler> GetHandlers()");
-                    sb.AppendLine("        {");
-                    sb.AppendLine("            return new Dictionary<string, ISagaStepHandler>");
-                    sb.AppendLine("            {");
 
-                    if (_steps != null && _steps.Any())
+                // 🔥 CAMPOS PRIVADOS (handlers)
+                if (_steps != null && _steps.Any())
+                {
+                    foreach (var step in _steps)
                     {
-                        foreach (var step in _steps)
-                        {
-                            // Nome do handler baseado no step
-                            var handlerName = $"{step.Name}Handler";
+                        var handlerName = $"{step.Name.SourceType()}Handler";
+                        var paramName = step.Name.SourceType() + "Handler";
 
-                            // Constante STEP_X
-                            var stepConst = $"{sagaName}.STEP_{step.Orden}";
-
-                            sb.AppendLine($"                {{ {stepConst}, new {handlerName}() }},");
-                        }
+                        sb.AppendLine($"        private readonly {handlerName} _{paramName};");
                     }
-                    else
+                }
+
+                sb.AppendLine();
+
+
+                // 🔥 CONSTRUTOR COM DI
+                sb.Append("        public " + resolverName + "(");
+
+                if (_steps != null && _steps.Any())
+                {
+                    for (int i = 0; i < _steps.Count; i++)
                     {
-                        sb.AppendLine("                // Nenhum step configurado");
+                        var step = _steps[i];
+                        var handlerName = $"{step.Name.SourceType()}Handler";
+                        var paramName = step.Name.SourceType() + "Handler";
+
+                        sb.Append($"{handlerName} {paramName}");
+
+                        if (i < _steps.Count - 1)
+                            sb.Append(", ");
                     }
+                }
 
-                    sb.AppendLine("            };");
-                    sb.AppendLine("        }");
+                sb.AppendLine(")");
+                sb.AppendLine("        {");
 
-                    sb.AppendLine("    }");
-                    sb.AppendLine("}");
+                if (_steps != null && _steps.Any())
+                {
+                    foreach (var step in _steps)
+                    {
+                        var paramName = step.Name.SourceType() + "Handler";
+                        sb.AppendLine($"            _{paramName} = {paramName};");
+                    }
+                }
 
+                sb.AppendLine("        }");
+                sb.AppendLine();
+
+
+                // 🔥 GET HANDLERS
+                sb.AppendLine("        public Dictionary<string, ISagaStepHandler> GetHandlers()");
+                sb.AppendLine("        {");
+                sb.AppendLine("            return new Dictionary<string, ISagaStepHandler>");
+                sb.AppendLine("            {");
+
+                if (_steps != null && _steps.Any())
+                {
+                    foreach (var step in _steps)
+                    {
+                        var handlerName = $"{step.Name.SourceType()}Handler";
+                        var paramName = step.Name.SourceType() + "Handler";
+                        var stepConst = $"{sagaName}.STEP_{step.Orden}";
+
+                        sb.AppendLine($"                {{ {stepConst}, _{paramName} }},");
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("                // Nenhum step configurado");
+                }
+
+                sb.AppendLine("            };");
+                sb.AppendLine("        }");
+
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
             }
             else if (_commandType == CommandType.SagaResolverRegistry)
             {
-                    sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
-                    sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioSaga};");
-                    sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfacePatternsSaga};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioSaga};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfacePatternsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioPatternsSaga};");
-
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceRepositorioOutputs};");
-                
 
-                    sb.AppendLine($"using System;");
-                    sb.AppendLine($"using System.Collections.Generic;");
-                    sb.AppendLine($"using System.Linq;");
-                    sb.AppendLine();
+                sb.AppendLine("using System;");
+                sb.AppendLine("using System.Collections.Generic;");
+                sb.AppendLine("using System.Linq;");
+                sb.AppendLine();
 
-                    sb.AppendLine($"namespace {_nameSpace}");
-                    sb.AppendLine("{");
+                sb.AppendLine($"namespace {_nameSpace}");
+                sb.AppendLine("{");
 
-                    sb.AppendLine("    public class SagaResolverRegistry : ISagaResolverRegistry");
-                    sb.AppendLine("    {");
+                sb.AppendLine("    public class SagaResolverRegistry : ISagaResolverRegistry");
+                sb.AppendLine("    {");
 
-                    sb.AppendLine("        private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;");
-                    sb.AppendLine("        private readonly Dictionary<string, Func<SagaBase>> _factoryMap;");
-                    sb.AppendLine();
+                sb.AppendLine("        private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;");
+                sb.AppendLine("        private readonly Dictionary<string, Func<SagaBase>> _factoryMap;");
+                sb.AppendLine();
 
-                    sb.AppendLine("        public SagaResolverRegistry()");
-                    sb.AppendLine("        {");
 
-                    // 🔥 RESOLVER MAP
-                    sb.AppendLine("            _resolverMap = new Dictionary<string, ISagaHandlerResolver>");
-                    sb.AppendLine("            {");
+                // 🔥 CONSTRUTOR DINÂMICO COM DI
+                sb.Append("        public SagaResolverRegistry(");
 
-                    foreach (var saga in _sagas)
-                    {
-                        var sagaName = $"{saga.Name}Saga";
-                        var resolverName = $"{sagaName}HandlerResolver";
+                for (int i = 0; i < _sagas.Count; i++)
+                {
+                    var saga = _sagas[i];
+                    var sagaName = $"{saga.Name}Saga";
+                    var resolverName = $"{sagaName}HandlerResolver";
+                    var paramName = saga.Name.SourceType() + "Resolver";
 
-                        sb.AppendLine($"                {{ nameof({sagaName}), new {resolverName}() }},");
-                    }
+                    sb.Append($"{resolverName} {paramName}");
 
-                    sb.AppendLine("            };");
-                    sb.AppendLine();
+                    if (i < _sagas.Count - 1)
+                        sb.Append(", ");
+                }
 
-                    // 🔥 FACTORY MAP
-                    sb.AppendLine("            _factoryMap = new Dictionary<string, Func<SagaBase>>");
-                    sb.AppendLine("            {");
+                sb.AppendLine(")");
+                sb.AppendLine("        {");
 
-                    foreach (var saga in _sagas)
-                    {
+                // 🔥 RESOLVER MAP
+                sb.AppendLine("            _resolverMap = new Dictionary<string, ISagaHandlerResolver>");
+                sb.AppendLine("            {");
+
+                foreach (var saga in _sagas)
+                {
+                    var sagaName = $"{saga.Name}Saga";
+                    var paramName = saga.Name.SourceType() + "Resolver";
+
+                    sb.AppendLine($"                {{ nameof({sagaName}), {paramName} }},");
+                }
+
+                sb.AppendLine("            };");
+                sb.AppendLine();
+
+                // 🔥 FACTORY MAP
+                sb.AppendLine("            _factoryMap = new Dictionary<string, Func<SagaBase>>");
+                sb.AppendLine("            {");
+
+                foreach (var saga in _sagas)
+                {
                     var sagaName = $"{saga.Name}Saga";
 
                     sb.AppendLine($"                {{ nameof({sagaName}), () => new {sagaName}() }},");
-                    }
+                }
 
-                    sb.AppendLine("            };");
+                sb.AppendLine("            };");
 
-                    sb.AppendLine("        }");
-                    sb.AppendLine();
+                sb.AppendLine("        }");
+                sb.AppendLine();
 
-                    // Resolve
-                    sb.AppendLine("        public ISagaHandlerResolver Resolve(SagaBase saga)");
-                    sb.AppendLine("        {");
-                    sb.AppendLine("            var key = saga.Type;");
-                    sb.AppendLine();
-                    sb.AppendLine("            if (!_resolverMap.TryGetValue(key, out var resolver))");
-                    sb.AppendLine("                throw new Exception($\"Resolver não encontrado para {key}\");");
-                    sb.AppendLine();
-                    sb.AppendLine("            return resolver;");
-                    sb.AppendLine("        }");
-                    sb.AppendLine();
 
-                    // Create
-                    sb.AppendLine("        public SagaBase Create(string type)");
-                    sb.AppendLine("        {");
-                    sb.AppendLine("            if (!_factoryMap.TryGetValue(type, out var factory))");
-                    sb.AppendLine("                throw new Exception($\"Saga não registrada: {type}\");");
-                    sb.AppendLine();
-                    sb.AppendLine("            return factory();");
-                    sb.AppendLine("        }");
-                    sb.AppendLine();
+                // 🔥 RESOLVE
+                sb.AppendLine("        public ISagaHandlerResolver Resolve(SagaBase saga)");
+                sb.AppendLine("        {");
+                sb.AppendLine("            var key = saga.Type;");
+                sb.AppendLine();
+                sb.AppendLine("            if (!_resolverMap.TryGetValue(key, out var resolver))");
+                sb.AppendLine("                throw new Exception($\"Resolver não encontrado para {key}\");");
+                sb.AppendLine();
+                sb.AppendLine("            return resolver;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
 
-                    // Map
-                    sb.AppendLine("        public SagaBase Map(ySagaDTO dto)");
-                    sb.AppendLine("        {");
-                    sb.AppendLine("            var saga = Create(dto.type);");
-                    sb.AppendLine();
-                    sb.AppendLine("            saga.Id = dto.id;");
-                    sb.AppendLine("            saga.SetSagaId(dto.sagaid);");
-                    sb.AppendLine("            saga.SetStatus(dto.status);");
-                    sb.AppendLine("            saga.Type = dto.type;");
-                    sb.AppendLine("            saga.KeyCurrentStep = dto.keycurrentstep;");
-                    sb.AppendLine("            saga.CreatedAt = dto.createdat;");
-                    sb.AppendLine("            saga.CompletedAt = dto.completedat;");
-                    sb.AppendLine("            saga.EntityType = dto.entitytype;");
-                    sb.AppendLine("            saga.EntityId = dto.entityid;");
-                    sb.AppendLine();
 
-                    sb.AppendLine("            if (dto.Steps != null && dto.Steps.Any())");
-                    sb.AppendLine("            {");
-                    sb.AppendLine("                foreach (var step in saga.Steps)");
-                    sb.AppendLine("                {");
-                    sb.AppendLine("                    var dtoStep = dto.Steps.FirstOrDefault(s => s.stepkey == step.Key);");
-                    sb.AppendLine();
-                    sb.AppendLine("                    if (dtoStep == null)");
-                    sb.AppendLine("                        continue;");
-                    sb.AppendLine();
-                    sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount);");
-                    sb.AppendLine("                }");
-                    sb.AppendLine("            }");
-                    sb.AppendLine();
-                    sb.AppendLine("            return saga;");
-                    sb.AppendLine("        }");
+                // 🔥 CREATE
+                sb.AppendLine("        public SagaBase Create(string type)");
+                sb.AppendLine("        {");
+                sb.AppendLine("            if (!_factoryMap.TryGetValue(type, out var factory))");
+                sb.AppendLine("                throw new Exception($\"Saga não registrada: {type}\");");
+                sb.AppendLine();
+                sb.AppendLine("            return factory();");
+                sb.AppendLine("        }");
+                sb.AppendLine();
 
-                    sb.AppendLine("    }");
-                    sb.AppendLine("}");
 
-                    return sb;
+                // 🔥 MAP
+                sb.AppendLine("        public SagaBase Map(ySagaDTO dto)");
+                sb.AppendLine("        {");
+                sb.AppendLine("            var saga = Create(dto.type);");
+                sb.AppendLine();
+                sb.AppendLine("            saga.Id = dto.id;");
+                sb.AppendLine("            saga.SetSagaId(dto.sagaid);");
+                sb.AppendLine("            saga.SetStatus(dto.status);");
+                sb.AppendLine("            saga.Type = dto.type;");
+                sb.AppendLine("            saga.KeyCurrentStep = dto.keycurrentstep;");
+                sb.AppendLine("            saga.CreatedAt = dto.createdat;");
+                sb.AppendLine("            saga.CompletedAt = dto.completedat;");
+                sb.AppendLine("            saga.EntityType = dto.entitytype;");
+                sb.AppendLine("            saga.EntityId = dto.entityid;");
+                sb.AppendLine();
+
+                sb.AppendLine("            if (dto.Steps != null && dto.Steps.Any())");
+                sb.AppendLine("            {");
+                sb.AppendLine("                foreach (var step in saga.Steps)");
+                sb.AppendLine("                {");
+                sb.AppendLine("                    var dtoStep = dto.Steps.FirstOrDefault(s => s.stepkey == step.Key);");
+                sb.AppendLine();
+                sb.AppendLine("                    if (dtoStep == null)");
+                sb.AppendLine("                        continue;");
+                sb.AppendLine();
+                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount);");
+                sb.AppendLine("                }");
+                sb.AppendLine("            }");
+                sb.AppendLine();
+                sb.AppendLine("            return saga;");
+                sb.AppendLine("        }");
+
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+                return sb;
             }
             else
             {

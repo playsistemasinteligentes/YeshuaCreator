@@ -122,15 +122,15 @@
                                         }
                                     }
 
-                                    public DateTime? SentAt
+                                    public DateTime? ProcessedAt
                                     {
-                                        get => _inner.SentAt;
+                                        get => _inner.ProcessedAt;
                                         set
                                         {
-                                            if (_inner.SentAt != value)
+                                            if (_inner.ProcessedAt != value)
                                             {
-                                                _logger.Info($"Propriedade SentAt: antes={_inner.SentAt}, depois={value}");
-                                                _inner.SentAt = value;
+                                                _logger.Info($"Propriedade ProcessedAt: antes={_inner.ProcessedAt}, depois={value}");
+                                                _inner.ProcessedAt = value;
                                             }
                                         }
                                     }

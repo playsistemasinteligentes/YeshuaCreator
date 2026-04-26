@@ -17,10 +17,14 @@
     string EntityId { get; set; }
     string Payload { get; set; }
     int Status { get; set; }
+    int TransportType { get; set; }
+    string TransportData { get; set; }
     DateTime CreatedAt { get; set; }
     DateTime? SentAt { get; set; }
     int RetryCount { get; set; }
     string LastError { get; set; }
+    DateTime? ProcessingAt { get; set; }
+    DateTime? NextAttemptAt { get; set; }
     int? SagaId { get; set; }
     int? SagaStepId { get; set; }
     int? TenantID { get; set; }

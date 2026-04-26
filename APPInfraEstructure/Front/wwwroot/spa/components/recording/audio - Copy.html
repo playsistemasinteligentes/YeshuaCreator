@@ -69,8 +69,8 @@
 
     <button onclick="Recorder.start()">▶️ Start</button>
     <button onclick="Recorder.pause()">⏸️ Pause</button>
-    <button onclick="Recorder.resume()">⏯️ Resume</button>
-    <button onclick="Recorder.stop()">⏹️ Stop</button>
+    <!--<button onclick="Recorder.resume()">⏯️ Resume</button>-->
+    <button onclick="Recorder.stop()">⏹️ Finalizar</button>
     <button onclick="Recorder.state()">📊 State</button>
 
     <div id="timer">00:00</div>
@@ -110,7 +110,8 @@
                 CHUNK_TIME: 5000,
                 uploadToken: null,
                 MAX_RETRIES: 3,
-                uploadEnabled: true
+                uploadEnabled: true,
+                isFinal: false
             };
         }
         const app = window.AudioRecorderApp;
@@ -178,28 +179,50 @@
 
         async function startSession() {
             if (app.uploadToken) return app.uploadToken;
-            const res = await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) });
+
+            const token = localStorage.getItem("token");
+
+            const res = await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({})
+            });
+
             const data = await res.json();
             app.uploadToken = data.uploadToken;
             log("Token sessão: " + app.uploadToken);
             return app.uploadToken;
         }
 
-        async function finishSession() {
+        async function finishSession() { // obsoleta
             if (!app.uploadToken) return;
+
+            const token = localStorage.getItem("token");
+
             log("Finalizando sessão...");
             await fetch("/yapi/FileUpload/InfraStarSessionUploadUseCase", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: app.uploadToken, IsFinalChunk: true })
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    token: app.uploadToken,
+                    IsFinalChunk: true
+                })
             });
+
             log("Sessão finalizada");
         }
 
         async function uploadChunk(chunk, isFinal = false) {
             try {
-                const fd = new FormData();
+                const token = localStorage.getItem("token");
 
+                const fd = new FormData();
                 const fileName = `audio_chunk_${chunk.index}.webm`;
 
                 fd.append("token", app.uploadToken);
@@ -211,6 +234,9 @@
 
                 const res = await fetch("/yapi/FileUpload/InfraSendFileUseCase2", {
                     method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}` // 👈 aqui
+                    },
                     body: fd
                 });
 
@@ -220,7 +246,6 @@
                 return false;
             }
         }
-
         async function uploadWorker() {
 
             if (!app.uploadEnabled) {
@@ -233,10 +258,13 @@
 
             for (let i = 0; i < chunks.length; i++) {
                 const chunk = chunks[i];
-                const isFinal = (i === chunks.length - 1);
-
+                if ((i === chunks.length - 1) && app.isFinal == false) {
+                    setTimeout(uploadWorker, 1000);
+                    return;
+                }
                 if (chunk.status === "pending" || chunk.status === "error") {
                     let ok = false;
+                    let isFinal = ((i === chunks.length - 1) && app.isFinal == true);
 
                     while (chunk.retries < app.MAX_RETRIES && !ok && app.uploadEnabled) {
 
@@ -255,6 +283,12 @@
 
                             const tx2 = app.db.transaction(["chunks"], "readwrite");
                             tx2.objectStore("chunks").delete(chunk.index);
+
+                            if (isFinal) {
+                                await Recorder.clear();
+                                return;
+                            }
+
                         } else {
                             log("❌ Erro upload chunk " + chunk.index);
 
@@ -277,6 +311,7 @@
                 if (!app.stream) { app.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); startVU(); }
                 const mimeType = getSupportedMimeType();
                 log("MimeType: " + mimeType);
+                app.isFinal = false;
                 app.mediaRecorder = new MediaRecorder(app.stream, { mimeType });
                 app.mediaRecorder.ondataavailable = async e => {
                     if (e.data.size > 0) {
@@ -299,12 +334,15 @@
 
             async stop() {
                 if (app.mediaRecorder) {
+                    if (app.mediaRecorder?.state === "recording") {
+                        app.mediaRecorder.pause(); log("Pausado");
+                    }
+                    app.isFinal = true;
                     app.mediaRecorder.stop();
                     clearInterval(app.chunkTimer);
                     stopTimer();
                     document.getElementById("recIndicator").style.background = "#500";
                     log("Finalizando gravação...");
-                    await finishSession();
                 }
             },
 

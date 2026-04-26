@@ -1,74 +1,103 @@
 ﻿using Command.Patterns;
 using Command.Patterns.Command;
+using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Saga;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using System.Collections.Generic;
-
-public class SagaInboxWorkerCommandHandler: ReciverBase<InputCommand, OutputCommand>
+namespace Command.Patterns
 {
-    private readonly IyInboxReadRepository _yInboxReadRepository;
-    private readonly ISagaResolverRegistry _sagaResolverRegistry;
-    private readonly IySagaReadRepository _sagaReadRepository;
-    private readonly IySagaWriteRepository _sagaWriteRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public SagaInboxWorkerCommandHandler(
-        IyInboxReadRepository yInboxReadRepository,
-        ISagaResolverRegistry sagaResolverRegistry,
-        IySagaReadRepository sagaReadRepository,
-        IySagaWriteRepository sagaWriteRepository,
-        IUnitOfWork unitOfWork)
+    public class SagaInboxWorkerCommandHandler : ReciverBase<InputCommand, OutputCommand>
     {
-        _yInboxReadRepository = yInboxReadRepository;
-        _sagaResolverRegistry = sagaResolverRegistry;
-        _sagaReadRepository = sagaReadRepository;
-        _sagaWriteRepository = sagaWriteRepository;
-        _unitOfWork = unitOfWork;
-    }
+        private readonly IyInboxReadRepository _yInboxReadRepository;
+        private readonly ISagaResolverRegistry _sagaResolverRegistry;
+        private readonly IySagaReadRepository _sagaReadRepository;
+        private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-    protected override State<OutputCommand> Action(InputCommand command)
-    {
-        try
+        public SagaInboxWorkerCommandHandler(
+            IyInboxReadRepository yInboxReadRepository,
+            ISagaResolverRegistry sagaResolverRegistry,
+            IySagaReadRepository sagaReadRepository,
+            IySagaWriteRepository sagaWriteRepository,
+            IUnitOfWork unitOfWork)
         {
-            var messages = _yInboxReadRepository.ClaimRunnableInbox(15, DateTime.UtcNow);
+            _yInboxReadRepository = yInboxReadRepository;
+            _sagaResolverRegistry = sagaResolverRegistry;
+            _sagaReadRepository = sagaReadRepository;
+            _sagaWriteRepository = sagaWriteRepository;
+            _unitOfWork = unitOfWork;
+        }
 
-            foreach (var msg in messages)
+        protected override State<OutputCommand> Action(InputCommand command)
+        {
+            try
             {
-                try
+                var messages = _yInboxReadRepository
+                    .ClaimRunnableInbox(15, DateTime.UtcNow);
+
+                foreach (var msg in messages)
                 {
-                    var sagaDto = _sagaReadRepository.GetAllById(msg.sagaid).FirstOrDefault();
+                    try
+                    {
+                        var sagaDto = _sagaReadRepository
+                            .GetAllById(msg.sagaid)
+                            .FirstOrDefault();
 
-                    if (sagaDto == null)
-                        continue;
+                        if (sagaDto == null)
+                            continue;
 
-                    var saga = _sagaResolverRegistry.Map(sagaDto);
+                        var saga = _sagaResolverRegistry.Map(sagaDto);
 
-                    saga.Resume(msg.EventType, msg.Payload);
-                    
-                    _unitOfWork.BeginTran();
-                    _sagaWriteRepository.Save(saga);
-                    _yInboxReadRepository.MarkAsProcessed(msg.Id);
-                    _unitOfWork.Commit();
+                        var step = saga.GetWaitingStep(msg.sagastepid);
+
+                        if (step == null)
+                            continue; // mensagem órfã ou já processada
+
+                        // 🔥 aplicar payload (SEM executar domínio)
+                        step.SetPayload(msg.payload);
+
+                        // 🔥 mudar estado → agora SagaWorker vai processar
+                        step.SetPendingApply();
+
+                        if (!saga.IsDirty)
+                            continue;
+
+                        _unitOfWork.BeginTran();
+
+                        try
+                        {
+                            _sagaWriteRepository.Save(saga);
+                            _yInboxReadRepository.MarkAsProcessed(msg.id);
+
+                            _unitOfWork.Commit();
+                        }
+                        catch
+                        {
+                            _unitOfWork.Rollback();
+                            throw;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        // retry automático (não marca como processado)
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    // retry automático (não marca como processado)
-                }
+
+                return Success("OK", null);
             }
-
-            return Success("OK", null);
-        }
-        catch (ReceiverException<OutputCommand> e)
-        {
-            return e.State;
-        }
-        catch (Exception e)
-        {
-            return Error(e, default);
+            catch (ReceiverException<OutputCommand> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
         }
     }
 }

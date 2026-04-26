@@ -19,12 +19,6 @@ C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstru
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\refint\Shered.dll
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.pdb
 C:\Users\angel\source\repos\playsistemasinteligentes\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\ref\Shered.dll
-C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.csproj.AssemblyReference.cache
-C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.AssemblyInfoInputs.cache
-C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.AssemblyInfo.cs
-C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.csproj.CoreCompileInputs.cache
-C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.sourcelink.json
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Shered.dll.config
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Shered.deps.json
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Shered.dll
@@ -35,6 +29,12 @@ C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Sher
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Command.pdb
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\RepositoryInterfaces.pdb
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\bin\Debug\net8.0\Dominio.pdb
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.csproj.AssemblyReference.cache
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.AssemblyInfoInputs.cache
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.AssemblyInfo.cs
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.csproj.CoreCompileInputs.cache
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.sourcelink.json
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.csproj.Up2Date
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\Shered.dll
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Shered\obj\Debug\net8.0\refint\Shered.dll

@@ -1,5 +1,4 @@
-using Dapper;
-using Newtonsoft.Json.Linq;
+using Microsoft.Data.SqlClient;
 using Repositorio.Outputs;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +7,93 @@ namespace Read.Repository
 {
     public partial class yOutboxReadRepository
     {
-        public IReadOnlyList<int> getToWorker(string tipo, int limite)
+        public List<yOutboxDTO> ClaimBatch(string type, int batchSize)
         {
-            var sql = @" UPDATE TOP (@Limit) yOutbox
-                            SET Status = 1 -- Processando
-                            OUTPUT INSERTED.Id
-                            WHERE Type = @Type
-                              AND Status = 0
-                              AND Deleted = 0
-                        ";
+            var sql = @"
+        DECLARE @now DATETIME2 = SYSUTCDATETIME();
 
-            var result = _unitOfWork.Query<int>(sql, new
+        UPDATE TOP (@BatchSize) yOutbox WITH (ROWLOCK, READPAST)
+        SET 
+            Status = 9,
+            ProcessingAt = @now
+        OUTPUT inserted.*
+        WHERE 
+            (
+                Status = 0
+                OR (
+                    Status = 9 
+                    AND ProcessingAt < DATEADD(MINUTE, -@TimeoutMinutes, @now)
+                )
+            )
+            AND Type = @Type
+            AND (NextAttemptAt IS NULL OR NextAttemptAt <= @now)
+    ";
+
+            return _unitOfWork.Query<yOutboxDTO>(sql, new
             {
-                Type = tipo,
-                Limit = limite
-            });
+                BatchSize = batchSize,
+                TimeoutMinutes = 5,
+                Type = type
+            }).ToList();
+        }
+        public void MarkAsDone(int id, DateTime sentAt)
+        {
+            var sql = @"
+        UPDATE yOutbox
+        SET 
+            Status = 1,
+            SentAt = @SentAt,
+            ProcessingAt = NULL
+        WHERE Id = @Id
+    ";
 
-            return result.ToList();
+            _unitOfWork.Execute(sql, new
+            {
+                Id = id,
+                SentAt = sentAt
+            });
+        }
+
+        public void MarkAsRetry(int id, int retryCount, DateTime nextAttempt, string error)
+        {
+            var sql = @"
+        UPDATE yOutbox
+        SET 
+            Status = 0,
+            RetryCount = @RetryCount,
+            NextAttemptAt = @NextAttemptAt,
+            LastError = @LastError,
+            ProcessingAt = NULL
+        WHERE Id = @Id
+    ";
+
+            _unitOfWork.Execute(sql, new
+            {
+                Id = id,
+                RetryCount = retryCount,
+                NextAttemptAt = nextAttempt,
+                LastError = error ?? ""
+            });
+        }
+
+        public void MarkAsDeadLetter(int id, string error, int retryCount)
+        {
+            var sql = @"
+        UPDATE yOutbox
+        SET 
+            Status = 2,
+            RetryCount = @RetryCount,
+            LastError = @LastError,
+            ProcessingAt = NULL
+        WHERE Id = @Id
+    ";
+
+            _unitOfWork.Execute(sql, new
+            {
+                Id = id,
+                RetryCount = retryCount,
+                LastError = error ?? ""
+            });
         }
     }
-}//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+}

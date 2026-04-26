@@ -176,6 +176,22 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByTransportType(int value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByTransportTypeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTransportData(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByTransportDataQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByCreatedAtQuery(value , TakeOffTenantID);
@@ -203,6 +219,22 @@ namespace Read.Repository
         public bool ExistsByLastError(string value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByLastErrorQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByProcessingAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByProcessingAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByNextAttemptAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByNextAttemptAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -312,6 +344,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public yOutboxDTO FirstByTransportType(int value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByTransportTypeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yOutboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yOutboxDTO FirstByTransportData(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByTransportDataQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yOutboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yOutboxDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
@@ -339,6 +387,22 @@ namespace Read.Repository
         public yOutboxDTO FirstByLastError(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yOutboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yOutboxDTO FirstByProcessingAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByProcessingAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yOutboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yOutboxDTO FirstByNextAttemptAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByNextAttemptAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<yOutboxDTO>(query.Query, query.Parameters);
                 return result;
@@ -448,6 +512,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public IEnumerable<yOutboxDTO> GetAllByTransportType(int value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByTransportTypeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
+                return result;
+        }
+
+        public IEnumerable<yOutboxDTO> GetAllByTransportData(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByTransportDataQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
+                return result;
+        }
+
         public IEnumerable<yOutboxDTO> GetAllByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
@@ -475,6 +555,22 @@ namespace Read.Repository
         public IEnumerable<yOutboxDTO> GetAllByLastError(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
+                return result;
+        }
+
+        public IEnumerable<yOutboxDTO> GetAllByProcessingAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByProcessingAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
+                return result;
+        }
+
+        public IEnumerable<yOutboxDTO> GetAllByNextAttemptAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByNextAttemptAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
                 return result;

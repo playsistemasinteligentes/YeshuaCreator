@@ -20,19 +20,23 @@ namespace Query.Write
         }
         public QueryModel InseriryOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" INSERT INTO yOutbox (MessageId, Type, EntityType, EntityId, Payload, Status, CreatedAt, SentAt, RetryCount, LastError, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @Payload, @Status, @CreatedAt, @SentAt, @RetryCount, @LastError, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yOutbox (MessageId, Type, EntityType, EntityId, Payload, Status, TransportType, TransportData, CreatedAt, SentAt, RetryCount, LastError, ProcessingAt, NextAttemptAt, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
-                MessageId = Guid.NewGuid(),
+                MessageId = yOutbox.MessageId,
                 Type = yOutbox.Type,
                 EntityType = yOutbox.EntityType,
                 EntityId = yOutbox.EntityId,
                 Payload = yOutbox.Payload,
                 Status = yOutbox.Status,
+                TransportType = yOutbox.TransportType,
+                TransportData = yOutbox.TransportData,
                 CreatedAt = yOutbox.CreatedAt,
                 SentAt = yOutbox.SentAt,
                 RetryCount = yOutbox.RetryCount,
                 LastError = yOutbox.LastError,
+                ProcessingAt = yOutbox.ProcessingAt,
+                NextAttemptAt = yOutbox.NextAttemptAt,
                 SagaId = yOutbox.SagaId,
                 SagaStepId = yOutbox.SagaStepId,
                 TenantID = _currentUser.TenantID,
@@ -44,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" UPDATE yOutbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, SentAt = @SentAt, RetryCount = @RetryCount, LastError = @LastError, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yOutbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, Payload = @Payload, Status = @Status, TransportType = @TransportType, TransportData = @TransportData, CreatedAt = @CreatedAt, SentAt = @SentAt, RetryCount = @RetryCount, LastError = @LastError, ProcessingAt = @ProcessingAt, NextAttemptAt = @NextAttemptAt, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 MessageId = yOutbox.MessageId,
@@ -53,10 +57,14 @@ namespace Query.Write
                 EntityId = yOutbox.EntityId,
                 Payload = yOutbox.Payload,
                 Status = yOutbox.Status,
+                TransportType = yOutbox.TransportType,
+                TransportData = yOutbox.TransportData,
                 CreatedAt = yOutbox.CreatedAt,
                 SentAt = yOutbox.SentAt,
                 RetryCount = yOutbox.RetryCount,
                 LastError = yOutbox.LastError,
+                ProcessingAt = yOutbox.ProcessingAt,
+                NextAttemptAt = yOutbox.NextAttemptAt,
                 SagaId = yOutbox.SagaId,
                 SagaStepId = yOutbox.SagaStepId,
                 Changed = yOutbox.Changed,
@@ -125,6 +133,26 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateTransportType(IyOutboxEntity entity)
+        {
+            this.Query = $@" UPDATE yOutbox SET TransportType = @TransportType WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TransportType = entity.TransportType,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateTransportData(IyOutboxEntity entity)
+        {
+            this.Query = $@" UPDATE yOutbox SET TransportData = @TransportData WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                TransportData = entity.TransportData,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel UpdateCreatedAt(IyOutboxEntity entity)
         {
             this.Query = $@" UPDATE yOutbox SET CreatedAt = @CreatedAt WHERE Id = @Id ";
@@ -161,6 +189,26 @@ namespace Query.Write
             this.Parameters = new
             {
                 LastError = entity.LastError,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateProcessingAt(IyOutboxEntity entity)
+        {
+            this.Query = $@" UPDATE yOutbox SET ProcessingAt = @ProcessingAt WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                ProcessingAt = entity.ProcessingAt,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNextAttemptAt(IyOutboxEntity entity)
+        {
+            this.Query = $@" UPDATE yOutbox SET NextAttemptAt = @NextAttemptAt WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                NextAttemptAt = entity.NextAttemptAt,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

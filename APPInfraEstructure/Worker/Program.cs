@@ -82,7 +82,9 @@ var topology = new QueueTopology
 var initializer = app.Services.GetRequiredService<IQueueTopologyInitializer>();
 Console.WriteLine("inicializando topologia");
 
-await initializer.InitializeAsync(topology);
+//await initializer.InitializeAsync(topology);
+
+await initializer.InitializeAsync(DependencInjection.GetQueueTopology());
 
 app.Run();
 

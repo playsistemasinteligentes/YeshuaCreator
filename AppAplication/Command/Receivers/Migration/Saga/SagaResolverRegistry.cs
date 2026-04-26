@@ -14,11 +14,11 @@ namespace Command.Receivers.Migration.Saga
         private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;
         private readonly Dictionary<string, Func<SagaBase>> _factoryMap;
 
-        public SagaResolverRegistry()
+        public SagaResolverRegistry(PsychologySessionInsightSagaHandlerResolver PsychologySessionInsightResolver)
         {
             _resolverMap = new Dictionary<string, ISagaHandlerResolver>
             {
-                { nameof(PsychologySessionInsightSaga), new PsychologySessionInsightSagaHandlerResolver() },
+                { nameof(PsychologySessionInsightSaga), PsychologySessionInsightResolver },
             };
 
             _factoryMap = new Dictionary<string, Func<SagaBase>>

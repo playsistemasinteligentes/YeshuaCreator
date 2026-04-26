@@ -37,6 +37,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using Command.Interfaces;");
             sb.AppendLine("using RepositoryInterfaces.Patterns.Saga;");
             sb.AppendLine("using Command.Receivers.Migration.Saga;");
+            sb.AppendLine("using Command.Patterns.OutBox;");
+            sb.AppendLine("using Command.Receivers;");
+            
+
+
 
 
 
@@ -55,6 +60,7 @@ namespace Dominio.Schemas.CQRS
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddScoped<OutboxService>();
 
             ");
         
@@ -137,6 +143,63 @@ namespace Dominio.Schemas.CQRS
                 }
 
             }
+
+
+            //UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"OutBoxPollingWorker"}");
+
+
+            var exchanges = new Dictionary<string, ExchangeDefinition>();
+
+            foreach (var group in _migration.UseCaseGroup)
+            {
+                foreach (var subGroup in group.UseCaseSubGroup)
+                {
+                    foreach (var saga in subGroup.Saga)
+                    {
+                        foreach (var stepGroup in saga.SagaStepGroup)
+                        {
+                            foreach (var step in stepGroup.Steps)
+                            {
+                                var topology = step.queueTopology;
+
+                                if (topology == null)
+                                    continue;
+
+                                foreach (var ex in topology.Exchanges)
+                                {
+                                    if (!exchanges.TryGetValue(ex.Name, out var existing))
+                                    {
+                                        existing = new ExchangeDefinition
+                                        {
+                                            Name = ex.Name,
+                                            Type = ex.Type,
+                                            Bindings = new List<QueueBindingDefinition>()
+                                        };
+
+                                        exchanges.Add(ex.Name, existing);
+                                    }
+
+                                    foreach (var bind in ex.Bindings)
+                                    {
+                                        // evita duplicação
+                                        if (!existing.Bindings.Any(b =>
+                                            b.QueueName == bind.QueueName &&
+                                            b.RoutingKey == bind.RoutingKey))
+                                        {
+                                            existing.Bindings.Add(new QueueBindingDefinition
+                                            {
+                                                QueueName = bind.QueueName,
+                                                RoutingKey = bind.RoutingKey
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach (var group in _migration.UseCaseGroup)
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
@@ -146,6 +209,15 @@ namespace Dominio.Schemas.CQRS
                     {
                         sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceDominioSaga}.{saga.Name.SourceType()}Saga>();");
                         sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceSagaHandlerResolver}.{saga.Name.SourceType()}SagaHandlerResolver>();");
+
+                        foreach (var stepGroup in saga.SagaStepGroup)
+                        {
+                            foreach (var step in stepGroup.Steps)
+                            {
+                                sb.AppendLine($"builder.Services.AddTransient<{$"{step.Name.SourceType()}Handler"}>();");
+
+                            }
+                        }
                     }
 
                     foreach (var useCase in subGroup.UseCaseCommand)
@@ -177,6 +249,40 @@ namespace Dominio.Schemas.CQRS
             }
 
 
+            sb.AppendLine("}");
+
+            sb.AppendLine("public static Command.Interfaces.Patterns.Queue.QueueTopology GetQueueTopology()");
+            sb.AppendLine("{");
+
+            sb.AppendLine("return new Command.Interfaces.Patterns.Queue.QueueTopology");
+            sb.AppendLine("{");
+            sb.AppendLine("    Exchanges = new List<Command.Interfaces.Patterns.Queue.ExchangeDefinition>");
+            sb.AppendLine("    {");
+
+            foreach (var ex in exchanges.Values)
+            {
+                sb.AppendLine("        new Command.Interfaces.Patterns.Queue.ExchangeDefinition");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            Name = \"{ex.Name}\",");
+                sb.AppendLine($"            Type = \"{ex.Type}\",");
+                sb.AppendLine("            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>");
+                sb.AppendLine("            {");
+
+                foreach (var bind in ex.Bindings)
+                {
+                    sb.AppendLine("                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition");
+                    sb.AppendLine("                {");
+                    sb.AppendLine($"                    QueueName = \"{bind.QueueName}\",");
+                    sb.AppendLine($"                    RoutingKey = \"{bind.RoutingKey}\"");
+                    sb.AppendLine("                },");
+                }
+
+                sb.AppendLine("            }");
+                sb.AppendLine("        },");
+            }
+
+            sb.AppendLine("    }");
+            sb.AppendLine("};");
             sb.AppendLine("}");
             sb.AppendLine("}");
             sb.AppendLine("}");

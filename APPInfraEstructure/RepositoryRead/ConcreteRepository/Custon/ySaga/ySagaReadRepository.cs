@@ -14,18 +14,24 @@ namespace Read.Repository
         /// </summary>
         public IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt)
         {
-            var sql = @" UPDATE TOP (@Limit) ySaga
-                            SET 
-                                LockedBy = @LockedBy, 
-                                LockedAt = @LockedAt,
-                                NextExecutionAt = @NextExecutionAt
-
-                            OUTPUT inserted.*
+            var sql = @"
+                        WITH cte AS (
+                            SELECT TOP (@Limit) *
+                            FROM ySaga WITH (UPDLOCK, READPAST, ROWLOCK)
                             WHERE 
                                 Status = 1 -- InProgress
                                 AND (LockedBy IS NULL OR LockedAt < @DtNowlockedAt)
-                                AND (NextExecutionAt IS NULL OR NextExecutionAt <= @DtNow)";
-
+                                AND (NextExecutionAt IS NULL OR NextExecutionAt <= @DtNow)
+                            ORDER BY 
+                                ISNULL(NextExecutionAt, '1900-01-01') ASC
+                        )
+                        UPDATE cte
+                        SET 
+                            LockedBy = @LockedBy, 
+                            LockedAt = @LockedAt,
+                            NextExecutionAt = @NextExecutionAt
+                        OUTPUT inserted.*;
+                        ";
 
             var sagas = _unitOfWork.Query<ySagaDTO>(sql, new
             {
@@ -33,7 +39,7 @@ namespace Read.Repository
                 LockedBy = lockedBy,
                 LockedAt = lockedAt,
                 NextExecutionAt = nextExecutionAt,
-                DtNow = DateTime.Now,
+                DtNow = DateTime.UtcNow,
                 DtNowlockedAt = lockedAt.AddMinutes(-1)
 
             }).ToList();

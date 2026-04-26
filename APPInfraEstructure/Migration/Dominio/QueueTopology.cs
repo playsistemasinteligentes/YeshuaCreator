@@ -16,7 +16,7 @@ namespace Dominio
     {
         public string Name { get; init; } = default!;
 
-        public ExchangeType Type { get; init; } = ExchangeType.Topic;
+        public ExchangeType Type { get; init; } = ExchangeType.topic;
 
         public bool Durable { get; init; } = true;
 
@@ -34,9 +34,9 @@ namespace Dominio
 
     public enum ExchangeType
     {
-        Direct,
-        Fanout,
-        Topic,
-        Headers
+        direct,
+        fanout,
+        topic,
+        headers
     }
 }

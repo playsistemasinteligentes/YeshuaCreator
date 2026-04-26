@@ -1,39 +1,86 @@
 ﻿using Dominio.Entitys;
 using Dominio.Interfaces;
 using IRepository.Write;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Command.Patterns.OutBox
 {
     public class OutboxService
     {
-        private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
+        private readonly IyOutboxWriteRepository _repo;
         private readonly ILogger _logger;
 
-        public OutboxService(IyOutboxWriteRepository yOutboxWriteRepository, ILogger logger)
+        public OutboxService(IyOutboxWriteRepository repo, ILogger logger)
         {
-            _yOutboxWriteRepository = yOutboxWriteRepository;
+            _repo = repo;
             _logger = logger;
         }
 
-        public void AddOutBoxEvent(string type, object payload, string entityType, string entityID)
+        public void AddOutBoxEvent(
+            string type,
+            object payload,
+            string entityType,
+            string entityID,
+            string messageId,
+            int transportType,
+            object transportData,
+            int? sagaId = null,
+            int? sagaStepID = null)
         {
-            AddOutbox(type, payload, entityType, entityID);
-        }
+            if (string.IsNullOrWhiteSpace(messageId))
+                messageId = Guid.NewGuid().ToString();
 
-        private void AddOutbox(string type, object payload, string entityType, string entityID)
-        {
+            string payloadJson;
+            string transportJson;
 
-            var youtbox = new yOutboxFactory(_logger).Create(0, type, entityType, entityID,JsonSerializer.Serialize(payload), 0, DateTime.UtcNow, null, 0, string.Empty,null,null);
-            if (!youtbox.isValidInsert())
-                throw new ApplicationException(string.Join("; ", youtbox.getErroMensagens()));
+            try
+            {
+                payloadJson = JsonSerializer.Serialize(payload);
+                transportJson = transportData != null
+                    ? JsonSerializer.Serialize(transportData)
+                    : null;
+            }
+            catch (Exception ex)
+            {
+                //_logger.Error("Erro serializando payload do Outbox: " + ex.Message);
+                throw;
+            }
 
-            _yOutboxWriteRepository.Insert(youtbox);
+            var entity = new yOutboxFactory(_logger).Create(
+                            id: 0,
+                            messageid: messageId,
+                            type: type,
+                            entitytype: entityType,
+                            entityid: entityID,
+                            payload: payloadJson,
+
+                            status: 0, // Pending
+
+                            transporttype: transportType,
+                            transportdata: transportJson,
+
+                            createdat: DateTime.UtcNow,
+                            sentat: null,
+
+                            retrycount: 0,
+                            lasterror: string.Empty,
+
+                            processingat: null,
+                            nextattemptat: null,
+
+                            sagaid: sagaId,
+                            sagastepid: sagaStepID
+                        );
+            if (!entity.isValidInsert())
+                throw new ApplicationException(string.Join("; ", entity.getErroMensagens()));
+
+            // 🔥 CAMPOS NOVOS (ESSENCIAL)
+            entity.TransportType = transportType;
+            entity.TransportData = transportJson;
+            entity.NextAttemptAt = null;
+            entity.ProcessingAt = null;
+
+            _repo.Insert(entity);
         }
     }
 }

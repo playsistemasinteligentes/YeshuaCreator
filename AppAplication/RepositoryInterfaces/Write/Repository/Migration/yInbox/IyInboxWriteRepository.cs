@@ -19,7 +19,7 @@ namespace IRepository.Write
         public void UpdatePayload(IyInboxEntity entity);
         public void UpdateStatus(IyInboxEntity entity);
         public void UpdateCreatedAt(IyInboxEntity entity);
-        public void UpdateSentAt(IyInboxEntity entity);
+        public void UpdateProcessedAt(IyInboxEntity entity);
         public void UpdateRetryCount(IyInboxEntity entity);
         public void UpdateLastError(IyInboxEntity entity);
         public void UpdateSagaId(IyInboxEntity entity);

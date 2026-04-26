@@ -16,7 +16,7 @@ namespace IQuery.Read
         public QueryModel ExistsByPayloadQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
-        public QueryModel ExistsBySentAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByProcessedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByRetryCountQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByLastErrorQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsBySagaIdQuery(int value , bool TakeOffTenantID = false);
@@ -33,7 +33,7 @@ namespace IQuery.Read
         public QueryModel FirstByPayloadQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
-        public QueryModel FirstBySentAtQuery(DateTime value , bool TakeOffTenantID = false);
+        public QueryModel FirstByProcessedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByRetryCountQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByLastErrorQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstBySagaIdQuery(int value , bool TakeOffTenantID = false);

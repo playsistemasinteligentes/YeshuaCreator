@@ -17,10 +17,14 @@
     public string EntityId { get; set; }
     public string Payload { get; set; }
     public int Status { get; set; }
+    public int TransportType { get; set; }
+    public string TransportData { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? SentAt { get; set; }
     public int RetryCount { get; set; }
     public string LastError { get; set; }
+    public DateTime? ProcessingAt { get; set; }
+    public DateTime? NextAttemptAt { get; set; }
     public int? SagaId { get; set; }
     public int? SagaStepId { get; set; }
     public int? TenantID { get; set; }
@@ -28,17 +32,22 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yOutboxEntity(int? id, string type, string entitytype, string entityid, string payload, int status, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, int? sagaid, int? sagastepid ){
+ internal yOutboxEntity(int? id, string messageid, string type, string entitytype, string entityid, string payload, int status, int transporttype, string transportdata, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid ){
  Id = id; 
+ MessageId = messageid; 
  Type = type; 
  EntityType = entitytype; 
  EntityId = entityid; 
  Payload = payload; 
  Status = status; 
+ TransportType = transporttype; 
+ TransportData = transportdata; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
  SentAt = (sentat < (new DateTime(1800, 1, 1))) ? DateTime.Now : sentat; 
  RetryCount = retrycount; 
  LastError = lasterror; 
+ ProcessingAt = (processingat < (new DateTime(1800, 1, 1))) ? DateTime.Now : processingat; 
+ NextAttemptAt = (nextattemptat < (new DateTime(1800, 1, 1))) ? DateTime.Now : nextattemptat; 
  SagaId = sagaid; 
  SagaStepId = sagastepid; 
 }
@@ -51,6 +60,8 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Payload deve ser informado.");
    if (Status == null)
    this._erroMensagem.Add("Status deve ser informado.");
+   if (TransportType == null)
+   this._erroMensagem.Add("Tipo de Transporte deve ser informado.");
    if (CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado em deve ser informado.");
    if (RetryCount == null)

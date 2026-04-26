@@ -7,7 +7,7 @@ using System;
 
 namespace Command.Receivers
 {
-    public partial class prontuarySumaryRequestedHandler : ISagaStepHandler
+    public partial class ProntuarySumaryRequestedHandler : ISagaStepHandler
     {
         public string Key => PsychologySessionInsightSaga.STEP_3;
 
@@ -17,11 +17,39 @@ namespace Command.Receivers
         {
             try
             {
-                saga.MarkInProgress();
+                // marca execução
+                step.SetInProgress();
 
+                // lógica de domínio
                 CustomExecute(saga, step);
 
-                saga.MarkWaiting(step.CorrelationId);
+                // define próximo estado
+                if (IsAsync)
+                {
+                    var correlationId = Guid.NewGuid().ToString();
+                    step.SetWaiting(correlationId);
+                }
+                else
+                {
+                    step.SetPendingApply();
+                }
+            }
+            catch (Exception ex)
+            {
+                saga.MarkFailed(ex.Message);
+                throw;
+            }
+        }
+
+        public void ApplyResponse(SagaBase saga, SagaStepBase step, string payload)
+        {
+            try
+            {
+                // aplica no domínio
+                CustomApplyResponse(saga, step, payload);
+
+                // finaliza step
+                saga.CompleteCurrentStep();
             }
             catch (Exception ex)
             {
@@ -31,6 +59,7 @@ namespace Command.Receivers
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step);
+        partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

@@ -36,22 +36,25 @@ namespace Command.Patterns
         {
             try
             {
-                var LockedBy = "Worker_0001";
-                DateTime LockedAt = DateTime.UtcNow;
-                DateTime NextExecutionAt = DateTime.UtcNow.AddMinutes(5); 
-                var sagas = _sagaReadRepository.ClaimRunnableSagas(5, LockedBy, LockedAt, NextExecutionAt);
-                
+                var lockedBy = $"Worker_{Environment.MachineName}";
+                var lockedAt = DateTime.UtcNow;
+                var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
+
+                var sagas = _sagaReadRepository
+                    .ClaimRunnableSagas(5, lockedBy, lockedAt, nextExecutionAt);
+
                 foreach (var sagaDto in sagas)
                 {
-                    string SagaId = string.Empty;
+                    string sagaId = string.Empty;
+
                     try
                     {
                         var saga = _registry.Map(sagaDto);
-                        SagaId = saga.SagaId.ToString();
+                        sagaId = saga.SagaId.ToString();
 
-                        saga.LockedBy = LockedBy;
-                        saga.LockedAt = LockedAt;
-                        saga.NextExecutionAt = NextExecutionAt;
+                        // 🔒 lock metadata
+                        saga.LockedBy = lockedBy;
+                        saga.LockedAt = lockedAt;
 
                         if (saga.Status != SagaStatus.InProgress)
                             continue;
@@ -63,19 +66,34 @@ namespace Command.Patterns
 
                         var resolver = _registry.Resolve(saga);
 
+                        // 🔥 EXECUÇÃO CENTRALIZADA
                         _executor.Execute(saga, resolver);
 
+                        // 🔥 só persiste se mudou
+                        if (!saga.IsDirty)
+                            continue;
+
                         _unitOfWork.BeginTran();
-                        _sagaWriteRepository.Save(saga);
-                        _unitOfWork.Commit();
+
+                        try
+                        {
+                            _sagaWriteRepository.Save(saga);
+                            _unitOfWork.Commit();
+                        }
+                        catch
+                        {
+                            _unitOfWork.Rollback();
+                            throw;
+                        }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Erro na saga {SagaId}: {ex.Message}");
+                        Console.WriteLine($"Erro na saga {sagaId}: {ex.Message}");
                     }
                     finally
                     {
-                        _sagaReadRepository.ReleaseLock(saga.Id, LockedBy);
+                        // 🔓 libera lock SEMPRE
+                        _sagaReadRepository.ReleaseLock(sagaDto.id, lockedBy);
                     }
                 }
 
@@ -90,7 +108,6 @@ namespace Command.Patterns
                 return Error(e, default);
             }
         }
-
     }
 
     public partial record InputCommand : ICommand

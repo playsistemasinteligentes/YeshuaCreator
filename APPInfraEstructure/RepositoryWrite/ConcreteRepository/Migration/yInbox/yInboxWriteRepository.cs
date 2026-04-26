@@ -76,9 +76,9 @@ namespace Input.Repository.yInbox
             var query = _query.UpdateCreatedAt(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSentAt(IyInboxEntity entity)
+        public void UpdateProcessedAt(IyInboxEntity entity)
         {
-            var query = _query.UpdateSentAt(entity);
+            var query = _query.UpdateProcessedAt(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateRetryCount(IyInboxEntity entity)

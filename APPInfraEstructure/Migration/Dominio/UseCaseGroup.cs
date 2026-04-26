@@ -244,7 +244,7 @@ Command
             return AddOutBoxPollingWorker(queueTopology);
         }
 
-        public UseCaseGroup AddQueueListenerWorker(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
+        public UseCaseGroup AddInboxListenerWorker(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
         {
 
             QueueTopology queueTopology = new QueueTopology
@@ -263,9 +263,9 @@ Command
                 }
             };
 
-            return AddQueueListenerWorker(queueTopology);
+            return AddInboxListenerWorker(queueTopology);
         }
-        public UseCaseGroup AddQueueListenerWorker(QueueTopology queueTopology)
+        public UseCaseGroup AddInboxListenerWorker(QueueTopology queueTopology)
         {
             this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.queueTopology = queueTopology;
 

@@ -91,13 +91,6 @@ namespace Migration.Dominio.Migration
             .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
-
-
-
-
-
-
-
             AddEntity("yOutbox").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
                 .AddColumn("MessageId", "Message Id").Varchar(100)
@@ -110,10 +103,25 @@ namespace Migration.Dominio.Migration
                     .Enumerable(0, "Pending")
                     .Enumerable(1, "Sent")
                     .Enumerable(2, "Failed")
+                    .Enumerable(9, "Processing")
+
+                // 🔥 TIPO DE TRANSPORTE (ENUM)
+                .AddColumn("TransportType", "Tipo de Transporte").Int().NotNull()
+                    .Enumerable(1, "Queue")
+                    .Enumerable(2, "Http")
+                    .Enumerable(3, "Socket")
+
+                // 🔥 CONFIG FLEXÍVEL (JSON)
+                .AddColumn("TransportData", "Dados do transporte").Varchar(8000)
+
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("SentAt", "Enviado em").DateTime()
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
+                .AddColumn("ProcessingAt", "Processando em").DateTime() 
+                .AddColumn("NextAttemptAt", "Próxima tentativa").DateTime() 
+
+
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
@@ -125,39 +133,30 @@ namespace Migration.Dominio.Migration
 
 
             AddEntity("yInbox").AddModule("ADM")
-
                 .AddColumn("Id", "ID").Int().Incremento().Key()
-
                 // 🔑 Idempotência / rastreio externo
                 .AddColumn("MessageId", "Message Id").Varchar(100)
-
                 // 🔀 Roteamento
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("EntityType", "Entity Type").Varchar(100)
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
-
                 // 📦 Payload (IMPORTANTE aumentar)
                 .AddColumn("Payload", "Payload").Varchar(8000).NotNull()
-
                 // 🔄 Estado
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
                     .Enumerable(1, "Processed")
                     .Enumerable(2, "Failed")
                     .Enumerable(3, "Processing")
-
                 // ⏱️ Controle de fluxo
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("ProcessedAt", "Processado em").DateTime()
-
                 // 🔁 Retry
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
-
                 // 🔗 Integração com Saga (mantém)
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
-
                 // 🏢 Multi-tenant
                 .AddColumn("TenantID", "TenantID").Int()
                     .FK("yTenant", "Id")
@@ -165,6 +164,51 @@ namespace Migration.Dominio.Migration
                     .EditFront(false)
                     .NeedBeWhere()
                     .CanTakeOffWhere();
+
+/*
+
+    1. Saga.Start
+       → Step = Pending
+
+    2. SagaWorker
+
+       se Pending:
+          → Execute
+
+          se interno:
+             → ApplyResponse (inline)
+             → Completed
+             → próximo step
+             → go to passo 2
+
+          se externo:
+             → Outbox
+             → WaitingResponse
+             → parar
+
+       se PendingApply:
+          → ApplyResponse
+          → Completed
+          → próximo step
+          → go to passo 2
+
+    3. OutboxWorker
+       → envia mensagem
+
+    4. QueueListener
+       → grava Inbox
+
+    5. InboxWorker
+       → encontra saga + step (WaitingResponse)
+       → salva payload
+       → Step = PendingApply
+
+    → go to passo 2
+
+ */
+
+
+
 
         }
         public record SendFileCommand(string token, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);

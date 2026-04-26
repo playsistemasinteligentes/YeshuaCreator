@@ -11,6 +11,6 @@ namespace Command.Interfaces
     public interface ISagaExecutor
     {
         void Execute(SagaBase saga, ISagaHandlerResolver resolver);
-        void ApplyResponsee(SagaBase saga, ISagaHandlerResolver resolver, string payload);
+        //void ApplyResponsee(SagaBase saga, ISagaHandlerResolver resolver, string payload);
     }
 }

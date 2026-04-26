@@ -46,15 +46,18 @@ def convert_to_wav(input_path: str) -> str:
     ], check=True)
     return output_path
 
-
 @celery_app.task(
-    name="app.tasks.transcribe_audio",
-    bind=True,
-    autoretry_for=(Exception,),
-    retry_backoff=True,
-    retry_backoff_max=60,
-    retry_kwargs={"max_retries": 3},
+    name="app.tasks.transcribe_audio"
 )
+
+#@celery_app.task(
+#    name="app.tasks.transcribe_audio",
+#    bind=True,
+#    autoretry_for=(Exception,),
+#    retry_backoff=True,
+#    retry_backoff_max=60,
+#    retry_kwargs={"max_retries": 3},
+#)
 def transcribe_audio(self, job_id: str, file_url: str):
     file_path = None
     wav_path = None

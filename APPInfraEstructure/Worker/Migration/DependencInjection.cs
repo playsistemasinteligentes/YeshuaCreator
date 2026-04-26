@@ -4,6 +4,8 @@ using Command.Patterns;
 using Command.Interfaces;
 using RepositoryInterfaces.Patterns.Saga;
 using Command.Receivers.Migration.Saga;
+using Command.Patterns.OutBox;
+using Command.Receivers;
 namespace Migrations
 {
 public static class DependencInjection
@@ -17,6 +19,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddScoped<OutboxService>();
 
             
 
@@ -373,14 +376,12 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
-
-builder.Services.AddTransient<Command.Receivers.UseCase.OutBoxHandler>();
-
-builder.Services.AddTransient<Command.Receivers.UseCase.InboxHandler>();
-
-builder.Services.AddTransient<Command.Receivers.UseCase.InBoxHandler>();
 builder.Services.AddTransient<Dominio.Saga.PsychologySessionInsightSaga>();
 builder.Services.AddTransient<Command.Receivers.PsychologySessionInsightSagaHandlerResolver>();
+builder.Services.AddTransient<AudioTranscriptRequestedHandler>();
+builder.Services.AddTransient<AudioTranscriptGeneratedHandler>();
+builder.Services.AddTransient<ProntuarySumaryRequestedHandler>();
+builder.Services.AddTransient<ProntuarySumaryGeneratedHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
@@ -397,6 +398,51 @@ builder.Services.AddTransient<Shered.Patterns.Strategy.SMSNotification>();
 builder.Services.AddTransient<Shered.Patterns.Strategy.WhatsappNotification>();
 builder.Services.AddTransient<Dominio.Interfaces.Strategy.IINotificationFactory,Shered.Patterns.Strategy.NotificationFactory>();
 builder.Services.AddTransient<Dominio.Interfaces.Strategy.IMessage,Shered.Patterns.Strategy.Message>();
+}
+public static Command.Interfaces.Patterns.Queue.QueueTopology GetQueueTopology()
+{
+return new Command.Interfaces.Patterns.Queue.QueueTopology
+{
+    Exchanges = new List<Command.Interfaces.Patterns.Queue.ExchangeDefinition>
+    {
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "ai.results",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribed.inbox",
+                    RoutingKey = "audio.transcribed"
+                },
+            }
+        },
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "ai.tasks",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "audio.transcript.ConsumerWorker",
+                    RoutingKey = "audio.transcript.generated"
+                },
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "prontuary.sumary.CeleryWorker",
+                    RoutingKey = "prontuary.sumary.requested"
+                },
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "prontuary.sumary.ConsumerWorker",
+                    RoutingKey = "prontuary.sumary.generated"
+                },
+            }
+        },
+    }
+};
 }
 }
 }

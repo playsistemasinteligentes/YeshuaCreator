@@ -18,7 +18,7 @@
     string Payload { get; set; }
     int Status { get; set; }
     DateTime CreatedAt { get; set; }
-    DateTime? SentAt { get; set; }
+    DateTime? ProcessedAt { get; set; }
     int RetryCount { get; set; }
     string LastError { get; set; }
     int? SagaId { get; set; }

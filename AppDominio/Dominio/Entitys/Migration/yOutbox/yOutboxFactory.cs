@@ -9,9 +9,9 @@
                                     public yOutboxFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IyOutboxEntity Create(int? id, string type, string entitytype, string entityid, string payload, int status, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, int? sagaid, int? sagastepid )
+                                    } public IyOutboxEntity Create(int? id, string messageid, string type, string entitytype, string entityid, string payload, int status, int transporttype, string transportdata, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid )
                             {
-                            var entity = new yOutboxEntity(id, type, entitytype, entityid, payload, status, createdat, sentat, retrycount, lasterror, sagaid, sagastepid );
+                            var entity = new yOutboxEntity(id, messageid, type, entitytype, entityid, payload, status, transporttype, transportdata, createdat, sentat, retrycount, lasterror, processingat, nextattemptat, sagaid, sagastepid );
 
 
                             var decoratedEntity = new yOutboxDecorator(entity, _logger);
