@@ -56,45 +56,75 @@ def convert_to_wav(input_path: str) -> str:
     retry_kwargs={"max_retries": 1},
 )
 
+@celery_app.task(
+    name="app.tasks.transcribe_audio",
+    bind=True,
+    autoretry_for=(Exception,),  # 🔥 mantido por enquanto
+    retry_backoff=True,
+    retry_backoff_max=60,
+    retry_kwargs={"max_retries": 1},
+)
 def transcribe_audio(self, job_id: str, file_url: str):
     file_path = None
     wav_path = None
     cleanup_wav = False
 
     try:
-        print(">>> INICIO TASK")
+        print(f"[{job_id}] INICIO TASK")
 
-        # 1️⃣ Baixar o arquivo
+        # 1️⃣ download
         file_path = download_file(file_url)
-        print(f"Arquivo baixado: {file_path}")
+        print(f"[{job_id}] arquivo baixado")
 
-        # 2️⃣ Converter se necessário
+        # 2️⃣ conversão
         wav_path = convert_to_wav(file_path)
-        cleanup_wav = wav_path != file_path  # só remove se criou um novo WAV
-        print(f"Arquivo pronto para transcrição: {wav_path}")
+        cleanup_wav = wav_path != file_path
+        print(f"[{job_id}] convertido para wav")
 
-        # 3️⃣ Transcrever
+        # 3️⃣ transcrição
         text = transcribe_audio_file(wav_path)
-        print(f"Transcrição concluída: {text[:50]}...")
+        print(f"[{job_id}] transcrição concluída")
 
-        # 4️⃣ Publicar mensagem
+        # ✅ SUCESSO (CONTRATO PADRÃO)
         publish_message(
             "audio.transcribed.inbox",
-            {"job_id": job_id, "success": True, "text": text},
+            {
+                "correlationId": job_id,
+                "status": "completed",
+                "result": {
+                    "text": text
+                },
+                "error": None
+            },
         )
-        print("Mensagem publicada com sucesso!")
 
-        return {"job_id": job_id, "success": True, "text": text}
+        print(f"[{job_id}] SUCCESS enviado")
 
     except Exception as e:
-        print(">>> ERRO NA TASK:", str(e))
-        raise
+        print(f"[{job_id}] ERRO: {e}")
+
+        # ❌ ERRO (CONTRATO PADRÃO)
+        publish_message(
+            "audio.transcribed.inbox",
+            {
+                "correlationId": job_id,
+                "status": "failed",
+                "result": None,
+                "error": {
+                    "message": str(e),
+                    "type": type(e).__name__
+                }
+            },
+        )
+
+        print(f"[{job_id}] ERROR enviado")
 
     finally:
-        # Limpeza de arquivos temporários
+        # 🧹 limpeza
         if file_path and os.path.exists(file_path):
             os.remove(file_path)
-            print(f"Arquivo temporário removido: {file_path}")
+            print(f"[{job_id}] file removido")
+
         if cleanup_wav and wav_path and os.path.exists(wav_path):
             os.remove(wav_path)
-            print(f"Arquivo WAV temporário removido: {wav_path}")
+            print(f"[{job_id}] wav removido")
