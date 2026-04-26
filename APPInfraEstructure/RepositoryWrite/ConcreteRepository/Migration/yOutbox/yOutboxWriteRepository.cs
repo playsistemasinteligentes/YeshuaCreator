@@ -61,6 +61,11 @@ namespace Input.Repository.yOutbox
             var query = _query.UpdateEntityId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateCorrelationId(IyOutboxEntity entity)
+        {
+            var query = _query.UpdateCorrelationId(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdatePayload(IyOutboxEntity entity)
         {
             var query = _query.UpdatePayload(entity);

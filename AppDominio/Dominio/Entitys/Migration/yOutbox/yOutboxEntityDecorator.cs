@@ -83,6 +83,19 @@
                                         }
                                     }
 
+                                    public string CorrelationId
+                                    {
+                                        get => _inner.CorrelationId;
+                                        set
+                                        {
+                                            if (_inner.CorrelationId != value)
+                                            {
+                                                _logger.Info($"Propriedade CorrelationId: antes={_inner.CorrelationId}, depois={value}");
+                                                _inner.CorrelationId = value;
+                                            }
+                                        }
+                                    }
+
                                     public string Payload
                                     {
                                         get => _inner.Payload;

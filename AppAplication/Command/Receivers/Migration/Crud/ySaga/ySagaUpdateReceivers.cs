@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ySagaCrudCommand c) 
              {    
-                 var ysaga = new ySagaFactory(_logger).Create(c.Id, c.SagaId, c.Type, c.Status, c.KeyCurrentStep, c.CreatedAt, c.CompletedAt, c.EntityType, c.EntityId, c.NextExecutionAt, c.LockedAt, c.LockedBy);
+                 var ysaga = new ySagaFactory(_logger).Create(c.Id, c.CorrelationId, c.Type, c.Status, c.KeyCurrentStep, c.CreatedAt, c.CompletedAt, c.EntityType, c.EntityId, c.NextExecutionAt, c.LockedAt, c.LockedBy);
                  if (!ysaga.isValidUpdate())
                      return ValidationError(ysaga.getErroMensagens(), null);
 

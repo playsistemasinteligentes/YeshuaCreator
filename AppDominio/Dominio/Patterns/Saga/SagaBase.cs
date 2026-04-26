@@ -19,7 +19,7 @@ namespace Dominio.Patterns.Saga
     public abstract class SagaBase
     {
         public int Id { get; set; }
-        public Guid SagaId { get; protected set; } = Guid.NewGuid();
+        public Guid CorrelationId { get; protected set; } = Guid.NewGuid();
         public string Type { get; set; }
         public SagaStatus Status { get; protected set; } = SagaStatus.NotStarted;
         public string KeyCurrentStep { get; set; }
@@ -38,7 +38,7 @@ namespace Dominio.Patterns.Saga
 
         public void SetSagaId(string guid)
         {
-            this.SagaId = Guid.Parse(guid);
+            this.CorrelationId = Guid.Parse(guid);
         }
         public void SetStatus(int status)
         {

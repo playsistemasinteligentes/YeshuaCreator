@@ -31,15 +31,15 @@
                                         }
                                     }
 
-                                    public string SagaId
+                                    public string CorrelationId
                                     {
-                                        get => _inner.SagaId;
+                                        get => _inner.CorrelationId;
                                         set
                                         {
-                                            if (_inner.SagaId != value)
+                                            if (_inner.CorrelationId != value)
                                             {
-                                                _logger.Info($"Propriedade SagaId: antes={_inner.SagaId}, depois={value}");
-                                                _inner.SagaId = value;
+                                                _logger.Info($"Propriedade CorrelationId: antes={_inner.CorrelationId}, depois={value}");
+                                                _inner.CorrelationId = value;
                                             }
                                         }
                                     }

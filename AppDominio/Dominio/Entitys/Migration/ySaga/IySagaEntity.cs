@@ -11,7 +11,7 @@
                     public interface IySagaEntity
 {
     int? Id { get; set; }
-    string SagaId { get; set; }
+    string CorrelationId { get; set; }
     string Type { get; set; }
     int Status { get; set; }
     string KeyCurrentStep { get; set; }

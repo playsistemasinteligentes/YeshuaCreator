@@ -41,9 +41,9 @@ namespace Input.Repository.ySaga
             var query = _query.DeleteySagaQuery(ySaga);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSagaId(IySagaEntity entity)
+        public void UpdateCorrelationId(IySagaEntity entity)
         {
-            var query = _query.UpdateSagaId(entity);
+            var query = _query.UpdateCorrelationId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateType(IySagaEntity entity)

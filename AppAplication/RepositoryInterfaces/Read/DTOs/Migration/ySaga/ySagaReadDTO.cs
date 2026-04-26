@@ -9,7 +9,7 @@ namespace Repositorio.Outputs
     public partial record ySagaDTO
     {
     public int id { get; set; }
-    public string sagaid { get; set; }
+    public string correlationid { get; set; }
     public string type { get; set; }
     public int status { get; set; }
     public string keycurrentstep { get; set; }

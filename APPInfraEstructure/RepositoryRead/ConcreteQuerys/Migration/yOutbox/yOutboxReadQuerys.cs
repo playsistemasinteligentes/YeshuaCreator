@@ -25,7 +25,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, MessageId, Type, EntityType, EntityId, Payload, Status, TransportType, TransportData, CreatedAt, SentAt, RetryCount, LastError, ProcessingAt, NextAttemptAt, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId from yOutbox ";
+            this.Query = $@" select Id, MessageId, Type, EntityType, EntityId, CorrelationId, Payload, Status, TransportType, TransportData, CreatedAt, SentAt, RetryCount, LastError, ProcessingAt, NextAttemptAt, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId from yOutbox ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.MessageId)) dict["MessageId"] = $"%{Command.MessageId}%";
@@ -36,6 +36,8 @@ if (!string.IsNullOrEmpty(Command.EntityType)) dict["EntityType"] = $"%{Command.
 if (!string.IsNullOrEmpty(Command.EntityType)) whereClauses.Add($"EntityType like @EntityType");
 if (!string.IsNullOrEmpty(Command.EntityId)) dict["EntityId"] = $"%{Command.EntityId}%";
 if (!string.IsNullOrEmpty(Command.EntityId)) whereClauses.Add($"EntityId like @EntityId");
+if (!string.IsNullOrEmpty(Command.CorrelationId)) dict["CorrelationId"] = $"%{Command.CorrelationId}%";
+if (!string.IsNullOrEmpty(Command.CorrelationId)) whereClauses.Add($"CorrelationId like @CorrelationId");
 if (!string.IsNullOrEmpty(Command.Payload)) dict["Payload"] = $"%{Command.Payload}%";
 if (!string.IsNullOrEmpty(Command.Payload)) whereClauses.Add($"Payload like @Payload");
 if (Command.Status != null && Command.Status.Any())
@@ -292,6 +294,24 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EntityId"] = value; //04
                       whereClauses.Add($" EntityId = @EntityId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByCorrelationIdQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yOutbox ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["CorrelationId"] = value; //04
+                      whereClauses.Add($" CorrelationId = @CorrelationId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -670,6 +690,24 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EntityId"] = value; //06
                       whereClauses.Add($" EntityId = @EntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByCorrelationIdQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yOutbox ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["CorrelationId"] = value; //06
+                      whereClauses.Add($" CorrelationId = @CorrelationId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

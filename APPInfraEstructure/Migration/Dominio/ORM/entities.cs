@@ -242,7 +242,7 @@ namespace MyApp.Domain.Entities
     public class ySaga
     {
         public int? Id { get; set; }
-        public string SagaId { get; set; }
+        public string CorrelationId { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
         public string KeyCurrentStep { get; set; }
@@ -295,6 +295,7 @@ namespace MyApp.Domain.Entities
         public string Type { get; set; }
         public string EntityType { get; set; }
         public string EntityId { get; set; }
+        public string CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public int TransportType { get; set; }
@@ -326,12 +327,14 @@ namespace MyApp.Domain.Entities
         public string Type { get; set; }
         public string EntityType { get; set; }
         public string EntityId { get; set; }
+        public string CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime? ProcessedAt { get; set; }
         public int RetryCount { get; set; }
         public string LastError { get; set; }
+        public DateTime? ProcessingAt { get; set; }
+        public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }
         public ySaga ySaga { get; set; }
         public int? SagaStepId { get; set; }

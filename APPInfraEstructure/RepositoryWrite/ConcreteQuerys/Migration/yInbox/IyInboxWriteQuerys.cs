@@ -11,12 +11,14 @@ namespace IQuery.Write
         public QueryModel UpdateType(IyInboxEntity entity);
         public QueryModel UpdateEntityType(IyInboxEntity entity);
         public QueryModel UpdateEntityId(IyInboxEntity entity);
+        public QueryModel UpdateCorrelationId(IyInboxEntity entity);
         public QueryModel UpdatePayload(IyInboxEntity entity);
         public QueryModel UpdateStatus(IyInboxEntity entity);
         public QueryModel UpdateCreatedAt(IyInboxEntity entity);
-        public QueryModel UpdateProcessedAt(IyInboxEntity entity);
         public QueryModel UpdateRetryCount(IyInboxEntity entity);
         public QueryModel UpdateLastError(IyInboxEntity entity);
+        public QueryModel UpdateProcessingAt(IyInboxEntity entity);
+        public QueryModel UpdateNextAttemptAt(IyInboxEntity entity);
         public QueryModel UpdateSagaId(IyInboxEntity entity);
         public QueryModel UpdateSagaStepId(IyInboxEntity entity);
         public QueryModel UpdateTenantID(IyInboxEntity entity);

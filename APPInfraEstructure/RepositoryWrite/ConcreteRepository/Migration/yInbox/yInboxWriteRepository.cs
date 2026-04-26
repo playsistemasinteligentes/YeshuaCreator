@@ -61,6 +61,11 @@ namespace Input.Repository.yInbox
             var query = _query.UpdateEntityId(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateCorrelationId(IyInboxEntity entity)
+        {
+            var query = _query.UpdateCorrelationId(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdatePayload(IyInboxEntity entity)
         {
             var query = _query.UpdatePayload(entity);
@@ -76,11 +81,6 @@ namespace Input.Repository.yInbox
             var query = _query.UpdateCreatedAt(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProcessedAt(IyInboxEntity entity)
-        {
-            var query = _query.UpdateProcessedAt(entity);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
         public void UpdateRetryCount(IyInboxEntity entity)
         {
             var query = _query.UpdateRetryCount(entity);
@@ -89,6 +89,16 @@ namespace Input.Repository.yInbox
         public void UpdateLastError(IyInboxEntity entity)
         {
             var query = _query.UpdateLastError(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateProcessingAt(IyInboxEntity entity)
+        {
+            var query = _query.UpdateProcessingAt(entity);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNextAttemptAt(IyInboxEntity entity)
+        {
+            var query = _query.UpdateNextAttemptAt(entity);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateSagaId(IyInboxEntity entity)

@@ -13,6 +13,7 @@ namespace IQuery.Read
         public QueryModel ExistsByTypeQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByEntityTypeQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByEntityIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByPayloadQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByTransportTypeQuery(int value , bool TakeOffTenantID = false);
@@ -34,6 +35,7 @@ namespace IQuery.Read
         public QueryModel FirstByTypeQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByEntityTypeQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByEntityIdQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByCorrelationIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByPayloadQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByTransportTypeQuery(int value , bool TakeOffTenantID = false);

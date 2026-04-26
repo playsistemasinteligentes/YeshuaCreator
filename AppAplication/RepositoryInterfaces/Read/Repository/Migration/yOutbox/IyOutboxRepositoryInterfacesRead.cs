@@ -21,6 +21,7 @@ namespace IRepository.Read
         public bool ExistsByType(string value , bool TakeOffTenantID = false);
         public bool ExistsByEntityType(string value , bool TakeOffTenantID = false);
         public bool ExistsByEntityId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByCorrelationId(string value , bool TakeOffTenantID = false);
         public bool ExistsByPayload(string value , bool TakeOffTenantID = false);
         public bool ExistsByStatus(int value , bool TakeOffTenantID = false);
         public bool ExistsByTransportType(int value , bool TakeOffTenantID = false);
@@ -42,6 +43,7 @@ namespace IRepository.Read
         public yOutboxDTO FirstByType(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByEntityType(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByEntityId(string value , bool TakeOffTenantID = false);
+        public yOutboxDTO FirstByCorrelationId(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByPayload(string value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByStatus(int value , bool TakeOffTenantID = false);
         public yOutboxDTO FirstByTransportType(int value , bool TakeOffTenantID = false);
@@ -63,6 +65,7 @@ namespace IRepository.Read
         public IEnumerable<yOutboxDTO> GetAllByType(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByEntityType(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByEntityId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yOutboxDTO> GetAllByCorrelationId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByPayload(string value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByStatus(int value , bool TakeOffTenantID = false);
         public IEnumerable<yOutboxDTO> GetAllByTransportType(int value , bool TakeOffTenantID = false);

@@ -8,6 +8,7 @@ namespace Command.Read
         public string Type { get; set; }
         public string EntityType { get; set; }
         public string EntityId { get; set; }
+        public string CorrelationId { get; set; }
         public string Payload { get; set; }
         public List<int> Status { get; set; }
         public List<int> TransportType { get; set; }

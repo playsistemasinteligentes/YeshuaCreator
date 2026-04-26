@@ -15,6 +15,7 @@
     public string Type { get; set; }
     public string EntityType { get; set; }
     public string EntityId { get; set; }
+    public string CorrelationId { get; set; }
     public string Payload { get; set; }
     public int Status { get; set; }
     public int TransportType { get; set; }
@@ -32,12 +33,13 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yOutboxEntity(int? id, string messageid, string type, string entitytype, string entityid, string payload, int status, int transporttype, string transportdata, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid ){
+ internal yOutboxEntity(int? id, string messageid, string type, string entitytype, string entityid, string correlationid, string payload, int status, int transporttype, string transportdata, DateTime createdat, DateTime? sentat, int retrycount, string lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid ){
  Id = id; 
  MessageId = messageid; 
  Type = type; 
  EntityType = entitytype; 
  EntityId = entityid; 
+ CorrelationId = correlationid; 
  Payload = payload; 
  Status = status; 
  TransportType = transporttype; 

@@ -15,12 +15,14 @@
     string Type { get; set; }
     string EntityType { get; set; }
     string EntityId { get; set; }
+    string CorrelationId { get; set; }
     string Payload { get; set; }
     int Status { get; set; }
     DateTime CreatedAt { get; set; }
-    DateTime? ProcessedAt { get; set; }
     int RetryCount { get; set; }
     string LastError { get; set; }
+    DateTime? ProcessingAt { get; set; }
+    DateTime? NextAttemptAt { get; set; }
     int? SagaId { get; set; }
     int? SagaStepId { get; set; }
     int? TenantID { get; set; }

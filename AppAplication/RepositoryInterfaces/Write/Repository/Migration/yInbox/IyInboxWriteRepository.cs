@@ -16,12 +16,14 @@ namespace IRepository.Write
         public void UpdateType(IyInboxEntity entity);
         public void UpdateEntityType(IyInboxEntity entity);
         public void UpdateEntityId(IyInboxEntity entity);
+        public void UpdateCorrelationId(IyInboxEntity entity);
         public void UpdatePayload(IyInboxEntity entity);
         public void UpdateStatus(IyInboxEntity entity);
         public void UpdateCreatedAt(IyInboxEntity entity);
-        public void UpdateProcessedAt(IyInboxEntity entity);
         public void UpdateRetryCount(IyInboxEntity entity);
         public void UpdateLastError(IyInboxEntity entity);
+        public void UpdateProcessingAt(IyInboxEntity entity);
+        public void UpdateNextAttemptAt(IyInboxEntity entity);
         public void UpdateSagaId(IyInboxEntity entity);
         public void UpdateSagaStepId(IyInboxEntity entity);
         public void UpdateTenantID(IyInboxEntity entity);

@@ -13,6 +13,7 @@ namespace Repositorio.Outputs
     public string type { get; set; }
     public string entitytype { get; set; }
     public string entityid { get; set; }
+    public string correlationid { get; set; }
     public string payload { get; set; }
     public int status { get; set; }
     public int transporttype { get; set; }

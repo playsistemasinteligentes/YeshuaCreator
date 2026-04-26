@@ -52,9 +52,9 @@ namespace Migration.Dominio.Migration
 
             AddEntity("ySaga").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("SagaId", "Saga Id").Varchar(100)
+            .AddColumn("CorrelationId", "CorrelationId").Varchar(100).NotNull() // pendencia unic e indice 
             .AddColumn("Type", "Type").Varchar(200).NotNull()
-            .AddColumn("Status", "Status").Int().NotNull()
+            .AddColumn("Status", "Status").Int().NotNull() // pendencia ver necessidade de waiting 
                 .Enumerable(0, "NotStarted")
                 .Enumerable(1, "InProgress")
                 .Enumerable(2, "Completed")
@@ -97,7 +97,8 @@ namespace Migration.Dominio.Migration
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("EntityType", "Entity Type").Varchar(100)
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
-
+                .AddColumn("CorrelationId", "Correlation Id").Varchar(100)
+                
                 .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
@@ -134,78 +135,72 @@ namespace Migration.Dominio.Migration
 
             AddEntity("yInbox").AddModule("ADM")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
-                // 🔑 Idempotência / rastreio externo
                 .AddColumn("MessageId", "Message Id").Varchar(100)
-                // 🔀 Roteamento
                 .AddColumn("Type", "Tipo da Mensagem").Varchar(100).NotNull()
                 .AddColumn("EntityType", "Entity Type").Varchar(100)
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
-                // 📦 Payload (IMPORTANTE aumentar)
-                .AddColumn("Payload", "Payload").Varchar(8000).NotNull()
-                // 🔄 Estado
+                .AddColumn("CorrelationId", "Correlation Id").Varchar(100)
+
+                .AddColumn("Payload", "Payload").Varchar(8000).NotNull()// pendencia Varchar(maxnum)
                 .AddColumn("Status", "Status").Int().NotNull()
                     .Enumerable(0, "Pending")
-                    .Enumerable(1, "Processed")
+                    .Enumerable(1, "Sent")
                     .Enumerable(2, "Failed")
-                    .Enumerable(3, "Processing")
-                // ⏱️ Controle de fluxo
+                    .Enumerable(9, "Processing")
+
+
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
-                .AddColumn("ProcessedAt", "Processado em").DateTime()
-                // 🔁 Retry
                 .AddColumn("RetryCount", "Tentativas").Int().NotNull()
                 .AddColumn("LastError", "Último Erro").Varchar(2000)
-                // 🔗 Integração com Saga (mantém)
+                .AddColumn("ProcessingAt", "Processando em").DateTime()
+                .AddColumn("NextAttemptAt", "Próxima tentativa").DateTime()
+
+
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
-                // 🏢 Multi-tenant
-                .AddColumn("TenantID", "TenantID").Int()
-                    .FK("yTenant", "Id")
-                    .DefaultValue("#_currentUser.TenantID")
-                    .EditFront(false)
-                    .NeedBeWhere()
-                    .CanTakeOffWhere();
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
-/*
+            /*
 
-    1. Saga.Start
-       → Step = Pending
+                1. Saga.Start
+                   → Step = Pending
 
-    2. SagaWorker
+                2. SagaWorker
 
-       se Pending:
-          → Execute
+                   se Pending:
+                      → Execute
 
-          se interno:
-             → ApplyResponse (inline)
-             → Completed
-             → próximo step
-             → go to passo 2
+                      se interno:
+                         → ApplyResponse (inline)
+                         → Completed
+                         → próximo step
+                         → go to passo 2
 
-          se externo:
-             → Outbox
-             → WaitingResponse
-             → parar
+                      se externo:
+                         → Outbox
+                         → WaitingResponse
+                         → parar
 
-       se PendingApply:
-          → ApplyResponse
-          → Completed
-          → próximo step
-          → go to passo 2
+                   se PendingApply:
+                      → ApplyResponse
+                      → Completed
+                      → próximo step
+                      → go to passo 2
 
-    3. OutboxWorker
-       → envia mensagem
+                3. OutboxWorker
+                   → envia mensagem
 
-    4. QueueListener
-       → grava Inbox
+                4. QueueListener
+                   → grava Inbox
 
-    5. InboxWorker
-       → encontra saga + step (WaitingResponse)
-       → salva payload
-       → Step = PendingApply
+                5. InboxWorker
+                   → encontra saga + step (WaitingResponse)
+                   → salva payload
+                   → Step = PendingApply
 
-    → go to passo 2
+                → go to passo 2
 
- */
+             */
 
 
 

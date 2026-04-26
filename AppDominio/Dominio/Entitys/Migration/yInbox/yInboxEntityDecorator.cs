@@ -83,6 +83,19 @@
                                         }
                                     }
 
+                                    public string CorrelationId
+                                    {
+                                        get => _inner.CorrelationId;
+                                        set
+                                        {
+                                            if (_inner.CorrelationId != value)
+                                            {
+                                                _logger.Info($"Propriedade CorrelationId: antes={_inner.CorrelationId}, depois={value}");
+                                                _inner.CorrelationId = value;
+                                            }
+                                        }
+                                    }
+
                                     public string Payload
                                     {
                                         get => _inner.Payload;
@@ -122,19 +135,6 @@
                                         }
                                     }
 
-                                    public DateTime? ProcessedAt
-                                    {
-                                        get => _inner.ProcessedAt;
-                                        set
-                                        {
-                                            if (_inner.ProcessedAt != value)
-                                            {
-                                                _logger.Info($"Propriedade ProcessedAt: antes={_inner.ProcessedAt}, depois={value}");
-                                                _inner.ProcessedAt = value;
-                                            }
-                                        }
-                                    }
-
                                     public int RetryCount
                                     {
                                         get => _inner.RetryCount;
@@ -157,6 +157,32 @@
                                             {
                                                 _logger.Info($"Propriedade LastError: antes={_inner.LastError}, depois={value}");
                                                 _inner.LastError = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? ProcessingAt
+                                    {
+                                        get => _inner.ProcessingAt;
+                                        set
+                                        {
+                                            if (_inner.ProcessingAt != value)
+                                            {
+                                                _logger.Info($"Propriedade ProcessingAt: antes={_inner.ProcessingAt}, depois={value}");
+                                                _inner.ProcessingAt = value;
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? NextAttemptAt
+                                    {
+                                        get => _inner.NextAttemptAt;
+                                        set
+                                        {
+                                            if (_inner.NextAttemptAt != value)
+                                            {
+                                                _logger.Info($"Propriedade NextAttemptAt: antes={_inner.NextAttemptAt}, depois={value}");
+                                                _inner.NextAttemptAt = value;
                                             }
                                         }
                                     }

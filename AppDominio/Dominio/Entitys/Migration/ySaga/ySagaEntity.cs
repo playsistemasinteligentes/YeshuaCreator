@@ -11,7 +11,7 @@
                     public partial class ySagaEntity : IySagaEntity
 {
     public int? Id { get; set; }
-    public string SagaId { get; set; }
+    public string CorrelationId { get; set; }
     public string Type { get; set; }
     public int Status { get; set; }
     public string KeyCurrentStep { get; set; }
@@ -27,9 +27,9 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal ySagaEntity(int? id, string sagaid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid, DateTime? nextexecutionat, DateTime? lockedat, string lockedby ){
+ internal ySagaEntity(int? id, string correlationid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid, DateTime? nextexecutionat, DateTime? lockedat, string lockedby ){
  Id = id; 
- SagaId = sagaid; 
+ CorrelationId = correlationid; 
  Type = type; 
  Status = status; 
  KeyCurrentStep = keycurrentstep; 
@@ -44,6 +44,8 @@
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(CorrelationId))
+   this._erroMensagem.Add("CorrelationId deve ser informado.");
    if(string.IsNullOrEmpty(Type))
    this._erroMensagem.Add("Type deve ser informado.");
    if (Status == null)

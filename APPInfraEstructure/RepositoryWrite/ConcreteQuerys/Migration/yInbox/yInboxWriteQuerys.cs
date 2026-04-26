@@ -20,19 +20,21 @@ namespace Query.Write
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" INSERT INTO yInbox (MessageId, Type, EntityType, EntityId, Payload, Status, CreatedAt, ProcessedAt, RetryCount, LastError, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @Payload, @Status, @CreatedAt, @ProcessedAt, @RetryCount, @LastError, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yInbox (MessageId, Type, EntityType, EntityId, CorrelationId, Payload, Status, CreatedAt, RetryCount, LastError, ProcessingAt, NextAttemptAt, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @CreatedAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
                 Type = yInbox.Type,
                 EntityType = yInbox.EntityType,
                 EntityId = yInbox.EntityId,
+                CorrelationId = yInbox.CorrelationId,
                 Payload = yInbox.Payload,
                 Status = yInbox.Status,
                 CreatedAt = yInbox.CreatedAt,
-                ProcessedAt = yInbox.ProcessedAt,
                 RetryCount = yInbox.RetryCount,
                 LastError = yInbox.LastError,
+                ProcessingAt = yInbox.ProcessingAt,
+                NextAttemptAt = yInbox.NextAttemptAt,
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
                 TenantID = _currentUser.TenantID,
@@ -44,19 +46,21 @@ namespace Query.Write
         }
         public QueryModel UpdateyInboxQuery(IyInboxEntity yInbox)
         {
-            this.Query = $@" UPDATE yInbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, ProcessedAt = @ProcessedAt, RetryCount = @RetryCount, LastError = @LastError, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yInbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, CorrelationId = @CorrelationId, Payload = @Payload, Status = @Status, CreatedAt = @CreatedAt, RetryCount = @RetryCount, LastError = @LastError, ProcessingAt = @ProcessingAt, NextAttemptAt = @NextAttemptAt, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 MessageId = yInbox.MessageId,
                 Type = yInbox.Type,
                 EntityType = yInbox.EntityType,
                 EntityId = yInbox.EntityId,
+                CorrelationId = yInbox.CorrelationId,
                 Payload = yInbox.Payload,
                 Status = yInbox.Status,
                 CreatedAt = yInbox.CreatedAt,
-                ProcessedAt = yInbox.ProcessedAt,
                 RetryCount = yInbox.RetryCount,
                 LastError = yInbox.LastError,
+                ProcessingAt = yInbox.ProcessingAt,
+                NextAttemptAt = yInbox.NextAttemptAt,
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
                 Changed = yInbox.Changed,
@@ -105,6 +109,16 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
+        public QueryModel UpdateCorrelationId(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET CorrelationId = @CorrelationId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                CorrelationId = entity.CorrelationId,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
         public QueryModel UpdatePayload(IyInboxEntity entity)
         {
             this.Query = $@" UPDATE yInbox SET Payload = @Payload WHERE Id = @Id ";
@@ -135,16 +149,6 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateProcessedAt(IyInboxEntity entity)
-        {
-            this.Query = $@" UPDATE yInbox SET ProcessedAt = @ProcessedAt WHERE Id = @Id ";
-            this.Parameters = new
-            {
-                ProcessedAt = entity.ProcessedAt,
-                Id = entity.Id,
-            };
-            return new QueryModel(this.Query, this.Parameters);
-        }
         public QueryModel UpdateRetryCount(IyInboxEntity entity)
         {
             this.Query = $@" UPDATE yInbox SET RetryCount = @RetryCount WHERE Id = @Id ";
@@ -161,6 +165,26 @@ namespace Query.Write
             this.Parameters = new
             {
                 LastError = entity.LastError,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateProcessingAt(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET ProcessingAt = @ProcessingAt WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                ProcessingAt = entity.ProcessingAt,
+                Id = entity.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNextAttemptAt(IyInboxEntity entity)
+        {
+            this.Query = $@" UPDATE yInbox SET NextAttemptAt = @NextAttemptAt WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                NextAttemptAt = entity.NextAttemptAt,
                 Id = entity.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

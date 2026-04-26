@@ -89,14 +89,16 @@ def transcribe_audio(self, job_id: str, file_url: str):
         publish_message(
             "audio.transcribed.inbox",
             {
+                "messageId": str(uuid.uuid4()),  # 🔥 novo
                 "correlationId": job_id,
-                "status": "completed",
+                "status": "audio.transcription.completed",  # 🔥 melhorado
                 "result": {
-                    "text": text
+                        "text": text
                 },
                 "error": None
             },
         )
+
 
         print(f"[{job_id}] SUCCESS enviado")
 
@@ -107,8 +109,10 @@ def transcribe_audio(self, job_id: str, file_url: str):
         publish_message(
             "audio.transcribed.inbox",
             {
+                "messageId": str(uuid.uuid4()),  # 🔥 novo
                 "correlationId": job_id,
                 "status": "failed",
+                "status": "audio.transcription.failed",  # 🔥 melhorado
                 "result": None,
                 "error": {
                     "message": str(e),

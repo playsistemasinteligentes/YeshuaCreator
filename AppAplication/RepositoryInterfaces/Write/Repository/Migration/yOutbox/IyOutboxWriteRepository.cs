@@ -16,6 +16,7 @@ namespace IRepository.Write
         public void UpdateType(IyOutboxEntity entity);
         public void UpdateEntityType(IyOutboxEntity entity);
         public void UpdateEntityId(IyOutboxEntity entity);
+        public void UpdateCorrelationId(IyOutboxEntity entity);
         public void UpdatePayload(IyOutboxEntity entity);
         public void UpdateStatus(IyOutboxEntity entity);
         public void UpdateTransportType(IyOutboxEntity entity);

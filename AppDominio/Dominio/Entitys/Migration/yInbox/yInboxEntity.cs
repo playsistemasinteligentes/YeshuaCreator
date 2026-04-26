@@ -15,12 +15,14 @@
     public string Type { get; set; }
     public string EntityType { get; set; }
     public string EntityId { get; set; }
+    public string CorrelationId { get; set; }
     public string Payload { get; set; }
     public int Status { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime? ProcessedAt { get; set; }
     public int RetryCount { get; set; }
     public string LastError { get; set; }
+    public DateTime? ProcessingAt { get; set; }
+    public DateTime? NextAttemptAt { get; set; }
     public int? SagaId { get; set; }
     public int? SagaStepId { get; set; }
     public int? TenantID { get; set; }
@@ -28,18 +30,20 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yInboxEntity(int? id, string messageid, string type, string entitytype, string entityid, string payload, int status, DateTime createdat, DateTime? processedat, int retrycount, string lasterror, int? sagaid, int? sagastepid ){
+ internal yInboxEntity(int? id, string messageid, string type, string entitytype, string entityid, string correlationid, string payload, int status, DateTime createdat, int retrycount, string lasterror, DateTime? processingat, DateTime? nextattemptat, int? sagaid, int? sagastepid ){
  Id = id; 
  MessageId = messageid; 
  Type = type; 
  EntityType = entitytype; 
  EntityId = entityid; 
+ CorrelationId = correlationid; 
  Payload = payload; 
  Status = status; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
- ProcessedAt = (processedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : processedat; 
  RetryCount = retrycount; 
  LastError = lasterror; 
+ ProcessingAt = (processingat < (new DateTime(1800, 1, 1))) ? DateTime.Now : processingat; 
+ NextAttemptAt = (nextattemptat < (new DateTime(1800, 1, 1))) ? DateTime.Now : nextattemptat; 
  SagaId = sagaid; 
  SagaStepId = sagastepid; 
 }

@@ -160,6 +160,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByCorrelationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByCorrelationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByPayload(string value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByPayloadQuery(value , TakeOffTenantID);
@@ -328,6 +336,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public yOutboxDTO FirstByCorrelationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yOutboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yOutboxDTO FirstByPayload(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
@@ -491,6 +507,14 @@ namespace Read.Repository
         public IEnumerable<yOutboxDTO> GetAllByEntityId(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
+                return result;
+        }
+
+        public IEnumerable<yOutboxDTO> GetAllByCorrelationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yOutboxDTO>(query.Query,query.Parameters) as List<yOutboxDTO>;
                 return result;

@@ -160,6 +160,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByCorrelationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByCorrelationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByPayload(string value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByPayloadQuery(value , TakeOffTenantID);
@@ -184,14 +192,6 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByProcessedAt(DateTime value , bool TakeOffTenantID = false)
-        {
-            var query = _query.ExistsByProcessedAtQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
-                return result == 1;
-        }
-
         public bool ExistsByRetryCount(int value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByRetryCountQuery(value , TakeOffTenantID);
@@ -203,6 +203,22 @@ namespace Read.Repository
         public bool ExistsByLastError(string value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByLastErrorQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByProcessingAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByProcessingAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByNextAttemptAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByNextAttemptAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -296,6 +312,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public yInboxDTO FirstByCorrelationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yInboxDTO FirstByPayload(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
@@ -320,14 +344,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public yInboxDTO FirstByProcessedAt(DateTime value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByProcessedAtQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
-                return result;
-        }
-
         public yInboxDTO FirstByRetryCount(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
@@ -339,6 +355,22 @@ namespace Read.Repository
         public yInboxDTO FirstByLastError(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yInboxDTO FirstByProcessingAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByProcessingAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yInboxDTO FirstByNextAttemptAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByNextAttemptAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<yInboxDTO>(query.Query, query.Parameters);
                 return result;
@@ -432,6 +464,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public IEnumerable<yInboxDTO> GetAllByCorrelationId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                return result;
+        }
+
         public IEnumerable<yInboxDTO> GetAllByPayload(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
@@ -456,14 +496,6 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yInboxDTO> GetAllByProcessedAt(DateTime value , bool TakeOffTenantID = false)
-        {
-            var query = _query.FirstByProcessedAtQuery(value , TakeOffTenantID);
-
-                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
-                return result;
-        }
-
         public IEnumerable<yInboxDTO> GetAllByRetryCount(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
@@ -475,6 +507,22 @@ namespace Read.Repository
         public IEnumerable<yInboxDTO> GetAllByLastError(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByLastErrorQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                return result;
+        }
+
+        public IEnumerable<yInboxDTO> GetAllByProcessingAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByProcessingAtQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
+                return result;
+        }
+
+        public IEnumerable<yInboxDTO> GetAllByNextAttemptAt(DateTime value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByNextAttemptAtQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters) as List<yInboxDTO>;
                 return result;

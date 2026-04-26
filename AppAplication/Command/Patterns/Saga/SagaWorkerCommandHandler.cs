@@ -50,7 +50,7 @@ namespace Command.Patterns
                     try
                     {
                         var saga = _registry.Map(sagaDto);
-                        sagaId = saga.SagaId.ToString();
+                        sagaId = saga.CorrelationId.ToString();
 
                         // 🔒 lock metadata
                         saga.LockedBy = lockedBy;

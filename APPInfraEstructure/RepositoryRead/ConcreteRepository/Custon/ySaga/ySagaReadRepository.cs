@@ -50,7 +50,7 @@ namespace Read.Repository
             // 🔥 busca os steps
             var ids = sagas.Select(s => s.id);
 
-            var sqlSteps = @" SELECT * FROM ySagaStep WHERE SagaId IN @Ids ";
+            var sqlSteps = @" SELECT * FROM ySagaStep WHERE CorrelationId IN @Ids ";
 
             var steps = _unitOfWork.Query<ySagaStepDTO>(sqlSteps, new { Ids = ids });
 
@@ -81,7 +81,7 @@ namespace Read.Repository
                         SET 
                             LockedBy = NULL,
                             LockedAt = NULL
-                        WHERE Id = @SagaId
+                        WHERE Id = @CorrelationId
                           AND LockedBy = @WorkerId ";
 
             _unitOfWork.Execute(sql, new
@@ -96,7 +96,7 @@ namespace Read.Repository
             var sql = @"
                         SELECT s.*
                         FROM ySaga s
-                        INNER JOIN ySagaStep st ON st.SagaId = s.id
+                        INNER JOIN ySagaStep st ON st.CorrelationId = s.id
                         WHERE st.CorrelationId = @CorrelationId
                     ";
 
@@ -106,7 +106,7 @@ namespace Read.Repository
                 return null;
 
             // 🔥 carrega steps (igual você já faz)
-            var steps = _unitOfWork.Query<ySagaStepDTO>( "SELECT * FROM ySagaStep WHERE SagaId = @Id", new { Id = saga.id });
+            var steps = _unitOfWork.Query<ySagaStepDTO>( "SELECT * FROM ySagaStep WHERE CorrelationId = @Id", new { Id = saga.id });
 
             saga.Steps = steps.ToList();
 

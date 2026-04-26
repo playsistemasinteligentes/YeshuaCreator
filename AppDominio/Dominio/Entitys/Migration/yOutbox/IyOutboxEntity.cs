@@ -15,6 +15,7 @@
     string Type { get; set; }
     string EntityType { get; set; }
     string EntityId { get; set; }
+    string CorrelationId { get; set; }
     string Payload { get; set; }
     int Status { get; set; }
     int TransportType { get; set; }

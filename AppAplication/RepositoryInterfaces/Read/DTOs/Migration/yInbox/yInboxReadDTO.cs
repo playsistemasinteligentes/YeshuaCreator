@@ -13,12 +13,14 @@ namespace Repositorio.Outputs
     public string type { get; set; }
     public string entitytype { get; set; }
     public string entityid { get; set; }
+    public string correlationid { get; set; }
     public string payload { get; set; }
     public int status { get; set; }
     public DateTime createdat { get; set; }
-    public DateTime processedat { get; set; }
     public int retrycount { get; set; }
     public string lasterror { get; set; }
+    public DateTime processingat { get; set; }
+    public DateTime nextattemptat { get; set; }
     public int sagaid { get; set; }
     public int sagastepid { get; set; }
     public int tenantid { get; set; }

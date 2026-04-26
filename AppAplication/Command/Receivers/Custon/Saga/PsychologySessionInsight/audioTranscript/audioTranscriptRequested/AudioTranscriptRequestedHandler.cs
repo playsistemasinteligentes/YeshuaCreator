@@ -94,6 +94,7 @@ namespace Command.Receivers
                             entityType: nameof(yFileUploadDTO),
                             entityID: upload.id.ToString(),
                             messageId: Guid.NewGuid().ToString(),
+                            correlationId:step.CorrelationId,
                             transportType: 1, // Queue
                             transportData: new
                             {

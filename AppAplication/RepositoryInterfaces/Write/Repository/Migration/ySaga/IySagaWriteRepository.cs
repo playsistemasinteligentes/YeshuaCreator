@@ -12,7 +12,7 @@ namespace IRepository.Write
         void Insert(IySagaEntity ysaga);
         void Update(IySagaEntity ysaga);
         void Delete(IySagaEntity ysaga);
-        public void UpdateSagaId(IySagaEntity entity);
+        public void UpdateCorrelationId(IySagaEntity entity);
         public void UpdateType(IySagaEntity entity);
         public void UpdateStatus(IySagaEntity entity);
         public void UpdateKeyCurrentStep(IySagaEntity entity);

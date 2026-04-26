@@ -50,7 +50,7 @@ namespace Command.Receivers.Migration.Saga
             var saga = Create(dto.type);
 
             saga.Id = dto.id;
-            saga.SetSagaId(dto.sagaid);
+            saga.SetSagaId(dto.correlationid);
             saga.SetStatus(dto.status);
             saga.Type = dto.type;
             saga.KeyCurrentStep = dto.keycurrentstep;

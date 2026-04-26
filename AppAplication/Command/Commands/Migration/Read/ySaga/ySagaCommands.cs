@@ -4,7 +4,7 @@ namespace Command.Read
     public struct ySagaReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string SagaId { get; set; }
+        public string CorrelationId { get; set; }
         public string Type { get; set; }
         public List<int> Status { get; set; }
         public string KeyCurrentStep { get; set; }

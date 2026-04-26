@@ -11,6 +11,7 @@ namespace IQuery.Write
         public QueryModel UpdateType(IyOutboxEntity entity);
         public QueryModel UpdateEntityType(IyOutboxEntity entity);
         public QueryModel UpdateEntityId(IyOutboxEntity entity);
+        public QueryModel UpdateCorrelationId(IyOutboxEntity entity);
         public QueryModel UpdatePayload(IyOutboxEntity entity);
         public QueryModel UpdateStatus(IyOutboxEntity entity);
         public QueryModel UpdateTransportType(IyOutboxEntity entity);

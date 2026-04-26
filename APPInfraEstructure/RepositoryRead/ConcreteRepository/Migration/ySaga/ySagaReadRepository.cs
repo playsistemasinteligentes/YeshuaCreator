@@ -92,9 +92,9 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsBySagaId(string value , bool TakeOffTenantID = false)
+        public bool ExistsByCorrelationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.ExistsBySagaIdQuery(value , TakeOffTenantID);
+            var query = _query.ExistsByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -220,9 +220,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public ySagaDTO FirstBySagaId(string value , bool TakeOffTenantID = false)
+        public ySagaDTO FirstByCorrelationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstBySagaIdQuery(value , TakeOffTenantID);
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.QueryFirstOrDefault<ySagaDTO>(query.Query, query.Parameters);
                 return result;
@@ -348,9 +348,9 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<ySagaDTO> GetAllBySagaId(string value , bool TakeOffTenantID = false)
+        public IEnumerable<ySagaDTO> GetAllByCorrelationId(string value , bool TakeOffTenantID = false)
         {
-            var query = _query.FirstBySagaIdQuery(value , TakeOffTenantID);
+            var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
                 return result;

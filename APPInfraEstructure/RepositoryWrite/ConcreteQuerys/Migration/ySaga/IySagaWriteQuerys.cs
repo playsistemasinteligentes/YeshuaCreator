@@ -7,7 +7,7 @@ namespace IQuery.Write
      {
         public QueryModel InserirySagaQuery(IySagaEntity ySaga);
         public QueryModel UpdateySagaQuery(IySagaEntity ySaga);
-        public QueryModel UpdateSagaId(IySagaEntity entity);
+        public QueryModel UpdateCorrelationId(IySagaEntity entity);
         public QueryModel UpdateType(IySagaEntity entity);
         public QueryModel UpdateStatus(IySagaEntity entity);
         public QueryModel UpdateKeyCurrentStep(IySagaEntity entity);
