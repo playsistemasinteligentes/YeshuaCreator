@@ -60,7 +60,6 @@ namespace Command.Patterns.OutBox
                         {
                             //ok = _queuePublisher.PublishCeleryAsync("ai.tasks.audio.transcribe", "ai.tasks", "audio.transcribe", message).GetAwaiter().GetResult();
                             var transport = JsonSerializer.Deserialize<QueueTransport>(evt.transportdata ?? "{}");
-                            
                             ok = _queuePublisher.PublishCeleryAsync(
                                 transport.Queue,
                                 transport.Exchange,

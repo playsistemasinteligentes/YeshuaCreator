@@ -145,60 +145,6 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-            //UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"OutBoxPollingWorker"}");
-
-
-            var exchanges = new Dictionary<string, ExchangeDefinition>();
-
-            foreach (var group in _migration.UseCaseGroup)
-            {
-                foreach (var subGroup in group.UseCaseSubGroup)
-                {
-                    foreach (var saga in subGroup.Saga)
-                    {
-                        foreach (var stepGroup in saga.SagaStepGroup)
-                        {
-                            foreach (var step in stepGroup.Steps)
-                            {
-                                var topology = step.queueTopology;
-
-                                if (topology == null)
-                                    continue;
-
-                                foreach (var ex in topology.Exchanges)
-                                {
-                                    if (!exchanges.TryGetValue(ex.Name, out var existing))
-                                    {
-                                        existing = new ExchangeDefinition
-                                        {
-                                            Name = ex.Name,
-                                            Type = ex.Type,
-                                            Bindings = new List<QueueBindingDefinition>()
-                                        };
-
-                                        exchanges.Add(ex.Name, existing);
-                                    }
-
-                                    foreach (var bind in ex.Bindings)
-                                    {
-                                        // evita duplicação
-                                        if (!existing.Bindings.Any(b =>
-                                            b.QueueName == bind.QueueName &&
-                                            b.RoutingKey == bind.RoutingKey))
-                                        {
-                                            existing.Bindings.Add(new QueueBindingDefinition
-                                            {
-                                                QueueName = bind.QueueName,
-                                                RoutingKey = bind.RoutingKey
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
 
             foreach (var group in _migration.UseCaseGroup)
             {
@@ -247,9 +193,71 @@ namespace Dominio.Schemas.CQRS
                     }
                 }
             }
-
-
             sb.AppendLine("}");
+
+
+
+
+            //UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"OutBoxPollingWorker"}");
+
+
+            var exchanges = new Dictionary<string, ExchangeDefinition>();
+
+            foreach (var group in _migration.UseCaseGroup)
+            {
+                foreach (var subGroup in group.UseCaseSubGroup)
+                {
+                    foreach (var saga in subGroup.Saga)
+                    {
+                        foreach (var stepGroup in saga.SagaStepGroup)
+                        {
+                            foreach (var step in stepGroup.Steps)
+                            {
+                                var topologies = step.LstQueueTopology;
+
+                                if (topologies == null || !topologies.Any())
+                                    continue;
+
+                                foreach (var topology in topologies)
+                                {
+                                    if (topology.Exchanges == null)
+                                        continue;
+
+                                    foreach (var ex in topology.Exchanges)
+                                    {
+                                        if (!exchanges.TryGetValue(ex.Name, out var existing))
+                                        {
+                                            existing = new ExchangeDefinition
+                                            {
+                                                Name = ex.Name,
+                                                Type = ex.Type,
+                                                Bindings = new List<QueueBindingDefinition>()
+                                            };
+
+                                            exchanges.Add(ex.Name, existing);
+                                        }
+
+                                        foreach (var bind in ex.Bindings)
+                                        {
+                                            // evita duplicação
+                                            if (!existing.Bindings.Any(b =>
+                                                b.QueueName == bind.QueueName &&
+                                                b.RoutingKey == bind.RoutingKey))
+                                            {
+                                                existing.Bindings.Add(new QueueBindingDefinition
+                                                {
+                                                    QueueName = bind.QueueName,
+                                                    RoutingKey = bind.RoutingKey
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             sb.AppendLine("public static Command.Interfaces.Patterns.Queue.QueueTopology GetQueueTopology()");
             sb.AppendLine("{");

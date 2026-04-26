@@ -185,39 +185,20 @@ Command
             return this;
         }
 
-        public UseCaseGroup AddOutBoxPollingWorker(QueueTopology queueTopology = null)
-        {
-            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"OutBoxPollingWorker"}");
-            _Method.UseCaseGroup = this;
-            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
-            
-            object[] input = new object[2];
-            input[0] = new Lista(new List<int>());
-            input[1] = new Lista(new List<int>());
-            _Method.Inputs = new object[] { input.First() };
-            _Method.Outputs = new object[] { input.Last() };
-
-
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.OutBoxPollingWorker = _Method;
-            if (queueTopology != null)
-                this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.queueTopology = queueTopology;
-            
-            return this;
-        }
 
         public UseCaseGroup AddInBoxPollingWorker()
         {
-            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"InBoxPollingWorker"}");
-            _Method.UseCaseGroup = this;
-            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
+            //UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"InBoxPollingWorker"}");
+            //_Method.UseCaseGroup = this;
+            //_Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
             
-            object[] input = new object[2];
-            input[0] = new Lista(new List<int>());
-            input[1] = new Lista(new List<int>());
-            _Method.Inputs = new object[] { input.First() };
-            _Method.Outputs = new object[] { input.Last() };
+            //object[] input = new object[2];
+            //input[0] = new Lista(new List<int>());
+            //input[1] = new Lista(new List<int>());
+            //_Method.Inputs = new object[] { input.First() };
+            //_Method.Outputs = new object[] { input.Last() };
 
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.InBoxPollingWorker = _Method;
+            //this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.InBoxPollingWorker = _Method;
             return this;
         }
 
@@ -241,7 +222,7 @@ Command
                 }
             };
 
-            return AddOutBoxPollingWorker(queueTopology);
+            return AddqueueTopology(queueTopology);
         }
 
         public UseCaseGroup AddInboxListenerWorker(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
@@ -263,23 +244,11 @@ Command
                 }
             };
 
-            return AddInboxListenerWorker(queueTopology);
+            return AddqueueTopology(queueTopology);
         }
-        public UseCaseGroup AddInboxListenerWorker(QueueTopology queueTopology)
+        public UseCaseGroup AddqueueTopology(QueueTopology queueTopology)
         {
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.queueTopology = queueTopology;
-
-            UseCaseCommand _Method = new UseCaseCommand($"{this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.Name._value}{"QueueListenerWorker"}");
-            _Method.UseCaseGroup = this;
-            _Method.UseCaseSubGroup = this.UseCaseSubGroup.Last();
-
-            object[] input = new object[2];
-            input[0] = new Lista(new List<int>());
-            input[1] = new Lista(new List<int>());
-            _Method.Inputs = new object[] { input.First() };
-            _Method.Outputs = new object[] { input.Last() };
-
-            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.QueueListenerWorker = _Method;
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.LstQueueTopology.Add(queueTopology);
             return this;
         }
 

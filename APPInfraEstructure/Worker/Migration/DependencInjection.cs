@@ -407,23 +407,15 @@ return new Command.Interfaces.Patterns.Queue.QueueTopology
     {
         new Command.Interfaces.Patterns.Queue.ExchangeDefinition
         {
-            Name = "ai.results",
+            Name = "ai.tasks",
             Type = "topic",
             Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
             {
                 new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
                 {
-                    QueueName = "audio.transcribed.inbox",
-                    RoutingKey = "audio.transcribed"
+                    QueueName = "audio.transcribe.outbox",
+                    RoutingKey = "audio.transcribe"
                 },
-            }
-        },
-        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
-        {
-            Name = "ai.tasks",
-            Type = "topic",
-            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
-            {
                 new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
                 {
                     QueueName = "audio.transcript.ConsumerWorker",
@@ -438,6 +430,19 @@ return new Command.Interfaces.Patterns.Queue.QueueTopology
                 {
                     QueueName = "prontuary.sumary.ConsumerWorker",
                     RoutingKey = "prontuary.sumary.generated"
+                },
+            }
+        },
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "ai.results",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribed.inbox",
+                    RoutingKey = "audio.transcribed"
                 },
             }
         },

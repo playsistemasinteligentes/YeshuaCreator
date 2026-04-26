@@ -40,7 +40,7 @@ namespace Dominio
         public UseCaseCommand InBoxPollingWorker { get; set; }
         public UseCaseCommand QueueListenerWorker { get; set; }
         //public QueueTopology queueTopologyConsumer { get; set; }
-        public QueueTopology queueTopology { get; set; }
+        public List<QueueTopology> LstQueueTopology { get; set; } = new List<QueueTopology>();
 
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();
