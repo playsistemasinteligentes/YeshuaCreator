@@ -50,7 +50,7 @@ namespace Read.Repository
             // 🔥 busca os steps
             var ids = sagas.Select(s => s.id);
 
-            var sqlSteps = @" SELECT * FROM ySagaStep WHERE CorrelationId IN @Ids ";
+            var sqlSteps = @" SELECT * FROM ySagaStep WHERE SagaId IN @Ids ";
 
             var steps = _unitOfWork.Query<ySagaStepDTO>(sqlSteps, new { Ids = ids });
 
