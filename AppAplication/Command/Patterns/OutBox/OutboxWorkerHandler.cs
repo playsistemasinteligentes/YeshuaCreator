@@ -50,7 +50,8 @@ namespace Command.Patterns.OutBox
                     {
                         var message = new QueueMessage(evt.type, evt.payload)
                         {
-                            CorrelationId = evt.messageid,
+                            MenssageId = evt.messageid,
+                            CorrelationId = evt.correlationid,
                             Source = "outbox-worker"
                         };
 

@@ -36,7 +36,7 @@ namespace Dominio.Patterns.Saga
         // 🔥 NOVO: controle de persistência
         public bool IsDirty { get; private set; } = false;
 
-        public void SetSagaId(string guid)
+        public void SetCorrelationId(string guid)
         {
             this.CorrelationId = Guid.Parse(guid);
         }
@@ -117,9 +117,9 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
 
-        public void MarkWaiting(string correlationId)
+        public void MarkWaiting()
         {
-            GetCurrent()?.SetWaiting(correlationId);
+            GetCurrent()?.SetWaiting();
             MarkDirty();
         }
 

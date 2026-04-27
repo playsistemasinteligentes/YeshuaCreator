@@ -26,8 +26,7 @@ namespace Command.Receivers
                 // define próximo estado
                 if (IsAsync)
                 {
-                    var correlationId = Guid.NewGuid().ToString();
-                    step.SetWaiting(correlationId);
+                    step.SetWaiting();
                 }
                 else
                 {

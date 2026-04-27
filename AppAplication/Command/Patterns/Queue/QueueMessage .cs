@@ -17,6 +17,7 @@ public sealed class QueueMessage
     public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
 
     // rastreabilidade entre serviços
+    public string? MenssageId { get; init; }
     public string? CorrelationId { get; init; }
 
     // quem originou

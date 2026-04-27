@@ -42,8 +42,8 @@ namespace Command.Patterns.OutBox
                 _inboxService.AddInboxEvent(
                     type: command.status,
                     payload: payload,
-                    entityType: "Saga",
-                    entityID: command.correlationId,
+                    entityType: "SagaStep",
+                    entityID: string.Empty,
                     messageId: command.messageId, // 🔥 vem do Python agora
                     correlationId: command.correlationId
                 );

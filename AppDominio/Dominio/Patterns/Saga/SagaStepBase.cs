@@ -24,7 +24,7 @@ namespace Dominio.Patterns.Saga
         public int RetryCount { get; protected set; } = 0;
         public int MaxRetries { get; protected set; } = 3;
 
-        public string CorrelationId { get; protected set; }
+        public string CorrelationId { get; protected set; } = Guid.NewGuid().ToString();
         public bool IsNew { get; private set; } = true;
         public bool IsDirty { get; private set; } = false;
 
@@ -50,10 +50,9 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
         // 🔥 async flow
-        public void SetWaiting(string correlationId)
+        public void SetWaiting()
         {
             Status = SagaStepStatus.WaitingResponse;
-            CorrelationId = correlationId;
             MarkDirty();
         }
         public void SetPayload(string payload)
@@ -66,7 +65,6 @@ namespace Dominio.Patterns.Saga
         {
             Status = SagaStepStatus.Completed;
             CompletedAt = DateTime.UtcNow;
-            CorrelationId = null;
             MarkDirty();
         }
 

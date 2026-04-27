@@ -66,7 +66,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
 
                 foreach (var prop in doc.RootElement.EnumerateObject())
                 {
-                    list.Add(prop.Name);                 // chave -> "1"
+                    list.Add(message.CorrelationId);                 // chave -> "1"
                     list.Add(prop.Value.GetString());    // valor -> URL
                 }
 
