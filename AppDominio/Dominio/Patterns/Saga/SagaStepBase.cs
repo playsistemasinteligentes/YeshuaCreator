@@ -37,6 +37,10 @@ namespace Dominio.Patterns.Saga
             IsDirty = true; // novo já nasce dirty
         }
 
+        public void SetOrder(int order)
+        {
+            Order = order;
+        }
         private void MarkDirty()
         {
             IsDirty = true;

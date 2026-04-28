@@ -117,8 +117,6 @@ namespace Command.Receivers
 
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {
-            step.SetCompleted();
-            saga.CompleteCurrentStep();
         }
 
         // =========================================================

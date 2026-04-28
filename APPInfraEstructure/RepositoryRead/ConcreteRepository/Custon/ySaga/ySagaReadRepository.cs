@@ -34,7 +34,7 @@ namespace Read.Repository
                         ";
 
             var sagas = _unitOfWork.Query<ySagaDTO>(sql, new
-            {
+            {   
                 Limit = limit,
                 LockedBy = lockedBy,
                 LockedAt = lockedAt,

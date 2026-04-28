@@ -21,15 +21,20 @@ namespace Read.Repository
     {
         public IEnumerable<yInboxDTO> ClaimRunnableInbox(int limit, DateTime now)
         {
-            var sql = @" UPDATE TOP (@Limit) yInbox
+            var sql = @"
+                        WITH cte AS (
+                            SELECT TOP (@Limit) *
+                            FROM yInbox
+                            WHERE 
+                                Status = @Pending
+                                AND TenantID = @TenantID
+                            ORDER BY CreatedAt
+                        )
+                        UPDATE cte
                         SET 
                             Status = @Processing,
                             RetryCount = RetryCount + 1
-                        OUTPUT inserted.*
-                        WHERE 
-                            Status = @Pending
-                            AND TenantID = @TenantID
-                        ORDER BY CreatedAt";
+                        OUTPUT inserted.*";
 
             var inbox = _unitOfWork.Query<yInboxDTO>(sql, new
             {

@@ -165,7 +165,9 @@ namespace Dominio.Schemas.CQRS
                             foreach (var step in group.Steps)
                             {
                                 var stepClassName = $"{sagaCommand.Name.SourceType()}Step";
-                                sb.AppendLine($"            AddStep(new {stepClassName}(STEP_{step.Orden}));");
+
+                                // 🔥 AGORA COM ORDEM EXPLÍCITA
+                                sb.AppendLine($"            AddStep(new {stepClassName}(STEP_{step.Orden}, {step.Orden}));");
                             }
                         }
                     }
@@ -200,8 +202,10 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"    public class {stepClassName} : SagaStepBase");
                     sb.AppendLine("    {");
 
-                    sb.AppendLine($"        public {stepClassName}(string key) : base(key)");
+                    sb.AppendLine($"        public {stepClassName}(string key, int order) : base(key)");
                     sb.AppendLine("        {");
+                    sb.AppendLine("             Key = key;");
+                    sb.AppendLine("             SetOrder(order);");
                     sb.AppendLine("        }");
 
                     sb.AppendLine("    }");
@@ -263,8 +267,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("                // define próximo estado");
                     sb.AppendLine("                if (IsAsync)");
                     sb.AppendLine("                {");
-                    sb.AppendLine("                    var correlationId = Guid.NewGuid().ToString();");
-                    sb.AppendLine("                    step.SetWaiting(correlationId);");
+                    sb.AppendLine("                    step.SetWaiting();");
                     sb.AppendLine("                }");
                     sb.AppendLine("                else");
                     sb.AppendLine("                {");
@@ -291,9 +294,6 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("                // aplica no domínio");
                     sb.AppendLine("                CustomApplyResponse(saga, step, payload);");
                     sb.AppendLine();
-
-                    sb.AppendLine("                // finaliza step");
-                    sb.AppendLine("                saga.CompleteCurrentStep();");
 
                     sb.AppendLine("            }");
                     sb.AppendLine("            catch (Exception ex)");
@@ -521,7 +521,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            var saga = Create(dto.type);");
                 sb.AppendLine();
                 sb.AppendLine("            saga.Id = dto.id;");
-                sb.AppendLine("            saga.SetSagaId(dto.sagaid);");
+                sb.AppendLine("            saga.SetCorrelationId(dto.correlationid);");
                 sb.AppendLine("            saga.SetStatus(dto.status);");
                 sb.AppendLine("            saga.Type = dto.type;");
                 sb.AppendLine("            saga.KeyCurrentStep = dto.keycurrentstep;");

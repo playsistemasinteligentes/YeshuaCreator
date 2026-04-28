@@ -13,79 +13,30 @@ namespace Command.Patterns
     public class SagaInboxWorkerCommandHandler : ReciverBase<InputCommand, OutputCommand>
     {
         private readonly IyInboxReadRepository _yInboxReadRepository;
-        private readonly ISagaResolverRegistry _sagaResolverRegistry;
-        private readonly IySagaReadRepository _sagaReadRepository;
-        private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IySagaStepReadRepository _ySagaStepReadRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public SagaInboxWorkerCommandHandler(
             IyInboxReadRepository yInboxReadRepository,
-            ISagaResolverRegistry sagaResolverRegistry,
-            IySagaReadRepository sagaReadRepository,
-            IySagaWriteRepository sagaWriteRepository,
+            IySagaStepReadRepository ySagaStepReadRepository,
             IUnitOfWork unitOfWork)
         {
             _yInboxReadRepository = yInboxReadRepository;
-            _sagaResolverRegistry = sagaResolverRegistry;
-            _sagaReadRepository = sagaReadRepository;
-            _sagaWriteRepository = sagaWriteRepository;
+            _ySagaStepReadRepository = ySagaStepReadRepository;
             _unitOfWork = unitOfWork;
         }
-
+        
         protected override State<OutputCommand> Action(InputCommand command)
         {
             try
             {
-                var messages = _yInboxReadRepository
-                    .ClaimRunnableInbox(15, DateTime.UtcNow);
-
-                foreach (var msg in messages)
+                try
                 {
-                    try
-                    {
-                        var sagaDto = _sagaReadRepository
-                            .GetAllById(msg.sagaid)
-                            .FirstOrDefault();
-
-                        if (sagaDto == null)
-                            continue;
-
-                        var saga = _sagaResolverRegistry.Map(sagaDto);
-
-                        var step = saga.GetWaitingStep(msg.sagastepid);
-
-                        if (step == null)
-                            continue; // mensagem órfã ou já processada
-
-                        // 🔥 aplicar payload (SEM executar domínio)
-                        step.SetPayload(msg.payload);
-
-                        // 🔥 mudar estado → agora SagaWorker vai processar
-                        step.SetPendingApply();
-
-                        if (!saga.IsDirty)
-                            continue;
-
-                        _unitOfWork.BeginTran();
-
-                        try
-                        {
-                            _sagaWriteRepository.Save(saga);
-                            _yInboxReadRepository.MarkAsProcessed(msg.id);
-
-                            _unitOfWork.Commit();
-                        }
-                        catch
-                        {
-                            _unitOfWork.Rollback();
-                            throw;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                        // retry automático (não marca como processado)
-                    }
+                    _ySagaStepReadRepository.SetPendingApply();
+                }
+                catch
+                {
+                    throw;
                 }
 
                 return Success("OK", null);
@@ -99,5 +50,5 @@ namespace Command.Patterns
                 return Error(e, default);
             }
         }
-    }
-}
+    } 
+} 

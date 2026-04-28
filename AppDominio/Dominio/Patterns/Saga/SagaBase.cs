@@ -85,13 +85,7 @@ namespace Dominio.Patterns.Saga
             if (current == null)
                 return;
 
-            var next = _steps
-                .Where(s => s.Order > current.Order)
-                .OrderBy(s => s.Order)
-                .FirstOrDefault();
-
-            if (next != null)
-                next.SetPending();
+            current.SetPending();
 
             if (_steps.All(s => s.Status == SagaStepStatus.Completed))
                 Status = SagaStatus.Completed;
@@ -102,13 +96,21 @@ namespace Dominio.Patterns.Saga
 
         public SagaStepBase GetCurrent()
         {
+            var lastCompleted = _steps
+                .Where(s => s.Status == SagaStepStatus.Completed)
+                .OrderByDescending(s => s.Order)
+                .FirstOrDefault();
+
+            if (lastCompleted == null)
+            {
+                // nenhum completado → primeiro step
+                return _steps.OrderBy(s => s.Order).FirstOrDefault();
+            }
+
             return _steps
+                .Where(s => s.Order > lastCompleted.Order)
                 .OrderBy(s => s.Order)
-                .FirstOrDefault(s =>
-                    s.Status == SagaStepStatus.Pending ||
-                    s.Status == SagaStepStatus.PendingApply ||
-                    s.Status == SagaStepStatus.InProgress ||
-                    s.Status == SagaStepStatus.WaitingResponse);
+                .FirstOrDefault();
         }
 
         public void MarkInProgress()

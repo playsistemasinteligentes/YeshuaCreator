@@ -80,9 +80,15 @@ namespace Migration.Dominio.Migration
                 .Enumerable(1, "Pending")
                 .Enumerable(2, "InProgress")
                 .Enumerable(3, "WaitingResponse")
-                .Enumerable(4, "Completed")
-                .Enumerable(5, "Failed")
-            .AddColumn("ExecutionCount", "Execuções").Int().NotNull()
+                .Enumerable(4, "PendingApply")
+                .Enumerable(5, "Completed")
+                .Enumerable(6, "Failed")
+
+
+
+        
+
+                .AddColumn("ExecutionCount", "Execuções").Int().NotNull()
             .AddColumn("LastExecutionAt", "Última Execução").DateTime()
             .AddColumn("CompletedAt", "Finalizado em").DateTime()
             .AddColumn("ErrorMessage", "Erro").Varchar(2000)

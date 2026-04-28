@@ -11,10 +11,10 @@ namespace Dominio.Saga
 
         public PsychologySessionInsightSaga()
         {
-            AddStep(new PsychologySessionInsightStep(STEP_1));
-            AddStep(new PsychologySessionInsightStep(STEP_2));
-            AddStep(new PsychologySessionInsightStep(STEP_3));
-            AddStep(new PsychologySessionInsightStep(STEP_4));
+            AddStep(new PsychologySessionInsightStep(STEP_1, 1));
+            AddStep(new PsychologySessionInsightStep(STEP_2, 2));
+            AddStep(new PsychologySessionInsightStep(STEP_3, 3));
+            AddStep(new PsychologySessionInsightStep(STEP_4, 4));
         }
     }
 }

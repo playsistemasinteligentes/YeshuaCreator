@@ -47,8 +47,6 @@ namespace Command.Receivers
                 // aplica no domínio
                 CustomApplyResponse(saga, step, payload);
 
-                // finaliza step
-                saga.CompleteCurrentStep();
             }
             catch (Exception ex)
             {
