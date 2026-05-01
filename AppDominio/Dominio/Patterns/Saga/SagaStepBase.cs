@@ -103,7 +103,7 @@ namespace Dominio.Patterns.Saga
         {
             RetryCount++;
         }
-        public void Hydrate(int id,int status,string correlationId,DateTime? completedAt,int retryCount)
+        public void Hydrate(int id,int status,string correlationId,DateTime? completedAt,int retryCount,string payload)
         {
             Id = id;
             Status = (SagaStepStatus)status;
@@ -111,7 +111,7 @@ namespace Dominio.Patterns.Saga
             CompletedAt = completedAt;
             RetryCount = retryCount;
             //NextExecutionAt = nextExecutionAt;
-
+            Payload = payload;
             IsNew = false;
             IsDirty = false;
         }

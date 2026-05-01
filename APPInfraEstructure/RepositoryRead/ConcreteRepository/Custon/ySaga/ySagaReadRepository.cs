@@ -81,7 +81,7 @@ namespace Read.Repository
                         SET 
                             LockedBy = NULL,
                             LockedAt = NULL
-                        WHERE Id = @CorrelationId
+                        WHERE Id = @sagaId
                           AND LockedBy = @WorkerId ";
 
             _unitOfWork.Execute(sql, new
