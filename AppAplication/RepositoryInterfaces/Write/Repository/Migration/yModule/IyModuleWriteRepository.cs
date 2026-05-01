@@ -12,7 +12,7 @@ namespace IRepository.Write
         void Insert(IyModuleEntity ymodule);
         void Update(IyModuleEntity ymodule);
         void Delete(IyModuleEntity ymodule);
-        public void UpdateDescription(IyModuleEntity entity);
+        void UpdateDescription(string id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

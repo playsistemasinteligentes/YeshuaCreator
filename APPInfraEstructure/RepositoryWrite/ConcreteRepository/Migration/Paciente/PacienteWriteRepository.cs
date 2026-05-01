@@ -41,74 +41,74 @@ namespace Input.Repository.Paciente
             var query = _query.DeletePacienteQuery(Paciente);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateNome(IPacienteEntity entity)
+        public void UpdateNome(int id, string value)
         {
-            var query = _query.UpdateNome(entity);
+            var query = _query.UpdateNome(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTelefone(IPacienteEntity entity)
+        public void UpdateTelefone(int id, string value)
         {
-            var query = _query.UpdateTelefone(entity);
+            var query = _query.UpdateTelefone(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDataNascimento(IPacienteEntity entity)
+        public void UpdateDataNascimento(int id, DateTime value)
         {
-            var query = _query.UpdateDataNascimento(entity);
+            var query = _query.UpdateDataNascimento(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateGenero(IPacienteEntity entity)
+        public void UpdateGenero(int id, int value)
         {
-            var query = _query.UpdateGenero(entity);
+            var query = _query.UpdateGenero(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEscolaridade(IPacienteEntity entity)
+        public void UpdateEscolaridade(int id, string value)
         {
-            var query = _query.UpdateEscolaridade(entity);
+            var query = _query.UpdateEscolaridade(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProfissao(IPacienteEntity entity)
+        public void UpdateProfissao(int id, string value)
         {
-            var query = _query.UpdateProfissao(entity);
+            var query = _query.UpdateProfissao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEndereco(IPacienteEntity entity)
+        public void UpdateEndereco(int id, string value)
         {
-            var query = _query.UpdateEndereco(entity);
+            var query = _query.UpdateEndereco(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateNomeResponsavel(IPacienteEntity entity)
+        public void UpdateNomeResponsavel(int id, string value)
         {
-            var query = _query.UpdateNomeResponsavel(entity);
+            var query = _query.UpdateNomeResponsavel(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTelefoneResponsavel(IPacienteEntity entity)
+        public void UpdateTelefoneResponsavel(int id, string value)
         {
-            var query = _query.UpdateTelefoneResponsavel(entity);
+            var query = _query.UpdateTelefoneResponsavel(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateObservacao(IPacienteEntity entity)
+        public void UpdateObservacao(int id, string value)
         {
-            var query = _query.UpdateObservacao(entity);
+            var query = _query.UpdateObservacao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IPacienteEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IPacienteEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IPacienteEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IPacienteEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

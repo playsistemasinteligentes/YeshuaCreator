@@ -63,153 +63,153 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCorrelationId(IySagaEntity entity)
+        public QueryModel UpdateCorrelationId(int id, string value)
         {
             this.Query = $@" UPDATE ySaga SET CorrelationId = @CorrelationId WHERE Id = @Id ";
             this.Parameters = new
             {
-                CorrelationId = entity.CorrelationId,
-                Id = entity.Id,
+                CorrelationId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateType(IySagaEntity entity)
+        public QueryModel UpdateType(int id, string value)
         {
             this.Query = $@" UPDATE ySaga SET Type = @Type WHERE Id = @Id ";
             this.Parameters = new
             {
-                Type = entity.Type,
-                Id = entity.Id,
+                Type = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateStatus(IySagaEntity entity)
+        public QueryModel UpdateStatus(int id, int value)
         {
             this.Query = $@" UPDATE ySaga SET Status = @Status WHERE Id = @Id ";
             this.Parameters = new
             {
-                Status = entity.Status,
-                Id = entity.Id,
+                Status = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateKeyCurrentStep(IySagaEntity entity)
+        public QueryModel UpdateKeyCurrentStep(int id, string value)
         {
             this.Query = $@" UPDATE ySaga SET KeyCurrentStep = @KeyCurrentStep WHERE Id = @Id ";
             this.Parameters = new
             {
-                KeyCurrentStep = entity.KeyCurrentStep,
-                Id = entity.Id,
+                KeyCurrentStep = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCreatedAt(IySagaEntity entity)
+        public QueryModel UpdateCreatedAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE ySaga SET CreatedAt = @CreatedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                CreatedAt = entity.CreatedAt,
-                Id = entity.Id,
+                CreatedAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCompletedAt(IySagaEntity entity)
+        public QueryModel UpdateCompletedAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE ySaga SET CompletedAt = @CompletedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                CompletedAt = entity.CompletedAt,
-                Id = entity.Id,
+                CompletedAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEntityType(IySagaEntity entity)
+        public QueryModel UpdateEntityType(int id, string value)
         {
             this.Query = $@" UPDATE ySaga SET EntityType = @EntityType WHERE Id = @Id ";
             this.Parameters = new
             {
-                EntityType = entity.EntityType,
-                Id = entity.Id,
+                EntityType = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEntityId(IySagaEntity entity)
+        public QueryModel UpdateEntityId(int id, string value)
         {
             this.Query = $@" UPDATE ySaga SET EntityId = @EntityId WHERE Id = @Id ";
             this.Parameters = new
             {
-                EntityId = entity.EntityId,
-                Id = entity.Id,
+                EntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNextExecutionAt(IySagaEntity entity)
+        public QueryModel UpdateNextExecutionAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE ySaga SET NextExecutionAt = @NextExecutionAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                NextExecutionAt = entity.NextExecutionAt,
-                Id = entity.Id,
+                NextExecutionAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateLockedAt(IySagaEntity entity)
+        public QueryModel UpdateLockedAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE ySaga SET LockedAt = @LockedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                LockedAt = entity.LockedAt,
-                Id = entity.Id,
+                LockedAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateLockedBy(IySagaEntity entity)
+        public QueryModel UpdateLockedBy(int id, string value)
         {
             this.Query = $@" UPDATE ySaga SET LockedBy = @LockedBy WHERE Id = @Id ";
             this.Parameters = new
             {
-                LockedBy = entity.LockedBy,
-                Id = entity.Id,
+                LockedBy = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IySagaEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE ySaga SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IySagaEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE ySaga SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IySagaEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE ySaga SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IySagaEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE ySaga SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

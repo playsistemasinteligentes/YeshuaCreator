@@ -41,29 +41,29 @@ namespace Input.Repository.yGrant
             var query = _query.DeleteyGrantQuery(yGrant);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDescription(IyGrantEntity entity)
+        public void UpdateDescription(string id, string value)
         {
-            var query = _query.UpdateDescription(entity);
+            var query = _query.UpdateDescription(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyGrantEntity entity)
+        public void UpdateTenantID(string id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyGrantEntity entity)
+        public void UpdateDeleted(string id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyGrantEntity entity)
+        public void UpdateChanged(string id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyGrantEntity entity)
+        public void UpdateUserId(string id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

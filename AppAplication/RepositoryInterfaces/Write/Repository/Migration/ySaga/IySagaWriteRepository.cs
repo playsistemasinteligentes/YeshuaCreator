@@ -12,21 +12,21 @@ namespace IRepository.Write
         void Insert(IySagaEntity ysaga);
         void Update(IySagaEntity ysaga);
         void Delete(IySagaEntity ysaga);
-        public void UpdateCorrelationId(IySagaEntity entity);
-        public void UpdateType(IySagaEntity entity);
-        public void UpdateStatus(IySagaEntity entity);
-        public void UpdateKeyCurrentStep(IySagaEntity entity);
-        public void UpdateCreatedAt(IySagaEntity entity);
-        public void UpdateCompletedAt(IySagaEntity entity);
-        public void UpdateEntityType(IySagaEntity entity);
-        public void UpdateEntityId(IySagaEntity entity);
-        public void UpdateNextExecutionAt(IySagaEntity entity);
-        public void UpdateLockedAt(IySagaEntity entity);
-        public void UpdateLockedBy(IySagaEntity entity);
-        public void UpdateTenantID(IySagaEntity entity);
-        public void UpdateDeleted(IySagaEntity entity);
-        public void UpdateChanged(IySagaEntity entity);
-        public void UpdateUserId(IySagaEntity entity);
+        void UpdateCorrelationId(int id, string value);
+        void UpdateType(int id, string value);
+        void UpdateStatus(int id, int value);
+        void UpdateKeyCurrentStep(int id, string value);
+        void UpdateCreatedAt(int id, DateTime value);
+        void UpdateCompletedAt(int id, DateTime value);
+        void UpdateEntityType(int id, string value);
+        void UpdateEntityId(int id, string value);
+        void UpdateNextExecutionAt(int id, DateTime value);
+        void UpdateLockedAt(int id, DateTime value);
+        void UpdateLockedBy(int id, string value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

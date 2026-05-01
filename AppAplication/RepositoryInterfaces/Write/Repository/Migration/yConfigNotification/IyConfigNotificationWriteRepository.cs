@@ -12,14 +12,14 @@ namespace IRepository.Write
         void Insert(IyConfigNotificationEntity yconfignotification);
         void Update(IyConfigNotificationEntity yconfignotification);
         void Delete(IyConfigNotificationEntity yconfignotification);
-        public void UpdateTenantID(IyConfigNotificationEntity entity);
-        public void UpdateEmailSmtpClient(IyConfigNotificationEntity entity);
-        public void UpdateEmailPort(IyConfigNotificationEntity entity);
-        public void UpdateEmailUserName(IyConfigNotificationEntity entity);
-        public void UpdateEmailPassword(IyConfigNotificationEntity entity);
-        public void UpdateDeleted(IyConfigNotificationEntity entity);
-        public void UpdateChanged(IyConfigNotificationEntity entity);
-        public void UpdateUserId(IyConfigNotificationEntity entity);
+        void UpdateTenantID(int id, int value);
+        void UpdateEmailSmtpClient(int id, string value);
+        void UpdateEmailPort(int id, int value);
+        void UpdateEmailUserName(int id, string value);
+        void UpdateEmailPassword(int id, string value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

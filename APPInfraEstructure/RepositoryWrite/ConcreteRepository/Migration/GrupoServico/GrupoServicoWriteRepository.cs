@@ -41,29 +41,29 @@ namespace Input.Repository.GrupoServico
             var query = _query.DeleteGrupoServicoQuery(GrupoServico);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDescricao(IGrupoServicoEntity entity)
+        public void UpdateDescricao(int id, string value)
         {
-            var query = _query.UpdateDescricao(entity);
+            var query = _query.UpdateDescricao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IGrupoServicoEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IGrupoServicoEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IGrupoServicoEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IGrupoServicoEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

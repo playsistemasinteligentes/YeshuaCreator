@@ -7,13 +7,13 @@ namespace IQuery.Write
      {
         public QueryModel InserirProfissionalQuery(IProfissionalEntity Profissional);
         public QueryModel UpdateProfissionalQuery(IProfissionalEntity Profissional);
-        public QueryModel UpdateNome(IProfissionalEntity entity);
-        public QueryModel UpdateEspecialidadeId(IProfissionalEntity entity);
-        public QueryModel UpdateTelefone(IProfissionalEntity entity);
-        public QueryModel UpdateTenantID(IProfissionalEntity entity);
-        public QueryModel UpdateDeleted(IProfissionalEntity entity);
-        public QueryModel UpdateChanged(IProfissionalEntity entity);
-        public QueryModel UpdateUserId(IProfissionalEntity entity);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateEspecialidadeId(int id, int value);
+        QueryModel UpdateTelefone(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteProfissionalQuery(IProfissionalEntity Profissional);
     }
 }

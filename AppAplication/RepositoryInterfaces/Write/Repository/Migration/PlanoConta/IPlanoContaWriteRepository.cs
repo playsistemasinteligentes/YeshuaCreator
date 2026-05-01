@@ -12,13 +12,13 @@ namespace IRepository.Write
         void Insert(IPlanoContaEntity planoconta);
         void Update(IPlanoContaEntity planoconta);
         void Delete(IPlanoContaEntity planoconta);
-        public void UpdateCodigo(IPlanoContaEntity entity);
-        public void UpdateNome(IPlanoContaEntity entity);
-        public void UpdateTipo(IPlanoContaEntity entity);
-        public void UpdateTenantID(IPlanoContaEntity entity);
-        public void UpdateDeleted(IPlanoContaEntity entity);
-        public void UpdateChanged(IPlanoContaEntity entity);
-        public void UpdateUserId(IPlanoContaEntity entity);
+        void UpdateCodigo(int id, string value);
+        void UpdateNome(int id, string value);
+        void UpdateTipo(int id, int value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

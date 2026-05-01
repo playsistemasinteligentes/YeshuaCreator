@@ -41,29 +41,29 @@ namespace Input.Repository.yPerfil
             var query = _query.DeleteyPerfilQuery(yPerfil);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDescription(IyPerfilEntity entity)
+        public void UpdateDescription(int id, string value)
         {
-            var query = _query.UpdateDescription(entity);
+            var query = _query.UpdateDescription(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyPerfilEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyPerfilEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyPerfilEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyPerfilEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

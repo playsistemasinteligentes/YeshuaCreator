@@ -20,7 +20,7 @@ namespace Query.Write
         }
         public QueryModel InseriryUserGrantQuery(IyUserGrantEntity yUserGrant)
         {
-            this.Query = $@" INSERT INTO yUserGrant (PerfilId, GrantId, Grant, Create, Read, Update, Delete, ValidUntil, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ID VALUES(@PerfilId, @GrantId, @Grant, @Create, @Read, @Update, @Delete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yUserGrant (PerfilId, GrantId, Grant, Create, Read, Update, Delete, ValidUntil, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PerfilId, @GrantId, @Grant, @Create, @Read, @Update, @Delete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PerfilId = yUserGrant.PerfilId,
@@ -40,7 +40,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyUserGrantQuery(IyUserGrantEntity yUserGrant)
         {
-            this.Query = $@" UPDATE yUserGrant SET PerfilId = @PerfilId, GrantId = @GrantId, Grant = @Grant, Create = @Create, Read = @Read, Update = @Update, Delete = @Delete, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET PerfilId = @PerfilId, GrantId = @GrantId, Grant = @Grant, Create = @Create, Read = @Read, Update = @Update, Delete = @Delete, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 PerfilId = yUserGrant.PerfilId,
@@ -53,122 +53,136 @@ namespace Query.Write
                 ValidUntil = yUserGrant.ValidUntil,
                 Changed = yUserGrant.Changed,
                 UserId = _currentUser.UserId,
+                Id = yUserGrant.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdatePerfilId(IyUserGrantEntity entity)
+        public QueryModel UpdatePerfilId(int id, int value)
         {
-            this.Query = $@" UPDATE yUserGrant SET PerfilId = @PerfilId WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET PerfilId = @PerfilId WHERE Id = @Id ";
             this.Parameters = new
             {
-                PerfilId = entity.PerfilId,
+                PerfilId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateGrantId(IyUserGrantEntity entity)
+        public QueryModel UpdateGrantId(int id, string value)
         {
-            this.Query = $@" UPDATE yUserGrant SET GrantId = @GrantId WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET GrantId = @GrantId WHERE Id = @Id ";
             this.Parameters = new
             {
-                GrantId = entity.GrantId,
+                GrantId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateGrant(IyUserGrantEntity entity)
+        public QueryModel UpdateGrant(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Grant = @Grant WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Grant = @Grant WHERE Id = @Id ";
             this.Parameters = new
             {
-                Grant = entity.Grant,
+                Grant = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCreate(IyUserGrantEntity entity)
+        public QueryModel UpdateCreate(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Create = @Create WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Create = @Create WHERE Id = @Id ";
             this.Parameters = new
             {
-                Create = entity.Create,
+                Create = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateRead(IyUserGrantEntity entity)
+        public QueryModel UpdateRead(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Read = @Read WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Read = @Read WHERE Id = @Id ";
             this.Parameters = new
             {
-                Read = entity.Read,
+                Read = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUpdate(IyUserGrantEntity entity)
+        public QueryModel UpdateUpdate(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Update = @Update WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Update = @Update WHERE Id = @Id ";
             this.Parameters = new
             {
-                Update = entity.Update,
+                Update = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDelete(IyUserGrantEntity entity)
+        public QueryModel UpdateDelete(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Delete = @Delete WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Delete = @Delete WHERE Id = @Id ";
             this.Parameters = new
             {
-                Delete = entity.Delete,
+                Delete = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateValidUntil(IyUserGrantEntity entity)
+        public QueryModel UpdateValidUntil(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yUserGrant SET ValidUntil = @ValidUntil WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET ValidUntil = @ValidUntil WHERE Id = @Id ";
             this.Parameters = new
             {
-                ValidUntil = entity.ValidUntil,
+                ValidUntil = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IyUserGrantEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yUserGrant SET TenantID = @TenantID WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IyUserGrantEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Deleted = @Deleted WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IyUserGrantEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Changed = @Changed WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IyUserGrantEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yUserGrant SET UserId = @UserId WHERE  ";
+            this.Query = $@" UPDATE yUserGrant SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel DeleteyUserGrantQuery(IyUserGrantEntity yUserGrant)
         {
-            this.Query = $@" DELETE FROM yUserGrant WHERE  ";
+            this.Query = $@" DELETE FROM yUserGrant WHERE Id = @Id ";
             this.Parameters = new
             {
+                Id = yUserGrant.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

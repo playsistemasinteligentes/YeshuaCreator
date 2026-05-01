@@ -41,159 +41,159 @@ namespace Input.Repository.Sesoes
             var query = _query.DeleteSesoesQuery(Sesoes);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePacienteId(ISesoesEntity entity)
+        public void UpdatePacienteId(int id, int value)
         {
-            var query = _query.UpdatePacienteId(entity);
+            var query = _query.UpdatePacienteId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDataInicio(ISesoesEntity entity)
+        public void UpdateDataInicio(int id, DateTime value)
         {
-            var query = _query.UpdateDataInicio(entity);
+            var query = _query.UpdateDataInicio(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDataFim(ISesoesEntity entity)
+        public void UpdateDataFim(int id, DateTime value)
         {
-            var query = _query.UpdateDataFim(entity);
+            var query = _query.UpdateDataFim(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatusAgendamento(ISesoesEntity entity)
+        public void UpdateStatusAgendamento(int id, int value)
         {
-            var query = _query.UpdateStatusAgendamento(entity);
+            var query = _query.UpdateStatusAgendamento(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatusProntuario(ISesoesEntity entity)
+        public void UpdateStatusProntuario(int id, int value)
         {
-            var query = _query.UpdateStatusProntuario(entity);
+            var query = _query.UpdateStatusProntuario(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProntuario(ISesoesEntity entity)
+        public void UpdateProntuario(int id, string value)
         {
-            var query = _query.UpdateProntuario(entity);
+            var query = _query.UpdateProntuario(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateQueixaPrincipal(ISesoesEntity entity)
+        public void UpdateQueixaPrincipal(int id, string value)
         {
-            var query = _query.UpdateQueixaPrincipal(entity);
+            var query = _query.UpdateQueixaPrincipal(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateRegistroDocumental(ISesoesEntity entity)
+        public void UpdateRegistroDocumental(int id, string value)
         {
-            var query = _query.UpdateRegistroDocumental(entity);
+            var query = _query.UpdateRegistroDocumental(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSintomasRelatados(ISesoesEntity entity)
+        public void UpdateSintomasRelatados(int id, string value)
         {
-            var query = _query.UpdateSintomasRelatados(entity);
+            var query = _query.UpdateSintomasRelatados(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateMudancasDesdeUltimaSessaao(ISesoesEntity entity)
+        public void UpdateMudancasDesdeUltimaSessaao(int id, int value)
         {
-            var query = _query.UpdateMudancasDesdeUltimaSessaao(entity);
+            var query = _query.UpdateMudancasDesdeUltimaSessaao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateComportamentoObservado(ISesoesEntity entity)
+        public void UpdateComportamentoObservado(int id, string value)
         {
-            var query = _query.UpdateComportamentoObservado(entity);
+            var query = _query.UpdateComportamentoObservado(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEstadoEmocionalGeral(ISesoesEntity entity)
+        public void UpdateEstadoEmocionalGeral(int id, string value)
         {
-            var query = _query.UpdateEstadoEmocionalGeral(entity);
+            var query = _query.UpdateEstadoEmocionalGeral(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDiscursoPensamentos(ISesoesEntity entity)
+        public void UpdateDiscursoPensamentos(int id, string value)
         {
-            var query = _query.UpdateDiscursoPensamentos(entity);
+            var query = _query.UpdateDiscursoPensamentos(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUsoMedicacao(ISesoesEntity entity)
+        public void UpdateUsoMedicacao(int id, string value)
         {
-            var query = _query.UpdateUsoMedicacao(entity);
+            var query = _query.UpdateUsoMedicacao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTecnicasUtilizadas(ISesoesEntity entity)
+        public void UpdateTecnicasUtilizadas(int id, string value)
         {
-            var query = _query.UpdateTecnicasUtilizadas(entity);
+            var query = _query.UpdateTecnicasUtilizadas(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateQuestionamentosReflexoesAbordadas(ISesoesEntity entity)
+        public void UpdateQuestionamentosReflexoesAbordadas(int id, string value)
         {
-            var query = _query.UpdateQuestionamentosReflexoesAbordadas(entity);
+            var query = _query.UpdateQuestionamentosReflexoesAbordadas(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateExerciciosTarefasSugeridas(ISesoesEntity entity)
+        public void UpdateExerciciosTarefasSugeridas(int id, string value)
         {
-            var query = _query.UpdateExerciciosTarefasSugeridas(entity);
+            var query = _query.UpdateExerciciosTarefasSugeridas(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDiagnoosticoHipoteseDiagnoostica(ISesoesEntity entity)
+        public void UpdateDiagnoosticoHipoteseDiagnoostica(int id, string value)
         {
-            var query = _query.UpdateDiagnoosticoHipoteseDiagnoostica(entity);
+            var query = _query.UpdateDiagnoosticoHipoteseDiagnoostica(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateObjetivosCurtoPrazo(ISesoesEntity entity)
+        public void UpdateObjetivosCurtoPrazo(int id, string value)
         {
-            var query = _query.UpdateObjetivosCurtoPrazo(entity);
+            var query = _query.UpdateObjetivosCurtoPrazo(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateObjetivosLongoPrazo(ISesoesEntity entity)
+        public void UpdateObjetivosLongoPrazo(int id, string value)
         {
-            var query = _query.UpdateObjetivosLongoPrazo(entity);
+            var query = _query.UpdateObjetivosLongoPrazo(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateFrequenciaSugeridaSessooes(ISesoesEntity entity)
+        public void UpdateFrequenciaSugeridaSessooes(int id, string value)
         {
-            var query = _query.UpdateFrequenciaSugeridaSessooes(entity);
+            var query = _query.UpdateFrequenciaSugeridaSessooes(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEncaminhamentoOutrosProfissionais(ISesoesEntity entity)
+        public void UpdateEncaminhamentoOutrosProfissionais(int id, string value)
         {
-            var query = _query.UpdateEncaminhamentoOutrosProfissionais(entity);
+            var query = _query.UpdateEncaminhamentoOutrosProfissionais(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity)
+        public void UpdateInformacoesRelevantesFuturasConsultas(int id, string value)
         {
-            var query = _query.UpdateInformacoesRelevantesFuturasConsultas(entity);
+            var query = _query.UpdateInformacoesRelevantesFuturasConsultas(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity)
+        public void UpdateFeedbackPacienteSobreProcessoTerapeeutico(int id, string value)
         {
-            var query = _query.UpdateFeedbackPacienteSobreProcessoTerapeeutico(entity);
+            var query = _query.UpdateFeedbackPacienteSobreProcessoTerapeeutico(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateServicoId(ISesoesEntity entity)
+        public void UpdateServicoId(int id, int value)
         {
-            var query = _query.UpdateServicoId(entity);
+            var query = _query.UpdateServicoId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateMovimentacaoFinanceiraId(ISesoesEntity entity)
+        public void UpdateMovimentacaoFinanceiraId(int id, int value)
         {
-            var query = _query.UpdateMovimentacaoFinanceiraId(entity);
+            var query = _query.UpdateMovimentacaoFinanceiraId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProfissionalId(ISesoesEntity entity)
+        public void UpdateProfissionalId(int id, int value)
         {
-            var query = _query.UpdateProfissionalId(entity);
+            var query = _query.UpdateProfissionalId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(ISesoesEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(ISesoesEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(ISesoesEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(ISesoesEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

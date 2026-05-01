@@ -7,13 +7,13 @@ namespace IQuery.Write
      {
         public QueryModel InserirPlanoContaQuery(IPlanoContaEntity PlanoConta);
         public QueryModel UpdatePlanoContaQuery(IPlanoContaEntity PlanoConta);
-        public QueryModel UpdateCodigo(IPlanoContaEntity entity);
-        public QueryModel UpdateNome(IPlanoContaEntity entity);
-        public QueryModel UpdateTipo(IPlanoContaEntity entity);
-        public QueryModel UpdateTenantID(IPlanoContaEntity entity);
-        public QueryModel UpdateDeleted(IPlanoContaEntity entity);
-        public QueryModel UpdateChanged(IPlanoContaEntity entity);
-        public QueryModel UpdateUserId(IPlanoContaEntity entity);
+        QueryModel UpdateCodigo(int id, string value);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateTipo(int id, int value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeletePlanoContaQuery(IPlanoContaEntity PlanoConta);
     }
 }

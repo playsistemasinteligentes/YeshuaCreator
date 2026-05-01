@@ -43,53 +43,53 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDescricao(IEspecialidadeEntity entity)
+        public QueryModel UpdateDescricao(int id, string value)
         {
             this.Query = $@" UPDATE Especialidade SET Descricao = @Descricao WHERE Id = @Id ";
             this.Parameters = new
             {
-                Descricao = entity.Descricao,
-                Id = entity.Id,
+                Descricao = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IEspecialidadeEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE Especialidade SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IEspecialidadeEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE Especialidade SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IEspecialidadeEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE Especialidade SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IEspecialidadeEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE Especialidade SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

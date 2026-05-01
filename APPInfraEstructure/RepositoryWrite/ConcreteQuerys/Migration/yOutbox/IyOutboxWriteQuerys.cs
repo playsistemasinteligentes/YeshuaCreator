@@ -7,27 +7,27 @@ namespace IQuery.Write
      {
         public QueryModel InseriryOutboxQuery(IyOutboxEntity yOutbox);
         public QueryModel UpdateyOutboxQuery(IyOutboxEntity yOutbox);
-        public QueryModel UpdateMessageId(IyOutboxEntity entity);
-        public QueryModel UpdateType(IyOutboxEntity entity);
-        public QueryModel UpdateEntityType(IyOutboxEntity entity);
-        public QueryModel UpdateEntityId(IyOutboxEntity entity);
-        public QueryModel UpdateCorrelationId(IyOutboxEntity entity);
-        public QueryModel UpdatePayload(IyOutboxEntity entity);
-        public QueryModel UpdateStatus(IyOutboxEntity entity);
-        public QueryModel UpdateTransportType(IyOutboxEntity entity);
-        public QueryModel UpdateTransportData(IyOutboxEntity entity);
-        public QueryModel UpdateCreatedAt(IyOutboxEntity entity);
-        public QueryModel UpdateSentAt(IyOutboxEntity entity);
-        public QueryModel UpdateRetryCount(IyOutboxEntity entity);
-        public QueryModel UpdateLastError(IyOutboxEntity entity);
-        public QueryModel UpdateProcessingAt(IyOutboxEntity entity);
-        public QueryModel UpdateNextAttemptAt(IyOutboxEntity entity);
-        public QueryModel UpdateSagaId(IyOutboxEntity entity);
-        public QueryModel UpdateSagaStepId(IyOutboxEntity entity);
-        public QueryModel UpdateTenantID(IyOutboxEntity entity);
-        public QueryModel UpdateDeleted(IyOutboxEntity entity);
-        public QueryModel UpdateChanged(IyOutboxEntity entity);
-        public QueryModel UpdateUserId(IyOutboxEntity entity);
+        QueryModel UpdateMessageId(int id, string value);
+        QueryModel UpdateType(int id, string value);
+        QueryModel UpdateEntityType(int id, string value);
+        QueryModel UpdateEntityId(int id, string value);
+        QueryModel UpdateCorrelationId(int id, string value);
+        QueryModel UpdatePayload(int id, string value);
+        QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateTransportType(int id, int value);
+        QueryModel UpdateTransportData(int id, string value);
+        QueryModel UpdateCreatedAt(int id, DateTime value);
+        QueryModel UpdateSentAt(int id, DateTime value);
+        QueryModel UpdateRetryCount(int id, int value);
+        QueryModel UpdateLastError(int id, string value);
+        QueryModel UpdateProcessingAt(int id, DateTime value);
+        QueryModel UpdateNextAttemptAt(int id, DateTime value);
+        QueryModel UpdateSagaId(int id, int value);
+        QueryModel UpdateSagaStepId(int id, int value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteyOutboxQuery(IyOutboxEntity yOutbox);
     }
 }

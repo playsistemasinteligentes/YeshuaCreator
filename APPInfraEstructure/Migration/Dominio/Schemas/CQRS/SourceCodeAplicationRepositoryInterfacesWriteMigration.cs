@@ -36,11 +36,15 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        void Update(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
             sb.AppendLine($"        void Delete(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
 
+
+            var key = _entity.AddColumns.First(x => x.IsKey);
+            var keyType = key.getCsharpType();
+
             foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
-                sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity);");
-
-
-
+            {
+                var type = column.getCsharpType();
+                sb.AppendLine($"        void Update{column.Name}({keyType} id, {type} value);");
+            }
 
             sb.AppendLine("    }");
             sb.AppendLine("}");

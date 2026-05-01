@@ -41,39 +41,39 @@ namespace Input.Repository.Servico
             var query = _query.DeleteServicoQuery(Servico);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateGrupoServicoId(IServicoEntity entity)
+        public void UpdateGrupoServicoId(int id, int value)
         {
-            var query = _query.UpdateGrupoServicoId(entity);
+            var query = _query.UpdateGrupoServicoId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateNome(IServicoEntity entity)
+        public void UpdateNome(int id, string value)
         {
-            var query = _query.UpdateNome(entity);
+            var query = _query.UpdateNome(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateValor(IServicoEntity entity)
+        public void UpdateValor(int id, Decimal value)
         {
-            var query = _query.UpdateValor(entity);
+            var query = _query.UpdateValor(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IServicoEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IServicoEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IServicoEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IServicoEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

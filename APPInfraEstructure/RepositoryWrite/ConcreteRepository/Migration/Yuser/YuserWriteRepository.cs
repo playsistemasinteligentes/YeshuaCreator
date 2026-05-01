@@ -41,34 +41,34 @@ namespace Input.Repository.yUser
             var query = _query.DeleteyUserQuery(yUser);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateNome(IyUserEntity entity)
+        public void UpdateNome(int id, string value)
         {
-            var query = _query.UpdateNome(entity);
+            var query = _query.UpdateNome(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEmail(IyUserEntity entity)
+        public void UpdateEmail(int id, string value)
         {
-            var query = _query.UpdateEmail(entity);
+            var query = _query.UpdateEmail(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSenha(IyUserEntity entity)
+        public void UpdateSenha(int id, string value)
         {
-            var query = _query.UpdateSenha(entity);
+            var query = _query.UpdateSenha(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyUserEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyUserEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyUserEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

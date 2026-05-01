@@ -35,8 +35,18 @@ namespace Dominio.Schemas.CQRS
                 // update 
                 sb.AppendLine($"        public QueryModel Update{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName});");
 
+                var key = _entity.AddColumns.First(x => x.IsKey && !x.IsBackEndField);
+                var keyType = key.getCsharpType();
+                var keyName = key.Name.ToLower();
+                // UPDATE por coluna (leve + unificado)
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
-                    sb.AppendLine($"        public QueryModel Update{column.Name}(I{_entity.EntityName}Entity entity);");
+                {
+                    var type = column.getCsharpType();
+
+                    sb.AppendLine($"        QueryModel Update{column.Name}({keyType} {keyName}, {type} value);");
+                }
+
+
                 //delete 
                 sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName});");
 
@@ -126,18 +136,31 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        }");
 
 
+                var keys = _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).ToList();
+                var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
+                var whereClause = string.Join(" AND ", keys.Select(k => $"{k.Name} = @{k.Name}"));
+
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
                 {
-                    sb.AppendLine($"        public QueryModel Update{column.Name}(I{_entity.EntityName}Entity entity)");
+                    var columnType = column.getCsharpType();
+                    sb.AppendLine($"        public QueryModel Update{column.Name}({methodParamsKeys}, {columnType} value)");
+
                     sb.AppendLine("        {");
-                    parametersWhere = string.Join(", ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
+                    //parametersWhere = string.Join(", ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
+                    parametersWhere = whereClause;
                     sb.AppendLine($"            this.Query = $@\" UPDATE {_entity.EntityName} SET {column.Name} = @{column.Name} WHERE {parametersWhere} \";");
 
                     sb.AppendLine("            this.Parameters = new");
                     sb.AppendLine("            {");
-                    sb.AppendLine($"                {column.Name} = entity.{column.Name},");
-                    foreach (var col in _entity.AddColumns.Where(x => x.IsKey))
-                        sb.AppendLine($"                {col.Name} = entity.{col.Name},");
+                    //sb.AppendLine($"                {column.Name} = entity.{column.Name},");
+                    sb.AppendLine($"                {column.Name} = value,");
+
+                    //foreach (var col in _entity.AddColumns.Where(x => x.IsKey))
+                    //    sb.AppendLine($"                {col.Name} = entity.{col.Name},");
+
+                    foreach (var key in keys)
+                        sb.AppendLine($"                {key.Name} = {key.Name.ToLower()},");
+
                     sb.AppendLine("            };");
                     sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
                     sb.AppendLine("        }");

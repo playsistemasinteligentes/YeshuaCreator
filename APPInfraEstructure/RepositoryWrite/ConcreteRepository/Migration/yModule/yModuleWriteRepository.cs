@@ -41,9 +41,9 @@ namespace Input.Repository.yModule
             var query = _query.DeleteyModuleQuery(yModule);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDescription(IyModuleEntity entity)
+        public void UpdateDescription(string id, string value)
         {
-            var query = _query.UpdateDescription(entity);
+            var query = _query.UpdateDescription(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

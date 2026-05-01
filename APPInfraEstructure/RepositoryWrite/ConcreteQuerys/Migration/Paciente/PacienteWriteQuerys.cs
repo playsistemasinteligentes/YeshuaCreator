@@ -61,143 +61,143 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNome(IPacienteEntity entity)
+        public QueryModel UpdateNome(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET Nome = @Nome WHERE Id = @Id ";
             this.Parameters = new
             {
-                Nome = entity.Nome,
-                Id = entity.Id,
+                Nome = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTelefone(IPacienteEntity entity)
+        public QueryModel UpdateTelefone(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET Telefone = @Telefone WHERE Id = @Id ";
             this.Parameters = new
             {
-                Telefone = entity.Telefone,
-                Id = entity.Id,
+                Telefone = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDataNascimento(IPacienteEntity entity)
+        public QueryModel UpdateDataNascimento(int id, DateTime value)
         {
             this.Query = $@" UPDATE Paciente SET DataNascimento = @DataNascimento WHERE Id = @Id ";
             this.Parameters = new
             {
-                DataNascimento = entity.DataNascimento,
-                Id = entity.Id,
+                DataNascimento = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateGenero(IPacienteEntity entity)
+        public QueryModel UpdateGenero(int id, int value)
         {
             this.Query = $@" UPDATE Paciente SET Genero = @Genero WHERE Id = @Id ";
             this.Parameters = new
             {
-                Genero = entity.Genero,
-                Id = entity.Id,
+                Genero = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEscolaridade(IPacienteEntity entity)
+        public QueryModel UpdateEscolaridade(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET Escolaridade = @Escolaridade WHERE Id = @Id ";
             this.Parameters = new
             {
-                Escolaridade = entity.Escolaridade,
-                Id = entity.Id,
+                Escolaridade = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateProfissao(IPacienteEntity entity)
+        public QueryModel UpdateProfissao(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET Profissao = @Profissao WHERE Id = @Id ";
             this.Parameters = new
             {
-                Profissao = entity.Profissao,
-                Id = entity.Id,
+                Profissao = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEndereco(IPacienteEntity entity)
+        public QueryModel UpdateEndereco(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET Endereco = @Endereco WHERE Id = @Id ";
             this.Parameters = new
             {
-                Endereco = entity.Endereco,
-                Id = entity.Id,
+                Endereco = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNomeResponsavel(IPacienteEntity entity)
+        public QueryModel UpdateNomeResponsavel(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET NomeResponsavel = @NomeResponsavel WHERE Id = @Id ";
             this.Parameters = new
             {
-                NomeResponsavel = entity.NomeResponsavel,
-                Id = entity.Id,
+                NomeResponsavel = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTelefoneResponsavel(IPacienteEntity entity)
+        public QueryModel UpdateTelefoneResponsavel(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET TelefoneResponsavel = @TelefoneResponsavel WHERE Id = @Id ";
             this.Parameters = new
             {
-                TelefoneResponsavel = entity.TelefoneResponsavel,
-                Id = entity.Id,
+                TelefoneResponsavel = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateObservacao(IPacienteEntity entity)
+        public QueryModel UpdateObservacao(int id, string value)
         {
             this.Query = $@" UPDATE Paciente SET Observacao = @Observacao WHERE Id = @Id ";
             this.Parameters = new
             {
-                Observacao = entity.Observacao,
-                Id = entity.Id,
+                Observacao = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IPacienteEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE Paciente SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IPacienteEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE Paciente SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IPacienteEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE Paciente SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IPacienteEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE Paciente SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

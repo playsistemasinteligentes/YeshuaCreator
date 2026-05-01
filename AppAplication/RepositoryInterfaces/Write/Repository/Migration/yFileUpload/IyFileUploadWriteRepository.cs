@@ -12,16 +12,16 @@ namespace IRepository.Write
         void Insert(IyFileUploadEntity yfileupload);
         void Update(IyFileUploadEntity yfileupload);
         void Delete(IyFileUploadEntity yfileupload);
-        public void UpdateType(IyFileUploadEntity entity);
-        public void UpdateStatus(IyFileUploadEntity entity);
-        public void UpdateFilePath(IyFileUploadEntity entity);
-        public void UpdateFileSize(IyFileUploadEntity entity);
-        public void UpdateCreatedAt(IyFileUploadEntity entity);
-        public void UpdateCompletedAt(IyFileUploadEntity entity);
-        public void UpdateTenantID(IyFileUploadEntity entity);
-        public void UpdateDeleted(IyFileUploadEntity entity);
-        public void UpdateChanged(IyFileUploadEntity entity);
-        public void UpdateUserId(IyFileUploadEntity entity);
+        void UpdateType(int id, string value);
+        void UpdateStatus(int id, int value);
+        void UpdateFilePath(int id, string value);
+        void UpdateFileSize(int id, long value);
+        void UpdateCreatedAt(int id, DateTime value);
+        void UpdateCompletedAt(int id, DateTime value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

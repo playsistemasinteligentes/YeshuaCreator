@@ -10,6 +10,7 @@
                 {
                     public interface IyUserGrantEntity
 {
+    int? Id { get; set; }
     int? PerfilId { get; set; }
     string GrantId { get; set; }
     bool? Grant { get; set; }

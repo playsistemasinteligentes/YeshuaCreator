@@ -7,13 +7,13 @@ namespace IQuery.Write
      {
         public QueryModel InserirClinicaQuery(IClinicaEntity Clinica);
         public QueryModel UpdateClinicaQuery(IClinicaEntity Clinica);
-        public QueryModel UpdateNome(IClinicaEntity entity);
-        public QueryModel UpdateEndereco(IClinicaEntity entity);
-        public QueryModel UpdateTelefone(IClinicaEntity entity);
-        public QueryModel UpdateTenantID(IClinicaEntity entity);
-        public QueryModel UpdateDeleted(IClinicaEntity entity);
-        public QueryModel UpdateChanged(IClinicaEntity entity);
-        public QueryModel UpdateUserId(IClinicaEntity entity);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateEndereco(int id, string value);
+        QueryModel UpdateTelefone(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteClinicaQuery(IClinicaEntity Clinica);
     }
 }

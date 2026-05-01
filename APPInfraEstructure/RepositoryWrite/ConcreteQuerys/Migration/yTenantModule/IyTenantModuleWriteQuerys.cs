@@ -7,12 +7,12 @@ namespace IQuery.Write
      {
         public QueryModel InseriryTenantModuleQuery(IyTenantModuleEntity yTenantModule);
         public QueryModel UpdateyTenantModuleQuery(IyTenantModuleEntity yTenantModule);
-        public QueryModel UpdateModuleId(IyTenantModuleEntity entity);
-        public QueryModel UpdateTenantID(IyTenantModuleEntity entity);
-        public QueryModel UpdateValidUntil(IyTenantModuleEntity entity);
-        public QueryModel UpdateDeleted(IyTenantModuleEntity entity);
-        public QueryModel UpdateChanged(IyTenantModuleEntity entity);
-        public QueryModel UpdateUserId(IyTenantModuleEntity entity);
+        QueryModel UpdateModuleId(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateValidUntil(int id, DateTime value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteyTenantModuleQuery(IyTenantModuleEntity yTenantModule);
     }
 }

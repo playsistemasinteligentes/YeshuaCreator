@@ -7,12 +7,12 @@ namespace IQuery.Write
      {
         public QueryModel InseriryUserQuery(IyUserEntity yUser);
         public QueryModel UpdateyUserQuery(IyUserEntity yUser);
-        public QueryModel UpdateNome(IyUserEntity entity);
-        public QueryModel UpdateEmail(IyUserEntity entity);
-        public QueryModel UpdateSenha(IyUserEntity entity);
-        public QueryModel UpdateTenantID(IyUserEntity entity);
-        public QueryModel UpdateDeleted(IyUserEntity entity);
-        public QueryModel UpdateChanged(IyUserEntity entity);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateEmail(int id, string value);
+        QueryModel UpdateSenha(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
         public QueryModel DeleteyUserQuery(IyUserEntity yUser);
     }
 }

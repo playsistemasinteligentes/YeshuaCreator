@@ -41,79 +41,79 @@ namespace Input.Repository.ySagaStep
             var query = _query.DeleteySagaStepQuery(ySagaStep);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSagaId(IySagaStepEntity entity)
+        public void UpdateSagaId(int id, int value)
         {
-            var query = _query.UpdateSagaId(entity);
+            var query = _query.UpdateSagaId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStepKey(IySagaStepEntity entity)
+        public void UpdateStepKey(int id, string value)
         {
-            var query = _query.UpdateStepKey(entity);
+            var query = _query.UpdateStepKey(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateIndexOrder(IySagaStepEntity entity)
+        public void UpdateIndexOrder(int id, int value)
         {
-            var query = _query.UpdateIndexOrder(entity);
+            var query = _query.UpdateIndexOrder(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCorrelationId(IySagaStepEntity entity)
+        public void UpdateCorrelationId(int id, string value)
         {
-            var query = _query.UpdateCorrelationId(entity);
+            var query = _query.UpdateCorrelationId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatus(IySagaStepEntity entity)
+        public void UpdateStatus(int id, int value)
         {
-            var query = _query.UpdateStatus(entity);
+            var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateExecutionCount(IySagaStepEntity entity)
+        public void UpdateExecutionCount(int id, int value)
         {
-            var query = _query.UpdateExecutionCount(entity);
+            var query = _query.UpdateExecutionCount(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateLastExecutionAt(IySagaStepEntity entity)
+        public void UpdateLastExecutionAt(int id, DateTime value)
         {
-            var query = _query.UpdateLastExecutionAt(entity);
+            var query = _query.UpdateLastExecutionAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCompletedAt(IySagaStepEntity entity)
+        public void UpdateCompletedAt(int id, DateTime value)
         {
-            var query = _query.UpdateCompletedAt(entity);
+            var query = _query.UpdateCompletedAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateErrorMessage(IySagaStepEntity entity)
+        public void UpdateErrorMessage(int id, string value)
         {
-            var query = _query.UpdateErrorMessage(entity);
+            var query = _query.UpdateErrorMessage(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePayload(IySagaStepEntity entity)
+        public void UpdatePayload(int id, string value)
         {
-            var query = _query.UpdatePayload(entity);
+            var query = _query.UpdatePayload(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateRetryCount(IySagaStepEntity entity)
+        public void UpdateRetryCount(int id, int value)
         {
-            var query = _query.UpdateRetryCount(entity);
+            var query = _query.UpdateRetryCount(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IySagaStepEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IySagaStepEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IySagaStepEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IySagaStepEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

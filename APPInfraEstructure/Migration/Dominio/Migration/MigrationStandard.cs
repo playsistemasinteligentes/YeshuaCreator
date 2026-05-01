@@ -110,6 +110,7 @@ Polling
             .AddColumn("Description", "Descrição").Varchar(1000);*/
 
             AddEntity("yPerfilGrant").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("PerfilId", "ID Perfil").FK("yPerfil", "Id").Int()
             .AddColumn("GrantId", "ID Permição").FK("yGrant", "Id").Varchar(100)
             .AddColumn("Grant", "Permite acessar").Boolean()
@@ -120,6 +121,7 @@ Polling
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
             AddEntity("yUserGrant").AddModule("ADM")
+            .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("PerfilId", "ID Perfil").FK("yPerfil", "Id").Int()
             .AddColumn("GrantId", "ID Permição").FK("yGrant", "Id").Varchar(100)
             .AddColumn("Grant", "Permite acessar").Boolean()

@@ -7,13 +7,13 @@ namespace IQuery.Write
      {
         public QueryModel InserirServicoQuery(IServicoEntity Servico);
         public QueryModel UpdateServicoQuery(IServicoEntity Servico);
-        public QueryModel UpdateGrupoServicoId(IServicoEntity entity);
-        public QueryModel UpdateNome(IServicoEntity entity);
-        public QueryModel UpdateValor(IServicoEntity entity);
-        public QueryModel UpdateTenantID(IServicoEntity entity);
-        public QueryModel UpdateDeleted(IServicoEntity entity);
-        public QueryModel UpdateChanged(IServicoEntity entity);
-        public QueryModel UpdateUserId(IServicoEntity entity);
+        QueryModel UpdateGrupoServicoId(int id, int value);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateValor(int id, Decimal value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteServicoQuery(IServicoEntity Servico);
     }
 }

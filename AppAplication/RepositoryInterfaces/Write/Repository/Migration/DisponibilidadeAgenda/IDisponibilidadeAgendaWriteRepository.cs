@@ -12,12 +12,12 @@ namespace IRepository.Write
         void Insert(IDisponibilidadeAgendaEntity disponibilidadeagenda);
         void Update(IDisponibilidadeAgendaEntity disponibilidadeagenda);
         void Delete(IDisponibilidadeAgendaEntity disponibilidadeagenda);
-        public void UpdateProfissionalId(IDisponibilidadeAgendaEntity entity);
-        public void UpdateDataHora(IDisponibilidadeAgendaEntity entity);
-        public void UpdateTenantID(IDisponibilidadeAgendaEntity entity);
-        public void UpdateDeleted(IDisponibilidadeAgendaEntity entity);
-        public void UpdateChanged(IDisponibilidadeAgendaEntity entity);
-        public void UpdateUserId(IDisponibilidadeAgendaEntity entity);
+        void UpdateProfissionalId(int id, int value);
+        void UpdateDataHora(int id, DateTime value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -12,11 +12,11 @@ namespace IRepository.Write
         void Insert(IGrupoServicoEntity gruposervico);
         void Update(IGrupoServicoEntity gruposervico);
         void Delete(IGrupoServicoEntity gruposervico);
-        public void UpdateDescricao(IGrupoServicoEntity entity);
-        public void UpdateTenantID(IGrupoServicoEntity entity);
-        public void UpdateDeleted(IGrupoServicoEntity entity);
-        public void UpdateChanged(IGrupoServicoEntity entity);
-        public void UpdateUserId(IGrupoServicoEntity entity);
+        void UpdateDescricao(int id, string value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

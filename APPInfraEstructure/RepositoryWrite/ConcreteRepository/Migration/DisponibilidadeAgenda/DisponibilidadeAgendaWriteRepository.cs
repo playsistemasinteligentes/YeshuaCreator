@@ -41,34 +41,34 @@ namespace Input.Repository.DisponibilidadeAgenda
             var query = _query.DeleteDisponibilidadeAgendaQuery(DisponibilidadeAgenda);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProfissionalId(IDisponibilidadeAgendaEntity entity)
+        public void UpdateProfissionalId(int id, int value)
         {
-            var query = _query.UpdateProfissionalId(entity);
+            var query = _query.UpdateProfissionalId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDataHora(IDisponibilidadeAgendaEntity entity)
+        public void UpdateDataHora(int id, DateTime value)
         {
-            var query = _query.UpdateDataHora(entity);
+            var query = _query.UpdateDataHora(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IDisponibilidadeAgendaEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IDisponibilidadeAgendaEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IDisponibilidadeAgendaEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IDisponibilidadeAgendaEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

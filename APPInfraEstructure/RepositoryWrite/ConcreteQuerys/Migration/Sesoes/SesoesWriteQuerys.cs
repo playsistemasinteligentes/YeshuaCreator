@@ -95,313 +95,313 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdatePacienteId(ISesoesEntity entity)
+        public QueryModel UpdatePacienteId(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET PacienteId = @PacienteId WHERE Id = @Id ";
             this.Parameters = new
             {
-                PacienteId = entity.PacienteId,
-                Id = entity.Id,
+                PacienteId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDataInicio(ISesoesEntity entity)
+        public QueryModel UpdateDataInicio(int id, DateTime value)
         {
             this.Query = $@" UPDATE Sesoes SET DataInicio = @DataInicio WHERE Id = @Id ";
             this.Parameters = new
             {
-                DataInicio = entity.DataInicio,
-                Id = entity.Id,
+                DataInicio = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDataFim(ISesoesEntity entity)
+        public QueryModel UpdateDataFim(int id, DateTime value)
         {
             this.Query = $@" UPDATE Sesoes SET DataFim = @DataFim WHERE Id = @Id ";
             this.Parameters = new
             {
-                DataFim = entity.DataFim,
-                Id = entity.Id,
+                DataFim = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateStatusAgendamento(ISesoesEntity entity)
+        public QueryModel UpdateStatusAgendamento(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET StatusAgendamento = @StatusAgendamento WHERE Id = @Id ";
             this.Parameters = new
             {
-                StatusAgendamento = entity.StatusAgendamento,
-                Id = entity.Id,
+                StatusAgendamento = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateStatusProntuario(ISesoesEntity entity)
+        public QueryModel UpdateStatusProntuario(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET StatusProntuario = @StatusProntuario WHERE Id = @Id ";
             this.Parameters = new
             {
-                StatusProntuario = entity.StatusProntuario,
-                Id = entity.Id,
+                StatusProntuario = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateProntuario(ISesoesEntity entity)
+        public QueryModel UpdateProntuario(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET Prontuario = @Prontuario WHERE Id = @Id ";
             this.Parameters = new
             {
-                Prontuario = entity.Prontuario,
-                Id = entity.Id,
+                Prontuario = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateQueixaPrincipal(ISesoesEntity entity)
+        public QueryModel UpdateQueixaPrincipal(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET QueixaPrincipal = @QueixaPrincipal WHERE Id = @Id ";
             this.Parameters = new
             {
-                QueixaPrincipal = entity.QueixaPrincipal,
-                Id = entity.Id,
+                QueixaPrincipal = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateRegistroDocumental(ISesoesEntity entity)
+        public QueryModel UpdateRegistroDocumental(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET RegistroDocumental = @RegistroDocumental WHERE Id = @Id ";
             this.Parameters = new
             {
-                RegistroDocumental = entity.RegistroDocumental,
-                Id = entity.Id,
+                RegistroDocumental = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSintomasRelatados(ISesoesEntity entity)
+        public QueryModel UpdateSintomasRelatados(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET SintomasRelatados = @SintomasRelatados WHERE Id = @Id ";
             this.Parameters = new
             {
-                SintomasRelatados = entity.SintomasRelatados,
-                Id = entity.Id,
+                SintomasRelatados = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateMudancasDesdeUltimaSessaao(ISesoesEntity entity)
+        public QueryModel UpdateMudancasDesdeUltimaSessaao(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET MudancasDesdeUltimaSessaao = @MudancasDesdeUltimaSessaao WHERE Id = @Id ";
             this.Parameters = new
             {
-                MudancasDesdeUltimaSessaao = entity.MudancasDesdeUltimaSessaao,
-                Id = entity.Id,
+                MudancasDesdeUltimaSessaao = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateComportamentoObservado(ISesoesEntity entity)
+        public QueryModel UpdateComportamentoObservado(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET ComportamentoObservado = @ComportamentoObservado WHERE Id = @Id ";
             this.Parameters = new
             {
-                ComportamentoObservado = entity.ComportamentoObservado,
-                Id = entity.Id,
+                ComportamentoObservado = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEstadoEmocionalGeral(ISesoesEntity entity)
+        public QueryModel UpdateEstadoEmocionalGeral(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET EstadoEmocionalGeral = @EstadoEmocionalGeral WHERE Id = @Id ";
             this.Parameters = new
             {
-                EstadoEmocionalGeral = entity.EstadoEmocionalGeral,
-                Id = entity.Id,
+                EstadoEmocionalGeral = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDiscursoPensamentos(ISesoesEntity entity)
+        public QueryModel UpdateDiscursoPensamentos(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET DiscursoPensamentos = @DiscursoPensamentos WHERE Id = @Id ";
             this.Parameters = new
             {
-                DiscursoPensamentos = entity.DiscursoPensamentos,
-                Id = entity.Id,
+                DiscursoPensamentos = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUsoMedicacao(ISesoesEntity entity)
+        public QueryModel UpdateUsoMedicacao(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET UsoMedicacao = @UsoMedicacao WHERE Id = @Id ";
             this.Parameters = new
             {
-                UsoMedicacao = entity.UsoMedicacao,
-                Id = entity.Id,
+                UsoMedicacao = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTecnicasUtilizadas(ISesoesEntity entity)
+        public QueryModel UpdateTecnicasUtilizadas(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET TecnicasUtilizadas = @TecnicasUtilizadas WHERE Id = @Id ";
             this.Parameters = new
             {
-                TecnicasUtilizadas = entity.TecnicasUtilizadas,
-                Id = entity.Id,
+                TecnicasUtilizadas = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateQuestionamentosReflexoesAbordadas(ISesoesEntity entity)
+        public QueryModel UpdateQuestionamentosReflexoesAbordadas(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET QuestionamentosReflexoesAbordadas = @QuestionamentosReflexoesAbordadas WHERE Id = @Id ";
             this.Parameters = new
             {
-                QuestionamentosReflexoesAbordadas = entity.QuestionamentosReflexoesAbordadas,
-                Id = entity.Id,
+                QuestionamentosReflexoesAbordadas = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateExerciciosTarefasSugeridas(ISesoesEntity entity)
+        public QueryModel UpdateExerciciosTarefasSugeridas(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET ExerciciosTarefasSugeridas = @ExerciciosTarefasSugeridas WHERE Id = @Id ";
             this.Parameters = new
             {
-                ExerciciosTarefasSugeridas = entity.ExerciciosTarefasSugeridas,
-                Id = entity.Id,
+                ExerciciosTarefasSugeridas = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDiagnoosticoHipoteseDiagnoostica(ISesoesEntity entity)
+        public QueryModel UpdateDiagnoosticoHipoteseDiagnoostica(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET DiagnoosticoHipoteseDiagnoostica = @DiagnoosticoHipoteseDiagnoostica WHERE Id = @Id ";
             this.Parameters = new
             {
-                DiagnoosticoHipoteseDiagnoostica = entity.DiagnoosticoHipoteseDiagnoostica,
-                Id = entity.Id,
+                DiagnoosticoHipoteseDiagnoostica = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateObjetivosCurtoPrazo(ISesoesEntity entity)
+        public QueryModel UpdateObjetivosCurtoPrazo(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET ObjetivosCurtoPrazo = @ObjetivosCurtoPrazo WHERE Id = @Id ";
             this.Parameters = new
             {
-                ObjetivosCurtoPrazo = entity.ObjetivosCurtoPrazo,
-                Id = entity.Id,
+                ObjetivosCurtoPrazo = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateObjetivosLongoPrazo(ISesoesEntity entity)
+        public QueryModel UpdateObjetivosLongoPrazo(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET ObjetivosLongoPrazo = @ObjetivosLongoPrazo WHERE Id = @Id ";
             this.Parameters = new
             {
-                ObjetivosLongoPrazo = entity.ObjetivosLongoPrazo,
-                Id = entity.Id,
+                ObjetivosLongoPrazo = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateFrequenciaSugeridaSessooes(ISesoesEntity entity)
+        public QueryModel UpdateFrequenciaSugeridaSessooes(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET FrequenciaSugeridaSessooes = @FrequenciaSugeridaSessooes WHERE Id = @Id ";
             this.Parameters = new
             {
-                FrequenciaSugeridaSessooes = entity.FrequenciaSugeridaSessooes,
-                Id = entity.Id,
+                FrequenciaSugeridaSessooes = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEncaminhamentoOutrosProfissionais(ISesoesEntity entity)
+        public QueryModel UpdateEncaminhamentoOutrosProfissionais(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET EncaminhamentoOutrosProfissionais = @EncaminhamentoOutrosProfissionais WHERE Id = @Id ";
             this.Parameters = new
             {
-                EncaminhamentoOutrosProfissionais = entity.EncaminhamentoOutrosProfissionais,
-                Id = entity.Id,
+                EncaminhamentoOutrosProfissionais = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateInformacoesRelevantesFuturasConsultas(ISesoesEntity entity)
+        public QueryModel UpdateInformacoesRelevantesFuturasConsultas(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET InformacoesRelevantesFuturasConsultas = @InformacoesRelevantesFuturasConsultas WHERE Id = @Id ";
             this.Parameters = new
             {
-                InformacoesRelevantesFuturasConsultas = entity.InformacoesRelevantesFuturasConsultas,
-                Id = entity.Id,
+                InformacoesRelevantesFuturasConsultas = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateFeedbackPacienteSobreProcessoTerapeeutico(ISesoesEntity entity)
+        public QueryModel UpdateFeedbackPacienteSobreProcessoTerapeeutico(int id, string value)
         {
             this.Query = $@" UPDATE Sesoes SET FeedbackPacienteSobreProcessoTerapeeutico = @FeedbackPacienteSobreProcessoTerapeeutico WHERE Id = @Id ";
             this.Parameters = new
             {
-                FeedbackPacienteSobreProcessoTerapeeutico = entity.FeedbackPacienteSobreProcessoTerapeeutico,
-                Id = entity.Id,
+                FeedbackPacienteSobreProcessoTerapeeutico = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateServicoId(ISesoesEntity entity)
+        public QueryModel UpdateServicoId(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET ServicoId = @ServicoId WHERE Id = @Id ";
             this.Parameters = new
             {
-                ServicoId = entity.ServicoId,
-                Id = entity.Id,
+                ServicoId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateMovimentacaoFinanceiraId(ISesoesEntity entity)
+        public QueryModel UpdateMovimentacaoFinanceiraId(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET MovimentacaoFinanceiraId = @MovimentacaoFinanceiraId WHERE Id = @Id ";
             this.Parameters = new
             {
-                MovimentacaoFinanceiraId = entity.MovimentacaoFinanceiraId,
-                Id = entity.Id,
+                MovimentacaoFinanceiraId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateProfissionalId(ISesoesEntity entity)
+        public QueryModel UpdateProfissionalId(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET ProfissionalId = @ProfissionalId WHERE Id = @Id ";
             this.Parameters = new
             {
-                ProfissionalId = entity.ProfissionalId,
-                Id = entity.Id,
+                ProfissionalId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(ISesoesEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(ISesoesEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE Sesoes SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(ISesoesEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE Sesoes SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(ISesoesEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE Sesoes SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

@@ -23,7 +23,7 @@ namespace Read.Repository
                     SET i.Status = 1
                     FROM yInbox i
                     INNER JOIN ySagaStep s ON s.CorrelationId = i.CorrelationId
-                    WHERE s.Status = 4;
+                    WHERE s.Status = 4 and i.Status = 0;
 
                     COMMIT";
 

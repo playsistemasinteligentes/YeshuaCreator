@@ -8,6 +8,7 @@ namespace Repositorio.Outputs
 {
     public partial record yUserGrantDTO
     {
+    public int id { get; set; }
     public int perfilid { get; set; }
     public string grantid { get; set; }
     public bool grant { get; set; }

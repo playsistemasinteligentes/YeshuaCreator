@@ -7,21 +7,21 @@ namespace IQuery.Write
      {
         public QueryModel InserirySagaQuery(IySagaEntity ySaga);
         public QueryModel UpdateySagaQuery(IySagaEntity ySaga);
-        public QueryModel UpdateCorrelationId(IySagaEntity entity);
-        public QueryModel UpdateType(IySagaEntity entity);
-        public QueryModel UpdateStatus(IySagaEntity entity);
-        public QueryModel UpdateKeyCurrentStep(IySagaEntity entity);
-        public QueryModel UpdateCreatedAt(IySagaEntity entity);
-        public QueryModel UpdateCompletedAt(IySagaEntity entity);
-        public QueryModel UpdateEntityType(IySagaEntity entity);
-        public QueryModel UpdateEntityId(IySagaEntity entity);
-        public QueryModel UpdateNextExecutionAt(IySagaEntity entity);
-        public QueryModel UpdateLockedAt(IySagaEntity entity);
-        public QueryModel UpdateLockedBy(IySagaEntity entity);
-        public QueryModel UpdateTenantID(IySagaEntity entity);
-        public QueryModel UpdateDeleted(IySagaEntity entity);
-        public QueryModel UpdateChanged(IySagaEntity entity);
-        public QueryModel UpdateUserId(IySagaEntity entity);
+        QueryModel UpdateCorrelationId(int id, string value);
+        QueryModel UpdateType(int id, string value);
+        QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateKeyCurrentStep(int id, string value);
+        QueryModel UpdateCreatedAt(int id, DateTime value);
+        QueryModel UpdateCompletedAt(int id, DateTime value);
+        QueryModel UpdateEntityType(int id, string value);
+        QueryModel UpdateEntityId(int id, string value);
+        QueryModel UpdateNextExecutionAt(int id, DateTime value);
+        QueryModel UpdateLockedAt(int id, DateTime value);
+        QueryModel UpdateLockedBy(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteySagaQuery(IySagaEntity ySaga);
     }
 }

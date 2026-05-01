@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yUserGrantCrudCommand c) 
              {    
-                 var yusergrant = new yUserGrantFactory(_logger).Create(c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
+                 var yusergrant = new yUserGrantFactory(_logger).Create(c.Id, c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
                  if (!yusergrant.isValidUpdate())
                      return ValidationError(yusergrant.getErroMensagens(), null);
 

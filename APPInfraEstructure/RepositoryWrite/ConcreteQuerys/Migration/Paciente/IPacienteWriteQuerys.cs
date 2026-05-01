@@ -7,20 +7,20 @@ namespace IQuery.Write
      {
         public QueryModel InserirPacienteQuery(IPacienteEntity Paciente);
         public QueryModel UpdatePacienteQuery(IPacienteEntity Paciente);
-        public QueryModel UpdateNome(IPacienteEntity entity);
-        public QueryModel UpdateTelefone(IPacienteEntity entity);
-        public QueryModel UpdateDataNascimento(IPacienteEntity entity);
-        public QueryModel UpdateGenero(IPacienteEntity entity);
-        public QueryModel UpdateEscolaridade(IPacienteEntity entity);
-        public QueryModel UpdateProfissao(IPacienteEntity entity);
-        public QueryModel UpdateEndereco(IPacienteEntity entity);
-        public QueryModel UpdateNomeResponsavel(IPacienteEntity entity);
-        public QueryModel UpdateTelefoneResponsavel(IPacienteEntity entity);
-        public QueryModel UpdateObservacao(IPacienteEntity entity);
-        public QueryModel UpdateTenantID(IPacienteEntity entity);
-        public QueryModel UpdateDeleted(IPacienteEntity entity);
-        public QueryModel UpdateChanged(IPacienteEntity entity);
-        public QueryModel UpdateUserId(IPacienteEntity entity);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateTelefone(int id, string value);
+        QueryModel UpdateDataNascimento(int id, DateTime value);
+        QueryModel UpdateGenero(int id, int value);
+        QueryModel UpdateEscolaridade(int id, string value);
+        QueryModel UpdateProfissao(int id, string value);
+        QueryModel UpdateEndereco(int id, string value);
+        QueryModel UpdateNomeResponsavel(int id, string value);
+        QueryModel UpdateTelefoneResponsavel(int id, string value);
+        QueryModel UpdateObservacao(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeletePacienteQuery(IPacienteEntity Paciente);
     }
 }

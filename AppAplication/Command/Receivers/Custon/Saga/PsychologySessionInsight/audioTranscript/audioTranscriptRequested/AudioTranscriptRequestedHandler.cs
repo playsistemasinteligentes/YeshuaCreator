@@ -6,6 +6,7 @@ using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
 using Dominio.Saga;
 using IRepository.Read;
+using IRepository.Write;
 using Repositorio.Outputs;
 using System;
 using System.IO;
@@ -16,6 +17,7 @@ namespace Command.Receivers
     public partial class AudioTranscriptRequestedHandler
     {
         private readonly IyFileUploadReadRepository _repReadyUpload;
+        private readonly ISesoesWriteRepository _repSesoesWriteRepository;
         private readonly IFileStorage _fileStorage;
         private readonly OutboxService _outboxService;
         private readonly ILogger _logger;
@@ -24,12 +26,14 @@ namespace Command.Receivers
             IyFileUploadReadRepository repReadyUpload,
             IFileStorage fileStorage,
             OutboxService outboxService,
-            ILogger logger)
+            ILogger logger,
+            ISesoesWriteRepository repSesoesWriteRepository)
         {
             _repReadyUpload = repReadyUpload;
             _fileStorage = fileStorage;
             _outboxService = outboxService;
             _logger = logger;
+            _repSesoesWriteRepository = repSesoesWriteRepository;
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
@@ -117,6 +121,7 @@ namespace Command.Receivers
 
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {
+            _repSesoesWriteRepository.UpdateProntuario(Convert.ToInt32(saga.EntityId),payload );
         }
 
         // =========================================================

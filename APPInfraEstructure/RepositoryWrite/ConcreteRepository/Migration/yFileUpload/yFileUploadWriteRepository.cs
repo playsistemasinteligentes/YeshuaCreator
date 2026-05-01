@@ -41,54 +41,54 @@ namespace Input.Repository.yFileUpload
             var query = _query.DeleteyFileUploadQuery(yFileUpload);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateType(IyFileUploadEntity entity)
+        public void UpdateType(int id, string value)
         {
-            var query = _query.UpdateType(entity);
+            var query = _query.UpdateType(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatus(IyFileUploadEntity entity)
+        public void UpdateStatus(int id, int value)
         {
-            var query = _query.UpdateStatus(entity);
+            var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateFilePath(IyFileUploadEntity entity)
+        public void UpdateFilePath(int id, string value)
         {
-            var query = _query.UpdateFilePath(entity);
+            var query = _query.UpdateFilePath(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateFileSize(IyFileUploadEntity entity)
+        public void UpdateFileSize(int id, long value)
         {
-            var query = _query.UpdateFileSize(entity);
+            var query = _query.UpdateFileSize(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCreatedAt(IyFileUploadEntity entity)
+        public void UpdateCreatedAt(int id, DateTime value)
         {
-            var query = _query.UpdateCreatedAt(entity);
+            var query = _query.UpdateCreatedAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCompletedAt(IyFileUploadEntity entity)
+        public void UpdateCompletedAt(int id, DateTime value)
         {
-            var query = _query.UpdateCompletedAt(entity);
+            var query = _query.UpdateCompletedAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyFileUploadEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyFileUploadEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyFileUploadEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyFileUploadEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

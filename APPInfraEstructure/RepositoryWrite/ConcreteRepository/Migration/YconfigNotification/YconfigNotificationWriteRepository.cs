@@ -46,52 +46,52 @@ namespace Input.Repository.yConfigNotification
             var query = _query.DeleteyConfigNotificationQuery(yConfigNotification);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyConfigNotificationEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEmailSmtpClient(IyConfigNotificationEntity entity)
+        public void UpdateEmailSmtpClient(int id, string value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateEmailSmtpClient(entity);
+            var query = _query.UpdateEmailSmtpClient(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEmailPort(IyConfigNotificationEntity entity)
+        public void UpdateEmailPort(int id, int value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateEmailPort(entity);
+            var query = _query.UpdateEmailPort(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEmailUserName(IyConfigNotificationEntity entity)
+        public void UpdateEmailUserName(int id, string value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateEmailUserName(entity);
+            var query = _query.UpdateEmailUserName(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEmailPassword(IyConfigNotificationEntity entity)
+        public void UpdateEmailPassword(int id, string value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateEmailPassword(entity);
+            var query = _query.UpdateEmailPassword(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyConfigNotificationEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyConfigNotificationEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyConfigNotificationEntity entity)
+        public void UpdateUserId(int id, int value)
         {
             _cacheService.RemoveByPrefix("yConfigNotification");
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

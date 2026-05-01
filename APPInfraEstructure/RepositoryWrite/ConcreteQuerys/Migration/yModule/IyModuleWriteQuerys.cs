@@ -7,7 +7,7 @@ namespace IQuery.Write
      {
         public QueryModel InseriryModuleQuery(IyModuleEntity yModule);
         public QueryModel UpdateyModuleQuery(IyModuleEntity yModule);
-        public QueryModel UpdateDescription(IyModuleEntity entity);
+        QueryModel UpdateDescription(string id, string value);
         public QueryModel DeleteyModuleQuery(IyModuleEntity yModule);
     }
 }

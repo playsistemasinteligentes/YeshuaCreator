@@ -7,11 +7,11 @@ namespace IQuery.Write
      {
         public QueryModel InseriryTenantQuery(IyTenantEntity yTenant);
         public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant);
-        public QueryModel UpdateCnpjCpf(IyTenantEntity entity);
-        public QueryModel UpdateNome(IyTenantEntity entity);
-        public QueryModel UpdateUserId(IyTenantEntity entity);
-        public QueryModel UpdateDeleted(IyTenantEntity entity);
-        public QueryModel UpdateChanged(IyTenantEntity entity);
+        QueryModel UpdateCnpjCpf(int id, string value);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
         public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant);
     }
 }

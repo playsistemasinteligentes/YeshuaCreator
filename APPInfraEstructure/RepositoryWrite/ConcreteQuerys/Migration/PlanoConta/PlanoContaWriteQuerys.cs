@@ -47,73 +47,73 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCodigo(IPlanoContaEntity entity)
+        public QueryModel UpdateCodigo(int id, string value)
         {
             this.Query = $@" UPDATE PlanoConta SET Codigo = @Codigo WHERE Id = @Id ";
             this.Parameters = new
             {
-                Codigo = entity.Codigo,
-                Id = entity.Id,
+                Codigo = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNome(IPlanoContaEntity entity)
+        public QueryModel UpdateNome(int id, string value)
         {
             this.Query = $@" UPDATE PlanoConta SET Nome = @Nome WHERE Id = @Id ";
             this.Parameters = new
             {
-                Nome = entity.Nome,
-                Id = entity.Id,
+                Nome = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTipo(IPlanoContaEntity entity)
+        public QueryModel UpdateTipo(int id, int value)
         {
             this.Query = $@" UPDATE PlanoConta SET Tipo = @Tipo WHERE Id = @Id ";
             this.Parameters = new
             {
-                Tipo = entity.Tipo,
-                Id = entity.Id,
+                Tipo = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IPlanoContaEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE PlanoConta SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IPlanoContaEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE PlanoConta SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IPlanoContaEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE PlanoConta SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IPlanoContaEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE PlanoConta SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

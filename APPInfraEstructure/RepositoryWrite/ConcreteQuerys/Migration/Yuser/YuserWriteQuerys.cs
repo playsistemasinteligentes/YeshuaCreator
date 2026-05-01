@@ -45,63 +45,63 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNome(IyUserEntity entity)
+        public QueryModel UpdateNome(int id, string value)
         {
             this.Query = $@" UPDATE yUser SET Nome = @Nome WHERE Id = @Id ";
             this.Parameters = new
             {
-                Nome = entity.Nome,
-                Id = entity.Id,
+                Nome = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEmail(IyUserEntity entity)
+        public QueryModel UpdateEmail(int id, string value)
         {
             this.Query = $@" UPDATE yUser SET Email = @Email WHERE Id = @Id ";
             this.Parameters = new
             {
-                Email = entity.Email,
-                Id = entity.Id,
+                Email = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSenha(IyUserEntity entity)
+        public QueryModel UpdateSenha(int id, string value)
         {
             this.Query = $@" UPDATE yUser SET Senha = @Senha WHERE Id = @Id ";
             this.Parameters = new
             {
-                Senha = entity.Senha,
-                Id = entity.Id,
+                Senha = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IyUserEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE yUser SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IyUserEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE yUser SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IyUserEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE yUser SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

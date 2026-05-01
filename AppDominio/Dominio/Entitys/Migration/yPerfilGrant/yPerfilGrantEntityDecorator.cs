@@ -18,6 +18,19 @@
                             _inner = inner;
                             _logger = logger;
                         }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+
                                     public int? PerfilId
                                     {
                                         get => _inner.PerfilId;

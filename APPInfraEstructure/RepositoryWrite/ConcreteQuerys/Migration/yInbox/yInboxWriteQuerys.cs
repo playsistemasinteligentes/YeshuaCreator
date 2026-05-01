@@ -69,183 +69,183 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateMessageId(IyInboxEntity entity)
+        public QueryModel UpdateMessageId(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET MessageId = @MessageId WHERE Id = @Id ";
             this.Parameters = new
             {
-                MessageId = entity.MessageId,
-                Id = entity.Id,
+                MessageId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateType(IyInboxEntity entity)
+        public QueryModel UpdateType(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET Type = @Type WHERE Id = @Id ";
             this.Parameters = new
             {
-                Type = entity.Type,
-                Id = entity.Id,
+                Type = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEntityType(IyInboxEntity entity)
+        public QueryModel UpdateEntityType(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET EntityType = @EntityType WHERE Id = @Id ";
             this.Parameters = new
             {
-                EntityType = entity.EntityType,
-                Id = entity.Id,
+                EntityType = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEntityId(IyInboxEntity entity)
+        public QueryModel UpdateEntityId(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET EntityId = @EntityId WHERE Id = @Id ";
             this.Parameters = new
             {
-                EntityId = entity.EntityId,
-                Id = entity.Id,
+                EntityId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCorrelationId(IyInboxEntity entity)
+        public QueryModel UpdateCorrelationId(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET CorrelationId = @CorrelationId WHERE Id = @Id ";
             this.Parameters = new
             {
-                CorrelationId = entity.CorrelationId,
-                Id = entity.Id,
+                CorrelationId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdatePayload(IyInboxEntity entity)
+        public QueryModel UpdatePayload(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET Payload = @Payload WHERE Id = @Id ";
             this.Parameters = new
             {
-                Payload = entity.Payload,
-                Id = entity.Id,
+                Payload = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateStatus(IyInboxEntity entity)
+        public QueryModel UpdateStatus(int id, int value)
         {
             this.Query = $@" UPDATE yInbox SET Status = @Status WHERE Id = @Id ";
             this.Parameters = new
             {
-                Status = entity.Status,
-                Id = entity.Id,
+                Status = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCreatedAt(IyInboxEntity entity)
+        public QueryModel UpdateCreatedAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE yInbox SET CreatedAt = @CreatedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                CreatedAt = entity.CreatedAt,
-                Id = entity.Id,
+                CreatedAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateRetryCount(IyInboxEntity entity)
+        public QueryModel UpdateRetryCount(int id, int value)
         {
             this.Query = $@" UPDATE yInbox SET RetryCount = @RetryCount WHERE Id = @Id ";
             this.Parameters = new
             {
-                RetryCount = entity.RetryCount,
-                Id = entity.Id,
+                RetryCount = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateLastError(IyInboxEntity entity)
+        public QueryModel UpdateLastError(int id, string value)
         {
             this.Query = $@" UPDATE yInbox SET LastError = @LastError WHERE Id = @Id ";
             this.Parameters = new
             {
-                LastError = entity.LastError,
-                Id = entity.Id,
+                LastError = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateProcessingAt(IyInboxEntity entity)
+        public QueryModel UpdateProcessingAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE yInbox SET ProcessingAt = @ProcessingAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                ProcessingAt = entity.ProcessingAt,
-                Id = entity.Id,
+                ProcessingAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNextAttemptAt(IyInboxEntity entity)
+        public QueryModel UpdateNextAttemptAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE yInbox SET NextAttemptAt = @NextAttemptAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                NextAttemptAt = entity.NextAttemptAt,
-                Id = entity.Id,
+                NextAttemptAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSagaId(IyInboxEntity entity)
+        public QueryModel UpdateSagaId(int id, int value)
         {
             this.Query = $@" UPDATE yInbox SET SagaId = @SagaId WHERE Id = @Id ";
             this.Parameters = new
             {
-                SagaId = entity.SagaId,
-                Id = entity.Id,
+                SagaId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateSagaStepId(IyInboxEntity entity)
+        public QueryModel UpdateSagaStepId(int id, int value)
         {
             this.Query = $@" UPDATE yInbox SET SagaStepId = @SagaStepId WHERE Id = @Id ";
             this.Parameters = new
             {
-                SagaStepId = entity.SagaStepId,
-                Id = entity.Id,
+                SagaStepId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IyInboxEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE yInbox SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IyInboxEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE yInbox SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IyInboxEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE yInbox SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IyInboxEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE yInbox SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

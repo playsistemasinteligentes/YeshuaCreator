@@ -38,13 +38,13 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDescription(IyModuleEntity entity)
+        public QueryModel UpdateDescription(string id, string value)
         {
             this.Query = $@" UPDATE yModule SET Description = @Description WHERE Id = @Id ";
             this.Parameters = new
             {
-                Description = entity.Description,
-                Id = entity.Id,
+                Description = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

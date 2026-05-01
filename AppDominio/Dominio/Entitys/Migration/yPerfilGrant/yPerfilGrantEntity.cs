@@ -10,6 +10,7 @@
                 {
                     public partial class yPerfilGrantEntity : IyPerfilGrantEntity
 {
+    public int? Id { get; set; }
     public int? PerfilId { get; set; }
     public string GrantId { get; set; }
     public bool? Grant { get; set; }
@@ -23,7 +24,8 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yPerfilGrantEntity(int? perfilid, string grantid, bool? grant, bool? create, bool? read, bool? update, bool? delete, DateTime? validuntil ){
+ internal yPerfilGrantEntity(int? id, int? perfilid, string grantid, bool? grant, bool? create, bool? read, bool? update, bool? delete, DateTime? validuntil ){
+ Id = id; 
  PerfilId = perfilid; 
  GrantId = grantid; 
  Grant = grant; 

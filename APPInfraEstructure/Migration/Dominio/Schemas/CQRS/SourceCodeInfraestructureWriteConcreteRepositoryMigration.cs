@@ -93,13 +93,20 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
 
 
+            var keys = _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).ToList();
+            var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
+            var methodParamsCall = string.Join(", ", keys.Select(k => k.Name.ToLower()));
+
             foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
             {
-                sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity)");
+                //sb.AppendLine($"        public void Update{column.Name}(I{_entity.EntityName}Entity entity)");
+
+                sb.AppendLine($"        public void Update{column.Name}({methodParamsKeys}, {column.getCsharpType()} value)"); 
                 sb.AppendLine("        {");
                 if (_entity.CachedTable)
                     sb.AppendLine($"            _cacheService.RemoveByPrefix(\"{_entity.EntityName}\");");
-                sb.AppendLine($"            var query = _query.Update{column.Name}(entity);");
+                //sb.AppendLine($"            var query = _query.Update{column.Name}(entity);");
+                sb.AppendLine($"            var query = _query.Update{column.Name}({methodParamsCall}, value);");
                 sb.AppendLine("             _UnitOfWork.Execute(query.Query, query.Parameters);");
                 sb.AppendLine("        }");
             }

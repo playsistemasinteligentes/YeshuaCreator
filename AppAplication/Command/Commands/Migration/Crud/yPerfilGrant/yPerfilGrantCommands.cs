@@ -3,6 +3,7 @@ namespace Command.Write
 {
     public struct yPerfilGrantCrudCommand : ICommand
     {
+        public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public string GrantId { get; set; }
         public bool? Grant { get; set; }

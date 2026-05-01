@@ -7,11 +7,11 @@ namespace IQuery.Write
      {
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant);
         public QueryModel UpdateyGrantQuery(IyGrantEntity yGrant);
-        public QueryModel UpdateDescription(IyGrantEntity entity);
-        public QueryModel UpdateTenantID(IyGrantEntity entity);
-        public QueryModel UpdateDeleted(IyGrantEntity entity);
-        public QueryModel UpdateChanged(IyGrantEntity entity);
-        public QueryModel UpdateUserId(IyGrantEntity entity);
+        QueryModel UpdateDescription(string id, string value);
+        QueryModel UpdateTenantID(string id, int value);
+        QueryModel UpdateDeleted(string id, bool value);
+        QueryModel UpdateChanged(string id, DateTime value);
+        QueryModel UpdateUserId(string id, int value);
         public QueryModel DeleteyGrantQuery(IyGrantEntity yGrant);
     }
 }

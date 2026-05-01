@@ -12,16 +12,16 @@ namespace IRepository.Write
         void Insert(IMovimentacaoFinanceiraEntity movimentacaofinanceira);
         void Update(IMovimentacaoFinanceiraEntity movimentacaofinanceira);
         void Delete(IMovimentacaoFinanceiraEntity movimentacaofinanceira);
-        public void UpdatePacienteId(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateServicoId(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateValor(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateTenantID(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateDeleted(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateChanged(IMovimentacaoFinanceiraEntity entity);
-        public void UpdateUserId(IMovimentacaoFinanceiraEntity entity);
+        void UpdatePacienteId(int id, int value);
+        void UpdateServicoId(int id, int value);
+        void UpdateValor(int id, Decimal value);
+        void UpdateTipoMovimentacao(int id, int value);
+        void UpdateDataMovimentacao(int id, DateTime value);
+        void UpdateSaldoAtual(int id, Decimal value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

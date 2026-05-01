@@ -3,6 +3,7 @@ namespace Command.Read
 {
     public struct yPerfilGrantReadCommand : ICommandRead
     {
+        public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public string GrantId { get; set; }
         public bool? Grant { get; set; }

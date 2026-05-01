@@ -12,12 +12,12 @@ namespace IRepository.Write
         void Insert(IyConfigArctetureEntity yconfigarcteture);
         void Update(IyConfigArctetureEntity yconfigarcteture);
         void Delete(IyConfigArctetureEntity yconfigarcteture);
-        public void UpdateAuditTrackerActived(IyConfigArctetureEntity entity);
-        public void UpdateAuditCRUDActived(IyConfigArctetureEntity entity);
-        public void UpdateTenantID(IyConfigArctetureEntity entity);
-        public void UpdateDeleted(IyConfigArctetureEntity entity);
-        public void UpdateChanged(IyConfigArctetureEntity entity);
-        public void UpdateUserId(IyConfigArctetureEntity entity);
+        void UpdateAuditTrackerActived(int id, int value);
+        void UpdateAuditCRUDActived(int id, int value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

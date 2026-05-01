@@ -41,34 +41,34 @@ namespace Input.Repository.yUserModule
             var query = _query.DeleteyUserModuleQuery(yUserModule);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateModuleId(IyUserModuleEntity entity)
+        public void UpdateModuleId(int id, string value)
         {
-            var query = _query.UpdateModuleId(entity);
+            var query = _query.UpdateModuleId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyUserModuleEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateValidUntil(IyUserModuleEntity entity)
+        public void UpdateValidUntil(int id, DateTime value)
         {
-            var query = _query.UpdateValidUntil(entity);
+            var query = _query.UpdateValidUntil(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyUserModuleEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyUserModuleEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyUserModuleEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

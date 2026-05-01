@@ -7,24 +7,24 @@ namespace IQuery.Write
      {
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox);
         public QueryModel UpdateyInboxQuery(IyInboxEntity yInbox);
-        public QueryModel UpdateMessageId(IyInboxEntity entity);
-        public QueryModel UpdateType(IyInboxEntity entity);
-        public QueryModel UpdateEntityType(IyInboxEntity entity);
-        public QueryModel UpdateEntityId(IyInboxEntity entity);
-        public QueryModel UpdateCorrelationId(IyInboxEntity entity);
-        public QueryModel UpdatePayload(IyInboxEntity entity);
-        public QueryModel UpdateStatus(IyInboxEntity entity);
-        public QueryModel UpdateCreatedAt(IyInboxEntity entity);
-        public QueryModel UpdateRetryCount(IyInboxEntity entity);
-        public QueryModel UpdateLastError(IyInboxEntity entity);
-        public QueryModel UpdateProcessingAt(IyInboxEntity entity);
-        public QueryModel UpdateNextAttemptAt(IyInboxEntity entity);
-        public QueryModel UpdateSagaId(IyInboxEntity entity);
-        public QueryModel UpdateSagaStepId(IyInboxEntity entity);
-        public QueryModel UpdateTenantID(IyInboxEntity entity);
-        public QueryModel UpdateDeleted(IyInboxEntity entity);
-        public QueryModel UpdateChanged(IyInboxEntity entity);
-        public QueryModel UpdateUserId(IyInboxEntity entity);
+        QueryModel UpdateMessageId(int id, string value);
+        QueryModel UpdateType(int id, string value);
+        QueryModel UpdateEntityType(int id, string value);
+        QueryModel UpdateEntityId(int id, string value);
+        QueryModel UpdateCorrelationId(int id, string value);
+        QueryModel UpdatePayload(int id, string value);
+        QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateCreatedAt(int id, DateTime value);
+        QueryModel UpdateRetryCount(int id, int value);
+        QueryModel UpdateLastError(int id, string value);
+        QueryModel UpdateProcessingAt(int id, DateTime value);
+        QueryModel UpdateNextAttemptAt(int id, DateTime value);
+        QueryModel UpdateSagaId(int id, int value);
+        QueryModel UpdateSagaStepId(int id, int value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteyInboxQuery(IyInboxEntity yInbox);
     }
 }

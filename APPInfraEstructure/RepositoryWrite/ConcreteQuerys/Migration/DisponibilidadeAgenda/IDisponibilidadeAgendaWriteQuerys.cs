@@ -7,12 +7,12 @@ namespace IQuery.Write
      {
         public QueryModel InserirDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda);
         public QueryModel UpdateDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda);
-        public QueryModel UpdateProfissionalId(IDisponibilidadeAgendaEntity entity);
-        public QueryModel UpdateDataHora(IDisponibilidadeAgendaEntity entity);
-        public QueryModel UpdateTenantID(IDisponibilidadeAgendaEntity entity);
-        public QueryModel UpdateDeleted(IDisponibilidadeAgendaEntity entity);
-        public QueryModel UpdateChanged(IDisponibilidadeAgendaEntity entity);
-        public QueryModel UpdateUserId(IDisponibilidadeAgendaEntity entity);
+        QueryModel UpdateProfissionalId(int id, int value);
+        QueryModel UpdateDataHora(int id, DateTime value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda);
     }
 }

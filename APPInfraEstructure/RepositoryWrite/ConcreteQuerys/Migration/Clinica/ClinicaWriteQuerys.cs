@@ -47,73 +47,73 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateNome(IClinicaEntity entity)
+        public QueryModel UpdateNome(int id, string value)
         {
             this.Query = $@" UPDATE Clinica SET Nome = @Nome WHERE Id = @Id ";
             this.Parameters = new
             {
-                Nome = entity.Nome,
-                Id = entity.Id,
+                Nome = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateEndereco(IClinicaEntity entity)
+        public QueryModel UpdateEndereco(int id, string value)
         {
             this.Query = $@" UPDATE Clinica SET Endereco = @Endereco WHERE Id = @Id ";
             this.Parameters = new
             {
-                Endereco = entity.Endereco,
-                Id = entity.Id,
+                Endereco = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTelefone(IClinicaEntity entity)
+        public QueryModel UpdateTelefone(int id, string value)
         {
             this.Query = $@" UPDATE Clinica SET Telefone = @Telefone WHERE Id = @Id ";
             this.Parameters = new
             {
-                Telefone = entity.Telefone,
-                Id = entity.Id,
+                Telefone = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IClinicaEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE Clinica SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IClinicaEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE Clinica SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IClinicaEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE Clinica SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IClinicaEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE Clinica SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

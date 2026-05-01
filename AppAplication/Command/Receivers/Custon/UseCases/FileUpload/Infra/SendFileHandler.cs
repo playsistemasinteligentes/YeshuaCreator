@@ -149,7 +149,7 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 //_sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
 
                 _unitOfWork.BeginTran();
-                _repWriteyFileUpload.UpdateFilePath(upload);
+                _repWriteyFileUpload.UpdateFilePath(uploadId, upload.FilePath);
                 _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
                 _unitOfWork.Commit();
 

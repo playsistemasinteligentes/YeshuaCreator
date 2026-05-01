@@ -12,24 +12,24 @@ namespace IRepository.Write
         void Insert(IyInboxEntity yinbox);
         void Update(IyInboxEntity yinbox);
         void Delete(IyInboxEntity yinbox);
-        public void UpdateMessageId(IyInboxEntity entity);
-        public void UpdateType(IyInboxEntity entity);
-        public void UpdateEntityType(IyInboxEntity entity);
-        public void UpdateEntityId(IyInboxEntity entity);
-        public void UpdateCorrelationId(IyInboxEntity entity);
-        public void UpdatePayload(IyInboxEntity entity);
-        public void UpdateStatus(IyInboxEntity entity);
-        public void UpdateCreatedAt(IyInboxEntity entity);
-        public void UpdateRetryCount(IyInboxEntity entity);
-        public void UpdateLastError(IyInboxEntity entity);
-        public void UpdateProcessingAt(IyInboxEntity entity);
-        public void UpdateNextAttemptAt(IyInboxEntity entity);
-        public void UpdateSagaId(IyInboxEntity entity);
-        public void UpdateSagaStepId(IyInboxEntity entity);
-        public void UpdateTenantID(IyInboxEntity entity);
-        public void UpdateDeleted(IyInboxEntity entity);
-        public void UpdateChanged(IyInboxEntity entity);
-        public void UpdateUserId(IyInboxEntity entity);
+        void UpdateMessageId(int id, string value);
+        void UpdateType(int id, string value);
+        void UpdateEntityType(int id, string value);
+        void UpdateEntityId(int id, string value);
+        void UpdateCorrelationId(int id, string value);
+        void UpdatePayload(int id, string value);
+        void UpdateStatus(int id, int value);
+        void UpdateCreatedAt(int id, DateTime value);
+        void UpdateRetryCount(int id, int value);
+        void UpdateLastError(int id, string value);
+        void UpdateProcessingAt(int id, DateTime value);
+        void UpdateNextAttemptAt(int id, DateTime value);
+        void UpdateSagaId(int id, int value);
+        void UpdateSagaStepId(int id, int value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

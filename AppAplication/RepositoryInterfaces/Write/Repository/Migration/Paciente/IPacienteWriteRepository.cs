@@ -12,20 +12,20 @@ namespace IRepository.Write
         void Insert(IPacienteEntity paciente);
         void Update(IPacienteEntity paciente);
         void Delete(IPacienteEntity paciente);
-        public void UpdateNome(IPacienteEntity entity);
-        public void UpdateTelefone(IPacienteEntity entity);
-        public void UpdateDataNascimento(IPacienteEntity entity);
-        public void UpdateGenero(IPacienteEntity entity);
-        public void UpdateEscolaridade(IPacienteEntity entity);
-        public void UpdateProfissao(IPacienteEntity entity);
-        public void UpdateEndereco(IPacienteEntity entity);
-        public void UpdateNomeResponsavel(IPacienteEntity entity);
-        public void UpdateTelefoneResponsavel(IPacienteEntity entity);
-        public void UpdateObservacao(IPacienteEntity entity);
-        public void UpdateTenantID(IPacienteEntity entity);
-        public void UpdateDeleted(IPacienteEntity entity);
-        public void UpdateChanged(IPacienteEntity entity);
-        public void UpdateUserId(IPacienteEntity entity);
+        void UpdateNome(int id, string value);
+        void UpdateTelefone(int id, string value);
+        void UpdateDataNascimento(int id, DateTime value);
+        void UpdateGenero(int id, int value);
+        void UpdateEscolaridade(int id, string value);
+        void UpdateProfissao(int id, string value);
+        void UpdateEndereco(int id, string value);
+        void UpdateNomeResponsavel(int id, string value);
+        void UpdateTelefoneResponsavel(int id, string value);
+        void UpdateObservacao(int id, string value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

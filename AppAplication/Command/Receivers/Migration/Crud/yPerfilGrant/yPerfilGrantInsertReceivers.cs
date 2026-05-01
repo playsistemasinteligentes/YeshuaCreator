@@ -26,7 +26,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yPerfilGrantCrudCommand c) 
              {    
-                 var yperfilgrant = new yPerfilGrantFactory(_logger).Create(c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
+                 var yperfilgrant = new yPerfilGrantFactory(_logger).Create(c.Id, c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
                  if (!yperfilgrant.isValidInsert())
                      return ValidationError(yperfilgrant.getErroMensagens(), null);
 

@@ -41,39 +41,39 @@ namespace Input.Repository.PlanoConta
             var query = _query.DeletePlanoContaQuery(PlanoConta);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCodigo(IPlanoContaEntity entity)
+        public void UpdateCodigo(int id, string value)
         {
-            var query = _query.UpdateCodigo(entity);
+            var query = _query.UpdateCodigo(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateNome(IPlanoContaEntity entity)
+        public void UpdateNome(int id, string value)
         {
-            var query = _query.UpdateNome(entity);
+            var query = _query.UpdateNome(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTipo(IPlanoContaEntity entity)
+        public void UpdateTipo(int id, int value)
         {
-            var query = _query.UpdateTipo(entity);
+            var query = _query.UpdateTipo(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IPlanoContaEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IPlanoContaEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IPlanoContaEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IPlanoContaEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

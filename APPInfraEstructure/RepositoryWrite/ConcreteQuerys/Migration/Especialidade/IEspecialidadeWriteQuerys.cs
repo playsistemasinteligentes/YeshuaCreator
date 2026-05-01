@@ -7,11 +7,11 @@ namespace IQuery.Write
      {
         public QueryModel InserirEspecialidadeQuery(IEspecialidadeEntity Especialidade);
         public QueryModel UpdateEspecialidadeQuery(IEspecialidadeEntity Especialidade);
-        public QueryModel UpdateDescricao(IEspecialidadeEntity entity);
-        public QueryModel UpdateTenantID(IEspecialidadeEntity entity);
-        public QueryModel UpdateDeleted(IEspecialidadeEntity entity);
-        public QueryModel UpdateChanged(IEspecialidadeEntity entity);
-        public QueryModel UpdateUserId(IEspecialidadeEntity entity);
+        QueryModel UpdateDescricao(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteEspecialidadeQuery(IEspecialidadeEntity Especialidade);
     }
 }

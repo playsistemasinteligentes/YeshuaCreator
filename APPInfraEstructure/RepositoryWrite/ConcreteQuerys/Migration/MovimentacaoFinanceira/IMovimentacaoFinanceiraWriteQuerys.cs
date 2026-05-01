@@ -7,16 +7,16 @@ namespace IQuery.Write
      {
         public QueryModel InserirMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira);
         public QueryModel UpdateMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira);
-        public QueryModel UpdatePacienteId(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateServicoId(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateValor(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateTipoMovimentacao(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateDataMovimentacao(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateSaldoAtual(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateTenantID(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateDeleted(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateChanged(IMovimentacaoFinanceiraEntity entity);
-        public QueryModel UpdateUserId(IMovimentacaoFinanceiraEntity entity);
+        QueryModel UpdatePacienteId(int id, int value);
+        QueryModel UpdateServicoId(int id, int value);
+        QueryModel UpdateValor(int id, Decimal value);
+        QueryModel UpdateTipoMovimentacao(int id, int value);
+        QueryModel UpdateDataMovimentacao(int id, DateTime value);
+        QueryModel UpdateSaldoAtual(int id, Decimal value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira);
     }
 }

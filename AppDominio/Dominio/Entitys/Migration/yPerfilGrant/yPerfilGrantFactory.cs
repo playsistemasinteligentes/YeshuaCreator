@@ -9,9 +9,9 @@
                                     public yPerfilGrantFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IyPerfilGrantEntity Create(int? perfilid, string grantid, bool? grant, bool? create, bool? read, bool? update, bool? delete, DateTime? validuntil )
+                                    } public IyPerfilGrantEntity Create(int? id, int? perfilid, string grantid, bool? grant, bool? create, bool? read, bool? update, bool? delete, DateTime? validuntil )
                             {
-                            var entity = new yPerfilGrantEntity(perfilid, grantid, grant, create, read, update, delete, validuntil );
+                            var entity = new yPerfilGrantEntity(id, perfilid, grantid, grant, create, read, update, delete, validuntil );
 
 
                             var decoratedEntity = new yPerfilGrantDecorator(entity, _logger);

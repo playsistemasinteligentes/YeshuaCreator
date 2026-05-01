@@ -41,94 +41,94 @@ namespace Input.Repository.yInbox
             var query = _query.DeleteyInboxQuery(yInbox);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateMessageId(IyInboxEntity entity)
+        public void UpdateMessageId(int id, string value)
         {
-            var query = _query.UpdateMessageId(entity);
+            var query = _query.UpdateMessageId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateType(IyInboxEntity entity)
+        public void UpdateType(int id, string value)
         {
-            var query = _query.UpdateType(entity);
+            var query = _query.UpdateType(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEntityType(IyInboxEntity entity)
+        public void UpdateEntityType(int id, string value)
         {
-            var query = _query.UpdateEntityType(entity);
+            var query = _query.UpdateEntityType(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateEntityId(IyInboxEntity entity)
+        public void UpdateEntityId(int id, string value)
         {
-            var query = _query.UpdateEntityId(entity);
+            var query = _query.UpdateEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCorrelationId(IyInboxEntity entity)
+        public void UpdateCorrelationId(int id, string value)
         {
-            var query = _query.UpdateCorrelationId(entity);
+            var query = _query.UpdateCorrelationId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePayload(IyInboxEntity entity)
+        public void UpdatePayload(int id, string value)
         {
-            var query = _query.UpdatePayload(entity);
+            var query = _query.UpdatePayload(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatus(IyInboxEntity entity)
+        public void UpdateStatus(int id, int value)
         {
-            var query = _query.UpdateStatus(entity);
+            var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCreatedAt(IyInboxEntity entity)
+        public void UpdateCreatedAt(int id, DateTime value)
         {
-            var query = _query.UpdateCreatedAt(entity);
+            var query = _query.UpdateCreatedAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateRetryCount(IyInboxEntity entity)
+        public void UpdateRetryCount(int id, int value)
         {
-            var query = _query.UpdateRetryCount(entity);
+            var query = _query.UpdateRetryCount(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateLastError(IyInboxEntity entity)
+        public void UpdateLastError(int id, string value)
         {
-            var query = _query.UpdateLastError(entity);
+            var query = _query.UpdateLastError(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProcessingAt(IyInboxEntity entity)
+        public void UpdateProcessingAt(int id, DateTime value)
         {
-            var query = _query.UpdateProcessingAt(entity);
+            var query = _query.UpdateProcessingAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateNextAttemptAt(IyInboxEntity entity)
+        public void UpdateNextAttemptAt(int id, DateTime value)
         {
-            var query = _query.UpdateNextAttemptAt(entity);
+            var query = _query.UpdateNextAttemptAt(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSagaId(IyInboxEntity entity)
+        public void UpdateSagaId(int id, int value)
         {
-            var query = _query.UpdateSagaId(entity);
+            var query = _query.UpdateSagaId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateSagaStepId(IyInboxEntity entity)
+        public void UpdateSagaStepId(int id, int value)
         {
-            var query = _query.UpdateSagaStepId(entity);
+            var query = _query.UpdateSagaStepId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyInboxEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyInboxEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyInboxEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyInboxEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

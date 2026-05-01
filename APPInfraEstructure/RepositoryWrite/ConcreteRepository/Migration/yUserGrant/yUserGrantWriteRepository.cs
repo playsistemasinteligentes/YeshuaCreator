@@ -28,7 +28,7 @@ namespace Input.Repository.yUserGrant
         public void Insert(IyUserGrantEntity yUserGrant)
         {
             var query = _query.InseriryUserGrantQuery(yUserGrant);
-                _UnitOfWork.Execute(query.Query, query.Parameters);
+        yUserGrant.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IyUserGrantEntity yUserGrant)
@@ -41,64 +41,64 @@ namespace Input.Repository.yUserGrant
             var query = _query.DeleteyUserGrantQuery(yUserGrant);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePerfilId(IyUserGrantEntity entity)
+        public void UpdatePerfilId(int id, int value)
         {
-            var query = _query.UpdatePerfilId(entity);
+            var query = _query.UpdatePerfilId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateGrantId(IyUserGrantEntity entity)
+        public void UpdateGrantId(int id, string value)
         {
-            var query = _query.UpdateGrantId(entity);
+            var query = _query.UpdateGrantId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateGrant(IyUserGrantEntity entity)
+        public void UpdateGrant(int id, bool value)
         {
-            var query = _query.UpdateGrant(entity);
+            var query = _query.UpdateGrant(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCreate(IyUserGrantEntity entity)
+        public void UpdateCreate(int id, bool value)
         {
-            var query = _query.UpdateCreate(entity);
+            var query = _query.UpdateCreate(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateRead(IyUserGrantEntity entity)
+        public void UpdateRead(int id, bool value)
         {
-            var query = _query.UpdateRead(entity);
+            var query = _query.UpdateRead(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUpdate(IyUserGrantEntity entity)
+        public void UpdateUpdate(int id, bool value)
         {
-            var query = _query.UpdateUpdate(entity);
+            var query = _query.UpdateUpdate(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDelete(IyUserGrantEntity entity)
+        public void UpdateDelete(int id, bool value)
         {
-            var query = _query.UpdateDelete(entity);
+            var query = _query.UpdateDelete(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateValidUntil(IyUserGrantEntity entity)
+        public void UpdateValidUntil(int id, DateTime value)
         {
-            var query = _query.UpdateValidUntil(entity);
+            var query = _query.UpdateValidUntil(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IyUserGrantEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IyUserGrantEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IyUserGrantEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IyUserGrantEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

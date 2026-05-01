@@ -41,54 +41,54 @@ namespace Input.Repository.MovimentoFinanceiro
             var query = _query.DeleteMovimentoFinanceiroQuery(MovimentoFinanceiro);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateIdOrigem(IMovimentoFinanceiroEntity entity)
+        public void UpdateIdOrigem(int id, string value)
         {
-            var query = _query.UpdateIdOrigem(entity);
+            var query = _query.UpdateIdOrigem(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateContaDebitoId(IMovimentoFinanceiroEntity entity)
+        public void UpdateContaDebitoId(int id, int value)
         {
-            var query = _query.UpdateContaDebitoId(entity);
+            var query = _query.UpdateContaDebitoId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateValor(IMovimentoFinanceiroEntity entity)
+        public void UpdateValor(int id, Decimal value)
         {
-            var query = _query.UpdateValor(entity);
+            var query = _query.UpdateValor(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDataMovimento(IMovimentoFinanceiroEntity entity)
+        public void UpdateDataMovimento(int id, DateTime value)
         {
-            var query = _query.UpdateDataMovimento(entity);
+            var query = _query.UpdateDataMovimento(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDataVencimento(IMovimentoFinanceiroEntity entity)
+        public void UpdateDataVencimento(int id, DateTime value)
         {
-            var query = _query.UpdateDataVencimento(entity);
+            var query = _query.UpdateDataVencimento(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatus(IMovimentoFinanceiroEntity entity)
+        public void UpdateStatus(int id, int value)
         {
-            var query = _query.UpdateStatus(entity);
+            var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(IMovimentoFinanceiroEntity entity)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateTenantID(entity);
+            var query = _query.UpdateTenantID(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(IMovimentoFinanceiroEntity entity)
+        public void UpdateDeleted(int id, bool value)
         {
-            var query = _query.UpdateDeleted(entity);
+            var query = _query.UpdateDeleted(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(IMovimentoFinanceiroEntity entity)
+        public void UpdateChanged(int id, DateTime value)
         {
-            var query = _query.UpdateChanged(entity);
+            var query = _query.UpdateChanged(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(IMovimentoFinanceiroEntity entity)
+        public void UpdateUserId(int id, int value)
         {
-            var query = _query.UpdateUserId(entity);
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

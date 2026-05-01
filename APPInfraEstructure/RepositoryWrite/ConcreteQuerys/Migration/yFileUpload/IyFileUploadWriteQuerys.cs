@@ -7,16 +7,16 @@ namespace IQuery.Write
      {
         public QueryModel InseriryFileUploadQuery(IyFileUploadEntity yFileUpload);
         public QueryModel UpdateyFileUploadQuery(IyFileUploadEntity yFileUpload);
-        public QueryModel UpdateType(IyFileUploadEntity entity);
-        public QueryModel UpdateStatus(IyFileUploadEntity entity);
-        public QueryModel UpdateFilePath(IyFileUploadEntity entity);
-        public QueryModel UpdateFileSize(IyFileUploadEntity entity);
-        public QueryModel UpdateCreatedAt(IyFileUploadEntity entity);
-        public QueryModel UpdateCompletedAt(IyFileUploadEntity entity);
-        public QueryModel UpdateTenantID(IyFileUploadEntity entity);
-        public QueryModel UpdateDeleted(IyFileUploadEntity entity);
-        public QueryModel UpdateChanged(IyFileUploadEntity entity);
-        public QueryModel UpdateUserId(IyFileUploadEntity entity);
+        QueryModel UpdateType(int id, string value);
+        QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateFilePath(int id, string value);
+        QueryModel UpdateFileSize(int id, long value);
+        QueryModel UpdateCreatedAt(int id, DateTime value);
+        QueryModel UpdateCompletedAt(int id, DateTime value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteyFileUploadQuery(IyFileUploadEntity yFileUpload);
     }
 }

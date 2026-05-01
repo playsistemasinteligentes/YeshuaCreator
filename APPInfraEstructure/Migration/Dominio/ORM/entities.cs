@@ -477,6 +477,7 @@ namespace MyApp.Domain.Entities
 
     public class yPerfilGrant
     {
+        public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
         public string GrantId { get; set; }
@@ -499,6 +500,7 @@ namespace MyApp.Domain.Entities
 
     public class yUserGrant
     {
+        public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
         public string GrantId { get; set; }

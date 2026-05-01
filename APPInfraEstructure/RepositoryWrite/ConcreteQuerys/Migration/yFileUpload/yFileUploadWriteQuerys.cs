@@ -53,103 +53,103 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateType(IyFileUploadEntity entity)
+        public QueryModel UpdateType(int id, string value)
         {
             this.Query = $@" UPDATE yFileUpload SET Type = @Type WHERE Id = @Id ";
             this.Parameters = new
             {
-                Type = entity.Type,
-                Id = entity.Id,
+                Type = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateStatus(IyFileUploadEntity entity)
+        public QueryModel UpdateStatus(int id, int value)
         {
             this.Query = $@" UPDATE yFileUpload SET Status = @Status WHERE Id = @Id ";
             this.Parameters = new
             {
-                Status = entity.Status,
-                Id = entity.Id,
+                Status = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateFilePath(IyFileUploadEntity entity)
+        public QueryModel UpdateFilePath(int id, string value)
         {
             this.Query = $@" UPDATE yFileUpload SET FilePath = @FilePath WHERE Id = @Id ";
             this.Parameters = new
             {
-                FilePath = entity.FilePath,
-                Id = entity.Id,
+                FilePath = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateFileSize(IyFileUploadEntity entity)
+        public QueryModel UpdateFileSize(int id, long value)
         {
             this.Query = $@" UPDATE yFileUpload SET FileSize = @FileSize WHERE Id = @Id ";
             this.Parameters = new
             {
-                FileSize = entity.FileSize,
-                Id = entity.Id,
+                FileSize = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCreatedAt(IyFileUploadEntity entity)
+        public QueryModel UpdateCreatedAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE yFileUpload SET CreatedAt = @CreatedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                CreatedAt = entity.CreatedAt,
-                Id = entity.Id,
+                CreatedAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCompletedAt(IyFileUploadEntity entity)
+        public QueryModel UpdateCompletedAt(int id, DateTime value)
         {
             this.Query = $@" UPDATE yFileUpload SET CompletedAt = @CompletedAt WHERE Id = @Id ";
             this.Parameters = new
             {
-                CompletedAt = entity.CompletedAt,
-                Id = entity.Id,
+                CompletedAt = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IyFileUploadEntity entity)
+        public QueryModel UpdateTenantID(int id, int value)
         {
             this.Query = $@" UPDATE yFileUpload SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IyFileUploadEntity entity)
+        public QueryModel UpdateDeleted(int id, bool value)
         {
             this.Query = $@" UPDATE yFileUpload SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IyFileUploadEntity entity)
+        public QueryModel UpdateChanged(int id, DateTime value)
         {
             this.Query = $@" UPDATE yFileUpload SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IyFileUploadEntity entity)
+        public QueryModel UpdateUserId(int id, int value)
         {
             this.Query = $@" UPDATE yFileUpload SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

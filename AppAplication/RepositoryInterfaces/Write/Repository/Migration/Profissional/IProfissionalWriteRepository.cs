@@ -12,13 +12,13 @@ namespace IRepository.Write
         void Insert(IProfissionalEntity profissional);
         void Update(IProfissionalEntity profissional);
         void Delete(IProfissionalEntity profissional);
-        public void UpdateNome(IProfissionalEntity entity);
-        public void UpdateEspecialidadeId(IProfissionalEntity entity);
-        public void UpdateTelefone(IProfissionalEntity entity);
-        public void UpdateTenantID(IProfissionalEntity entity);
-        public void UpdateDeleted(IProfissionalEntity entity);
-        public void UpdateChanged(IProfissionalEntity entity);
-        public void UpdateUserId(IProfissionalEntity entity);
+        void UpdateNome(int id, string value);
+        void UpdateEspecialidadeId(int id, int value);
+        void UpdateTelefone(int id, string value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

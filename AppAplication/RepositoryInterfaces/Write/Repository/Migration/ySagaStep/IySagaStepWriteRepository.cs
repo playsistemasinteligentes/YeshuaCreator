@@ -12,21 +12,21 @@ namespace IRepository.Write
         void Insert(IySagaStepEntity ysagastep);
         void Update(IySagaStepEntity ysagastep);
         void Delete(IySagaStepEntity ysagastep);
-        public void UpdateSagaId(IySagaStepEntity entity);
-        public void UpdateStepKey(IySagaStepEntity entity);
-        public void UpdateIndexOrder(IySagaStepEntity entity);
-        public void UpdateCorrelationId(IySagaStepEntity entity);
-        public void UpdateStatus(IySagaStepEntity entity);
-        public void UpdateExecutionCount(IySagaStepEntity entity);
-        public void UpdateLastExecutionAt(IySagaStepEntity entity);
-        public void UpdateCompletedAt(IySagaStepEntity entity);
-        public void UpdateErrorMessage(IySagaStepEntity entity);
-        public void UpdatePayload(IySagaStepEntity entity);
-        public void UpdateRetryCount(IySagaStepEntity entity);
-        public void UpdateTenantID(IySagaStepEntity entity);
-        public void UpdateDeleted(IySagaStepEntity entity);
-        public void UpdateChanged(IySagaStepEntity entity);
-        public void UpdateUserId(IySagaStepEntity entity);
+        void UpdateSagaId(int id, int value);
+        void UpdateStepKey(int id, string value);
+        void UpdateIndexOrder(int id, int value);
+        void UpdateCorrelationId(int id, string value);
+        void UpdateStatus(int id, int value);
+        void UpdateExecutionCount(int id, int value);
+        void UpdateLastExecutionAt(int id, DateTime value);
+        void UpdateCompletedAt(int id, DateTime value);
+        void UpdateErrorMessage(int id, string value);
+        void UpdatePayload(int id, string value);
+        void UpdateRetryCount(int id, int value);
+        void UpdateTenantID(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+        void UpdateUserId(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

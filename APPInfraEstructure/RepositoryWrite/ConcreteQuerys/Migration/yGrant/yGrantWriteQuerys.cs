@@ -44,53 +44,53 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDescription(IyGrantEntity entity)
+        public QueryModel UpdateDescription(string id, string value)
         {
             this.Query = $@" UPDATE yGrant SET Description = @Description WHERE Id = @Id ";
             this.Parameters = new
             {
-                Description = entity.Description,
-                Id = entity.Id,
+                Description = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateTenantID(IyGrantEntity entity)
+        public QueryModel UpdateTenantID(string id, int value)
         {
             this.Query = $@" UPDATE yGrant SET TenantID = @TenantID WHERE Id = @Id ";
             this.Parameters = new
             {
-                TenantID = entity.TenantID,
-                Id = entity.Id,
+                TenantID = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDeleted(IyGrantEntity entity)
+        public QueryModel UpdateDeleted(string id, bool value)
         {
             this.Query = $@" UPDATE yGrant SET Deleted = @Deleted WHERE Id = @Id ";
             this.Parameters = new
             {
-                Deleted = entity.Deleted,
-                Id = entity.Id,
+                Deleted = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateChanged(IyGrantEntity entity)
+        public QueryModel UpdateChanged(string id, DateTime value)
         {
             this.Query = $@" UPDATE yGrant SET Changed = @Changed WHERE Id = @Id ";
             this.Parameters = new
             {
-                Changed = entity.Changed,
-                Id = entity.Id,
+                Changed = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUserId(IyGrantEntity entity)
+        public QueryModel UpdateUserId(string id, int value)
         {
             this.Query = $@" UPDATE yGrant SET UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
-                UserId = entity.UserId,
-                Id = entity.Id,
+                UserId = value,
+                Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }

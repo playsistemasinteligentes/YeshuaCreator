@@ -7,21 +7,21 @@ namespace IQuery.Write
      {
         public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep);
         public QueryModel UpdateySagaStepQuery(IySagaStepEntity ySagaStep);
-        public QueryModel UpdateSagaId(IySagaStepEntity entity);
-        public QueryModel UpdateStepKey(IySagaStepEntity entity);
-        public QueryModel UpdateIndexOrder(IySagaStepEntity entity);
-        public QueryModel UpdateCorrelationId(IySagaStepEntity entity);
-        public QueryModel UpdateStatus(IySagaStepEntity entity);
-        public QueryModel UpdateExecutionCount(IySagaStepEntity entity);
-        public QueryModel UpdateLastExecutionAt(IySagaStepEntity entity);
-        public QueryModel UpdateCompletedAt(IySagaStepEntity entity);
-        public QueryModel UpdateErrorMessage(IySagaStepEntity entity);
-        public QueryModel UpdatePayload(IySagaStepEntity entity);
-        public QueryModel UpdateRetryCount(IySagaStepEntity entity);
-        public QueryModel UpdateTenantID(IySagaStepEntity entity);
-        public QueryModel UpdateDeleted(IySagaStepEntity entity);
-        public QueryModel UpdateChanged(IySagaStepEntity entity);
-        public QueryModel UpdateUserId(IySagaStepEntity entity);
+        QueryModel UpdateSagaId(int id, int value);
+        QueryModel UpdateStepKey(int id, string value);
+        QueryModel UpdateIndexOrder(int id, int value);
+        QueryModel UpdateCorrelationId(int id, string value);
+        QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateExecutionCount(int id, int value);
+        QueryModel UpdateLastExecutionAt(int id, DateTime value);
+        QueryModel UpdateCompletedAt(int id, DateTime value);
+        QueryModel UpdateErrorMessage(int id, string value);
+        QueryModel UpdatePayload(int id, string value);
+        QueryModel UpdateRetryCount(int id, int value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteySagaStepQuery(IySagaStepEntity ySagaStep);
     }
 }

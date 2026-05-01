@@ -7,14 +7,14 @@ namespace IQuery.Write
      {
         public QueryModel InseriryConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification);
         public QueryModel UpdateyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification);
-        public QueryModel UpdateTenantID(IyConfigNotificationEntity entity);
-        public QueryModel UpdateEmailSmtpClient(IyConfigNotificationEntity entity);
-        public QueryModel UpdateEmailPort(IyConfigNotificationEntity entity);
-        public QueryModel UpdateEmailUserName(IyConfigNotificationEntity entity);
-        public QueryModel UpdateEmailPassword(IyConfigNotificationEntity entity);
-        public QueryModel UpdateDeleted(IyConfigNotificationEntity entity);
-        public QueryModel UpdateChanged(IyConfigNotificationEntity entity);
-        public QueryModel UpdateUserId(IyConfigNotificationEntity entity);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateEmailSmtpClient(int id, string value);
+        QueryModel UpdateEmailPort(int id, int value);
+        QueryModel UpdateEmailUserName(int id, string value);
+        QueryModel UpdateEmailPassword(int id, string value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification);
     }
 }

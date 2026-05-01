@@ -12,11 +12,11 @@ namespace IRepository.Write
         void Insert(IyTenantEntity ytenant);
         void Update(IyTenantEntity ytenant);
         void Delete(IyTenantEntity ytenant);
-        public void UpdateCnpjCpf(IyTenantEntity entity);
-        public void UpdateNome(IyTenantEntity entity);
-        public void UpdateUserId(IyTenantEntity entity);
-        public void UpdateDeleted(IyTenantEntity entity);
-        public void UpdateChanged(IyTenantEntity entity);
+        void UpdateCnpjCpf(int id, string value);
+        void UpdateNome(int id, string value);
+        void UpdateUserId(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

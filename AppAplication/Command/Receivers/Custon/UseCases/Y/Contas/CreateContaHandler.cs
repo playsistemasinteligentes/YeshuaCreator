@@ -85,8 +85,7 @@ namespace Command.Receivers.UseCase
 
                 _repWriteY_User.Insert(user);
 
-                tenant.UserId = user.Id.Value;
-                _repWriteY_Tenant.UpdateUserId(tenant);
+                _repWriteY_Tenant.UpdateUserId(tenant.Id.Value, user.Id.Value);
 
                 _unitOfWork.Commit();
 

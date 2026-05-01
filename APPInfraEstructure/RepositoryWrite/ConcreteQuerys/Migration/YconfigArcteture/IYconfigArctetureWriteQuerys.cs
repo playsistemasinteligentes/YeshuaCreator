@@ -7,12 +7,12 @@ namespace IQuery.Write
      {
         public QueryModel InseriryConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
         public QueryModel UpdateyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
-        public QueryModel UpdateAuditTrackerActived(IyConfigArctetureEntity entity);
-        public QueryModel UpdateAuditCRUDActived(IyConfigArctetureEntity entity);
-        public QueryModel UpdateTenantID(IyConfigArctetureEntity entity);
-        public QueryModel UpdateDeleted(IyConfigArctetureEntity entity);
-        public QueryModel UpdateChanged(IyConfigArctetureEntity entity);
-        public QueryModel UpdateUserId(IyConfigArctetureEntity entity);
+        QueryModel UpdateAuditTrackerActived(int id, int value);
+        QueryModel UpdateAuditCRUDActived(int id, int value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
         public QueryModel DeleteyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture);
     }
 }
