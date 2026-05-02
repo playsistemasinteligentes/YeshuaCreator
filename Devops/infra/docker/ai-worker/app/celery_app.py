@@ -24,7 +24,6 @@ celery_app.conf.update(
 # 🔥 filas
 celery_app.conf.task_queues = (
     Queue("audio.transcribe.outbox", durable=True),
-    Queue("text.summarize.outbox", durable=True),
 )
 
 # 🔥 fila padrão
@@ -33,7 +32,6 @@ celery_app.conf.task_default_queue = "audio.transcribe.outbox"
 # 🔥 roteamento
 celery_app.conf.task_routes = {
     "app.tasks.transcribe_audio": {"queue": "audio.transcribe.outbox"},
-    "app.tasks.summarize_text": {"queue": "text.summarize.outbox"},
 }
 
 # auto discover

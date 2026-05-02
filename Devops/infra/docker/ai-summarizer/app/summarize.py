@@ -4,7 +4,7 @@ from threading import Lock
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 # ── Configuração ──────────────────────────────────────────────
-MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
+MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "microsoft/Phi-3-mini-4k-instruct")
 
 # "cpu" | "cuda" | "mps" — troca de CPU para GPU só mudando env var
 DEVICE = os.environ.get("SUMMARIZER_DEVICE", "cpu")
@@ -22,9 +22,10 @@ def _get_pipeline():
             if _pipeline is None:
                 print(f"[Summarizer] Carregando modelo {MODEL_ID} em {DEVICE}...")
 
-                token = os.environ.get("HF_TOKEN")
-
-                tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=token)
+                tokenizer = AutoTokenizer.from_pretrained(
+                    MODEL_ID,
+                    trust_remote_code=True,
+                )
 
                 # CPU: float32 | GPU: float16 automaticamente
                 dtype = torch.float16 if DEVICE != "cpu" else torch.float32
@@ -33,13 +34,14 @@ def _get_pipeline():
                     MODEL_ID,
                     torch_dtype=dtype,
                     device_map=DEVICE,
-                    token=token,
+                    trust_remote_code=True,
                 )
 
                 _pipeline = pipeline(
                     "text-generation",
                     model=model,
                     tokenizer=tokenizer,
+                    trust_remote_code=True,
                 )
 
                 print(f"[Summarizer] Modelo carregado.")
@@ -48,9 +50,6 @@ def _get_pipeline():
 
 
 # ── Prompts clínicos ─────────────────────────────────────────
-# Prontuário: enxuto, neutro, linguagem clínica.
-# Você pode ajustar o conteúdo dos prompts sem mexer na lógica.
-
 PROMPT_PRONTUARIO = """Você é um assistente clínico especializado em psicologia.
 Com base na transcrição da sessão abaixo, gere um PRONTUÁRIO CLÍNICO resumido.
 
@@ -98,7 +97,7 @@ def _generate(prompt: str, max_new_tokens: int) -> str:
     output = pipe(
         prompt,
         max_new_tokens=max_new_tokens,
-        do_sample=False,          # determinístico
+        do_sample=False,
         temperature=1.0,
         repetition_penalty=1.1,
         pad_token_id=pipe.tokenizer.eos_token_id,
@@ -111,7 +110,7 @@ def _generate(prompt: str, max_new_tokens: int) -> str:
 
 
 def gerar_prontuario(text: str) -> str:
-    prompt = PROMPT_PRONTUARIO.format(text=text[:3000])  # limite de contexto
+    prompt = PROMPT_PRONTUARIO.format(text=text[:3000])
     return _generate(prompt, max_new_tokens=300)
 
 

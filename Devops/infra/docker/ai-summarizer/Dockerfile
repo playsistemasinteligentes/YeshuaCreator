@@ -9,18 +9,15 @@ RUN apt-get update && apt-get install -y \
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-# Pré-download do modelo LLaMA 3.2 3B durante o build
-# Evita download no primeiro uso em produção
+# Pré-download do Phi-3 mini durante o build
 RUN python -c "from transformers import AutoTokenizer, AutoModelForCausalLM; \
-    AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-3B-Instruct'); \
-    AutoModelForCausalLM.from_pretrained('meta-llama/Llama-3.2-3B-Instruct')" || true
+    AutoTokenizer.from_pretrained('microsoft/Phi-3-mini-4k-instruct', trust_remote_code=True); \
+    AutoModelForCausalLM.from_pretrained('microsoft/Phi-3-mini-4k-instruct', trust_remote_code=True)" || true
 
 ENV PYTHONUNBUFFERED=1
-# Token HuggingFace necessário para baixar LLaMA (modelo gated)
-ENV HF_TOKEN=""
-# device: cpu | cuda | mps
 ENV SUMMARIZER_DEVICE="cpu"
+ENV SUMMARIZER_MODEL="microsoft/Phi-3-mini-4k-instruct"
 
 CMD ["celery", "-A", "app.celery_app", "worker", "-Q", "text.summarize.outbox", "--concurrency=1", "--loglevel=info"]
