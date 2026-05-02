@@ -540,7 +540,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("                    if (dtoStep == null)");
                 sb.AppendLine("                        continue;");
                 sb.AppendLine();
-                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount);");
+                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload);");
                 sb.AppendLine("                }");
                 sb.AppendLine("            }");
                 sb.AppendLine();

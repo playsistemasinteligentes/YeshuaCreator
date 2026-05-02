@@ -45,7 +45,7 @@ namespace Migration.Dominio.Migration
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddCommand("SendFile",
-                new SendFileCommand("", 0, false, "", "", null),
+                new SendFileCommand("", 0, false, "", "", null, "", ""),
                 new SendFileResponse(true, 0, true))
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
@@ -212,7 +212,7 @@ namespace Migration.Dominio.Migration
 
 
         }
-        public record SendFileCommand(string token, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);
+        public record SendFileCommand(string token, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream, string EntityId, string EntityType);
         public record SendFileResponse(bool Success, int ChunkIndex, bool IsFinalized);
         public record SessionUploadToken(string uploadToken);
         public record AutenticationToken(string token);

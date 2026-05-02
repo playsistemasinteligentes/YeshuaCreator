@@ -2,6 +2,7 @@ wwwroot\index.html
 wwwroot\spa\components\action-modal.html
 wwwroot\spa\components\fk-modal.html
 wwwroot\spa\components\recording\APP gravação.txt
+wwwroot\spa\components\recording\audio - Copy (2).html
 wwwroot\spa\components\recording\audio - Copy.html
 wwwroot\spa\components\recording\audio.html
 wwwroot\spa\enum\enumerators

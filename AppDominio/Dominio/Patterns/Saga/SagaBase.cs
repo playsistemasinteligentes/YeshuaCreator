@@ -27,6 +27,7 @@ namespace Dominio.Patterns.Saga
         public DateTime CompletedAt { get; set; }
         public string EntityType { get; set; }
         public string EntityId { get; set; }
+        public string Entity { get; set; }
         public DateTime NextExecutionAt { get; set; }
         public DateTime LockedAt { get; set; }
         public string LockedBy { get; set; }
@@ -62,9 +63,10 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
 
-        public void Start(string entityId)
+        public void Start(string entityId, string entityType)
         {
             EntityId = entityId;
+            EntityType = entityType;
 
             Type = this.GetType().Name;
 
