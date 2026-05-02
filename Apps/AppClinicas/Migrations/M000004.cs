@@ -73,16 +73,12 @@ Consumes    fato sistema externo continuar fluxo
                                         AddOutBoxPollingWorker("ai.tasks",ExchangeType.topic,"audio.transcribe.outbox","audio.transcribe").
                                         AddInboxListenerWorker("ai.results",ExchangeType.topic,"audio.transcribed.inbox","audio.transcribed").
 
-                                    AddStep("audioTranscriptGenerated"). //“isso aconteceu”
-                                        AddInboxListenerWorker("ai.tasks", ExchangeType.topic, "audio.transcript.ConsumerWorker", "audio.transcript.generated").
-                                        AddInBoxPollingWorker().
 
-                                AddStepGroup("prontuarySumary").
-                                    AddStep("prontuarySumaryRequested"). // “faça isso”
-                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "prontuary.sumary.CeleryWorker", "prontuary.sumary.requested").
-                                    AddStep("prontuarySumaryGenerated"). //“isso aconteceu”
-                                        AddInboxListenerWorker("ai.tasks", ExchangeType.topic, "prontuary.sumary.ConsumerWorker", "prontuary.sumary.generated").
-                                        AddInBoxPollingWorker();
+                                AddStepGroup("reportSumary").
+                                    AddStep("reportEndProntuaryRequested"). // “faça isso”
+                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "text.summarize.outbox", "text.summarize").
+                                        AddInboxListenerWorker("ai.results", ExchangeType.topic, "text.summarized.inbox", "text.summarized").
+
 
 
             

@@ -189,6 +189,22 @@
 
 
 
+      ai-summarizer:
+        build:
+            context: ./ai-summarizer
+            dockerfile: Dockerfile
+        depends_on:
+            - rabbitmq
+        environment:
+            CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+            HF_TOKEN: "seu_token_aqui"
+            SUMMARIZER_DEVICE: "cpu"
+        restart: unless-stopped
+        networks:
+            - yeshua-net
+
+
+
       rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: yeshua-rabbitmq
