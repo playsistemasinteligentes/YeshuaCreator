@@ -1,3 +1,6 @@
+
+
+
 #!/bin/bash
 set -e
 
@@ -5,7 +8,7 @@ APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/Devops/infra/docker"
 
 echo "====================================="
-echo " 🤖 DEPLOY – AI SUMMARIZER"
+echo " 🤖 DEPLOY – AI WORKER"
 echo "====================================="
 
 cd "$APP_DIR"
@@ -19,21 +22,21 @@ git pull origin main
 
 cd "$COMPOSE_DIR"
 
-echo ">> Parando apenas o ai-summarizer"
-docker compose stop ai-summarizer || true
+echo ">> Parando apenas o ai-worker"
+docker compose stop ai-worker || true
 
 echo ">> Removendo container antigo"
-docker compose rm -f ai-summarizer || true
+docker compose rm -f ai-worker || true
 
-echo ">> Buildando ai-summarizer"
-docker compose build ai-summarizer
+echo ">> Buildando ai-worker"
+docker compose build ai-worker
 
-echo ">> Subindo ai-summarizer"
-docker compose up -d ai-summarizer
+echo ">> Subindo ai-worker"
+docker compose up -d ai-worker
 
 echo ">> Status"
-docker compose ps ai-summarizer
+docker compose ps ai-worker
 
 echo "====================================="
-echo " ✅ AI Summarizer atualizado"
+echo " ✅ AI Worker atualizado"
 echo "====================================="

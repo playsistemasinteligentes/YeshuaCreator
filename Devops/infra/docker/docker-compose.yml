@@ -198,7 +198,6 @@
         environment:
             CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
             HF_TOKEN: "seu_token_aqui"
-            SUMMARIZER_MODEL: "microsoft/Phi-3-mini-4k-instruct"
             SUMMARIZER_DEVICE: "cpu"
         restart: unless-stopped
         networks:

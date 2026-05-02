@@ -4,8 +4,7 @@ from threading import Lock
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 # ── Configuração ──────────────────────────────────────────────
-# MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
-MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "microsoft/Phi-3-mini-4k-instruct")
+MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "meta-llama/Llama-3.2-3B-Instruct")
 
 # "cpu" | "cuda" | "mps" — troca de CPU para GPU só mudando env var
 DEVICE = os.environ.get("SUMMARIZER_DEVICE", "cpu")

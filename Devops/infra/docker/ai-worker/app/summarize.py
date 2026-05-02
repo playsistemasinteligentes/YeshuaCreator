@@ -1,119 +1,30 @@
-import os
-import torch
+﻿from transformers import pipeline
 from threading import Lock
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
-# ── Configuração ──────────────────────────────────────────────
-MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "microsoft/Phi-3-mini-4k-instruct")
-
-# "cpu" | "cuda" | "mps" — troca de CPU para GPU só mudando env var
-DEVICE = os.environ.get("SUMMARIZER_DEVICE", "cpu")
-
-_pipeline = None
-_lock = Lock()
+_summarizer = None
+_summarizer_lock = Lock()
 
 
-# ── Carregamento lazy (singleton) ────────────────────────────
-def _get_pipeline():
-    global _pipeline
+def _get_summarizer():
+    global _summarizer
 
-    if _pipeline is None:
-        with _lock:
-            if _pipeline is None:
-                print(f"[Summarizer] Carregando modelo {MODEL_ID} em {DEVICE}...")
-
-                tokenizer = AutoTokenizer.from_pretrained(
-                    MODEL_ID,
-                    trust_remote_code=True,
+    if _summarizer is None:
+        with _summarizer_lock:
+            if _summarizer is None:
+                _summarizer = pipeline(
+                    "summarization", model="facebook/bart-large-cnn", device=-1  # CPU
                 )
 
-                # CPU: float32 | GPU: float16 automaticamente
-                dtype = torch.float16 if DEVICE != "cpu" else torch.float32
-
-                model = AutoModelForCausalLM.from_pretrained(
-                    MODEL_ID,
-                    torch_dtype=dtype,
-                    device_map=DEVICE,
-                    trust_remote_code=True,
-                )
-
-                _pipeline = pipeline(
-                    "text-generation",
-                    model=model,
-                    tokenizer=tokenizer,
-                    trust_remote_code=True,
-                )
-
-                print(f"[Summarizer] Modelo carregado.")
-
-    return _pipeline
+    return _summarizer
 
 
-# ── Prompts clínicos ─────────────────────────────────────────
-PROMPT_PRONTUARIO = """Você é um assistente clínico especializado em psicologia.
-Com base na transcrição da sessão abaixo, gere um PRONTUÁRIO CLÍNICO resumido.
+def summarize_text_content(text: str) -> str:
+    summarizer = _get_summarizer()
 
-Regras:
-- Linguagem clínica, objetiva e neutra
-- Não inclua interpretações subjetivas ou opiniões
-- Foque apenas em: queixa principal, relato do paciente, conduta/encaminhamento
-- Máximo de 200 palavras
-- Formato:
-  Queixa principal: ...
-  Relato da sessão: ...
-  Conduta: ...
+    # proteção básica (evita explodir memória)
+    max_input_size = 2000
+    text = text[:max_input_size]
 
-Transcrição:
-{text}
+    result = summarizer(text, max_length=200, min_length=60, do_sample=False)
 
-Prontuário:"""
-
-PROMPT_RELATORIO = """Você é um assistente clínico especializado em psicologia.
-Com base na transcrição da sessão abaixo, gere um RELATÓRIO CLÍNICO detalhado.
-
-Regras:
-- Linguagem clínica, porém mais descritiva e analítica
-- Inclua observações sobre padrões emocionais, comportamentais e relacionais identificados
-- Registre temas recorrentes, avanços e pontos de atenção
-- Máximo de 500 palavras
-- Formato:
-  Resumo da sessão: ...
-  Temas abordados: ...
-  Observações clínicas: ...
-  Padrões identificados: ...
-  Pontos de atenção: ...
-  Evolução/Avanços: ...
-
-Transcrição:
-{text}
-
-Relatório:"""
-
-
-# ── Geração ───────────────────────────────────────────────────
-def _generate(prompt: str, max_new_tokens: int) -> str:
-    pipe = _get_pipeline()
-
-    output = pipe(
-        prompt,
-        max_new_tokens=max_new_tokens,
-        do_sample=False,
-        temperature=1.0,
-        repetition_penalty=1.1,
-        pad_token_id=pipe.tokenizer.eos_token_id,
-    )
-
-    generated = output[0]["generated_text"]
-
-    # Remove o prompt do início — retorna só o que o modelo gerou
-    return generated[len(prompt):].strip()
-
-
-def gerar_prontuario(text: str) -> str:
-    prompt = PROMPT_PRONTUARIO.format(text=text[:3000])
-    return _generate(prompt, max_new_tokens=300)
-
-
-def gerar_relatorio(text: str) -> str:
-    prompt = PROMPT_RELATORIO.format(text=text[:3000])
-    return _generate(prompt, max_new_tokens=700)
+    return result[0]["summary_text"]

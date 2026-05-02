@@ -1,4 +1,4 @@
-import json
+﻿import json
 import os
 import pika
 import time
@@ -8,9 +8,11 @@ RABBITMQ_URL = os.environ.get(
     "CELERY_BROKER_URL", "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
 )
 
+# 🔥 converter schema
 if RABBITMQ_URL.startswith("pyamqp://"):
     RABBITMQ_URL = RABBITMQ_URL.replace("pyamqp://", "amqp://", 1)
 
+# 🔥 corrigir vhost vazio
 if RABBITMQ_URL.endswith("//"):
     RABBITMQ_URL = RABBITMQ_URL[:-2] + "/%2F"
 
@@ -70,7 +72,8 @@ def publish_message(queue: str, message: dict, retries: int = 3):
                 print(f"[RabbitMQ] Falha ao publicar após {retries} tentativas: {e}")
                 raise
 
-            time.sleep(2 ** attempt)
+            time.sleep(2**attempt)
+            time.sleep(2**attempt)
 
 
 def _reset_connection():
@@ -84,4 +87,5 @@ def _reset_connection():
             pass
 
         _connection = None
+        _channel = None
         _channel = None
