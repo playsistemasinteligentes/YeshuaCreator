@@ -33,7 +33,8 @@ namespace Migration.Dominio.Migration
                     .Enumerable(2, "Failed")
                 .AddColumn("FilePath", "Caminho do Arquivo").Varchar(500)
                 .AddColumn("FileSize", "Tamanho do Arquivo").Long()
-                //.AddColumn("ContentType", "Content Type").Varchar(100)
+                .AddColumn("EntityType", "Entity Type").Varchar(100)
+                .AddColumn("EntityId", "Entity Id").Varchar(100)
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("CompletedAt", "Finalizado em").DateTime()
                 .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();

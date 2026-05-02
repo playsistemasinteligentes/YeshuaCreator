@@ -61,6 +61,16 @@ namespace Input.Repository.yFileUpload
             var query = _query.UpdateFileSize(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateEntityType(int id, string value)
+        {
+            var query = _query.UpdateEntityType(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateEntityId(int id, string value)
+        {
+            var query = _query.UpdateEntityId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateCreatedAt(int id, DateTime value)
         {
             var query = _query.UpdateCreatedAt(id, value);

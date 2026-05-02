@@ -7,7 +7,7 @@ using System;
 
 namespace Command.Receivers
 {
-    public partial class AudioTranscriptGeneratedHandler : ISagaStepHandler
+    public partial class ReportEndProntuaryRequestedHandler : ISagaStepHandler
     {
         public string Key => PsychologySessionInsightSaga.STEP_2;
 

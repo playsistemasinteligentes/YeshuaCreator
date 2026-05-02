@@ -127,7 +127,7 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                     false
                 );
 
-                // 🧩 aqui você pode juntar os chunks se necessário
+                // 🧩 aqui você pode juntar os chunks se necessário  
                 // ex: CombineChunks(uploadId)
 
                 // atualiza registro criado no StartUpload
@@ -137,6 +137,8 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 upload.Status = 1;
                 upload.CreatedAt = DateTime.UtcNow;
                 upload.Type = "audio.transcribe";
+                upload.EntityType = comand.EntityType;
+                upload.EntityId = comand.EntityId;
 
 
                 if (!upload.isValidData())
@@ -145,7 +147,7 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
 
                 var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
-                _psychologySessionInsightSaga.Start(comand.EntityId, comand.EntityType);
+                _psychologySessionInsightSaga.Start(uploadId, "yFileUpload");
                 //_sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
 
                 _unitOfWork.BeginTran();

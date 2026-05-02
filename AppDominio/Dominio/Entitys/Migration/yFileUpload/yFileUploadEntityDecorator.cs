@@ -83,6 +83,32 @@
                                         }
                                     }
 
+                                    public string EntityType
+                                    {
+                                        get => _inner.EntityType;
+                                        set
+                                        {
+                                            if (_inner.EntityType != value)
+                                            {
+                                                _logger.Info($"Propriedade EntityType: antes={_inner.EntityType}, depois={value}");
+                                                _inner.EntityType = value;
+                                            }
+                                        }
+                                    }
+
+                                    public string EntityId
+                                    {
+                                        get => _inner.EntityId;
+                                        set
+                                        {
+                                            if (_inner.EntityId != value)
+                                            {
+                                                _logger.Info($"Propriedade EntityId: antes={_inner.EntityId}, depois={value}");
+                                                _inner.EntityId = value;
+                                            }
+                                        }
+                                    }
+
                                     public DateTime CreatedAt
                                     {
                                         get => _inner.CreatedAt;

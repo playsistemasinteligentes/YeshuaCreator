@@ -124,6 +124,22 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByEntityType(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByEntityTypeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
             var query = _query.ExistsByCreatedAtQuery(value , TakeOffTenantID);
@@ -212,6 +228,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public yFileUploadDTO FirstByEntityType(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByEntityTypeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public yFileUploadDTO FirstByEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<yFileUploadDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public yFileUploadDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
@@ -295,6 +327,22 @@ namespace Read.Repository
         public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByFileSizeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                return result;
+        }
+
+        public IEnumerable<yFileUploadDTO> GetAllByEntityType(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByEntityTypeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
+                return result;
+        }
+
+        public IEnumerable<yFileUploadDTO> GetAllByEntityId(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByEntityIdQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters) as List<yFileUploadDTO>;
                 return result;

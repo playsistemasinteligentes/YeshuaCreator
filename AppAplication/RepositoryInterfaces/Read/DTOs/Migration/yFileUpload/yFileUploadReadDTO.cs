@@ -13,6 +13,8 @@ namespace Repositorio.Outputs
     public int status { get; set; }
     public string filepath { get; set; }
     public long filesize { get; set; }
+    public string entitytype { get; set; }
+    public string entityid { get; set; }
     public DateTime createdat { get; set; }
     public DateTime completedat { get; set; }
     public int tenantid { get; set; }

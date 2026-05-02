@@ -379,9 +379,7 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdRecei
 builder.Services.AddTransient<Dominio.Saga.PsychologySessionInsightSaga>();
 builder.Services.AddTransient<Command.Receivers.PsychologySessionInsightSagaHandlerResolver>();
 builder.Services.AddTransient<AudioTranscriptRequestedHandler>();
-builder.Services.AddTransient<AudioTranscriptGeneratedHandler>();
-builder.Services.AddTransient<ProntuarySumaryRequestedHandler>();
-builder.Services.AddTransient<ProntuarySumaryGeneratedHandler>();
+builder.Services.AddTransient<ReportEndProntuaryRequestedHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
@@ -418,18 +416,8 @@ return new Command.Interfaces.Patterns.Queue.QueueTopology
                 },
                 new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
                 {
-                    QueueName = "audio.transcript.ConsumerWorker",
-                    RoutingKey = "audio.transcript.generated"
-                },
-                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
-                {
-                    QueueName = "prontuary.sumary.CeleryWorker",
-                    RoutingKey = "prontuary.sumary.requested"
-                },
-                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
-                {
-                    QueueName = "prontuary.sumary.ConsumerWorker",
-                    RoutingKey = "prontuary.sumary.generated"
+                    QueueName = "text.summarize.outbox",
+                    RoutingKey = "text.summarize"
                 },
             }
         },
@@ -443,6 +431,11 @@ return new Command.Interfaces.Patterns.Queue.QueueTopology
                 {
                     QueueName = "audio.transcribed.inbox",
                     RoutingKey = "audio.transcribed"
+                },
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "text.summarized.inbox",
+                    RoutingKey = "text.summarized"
                 },
             }
         },

@@ -19,6 +19,8 @@ namespace IRepository.Read
         public bool ExistsByStatus(int value , bool TakeOffTenantID = false);
         public bool ExistsByFilePath(string value , bool TakeOffTenantID = false);
         public bool ExistsByFileSize(long value , bool TakeOffTenantID = false);
+        public bool ExistsByEntityType(string value , bool TakeOffTenantID = false);
+        public bool ExistsByEntityId(string value , bool TakeOffTenantID = false);
         public bool ExistsByCreatedAt(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByCompletedAt(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByTenantID(int value , bool TakeOffTenantID = false);
@@ -30,6 +32,8 @@ namespace IRepository.Read
         public yFileUploadDTO FirstByStatus(int value , bool TakeOffTenantID = false);
         public yFileUploadDTO FirstByFilePath(string value , bool TakeOffTenantID = false);
         public yFileUploadDTO FirstByFileSize(long value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByEntityType(string value , bool TakeOffTenantID = false);
+        public yFileUploadDTO FirstByEntityId(string value , bool TakeOffTenantID = false);
         public yFileUploadDTO FirstByCreatedAt(DateTime value , bool TakeOffTenantID = false);
         public yFileUploadDTO FirstByCompletedAt(DateTime value , bool TakeOffTenantID = false);
         public yFileUploadDTO FirstByTenantID(int value , bool TakeOffTenantID = false);
@@ -41,6 +45,8 @@ namespace IRepository.Read
         public IEnumerable<yFileUploadDTO> GetAllByStatus(int value , bool TakeOffTenantID = false);
         public IEnumerable<yFileUploadDTO> GetAllByFilePath(string value , bool TakeOffTenantID = false);
         public IEnumerable<yFileUploadDTO> GetAllByFileSize(long value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByEntityType(string value , bool TakeOffTenantID = false);
+        public IEnumerable<yFileUploadDTO> GetAllByEntityId(string value , bool TakeOffTenantID = false);
         public IEnumerable<yFileUploadDTO> GetAllByCreatedAt(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yFileUploadDTO> GetAllByCompletedAt(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<yFileUploadDTO> GetAllByTenantID(int value , bool TakeOffTenantID = false);

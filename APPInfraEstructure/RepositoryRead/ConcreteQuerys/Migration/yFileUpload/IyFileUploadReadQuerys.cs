@@ -11,6 +11,8 @@ namespace IQuery.Read
         public QueryModel ExistsByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel ExistsByFilePathQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByFileSizeQuery(long value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByEntityTypeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel ExistsByEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel ExistsByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByCompletedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false);
@@ -22,6 +24,8 @@ namespace IQuery.Read
         public QueryModel FirstByStatusQuery(int value , bool TakeOffTenantID = false);
         public QueryModel FirstByFilePathQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByFileSizeQuery(long value , bool TakeOffTenantID = false);
+        public QueryModel FirstByEntityTypeQuery(string value , bool TakeOffTenantID = false);
+        public QueryModel FirstByEntityIdQuery(string value , bool TakeOffTenantID = false);
         public QueryModel FirstByCreatedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByCompletedAtQuery(DateTime value , bool TakeOffTenantID = false);
         public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false);

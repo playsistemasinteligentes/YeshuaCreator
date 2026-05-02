@@ -25,7 +25,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Type, Status, FilePath, FileSize, CreatedAt, CompletedAt, TenantID, Deleted, Changed, UserId from yFileUpload ";
+            this.Query = $@" select Id, Type, Status, FilePath, FileSize, EntityType, EntityId, CreatedAt, CompletedAt, TenantID, Deleted, Changed, UserId from yFileUpload ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.Type)) dict["Type"] = $"%{Command.Type}%";
@@ -43,6 +43,10 @@ if (Command.Status != null && Command.Status.Any())
 }
 if (!string.IsNullOrEmpty(Command.FilePath)) dict["FilePath"] = $"%{Command.FilePath}%";
 if (!string.IsNullOrEmpty(Command.FilePath)) whereClauses.Add($"FilePath like @FilePath");
+if (!string.IsNullOrEmpty(Command.EntityType)) dict["EntityType"] = $"%{Command.EntityType}%";
+if (!string.IsNullOrEmpty(Command.EntityType)) whereClauses.Add($"EntityType like @EntityType");
+if (!string.IsNullOrEmpty(Command.EntityId)) dict["EntityId"] = $"%{Command.EntityId}%";
+if (!string.IsNullOrEmpty(Command.EntityId)) whereClauses.Add($"EntityId like @EntityId");
 if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
 if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -207,6 +211,42 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FileSize"] = value; //04
                       whereClauses.Add($" FileSize = @FileSize ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByEntityTypeQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yFileUpload ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["EntityType"] = value; //04
+                      whereClauses.Add($" EntityType = @EntityType ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByEntityIdQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yFileUpload ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["EntityId"] = value; //04
+                      whereClauses.Add($" EntityId = @EntityId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -405,6 +445,42 @@ if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
  whereClauses.Add($"Deleted = @Deleted");
                       dict["FileSize"] = value; //06
                       whereClauses.Add($" FileSize = @FileSize ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByEntityTypeQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yFileUpload ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["EntityType"] = value; //06
+                      whereClauses.Add($" EntityType = @EntityType ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByEntityIdQuery(string value , bool TakeOffTenantID = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yFileUpload ";
+if (!TakeOffTenantID)  dict["TenantID"] = _currentUser.TenantID;
+if (!TakeOffTenantID)  whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["EntityId"] = value; //06
+                      whereClauses.Add($" EntityId = @EntityId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

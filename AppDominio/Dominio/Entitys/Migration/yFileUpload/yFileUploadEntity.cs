@@ -15,6 +15,8 @@
     public int Status { get; set; }
     public string FilePath { get; set; }
     public long? FileSize { get; set; }
+    public string EntityType { get; set; }
+    public string EntityId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
     public int? TenantID { get; set; }
@@ -22,12 +24,14 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yFileUploadEntity(int? id, string type, int status, string filepath, long? filesize, DateTime createdat, DateTime? completedat ){
+ internal yFileUploadEntity(int? id, string type, int status, string filepath, long? filesize, string entitytype, string entityid, DateTime createdat, DateTime? completedat ){
  Id = id; 
  Type = type; 
  Status = status; 
  FilePath = filepath; 
  FileSize = filesize; 
+ EntityType = entitytype; 
+ EntityId = entityid; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
  CompletedAt = (completedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : completedat; 
 }

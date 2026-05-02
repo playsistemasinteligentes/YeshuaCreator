@@ -11,6 +11,8 @@ namespace IQuery.Write
         QueryModel UpdateStatus(int id, int value);
         QueryModel UpdateFilePath(int id, string value);
         QueryModel UpdateFileSize(int id, long value);
+        QueryModel UpdateEntityType(int id, string value);
+        QueryModel UpdateEntityId(int id, string value);
         QueryModel UpdateCreatedAt(int id, DateTime value);
         QueryModel UpdateCompletedAt(int id, DateTime value);
         QueryModel UpdateTenantID(int id, int value);
