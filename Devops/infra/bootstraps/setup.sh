@@ -185,7 +185,7 @@ alias yup='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.
 alias ydown='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml down'
 
 alias ydeploy='nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/deploy.sh | bash" > /root/deploy.log 2>&1 &'
-alias ydeploy='tail -f /root/deploy.log'
+alias ylogdeploy='tail -f /root/deploy.log'
 
 EOF
 

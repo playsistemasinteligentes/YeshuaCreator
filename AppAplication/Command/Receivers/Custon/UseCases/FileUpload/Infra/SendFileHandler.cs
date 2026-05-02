@@ -147,7 +147,7 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
 
                 var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
-                _psychologySessionInsightSaga.Start(uploadId, "yFileUpload");
+                _psychologySessionInsightSaga.Start(uploadId.ToString(), "yFileUpload");
                 //_sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
 
                 _unitOfWork.BeginTran();
