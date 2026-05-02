@@ -70,14 +70,14 @@ Consumes    fato sistema externo continuar fluxo
                                 AddSaga("PsychologySessionInsight").
                                 AddStepGroup("audioTranscript").
                                     AddStep("audioTranscriptRequested"). // “faça isso”
-                                        AddOutBoxPollingWorker("ai.tasks",ExchangeType.topic,"audio.transcribe.outbox","audio.transcribe").
-                                        AddInboxListenerWorker("ai.results",ExchangeType.topic,"audio.transcribed.inbox","audio.transcribed").
+                                        AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "audio.transcribe.outbox", "audio.transcribe").
+                                        AddInboxListenerWorker("ai.results", ExchangeType.topic, "audio.transcribed.inbox", "audio.transcribed").
 
 
                                 AddStepGroup("reportSumary").
                                     AddStep("reportEndProntuaryRequested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "text.summarize.outbox", "text.summarize").
-                                        AddInboxListenerWorker("ai.results", ExchangeType.topic, "text.summarized.inbox", "text.summarized").
+                                        AddInboxListenerWorker("ai.results", ExchangeType.topic, "text.summarized.inbox", "text.summarized");
 
 
 
