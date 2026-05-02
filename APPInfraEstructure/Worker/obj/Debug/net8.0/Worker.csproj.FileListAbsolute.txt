@@ -211,3 +211,4 @@ C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Work
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Worker\obj\Debug\net8.0\Worker.pdb
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Worker\obj\Debug\net8.0\Worker.genruntimeconfig.cache
 C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Worker\obj\Debug\net8.0\ref\Worker.dll
+C:\Users\AngeloRicardoFontana\Source\Repos\YeshuaCreator\APPInfraEstructure\Worker\obj\Debug\net8.0\Worker.MvcApplicationPartsAssemblyInfo.cs

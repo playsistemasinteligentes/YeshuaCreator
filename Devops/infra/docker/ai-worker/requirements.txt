@@ -1,8 +1,7 @@
 celery==5.3.6
 torch
-openai-whisper
 transformers
 accelerate
 sentencepiece
-requests
 pika
+requests
