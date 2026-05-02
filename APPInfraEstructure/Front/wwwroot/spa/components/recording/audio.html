@@ -4,123 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recorder Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { mono: ['JetBrains Mono', 'Courier New', 'monospace'] },
+                    keyframes: {
+                        blink: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.2 } },
+                        fadeIn: { from: { opacity: 0, transform: 'translateY(4px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+                    },
+                    animation: {
+                        blink: 'blink 1s infinite',
+                        fadeIn: 'fadeIn 0.3s ease',
+                    },
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
 
-        :root {
-            --bg: #0a0a0a;
-            --surface: #111111;
-            --surface2: #1a1a1a;
-            --border: #222;
-            --accent: #00e5a0;
-            --accent-dim: rgba(0,229,160,0.12);
-            --accent-warn: #ffb347;
-            --accent-err: #ff4d6d;
-            --text: #e8e8e8;
-            --text-dim: #666;
-            --text-mid: #999;
-            --mono: 'JetBrains Mono', monospace;
-            --sans: 'Space Grotesk', sans-serif;
+        /* Transições que Tailwind CDN não gera dinamicamente */
+        #vu-bar {
+            transition: width 0.05s linear;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        .hbar {
+            transition: width 0.5s ease, background-color 0.5s ease;
         }
 
-        body {
-            font-family: var(--sans);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 32px 16px;
-            gap: 20px;
-        }
-
-        h1 {
-            font-size: 13px;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-        }
-
-        /* ── Timer ── */
-        #timer {
-            font-family: var(--mono);
-            font-size: 72px;
-            font-weight: 600;
-            letter-spacing: -2px;
-            color: var(--accent);
-            line-height: 1;
-            transition: color 0.3s;
-        }
-
-            #timer.paused {
-                color: var(--accent-warn);
-            }
-
-            #timer.done {
-                color: var(--text-dim);
-            }
-
-        /* ── Status pill ── */
-        #status {
-            font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        #status, #timer {
             transition: all 0.3s;
         }
 
-            #status.recording {
-                border-color: var(--accent);
-                color: var(--accent);
-                background: var(--accent-dim);
-            }
-
-            #status.paused {
-                border-color: var(--accent-warn);
-                color: var(--accent-warn);
-                background: rgba(255,179,71,0.1);
-            }
-
-            #status.uploading {
-                border-color: #7eb8ff;
-                color: #7eb8ff;
-                background: rgba(126,184,255,0.1);
-            }
-
-            #status.done {
-                border-color: var(--text-dim);
-                color: var(--text-dim);
-            }
-
-            #status.error {
-                border-color: var(--accent-err);
-                color: var(--accent-err);
-                background: rgba(255,77,109,0.1);
-            }
-
-        #dot {
-            width: 7px;
-            height: 7px;
+        /* Toggle knob */
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: currentColor;
+            background: #0a0a0a;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
         }
 
-        #status.recording #dot {
+        .toggle.on::after {
+            transform: translateX(16px);
+        }
+
+        /* Dot blink */
+        .dot-blink {
             animation: blink 1s infinite;
         }
 
@@ -130,192 +66,14 @@
             }
 
             50% {
-                opacity: 0.2
+                opacity: .2
             }
         }
 
-        /* ── VU meter ── */
-        #vu-wrap {
-            width: 320px;
-            height: 4px;
-            background: var(--surface2);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        #vu-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent), #00ffcc);
-            border-radius: 2px;
-            transition: width 0.05s linear;
-        }
-
-        /* ── Controls ── */
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text-mid);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-            .btn:hover:not(:disabled) {
-                border-color: var(--accent);
-                color: var(--accent);
-                background: var(--accent-dim);
-            }
-
-            .btn:active:not(:disabled) {
-                transform: scale(0.97);
-            }
-
-            .btn:disabled {
-                opacity: 0.25;
-                cursor: not-allowed;
-            }
-
-            .btn.primary {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
-
-            .btn.danger:hover:not(:disabled) {
-                border-color: var(--accent-err);
-                color: var(--accent-err);
-                background: rgba(255,77,109,0.1);
-            }
-
-        /* ── Stats grid ── */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            width: 100%;
-            max-width: 520px;
-        }
-
-        .stat {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .stat-val {
-            font-family: var(--mono);
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .stat-label {
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            margin-top: 4px;
-        }
-
-        /* ── Health bar ── */
-        .health-row {
-            width: 100%;
-            max-width: 520px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .health-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 11px;
-            font-family: var(--mono);
-        }
-
-        .health-label {
-            color: var(--text-dim);
-            width: 110px;
-            flex-shrink: 0;
-        }
-
-        .health-bar-wrap {
-            flex: 1;
-            height: 3px;
-            background: var(--surface2);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .health-bar {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-            transition: width 0.5s, background 0.5s;
-        }
-
-            .health-bar.warn {
-                background: var(--accent-warn);
-            }
-
-            .health-bar.err {
-                background: var(--accent-err);
-            }
-
-        .health-val {
-            color: var(--text-mid);
-            width: 50px;
-            text-align: right;
-            flex-shrink: 0;
-            font-size: 10px;
-        }
-
-        /* ── Alerts ── */
-        #alerts {
-            width: 100%;
-            max-width: 520px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
+        /* Alert fadein */
         .alert {
-            font-family: var(--mono);
-            font-size: 11px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            border-left: 3px solid var(--accent-warn);
-            background: rgba(255,179,71,0.07);
-            color: var(--accent-warn);
             animation: fadeIn 0.3s ease;
         }
-
-            .alert.err {
-                border-color: var(--accent-err);
-                background: rgba(255,77,109,0.07);
-                color: var(--accent-err);
-            }
-
-            .alert.ok {
-                border-color: var(--accent);
-                background: var(--accent-dim);
-                color: var(--accent);
-            }
 
         @keyframes fadeIn {
             from {
@@ -329,213 +87,183 @@
             }
         }
 
-        /* ── Log ── */
-        details {
-            width: 100%;
-            max-width: 520px;
+        /* Log color spans */
+        #log .ok {
+            color: #00e5a0
         }
 
-        summary {
-            font-family: var(--mono);
+        #log .err {
+            color: #ff4d6d
+        }
+
+        #log .warn {
+            color: #ffb347
+        }
+
+        #log .info {
+            color: #7eb8ff
+        }
+
+        /* Buttons (hover+disabled combos são chatos de fazer só com Tailwind CDN) */
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--text-dim);
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 1px solid #222;
+            background: #111;
+            color: #999;
             cursor: pointer;
-            padding: 6px 0;
-            user-select: none;
+            transition: all 0.15s;
         }
 
-            summary:hover {
-                color: var(--text-mid);
+            .btn:hover:not(:disabled) {
+                border-color: #00e5a0;
+                color: #00e5a0;
+                background: rgba(0,229,160,.12);
             }
 
-        #log {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            height: 180px;
-            overflow-y: auto;
-            font-family: var(--mono);
-            font-size: 11px;
-            color: var(--text-mid);
-            line-height: 1.7;
-            margin-top: 8px;
-        }
-
-            #log span.ok {
-                color: var(--accent);
+            .btn:active:not(:disabled) {
+                transform: scale(.97);
             }
 
-            #log span.err {
-                color: var(--accent-err);
+            .btn:disabled {
+                opacity: .25;
+                cursor: not-allowed;
             }
 
-            #log span.warn {
-                color: var(--accent-warn);
+            .btn.primary {
+                border-color: #00e5a0;
+                color: #00e5a0;
             }
 
-            #log span.info {
-                color: #7eb8ff;
+            .btn.danger:hover:not(:disabled) {
+                border-color: #ff4d6d;
+                color: #ff4d6d;
+                background: rgba(255,77,109,.1);
             }
-
-        /* ── Upload toggle ── */
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: var(--mono);
-            font-size: 11px;
-            color: var(--text-dim);
-        }
-
-        .toggle {
-            width: 36px;
-            height: 20px;
-            border-radius: 10px;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            position: relative;
-            transition: background 0.2s;
-        }
-
-            .toggle.on {
-                background: var(--accent);
-                border-color: var(--accent);
-            }
-
-            .toggle::after {
-                content: '';
-                position: absolute;
-                width: 14px;
-                height: 14px;
-                border-radius: 50%;
-                background: var(--bg);
-                top: 2px;
-                left: 2px;
-                transition: transform 0.2s;
-            }
-
-            .toggle.on::after {
-                transform: translateX(16px);
-            }
-
-        @media(max-width:480px) {
-            #timer {
-                font-size: 52px;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
     </style>
 </head>
-<body>
 
-    <h1>Recorder Pro</h1>
+<body class="bg-[#0a0a0a] text-[#e8e8e8] min-h-screen flex flex-col items-center px-4 py-8 gap-5 font-mono">
 
-    <div id="timer">00:00:00</div>
+    <!-- Title -->
+    <h1 class="text-xs tracking-[.2em] uppercase text-[#555]">Recorder Pro</h1>
 
-    <div id="status" class="idle">
-        <div id="dot"></div>
+    <!-- Timer -->
+    <div id="timer" class="text-7xl sm:text-5xl font-semibold tracking-tight text-[#00e5a0] leading-none">00:00:00</div>
+
+    <!-- Status pill -->
+    <div id="status" class="text-[11px] tracking-[.15em] uppercase px-3 py-1 rounded-full border border-[#222] text-[#555] flex items-center gap-2">
+        <div id="dot" class="w-2 h-2 rounded-full bg-current"></div>
         <span id="status-text">idle</span>
     </div>
 
-    <div id="vu-wrap"><div id="vu-bar"></div></div>
-
-    <div class="controls">
-        <button class="btn primary" id="btnStart" onclick="Recorder.start()">Start</button>
-        <button class="btn" id="btnPause" onclick="Recorder.pause()" disabled>Pause</button>
-        <button class="btn" id="btnResume" onclick="Recorder.resume()" disabled>Resume</button>
-        <button class="btn danger" id="btnStop" onclick="Recorder.stop()" disabled>Finalizar</button>
+    <!-- VU meter -->
+    <div class="w-80 h-1 bg-[#1a1a1a] rounded-full overflow-hidden">
+        <div id="vu-bar" class="h-full w-0 rounded-full" style="background:linear-gradient(90deg,#00e5a0,#00ffcc)"></div>
     </div>
 
-    <div class="stats">
-        <div class="stat"><div class="stat-val" id="st-chunks">0</div><div class="stat-label">Chunks</div></div>
-        <div class="stat"><div class="stat-val" id="st-sent">0</div><div class="stat-label">Enviados</div></div>
-        <div class="stat"><div class="stat-val" id="st-pending">0</div><div class="stat-label">Pendentes</div></div>
-        <div class="stat"><div class="stat-val" id="st-errors">0</div><div class="stat-label">Erros</div></div>
+    <!-- Controls -->
+    <div class="flex gap-2 flex-wrap justify-center">
+        <button id="btnStart" onclick="Recorder.start()" class="btn primary">Start</button>
+        <button id="btnPause" onclick="Recorder.pause()" class="btn" disabled>Pause</button>
+        <button id="btnResume" onclick="Recorder.resume()" class="btn" disabled>Resume</button>
+        <button id="btnStop" onclick="Recorder.stop()" class="btn danger" disabled>Finalizar</button>
     </div>
 
-    <div class="health-row">
-        <div class="health-item">
-            <span class="health-label">DB usage</span>
-            <div class="health-bar-wrap"><div class="health-bar" id="hb-db" style="width:0%"></div></div>
-            <span class="health-val" id="hv-db">0 / 200</span>
+    <!-- Stats -->
+    <div class="grid grid-cols-4 sm:grid-cols-2 gap-2 w-full max-w-lg">
+        <div class="bg-[#111] border border-[#222] rounded-lg p-3 text-center">
+            <div class="text-xl font-semibold" id="st-chunks">0</div>
+            <div class="text-[10px] tracking-widest uppercase text-[#555] mt-1">Chunks</div>
         </div>
-        <div class="health-item">
-            <span class="health-label">Upload queue</span>
-            <div class="health-bar-wrap"><div class="health-bar" id="hb-q" style="width:0%"></div></div>
-            <span class="health-val" id="hv-q">0</span>
+        <div class="bg-[#111] border border-[#222] rounded-lg p-3 text-center">
+            <div class="text-xl font-semibold" id="st-sent">0</div>
+            <div class="text-[10px] tracking-widest uppercase text-[#555] mt-1">Enviados</div>
         </div>
-        <div class="health-item">
-            <span class="health-label">Backoff</span>
-            <div class="health-bar-wrap"><div class="health-bar" id="hb-bo" style="width:0%"></div></div>
-            <span class="health-val" id="hv-bo">1s</span>
+        <div class="bg-[#111] border border-[#222] rounded-lg p-3 text-center">
+            <div class="text-xl font-semibold" id="st-pending">0</div>
+            <div class="text-[10px] tracking-widest uppercase text-[#555] mt-1">Pendentes</div>
+        </div>
+        <div class="bg-[#111] border border-[#222] rounded-lg p-3 text-center">
+            <div class="text-xl font-semibold" id="st-errors">0</div>
+            <div class="text-[10px] tracking-widest uppercase text-[#555] mt-1">Erros</div>
         </div>
     </div>
 
-    <div id="alerts"></div>
+    <!-- Health bars -->
+    <div class="w-full max-w-lg flex flex-col gap-2">
+        <div class="flex items-center gap-2 text-[11px]">
+            <span class="text-[#555] w-28 shrink-0">DB usage</span>
+            <div class="flex-1 h-[3px] bg-[#1a1a1a] rounded-full overflow-hidden">
+                <div class="hbar h-full rounded-full bg-[#00e5a0]" id="hb-db" style="width:0%"></div>
+            </div>
+            <span class="text-[#999] w-14 text-right text-[10px] shrink-0" id="hv-db">0 / 200</span>
+        </div>
+        <div class="flex items-center gap-2 text-[11px]">
+            <span class="text-[#555] w-28 shrink-0">Upload queue</span>
+            <div class="flex-1 h-[3px] bg-[#1a1a1a] rounded-full overflow-hidden">
+                <div class="hbar h-full rounded-full bg-[#00e5a0]" id="hb-q" style="width:0%"></div>
+            </div>
+            <span class="text-[#999] w-14 text-right text-[10px] shrink-0" id="hv-q">0</span>
+        </div>
+        <div class="flex items-center gap-2 text-[11px]">
+            <span class="text-[#555] w-28 shrink-0">Backoff</span>
+            <div class="flex-1 h-[3px] bg-[#1a1a1a] rounded-full overflow-hidden">
+                <div class="hbar h-full rounded-full bg-[#00e5a0]" id="hb-bo" style="width:0%"></div>
+            </div>
+            <span class="text-[#999] w-14 text-right text-[10px] shrink-0" id="hv-bo">1s</span>
+        </div>
+    </div>
 
-    <div class="toggle-row">
-        <div class="toggle on" id="uploadToggle" onclick="Recorder.toggleUpload()"></div>
+    <!-- Alerts -->
+    <div id="alerts" class="w-full max-w-lg flex flex-col gap-1"></div>
+
+    <!-- Upload toggle -->
+    <div class="flex items-center gap-3 text-[11px] text-[#555]">
+        <div class="toggle on relative w-9 h-5 rounded-full cursor-pointer border" id="uploadToggle"
+             style="background:#00e5a0;border-color:#00e5a0"
+             onclick="Recorder.toggleUpload()"></div>
         <span>Upload automático</span>
     </div>
 
-    <details>
-        <summary>Log técnico</summary>
-        <div id="log"></div>
+    <!-- Log -->
+    <details class="w-full max-w-lg">
+        <summary class="text-[11px] tracking-widest uppercase text-[#555] cursor-pointer py-1 hover:text-[#999] select-none">Log técnico</summary>
+        <div id="log" class="bg-[#111] border border-[#222] rounded-lg p-3 h-44 overflow-y-auto text-[11px] text-[#999] leading-relaxed mt-2"></div>
     </details>
 
     <script>
-        // ════════════════════════════════════════════════════════════════
-        // RECORDER PRO v3 — Gravações longas (5h, 10h, 24h+)
-        // ════════════════════════════════════════════════════════════════
+        // ════════════════════════════════════════════════════════════
+        // RECORDER PRO v3
+        // ════════════════════════════════════════════════════════════
 
-        // ── Constantes ───────────────────────────────────────────────────
-        const CHUNK_MS = 10_000;   // 10s por chunk (menos overhead de IDB)
-        const MAX_RETRIES = 5;        // tentativas por chunk
-        const MAX_DB_CHUNKS = 200;      // limite de pendentes — pausa gravação se atingir
-        const BACKOFF_BASE = 1_000;    // backoff inicial (ms)
-        const BACKOFF_MAX = 60_000;   // backoff máximo (1 min)
-        const HEARTBEAT_MS = 15_000;   // checar saúde do stream a cada 15s
-        const VU_IDLE_MS = 10_000;   // parar rAF do VU após 10s de tela inativa
+        const CHUNK_MS = 10_000;
+        const MAX_RETRIES = 5;
+        const MAX_DB_CHUNKS = 200;
+        const BACKOFF_BASE = 1_000;
+        const BACKOFF_MAX = 60_000;
+        const HEARTBEAT_MS = 15_000;
 
-        // ── Estado ───────────────────────────────────────────────────────
         function freshState() {
             return {
-                sessionId: null,
-                uploadToken: null,
-                mediaRecorder: null,
-                stream: null,
-                audioCtx: null,
-                analyser: null,
-                chunkIndex: 0,
-                isFinal: false,
-                uploadEnabled: true,
-                workerAbort: null,
-                timerInterval: null,
-                startTime: 0,
-                pausedAt: 0,
-                pausedTotal: 0,
-                vuRunning: false,
-                vuStopped: false,       // parado por inatividade
-                heartbeatTimer: null,
-                lastChunkAt: 0,         // timestamp do último chunk recebido
-                // contadores UI
-                totalChunks: 0,
-                sentChunks: 0,
-                errorChunks: 0,
-                backoffMs: BACKOFF_BASE,
+                sessionId: null, uploadToken: null, mediaRecorder: null, stream: null,
+                audioCtx: null, analyser: null, chunkIndex: 0, isFinal: false,
+                uploadEnabled: true, workerAbort: null, timerInterval: null,
+                startTime: 0, pausedAt: 0, pausedTotal: 0,
+                vuRunning: false, vuStopped: false,
+                heartbeatTimer: null, lastChunkAt: 0,
+                totalChunks: 0, sentChunks: 0, errorChunks: 0,
+                backoffMs: BACKOFF_BASE, _userPaused: false, wakeLock: null,
             };
         }
         let app = freshState();
         let db = null;
 
-        // ── Log ──────────────────────────────────────────────────────────
+        // ── Log ──────────────────────────────────────────────────────
         const logEl = document.getElementById('log');
         function log(msg, type = '') {
             const ts = new Date().toTimeString().slice(0, 8);
@@ -543,13 +271,18 @@
             logEl.scrollTop = logEl.scrollHeight;
         }
 
-        // ── Alertas ──────────────────────────────────────────────────────
+        // ── Alertas ──────────────────────────────────────────────────
         const alertsEl = document.getElementById('alerts');
         const activeAlerts = {};
+        const alertStyles = {
+            warn: 'border-l-4 border-[#ffb347] bg-[rgba(255,179,71,.07)] text-[#ffb347] text-[11px] px-3 py-2 rounded-md',
+            err: 'border-l-4 border-[#ff4d6d] bg-[rgba(255,77,109,.07)] text-[#ff4d6d] text-[11px] px-3 py-2 rounded-md',
+            ok: 'border-l-4 border-[#00e5a0] bg-[rgba(0,229,160,.12)] text-[#00e5a0] text-[11px] px-3 py-2 rounded-md',
+        };
         function setAlert(key, msg, type = 'warn') {
             if (activeAlerts[key]) return;
             const el = document.createElement('div');
-            el.className = `alert ${type}`;
+            el.className = 'alert ' + (alertStyles[type] || alertStyles.warn);
             el.textContent = msg;
             alertsEl.appendChild(el);
             activeAlerts[key] = el;
@@ -559,23 +292,30 @@
             if (activeAlerts[key]) { activeAlerts[key].remove(); delete activeAlerts[key]; }
         }
 
-        // ── Utils ────────────────────────────────────────────────────────
+        // ── Utils ────────────────────────────────────────────────────
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
         function getSupportedMimeType() {
             const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/mp4'];
             for (const t of types) if (MediaRecorder.isTypeSupported(t)) return t;
             return '';
         }
+        function genSessionId() { return `s${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
 
-        function genSessionId() {
-            return `s${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
-        }
-
-        // ── UI ───────────────────────────────────────────────────────────
+        // ── UI ───────────────────────────────────────────────────────
         function setStatus(state, label) {
             const el = document.getElementById('status');
-            el.className = state;
+            const dot = document.getElementById('dot');
+            const base = 'text-[11px] tracking-[.15em] uppercase px-3 py-1 rounded-full border flex items-center gap-2';
+            const map = {
+                idle: 'border-[#222] text-[#555]',
+                recording: 'border-[#00e5a0] text-[#00e5a0] bg-[rgba(0,229,160,.12)]',
+                paused: 'border-[#ffb347] text-[#ffb347] bg-[rgba(255,179,71,.1)]',
+                uploading: 'border-[#7eb8ff] text-[#7eb8ff] bg-[rgba(126,184,255,.1)]',
+                done: 'border-[#555] text-[#555]',
+                error: 'border-[#ff4d6d] text-[#ff4d6d] bg-[rgba(255,77,109,.1)]',
+            };
+            el.className = base + ' ' + (map[state] || map.idle);
+            dot.className = 'w-2 h-2 rounded-full bg-current' + (state === 'recording' ? ' dot-blink' : '');
             document.getElementById('status-text').textContent = label;
         }
 
@@ -585,19 +325,19 @@
             document.getElementById('btnResume').disabled = state !== 'paused';
             document.getElementById('btnStop').disabled = !['recording', 'paused'].includes(state);
 
-            const timerEl = document.getElementById('timer');
-            timerEl.className = state === 'paused' ? 'paused' : state === 'done' ? 'done' : '';
+            const timer = document.getElementById('timer');
+            const base = 'text-7xl sm:text-5xl font-semibold tracking-tight leading-none ';
+            timer.className = base + (state === 'paused' ? 'text-[#ffb347]' : state === 'done' ? 'text-[#555]' : 'text-[#00e5a0]');
 
             const statusMap = {
-                idle: ['idle', 'idle'],
-                recording: ['recording', 'recording'],
-                paused: ['paused', 'paused'],
-                finalizing: ['uploading', 'finalizando…'],
-                done: ['done', 'concluído'],
-                error: ['error', 'erro'],
+                idle: 'idle', recording: 'recording', paused: 'paused',
+                finalizing: 'uploading', done: 'done', error: 'error',
             };
-            const [cls, lbl] = statusMap[state] || ['idle', 'idle'];
-            setStatus(cls, lbl);
+            const labelMap = {
+                idle: 'idle', recording: 'recording', paused: 'paused',
+                finalizing: 'finalizando…', done: 'concluído', error: 'erro',
+            };
+            setStatus(statusMap[state] || 'idle', labelMap[state] || 'idle');
         }
 
         function updateStats() {
@@ -605,126 +345,84 @@
             document.getElementById('st-sent').textContent = app.sentChunks;
             document.getElementById('st-pending').textContent = app.totalChunks - app.sentChunks - app.errorChunks;
             document.getElementById('st-errors').textContent = app.errorChunks;
+            persistSession();
         }
 
         function updateHealth(pendingCount) {
-            const dbPct = Math.min(pendingCount / MAX_DB_CHUNKS * 100, 100);
-            const dbBar = document.getElementById('hb-db');
-            dbBar.style.width = dbPct + '%';
-            dbBar.className = 'health-bar' + (dbPct > 80 ? ' err' : dbPct > 50 ? ' warn' : '');
-            document.getElementById('hv-db').textContent = `${pendingCount} / ${MAX_DB_CHUNKS}`;
-
-            const qBar = document.getElementById('hb-q');
-            qBar.style.width = Math.min(pendingCount / 20 * 100, 100) + '%';
-            qBar.className = 'health-bar' + (pendingCount > 15 ? ' warn' : '');
-            document.getElementById('hv-q').textContent = pendingCount;
-
-            const boPct = Math.min(app.backoffMs / BACKOFF_MAX * 100, 100);
-            const boBar = document.getElementById('hb-bo');
-            boBar.style.width = boPct + '%';
-            boBar.className = 'health-bar' + (boPct > 50 ? ' warn' : '');
-            document.getElementById('hv-bo').textContent = (app.backoffMs / 1000).toFixed(0) + 's';
+            function setBar(barId, valId, pct, valText) {
+                const bar = document.getElementById(barId);
+                bar.style.width = Math.min(pct, 100) + '%';
+                bar.style.backgroundColor = pct > 80 ? '#ff4d6d' : pct > 50 ? '#ffb347' : '#00e5a0';
+                document.getElementById(valId).textContent = valText;
+            }
+            setBar('hb-db', 'hv-db', pendingCount / MAX_DB_CHUNKS * 100, `${pendingCount} / ${MAX_DB_CHUNKS}`);
+            setBar('hb-q', 'hv-q', pendingCount / 20 * 100, pendingCount);
+            setBar('hb-bo', 'hv-bo', app.backoffMs / BACKOFF_MAX * 100, (app.backoffMs / 1000).toFixed(0) + 's');
         }
 
-        // ── Timer ────────────────────────────────────────────────────────
+        // ── Timer ────────────────────────────────────────────────────
         function startTimer() {
-            app.startTime = Date.now();
-            app.pausedTotal = 0;
+            app.startTime = Date.now(); app.pausedTotal = 0;
             app.timerInterval = setInterval(() => {
-                const elapsed = Date.now() - app.startTime - app.pausedTotal;
-                const tot = Math.floor(elapsed / 1000);
-                const h = Math.floor(tot / 3600);
-                const m = Math.floor((tot % 3600) / 60);
-                const s = tot % 60;
+                const tot = Math.floor((Date.now() - app.startTime - app.pausedTotal) / 1000);
+                const h = Math.floor(tot / 3600), m = Math.floor((tot % 3600) / 60), s = tot % 60;
                 document.getElementById('timer').textContent =
-                    String(h).padStart(2, '0') + ':' +
-                    String(m).padStart(2, '0') + ':' +
-                    String(s).padStart(2, '0');
+                    String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
             }, 500);
         }
         function pauseTimer() { app.pausedAt = Date.now(); }
         function resumeTimer() { app.pausedTotal += Date.now() - app.pausedAt; }
         function stopTimer() { clearInterval(app.timerInterval); }
 
-        // ── Wake Lock ────────────────────────────────────────────────────
+        // ── Wake Lock ────────────────────────────────────────────────
         async function requestWakeLock() {
             try {
                 app.wakeLock = await navigator.wakeLock?.request('screen');
                 log('WakeLock ativo', 'ok');
-                // Re-adquire se perdido (ex: tela apagou, voltou)
                 document.addEventListener('visibilitychange', async () => {
                     if (document.visibilityState === 'visible' && app.mediaRecorder?.state === 'recording') {
-                        try {
-                            app.wakeLock = await navigator.wakeLock?.request('screen');
-                            log('WakeLock re-adquirido', 'ok');
-                        } catch { }
+                        try { app.wakeLock = await navigator.wakeLock?.request('screen'); log('WakeLock re-adquirido', 'ok'); } catch { }
                     }
                 });
             } catch { log('WakeLock não suportado', 'warn'); }
         }
 
-        // ── VU meter ─────────────────────────────────────────────────────
+        // ── VU meter ─────────────────────────────────────────────────
         function startVU(stream) {
             if (app.vuRunning) return;
-            app.vuRunning = true;
-            app.vuStopped = false;
-
+            app.vuRunning = true; app.vuStopped = false;
             app.audioCtx = new AudioContext();
             const src = app.audioCtx.createMediaStreamSource(stream);
             app.analyser = app.audioCtx.createAnalyser();
             app.analyser.fftSize = 256;
             src.connect(app.analyser);
             const data = new Uint8Array(app.analyser.frequencyBinCount);
-
-            // Retoma AudioContext se suspenso (iOS)
             app.audioCtx.addEventListener('statechange', () => {
-                if (app.audioCtx.state === 'suspended' && app.mediaRecorder?.state === 'recording') {
+                if (app.audioCtx.state === 'suspended' && app.mediaRecorder?.state === 'recording')
                     app.audioCtx.resume().then(() => log('AudioContext resumido', 'warn'));
-                }
             });
-
-            let lastActivity = Date.now();
-
             function draw() {
                 if (!app.vuRunning) return;
-
-                // Parar rAF se tela ficou inativa por VU_IDLE_MS
-                if (document.hidden) {
-                    app.vuStopped = true;
-                    app.vuRunning = false;
-                    document.getElementById('vu-bar').style.width = '0%';
-                    return;
-                }
-
+                if (document.hidden) { app.vuStopped = true; app.vuRunning = false; document.getElementById('vu-bar').style.width = '0%'; return; }
                 app.analyser.getByteFrequencyData(data);
-                let sum = 0;
-                for (let i = 0; i < data.length; i++) sum += data[i];
-                const avg = sum / data.length / 255;
-                document.getElementById('vu-bar').style.width = (avg * 100) + '%';
-
+                let sum = 0; for (let i = 0; i < data.length; i++) sum += data[i];
+                document.getElementById('vu-bar').style.width = (sum / data.length / 255 * 100) + '%';
                 requestAnimationFrame(draw);
             }
-
-            // Reativar VU quando tela voltar
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible' && app.vuStopped && app.mediaRecorder?.state === 'recording') {
-                    app.vuRunning = true;
-                    app.vuStopped = false;
-                    draw();
-                    log('VU meter reativado', 'info');
+                    app.vuRunning = true; app.vuStopped = false; draw(); log('VU meter reativado', 'info');
                 }
             });
-
             draw();
         }
-
         function stopVU() {
             app.vuRunning = false;
             if (app.audioCtx) { app.audioCtx.close().catch(() => { }); app.audioCtx = null; }
             document.getElementById('vu-bar').style.width = '0%';
         }
 
-        // ── IndexedDB ────────────────────────────────────────────────────
+        // ── IndexedDB ────────────────────────────────────────────────
         function initDB() {
             return new Promise((resolve, reject) => {
                 const req = indexedDB.open('RecorderDB_v3', 1);
@@ -736,7 +434,6 @@
                 req.onerror = () => reject(req.error);
             });
         }
-
         function txOp(mode, fn) {
             return new Promise((resolve, reject) => {
                 const tx = db.transaction(['chunks'], mode);
@@ -744,17 +441,11 @@
                 fn(tx.objectStore('chunks'), resolve, reject);
             });
         }
-
         function saveChunk(blob, sessionId, index) {
             return txOp('readwrite', (store, resolve) => {
-                const req = store.put({
-                    key: `${sessionId}_${index}`, sessionId, index, blob,
-                    status: 'pending', retries: 0
-                });
-                req.onsuccess = resolve;
+                store.put({ key: `${sessionId}_${index}`, sessionId, index, blob, status: 'pending', retries: 0 }).onsuccess = resolve;
             });
         }
-
         function getSessionChunks(sessionId) {
             return new Promise((resolve, reject) => {
                 const tx = db.transaction(['chunks'], 'readonly');
@@ -763,39 +454,22 @@
                 req.onerror = () => reject(req.error);
             });
         }
-
-        function updateChunk(chunk) {
-            return txOp('readwrite', (store, resolve) => {
-                const req = store.put(chunk);
-                req.onsuccess = resolve;
-            });
-        }
-
-        function deleteChunk(key) {
-            return txOp('readwrite', (store, resolve) => {
-                const req = store.delete(key);
-                req.onsuccess = resolve;
-            });
-        }
-
+        function updateChunk(chunk) { return txOp('readwrite', (store, resolve) => { store.put(chunk).onsuccess = resolve; }); }
+        function deleteChunk(key) { return txOp('readwrite', (store, resolve) => { store.delete(key).onsuccess = resolve; }); }
         async function countPendingChunks(sessionId) {
             const chunks = await getSessionChunks(sessionId);
             return chunks.filter(c => c.status === 'pending' || c.status === 'error').length;
         }
 
-        // ── API de sessão e upload ────────────────────────────────────────
+        // ── API ──────────────────────────────────────────────────────
         async function startUploadSession() {
             const token = localStorage.getItem('token');
             const res = await fetch('/yapi/FileUpload/InfraStarSessionUploadUseCase', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({}),
+                method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: '{}',
             });
             if (!res.ok) throw new Error('Falha sessão: ' + res.status);
-            const data = await res.json();
-            return data.uploadToken;
+            return (await res.json()).uploadToken;
         }
-
         async function sendChunk(uploadToken, chunk, isFinalChunk) {
             const token = localStorage.getItem('token');
             const fd = new FormData();
@@ -807,411 +481,208 @@
             fd.append('contentType', chunk.blob.type || 'audio/webm');
             fd.append('fileStream', chunk.blob, fileName);
             const res = await fetch('/yapi/FileUpload/InfraSendFileUseCase2', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${token}` },
-                body: fd,
+                method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: fd,
             });
             return res.ok;
         }
 
-        // ── Upload Worker ─────────────────────────────────────────────────
-        // Garantias:
-        //  1. isFinalChunk só é true quando: isFinal=true + chunk é o maior índice
-        //     + é o único pendente restante.
-        //  2. deleteChunk ocorre ANTES de qualquer return — nunca há reenvio.
-        //  3. Backoff exponencial com teto de 60s.
-        //  4. AbortSignal limpa o worker ao trocar de sessão.
-        //  5. Limite de DB: pausa a gravação se pendentes >= MAX_DB_CHUNKS.
-
+        // ── Upload Worker ─────────────────────────────────────────────
         async function uploadWorker(sessionId, uploadToken, signal) {
             log(`Worker iniciado [${sessionId}]`, 'info');
             app.backoffMs = BACKOFF_BASE;
-
             while (!signal.aborted) {
                 if (!app.uploadEnabled) { await sleep(2000); continue; }
-
                 let chunks;
                 try { chunks = await getSessionChunks(sessionId); }
                 catch (e) { log('Erro IDB: ' + e.message, 'err'); await sleep(5000); continue; }
-
                 const pending = chunks.filter(c => c.status === 'pending' || c.status === 'error');
-
-                // Proteção de backpressure: muitos pendentes → pausa gravação
                 if (pending.length >= MAX_DB_CHUNKS) {
-                    setAlert('backpressure', `⚠ Fila cheia (${pending.length} chunks). Gravação pausada até upload liberar.`, 'warn');
-                    if (app.mediaRecorder?.state === 'recording') {
-                        app.mediaRecorder.pause();
-                        setUIState('paused');
-                    }
+                    setAlert('backpressure', `⚠ Fila cheia (${pending.length} chunks). Gravação pausada.`, 'warn');
+                    if (app.mediaRecorder?.state === 'recording') { app.mediaRecorder.pause(); setUIState('paused'); }
                 } else {
                     clearAlert('backpressure');
-                    // Retoma se pausou por backpressure
-                    if (app.mediaRecorder?.state === 'paused' && !app._userPaused) {
-                        app.mediaRecorder.resume();
-                        setUIState('recording');
-                    }
+                    if (app.mediaRecorder?.state === 'paused' && !app._userPaused) { app.mediaRecorder.resume(); setUIState('recording'); }
                 }
-
-                // Atualiza painel
                 updateHealth(pending.length);
                 updateStats();
-
-                // Condição de saída
                 if (pending.length === 0 && app.isFinal) {
-                    log('Todos os chunks enviados. Worker encerrado.', 'ok');
+                    log('Todos os chunks enviados.', 'ok');
                     setAlert('done', '✓ Upload completo!', 'ok');
-                    clearPersistedSession();
-                    setUIState('done');
-                    return;
+                    clearPersistedSession(); setUIState('done'); return;
                 }
-
                 let anySuccess = false;
-
                 for (const chunk of pending) {
                     if (signal.aborted) return;
                     if (!app.uploadEnabled) break;
-
-                    // Descarta após MAX_RETRIES (perder chunk não é crítico)
                     if (chunk.retries >= MAX_RETRIES) {
                         log(`Chunk ${chunk.index} descartado após ${MAX_RETRIES} tentativas`, 'warn');
                         app.errorChunks++;
-                        setAlert('chunks_lost', `⚠ ${app.errorChunks} chunk(s) descartado(s) por falha de upload`, 'warn');
-                        await deleteChunk(chunk.key);
-                        updateStats();
-                        continue;
+                        setAlert('chunks_lost', `⚠ ${app.errorChunks} chunk(s) descartado(s)`, 'warn');
+                        await deleteChunk(chunk.key); updateStats(); continue;
                     }
-
-                    // Verifica se é o chunk final
-                    // Reler do DB para ter estado atual (outro chunk pode ter sido deletado)
                     const fresh = await getSessionChunks(sessionId);
                     const stillPending = fresh.filter(c => c.status === 'pending' || c.status === 'error');
                     const maxIndex = Math.max(...fresh.map(c => c.index));
-                    const isFinalChunk = app.isFinal
-                        && chunk.index === maxIndex
-                        && stillPending.length === 1
-                        && stillPending[0].key === chunk.key;
-
-                    chunk.retries++;
-                    chunk.status = 'uploading';
-                    await updateChunk(chunk);
-
+                    const isFinalChunk = app.isFinal && chunk.index === maxIndex && stillPending.length === 1 && stillPending[0].key === chunk.key;
+                    chunk.retries++; chunk.status = 'uploading'; await updateChunk(chunk);
                     log(`↑ chunk ${chunk.index}${isFinalChunk ? ' [FINAL]' : ''} (tentativa ${chunk.retries})`, 'info');
-
                     let ok = false;
-                    try {
-                        ok = await sendChunk(uploadToken, chunk, isFinalChunk);
-                    } catch (e) {
-                        log(`Exceção chunk ${chunk.index}: ${e.message}`, 'err');
-                    }
-
+                    try { ok = await sendChunk(uploadToken, chunk, isFinalChunk); } catch (e) { log(`Exceção chunk ${chunk.index}: ${e.message}`, 'err'); }
                     if (ok) {
                         log(`✓ chunk ${chunk.index} enviado`, 'ok');
-                        app.sentChunks++;
-                        app.backoffMs = BACKOFF_BASE; // reset backoff em caso de sucesso
-                        await deleteChunk(chunk.key); // deleta ANTES de qualquer return
-                        anySuccess = true;
-                        updateStats();
-
+                        app.sentChunks++; app.backoffMs = BACKOFF_BASE;
+                        await deleteChunk(chunk.key); anySuccess = true; updateStats();
                         if (isFinalChunk) {
-                            log('Chunk final entregue. Sessão encerrada.', 'ok');
-                            setAlert('done', '✓ Upload completo!', 'ok');
-                            clearPersistedSession();
-                            setUIState('done');
-                            stopVU();
-                            stopTimer();
-                            return;
+                            log('Chunk final entregue.', 'ok'); setAlert('done', '✓ Upload completo!', 'ok');
+                            clearPersistedSession(); setUIState('done'); stopVU(); stopTimer(); return;
                         }
                     } else {
                         log(`✗ chunk ${chunk.index} falhou`, 'err');
-                        chunk.status = 'error';
-                        await updateChunk(chunk);
-                        updateHealth(pending.length);
+                        chunk.status = 'error'; await updateChunk(chunk); updateHealth(pending.length);
                     }
                 }
-
-                // Backoff exponencial só quando não houve nenhum sucesso
                 if (!anySuccess && pending.length > 0) {
                     app.backoffMs = Math.min(app.backoffMs * 2, BACKOFF_MAX);
-                    updateHealth(pending.length);
-                    log(`Backoff ${app.backoffMs / 1000}s`, 'warn');
-                } else {
-                    app.backoffMs = BACKOFF_BASE;
-                }
-
+                    updateHealth(pending.length); log(`Backoff ${app.backoffMs / 1000}s`, 'warn');
+                } else { app.backoffMs = BACKOFF_BASE; }
                 await sleep(anySuccess ? 500 : app.backoffMs);
             }
-
             log(`Worker abortado [${sessionId}]`, 'warn');
         }
 
-        // ── Heartbeat: detecta stream morto ──────────────────────────────
+        // ── Heartbeat ─────────────────────────────────────────────────
         function startHeartbeat() {
             app.lastChunkAt = Date.now();
             app.heartbeatTimer = setInterval(() => {
                 if (app.mediaRecorder?.state !== 'recording') return;
                 const silence = Date.now() - app.lastChunkAt;
                 if (silence > HEARTBEAT_MS * 2) {
-                    setAlert('stream_dead', '⚠ Nenhum áudio recebido há ' + Math.round(silence / 1000) + 's. Microfone OK?', 'warn');
-                    log(`Silêncio por ${Math.round(silence / 1000)}s — verifique o microfone`, 'err');
-                } else {
-                    clearAlert('stream_dead');
-                }
+                    setAlert('stream_dead', `⚠ Nenhum áudio há ${Math.round(silence / 1000)}s. Microfone OK?`, 'warn');
+                } else { clearAlert('stream_dead'); }
             }, HEARTBEAT_MS);
         }
         function stopHeartbeat() { clearInterval(app.heartbeatTimer); }
 
-        // ── Page Visibility — log de suspensão ───────────────────────────
+        // ── Visibility ────────────────────────────────────────────────
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden && app.mediaRecorder?.state === 'recording') {
-                log('Tela inativa — gravação continua em background', 'warn');
-            }
+            if (document.hidden && app.mediaRecorder?.state === 'recording') log('Tela inativa — gravação continua', 'warn');
             if (!document.hidden && app.mediaRecorder?.state === 'recording') {
                 log('Tela ativa novamente', 'info');
-                // Reativar AudioContext se necessário
-                if (app.audioCtx?.state === 'suspended') {
-                    app.audioCtx.resume().catch(() => { });
-                }
+                if (app.audioCtx?.state === 'suspended') app.audioCtx.resume().catch(() => { });
             }
         });
 
-        // ── API pública ───────────────────────────────────────────────────
+        // ── Recorder API ──────────────────────────────────────────────
         window.Recorder = {
-
             async start() {
-                // Abortar sessão anterior
-                if (app.workerAbort) {
-                    app.workerAbort.abort();
-                    log('Sessão anterior abortada', 'warn');
-                }
-                stopTimer();
-                stopHeartbeat();
-
-                const prevStream = app.stream;
-                app = freshState();
-                app.stream = prevStream;
-
+                if (app.workerAbort) { app.workerAbort.abort(); log('Sessão anterior abortada', 'warn'); }
+                stopTimer(); stopHeartbeat();
+                const prevStream = app.stream; app = freshState(); app.stream = prevStream;
                 try {
-                    await initDB();
-                    await requestWakeLock();
-
+                    await initDB(); await requestWakeLock();
                     app.sessionId = genSessionId();
                     app.uploadToken = await startUploadSession();
-                    clearPersistedSession(); // limpa sessão anterior
-                    persistSession();
+                    clearPersistedSession(); persistSession();
                     log(`Sessão: ${app.sessionId}`, 'info');
-                    log(`Token: ${app.uploadToken}`, 'info');
-
-                    if (!app.stream) {
-                        app.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    }
+                    if (!app.stream) app.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     startVU(app.stream);
-
                     const mimeType = getSupportedMimeType();
                     log('Codec: ' + mimeType, 'info');
-
                     app.mediaRecorder = new MediaRecorder(app.stream, { mimeType });
-
                     app.mediaRecorder.ondataavailable = async e => {
                         if (e.data && e.data.size > 0) {
-                            const index = app.chunkIndex++;
-                            app.totalChunks++;
-                            app.lastChunkAt = Date.now();
-
-                            // Checa limite de DB antes de salvar
-                            const pendingCount = await countPendingChunks(app.sessionId);
-                            if (pendingCount >= MAX_DB_CHUNKS) {
-                                log(`DB cheio (${pendingCount} pendentes) — chunk ${index} aguardando...`, 'warn');
-                                // Espera o worker liberar espaço (até 30s)
+                            const index = app.chunkIndex++; app.totalChunks++; app.lastChunkAt = Date.now();
+                            const pc = await countPendingChunks(app.sessionId);
+                            if (pc >= MAX_DB_CHUNKS) {
+                                log(`DB cheio (${pc} pendentes) — aguardando...`, 'warn');
                                 let waited = 0;
-                                while (await countPendingChunks(app.sessionId) >= MAX_DB_CHUNKS && waited < 30000) {
-                                    await sleep(1000);
-                                    waited += 1000;
-                                }
+                                while (await countPendingChunks(app.sessionId) >= MAX_DB_CHUNKS && waited < 30000) { await sleep(1000); waited += 1000; }
                             }
-
-                            try {
-                                await saveChunk(e.data, app.sessionId, index);
-                                log(`Chunk ${index} salvo (${(e.data.size / 1024).toFixed(1)}KB)`, '');
-                            } catch (err) {
-                                log(`Erro ao salvar chunk ${index}: ${err.message}`, 'err');
-                            }
+                            try { await saveChunk(e.data, app.sessionId, index); log(`Chunk ${index} salvo (${(e.data.size / 1024).toFixed(1)}KB)`, ''); }
+                            catch (err) { log(`Erro ao salvar chunk ${index}: ${err.message}`, 'err'); }
                             updateStats();
                         }
                     };
-
                     app.mediaRecorder.onerror = e => {
                         log('MediaRecorder error: ' + e.error?.message, 'err');
-                        setAlert('recorder_err', '⚠ Erro no MediaRecorder: ' + e.error?.message, 'err');
+                        setAlert('recorder_err', '⚠ Erro no MediaRecorder', 'err');
                     };
-
-                    // Inicia gravação
                     app.isFinal = false;
                     app.mediaRecorder.start(CHUNK_MS);
-
-                    // Worker de upload
-                    const ac = new AbortController();
-                    app.workerAbort = ac;
+                    const ac = new AbortController(); app.workerAbort = ac;
                     uploadWorker(app.sessionId, app.uploadToken, ac.signal);
-
-                    setUIState('recording');
-                    startTimer();
-                    startHeartbeat();
-                    clearAlert('done');
+                    setUIState('recording'); startTimer(); startHeartbeat(); clearAlert('done');
                     log('Gravando...', 'ok');
-
                 } catch (e) {
                     log('Erro ao iniciar: ' + e.message, 'err');
                     setAlert('start_err', '✗ Falha ao iniciar: ' + e.message, 'err');
                     setUIState('error');
                 }
             },
-
             pause() {
                 if (app.mediaRecorder?.state !== 'recording') return;
-                app._userPaused = true;
-                app.mediaRecorder.pause();
-                pauseTimer();
-                setUIState('paused');
-                log('Pausado', 'warn');
+                app._userPaused = true; app.mediaRecorder.pause(); pauseTimer(); setUIState('paused'); log('Pausado', 'warn');
             },
-
             resume() {
                 if (app.mediaRecorder?.state !== 'paused') return;
-                app._userPaused = false;
-                app.mediaRecorder.resume();
-                resumeTimer();
-                setUIState('recording');
-                log('Resumido', 'ok');
+                app._userPaused = false; app.mediaRecorder.resume(); resumeTimer(); setUIState('recording'); log('Resumido', 'ok');
             },
-
             stop() {
-                if (!app.mediaRecorder || app.mediaRecorder.state === 'inactive') {
-                    log('Nenhuma gravação ativa', 'warn'); return;
-                }
-
-                // isFinal ANTES do stop() — garante que ondataavailable final
-                // seja capturado com o flag correto quando o worker processar
-                app.isFinal = true;
-                app._userPaused = false;
-
-                app.mediaRecorder.stop();
-                stopHeartbeat();
-                stopTimer();
-                setUIState('finalizing');
-                log('Finalizando — aguardando upload...', 'warn');
+                if (!app.mediaRecorder || app.mediaRecorder.state === 'inactive') { log('Nenhuma gravação ativa', 'warn'); return; }
+                app.isFinal = true; app._userPaused = false;
+                app.mediaRecorder.stop(); stopHeartbeat(); stopTimer();
+                setUIState('finalizing'); log('Finalizando — aguardando upload...', 'warn');
             },
-
             toggleUpload() {
                 app.uploadEnabled = !app.uploadEnabled;
-                document.getElementById('uploadToggle').className = 'toggle' + (app.uploadEnabled ? ' on' : '');
+                const t = document.getElementById('uploadToggle');
+                if (app.uploadEnabled) { t.style.background = '#00e5a0'; t.style.borderColor = '#00e5a0'; }
+                else { t.style.background = '#1a1a1a'; t.style.borderColor = '#222'; }
                 log('Upload: ' + (app.uploadEnabled ? 'ON' : 'OFF'), app.uploadEnabled ? 'ok' : 'warn');
                 if (!app.uploadEnabled) setAlert('upload_off', '⚠ Upload desabilitado', 'warn');
                 else clearAlert('upload_off');
             },
         };
 
-        // ── Persistência de sessão no localStorage ────────────────────────
-        // Salva sessionId + uploadToken para sobreviver a recarregamentos.
-
+        // ── Persistência ──────────────────────────────────────────────
         function persistSession() {
             if (!app.sessionId) return;
             localStorage.setItem('recorder_session', JSON.stringify({
-                sessionId: app.sessionId,
-                uploadToken: app.uploadToken,
-                startTime: app.startTime,
-                chunkIndex: app.chunkIndex,
-                totalChunks: app.totalChunks,
-                sentChunks: app.sentChunks,
+                sessionId: app.sessionId, uploadToken: app.uploadToken,
+                startTime: app.startTime, chunkIndex: app.chunkIndex,
+                totalChunks: app.totalChunks, sentChunks: app.sentChunks,
             }));
         }
+        function clearPersistedSession() { localStorage.removeItem('recorder_session'); }
 
-        function clearPersistedSession() {
-            localStorage.removeItem('recorder_session');
-        }
-
-        // Salva estado a cada chunk gravado e a cada chunk enviado
-        const _origSaveChunk = saveChunk;
-        // Monkey-patch não necessário — chamamos persistSession nos pontos certos:
-        // após salvar chunk e após enviar chunk bem-sucedido.
-
-        // ── Recuperação ao carregar página ───────────────────────────────
+        // ── Recuperação ao carregar ───────────────────────────────────
         async function recoverSessionOnLoad() {
             await initDB();
-
             const raw = localStorage.getItem('recorder_session');
             if (!raw) { setUIState('idle'); updateStats(); updateHealth(0); return; }
-
             let saved;
             try { saved = JSON.parse(raw); } catch { clearPersistedSession(); setUIState('idle'); return; }
-
-            // Verifica se há chunks pendentes no DB para esta sessão
             const chunks = await getSessionChunks(saved.sessionId);
             const pending = chunks.filter(c => c.status === 'pending' || c.status === 'error' || c.status === 'uploading');
-
             if (pending.length === 0) {
-                // Sessão já estava completa — limpa e inicia fresh
-                clearPersistedSession();
-                log('Sessão anterior já completa. Pronto para nova gravação.', 'ok');
-                setUIState('idle'); updateStats(); updateHealth(0);
-                return;
+                clearPersistedSession(); log('Sessão anterior já completa.', 'ok');
+                setUIState('idle'); updateStats(); updateHealth(0); return;
             }
-
-            // Há chunks órfãos — oferece retomar upload
-            log(`Sessão interrompida encontrada: ${pending.length} chunk(s) pendentes`, 'warn');
-            setAlert('recover',
-                `↺ Página foi recarregada com ${pending.length} chunk(s) não enviados. Retomando upload...`,
-                'warn'
-            );
-
-            // Restaura estado mínimo para o worker funcionar
-            app.sessionId = saved.sessionId;
-            app.uploadToken = saved.uploadToken;
-            app.startTime = saved.startTime || Date.now();
-            app.chunkIndex = saved.chunkIndex || 0;
-            app.totalChunks = saved.totalChunks || chunks.length;
-            app.sentChunks = saved.sentChunks || 0;
-            app.isFinal = true;   // sessão interrompida = tratar como finalizada
-            app.uploadEnabled = true;
-
-            // Marca chunks "uploading" como "error" — eles estavam em voo quando a página fechou
+            log(`Sessão interrompida: ${pending.length} chunk(s) pendentes`, 'warn');
+            setAlert('recover', `↺ ${pending.length} chunk(s) não enviados. Retomando...`, 'warn');
+            app.sessionId = saved.sessionId; app.uploadToken = saved.uploadToken;
+            app.startTime = saved.startTime || Date.now(); app.chunkIndex = saved.chunkIndex || 0;
+            app.totalChunks = saved.totalChunks || chunks.length; app.sentChunks = saved.sentChunks || 0;
+            app.isFinal = true; app.uploadEnabled = true;
             for (const c of chunks.filter(c => c.status === 'uploading')) {
-                c.status = 'error';
-                c.retries = Math.max(0, c.retries - 1); // desconta 1 pois não foi confirmado
-                await updateChunk(c);
+                c.status = 'error'; c.retries = Math.max(0, c.retries - 1); await updateChunk(c);
             }
-
-            // Inicia worker de recuperação
-            const ac = new AbortController();
-            app.workerAbort = ac;
-
-            setUIState('finalizing');
-            updateStats();
-            updateHealth(pending.length);
-
-            log(`Retomando upload de sessão ${app.sessionId}`, 'info');
-
-            // Worker com callback para limpar localStorage ao terminar
-            uploadWorkerWithCleanup(app.sessionId, app.uploadToken, ac.signal);
+            const ac = new AbortController(); app.workerAbort = ac;
+            setUIState('finalizing'); updateStats(); updateHealth(pending.length);
+            log(`Retomando sessão ${app.sessionId}`, 'info');
+            uploadWorker(app.sessionId, app.uploadToken, ac.signal).then(clearPersistedSession);
         }
 
-        async function uploadWorkerWithCleanup(sessionId, uploadToken, signal) {
-            await uploadWorker(sessionId, uploadToken, signal);
-            clearPersistedSession();
-        }
-
-        // Intercepta os pontos onde precisamos persistir:
-
-        // 1. Após salvar chunk no ondataavailable — vamos chamar persistSession() lá.
-        // 2. Após envio bem-sucedido no worker — já chamamos updateStats(), adicionamos persist lá.
-
-        // Sobrescreve updateStats para também persistir
-        const _origUpdateStats = updateStats;
-        window.updateStats = function () {
-            _origUpdateStats();
-            persistSession();
-        };
-
-        // ── Inicia ───────────────────────────────────────────────────────
         recoverSessionOnLoad();
     </script>
 </body>
