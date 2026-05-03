@@ -41,8 +41,8 @@ namespace Command.Receivers.UseCase
                   1,                       // Status Finalizado
                   "",
                   0,
-                  string.Empty,
-                  string.Empty,
+                  comand.entityId,
+                  comand.entityType,
                   DateTime.UtcNow,
                   DateTime.UtcNow
               );

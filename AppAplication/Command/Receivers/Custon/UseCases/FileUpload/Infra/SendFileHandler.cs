@@ -130,17 +130,14 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 // 🧩 aqui você pode juntar os chunks se necessário  
                 // ex: CombineChunks(uploadId)
 
-                // atualiza registro criado no StartUpload
-                yFileUploadEntity upload = new yFileUploadEntity().getProxy(uploadId);
+                
+                var upload = _repReadyFileUpload.GetAllById(uploadId).FirstOrDefault(); 
                 upload.FilePath = finalPath.Value;
                 upload.FileSize = result.Size;
                 upload.Status = 1;
                 upload.CreatedAt = DateTime.UtcNow;
                 upload.Type = "audio.transcribe";
-                upload.EntityType = comand.EntityType;
-                upload.EntityId = comand.EntityId;
-
-
+                
                 if (!upload.isValidData())
                     throw new ReceiverException<SendFileOutputCommand>(
                     Error(string.Join("; ", upload.getErroMensagens()), default));
@@ -148,13 +145,13 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
                 _psychologySessionInsightSaga.Start(uploadId.ToString(), "yFileUpload");
-                //_sagaExecutor.Execute(_psychologySessionInsightSaga, _psychologySagaHandlerResolver);
 
                 _unitOfWork.BeginTran();
                 _repWriteyFileUpload.UpdateFilePath(uploadId, upload.FilePath);
                 _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
                 _unitOfWork.Commit();
 
+                
                 state = Success("Upload finalizado com sucesso.",
                     new SendFileOutputCommand
                     {

@@ -4,7 +4,7 @@ from threading import Lock
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 # ── Configuração ──────────────────────────────────────────────
-MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "microsoft/Phi-3-mini-4k-instruct")
+MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "Qwen/Qwen2.5-3B-Instruct")
 
 # "cpu" | "cuda" | "mps" — troca de CPU para GPU só mudando env var
 DEVICE = os.environ.get("SUMMARIZER_DEVICE", "cpu")
@@ -22,10 +22,7 @@ def _get_pipeline():
             if _pipeline is None:
                 print(f"[Summarizer] Carregando modelo {MODEL_ID} em {DEVICE}...")
 
-                tokenizer = AutoTokenizer.from_pretrained(
-                    MODEL_ID,
-                    trust_remote_code=True,
-                )
+                tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 
                 # CPU: float32 | GPU: float16 automaticamente
                 dtype = torch.float16 if DEVICE != "cpu" else torch.float32
@@ -34,14 +31,12 @@ def _get_pipeline():
                     MODEL_ID,
                     torch_dtype=dtype,
                     device_map=DEVICE,
-                    trust_remote_code=True,
                 )
 
                 _pipeline = pipeline(
                     "text-generation",
                     model=model,
                     tokenizer=tokenizer,
-                    trust_remote_code=True,
                 )
 
                 print(f"[Summarizer] Modelo carregado.")
