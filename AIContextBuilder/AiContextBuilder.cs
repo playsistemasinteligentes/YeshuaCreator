@@ -16,15 +16,6 @@ public class AiContextBuilder
     private INamedTypeSymbol? _rootType;
 
 
-    private void EnsureMSBuildRegistered()
-    {
-        if (!_msbuildRegistered)
-        {
-            MSBuildLocator.RegisterDefaults();
-            _msbuildRegistered = true;
-        }
-    }
-
     #region PUBLIC API
 
     public async Task GenerateForReceiver(
@@ -32,8 +23,7 @@ public class AiContextBuilder
         string receiverName,
         string outputDirectory)
     {
-        EnsureMSBuildRegistered();
-        Directory.CreateDirectory(outputDirectory);
+       Directory.CreateDirectory(outputDirectory);
 
         using var workspace = MSBuildWorkspace.Create();
         var solution = await workspace.OpenSolutionAsync(solutionPath);
@@ -57,7 +47,6 @@ public class AiContextBuilder
         string solutionPath,
         string outputDirectory)
     {
-        EnsureMSBuildRegistered();
         Directory.CreateDirectory(outputDirectory);
 
         using var workspace = MSBuildWorkspace.Create();
@@ -69,12 +58,12 @@ public class AiContextBuilder
 
             foreach (var type in GetAllTypes(compilation.GlobalNamespace))
             {
-                if (type.Name.EndsWith("Receiver"))
+                if (type.Name.EndsWith("Handler"))
                 {
                     var content = await BuildContext(type);
 
                     var fileName =
-                        $"{type.ContainingNamespace}.{type.Name}.context.txt";
+                        $"{type.Name}__{type.ContainingNamespace}.context.txt";
 
                     File.WriteAllText(
                         Path.Combine(outputDirectory, fileName),
