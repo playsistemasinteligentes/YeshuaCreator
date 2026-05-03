@@ -12,8 +12,6 @@ public partial record SendFileInputCommand : ICommand
     public string FileName { get; set; }
     public string ContentType { get; set; }
     public IFormFile FileStream { get; set; }
-    public string EntityId { get; set; }
-    public string EntityType { get; set; }
 }
 
 public partial record SendFileOutputCommand : ICommand

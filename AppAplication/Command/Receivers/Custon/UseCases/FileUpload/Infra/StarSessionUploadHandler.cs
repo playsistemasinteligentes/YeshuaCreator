@@ -37,14 +37,14 @@ namespace Command.Receivers.UseCase
                 // Criar entidade
                 var upload = new yFileUploadFactory(_logger).Create(
                   0,
-                  "Audio",                 // ou comand.Type se existir
-                  1,                       // Status Finalizado
+                  "audio.transcribe",
+                  0,                       
                   "",
                   0,
                   comand.entityId,
                   comand.entityType,
                   DateTime.UtcNow,
-                  DateTime.UtcNow
+                  DateTime.MinValue
               );
 
                 if (!upload.isValidInsert())

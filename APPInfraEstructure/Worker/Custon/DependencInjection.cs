@@ -69,7 +69,7 @@ namespace Migration
                      sp,
                      sp.GetRequiredService<
                          ILogger<PollingWorker<SagaWorkerCommandHandler, InputCommand, OutputCommand>>>(),
-                     TimeSpan.FromMilliseconds(10)
+                     TimeSpan.FromMilliseconds(5000)
                  ));
 
 
@@ -81,7 +81,7 @@ namespace Migration
                      sp,
                      sp.GetRequiredService<
                          ILogger<PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
-                     TimeSpan.FromMilliseconds(10)
+                     TimeSpan.FromMilliseconds(5000)
                  ));
 
 
@@ -95,7 +95,7 @@ namespace Migration
                      sp,
                      sp.GetRequiredService<
                          ILogger<PollingWorker<SagaInboxWorkerCommandHandler, InputCommand, OutputCommand>>>(),
-                     TimeSpan.FromMilliseconds(10)
+                     TimeSpan.FromMilliseconds(5000)
                  ));
              
 

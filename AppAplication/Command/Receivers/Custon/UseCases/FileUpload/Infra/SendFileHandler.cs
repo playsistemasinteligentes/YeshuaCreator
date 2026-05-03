@@ -128,26 +128,14 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 );
 
                 // 🧩 aqui você pode juntar os chunks se necessário  
-                // ex: CombineChunks(uploadId)
-
-                
-                var upload = _repReadyFileUpload.GetAllById(uploadId).FirstOrDefault(); 
-                upload.FilePath = finalPath.Value;
-                upload.FileSize = result.Size;
-                upload.Status = 1;
-                upload.CreatedAt = DateTime.UtcNow;
-                upload.Type = "audio.transcribe";
-                
-                if (!upload.isValidData())
-                    throw new ReceiverException<SendFileOutputCommand>(
-                    Error(string.Join("; ", upload.getErroMensagens()), default));
-
-                var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
+                //var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
                 _psychologySessionInsightSaga.Start(uploadId.ToString(), "yFileUpload");
 
                 _unitOfWork.BeginTran();
-                _repWriteyFileUpload.UpdateFilePath(uploadId, upload.FilePath);
+                _repWriteyFileUpload.UpdateFilePath(uploadId, finalPath.Value);
+                _repWriteyFileUpload.UpdateStatus(uploadId, 1);
+                _repWriteyFileUpload.UpdateCompletedAt(uploadId, DateTime.UtcNow);
                 _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
                 _unitOfWork.Commit();
 

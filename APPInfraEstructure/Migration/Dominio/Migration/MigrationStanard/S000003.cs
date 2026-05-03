@@ -41,12 +41,12 @@ namespace Migration.Dominio.Migration
 
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddCommand("StarSessionUpload",
-                new AutenticationToken(""),
+                new AutenticationToken("", "", ""),
                 new SessionUploadToken(""))
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddCommand("SendFile",
-                new SendFileCommand("", 0, false, "", "", null, "", ""),
+                new SendFileCommand("", 0, false, "", "", null),
                 new SendFileResponse(true, 0, true))
             .AddEntity<yFileUpload>(); // pendencia incluir ingeção dependencia
 
