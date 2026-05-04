@@ -60,22 +60,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             }
             else if (message.Payload is string str && str.TrimStart().StartsWith("{"))
             {
-                using var doc = JsonDocument.Parse(str);
-
-                var list = new List<object>();
-
-                foreach (var prop in doc.RootElement.EnumerateObject())
-                {
-                    list.Add(message.CorrelationId);
-                    var value = prop.Value.ValueKind switch
-                    {
-                        JsonValueKind.String => prop.Value.GetString(),
-                        JsonValueKind.Number => prop.Value.GetRawText(),
-                        _ => prop.Value.GetRawText()
-                    };
-                    list.Add(value);
-                }
-                args = list.ToArray();
+                args = new object[] { message.CorrelationId, str };
             }
             else if (message.Payload != null)
             {
