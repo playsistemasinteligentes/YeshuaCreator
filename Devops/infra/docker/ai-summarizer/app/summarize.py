@@ -4,7 +4,7 @@ from threading import Lock
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 # ── Configuração ──────────────────────────────────────────────
-MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "Qwen/Qwen2.5-3B-Instruct")
+MODEL_ID = os.environ.get("SUMMARIZER_MODEL", "Qwen/Qwen2.5-0.7B-Instruct")
 
 # "cpu" | "cuda" | "mps" — troca de CPU para GPU só mudando env var
 DEVICE = os.environ.get("SUMMARIZER_DEVICE", "cpu")
