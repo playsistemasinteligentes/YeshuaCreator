@@ -66,12 +66,15 @@ public class RabbitMQQueuePublisher : IQueuePublisher
 
                 foreach (var prop in doc.RootElement.EnumerateObject())
                 {
-                    list.Add(message.CorrelationId);                 
-                    //list.Add(prop.Value.GetString());    
-
-                    list.Add(prop.Value.GetRawText());
+                    list.Add(message.CorrelationId);
+                    var value = prop.Value.ValueKind switch
+                    {
+                        JsonValueKind.String => prop.Value.GetString(),
+                        JsonValueKind.Number => prop.Value.GetRawText(),
+                        _ => prop.Value.GetRawText()
+                    };
+                    list.Add(value);
                 }
-
                 args = list.ToArray();
             }
             else if (message.Payload != null)

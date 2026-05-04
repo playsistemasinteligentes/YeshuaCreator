@@ -11,7 +11,7 @@ def _get_model():
     if _model is None:
         with _model_lock:
             if _model is None:
-                _model = whisper.load_model("tiny")
+                _model = whisper.load_model("small") 
 
     return _model
 
@@ -20,7 +20,7 @@ def transcribe_audio_file(path: str) -> str:
     model = _get_model()
 
     try:
-        result = model.transcribe(path, fp16=False)  # 🔥 evita warning no CPU
+        result = model.transcribe(path, fp16=False, language="pt")
 
         return result["text"]
 
