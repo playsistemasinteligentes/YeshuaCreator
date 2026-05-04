@@ -16,4 +16,4 @@ COPY app ./app
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["celery", "-A", "app.celery_app", "worker", "-Q", "audio.transcribe.outbox,text.summarize.outbox", "--concurrency=1", "--loglevel=info"]
+CMD ["celery", "-A", "app.celery_app", "worker","-Q", "audio.transcribe.outbox", "--concurrency=1", "--loglevel=info"]
