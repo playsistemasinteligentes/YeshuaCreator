@@ -80,7 +80,7 @@ namespace Dominio.Patterns.Saga
             UpdateCurrentStepKey();
         }
 
-        private void NextStep()
+        private void NextStep(string payload)
         {
             var current = GetCurrent();
 
@@ -88,6 +88,7 @@ namespace Dominio.Patterns.Saga
                 return;
 
             current.SetPending();
+            current.SetPayload(payload);
 
             if (_steps.All(s => s.Status == SagaStepStatus.Completed))
                 Status = SagaStatus.Completed;
@@ -127,9 +128,9 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
 
-        public void MarkCompleted()
+        public void MarkCompleted(string payload)
         {
-            NextStep();
+            NextStep(payload);
         }
 
         public void MarkFailed(string menssage) // pendencia propagar menssagem para banco e pra outros 
@@ -152,7 +153,7 @@ namespace Dominio.Patterns.Saga
         }
 
 
-        public void CompleteCurrentStep()
+        public void CompleteCurrentStep(string payload)
         {
             var current = GetCurrent();
 
@@ -160,7 +161,7 @@ namespace Dominio.Patterns.Saga
                 return;
 
             current.SetCompleted();
-            NextStep();
+            NextStep(payload);
         }
 
         public SagaStepBase GetWaitingStep(string correlationId)

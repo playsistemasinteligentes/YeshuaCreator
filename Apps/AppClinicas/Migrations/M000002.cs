@@ -13,28 +13,6 @@ using static Migration.Dominio.Migration.S000002;
 namespace AppClinicas
 {
 
-    namespace Migrations
-    {
-
-        [Migration(000001)]
-        public class M000001 : MigrationBase
-        {
-            public override void Up()
-            {
-                AddModule("PSI", "Clinica Psicologia");
-
-
-                AddEntity("Clinica").AddModule("PSI")
-                .AddColumn("Id", "ID").Int().Incremento().Key()
-                .AddColumn("Nome", "Nome da Clínica").Varchar(150).NotNull()
-                .AddColumn("Endereco", "Endereço da Clínica").Varchar(250).NotNull()
-                .AddColumn("Telefone", "Telefone de Contato").Varchar(20).NotNull();
-            }
-        }
-    }
-
-
-
     [Migration(000002)]
     public class M000002 : MigrationBase
     {
@@ -221,6 +199,7 @@ namespace AppClinicas
                 .AddAgents("createConta");
         }
     }
+
 
 
 }

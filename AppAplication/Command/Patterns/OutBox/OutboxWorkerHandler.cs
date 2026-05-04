@@ -42,7 +42,7 @@ namespace Command.Patterns.OutBox
 
             try
             {
-                var events = _outboxReadRepository.ClaimBatch("audio.transcribe", 10);
+                var events = _outboxReadRepository.ClaimBatch(10);
 
                 foreach (var evt in events)
                 {
@@ -65,6 +65,7 @@ namespace Command.Patterns.OutBox
                                 transport.Queue,
                                 transport.Exchange,
                                 transport.RoutingKey,
+                                transport.TaskName,
                                 message
                             ).GetAwaiter().GetResult();
                         }
@@ -112,6 +113,8 @@ namespace Command.Patterns.OutBox
         public string Queue { get; set; }
         public string Exchange { get; set; }
         public string RoutingKey { get; set; }
+        public string TaskName{ get; set; }
+
     }
 
     public partial record yOutboxInputCommand : ICommand

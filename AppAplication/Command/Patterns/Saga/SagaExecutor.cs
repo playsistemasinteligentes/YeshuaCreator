@@ -38,7 +38,7 @@ namespace Command.Patterns
                 {
                     handler.ApplyResponse(saga, step, step.Payload);
                     
-                    saga.CompleteCurrentStep();
+                    saga.CompleteCurrentStep(step.Payload);
                 }
             }
             catch (Exception e)

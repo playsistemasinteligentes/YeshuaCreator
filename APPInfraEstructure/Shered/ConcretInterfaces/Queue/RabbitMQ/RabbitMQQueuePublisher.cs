@@ -46,7 +46,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             return false;
         }
     }
-    public async Task<bool> PublishCeleryAsync(string channelId, string exchange, string routingKey, QueueMessage message, CancellationToken ct = default)
+    public async Task<bool> PublishCeleryAsync(string channelId, string exchange, string routingKey, string taskName, QueueMessage message, CancellationToken ct = default)
     {
         try
         {
@@ -66,8 +66,10 @@ public class RabbitMQQueuePublisher : IQueuePublisher
 
                 foreach (var prop in doc.RootElement.EnumerateObject())
                 {
-                    list.Add(message.CorrelationId);                 // chave -> "1"
-                    list.Add(prop.Value.GetString());    // valor -> URL
+                    list.Add(message.CorrelationId);                 
+                    //list.Add(prop.Value.GetString());    
+
+                    list.Add(prop.Value.GetRawText());
                 }
 
                 args = list.ToArray();
@@ -82,7 +84,6 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             }
 
             // 🔥 GARANTE nome correto da task (caso venha errado)
-            var taskName = "app.tasks.transcribe_audio";
             var taskId = message.CorrelationId ?? message.Id.ToString();
 
             var celeryBody = new

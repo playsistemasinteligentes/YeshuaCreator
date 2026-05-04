@@ -7,7 +7,7 @@ namespace Read.Repository
 {
     public partial class yOutboxReadRepository
     {
-        public List<yOutboxDTO> ClaimBatch(string type, int batchSize)
+        public List<yOutboxDTO> ClaimBatch(int batchSize)
         {
             var sql = @"
         DECLARE @now DATETIME2 = SYSUTCDATETIME();
@@ -25,15 +25,14 @@ namespace Read.Repository
                     AND ProcessingAt < DATEADD(MINUTE, -@TimeoutMinutes, @now)
                 )
             )
-            AND Type = @Type
+            AND SagaId is not null 
             AND (NextAttemptAt IS NULL OR NextAttemptAt <= @now)
     ";
 
             return _unitOfWork.Query<yOutboxDTO>(sql, new
             {
                 BatchSize = batchSize,
-                TimeoutMinutes = 5,
-                Type = type
+                TimeoutMinutes = 5
             }).ToList();
         }
         public void MarkAsDone(int id, DateTime sentAt)

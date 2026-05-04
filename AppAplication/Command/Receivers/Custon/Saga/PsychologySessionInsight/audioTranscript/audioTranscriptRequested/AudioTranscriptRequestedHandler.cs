@@ -104,7 +104,8 @@ namespace Command.Receivers
                             {
                                 Exchange = "ai.tasks",
                                 Queue = "audio.transcribe.outbox",
-                                RoutingKey = "audio.transcribe"
+                                RoutingKey = "audio.transcribe",
+                                TaskName = "app.tasks.transcribe_audio"
                             },
                             sagaId: saga.Id,
                             sagaStepID: step.Id
