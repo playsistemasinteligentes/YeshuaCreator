@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yOutboxQueryWrite : QueryBase, IyOutboxQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yOutboxQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yOutboxQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryOutboxQuery(IyOutboxEntity yOutbox)
         {
@@ -40,10 +40,10 @@ namespace Query.Write
                 NextAttemptAt = yOutbox.NextAttemptAt,
                 SagaId = yOutbox.SagaId,
                 SagaStepId = yOutbox.SagaStepId,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -70,7 +70,7 @@ namespace Query.Write
                 SagaId = yOutbox.SagaId,
                 SagaStepId = yOutbox.SagaStepId,
                 Changed = yOutbox.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = yOutbox.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

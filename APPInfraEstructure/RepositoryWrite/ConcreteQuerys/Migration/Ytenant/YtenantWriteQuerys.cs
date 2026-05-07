@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yTenantQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
         {
@@ -38,7 +38,7 @@ namespace Query.Write
             {
                 CnpjCpf = yTenant.CnpjCpf,
                 Nome = yTenant.Nome,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Changed = yTenant.Changed,
                 Id = yTenant.Id,
             };

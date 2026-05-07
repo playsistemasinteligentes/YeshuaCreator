@@ -54,7 +54,17 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
             sb.AppendLine(@$"
-                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
+                    
+                    
+                    builder.Services.AddScoped<UnitOfWork>();
+                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
+                        new InstrumentedUnitOfWork(
+                            sp.GetRequiredService<UnitOfWork>(),
+                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
+                            sp.GetRequiredService<IExecutionContext>()
+                        ));
+
+
                     builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();

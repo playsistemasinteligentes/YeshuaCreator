@@ -20,7 +20,13 @@ namespace Command.Receivers.UseCase
         private readonly IMessage _messege;
         private readonly IyUserReadRepository _userRep;
         // Injete a fábrica no construtor
-        public RecoveryAccountHandler(IINotificationFactory factory, IMessage messege, IyUserReadRepository userRep)
+        public RecoveryAccountHandler(
+            IINotificationFactory factory,
+            IMessage messege,
+            IyUserReadRepository userRep,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _factory = factory;
             _messege = messege;

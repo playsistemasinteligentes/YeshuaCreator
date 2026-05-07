@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IyPerfilReadRepository _repository;
         private readonly ILogger _logger;
 
-        public yPerfilReadReceiver(IyPerfilReadRepository repository,ILogger logger)
+        public yPerfilReadReceiver(
+            IyPerfilReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

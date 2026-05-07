@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class ySagaQueryWrite : QueryBase, IySagaQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public ySagaQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public ySagaQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirySagaQuery(IySagaEntity ySaga)
         {
@@ -34,10 +34,10 @@ namespace Query.Write
                 NextExecutionAt = ySaga.NextExecutionAt,
                 LockedAt = ySaga.LockedAt,
                 LockedBy = ySaga.LockedBy,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -58,7 +58,7 @@ namespace Query.Write
                 LockedAt = ySaga.LockedAt,
                 LockedBy = ySaga.LockedBy,
                 Changed = ySaga.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = ySaga.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

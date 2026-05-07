@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IMovimentacaoFinanceiraReadRepository _repository;
 
-        public MovimentacaoFinanceiraReadFKTenantIDReceiver(IMovimentacaoFinanceiraReadRepository repository)
+        public MovimentacaoFinanceiraReadFKTenantIDReceiver(
+            IMovimentacaoFinanceiraReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

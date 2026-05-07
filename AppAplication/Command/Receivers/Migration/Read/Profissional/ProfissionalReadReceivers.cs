@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IProfissionalReadRepository _repository;
         private readonly ILogger _logger;
 
-        public ProfissionalReadReceiver(IProfissionalReadRepository repository,ILogger logger)
+        public ProfissionalReadReceiver(
+            IProfissionalReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

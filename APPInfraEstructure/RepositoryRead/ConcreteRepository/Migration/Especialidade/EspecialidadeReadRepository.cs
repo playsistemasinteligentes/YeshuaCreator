@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class EspecialidadeReadRepository : IEspecialidadeReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IEspecialidadeQueryRead _query;
 
-        public EspecialidadeReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IEspecialidadeQueryRead query)
+        public EspecialidadeReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IEspecialidadeQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

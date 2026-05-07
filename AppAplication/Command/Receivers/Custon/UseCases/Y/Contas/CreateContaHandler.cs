@@ -18,17 +18,23 @@ namespace Command.Receivers.UseCase
         private readonly IyTenantWriteRepository _repWriteY_Tenant;
         private readonly IyUserReadRepository _repReadY_User;
         private readonly IyUserWriteRepository _repWriteY_User;
-        private readonly ICurrentUser _CurrentUser;
+        private readonly IExecutionContext _executionContext;
 
-        public CreateContaHandler(IUnitOfWork unitOfWork, ILogger logger, IyTenantReadRepository repReadY_Tenant, IyTenantWriteRepository repWriteY_Tenant, IyUserReadRepository repReadY_User, IyUserWriteRepository repWriteY_User, ICurrentUser CurrentUser)
+        public CreateContaHandler(
+    IUnitOfWork unitOfWork,
+    IyTenantReadRepository repReadY_Tenant,
+    IyTenantWriteRepository repWriteY_Tenant,
+    IyUserReadRepository repReadY_User,
+    IyUserWriteRepository repWriteY_User,
+    Dominio.Interfaces.ILogger logger,
+    Aplication.Interfaces.Services.IExecutionContext context)
+    : base(logger, context)
         {
             _unitOfWork = unitOfWork;
-            _logger = logger;
             _repReadY_Tenant = repReadY_Tenant;
             _repWriteY_Tenant = repWriteY_Tenant;
             _repReadY_User = repReadY_User;
             _repWriteY_User = repWriteY_User;
-            _CurrentUser = CurrentUser;
         }
 
         partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand)
@@ -78,7 +84,7 @@ namespace Command.Receivers.UseCase
                     comand.email, // Nome: Aqui você decide o valor real, coloquei email como exemplo
                     comand.password);
 
-                _CurrentUser.SetTenantId(tenant.Id.Value);
+                _executionContext.SetTenantId(tenant.Id.Value);
 
                 if (!user.isValidInsert())
                     throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default));

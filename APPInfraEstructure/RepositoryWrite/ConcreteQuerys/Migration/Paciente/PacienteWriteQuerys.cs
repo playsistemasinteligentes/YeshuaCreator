@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class PacienteQueryWrite : QueryBase, IPacienteQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public PacienteQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public PacienteQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirPacienteQuery(IPacienteEntity Paciente)
         {
@@ -33,10 +33,10 @@ namespace Query.Write
                 NomeResponsavel = Paciente.NomeResponsavel,
                 TelefoneResponsavel = Paciente.TelefoneResponsavel,
                 Observacao = Paciente.Observacao,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -56,7 +56,7 @@ namespace Query.Write
                 TelefoneResponsavel = Paciente.TelefoneResponsavel,
                 Observacao = Paciente.Observacao,
                 Changed = Paciente.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = Paciente.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

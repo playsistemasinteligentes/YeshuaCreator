@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IyInboxReadRepository _repository;
 
-        public yInboxReadFKSagaStepIdReceiver(IyInboxReadRepository repository)
+        public yInboxReadFKSagaStepIdReceiver(
+            IyInboxReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

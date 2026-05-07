@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class yFileUploadReadRepository : IyFileUploadReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IyFileUploadQueryRead _query;
 
-        public yFileUploadReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyFileUploadQueryRead query)
+        public yFileUploadReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IyFileUploadQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

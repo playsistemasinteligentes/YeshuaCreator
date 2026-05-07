@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class yUserGrantReadRepository : IyUserGrantReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IyUserGrantQueryRead _query;
 
-        public yUserGrantReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyUserGrantQueryRead query)
+        public yUserGrantReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IyUserGrantQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

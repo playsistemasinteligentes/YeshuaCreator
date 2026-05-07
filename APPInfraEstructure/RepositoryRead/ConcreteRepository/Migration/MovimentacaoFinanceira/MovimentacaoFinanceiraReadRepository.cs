@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class MovimentacaoFinanceiraReadRepository : IMovimentacaoFinanceiraReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IMovimentacaoFinanceiraQueryRead _query;
 
-        public MovimentacaoFinanceiraReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IMovimentacaoFinanceiraQueryRead query)
+        public MovimentacaoFinanceiraReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IMovimentacaoFinanceiraQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

@@ -19,12 +19,22 @@ namespace Command.Receivers.UseCase
         private readonly IyUserModuleReadRepository _repReadyUserModule;
         private readonly IyUserModuleWriteRepository _repWriteyUserModule;
         private readonly IyTenantReadRepository _repReadYtenantRepository;
-        private readonly ICurrentUser _CurrentUser;
+        private readonly IExecutionContext _executionContext;
 
-        public LoginHandler(IUnitOfWork unitOfWork, ILogger logger, IyUserReadRepository repReadYuser, IyUserWriteRepository repWriteYuser, IyTenantModuleReadRepository repReadyTenantModule, IyTenantModuleWriteRepository repWriteyTenantModule, IyUserModuleReadRepository repReadyUserModule, IyUserModuleWriteRepository repWriteyUserModule, IyTenantReadRepository repIYtenantReadRepository, ICurrentUser CurrentUser)
+        public LoginHandler(
+    IUnitOfWork unitOfWork,
+    IyUserReadRepository repReadYuser,
+    IyUserWriteRepository repWriteYuser,
+    IyTenantModuleReadRepository repReadyTenantModule,
+    IyTenantModuleWriteRepository repWriteyTenantModule,
+    IyUserModuleReadRepository repReadyUserModule,
+    IyUserModuleWriteRepository repWriteyUserModule,
+    IyTenantReadRepository repIYtenantReadRepository,
+    Dominio.Interfaces.ILogger logger,
+    Aplication.Interfaces.Services.IExecutionContext context)
+    : base(logger, context)
         {
             _unitOfWork = unitOfWork;
-            _logger = logger;
             _repReadYuser = repReadYuser;
             _repWriteYuser = repWriteYuser;
             _repReadyTenantModule = repReadyTenantModule;
@@ -32,7 +42,6 @@ namespace Command.Receivers.UseCase
             _repReadyUserModule = repReadyUserModule;
             _repWriteyUserModule = repWriteyUserModule;
             _repReadYtenantRepository = repIYtenantReadRepository;
-            _CurrentUser = CurrentUser;
         }
         partial void CustomActionHook(ref State<LoginOutputCommand> state, LoginInputCommand comand)
 {
@@ -46,7 +55,7 @@ namespace Command.Receivers.UseCase
                 if (user.senha != comand.password)
                     throw new ReceiverException<LoginOutputCommand>(Error("Erro login.", default));
 
-                _CurrentUser.SetTenantId(user.tenantid);
+                _executionContext.SetTenantId(user.tenantid);
 
                 var ModulosUsuario = _repReadyUserModule.GetAllByUserId(user.id);
                 bool usuarioVinculadoAoTenant = _repReadYtenantRepository.ExistsByUserId(user.id);

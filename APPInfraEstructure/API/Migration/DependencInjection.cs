@@ -1,11 +1,13 @@
-using Shered.Services;
-using RepositoryInterfaces.Services;
-using Command.Patterns;
+using Aplication.Interfaces.Services;
 using Command.Interfaces;
-using RepositoryInterfaces.Patterns.Saga;
-using Command.Receivers.Migration.Saga;
+using Command.Patterns;
 using Command.Patterns.OutBox;
 using Command.Receivers;
+using Command.Receivers.Migration.Saga;
+using RepositoryInterfaces.Patterns.Saga;
+using RepositoryInterfaces.Services;
+using Shered.DB.Connection;
+using Shered.Services;
 namespace Migrations
 {
 public static class DependencInjection
@@ -13,8 +15,18 @@ public static class DependencInjection
 public static void MapDependencInjection(WebApplicationBuilder builder)
 {
 
-                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
-                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
+
+
+            builder.Services.AddScoped<UnitOfWork>();
+            builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
+                new InstrumentedUnitOfWork(
+                    sp.GetRequiredService<UnitOfWork>(),
+                    sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
+                    sp.GetRequiredService<IExecutionContext>()
+                ));
+
+
+            builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
@@ -23,28 +35,16 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
 
             
 
-builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IPlanoContaQueryRead, Query.Read.PlanoContaQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IPlanoContaQueryWrite, Query.Write.PlanoContaQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
-
-builder.Services.AddTransient<IRepository.Write.IMovimentoFinanceiroWriteRepository, Input.Repository.MovimentoFinanceiro.MovimentoFinanceiroWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IMovimentoFinanceiroReadRepository, Read.Repository.MovimentoFinanceiroReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IMovimentoFinanceiroQueryRead, Query.Read.MovimentoFinanceiroQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IMovimentoFinanceiroQueryWrite, Query.Write.MovimentoFinanceiroQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentoFinanceiroReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
+builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IClinicaQueryRead, Query.Read.ClinicaQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IClinicaQueryWrite, Query.Write.ClinicaQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertClinicaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateClinicaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteClinicaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadFKUserIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IEspecialidadeWriteRepository, Input.Repository.Especialidade.EspecialidadeWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IEspecialidadeReadRepository, Read.Repository.EspecialidadeReadRepository>();
@@ -149,16 +149,28 @@ builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryHojeReceiver
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQuerySemanaReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadQueryD30Receiver>();
 
-builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
-builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();
-builder.Services.AddTransient<IQuery.Read.IClinicaQueryRead, Query.Read.ClinicaQueryRead>();
-builder.Services.AddTransient<IQuery.Write.IClinicaQueryWrite, Query.Write.ClinicaQueryWrite>();
-builder.Services.AddTransient<Command.Receivers.Write.InsertClinicaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.UpdateClinicaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Write.DeleteClinicaReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadFKTenantIDReceiver>();
-builder.Services.AddTransient<Command.Receivers.Read.ClinicaReadFKUserIdReceiver>();
+builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IPlanoContaQueryRead, Query.Read.PlanoContaQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IPlanoContaQueryWrite, Query.Write.PlanoContaQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertPlanoContaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdatePlanoContaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeletePlanoContaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PlanoContaReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IMovimentoFinanceiroWriteRepository, Input.Repository.MovimentoFinanceiro.MovimentoFinanceiroWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IMovimentoFinanceiroReadRepository, Read.Repository.MovimentoFinanceiroReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IMovimentoFinanceiroQueryRead, Query.Read.MovimentoFinanceiroQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IMovimentoFinanceiroQueryWrite, Query.Write.MovimentoFinanceiroQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertMovimentoFinanceiroReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();

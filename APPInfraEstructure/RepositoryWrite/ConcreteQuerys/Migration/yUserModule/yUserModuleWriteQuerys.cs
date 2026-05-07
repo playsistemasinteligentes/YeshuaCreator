@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yUserModuleQueryWrite : QueryBase, IyUserModuleQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yUserModuleQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yUserModuleQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryUserModuleQuery(IyUserModuleEntity yUserModule)
         {
@@ -26,7 +26,7 @@ namespace Query.Write
                 ModuleId = yUserModule.ModuleId,
                 UserId = yUserModule.UserId,
                 ValidUntil = yUserModule.ValidUntil,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
             };
@@ -38,7 +38,7 @@ namespace Query.Write
             this.Parameters = new
             {
                 ModuleId = yUserModule.ModuleId,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 ValidUntil = yUserModule.ValidUntil,
                 Changed = yUserModule.Changed,
                 Id = yUserModule.Id,

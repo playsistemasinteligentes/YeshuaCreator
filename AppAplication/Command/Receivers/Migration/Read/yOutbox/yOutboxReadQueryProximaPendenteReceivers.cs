@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IyOutboxReadRepository _repository;
         private readonly ILogger _logger;
 
-        public yOutboxReadQueryProximaPendenteReceiver(IyOutboxReadRepository repository,ILogger logger)
+        public yOutboxReadQueryProximaPendenteReceiver(
+            IyOutboxReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

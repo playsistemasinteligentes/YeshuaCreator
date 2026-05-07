@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IServicoReadRepository _repository;
 
-        public ServicoReadFKGrupoServicoIdReceiver(IServicoReadRepository repository)
+        public ServicoReadFKGrupoServicoIdReceiver(
+            IServicoReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

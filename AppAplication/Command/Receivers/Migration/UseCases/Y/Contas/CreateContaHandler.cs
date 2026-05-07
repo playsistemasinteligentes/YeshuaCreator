@@ -17,6 +17,13 @@ namespace Command.Receivers.UseCase
     public partial class CreateContaHandler : ReciverBase< CreateContaInputCommand, CreateContaOutputCommand>
     {
 
+        public CreateContaHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+        }
+
 
         protected override State<CreateContaOutputCommand> Action(CreateContaInputCommand comand)
         {

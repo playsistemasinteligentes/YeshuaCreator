@@ -14,10 +14,10 @@ namespace Query.Read
 {
     public class yUserModuleQueryRead : QueryBase, IyUserModuleQueryRead
     {
-        protected readonly ICurrentUser _currentUser;
-        public yUserModuleQueryRead(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yUserModuleQueryRead(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel yUserModuleQuery(Command.Read.yUserModuleReadCommand Command )
         {
@@ -32,7 +32,7 @@ if (!string.IsNullOrEmpty(Command.ModuleId)) dict["ModuleId"] = $"%{Command.Modu
 if (!string.IsNullOrEmpty(Command.ModuleId)) whereClauses.Add($"ModuleId like @ModuleId");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -67,7 +67,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Id like @Id ");//02
                  }
            }
-                      whereClauses.Add(" id in (select ModuleId from yTenantModule where TenantID = _currentUser.TenantID) "); //03
+                      whereClauses.Add(" id in (select ModuleId from yTenantModule where TenantID = _executionContext.TenantID) "); //03
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -95,7 +95,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");//02
                  }
            }
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -126,7 +126,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");//02
                  }
            }
- dict["Id"] = _currentUser.TenantID;
+ dict["Id"] = _executionContext.TenantID;
  whereClauses.Add($"Id = @Id");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -142,7 +142,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -160,7 +160,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -178,7 +178,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -196,7 +196,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -214,7 +214,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -232,7 +232,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -250,7 +250,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT 1 FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -268,7 +268,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -286,7 +286,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -304,7 +304,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -322,7 +322,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -340,7 +340,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -358,7 +358,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -376,7 +376,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
             this.Query = $"SELECT * FROM yUserModule ";
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");

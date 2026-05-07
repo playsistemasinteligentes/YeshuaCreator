@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IServicoWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateServicoReceiver(IServicoWriteRepository repository,ILogger logger)
+        public UpdateServicoReceiver(
+            IServicoWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

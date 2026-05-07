@@ -2,12 +2,12 @@ using System;
 
 namespace MyApp.Domain.Entities
 {
-    public class PlanoConta
+    public class Clinica
     {
         public int? Id { get; set; }
-        public string Codigo { get; set; }
         public string Nome { get; set; }
-        public int Tipo { get; set; }
+        public string Endereco { get; set; }
+        public string Telefone { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -15,27 +15,7 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
 
-        public static MyApp.QueryBuilder.Query<PlanoConta> Query() => new MyApp.QueryBuilder.Query<PlanoConta>();
-    }
-
-    public class MovimentoFinanceiro
-    {
-        public int? Id { get; set; }
-        public string IdOrigem { get; set; }
-        public int ContaDebitoId { get; set; }
-        public PlanoConta PlanoConta { get; set; }
-        public Decimal Valor { get; set; }
-        public DateTime DataMovimento { get; set; }
-        public DateTime? DataVencimento { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MovimentoFinanceiro> Query() => new MyApp.QueryBuilder.Query<MovimentoFinanceiro>();
+        public static MyApp.QueryBuilder.Query<Clinica> Query() => new MyApp.QueryBuilder.Query<Clinica>();
     }
 
     public class Especialidade
@@ -204,12 +184,12 @@ namespace MyApp.Domain.Entities
         public static MyApp.QueryBuilder.Query<Sesoes> Query() => new MyApp.QueryBuilder.Query<Sesoes>();
     }
 
-    public class Clinica
+    public class PlanoConta
     {
         public int? Id { get; set; }
+        public string Codigo { get; set; }
         public string Nome { get; set; }
-        public string Endereco { get; set; }
-        public string Telefone { get; set; }
+        public int Tipo { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -217,7 +197,27 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
 
-        public static MyApp.QueryBuilder.Query<Clinica> Query() => new MyApp.QueryBuilder.Query<Clinica>();
+        public static MyApp.QueryBuilder.Query<PlanoConta> Query() => new MyApp.QueryBuilder.Query<PlanoConta>();
+    }
+
+    public class MovimentoFinanceiro
+    {
+        public int? Id { get; set; }
+        public string IdOrigem { get; set; }
+        public int ContaDebitoId { get; set; }
+        public PlanoConta PlanoConta { get; set; }
+        public Decimal Valor { get; set; }
+        public DateTime DataMovimento { get; set; }
+        public DateTime? DataVencimento { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<MovimentoFinanceiro> Query() => new MyApp.QueryBuilder.Query<MovimentoFinanceiro>();
     }
 
     public class yFileUpload

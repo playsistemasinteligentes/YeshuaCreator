@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyUserModuleWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateyUserModuleReceiver(IyUserModuleWriteRepository repository,ILogger logger)
+        public UpdateyUserModuleReceiver(
+            IyUserModuleWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

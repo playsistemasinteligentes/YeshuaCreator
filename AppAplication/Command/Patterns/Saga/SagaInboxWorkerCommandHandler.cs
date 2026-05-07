@@ -19,13 +19,16 @@ namespace Command.Patterns
         public SagaInboxWorkerCommandHandler(
             IyInboxReadRepository yInboxReadRepository,
             IySagaStepReadRepository ySagaStepReadRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _yInboxReadRepository = yInboxReadRepository;
             _ySagaStepReadRepository = ySagaStepReadRepository;
             _unitOfWork = unitOfWork;
         }
-        
+
         protected override State<OutputCommand> Action(InputCommand command)
         {
             try

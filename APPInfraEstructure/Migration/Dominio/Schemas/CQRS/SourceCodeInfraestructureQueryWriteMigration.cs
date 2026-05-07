@@ -72,11 +72,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public class {_entity.EntityName}QueryWrite : QueryBase, I{_entity.EntityName}QueryWrite");
                 sb.AppendLine("    {");
 
-                sb.AppendLine($"        protected readonly ICurrentUser _currentUser;");
+                sb.AppendLine($"        protected readonly IExecutionContext _executionContext;");
 
-                sb.AppendLine($"        public {_entity.EntityName}QueryWrite(ICurrentUser currentUser)");
+                sb.AppendLine($"        public {_entity.EntityName}QueryWrite(IExecutionContext executionContext)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            _currentUser = currentUser;");
+                sb.AppendLine($"            _executionContext = executionContext;");
                 sb.AppendLine("        }");
 
                 sb.AppendLine($"        public QueryModel Inserir{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
@@ -125,7 +125,7 @@ namespace Dominio.Schemas.CQRS
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID"))
                 {
                     if (column.Name == "UserId")
-                        sb.AppendLine($"                {column.Name} = _currentUser.UserId,");
+                        sb.AppendLine($"                {column.Name} = _executionContext.UserId,");
                     else
                         sb.AppendLine($"                {column.Name} = {_entity.EntityName}.{column.Name},");
                 }

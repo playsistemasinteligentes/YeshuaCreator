@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class ySagaStepReadRepository : IySagaStepReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IySagaStepQueryRead _query;
 
-        public ySagaStepReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IySagaStepQueryRead query)
+        public ySagaStepReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IySagaStepQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

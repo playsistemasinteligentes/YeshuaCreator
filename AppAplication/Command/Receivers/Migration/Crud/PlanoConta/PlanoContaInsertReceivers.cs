@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IPlanoContaWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertPlanoContaReceiver(IPlanoContaWriteRepository repository,ILogger logger)
+        public InsertPlanoContaReceiver(
+            IPlanoContaWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

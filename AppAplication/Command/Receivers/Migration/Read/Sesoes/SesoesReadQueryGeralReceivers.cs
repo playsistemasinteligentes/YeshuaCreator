@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly ISesoesReadRepository _repository;
         private readonly ILogger _logger;
 
-        public SesoesReadQueryGeralReceiver(ISesoesReadRepository repository,ILogger logger)
+        public SesoesReadQueryGeralReceiver(
+            ISesoesReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

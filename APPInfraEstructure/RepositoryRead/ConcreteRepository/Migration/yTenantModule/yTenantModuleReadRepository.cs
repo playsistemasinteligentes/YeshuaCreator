@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class yTenantModuleReadRepository : IyTenantModuleReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IyTenantModuleQueryRead _query;
 
-        public yTenantModuleReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyTenantModuleQueryRead query)
+        public yTenantModuleReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IyTenantModuleQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyFileUploadWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteyFileUploadReceiver(IyFileUploadWriteRepository repository,ILogger logger)
+        public DeleteyFileUploadReceiver(
+            IyFileUploadWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

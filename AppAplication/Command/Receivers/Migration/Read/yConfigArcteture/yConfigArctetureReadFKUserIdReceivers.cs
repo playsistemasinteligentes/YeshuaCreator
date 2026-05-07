@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IyConfigArctetureReadRepository _repository;
 
-        public yConfigArctetureReadFKUserIdReceiver(IyConfigArctetureReadRepository repository)
+        public yConfigArctetureReadFKUserIdReceiver(
+            IyConfigArctetureReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

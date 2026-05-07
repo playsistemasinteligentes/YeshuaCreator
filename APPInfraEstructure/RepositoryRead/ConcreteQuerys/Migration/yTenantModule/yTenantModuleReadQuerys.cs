@@ -14,10 +14,10 @@ namespace Query.Read
 {
     public class yTenantModuleQueryRead : QueryBase, IyTenantModuleQueryRead
     {
-        protected readonly ICurrentUser _currentUser;
-        public yTenantModuleQueryRead(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yTenantModuleQueryRead(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel yTenantModuleQuery(Command.Read.yTenantModuleReadCommand Command )
         {
@@ -94,7 +94,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");//02
                  }
            }
- dict["Id"] = _currentUser.TenantID;
+ dict["Id"] = _executionContext.TenantID;
  whereClauses.Add($"Id = @Id");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
@@ -125,7 +125,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
                       whereClauses.Add($" Nome like @Nome ");//02
                  }
            }
- dict["TenantID"] = _currentUser.TenantID;
+ dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");

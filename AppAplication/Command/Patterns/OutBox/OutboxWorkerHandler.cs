@@ -21,15 +21,15 @@ namespace Command.Patterns.OutBox
         private readonly ILogger _logger;
 
         public yOutBoxWorkerHandler(
-            IUnitOfWork unitOfWork,
-            ILogger logger,
-            IyOutboxReadRepository outboxReadRepository,
-            IyOutboxWriteRepository outboxWriteRepository,
-            IQueuePublisher queuePublisher
-        )
+      IUnitOfWork unitOfWork,
+      IyOutboxReadRepository outboxReadRepository,
+      IyOutboxWriteRepository outboxWriteRepository,
+      IQueuePublisher queuePublisher,
+      Dominio.Interfaces.ILogger logger,
+      Aplication.Interfaces.Services.IExecutionContext context)
+      : base(logger, context)
         {
             _unitOfWork = unitOfWork;
-            _logger = logger;
             _outboxReadRepository = outboxReadRepository;
             _outboxWriteRepository = outboxWriteRepository;
             _queuePublisher = queuePublisher;

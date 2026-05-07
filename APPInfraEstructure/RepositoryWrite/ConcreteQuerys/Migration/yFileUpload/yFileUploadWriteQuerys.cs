@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yFileUploadQueryWrite : QueryBase, IyFileUploadQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yFileUploadQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yFileUploadQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryFileUploadQuery(IyFileUploadEntity yFileUpload)
         {
@@ -31,10 +31,10 @@ namespace Query.Write
                 EntityId = yFileUpload.EntityId,
                 CreatedAt = yFileUpload.CreatedAt,
                 CompletedAt = yFileUpload.CompletedAt,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -52,7 +52,7 @@ namespace Query.Write
                 CreatedAt = yFileUpload.CreatedAt,
                 CompletedAt = yFileUpload.CompletedAt,
                 Changed = yFileUpload.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = yFileUpload.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yPerfilQueryWrite : QueryBase, IyPerfilQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yPerfilQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yPerfilQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryPerfilQuery(IyPerfilEntity yPerfil)
         {
@@ -24,10 +24,10 @@ namespace Query.Write
             this.Parameters = new
             {
                 Description = yPerfil.Description,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -38,7 +38,7 @@ namespace Query.Write
             {
                 Description = yPerfil.Description,
                 Changed = yPerfil.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = yPerfil.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

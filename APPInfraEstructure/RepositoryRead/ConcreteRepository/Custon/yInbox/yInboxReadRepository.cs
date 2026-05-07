@@ -41,7 +41,7 @@ namespace Read.Repository
                 Limit = limit,
                 Processing = 3,
                 Pending = 0,
-                TenantID = _currentUser.TenantID
+                TenantID = _executionContext.TenantID
             }).ToList();
 
             return inbox;

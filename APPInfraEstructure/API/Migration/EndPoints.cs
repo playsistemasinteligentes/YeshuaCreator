@@ -9,20 +9,11 @@ public static class Endpoints
 {
 public static void MapEndpoints(this WebApplication app)
 {
-app.MapPost("/yapi/PlanoConta/PostPlanoConta", async ([FromServices] Command.Receivers.Write.InsertPlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
+app.MapPost("/yapi/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPost("/yapi/MovimentoFinanceiro/PostMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.InsertMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -99,11 +90,20 @@ app.MapPost("/yapi/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.W
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
+app.MapPost("/yapi/PlanoConta/PostPlanoConta", async ([FromServices] Command.Receivers.Write.InsertPlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/PostMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.InsertMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -252,20 +252,11 @@ app.MapPost("/yapi/yUserGrant/PostyUserGrant", async ([FromServices] Command.Rec
 .RequireAuthorization();
 
 
-app.MapPut("/yapi/PlanoConta/PutPlanoConta", async ([FromServices] Command.Receivers.Write.UpdatePlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
+app.MapPut("/yapi/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPut("/yapi/MovimentoFinanceiro/PutMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -342,11 +333,20 @@ app.MapPut("/yapi/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Wri
 .RequireAuthorization();
 
 
-app.MapPut("/yapi/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
+app.MapPut("/yapi/PlanoConta/PutPlanoConta", async ([FromServices] Command.Receivers.Write.UpdatePlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/MovimentoFinanceiro/PutMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -495,20 +495,11 @@ app.MapPut("/yapi/yUserGrant/PutyUserGrant", async ([FromServices] Command.Recei
 .RequireAuthorization();
 
 
-app.MapDelete("/yapi/PlanoConta/DeletePlanoConta", async ([FromServices] Command.Receivers.Write.DeletePlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
+app.MapDelete("/yapi/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapDelete("/yapi/MovimentoFinanceiro/DeleteMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -585,11 +576,20 @@ app.MapDelete("/yapi/Sesoes/DeleteSesoes", async ([FromServices] Command.Receive
 .RequireAuthorization();
 
 
-app.MapDelete("/yapi/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
+app.MapDelete("/yapi/PlanoConta/DeletePlanoConta", async ([FromServices] Command.Receivers.Write.DeletePlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/MovimentoFinanceiro/DeleteMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -765,20 +765,11 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                         return Results.Ok(result);
                     }).RequireAuthorization();
             
-app.MapPost("/yapi/PlanoConta/ReadPlanoConta", async ([FromServices] Command.Receivers.Read.PlanoContaReadReceiver receiver, [FromBody] Command.Read.PlanoContaReadCommand command) =>
+app.MapPost("/yapi/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Read.ClinicaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
-.Produces(StatusCodes.Status500InternalServerError)
-.RequireAuthorization();
-
-
-app.MapPost("/yapi/MovimentoFinanceiro/ReadMovimentoFinanceiro", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadReceiver receiver, [FromBody] Command.Read.MovimentoFinanceiroReadCommand command) =>
-{
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -855,11 +846,20 @@ app.MapPost("/yapi/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.R
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Read.ClinicaReadCommand command) =>
+app.MapPost("/yapi/PlanoConta/ReadPlanoConta", async ([FromServices] Command.Receivers.Read.PlanoContaReadReceiver receiver, [FromBody] Command.Read.PlanoContaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/ReadMovimentoFinanceiro", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadReceiver receiver, [FromBody] Command.Read.MovimentoFinanceiroReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1071,7 +1071,7 @@ app.MapPost("/yapi/yOutbox/ReadyOutboxProximaPendente", async ([FromServices] Co
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/PlanoConta/PlanoContaReadFKTenantID", async ([FromServices] Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Clinica/ClinicaReadFKTenantID", async ([FromServices] Command.Receivers.Read.ClinicaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1088,58 +1088,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/PlanoConta/PlanoContaReadFKUserId", async ([FromServices] Command.Receivers.Read.PlanoContaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKTenantID", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
-app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKUserId", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Clinica/ClinicaReadFKUserId", async ([FromServices] Command.Receivers.Read.ClinicaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1581,7 +1530,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/Clinica/ClinicaReadFKTenantID", async ([FromServices] Command.Receivers.Read.ClinicaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/PlanoConta/PlanoContaReadFKTenantID", async ([FromServices] Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1598,7 +1547,58 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/Clinica/ClinicaReadFKUserId", async ([FromServices] Command.Receivers.Read.ClinicaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/PlanoConta/PlanoContaReadFKUserId", async ([FromServices] Command.Receivers.Read.PlanoContaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKTenantID", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKUserId", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -2261,32 +2261,32 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapGet("/yapi/getMetaDataPlanoConta", (HttpContext context) =>
+app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (string.IsNullOrEmpty(userId))
         return Results.Unauthorized();
     var metadatacrud = new
     {
-        entityDescription = "PlanoConta",
+        entityDescription = "Clinica",
         search = new[]{
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/PlanoConta/ReadPlanoConta",
+                endpoint = "/Clinica/ReadClinica",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -2297,77 +2297,16 @@ app.MapGet("/yapi/getMetaDataPlanoConta", (HttpContext context) =>
         formFields = new[]
         {
             new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigo", label = "Código da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipo", label = "Tipo da Conta", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+            new { id = "nome", label = "Nome da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "endereco", label = "Endereço da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         endpoints = new
         {
-            create = "/PlanoConta/PostPlanoConta",
-            read = "/PlanoConta/ReadPlanoConta",
-            update = "/PlanoConta/PutPlanoConta",
-            delete = "/PlanoConta/DeletePlanoConta"
-        }
-    };
-    return Results.Ok(metadatacrud);
-}).RequireAuthorization();
-app.MapGet("/yapi/getMetaDataMovimentoFinanceiro", (HttpContext context) =>
-{
-    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (string.IsNullOrEmpty(userId))
-        return Results.Unauthorized();
-    var metadatacrud = new
-    {
-        entityDescription = "MovimentoFinanceiro",
-        search = new[]{
-            new {
-                id = "Standard",
-                description = "Standard",
-                endpoint = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
-            resultFields = new[]
-            {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
-            },
-            filterFields = new[]
-            {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
-            },
-            quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
-            {
-                contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
-            }
-            },
-        },
-        formFields = new[]
-        {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "idorigem", label = "Identificador de Origem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "contadebitoid", label = "Conta Débito", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valor", label = "Valor do Movimento", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status do Movimento", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
-        },
-        endpoints = new
-        {
-                 contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
-            create = "/MovimentoFinanceiro/PostMovimentoFinanceiro",
-            read = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
-            update = "/MovimentoFinanceiro/PutMovimentoFinanceiro",
-            delete = "/MovimentoFinanceiro/DeleteMovimentoFinanceiro"
+            create = "/Clinica/PostClinica",
+            read = "/Clinica/ReadClinica",
+            update = "/Clinica/PutClinica",
+            delete = "/Clinica/DeleteClinica"
         }
     };
     return Results.Ok(metadatacrud);
@@ -2819,32 +2758,32 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
-app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
+app.MapGet("/yapi/getMetaDataPlanoConta", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (string.IsNullOrEmpty(userId))
         return Results.Unauthorized();
     var metadatacrud = new
     {
-        entityDescription = "Clinica",
+        entityDescription = "PlanoConta",
         search = new[]{
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Clinica/ReadClinica",
+                endpoint = "/PlanoConta/ReadPlanoConta",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
             },
             filterFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -2855,16 +2794,77 @@ app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
         formFields = new[]
         {
             new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "endereco", label = "Endereço da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigo", label = "Código da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipo", label = "Tipo da Conta", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
         },
         endpoints = new
         {
-            create = "/Clinica/PostClinica",
-            read = "/Clinica/ReadClinica",
-            update = "/Clinica/PutClinica",
-            delete = "/Clinica/DeleteClinica"
+            create = "/PlanoConta/PostPlanoConta",
+            read = "/PlanoConta/ReadPlanoConta",
+            update = "/PlanoConta/PutPlanoConta",
+            delete = "/PlanoConta/DeletePlanoConta"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataMovimentoFinanceiro", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "MovimentoFinanceiro",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "idorigem", label = "Identificador de Origem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "contadebitoid", label = "Conta Débito", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor do Movimento", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status do Movimento", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+        },
+        endpoints = new
+        {
+                 contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
+            create = "/MovimentoFinanceiro/PostMovimentoFinanceiro",
+            read = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
+            update = "/MovimentoFinanceiro/PutMovimentoFinanceiro",
+            delete = "/MovimentoFinanceiro/DeleteMovimentoFinanceiro"
         }
     };
     return Results.Ok(metadatacrud);

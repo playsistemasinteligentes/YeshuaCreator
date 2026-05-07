@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IGrupoServicoWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertGrupoServicoReceiver(IGrupoServicoWriteRepository repository,ILogger logger)
+        public InsertGrupoServicoReceiver(
+            IGrupoServicoWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

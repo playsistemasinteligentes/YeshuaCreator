@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IClinicaReadRepository _repository;
         private readonly ILogger _logger;
 
-        public ClinicaReadReceiver(IClinicaReadRepository repository,ILogger logger)
+        public ClinicaReadReceiver(
+            IClinicaReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

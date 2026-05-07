@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IEspecialidadeReadRepository _repository;
 
-        public EspecialidadeReadFKTenantIDReceiver(IEspecialidadeReadRepository repository)
+        public EspecialidadeReadFKTenantIDReceiver(
+            IEspecialidadeReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

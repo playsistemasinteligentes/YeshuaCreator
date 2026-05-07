@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class PlanoContaReadRepository : IPlanoContaReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IPlanoContaQueryRead _query;
 
-        public PlanoContaReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IPlanoContaQueryRead query)
+        public PlanoContaReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IPlanoContaQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

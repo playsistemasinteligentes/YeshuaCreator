@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IyTenantModuleReadRepository _repository;
         private readonly ILogger _logger;
 
-        public yTenantModuleReadReceiver(IyTenantModuleReadRepository repository,ILogger logger)
+        public yTenantModuleReadReceiver(
+            IyTenantModuleReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

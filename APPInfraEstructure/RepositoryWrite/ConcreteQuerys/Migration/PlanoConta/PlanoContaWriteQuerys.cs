@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class PlanoContaQueryWrite : QueryBase, IPlanoContaQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public PlanoContaQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public PlanoContaQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirPlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
@@ -26,10 +26,10 @@ namespace Query.Write
                 Codigo = PlanoConta.Codigo,
                 Nome = PlanoConta.Nome,
                 Tipo = PlanoConta.Tipo,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -42,7 +42,7 @@ namespace Query.Write
                 Nome = PlanoConta.Nome,
                 Tipo = PlanoConta.Tipo,
                 Changed = PlanoConta.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = PlanoConta.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

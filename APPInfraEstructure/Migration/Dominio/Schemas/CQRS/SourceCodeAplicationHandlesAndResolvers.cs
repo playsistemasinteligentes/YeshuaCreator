@@ -586,6 +586,17 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("        {");
                 //sb.AppendLine("            _menssage = menssage;");
                 //sb.AppendLine("        }");
+
+
+                sb.AppendLine($"        public {_useCase.HandlerName}(");
+                sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+                sb.AppendLine($"            : base(logger, context)");
+                sb.AppendLine("        {");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+
+
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<{_useCase.OutputCommandName}> Action({_useCase.InputCommandName} comand)");
                 sb.AppendLine("        {");

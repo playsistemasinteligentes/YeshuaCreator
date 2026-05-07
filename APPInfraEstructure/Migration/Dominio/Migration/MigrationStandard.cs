@@ -42,7 +42,7 @@ Polling
             AddModule("ADM", "Administrativo");
 
             AddEntity("yTenant").AddModule("ADM")
-            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_currentUser.TenantID").NeedBeWhere().CanTakeOffWhere()
+            .AddColumn("Id", "ID").Int().Incremento().Key().DefaultValue("#_executionContext.TenantID").NeedBeWhere().CanTakeOffWhere()
             .AddColumn("CnpjCpf", "Cnpj/Cpf").Varchar(14).NotNull()
             .AddColumn("Nome", "Nome").Varchar(150).NotNull()
             .AddColumn("UserId", "User ID").Int();
@@ -52,17 +52,17 @@ Polling
             .AddColumn("Nome", "Nome Usuario").Varchar(150).NotNull()
             .AddColumn("Email", "Email").Varchar(60).NotNull()
             .AddColumn("Senha", "Senha").Varchar(60).Password()
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
             AddEntity("yStandardFields")
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere()
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere()
             .NotEntity("yModule")
             .AddColumn("Deleted", "Deleted").Boolean().DefaultValue("0").NeedBeWhere().EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
             .AddColumn("Changed", "Changed").DateTime().DefaultValue("#DateTime.Now").EditFront(false).VisivelFront(false)
             .NotEntity("yModule")
-            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_currentUser.UserId").EditFront(false).VisivelFront(false)
+            .AddColumn("UserId", "User ID").Int().FK("yUser", "Id").DefaultValue("#_executionContext.UserId").EditFront(false).VisivelFront(false)
             .NotEntity("yModule");
 
 
@@ -73,7 +73,7 @@ Polling
 
             AddEntity("yConfigNotification").AddModule("ADM").Cached()
             .AddColumn("Id", "ID").Int().Key()
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID")
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID")
             .AddColumn("EmailSmtpClient", "EmailSmtpClient").Varchar(100)
             .AddColumn("EmailPort", "EmailPort").Int()
             .AddColumn("EmailUserName", "EmailUserName").Varchar(100)
@@ -90,13 +90,13 @@ Polling
             AddEntity("yTenantModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100)
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID")
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
 
             AddEntity("yUserModule").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
-            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _currentUser.TenantID)")
+            .AddColumn("ModuleId", "ID Modulo").FK("yModule", "Id").Varchar(100).WhereClauses("id in (select ModuleId from yTenantModule where TenantID = _executionContext.TenantID)")
             .AddColumn("UserId", "User ID").Int().FK("yUser", "Id")
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 

@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class SesoesReadRepository : ISesoesReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly ISesoesQueryRead _query;
 
-        public SesoesReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,ISesoesQueryRead query)
+        public SesoesReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,ISesoesQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

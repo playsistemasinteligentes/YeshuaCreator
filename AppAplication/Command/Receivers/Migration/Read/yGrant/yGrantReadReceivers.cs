@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IyGrantReadRepository _repository;
         private readonly ILogger _logger;
 
-        public yGrantReadReceiver(IyGrantReadRepository repository,ILogger logger)
+        public yGrantReadReceiver(
+            IyGrantReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

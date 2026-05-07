@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IServicoWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteServicoReceiver(IServicoWriteRepository repository,ILogger logger)
+        public DeleteServicoReceiver(
+            IServicoWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

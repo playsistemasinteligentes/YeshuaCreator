@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IySagaWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteySagaReceiver(IySagaWriteRepository repository,ILogger logger)
+        public DeleteySagaReceiver(
+            IySagaWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

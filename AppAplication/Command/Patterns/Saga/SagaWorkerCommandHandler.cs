@@ -19,11 +19,13 @@ namespace Command.Patterns
         private readonly IUnitOfWork _unitOfWork;
 
         public SagaWorkerCommandHandler(
+                Dominio.Interfaces.ILogger logger,
+    Aplication.Interfaces.Services.IExecutionContext context,
             ISagaResolverRegistry registry,
             ISagaExecutor executor,
             IySagaReadRepository sagaReadRepository,
             IySagaWriteRepository sagaWriteRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork):base(logger, context)
         {
             _registry = registry;
             _executor = executor;
@@ -31,6 +33,9 @@ namespace Command.Patterns
             _sagaWriteRepository = sagaWriteRepository;
             _unitOfWork = unitOfWork;
         }
+
+        
+
 
         protected override State<OutputCommand> Action(InputCommand comand)
         {

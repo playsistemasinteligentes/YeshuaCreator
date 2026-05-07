@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class yOutboxReadRepository : IyOutboxReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IyOutboxQueryRead _query;
 
-        public yOutboxReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IyOutboxQueryRead query)
+        public yOutboxReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IyOutboxQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

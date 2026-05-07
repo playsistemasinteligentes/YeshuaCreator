@@ -1,0 +1,35 @@
+wwwroot\index.html
+wwwroot\spa\components\action-modal.html
+wwwroot\spa\components\fk-modal.html
+wwwroot\spa\components\recording\APP gravação.txt
+wwwroot\spa\components\recording\audio - Copy (2).html
+wwwroot\spa\components\recording\audio - Copy (3).html
+wwwroot\spa\components\recording\audio - Copy.html
+wwwroot\spa\components\recording\audio.html
+wwwroot\spa\enum\enumerators
+wwwroot\spa\enum\enumerators.js
+wwwroot\spa\environments.js
+wwwroot\spa\index.html
+wwwroot\spa\scripts\alert.js
+wwwroot\spa\scripts\alerts.js
+wwwroot\spa\scripts\components\actionModal.js
+wwwroot\spa\scripts\components\crudActions.js
+wwwroot\spa\scripts\components\fk-modal.js
+wwwroot\spa\scripts\crud.js
+wwwroot\spa\scripts\crudEnumerator.cs
+wwwroot\spa\scripts\crudEnumerator.js
+wwwroot\spa\scripts\crudState.js
+wwwroot\spa\scripts\enumerators
+wwwroot\spa\scripts\enumerators.js
+wwwroot\spa\scripts\main.js
+wwwroot\spa\scripts\menssagensConfirm.js
+wwwroot\spa\scripts\menu.js
+wwwroot\spa\scripts\router.js
+wwwroot\spa\scripts\ServicesGlobal\apiFetch.js
+wwwroot\spa\scripts\Test\runTestSteps.js
+wwwroot\spa\scripts\viewsScripts\forgot.js
+wwwroot\spa\scripts\viewsScripts\register.js
+wwwroot\spa\views\dashboard.html
+wwwroot\spa\views\forgot.html
+wwwroot\spa\views\login.html
+wwwroot\spa\views\register.html

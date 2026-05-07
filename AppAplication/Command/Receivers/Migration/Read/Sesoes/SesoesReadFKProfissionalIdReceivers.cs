@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly ISesoesReadRepository _repository;
 
-        public SesoesReadFKProfissionalIdReceiver(ISesoesReadRepository repository)
+        public SesoesReadFKProfissionalIdReceiver(
+            ISesoesReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

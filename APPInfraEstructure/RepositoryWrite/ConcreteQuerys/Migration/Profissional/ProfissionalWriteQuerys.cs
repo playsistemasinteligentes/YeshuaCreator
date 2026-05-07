@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class ProfissionalQueryWrite : QueryBase, IProfissionalQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public ProfissionalQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public ProfissionalQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirProfissionalQuery(IProfissionalEntity Profissional)
         {
@@ -26,10 +26,10 @@ namespace Query.Write
                 Nome = Profissional.Nome,
                 EspecialidadeId = Profissional.EspecialidadeId,
                 Telefone = Profissional.Telefone,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -42,7 +42,7 @@ namespace Query.Write
                 EspecialidadeId = Profissional.EspecialidadeId,
                 Telefone = Profissional.Telefone,
                 Changed = Profissional.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = Profissional.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

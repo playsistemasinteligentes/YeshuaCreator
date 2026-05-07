@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yConfigArctetureQueryWrite : QueryBase, IyConfigArctetureQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yConfigArctetureQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yConfigArctetureQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture)
         {
@@ -26,10 +26,10 @@ namespace Query.Write
                 Id = yConfigArcteture.Id,
                 AuditTrackerActived = yConfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = yConfigArcteture.AuditCRUDActived,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -41,7 +41,7 @@ namespace Query.Write
                 AuditTrackerActived = yConfigArcteture.AuditTrackerActived,
                 AuditCRUDActived = yConfigArcteture.AuditCRUDActived,
                 Changed = yConfigArcteture.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = yConfigArcteture.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

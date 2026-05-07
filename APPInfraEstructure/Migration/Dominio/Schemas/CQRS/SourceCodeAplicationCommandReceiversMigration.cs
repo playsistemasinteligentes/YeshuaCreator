@@ -90,7 +90,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
                 sb.AppendLine();
-                sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(I{_entity.EntityName}WriteRepository repository,ILogger logger)");
+                sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(");
+                sb.AppendLine($"            I{_entity.EntityName}WriteRepository repository,");
+                sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+                sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
@@ -142,7 +146,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        private readonly ILogger _logger;");
 
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(I{_entity.EntityName}ReadRepository repository,ILogger logger)");
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(");
+                sb.AppendLine($"            I{_entity.EntityName}ReadRepository repository,");
+                sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+                sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
@@ -182,7 +190,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        private readonly ILogger _logger;");
 
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}{action}{_whereName}Receiver(I{_entity.EntityName}ReadRepository repository,ILogger logger)");
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_whereName}Receiver(");
+                sb.AppendLine($"            I{_entity.EntityName}ReadRepository repository,");
+                sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+                sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
@@ -222,7 +234,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine();
-                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(I{_entity.EntityName}ReadRepository repository)");
+                sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(");
+                sb.AppendLine($"            I{_entity.EntityName}ReadRepository repository,");
+                sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+                sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("        }");

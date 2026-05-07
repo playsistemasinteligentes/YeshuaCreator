@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IySagaStepReadRepository _repository;
 
-        public ySagaStepReadFKTenantIDReceiver(IySagaStepReadRepository repository)
+        public ySagaStepReadFKTenantIDReceiver(
+            IySagaStepReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

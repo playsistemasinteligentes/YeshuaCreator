@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyPerfilWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteyPerfilReceiver(IyPerfilWriteRepository repository,ILogger logger)
+        public DeleteyPerfilReceiver(
+            IyPerfilWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

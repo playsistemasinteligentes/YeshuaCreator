@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IEspecialidadeWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteEspecialidadeReceiver(IEspecialidadeWriteRepository repository,ILogger logger)
+        public DeleteEspecialidadeReceiver(
+            IEspecialidadeWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

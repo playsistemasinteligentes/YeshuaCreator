@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class ProfissionalReadRepository : IProfissionalReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IProfissionalQueryRead _query;
 
-        public ProfissionalReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IProfissionalQueryRead query)
+        public ProfissionalReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IProfissionalQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class MovimentoFinanceiroQueryWrite : QueryBase, IMovimentoFinanceiroQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public MovimentoFinanceiroQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public MovimentoFinanceiroQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
@@ -29,10 +29,10 @@ namespace Query.Write
                 DataMovimento = MovimentoFinanceiro.DataMovimento,
                 DataVencimento = MovimentoFinanceiro.DataVencimento,
                 Status = MovimentoFinanceiro.Status,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -48,7 +48,7 @@ namespace Query.Write
                 DataVencimento = MovimentoFinanceiro.DataVencimento,
                 Status = MovimentoFinanceiro.Status,
                 Changed = MovimentoFinanceiro.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = MovimentoFinanceiro.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

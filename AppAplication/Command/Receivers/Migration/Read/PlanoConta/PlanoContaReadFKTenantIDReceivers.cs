@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IPlanoContaReadRepository _repository;
 
-        public PlanoContaReadFKTenantIDReceiver(IPlanoContaReadRepository repository)
+        public PlanoContaReadFKTenantIDReceiver(
+            IPlanoContaReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

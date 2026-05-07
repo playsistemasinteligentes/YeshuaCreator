@@ -104,11 +104,11 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public class {_entity.EntityName}QueryRead : QueryBase, I{_entity.EntityName}QueryRead");
                 sb.AppendLine("    {");
 
-                sb.AppendLine($"        protected readonly ICurrentUser _currentUser;");
+                sb.AppendLine($"        protected readonly IExecutionContext _executionContext;");
 
-                sb.AppendLine($"        public {_entity.EntityName}QueryRead(ICurrentUser currentUser)");
+                sb.AppendLine($"        public {_entity.EntityName}QueryRead(IExecutionContext executionContext)");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            _currentUser = currentUser;");
+                sb.AppendLine($"            _executionContext = executionContext;");
                 sb.AppendLine("        }");
 
                 sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command Command {takeOff})");
@@ -301,7 +301,7 @@ namespace Dominio.Schemas.CQRS
                         {
                             sb.AppendLine("");
                             sb.AppendLine("            dict[\"Deleted\"] = 0;");
-                            sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                            sb.AppendLine("            dict[\"TenantID\"] = _executionContext.TenantID;");
                             foreach (var prefix in prefixoList)
                             {
                                 sb.AppendLine("");
@@ -313,7 +313,7 @@ namespace Dominio.Schemas.CQRS
                         {
                             sb.AppendLine("");
                             sb.AppendLine("            dict[\"Deleted\"] = 0;");
-                            sb.AppendLine("            if (!TakeOffTenantID) dict[\"TenantID\"] = _currentUser.TenantID;");
+                            sb.AppendLine("            if (!TakeOffTenantID) dict[\"TenantID\"] = _executionContext.TenantID;");
 
                             foreach (var prefix in prefixoList)
                             {
@@ -398,7 +398,7 @@ namespace Dominio.Schemas.CQRS
 
                         sb.AppendLine("");
                         sb.AppendLine("            dict[\"Deleted\"] = 0;");
-                        sb.AppendLine("            dict[\"TenantID\"] = _currentUser.TenantID;");
+                        sb.AppendLine("            dict[\"TenantID\"] = _executionContext.TenantID;");
                         foreach (var prefix in prefixoList)
                         {
                             sb.AppendLine("");

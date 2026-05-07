@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class ClinicaReadRepository : IClinicaReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IClinicaQueryRead _query;
 
-        public ClinicaReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IClinicaQueryRead query)
+        public ClinicaReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IClinicaQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

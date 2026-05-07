@@ -12,12 +12,13 @@ namespace Comandos.Receivers.AgenteDeAgendamentoDePaciente
     public partial class AgenteDeAgendamentoDePacienteHubAgentReceiver : ReciverBase<ICommand,AgenteDeAgendamentoDePacienteHubAgentReceiver>
     {
 
-        private readonly object _menssage;
-
-        public AgenteDeAgendamentoDePacienteHubAgentReceiver(object menssage)
+        public AgenteDeAgendamentoDePacienteHubAgentReceiver(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
-            _menssage = menssage;
         }
+
 
         protected override State<AgenteDeAgendamentoDePacienteHubAgentReceiver> Action(ICommand comand)
         {

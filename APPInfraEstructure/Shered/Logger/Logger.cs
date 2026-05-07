@@ -6,42 +6,32 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
+// Shered.Logger — Logger.cs
 namespace Shered.Logger
 {
     public class Logger : ILogger
     {
         public void Info(string message)
         {
-            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"[INFO] {DateTimeOffset.UtcNow:HH:mm:ss.fff} {message}");
+            Console.ResetColor();
         }
-        public void DebugSql(string sql, object parameters)
+
+        public void Command(string commandName, string traceId, string fase, long? durationMs = null)
         {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("---- SQL DEBUG ----");
-            Console.WriteLine(sql);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            var duration = durationMs.HasValue ? $" ({durationMs}ms)" : string.Empty;
+            Console.WriteLine($"[COMMAND] {DateTimeOffset.UtcNow:HH:mm:ss.fff} [{fase.ToUpper()}] {commandName} | trace: {traceId}{duration}");
+            Console.ResetColor();
+        }
 
-            if (parameters != null)
-            {
-                var dict = parameters as IDictionary<string, object>
-                           ?? parameters.GetType()
-                                        .GetProperties()
-                                        .ToDictionary(p => p.Name, p => p.GetValue(parameters));
-
-                foreach (var kvp in dict)
-                {
-                    string valueStr = kvp.Value switch
-                    {
-                        string s => $"'{s}'",
-                        DateTime dt => $"'{dt:yyyy-MM-dd HH:mm:ss}'",
-                        null => "NULL",
-                        bool b => b ? "1" : "0",
-                        _ => kvp.Value.ToString()
-                    };
-                    Console.WriteLine($"  @{kvp.Key} = {valueStr}");
-                }
-            }
-
-            Console.WriteLine("-------------------");
+        public void Error(string commandName, string traceId, Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"[ERROR] {DateTimeOffset.UtcNow:HH:mm:ss.fff} {commandName} | trace: {traceId}");
+            Console.WriteLine($"  {ex.GetType().Name}: {ex.Message}");
+            Console.WriteLine($"  {ex.StackTrace}");
             Console.ResetColor();
         }
     }

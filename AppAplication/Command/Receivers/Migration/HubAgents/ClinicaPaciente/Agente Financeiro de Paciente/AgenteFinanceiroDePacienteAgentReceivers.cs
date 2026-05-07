@@ -12,12 +12,13 @@ namespace Comandos.Receivers.AgenteFinanceiroDePaciente
     public partial class AgenteFinanceiroDePacienteHubAgentReceiver : ReciverBase<ICommand,AgenteFinanceiroDePacienteHubAgentReceiver>
     {
 
-        private readonly object _menssage;
-
-        public AgenteFinanceiroDePacienteHubAgentReceiver(object menssage)
+        public AgenteFinanceiroDePacienteHubAgentReceiver(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
-            _menssage = menssage;
         }
+
 
         protected override State<AgenteFinanceiroDePacienteHubAgentReceiver> Action(ICommand comand)
         {

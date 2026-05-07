@@ -31,7 +31,7 @@ namespace Migration
         {
             builder.Services.AddLogging();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+            builder.Services.AddScoped<IExecutionContext, WorkerExecutionContext>();
             builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection("RabbitMq"));
             builder.Services.AddSingleton<RabbitMqConnectionManager>();
             builder.Services.AddSingleton<IQueueTopologyInitializer, RabbitMqTopologyInitializer>();

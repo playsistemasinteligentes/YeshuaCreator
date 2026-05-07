@@ -3,12 +3,12 @@ using System.Security.Claims;
 
 namespace Shered.Services
 {
-    public class CurrentUserHttp : ICurrentUser
+    public class executionContextHttp : IExecutionContext
     {
         private int? _manualTenantId;
 
         private readonly IHttpContextAccessor _http;
-        public CurrentUserHttp(IHttpContextAccessor http) => _http = http;
+        public executionContextHttp(IHttpContextAccessor http) => _http = http;
 
         public int TenantID => _manualTenantId ?? GetTenantId();
 
@@ -22,6 +22,26 @@ namespace Shered.Services
             if (claim == null) return 0;
             return int.TryParse(claim.Value, out var id) ? id : 0;
         }
+
+        // =========================
+        // NOVOS CAMPOS
+        // =========================
+        private int? _manualUserId;
+        private string? _manualTraceId;
+        private ExecutionOrigin? _manualOrigem;
+
+        // =========================
+        // NOVAS PROPRIEDADES
+        // =========================
+        public string TraceId =>
+            _manualTraceId ??
+            _http.HttpContext?.TraceIdentifier ??
+            Guid.NewGuid().ToString("N");
+
+        public ExecutionOrigin Origem =>
+            _manualOrigem ??
+            (_http.HttpContext != null ? ExecutionOrigin.Http : ExecutionOrigin.Worker);
+
         /// <summary>
         /// ⚠️ Método temporário para setar o TenantID manualmente.
         /// Use com extrema cautela e remova assim que possível.
@@ -31,5 +51,22 @@ namespace Shered.Services
             _manualTenantId = id;
         }
 
+        // =========================
+        // NOVOS MÉTODOS
+        // =========================
+        public void SetUserId(int id)
+        {
+            _manualUserId = id;
+        }
+
+        public void SetTraceId(string traceId)
+        {
+            _manualTraceId = traceId;
+        }
+
+        public void SetOrigem(ExecutionOrigin origem)
+        {
+            _manualOrigem = origem;
+        }
     }
 }

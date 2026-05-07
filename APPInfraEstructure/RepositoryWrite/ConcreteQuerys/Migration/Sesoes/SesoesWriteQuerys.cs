@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class SesoesQueryWrite : QueryBase, ISesoesQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public SesoesQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public SesoesQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirSesoesQuery(ISesoesEntity Sesoes)
         {
@@ -50,10 +50,10 @@ namespace Query.Write
                 ServicoId = Sesoes.ServicoId,
                 MovimentacaoFinanceiraId = Sesoes.MovimentacaoFinanceiraId,
                 ProfissionalId = Sesoes.ProfissionalId,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -90,7 +90,7 @@ namespace Query.Write
                 MovimentacaoFinanceiraId = Sesoes.MovimentacaoFinanceiraId,
                 ProfissionalId = Sesoes.ProfissionalId,
                 Changed = Sesoes.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = Sesoes.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

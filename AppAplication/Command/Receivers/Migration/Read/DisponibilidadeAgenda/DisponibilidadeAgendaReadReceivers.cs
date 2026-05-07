@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IDisponibilidadeAgendaReadRepository _repository;
         private readonly ILogger _logger;
 
-        public DisponibilidadeAgendaReadReceiver(IDisponibilidadeAgendaReadRepository repository,ILogger logger)
+        public DisponibilidadeAgendaReadReceiver(
+            IDisponibilidadeAgendaReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

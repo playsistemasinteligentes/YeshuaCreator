@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyConfigNotificationWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertyConfigNotificationReceiver(IyConfigNotificationWriteRepository repository,ILogger logger)
+        public InsertyConfigNotificationReceiver(
+            IyConfigNotificationWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class GrupoServicoReadRepository : IGrupoServicoReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IGrupoServicoQueryRead _query;
 
-        public GrupoServicoReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IGrupoServicoQueryRead query)
+        public GrupoServicoReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IGrupoServicoQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

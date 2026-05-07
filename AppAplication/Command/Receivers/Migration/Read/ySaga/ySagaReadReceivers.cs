@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IySagaReadRepository _repository;
         private readonly ILogger _logger;
 
-        public ySagaReadReceiver(IySagaReadRepository repository,ILogger logger)
+        public ySagaReadReceiver(
+            IySagaReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

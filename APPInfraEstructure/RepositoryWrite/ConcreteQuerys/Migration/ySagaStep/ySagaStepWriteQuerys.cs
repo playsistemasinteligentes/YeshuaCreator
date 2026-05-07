@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class ySagaStepQueryWrite : QueryBase, IySagaStepQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public ySagaStepQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public ySagaStepQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep)
         {
@@ -34,10 +34,10 @@ namespace Query.Write
                 ErrorMessage = ySagaStep.ErrorMessage,
                 Payload = ySagaStep.Payload,
                 RetryCount = ySagaStep.RetryCount,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -58,7 +58,7 @@ namespace Query.Write
                 Payload = ySagaStep.Payload,
                 RetryCount = ySagaStep.RetryCount,
                 Changed = ySagaStep.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = ySagaStep.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

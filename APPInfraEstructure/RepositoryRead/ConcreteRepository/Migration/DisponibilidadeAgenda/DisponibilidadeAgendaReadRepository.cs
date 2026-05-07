@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class DisponibilidadeAgendaReadRepository : IDisponibilidadeAgendaReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IDisponibilidadeAgendaQueryRead _query;
 
-        public DisponibilidadeAgendaReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IDisponibilidadeAgendaQueryRead query)
+        public DisponibilidadeAgendaReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IDisponibilidadeAgendaQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

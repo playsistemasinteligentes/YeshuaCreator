@@ -17,6 +17,13 @@ namespace Command.Receivers.UseCase
     public partial class SendFileHandler : ReciverBase< SendFileInputCommand, SendFileOutputCommand>
     {
 
+        public SendFileHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+        }
+
 
         protected override State<SendFileOutputCommand> Action(SendFileInputCommand comand)
         {

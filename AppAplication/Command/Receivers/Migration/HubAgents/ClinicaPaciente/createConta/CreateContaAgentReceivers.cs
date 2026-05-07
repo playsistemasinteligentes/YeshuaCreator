@@ -12,12 +12,13 @@ namespace Comandos.Receivers.CreateConta
     public partial class CreateContaHubAgentReceiver : ReciverBase<ICommand,CreateContaHubAgentReceiver>
     {
 
-        private readonly object _menssage;
-
-        public CreateContaHubAgentReceiver(object menssage)
+        public CreateContaHubAgentReceiver(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
-            _menssage = menssage;
         }
+
 
         protected override State<CreateContaHubAgentReceiver> Action(ICommand comand)
         {

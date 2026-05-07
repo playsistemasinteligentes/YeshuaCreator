@@ -210,13 +210,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public partial class {_entity.EntityName}ReadRepository : I{_entity.EntityName}ReadRepository");
             sb.AppendLine("    {");
             sb.AppendLine("        protected readonly IUnitOfWork _unitOfWork;");
-            sb.AppendLine("        protected readonly ICurrentUser _currentUser;");
+            sb.AppendLine("        protected readonly IExecutionContext _executionContext;");
             sb.AppendLine($"       protected readonly I{_entity.EntityName}QueryRead _query;");
             sb.AppendLine();
-            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,I{_entity.EntityName}QueryRead query)");
+            sb.AppendLine($"        public {_entity.EntityName}ReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,I{_entity.EntityName}QueryRead query)");
             sb.AppendLine("        {");
             sb.AppendLine("            _unitOfWork = unitOfWork;");
-            sb.AppendLine("            _currentUser = currentUser;");
+            sb.AppendLine("            _executionContext = executionContext;");
             sb.AppendLine("            _query = query;");
             sb.AppendLine("        }");
             sb.AppendLine();

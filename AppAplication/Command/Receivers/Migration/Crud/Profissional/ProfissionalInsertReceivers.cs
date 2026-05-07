@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IProfissionalWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertProfissionalReceiver(IProfissionalWriteRepository repository,ILogger logger)
+        public InsertProfissionalReceiver(
+            IProfissionalWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

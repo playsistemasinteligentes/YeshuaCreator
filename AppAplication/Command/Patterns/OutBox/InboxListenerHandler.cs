@@ -20,14 +20,16 @@ namespace Command.Patterns.OutBox
             ISagaResolverRegistry registry,
             IySagaReadRepository sagaReadRepository,
             IySagaWriteRepository sagaWriteRepository,
-            OutboxService inboxService)
+            OutboxService inboxService,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _registry = registry;
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
             _inboxService = inboxService;
         }
-
         protected override State<InboxOutputCommand> Action(InboxInputCommand command)
         {
             try

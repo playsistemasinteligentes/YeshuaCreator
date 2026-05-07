@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yGrantQueryWrite : QueryBase, IyGrantQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yGrantQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yGrantQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant)
         {
@@ -25,10 +25,10 @@ namespace Query.Write
             {
                 Id = yGrant.Id,
                 Description = yGrant.Description,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -39,7 +39,7 @@ namespace Query.Write
             {
                 Description = yGrant.Description,
                 Changed = yGrant.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = yGrant.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

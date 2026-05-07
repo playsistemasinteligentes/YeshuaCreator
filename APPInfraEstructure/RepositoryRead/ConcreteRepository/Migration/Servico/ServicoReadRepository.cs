@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class ServicoReadRepository : IServicoReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IServicoQueryRead _query;
 
-        public ServicoReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IServicoQueryRead query)
+        public ServicoReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IServicoQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

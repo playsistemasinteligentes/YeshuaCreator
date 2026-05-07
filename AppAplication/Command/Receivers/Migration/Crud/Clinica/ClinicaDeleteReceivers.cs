@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IClinicaWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteClinicaReceiver(IClinicaWriteRepository repository,ILogger logger)
+        public DeleteClinicaReceiver(
+            IClinicaWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

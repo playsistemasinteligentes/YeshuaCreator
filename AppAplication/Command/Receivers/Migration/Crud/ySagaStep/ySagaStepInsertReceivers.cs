@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IySagaStepWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertySagaStepReceiver(IySagaStepWriteRepository repository,ILogger logger)
+        public InsertySagaStepReceiver(
+            IySagaStepWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

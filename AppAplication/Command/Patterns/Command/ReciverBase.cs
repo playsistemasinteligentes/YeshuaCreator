@@ -1,4 +1,5 @@
-﻿
+﻿using Aplication.Interfaces.Services;
+using Dominio.Interfaces;
 using RepositoryInterfaces.Patterns.Command;
 
 namespace Command.Patterns.Command
@@ -7,11 +8,44 @@ namespace Command.Patterns.Command
         : IReceiver<TCommand, TResponse>
         where TCommand : ICommand
     {
+        private readonly ILogger _logger;
+        private readonly IExecutionContext _context;
+
+        protected ReciverBase(ILogger logger, IExecutionContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
         protected abstract State<TResponse> Action(TCommand command);
 
         public State<TResponse> Execute(TCommand command)
         {
-            return Action(command);
+            var commandName = typeof(TCommand).Name;
+            var traceId = _context.TraceId;
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+
+            _logger.Command(commandName, traceId, "iniciado");
+
+            try
+            {
+                var result = Action(command);
+                sw.Stop();
+
+                _logger.Command(commandName, traceId,
+                    result.StatusCode == 200 || result.StatusCode == 201
+                        ? "concluido"
+                        : "falhou",
+                    sw.ElapsedMilliseconds);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                sw.Stop();
+                _logger.Error(commandName, traceId, ex);
+                throw;
+            }
         }
 
         protected static State<TResponse> Error(
@@ -46,5 +80,3 @@ namespace Command.Patterns.Command
             => new State<TResponse>(400, messages, data);
     }
 }
-
-

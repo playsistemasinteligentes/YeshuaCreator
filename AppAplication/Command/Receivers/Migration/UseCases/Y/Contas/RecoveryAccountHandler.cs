@@ -17,6 +17,13 @@ namespace Command.Receivers.UseCase
     public partial class RecoveryAccountHandler : ReciverBase< RecoveryAccountInputCommand, RecoveryAccountOutputCommand>
     {
 
+        public RecoveryAccountHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+        }
+
 
         protected override State<RecoveryAccountOutputCommand> Action(RecoveryAccountInputCommand comand)
         {

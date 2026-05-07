@@ -9,6 +9,7 @@ namespace Dominio.Interfaces
     public interface ILogger
     {
         void Info(string message);
-        void DebugSql(string sql, object parameters);
+        void Command(string commandName, string traceId, string fase, long? durationMs = null);
+        void Error(string commandName, string traceId, Exception ex);
     }
 }

@@ -17,6 +17,13 @@ namespace Command.Receivers.UseCase
     public partial class StarSessionUploadHandler : ReciverBase< StarSessionUploadInputCommand, StarSessionUploadOutputCommand>
     {
 
+        public StarSessionUploadHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+        }
+
 
         protected override State<StarSessionUploadOutputCommand> Action(StarSessionUploadInputCommand comand)
         {

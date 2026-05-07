@@ -18,9 +18,9 @@
 //        private readonly IyTenantWriteRepository _repWriteY_Tenant;
 //        private readonly IyUserReadRepository _repReadY_User;
 //        private readonly IyUserWriteRepository _repWriteY_User;
-//        private readonly ICurrentUser _CurrentUser;
+//        private readonly IExecutionContext _executionContext;
 
-//        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyTenantReadRepository repReadY_Tenant, IyTenantWriteRepository repWriteY_Tenant, IyUserReadRepository repReadY_User, IyUserWriteRepository repWriteY_User, ICurrentUser CurrentUser)
+//        public ContasCreateContaUseCaseReceiver(IUnitOfWork unitOfWork, ILogger logger, IyTenantReadRepository repReadY_Tenant, IyTenantWriteRepository repWriteY_Tenant, IyUserReadRepository repReadY_User, IyUserWriteRepository repWriteY_User, IExecutionContext executionContext)
 //        {
 //            _unitOfWork = unitOfWork;
 //            _logger = logger;
@@ -28,7 +28,7 @@
 //            _repWriteY_Tenant = repWriteY_Tenant;
 //            _repReadY_User = repReadY_User;
 //            _repWriteY_User = repWriteY_User;
-//            _CurrentUser = CurrentUser;
+//            _executionContext = executionContext;
 //        }
 
 //        partial void CustomActionHook(ref State<ContasCreateContaUseCaseOutputCommand> state, ContasCreateContaUseCaseInputCommand comand)
@@ -78,7 +78,7 @@
 //                    comand.email, // Nome: Aqui você decide o valor real, coloquei email como exemplo
 //                    comand.password);
 
-//                _CurrentUser.SetTenantId(tenant.Id.Value);
+//                _executionContext.SetTenantId(tenant.Id.Value);
 
 //                if (!user.isValidInsert())
 //                    throw new ReceiverException<ContasCreateContaUseCaseOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default));

@@ -22,34 +22,41 @@ namespace Command.Receivers.UseCase
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly IFileStorage _fileStorage;
-        private readonly ICurrentUser _CurrentUser;
+        private readonly IExecutionContext _executionContext;
         private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
         private readonly IySagaWriteRepository _ySagaWriteRepository;
         private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
         private readonly ISagaExecutor _sagaExecutor;
         //private readonly PsychologySessionInsightSagaHandlerResolver _psychologySagaHandlerResolver;
-        
 
 
 
-        public SendFileHandler(IUnitOfWork unitOfWork, ILogger logger, IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload, IFileStorage fileStorage, ICurrentUser currentUser, IyOutboxWriteRepository yOutboxWriteRepository, IySagaWriteRepository ySagaWriteRepository, PsychologySessionInsightSaga psychologySessionInsightSaga,ISagaExecutor sagaExecutor)//, PsychologySessionInsightSagaHandlerResolver psychologySagaHandlerResolver)
+        public SendFileHandler(
+            IUnitOfWork unitOfWork,
+            IyFileUploadReadRepository repReadyFileUpload,
+            IyFileUploadWriteRepository repWriteyFileUpload,
+            IFileStorage fileStorage,
+            IyOutboxWriteRepository yOutboxWriteRepository,
+            IySagaWriteRepository ySagaWriteRepository,
+            PsychologySessionInsightSaga psychologySessionInsightSaga,
+            ISagaExecutor sagaExecutor,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _unitOfWork = unitOfWork;
-            _logger = logger;
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
             _fileStorage = fileStorage;
-            _CurrentUser = currentUser;
             _yOutboxWriteRepository = yOutboxWriteRepository;
             _ySagaWriteRepository = ySagaWriteRepository;
             _psychologySessionInsightSaga = psychologySessionInsightSaga;
             _sagaExecutor = sagaExecutor;
-            //_psychologySagaHandlerResolver = psychologySagaHandlerResolver;
         }
 
 
 
-partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileInputCommand comand)
+        partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileInputCommand comand)
 {
 
             try
@@ -71,7 +78,7 @@ partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileIn
                 string idEntity = Path.Combine(uploadId.ToString(), "pending_merge");
 
                 // segurança
-                if (tenantId != _CurrentUser.TenantID)
+                if (tenantId != _executionContext.TenantID)
                     throw new ReceiverException<SendFileOutputCommand>(
                         Error("Token inválido para o tenant atual.", default));
 

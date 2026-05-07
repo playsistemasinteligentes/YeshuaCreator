@@ -20,13 +20,13 @@ namespace Read.Repository
     public partial class PacienteReadRepository : IPacienteReadRepository
     {
         protected readonly IUnitOfWork _unitOfWork;
-        protected readonly ICurrentUser _currentUser;
+        protected readonly IExecutionContext _executionContext;
        protected readonly IPacienteQueryRead _query;
 
-        public PacienteReadRepository(IUnitOfWork unitOfWork, ICurrentUser currentUser,IPacienteQueryRead query)
+        public PacienteReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IPacienteQueryRead query)
         {
             _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
+            _executionContext = executionContext;
             _query = query;
         }
 

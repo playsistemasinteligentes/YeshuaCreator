@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yInboxQueryWrite : QueryBase, IyInboxQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yInboxQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yInboxQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryInboxQuery(IyInboxEntity yInbox)
         {
@@ -37,10 +37,10 @@ namespace Query.Write
                 NextAttemptAt = yInbox.NextAttemptAt,
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -64,7 +64,7 @@ namespace Query.Write
                 SagaId = yInbox.SagaId,
                 SagaStepId = yInbox.SagaStepId,
                 Changed = yInbox.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = yInbox.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

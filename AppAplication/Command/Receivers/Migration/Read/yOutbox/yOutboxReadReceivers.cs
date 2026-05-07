@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IyOutboxReadRepository _repository;
         private readonly ILogger _logger;
 
-        public yOutboxReadReceiver(IyOutboxReadRepository repository,ILogger logger)
+        public yOutboxReadReceiver(
+            IyOutboxReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

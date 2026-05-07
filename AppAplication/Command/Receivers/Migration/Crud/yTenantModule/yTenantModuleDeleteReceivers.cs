@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyTenantModuleWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteyTenantModuleReceiver(IyTenantModuleWriteRepository repository,ILogger logger)
+        public DeleteyTenantModuleReceiver(
+            IyTenantModuleWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

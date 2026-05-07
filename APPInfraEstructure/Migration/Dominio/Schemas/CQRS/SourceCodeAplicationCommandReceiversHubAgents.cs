@@ -39,12 +39,14 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public partial class {_agent.Name.SourceType()}HubAgentReceiver : ReciverBase<ICommand,{_agent.Name.SourceType()}HubAgentReceiver>");
             sb.AppendLine("    {");
             sb.AppendLine();
-            sb.AppendLine($"        private readonly object _menssage;");
-            sb.AppendLine();
-            sb.AppendLine($"        public {_agent.Name.SourceType()}HubAgentReceiver(object menssage)");
+
+            sb.AppendLine($"        public {_agent.Name.SourceType()}HubAgentReceiver(");
+            sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+            sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+            sb.AppendLine($"            : base(logger, context)");
             sb.AppendLine("        {");
-            sb.AppendLine("            _menssage = menssage;");
             sb.AppendLine("        }");
+            sb.AppendLine();
             sb.AppendLine();
             sb.AppendLine($"        protected override State<{_agent.Name.SourceType()}HubAgentReceiver> Action(ICommand comand)");
             sb.AppendLine("        {");

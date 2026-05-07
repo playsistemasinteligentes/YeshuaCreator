@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class yUserQueryWrite : QueryBase, IyUserQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public yUserQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public yUserQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InseriryUserQuery(IyUserEntity yUser)
         {
@@ -26,7 +26,7 @@ namespace Query.Write
                 Nome = yUser.Nome,
                 Email = yUser.Email,
                 Senha = yUser.Senha,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
             };

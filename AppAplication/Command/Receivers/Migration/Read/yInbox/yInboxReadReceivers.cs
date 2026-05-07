@@ -13,7 +13,11 @@ namespace Command.Receivers.Read
         private readonly IyInboxReadRepository _repository;
         private readonly ILogger _logger;
 
-        public yInboxReadReceiver(IyInboxReadRepository repository,ILogger logger)
+        public yInboxReadReceiver(
+            IyInboxReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

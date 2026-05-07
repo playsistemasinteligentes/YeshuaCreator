@@ -37,7 +37,7 @@ namespace Migration.Dominio.Migration
                 .AddColumn("EntityId", "Entity Id").Varchar(100)
                 .AddColumn("CreatedAt", "Criado em").DateTime().NotNull()
                 .AddColumn("CompletedAt", "Finalizado em").DateTime()
-                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
             AddUsecaseGroup("FileUpload").AddUseCaseSubGrup("Infra").AddCommand("StarSessionUpload",
@@ -68,7 +68,7 @@ namespace Migration.Dominio.Migration
             .AddColumn("NextExecutionAt", "Proxima execucao").DateTime()
             .AddColumn("LockedAt", "LockedAt").DateTime()
             .AddColumn("LockedBy", "LockedBy").Varchar(100)
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
             AddEntity("ySagaStep").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -95,7 +95,7 @@ namespace Migration.Dominio.Migration
             .AddColumn("ErrorMessage", "Erro").Varchar(2000)
             .AddColumn("Payload", "Payload").Varchar(8000)
             .AddColumn("RetryCount", "Tentativas").Int().NotNull()
-            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+            .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
 
             AddEntity("yOutbox").AddModule("ADM")
@@ -132,7 +132,7 @@ namespace Migration.Dominio.Migration
 
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
-                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
             
             AddQuery<yOutbox>("Standard", q => q
             .WhereContext("ProximaPendente", s => s.Status == 0)
@@ -165,7 +165,7 @@ namespace Migration.Dominio.Migration
 
                 .AddColumn("SagaId", "SagaId").FK("ySaga", "Id").Int()
                 .AddColumn("SagaStepId", "SagaStepId").FK("ySagaStep", "Id").Int()
-                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_currentUser.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
+                .AddColumn("TenantID", "TenantID").Int().FK("yTenant", "Id").DefaultValue("#_executionContext.TenantID").EditFront(false).VisivelFront(false).NeedBeWhere().CanTakeOffWhere();
 
             /*
 

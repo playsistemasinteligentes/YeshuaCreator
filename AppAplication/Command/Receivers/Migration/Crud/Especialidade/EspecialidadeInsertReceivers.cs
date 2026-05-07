@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IEspecialidadeWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertEspecialidadeReceiver(IEspecialidadeWriteRepository repository,ILogger logger)
+        public InsertEspecialidadeReceiver(
+            IEspecialidadeWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

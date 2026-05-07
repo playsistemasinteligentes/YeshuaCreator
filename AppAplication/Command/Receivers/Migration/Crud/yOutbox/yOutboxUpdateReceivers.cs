@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyOutboxWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateyOutboxReceiver(IyOutboxWriteRepository repository,ILogger logger)
+        public UpdateyOutboxReceiver(
+            IyOutboxWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

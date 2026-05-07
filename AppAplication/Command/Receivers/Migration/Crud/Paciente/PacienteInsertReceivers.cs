@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IPacienteWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public InsertPacienteReceiver(IPacienteWriteRepository repository,ILogger logger)
+        public InsertPacienteReceiver(
+            IPacienteWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly ISesoesWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public DeleteSesoesReceiver(ISesoesWriteRepository repository,ILogger logger)
+        public DeleteSesoesReceiver(
+            ISesoesWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

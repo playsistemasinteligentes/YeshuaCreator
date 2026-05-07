@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IyGrantWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateyGrantReceiver(IyGrantWriteRepository repository,ILogger logger)
+        public UpdateyGrantReceiver(
+            IyGrantWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

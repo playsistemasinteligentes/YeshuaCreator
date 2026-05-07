@@ -13,10 +13,10 @@ namespace Query.Write
 {
     public class MovimentacaoFinanceiraQueryWrite : QueryBase, IMovimentacaoFinanceiraQueryWrite
     {
-        protected readonly ICurrentUser _currentUser;
-        public MovimentacaoFinanceiraQueryWrite(ICurrentUser currentUser)
+        protected readonly IExecutionContext _executionContext;
+        public MovimentacaoFinanceiraQueryWrite(IExecutionContext executionContext)
         {
-            _currentUser = currentUser;
+            _executionContext = executionContext;
         }
         public QueryModel InserirMovimentacaoFinanceiraQuery(IMovimentacaoFinanceiraEntity MovimentacaoFinanceira)
         {
@@ -29,10 +29,10 @@ namespace Query.Write
                 TipoMovimentacao = MovimentacaoFinanceira.TipoMovimentacao,
                 DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
                 SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
-                TenantID = _currentUser.TenantID,
+                TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -48,7 +48,7 @@ namespace Query.Write
                 DataMovimentacao = MovimentacaoFinanceira.DataMovimentacao,
                 SaldoAtual = MovimentacaoFinanceira.SaldoAtual,
                 Changed = MovimentacaoFinanceira.Changed,
-                UserId = _currentUser.UserId,
+                UserId = _executionContext.UserId,
                 Id = MovimentacaoFinanceira.Id,
             };
             return new QueryModel(this.Query, this.Parameters);

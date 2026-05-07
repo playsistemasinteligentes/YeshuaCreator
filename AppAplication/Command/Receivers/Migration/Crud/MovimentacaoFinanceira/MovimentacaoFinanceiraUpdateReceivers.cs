@@ -16,7 +16,11 @@ namespace Command.Receivers.Write
         private readonly IMovimentacaoFinanceiraWriteRepository _repository;
         private readonly ILogger _logger;
 
-        public UpdateMovimentacaoFinanceiraReceiver(IMovimentacaoFinanceiraWriteRepository repository,ILogger logger)
+        public UpdateMovimentacaoFinanceiraReceiver(
+            IMovimentacaoFinanceiraWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
             _logger = logger;

@@ -12,7 +12,11 @@ namespace Command.Receivers.Read
     {
         private readonly IyOutboxReadRepository _repository;
 
-        public yOutboxReadFKSagaIdReceiver(IyOutboxReadRepository repository)
+        public yOutboxReadFKSagaIdReceiver(
+            IyOutboxReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
         {
             _repository = repository;
         }

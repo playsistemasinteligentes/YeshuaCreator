@@ -17,6 +17,13 @@ namespace Command.Receivers.UseCase
     public partial class LoginHandler : ReciverBase< LoginInputCommand, LoginOutputCommand>
     {
 
+        public LoginHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+        }
+
 
         protected override State<LoginOutputCommand> Action(LoginInputCommand comand)
         {
