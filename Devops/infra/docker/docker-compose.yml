@@ -197,7 +197,7 @@
             - rabbitmq
         environment:
             CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
-            HF_TOKEN: "seu_token_aqui"
+            SUMMARIZER_MODEL: "Qwen/Qwen2.5-0.5B-Instruct"
             SUMMARIZER_DEVICE: "cpu"
         restart: unless-stopped
         networks:
