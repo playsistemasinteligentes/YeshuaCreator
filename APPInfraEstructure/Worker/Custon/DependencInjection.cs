@@ -97,32 +97,20 @@ namespace Migration
                          ILogger<PollingWorker<SagaInboxWorkerCommandHandler, InputCommand, OutputCommand>>>(),
                      TimeSpan.FromMilliseconds(5000)
                  ));
-             
 
-                var queues = new[]
-                {
-                    "audio.transcribed.inbox",
-                    "payment.approved.inbox",
-                    "email.sent.inbox"
-                };
-            builder.Services.AddScoped<InboxListenerHandler>();
+
+
+            builder.Services.AddHostedService(sp =>
+            {
+                var listener = sp.GetRequiredService<IQueueListener>();
+                var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<InboxListenerHandler, InboxInputCommand, InboxOutputCommand>>>();
+                return new QueueListenerWorker<InboxListenerHandler, InboxInputCommand, InboxOutputCommand>(
+                    sp, listener, logger,
+                    "text.summarized.inbox",
+                    "audio.transcribed.inbox"
+                );
+            });
             
-                foreach (var queue in queues)
-                {
-                    builder.Services.AddHostedService(sp =>
-                    {
-                        var listener = sp.GetRequiredService<IQueueListener>();
-                        var logger = sp.GetRequiredService<ILogger<
-                            QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>>>();
-
-                        return new QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>(
-                                sp,
-                                listener,
-                                logger,
-                                queueName: queue
-                        );
-                    });
-                }
             /*
              * 
              * 

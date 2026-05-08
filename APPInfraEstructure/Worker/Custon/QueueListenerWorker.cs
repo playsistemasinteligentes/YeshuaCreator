@@ -4,72 +4,48 @@ using Microsoft.Extensions.Logging;
 using Command.Interfaces.Patterns.Queue;
 using Command.Patterns.Queue;
 using RepositoryInterfaces.Patterns.Command;
-
 namespace Worker.Custon
 {
     public class QueueListenerWorker<TReceiver, TCommand, TResponse> : BackgroundService
-        where TReceiver : class, IReceiver<TCommand, TResponse>
-        where TCommand : class, ICommand, new()
+    where TReceiver : class, IReceiver<TCommand, TResponse>
+    where TCommand : class, ICommand, new()
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IQueueListener _listener;
         private readonly ILogger<QueueListenerWorker<TReceiver, TCommand, TResponse>> _logger;
-        private readonly string _queueName;
+        private readonly string[] _queues;
 
         public QueueListenerWorker(
             IServiceProvider serviceProvider,
             IQueueListener listener,
             ILogger<QueueListenerWorker<TReceiver, TCommand, TResponse>> logger,
-            string queueName)
+            params string[] queues)
         {
             _serviceProvider = serviceProvider;
             _listener = listener;
             _logger = logger;
-            _queueName = queueName;
+            _queues = queues;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var workerName = typeof(TReceiver).Name;
-
-            _logger.LogInformation("QueueListenerWorker {Worker} iniciado.", workerName);
-
-            await _listener.ListenAsync<TCommand>(_queueName, async message =>
+            foreach (var queue in _queues)
             {
-                try
+                var queueCapturada = queue;
+                _ = Task.Run(() => _listener.ListenAsync<TCommand>(queueCapturada, async message =>
                 {
                     using var scope = _serviceProvider.CreateScope();
-
                     var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-
-                    //var command = new TCommand();
-
                     var result = receiver.Execute(message);
-
                     if (result.StatusCode >= 400)
-                    {
-                        _logger.LogWarning(
-                            "QueueListenerWorker {Worker} erro {StatusCode} - {Message}",
-                            workerName,
-                            result.StatusCode,
-                            result.Message);
-                    }
+                        _logger.LogWarning("Erro {StatusCode} - {Message}", result.StatusCode, result.Message);
                     else
-                    {
-                        _logger.LogInformation(
-                            "QueueListenerWorker {Worker} executado com sucesso.",
-                            workerName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Erro no QueueListenerWorker {Worker}", workerName);
-                    throw;
-                }
+                        _logger.LogInformation("Worker {Queue} executado com sucesso.", queueCapturada);
+                }, stoppingToken), stoppingToken);
+            }
 
-            }, stoppingToken);
+            return Task.CompletedTask;
         }
     }
+
 }
-
-

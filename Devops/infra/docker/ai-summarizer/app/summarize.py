@@ -92,8 +92,8 @@ def _generate(prompt: str, max_new_tokens: int) -> str:
     output = pipe(
         prompt,
         max_new_tokens=max_new_tokens,
+        max_length=None,
         do_sample=False,
-        temperature=1.0,
         repetition_penalty=1.1,
         pad_token_id=pipe.tokenizer.eos_token_id,
     )
