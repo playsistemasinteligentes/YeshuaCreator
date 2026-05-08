@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class yInboxReadFKSagaStepIdReceiver : ReciverBase<ICommand, IEnumerable<yInboxSagaStepIdDTO>>
     {
         private readonly IyInboxReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public yInboxReadFKSagaStepIdReceiver(
             IyInboxReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<yInboxSagaStepIdDTO>> Action(ICommand comand)

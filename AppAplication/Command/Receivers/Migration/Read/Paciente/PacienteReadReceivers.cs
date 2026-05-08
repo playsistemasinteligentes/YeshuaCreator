@@ -12,6 +12,7 @@ namespace Command.Receivers.Read
     {
         private readonly IPacienteReadRepository _repository;
         private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public PacienteReadReceiver(
             IPacienteReadRepository repository,
@@ -21,6 +22,7 @@ namespace Command.Receivers.Read
         {
             _repository = repository;
             _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<DataPagination<PacienteDTO>> Action(ICommand comand)

@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class yOutboxReadFKSagaIdReceiver : ReciverBase<ICommand, IEnumerable<yOutboxSagaIdDTO>>
     {
         private readonly IyOutboxReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public yOutboxReadFKSagaIdReceiver(
             IyOutboxReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<yOutboxSagaIdDTO>> Action(ICommand comand)

@@ -5,6 +5,7 @@ using Command.Patterns.Command;
 using Command.Read;
 using Command.UseCase;
 using Dominio.Entitys;
+using Dominio.Interfaces;
 using Dominio.Interfaces.Strategy;
 using IRepository.Read;
 using RepositoryInterfaces.Patterns.Command;
@@ -17,12 +18,13 @@ namespace Command.Receivers.UseCase
     {
 
         private readonly IINotificationFactory _factory;
-        private readonly IMessage _messege;
+        private readonly Dominio.Interfaces.Strategy.IMessage _messege;
         private readonly IyUserReadRepository _userRep;
+        
         // Injete a fábrica no construtor
         public RecoveryAccountHandler(
             IINotificationFactory factory,
-            IMessage messege,
+            Dominio.Interfaces.Strategy.IMessage messege,
             IyUserReadRepository userRep,
             Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context)
@@ -31,6 +33,8 @@ namespace Command.Receivers.UseCase
             _factory = factory;
             _messege = messege;
             _userRep = userRep;
+            _logger = logger;
+            _executionContext = context;
         }
 
         partial void CustomActionHook(ref State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand)

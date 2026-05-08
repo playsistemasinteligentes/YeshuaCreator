@@ -15,6 +15,7 @@ namespace Command.Receivers.Write
     {
         private readonly IDisponibilidadeAgendaWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public UpdateDisponibilidadeAgendaReceiver(
             IDisponibilidadeAgendaWriteRepository repository,
@@ -24,6 +25,7 @@ namespace Command.Receivers.Write
         {
             _repository = repository;
             _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<IDisponibilidadeAgendaEntity> Action(ICommand comand)

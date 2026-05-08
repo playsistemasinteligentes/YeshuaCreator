@@ -18,7 +18,9 @@ namespace Command.Patterns.OutBox
         private readonly IyOutboxWriteRepository _outboxWriteRepository;
         private readonly IQueuePublisher _queuePublisher;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger _logger;
+        private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+
 
         public yOutBoxWorkerHandler(
       IUnitOfWork unitOfWork,
@@ -33,6 +35,8 @@ namespace Command.Patterns.OutBox
             _outboxReadRepository = outboxReadRepository;
             _outboxWriteRepository = outboxWriteRepository;
             _queuePublisher = queuePublisher;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<yOutboxOutputCommand> Action(yOutboxInputCommand command)

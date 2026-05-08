@@ -1,5 +1,6 @@
 ﻿using Command.Interfaces;
 using Command.Patterns.Command;
+using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
@@ -15,6 +16,8 @@ namespace Command.Patterns.OutBox
         private readonly IySagaReadRepository _sagaReadRepository;
         private readonly IySagaWriteRepository _sagaWriteRepository;
         private readonly OutboxService _inboxService;
+        private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public InboxListenerHandler(
             ISagaResolverRegistry registry,
@@ -29,6 +32,8 @@ namespace Command.Patterns.OutBox
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
             _inboxService = inboxService;
+            _logger = logger;
+            _executionContext = context;
         }
         protected override State<InboxOutputCommand> Action(InboxInputCommand command)
         {

@@ -6,6 +6,9 @@ using RepositoryInterfaces.Patterns.Saga;
 using Command.Receivers.Migration.Saga;
 using Command.Patterns.OutBox;
 using Command.Receivers;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using Shered.DB.Connection;
+using Aplication.Interfaces.Services;
 namespace Migrations
 {
 public static class DependencInjection
@@ -13,7 +16,17 @@ public static class DependencInjection
 public static void MapDependencInjection(WebApplicationBuilder builder)
 {
 
-                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork, Shered.DB.Connection.UnitOfWork>();
+                    
+                    
+                    builder.Services.AddScoped<UnitOfWork>();
+                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
+                        new InstrumentedUnitOfWork(
+                            sp.GetRequiredService<UnitOfWork>(),
+                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
+                            sp.GetRequiredService<IExecutionContext>()
+                        ));
+
+
                     builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();

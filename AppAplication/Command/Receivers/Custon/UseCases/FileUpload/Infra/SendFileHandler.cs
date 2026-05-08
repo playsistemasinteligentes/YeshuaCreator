@@ -18,17 +18,14 @@ namespace Command.Receivers.UseCase
     {
 
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger _logger;
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly IFileStorage _fileStorage;
-        private readonly IExecutionContext _executionContext;
         private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
         private readonly IySagaWriteRepository _ySagaWriteRepository;
         private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
         private readonly ISagaExecutor _sagaExecutor;
-        //private readonly PsychologySessionInsightSagaHandlerResolver _psychologySagaHandlerResolver;
-
+        
 
 
         public SendFileHandler(
@@ -52,6 +49,8 @@ namespace Command.Receivers.UseCase
             _ySagaWriteRepository = ySagaWriteRepository;
             _psychologySessionInsightSaga = psychologySessionInsightSaga;
             _sagaExecutor = sagaExecutor;
+            _logger = logger;
+            _executionContext = context;
         }
 
 

@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class EspecialidadeReadFKTenantIDReceiver : ReciverBase<ICommand, IEnumerable<EspecialidadeTenantIDDTO>>
     {
         private readonly IEspecialidadeReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public EspecialidadeReadFKTenantIDReceiver(
             IEspecialidadeReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<EspecialidadeTenantIDDTO>> Action(ICommand comand)

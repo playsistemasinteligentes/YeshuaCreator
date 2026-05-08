@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class ySagaReadFKUserIdReceiver : ReciverBase<ICommand, IEnumerable<ySagaUserIdDTO>>
     {
         private readonly IySagaReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public ySagaReadFKUserIdReceiver(
             IySagaReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<ySagaUserIdDTO>> Action(ICommand comand)

@@ -17,11 +17,15 @@ namespace Command.Receivers.UseCase
     public partial class CreateContaHandler : ReciverBase< CreateContaInputCommand, CreateContaOutputCommand>
     {
 
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public CreateContaHandler(
             Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
+            _logger = logger;
+            _executionContext = context;
         }
 
 

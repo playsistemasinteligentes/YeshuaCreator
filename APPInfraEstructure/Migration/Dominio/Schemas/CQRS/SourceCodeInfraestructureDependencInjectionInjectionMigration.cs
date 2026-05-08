@@ -39,7 +39,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using Command.Receivers.Migration.Saga;");
             sb.AppendLine("using Command.Patterns.OutBox;");
             sb.AppendLine("using Command.Receivers;");
-            
+
+            sb.AppendLine("using RepositoryInterfaces.Patterns.UnitOfWork;");
+            sb.AppendLine("using Shered.DB.Connection;");
+            sb.AppendLine("using Aplication.Interfaces.Services;");
 
 
 

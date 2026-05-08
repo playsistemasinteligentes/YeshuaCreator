@@ -1,13 +1,14 @@
-using Aplication.Interfaces.Services;
-using Command.Interfaces;
+using Shered.Services;
+using RepositoryInterfaces.Services;
 using Command.Patterns;
+using Command.Interfaces;
+using RepositoryInterfaces.Patterns.Saga;
+using Command.Receivers.Migration.Saga;
 using Command.Patterns.OutBox;
 using Command.Receivers;
-using Command.Receivers.Migration.Saga;
-using RepositoryInterfaces.Patterns.Saga;
-using RepositoryInterfaces.Services;
+using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
-using Shered.Services;
+using Aplication.Interfaces.Services;
 namespace Migrations
 {
 public static class DependencInjection
@@ -15,18 +16,18 @@ public static class DependencInjection
 public static void MapDependencInjection(WebApplicationBuilder builder)
 {
 
+                    
+                    
+                    builder.Services.AddScoped<UnitOfWork>();
+                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
+                        new InstrumentedUnitOfWork(
+                            sp.GetRequiredService<UnitOfWork>(),
+                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
+                            sp.GetRequiredService<IExecutionContext>()
+                        ));
 
 
-            builder.Services.AddScoped<UnitOfWork>();
-            builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
-                new InstrumentedUnitOfWork(
-                    sp.GetRequiredService<UnitOfWork>(),
-                    sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
-                    sp.GetRequiredService<IExecutionContext>()
-                ));
-
-
-            builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
+                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
                     builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();

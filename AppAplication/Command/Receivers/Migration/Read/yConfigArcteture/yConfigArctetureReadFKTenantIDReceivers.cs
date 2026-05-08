@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class yConfigArctetureReadFKTenantIDReceiver : ReciverBase<ICommand, IEnumerable<yConfigArctetureTenantIDDTO>>
     {
         private readonly IyConfigArctetureReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public yConfigArctetureReadFKTenantIDReceiver(
             IyConfigArctetureReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<yConfigArctetureTenantIDDTO>> Action(ICommand comand)

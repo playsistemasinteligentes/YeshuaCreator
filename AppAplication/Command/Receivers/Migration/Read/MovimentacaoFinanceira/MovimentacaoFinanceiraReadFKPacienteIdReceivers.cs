@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class MovimentacaoFinanceiraReadFKPacienteIdReceiver : ReciverBase<ICommand, IEnumerable<MovimentacaoFinanceiraPacienteIdDTO>>
     {
         private readonly IMovimentacaoFinanceiraReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public MovimentacaoFinanceiraReadFKPacienteIdReceiver(
             IMovimentacaoFinanceiraReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<MovimentacaoFinanceiraPacienteIdDTO>> Action(ICommand comand)

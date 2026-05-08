@@ -39,12 +39,16 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    public partial class {_agent.Name.SourceType()}HubAgentReceiver : ReciverBase<ICommand,{_agent.Name.SourceType()}HubAgentReceiver>");
             sb.AppendLine("    {");
             sb.AppendLine();
+            sb.AppendLine("		   private readonly Dominio.Interfaces.ILogger _logger;");
+            sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
 
             sb.AppendLine($"        public {_agent.Name.SourceType()}HubAgentReceiver(");
             sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
             sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
             sb.AppendLine($"            : base(logger, context)");
             sb.AppendLine("        {");
+            sb.AppendLine("            _logger = logger;");
+            sb.AppendLine("            _executionContext = context;");
             sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine();

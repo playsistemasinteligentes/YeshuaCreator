@@ -14,11 +14,9 @@ namespace Command.Receivers.UseCase
     {
         
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger _logger;
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
-        private readonly IExecutionContext _executionContext;
-
+        
         public StarSessionUploadHandler(
     IUnitOfWork unitOfWork,
     IyFileUploadReadRepository repReadyFileUpload,
@@ -30,6 +28,8 @@ namespace Command.Receivers.UseCase
             _unitOfWork = unitOfWork;
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
+            _logger = logger;
+            _executionContext = context;
         }
 
 

@@ -12,6 +12,7 @@ namespace Command.Receivers.Read
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
         private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public DisponibilidadeAgendaReadReceiver(
             IDisponibilidadeAgendaReadRepository repository,
@@ -21,6 +22,7 @@ namespace Command.Receivers.Read
         {
             _repository = repository;
             _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<DataPagination<DisponibilidadeAgendaDTO>> Action(ICommand comand)

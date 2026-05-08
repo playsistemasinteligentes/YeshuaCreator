@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class yUserGrantReadFKGrantIdReceiver : ReciverBase<ICommand, IEnumerable<yUserGrantGrantIdDTO>>
     {
         private readonly IyUserGrantReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public yUserGrantReadFKGrantIdReceiver(
             IyUserGrantReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<yUserGrantGrantIdDTO>> Action(ICommand comand)

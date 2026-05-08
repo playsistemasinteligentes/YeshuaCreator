@@ -580,12 +580,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
                 sb.AppendLine();
 
-                //sb.AppendLine($"        private readonly {_classeOutputCommand} _menssage;");
-                //sb.AppendLine();
-                //sb.AppendLine($"        public {_classe}({_classeOutputCommand} menssage)");
-                //sb.AppendLine("        {");
-                //sb.AppendLine("            _menssage = menssage;");
-                //sb.AppendLine("        }");
+                sb.AppendLine("		   private readonly Dominio.Interfaces.ILogger _logger;");
+                sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
 
 
                 sb.AppendLine($"        public {_useCase.HandlerName}(");
@@ -593,9 +589,10 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
                 sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
+                sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-
 
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<{_useCase.OutputCommandName}> Action({_useCase.InputCommandName} comand)");
@@ -603,9 +600,6 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            try");
                 sb.AppendLine("            {");
                 // chamar o custon receiver
-
-                //sb.AppendLine("                 Agent = getAgent(comand);    ");
-                //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
                 sb.AppendLine($"                 State<{_useCase.OutputCommandName}> retorno = Success(\"OK\", null);");
 

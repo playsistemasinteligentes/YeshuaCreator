@@ -12,11 +12,15 @@ namespace Comandos.Receivers.AgenteFinanceiroParaAdministrador
     public partial class AgenteFinanceiroParaAdministradorHubAgentReceiver : ReciverBase<ICommand,AgenteFinanceiroParaAdministradorHubAgentReceiver>
     {
 
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public AgenteFinanceiroParaAdministradorHubAgentReceiver(
             Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
+            _logger = logger;
+            _executionContext = context;
         }
 
 

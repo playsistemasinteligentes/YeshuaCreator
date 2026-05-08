@@ -1,5 +1,6 @@
 ﻿using Command.Interfaces;
 using Command.Patterns.Command;
+using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
 using Dominio.Saga;
 using IRepository.Read;
@@ -17,6 +18,8 @@ namespace Command.Patterns
         private readonly IySagaReadRepository _sagaReadRepository;
         private readonly IySagaWriteRepository _sagaWriteRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public SagaWorkerCommandHandler(
                 Dominio.Interfaces.ILogger logger,
@@ -32,6 +35,8 @@ namespace Command.Patterns
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
             _unitOfWork = unitOfWork;
+            _logger = logger;
+            _executionContext = context;
         }
 
         

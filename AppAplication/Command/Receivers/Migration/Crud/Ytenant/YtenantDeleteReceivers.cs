@@ -15,6 +15,7 @@ namespace Command.Receivers.Write
     {
         private readonly IyTenantWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public DeleteyTenantReceiver(
             IyTenantWriteRepository repository,
@@ -24,6 +25,7 @@ namespace Command.Receivers.Write
         {
             _repository = repository;
             _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<IyTenantEntity> Action(ICommand comand)

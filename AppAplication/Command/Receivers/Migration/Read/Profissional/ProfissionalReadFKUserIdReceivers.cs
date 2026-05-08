@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class ProfissionalReadFKUserIdReceiver : ReciverBase<ICommand, IEnumerable<ProfissionalUserIdDTO>>
     {
         private readonly IProfissionalReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public ProfissionalReadFKUserIdReceiver(
             IProfissionalReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<ProfissionalUserIdDTO>> Action(ICommand comand)

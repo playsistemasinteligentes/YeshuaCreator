@@ -11,7 +11,6 @@ namespace Command.Receivers.UseCase
     public partial class LoginHandler
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger _logger;
         private readonly IyUserReadRepository _repReadYuser;
         private readonly IyUserWriteRepository _repWriteYuser;
         private readonly IyTenantModuleReadRepository _repReadyTenantModule;
@@ -19,7 +18,6 @@ namespace Command.Receivers.UseCase
         private readonly IyUserModuleReadRepository _repReadyUserModule;
         private readonly IyUserModuleWriteRepository _repWriteyUserModule;
         private readonly IyTenantReadRepository _repReadYtenantRepository;
-        private readonly IExecutionContext _executionContext;
 
         public LoginHandler(
     IUnitOfWork unitOfWork,
@@ -42,6 +40,8 @@ namespace Command.Receivers.UseCase
             _repReadyUserModule = repReadyUserModule;
             _repWriteyUserModule = repWriteyUserModule;
             _repReadYtenantRepository = repIYtenantReadRepository;
+            _logger = logger;
+            _executionContext = context;
         }
         partial void CustomActionHook(ref State<LoginOutputCommand> state, LoginInputCommand comand)
 {

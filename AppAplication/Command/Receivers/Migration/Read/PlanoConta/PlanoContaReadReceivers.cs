@@ -12,6 +12,7 @@ namespace Command.Receivers.Read
     {
         private readonly IPlanoContaReadRepository _repository;
         private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public PlanoContaReadReceiver(
             IPlanoContaReadRepository repository,
@@ -21,6 +22,7 @@ namespace Command.Receivers.Read
         {
             _repository = repository;
             _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<DataPagination<PlanoContaDTO>> Action(ICommand comand)

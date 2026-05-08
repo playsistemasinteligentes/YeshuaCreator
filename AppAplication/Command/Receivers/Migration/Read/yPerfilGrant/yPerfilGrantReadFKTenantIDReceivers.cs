@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class yPerfilGrantReadFKTenantIDReceiver : ReciverBase<ICommand, IEnumerable<yPerfilGrantTenantIDDTO>>
     {
         private readonly IyPerfilGrantReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public yPerfilGrantReadFKTenantIDReceiver(
             IyPerfilGrantReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<yPerfilGrantTenantIDDTO>> Action(ICommand comand)

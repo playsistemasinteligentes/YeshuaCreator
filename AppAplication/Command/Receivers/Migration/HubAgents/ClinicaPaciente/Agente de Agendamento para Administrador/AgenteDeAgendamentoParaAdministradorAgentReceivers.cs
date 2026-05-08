@@ -12,11 +12,15 @@ namespace Comandos.Receivers.AgenteDeAgendamentoParaAdministrador
     public partial class AgenteDeAgendamentoParaAdministradorHubAgentReceiver : ReciverBase<ICommand,AgenteDeAgendamentoParaAdministradorHubAgentReceiver>
     {
 
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public AgenteDeAgendamentoParaAdministradorHubAgentReceiver(
             Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
+            _logger = logger;
+            _executionContext = context;
         }
 
 

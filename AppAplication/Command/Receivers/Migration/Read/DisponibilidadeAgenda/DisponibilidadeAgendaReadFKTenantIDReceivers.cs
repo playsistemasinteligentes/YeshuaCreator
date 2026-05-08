@@ -11,6 +11,8 @@ namespace Command.Receivers.Read
     public class DisponibilidadeAgendaReadFKTenantIDReceiver : ReciverBase<ICommand, IEnumerable<DisponibilidadeAgendaTenantIDDTO>>
     {
         private readonly IDisponibilidadeAgendaReadRepository _repository;
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public DisponibilidadeAgendaReadFKTenantIDReceiver(
             IDisponibilidadeAgendaReadRepository repository,
@@ -19,6 +21,8 @@ namespace Command.Receivers.Read
             : base(logger, context)
         {
             _repository = repository;
+            _logger = logger;
+            _executionContext = context;
         }
 
         protected override State <IEnumerable<DisponibilidadeAgendaTenantIDDTO>> Action(ICommand comand)

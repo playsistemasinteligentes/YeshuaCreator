@@ -12,6 +12,7 @@ namespace Command.Receivers.Read
     {
         private readonly IyConfigNotificationReadRepository _repository;
         private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public yConfigNotificationReadReceiver(
             IyConfigNotificationReadRepository repository,
@@ -21,6 +22,7 @@ namespace Command.Receivers.Read
         {
             _repository = repository;
             _logger = logger;
+            _executionContext = context;
         }
 
         protected override State<DataPagination<yConfigNotificationDTO>> Action(ICommand comand)

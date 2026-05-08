@@ -3,6 +3,7 @@ using Migration.Dominio;
 using Migration.Dominio.Schemas.CQRS;
 using System.Data;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
 
 namespace Dominio.Schemas.CQRS
@@ -89,6 +90,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
+                sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
                 sb.AppendLine();
                 sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(");
                 sb.AppendLine($"            I{_entity.EntityName}WriteRepository repository,");
@@ -98,6 +100,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<I{_entity.EntityName}Entity> Action(ICommand comand)");
@@ -144,6 +147,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
+                sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
 
                 sb.AppendLine();
                 sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(");
@@ -154,6 +158,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}DTO>> Action(ICommand comand)");
@@ -188,6 +193,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
+                sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
 
                 sb.AppendLine();
                 sb.AppendLine($"        public {_entity.EntityName}{action}{_whereName}Receiver(");
@@ -198,6 +204,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>> Action(ICommand comand)");
@@ -233,6 +240,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public class {_entity.EntityName}{action}{_column}Receiver : ReciverBase<ICommand, IEnumerable<{_entity.EntityName}{_column}DTO>>");
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}ReadRepository _repository;");
+                sb.AppendLine("		   private readonly Dominio.Interfaces.ILogger _logger;");
+                sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
+
                 sb.AppendLine();
                 sb.AppendLine($"        public {_entity.EntityName}{action}{_column}Receiver(");
                 sb.AppendLine($"            I{_entity.EntityName}ReadRepository repository,");
@@ -241,6 +251,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
+                sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
                 sb.AppendLine($"        protected override State <IEnumerable<{_entity.EntityName}{_column}DTO>> Action(ICommand comand)");

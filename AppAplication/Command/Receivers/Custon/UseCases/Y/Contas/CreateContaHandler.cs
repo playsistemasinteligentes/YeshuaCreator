@@ -13,12 +13,10 @@ namespace Command.Receivers.UseCase
     public partial class CreateContaHandler
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger _logger;
         private readonly IyTenantReadRepository _repReadY_Tenant;
         private readonly IyTenantWriteRepository _repWriteY_Tenant;
         private readonly IyUserReadRepository _repReadY_User;
         private readonly IyUserWriteRepository _repWriteY_User;
-        private readonly IExecutionContext _executionContext;
 
         public CreateContaHandler(
     IUnitOfWork unitOfWork,
@@ -35,6 +33,8 @@ namespace Command.Receivers.UseCase
             _repWriteY_Tenant = repWriteY_Tenant;
             _repReadY_User = repReadY_User;
             _repWriteY_User = repWriteY_User;
+            _logger = logger;
+            _executionContext = context;
         }
 
         partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand)
