@@ -100,6 +100,9 @@ namespace Migration
 
 
 
+            // pendecia colocar no motor baseado nas filas inbox  acho que os serviços de cimo podem ficar o oque caracteriza algo fora do motor mas este em especifico a quantidade de filas pode variar 
+            builder.Services.AddScoped<InboxListenerHandler>();
+
             builder.Services.AddHostedService(sp =>
             {
                 var listener = sp.GetRequiredService<IQueueListener>();
@@ -110,7 +113,7 @@ namespace Migration
                     "audio.transcribed.inbox"
                 );
             });
-            
+
             /*
              * 
              * 
