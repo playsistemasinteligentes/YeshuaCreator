@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Yeshua.CQRS.Domain\Yeshua.CQRS.Domain.csproj" />
+    <ProjectReference Include="..\Yeshua.CQRS.Application.RepositoryInterfaces\Yeshua.CQRS.Application.RepositoryInterfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Custon\HubAgents\" />
+    <Folder Include="Commands\Custon\Read\Sesoes\" />
+    <Folder Include="Commands\Migration\Read\Sesoes\" />
+    <Folder Include="Patterns\Command\Interface\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+  </ItemGroup>
+
+</Project>

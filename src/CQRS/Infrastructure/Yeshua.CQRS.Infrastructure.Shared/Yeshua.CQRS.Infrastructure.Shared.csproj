@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Yeshua.CQRS.Application.Command\Yeshua.CQRS.Application.Command.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.CQRS.Application.RepositoryInterfaces\Yeshua.CQRS.Application.RepositoryInterfaces.csproj" />
+    <ProjectReference Include="..\..\Domain\Yeshua.CQRS.Domain\Yeshua.CQRS.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DB\Connection\SqlFactoryMokSqlite.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DB\Connection\SqlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ConcretInterfaces\Worker\" />
+  </ItemGroup>
+
+</Project>

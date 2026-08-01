@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <None Remove="Principios e objetos de arquitetura.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Principios e objetos de arquitetura.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Command\NameCrudCommand.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\ICommand.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\IWorker.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerBase.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerTemplate.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerTemplateCommand.cs" />
+    <EmbeddedResource Include="Dominio\CodeGeneration\Templates\Worker\WorkerTemplateReceiver.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Infra\SqlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
