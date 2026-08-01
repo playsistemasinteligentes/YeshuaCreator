@@ -2532,7 +2532,7 @@
       "projectName": "Test",
       "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPTeste\\Teste\\Test.csproj",
       "packagesPath": "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPTeste\\Teste\\obj\\",
+      "outputPath": "C:\\Users\\AngeloRicardoFontana\\source\\repos\\YeshuaCreator\\APPTeste\\Teste\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

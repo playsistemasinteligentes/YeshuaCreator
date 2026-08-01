@@ -2392,7 +2392,7 @@
       "projectName": "API",
       "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\API\\API.csproj",
       "packagesPath": "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\API\\obj\\",
+      "outputPath": "C:\\Users\\AngeloRicardoFontana\\source\\repos\\YeshuaCreator\\APPInfraEstructure\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

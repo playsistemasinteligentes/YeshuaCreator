@@ -3562,7 +3562,7 @@
       "projectName": "TestMigration",
       "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPTeste\\TestMigration\\TestMigration.csproj",
       "packagesPath": "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPTeste\\TestMigration\\obj\\",
+      "outputPath": "C:\\Users\\AngeloRicardoFontana\\source\\repos\\YeshuaCreator\\APPTeste\\TestMigration\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

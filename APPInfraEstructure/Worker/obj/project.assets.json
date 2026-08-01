@@ -2392,7 +2392,7 @@
       "projectName": "Worker",
       "projectPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Worker\\Worker.csproj",
       "packagesPath": "C:\\Users\\AngeloRicardoFontana\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AngeloRicardoFontana\\Source\\Repos\\YeshuaCreator\\APPInfraEstructure\\Worker\\obj\\",
+      "outputPath": "C:\\Users\\AngeloRicardoFontana\\source\\repos\\YeshuaCreator\\APPInfraEstructure\\Worker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
