@@ -1,8 +1,8 @@
     services:
       front:
         build:
-          context: ../../..
-          dockerfile: Devops/infra/docker/front/Dockerfile
+          context: ../..
+          dockerfile: infra/docker/front/Dockerfile
         environment:
           ASPNETCORE_URLS: "http://0.0.0.0:8080"
           ASPNETCORE_ENVIRONMENT: "Production"
@@ -17,8 +17,8 @@
 
       api:
         build:
-          context: ../../..
-          dockerfile: Devops/infra/docker/api/Dockerfile
+          context: ../..
+          dockerfile: infra/docker/api/Dockerfile
         environment:
           ASPNETCORE_URLS: "http://0.0.0.0:7214"
           ASPNETCORE_ENVIRONMENT: "Production"
@@ -55,8 +55,8 @@
 
       worker:
         build:
-            context: ../../..
-            dockerfile: Devops/infra/docker/worker/Dockerfile
+            context: ../..
+            dockerfile: infra/docker/worker/Dockerfile
         environment:
             ASPNETCORE_URLS: "http://0.0.0.0:7215"
             ASPNETCORE_ENVIRONMENT: "Production"
@@ -105,8 +105,8 @@
 
       migration:
         build:
-          context: ../../..
-          dockerfile: Devops/infra/docker/migration/Dockerfile
+          context: ../..
+          dockerfile: infra/docker/migration/Dockerfile
         environment:
           ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
           SA__PASSWORD: "123qwe!@#QWE"

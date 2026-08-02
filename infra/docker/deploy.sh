@@ -5,7 +5,7 @@
 ##set -e
 ##
 ##APP_DIR="/root/YeshuaCreator"
-##COMPOSE_DIR="$APP_DIR/Devops/infra/docker"
+##COMPOSE_DIR="$APP_DIR/infra/docker"
 ##
 ##echo "====================================="
 ##echo " 🤖 DEPLOY – AI WORKER"
@@ -48,7 +48,7 @@
 set -e
 
 APP_DIR="/root/YeshuaCreator"
-COMPOSE_DIR="$APP_DIR/Devops/infra/docker"
+COMPOSE_DIR="$APP_DIR/infra/docker"
 
 echo "====================================="
 echo " 🚀 DEPLOY – YeshuaCreator"

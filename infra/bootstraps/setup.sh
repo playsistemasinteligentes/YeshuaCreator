@@ -2,7 +2,7 @@
 set -e
 
 APP_DIR="/root/YeshuaCreator"
-COMPOSE_DIR="$APP_DIR/Devops/infra/docker"
+COMPOSE_DIR="$APP_DIR/infra/docker"
 ENV_FILE="/root/YeshuaDB/persistent/enviroment/.env"
 
 
@@ -94,7 +94,7 @@ fi
 
 echo "💣 Recovery: removendo configuração HTTPS do Nginx (se existir)..."
 
-NGINX_CONF_DIR="$APP_DIR/Devops/infra/docker/nginx/conf.d"
+NGINX_CONF_DIR="$APP_DIR/infra/docker/nginx/conf.d"
 HTTPS_CONF="$NGINX_CONF_DIR/10-https.conf"
 
 if [ -f "$HTTPS_CONF" ]; then
@@ -174,15 +174,15 @@ docker compose ps
 echo "🔧 Configurando aliases do Yeshua..."
 
 cat << 'EOF' > /root/.bash_aliases
-alias ycd='cd ~/YeshuaCreator/Devops/infra/docker'
-alias yps='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml ps'
-alias ylogsfull='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml logs -f'
-alias ylogs='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml logs --tail=100 -f --timestamps'
+alias ycd='cd ~/YeshuaCreator/infra/docker'
+alias yps='docker compose -f ~/YeshuaCreator/infra/docker/docker-compose.yml ps'
+alias ylogsfull='docker compose -f ~/YeshuaCreator/infra/docker/docker-compose.yml logs -f'
+alias ylogs='docker compose -f ~/YeshuaCreator/infra/docker/docker-compose.yml logs --tail=100 -f --timestamps'
 
-alias yup='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml up -d'
-alias ydown='docker compose -f ~/YeshuaCreator/Devops/infra/docker/docker-compose.yml down'
+alias yup='docker compose -f ~/YeshuaCreator/infra/docker/docker-compose.yml up -d'
+alias ydown='docker compose -f ~/YeshuaCreator/infra/docker/docker-compose.yml down'
 
-alias ydeploy='nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/Devops/infra/docker/deploy.sh | bash" > /root/deploy.log 2>&1 &'
+alias ydeploy='nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash" > /root/deploy.log 2>&1 &'
 alias ylogdeploy='tail -f /root/deploy.log'
 
 EOF

@@ -3,7 +3,7 @@ set -e
 
 
 
-ENV_FILE="/root/YeshuaCreator/Devops/infra/docker/.env"
+ENV_FILE="/root/YeshuaCreator/infra/docker/.env"
 
 # Carrega variáveis do .env
 #export $(grep -v '^#' "$ENV_FILE" | xargs)

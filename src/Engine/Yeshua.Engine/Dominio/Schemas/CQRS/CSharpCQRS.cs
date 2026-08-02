@@ -425,12 +425,12 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppAplicationCommand()
         {
-            return Path.Combine(GetPathAppAplication(), "Command");
+            return Path.Combine(GetPathAppAplication(), "Yeshua.CQRS.Application.Command");
         }
 
         private string GetPathAppAplication()
         {
-            return Path.Combine(GetPathAppSolution(), "AppAplication");
+            return Path.Combine(GetPathAppSolution(), "src", "CQRS", "Application");
         }
 
         public void AppAplicationGenerateCommandPartterns(Migration.MigrationBase migration)
@@ -510,7 +510,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppAplicationRepositoryInterfaces()
         {
-            return Path.Combine(GetPathAppAplication(), "RepositoryInterfaces");
+            return Path.Combine(GetPathAppAplication(), "Yeshua.CQRS.Application.RepositoryInterfaces");
         }
 
         public void AppAplicationGenerateRepositoryInterfacesWrite(Migration.MigrationBase migration)
@@ -554,7 +554,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppDominio()
         {
-            return Path.Combine(GetPathAppSolution(), Path.Combine("AppDominio", "Dominio"));
+            return Path.Combine(GetPathAppSolution(), "src", "CQRS", "Domain", "Yeshua.CQRS.Domain");
         }
 
         private string GetPathAppSolution()
@@ -591,10 +591,15 @@ namespace Dominio.Schemas.CQRS
 
         private void AppInternalEntitys(MigrationBase migration)
         {
-            var filePath = Path.Combine(GetPathAppInfraestructure(), $"Migration\\Dominio\\ORM\\entities.cs");
-            var filePathCuston = Path.Combine(GetPathAppInfraestructure(), $"Migration\\Dominio\\ORM\\Custonentities.cs");
+            var filePath = Path.Combine(GetPathEngineDominioOrm(), "entities.cs");
+            var filePathCuston = Path.Combine(GetPathEngineDominioOrm(), "Custonentities.cs");
             var sourceCodeMigration = new SourceCodeEntityInternalMigration(migration.Entitys);
             sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
+        }
+
+        private string GetPathEngineDominioOrm()
+        {
+            return Path.Combine(GetPathAppSolution(), "src", "Engine", "Yeshua.Engine", "Dominio", "ORM");
         }
 
 
@@ -659,15 +664,15 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureGenerateAPI()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "API");
+            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Api");
         }
         private string GetPathAppInfraestructureGenerateWorker()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Worker");
+            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Worker");
         }
         private string GetPathAppInfraestructureGenerateModules()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "API");
+            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Api");
         }
 
         public void AppInfraestructureGenerateAutomacaoTest(Migration.MigrationBase migration)
@@ -717,11 +722,11 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureRead()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "RepositoryRead");
+            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.RepositoryRead");
         }
         private string GetPathAppInfraestructureShered()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Shered");
+            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Shared");
         }
         private string GetPathAppInfraestructureSheredStrategy(string directory)
         {
@@ -730,7 +735,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructure()
         {
-            return Path.Combine(GetPathAppSolution(), "APPInfraEstructure");
+            return Path.Combine(GetPathAppSolution(), "src", "CQRS", "Infrastructure");
         }
 
         public void AppInfraestructureGenerateReadConcreteQuerys(Migration.MigrationBase migration)
@@ -783,7 +788,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureWrite()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "RepositoryWrite");
+            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.RepositoryWrite");
         }
 
         public void AppInfraestructureGenerateWriteConcreteQuerys(Migration.MigrationBase migration)

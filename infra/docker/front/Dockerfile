@@ -7,7 +7,7 @@ COPY . .
 
 # Publica o Front
 RUN dotnet publish \
-  APPInfraEstructure/Front/Front.csproj \
+  src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Front/Yeshua.CQRS.Infrastructure.Front.csproj \
   -c Release \
   -o /app/publish
 
@@ -22,4 +22,4 @@ COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://0.0.0.0:8080
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "Front.dll"]
+ENTRYPOINT ["dotnet", "Yeshua.CQRS.Infrastructure.Front.dll"]
