@@ -6,24 +6,35 @@ namespace Yeshua.CQRS.Tests.Integration.TestKit;
 
 public sealed class ApiIntegrationSettings
 {
-    private const string SectionName = "IntegrationApi";
+    private const string SectionName = "TestSettings";
+    private const string LegacySectionName = "IntegrationApi";
     private const string BaseUrlKey = SectionName + ":BaseUrl";
     private const string LoginKey = SectionName + ":Login";
     private const string PasswordKey = SectionName + ":Password";
     private const string LoginPathKey = SectionName + ":LoginPath";
     private const string TimeoutSecondsKey = SectionName + ":TimeoutSeconds";
+    private const string LegacyBaseUrlKey = LegacySectionName + ":BaseUrl";
+    private const string LegacyLoginKey = LegacySectionName + ":Login";
+    private const string LegacyPasswordKey = LegacySectionName + ":Password";
+    private const string LegacyLoginPathKey = LegacySectionName + ":LoginPath";
+    private const string LegacyTimeoutSecondsKey = LegacySectionName + ":TimeoutSeconds";
 
-    public const string BaseUrlVariable = "INTEGRATIONAPI__BASEURL";
-    public const string LoginVariable = "INTEGRATIONAPI__LOGIN";
-    public const string PasswordVariable = "INTEGRATIONAPI__PASSWORD";
-    public const string LoginPathVariable = "INTEGRATIONAPI__LOGINPATH";
-    public const string TimeoutSecondsVariable = "INTEGRATIONAPI__TIMEOUTSECONDS";
+    public const string BaseUrlVariable = "TESTSETTINGS__BASEURL";
+    public const string LoginVariable = "TESTSETTINGS__LOGIN";
+    public const string PasswordVariable = "TESTSETTINGS__PASSWORD";
+    public const string LoginPathVariable = "TESTSETTINGS__LOGINPATH";
+    public const string TimeoutSecondsVariable = "TESTSETTINGS__TIMEOUTSECONDS";
 
-    private const string LegacyBaseUrlVariable = "YESHUA_API_BASE_URL";
-    private const string LegacyLoginVariable = "YESHUA_API_LOGIN";
-    private const string LegacyPasswordVariable = "YESHUA_API_PASSWORD";
-    private const string LegacyLoginPathVariable = "YESHUA_API_LOGIN_PATH";
-    private const string LegacyTimeoutSecondsVariable = "YESHUA_API_TIMEOUT_SECONDS";
+    private const string LegacyIntegrationApiBaseUrlVariable = "INTEGRATIONAPI__BASEURL";
+    private const string LegacyIntegrationApiLoginVariable = "INTEGRATIONAPI__LOGIN";
+    private const string LegacyIntegrationApiPasswordVariable = "INTEGRATIONAPI__PASSWORD";
+    private const string LegacyIntegrationApiLoginPathVariable = "INTEGRATIONAPI__LOGINPATH";
+    private const string LegacyIntegrationApiTimeoutSecondsVariable = "INTEGRATIONAPI__TIMEOUTSECONDS";
+    private const string LegacyYeshuaApiBaseUrlVariable = "YESHUA_API_BASE_URL";
+    private const string LegacyYeshuaApiLoginVariable = "YESHUA_API_LOGIN";
+    private const string LegacyYeshuaApiPasswordVariable = "YESHUA_API_PASSWORD";
+    private const string LegacyYeshuaApiLoginPathVariable = "YESHUA_API_LOGIN_PATH";
+    private const string LegacyYeshuaApiTimeoutSecondsVariable = "YESHUA_API_TIMEOUT_SECONDS";
 
     public static string NotConfiguredMessage
     {
@@ -74,15 +85,15 @@ public sealed class ApiIntegrationSettings
         }
         catch (Exception ex)
         {
-            errorMessage = $"Could not read integration API configuration. {ex.Message}";
+            errorMessage = $"Could not read integration test configuration. {ex.Message}";
             return false;
         }
 
-        var baseUrl = GetValue(values, BaseUrlKey) ?? DiscoverBaseUrlFromApiLaunchSettings();
-        var login = GetValue(values, LoginKey);
-        var password = GetValue(values, PasswordKey);
-        var loginPath = GetValue(values, LoginPathKey);
-        var timeoutSecondsText = GetValue(values, TimeoutSecondsKey);
+        var baseUrl = GetValue(values, BaseUrlKey, LegacyBaseUrlKey) ?? DiscoverBaseUrlFromApiLaunchSettings();
+        var login = GetValue(values, LoginKey, LegacyLoginKey);
+        var password = GetValue(values, PasswordKey, LegacyPasswordKey);
+        var loginPath = GetValue(values, LoginPathKey, LegacyLoginPathKey);
+        var timeoutSecondsText = GetValue(values, TimeoutSecondsKey, LegacyTimeoutSecondsKey);
 
         if (string.IsNullOrWhiteSpace(baseUrl) ||
             string.IsNullOrWhiteSpace(login) ||
@@ -210,11 +221,50 @@ public sealed class ApiIntegrationSettings
 
     private static void ApplyEnvironmentOverrides(IDictionary<string, string> values)
     {
-        SetIfEnvironmentExists(values, BaseUrlKey, BaseUrlVariable, "IntegrationApi__BaseUrl", LegacyBaseUrlVariable);
-        SetIfEnvironmentExists(values, LoginKey, LoginVariable, "IntegrationApi__Login", LegacyLoginVariable);
-        SetIfEnvironmentExists(values, PasswordKey, PasswordVariable, "IntegrationApi__Password", LegacyPasswordVariable);
-        SetIfEnvironmentExists(values, LoginPathKey, LoginPathVariable, "IntegrationApi__LoginPath", LegacyLoginPathVariable);
-        SetIfEnvironmentExists(values, TimeoutSecondsKey, TimeoutSecondsVariable, "IntegrationApi__TimeoutSeconds", LegacyTimeoutSecondsVariable);
+        SetIfEnvironmentExists(
+            values,
+            BaseUrlKey,
+            BaseUrlVariable,
+            "TestSettings__BaseUrl",
+            LegacyIntegrationApiBaseUrlVariable,
+            "IntegrationApi__BaseUrl",
+            LegacyYeshuaApiBaseUrlVariable);
+
+        SetIfEnvironmentExists(
+            values,
+            LoginKey,
+            LoginVariable,
+            "TestSettings__Login",
+            LegacyIntegrationApiLoginVariable,
+            "IntegrationApi__Login",
+            LegacyYeshuaApiLoginVariable);
+
+        SetIfEnvironmentExists(
+            values,
+            PasswordKey,
+            PasswordVariable,
+            "TestSettings__Password",
+            LegacyIntegrationApiPasswordVariable,
+            "IntegrationApi__Password",
+            LegacyYeshuaApiPasswordVariable);
+
+        SetIfEnvironmentExists(
+            values,
+            LoginPathKey,
+            LoginPathVariable,
+            "TestSettings__LoginPath",
+            LegacyIntegrationApiLoginPathVariable,
+            "IntegrationApi__LoginPath",
+            LegacyYeshuaApiLoginPathVariable);
+
+        SetIfEnvironmentExists(
+            values,
+            TimeoutSecondsKey,
+            TimeoutSecondsVariable,
+            "TestSettings__TimeoutSeconds",
+            LegacyIntegrationApiTimeoutSecondsVariable,
+            "IntegrationApi__TimeoutSeconds",
+            LegacyYeshuaApiTimeoutSecondsVariable);
     }
 
     private static void SetIfEnvironmentExists(
@@ -233,11 +283,15 @@ public sealed class ApiIntegrationSettings
         }
     }
 
-    private static string? GetValue(IReadOnlyDictionary<string, string> values, string key)
+    private static string? GetValue(IReadOnlyDictionary<string, string> values, params string[] keys)
     {
-        return values.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value)
-            ? value
-            : null;
+        foreach (var key in keys)
+        {
+            if (values.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value))
+                return value;
+        }
+
+        return null;
     }
 
     private static string? DiscoverBaseUrlFromApiLaunchSettings()
@@ -309,6 +363,6 @@ public sealed class ApiIntegrationSettings
 
     private static string BuildNotConfiguredMessage()
     {
-        return $"Integration API tests require {BaseUrlKey}, {LoginKey} and {PasswordKey} in appsettings or {BaseUrlVariable}, {LoginVariable} and {PasswordVariable} in deploy.";
+        return $"Integration tests require {BaseUrlKey}, {LoginKey} and {PasswordKey} in appsettings or {BaseUrlVariable}, {LoginVariable} and {PasswordVariable} in deploy.";
     }
 }

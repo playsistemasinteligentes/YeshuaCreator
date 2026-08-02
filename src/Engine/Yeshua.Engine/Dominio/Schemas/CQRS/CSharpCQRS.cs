@@ -738,6 +738,9 @@ namespace Dominio.Schemas.CQRS
     <None Update=""appsettings*.json"">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update=""xunit.runner.json"">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>");
@@ -747,9 +750,23 @@ namespace Dominio.Schemas.CQRS
                 "global using Yeshua.CQRS.Tests.Integration.TestKit;");
 
             WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApi(), "AssemblyInfo.cs"),
+                @"using Xunit;
+
+[assembly: CollectionBehavior(DisableTestParallelization = true, MaxParallelThreads = 1)]");
+
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApi(), "xunit.runner.json"),
+                @"{
+  ""parallelizeAssembly"": false,
+  ""parallelizeTestCollections"": false,
+  ""maxParallelThreads"": 1
+}");
+
+            WriteTextIfMissing(
                 Path.Combine(GetPathTestsIntegrationApi(), "appsettings.json"),
                 @"{
-  ""IntegrationApi"": {
+  ""TestSettings"": {
     ""BaseUrl"": ""https://localhost:7214"",
     ""LoginPath"": ""/yapi/login"",
     ""Login"": """",

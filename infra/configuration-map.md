@@ -7,21 +7,19 @@ parece ativo do que parece sobra historica.
 
 - Desenvolvimento Windows: `appsettings.json` e arquivos locais de appsettings.
 - Deploy Linux/Docker: variaveis de ambiente no formato `Section__Key`.
-- Testes integrados API: secao `IntegrationApi` em appsettings, com override por
-  `INTEGRATIONAPI__...` no deploy.
+- Banco alvo: definido diretamente por `MyConfig:ReadConectionString` e
+  `MyConfig:WriteConectionString`, sem condicional por ambiente.
+- Testes integrados: secao geral `TestSettings` em appsettings, com override por
+  `TESTSETTINGS__...` no deploy.
 
 ## API e Worker
 
 | Chave | Onde aparece | Uso atual | Status |
 | --- | --- | --- | --- |
 | `MyConfig:ReadConectionString` | API, Worker, Front, Studio appsettings | `GS.I.MYC.ReadConectionString` cria `SqlFactory` | Manter |
-| `MyConfig:WriteConectionString` | API, Worker, Front, Studio appsettings | Existe no modelo e override, mas nao foi encontrado uso direto na API/Worker | Revisar antes de remover |
-| `MyConfig:ReadConectionStringHML` | API, Worker, Front appsettings | Promovida para `ReadConectionString` quando o ambiente for `HML`, `Homologacao`, `Homologation` ou `Staging` | Manter |
-| `MyConfig:WriteConectionStringHML` | API, Worker, Front appsettings | Promovida para `WriteConectionString` quando o ambiente for `HML`, `Homologacao`, `Homologation` ou `Staging` | Manter |
+| `MyConfig:WriteConectionString` | API, Worker, Front, Studio appsettings | Mantida pelo contrato de leitura/escrita; pode apontar para o mesmo banco da leitura | Manter |
 | `MYCONFIG__READCONECTIONSTRING` | Docker compose, `GS` | Override real da conexao de leitura | Manter |
 | `MYCONFIG__WRITECONECTIONSTRING` | Docker compose, `GS` | Override real da conexao de escrita | Manter por enquanto |
-| `MYCONFIG__READCONECTIONSTRINGHML` | Deploy/test runner | Override da conexao HML antes da selecao por ambiente | Manter |
-| `MYCONFIG__WRITECONECTIONSTRINGHML` | Deploy/test runner | Override da conexao HML antes da selecao por ambiente | Manter |
 | `MyConfig:MaxConcurrentConnections` | appsettings API/Worker/Front | Kestrel da API/Front | Manter |
 | `MyConfig:MaxConcurrentUpgradedConnections` | appsettings API/Worker/Front | Kestrel da API/Front | Manter |
 | `MyConfig:MaxRequestBodySize` | appsettings API/Worker/Front | Kestrel da API/Front | Manter |
@@ -84,18 +82,23 @@ padrao do ASP.NET.
 | `SUMMARIZER_MODEL` | ai-summarizer | Python summarizer | Manter |
 | `SUMMARIZER_DEVICE` | ai-summarizer | Python summarizer | Manter |
 
-## Testes integrados API
+## Testes integrados
+
+Os testes integrados de API executam sem paralelismo por `AssemblyInfo.cs` e
+`xunit.runner.json`, porque batem em API e banco reais.
 
 | Chave | Origem | Uso atual | Status |
 | --- | --- | --- | --- |
-| `IntegrationApi:BaseUrl` | `tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings*.json` | URL alvo dos testes | Manter |
-| `IntegrationApi:LoginPath` | appsettings/env | Endpoint de login, padrao `/yapi/login` | Manter |
-| `IntegrationApi:Login` | appsettings/env | Login real para autenticar nos testes | Manter |
-| `IntegrationApi:Password` | appsettings/env | Senha real para autenticar nos testes | Manter |
-| `IntegrationApi:TimeoutSeconds` | appsettings/env | Timeout do `HttpClient` | Manter |
-| `INTEGRATIONAPI__BASEURL` | deploy/test runner | Override de `IntegrationApi:BaseUrl` | Manter |
-| `INTEGRATIONAPI__LOGIN` | deploy/test runner | Override de `IntegrationApi:Login` | Manter |
-| `INTEGRATIONAPI__PASSWORD` | deploy/test runner | Override de `IntegrationApi:Password` | Manter |
-| `INTEGRATIONAPI__LOGINPATH` | deploy/test runner | Override de `IntegrationApi:LoginPath` | Manter |
-| `INTEGRATIONAPI__TIMEOUTSECONDS` | deploy/test runner | Override de `IntegrationApi:TimeoutSeconds` | Manter |
+| `TestSettings:BaseUrl` | `tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings*.json` | URL alvo dos testes | Manter |
+| `TestSettings:LoginPath` | appsettings/env | Endpoint de login, padrao `/yapi/login` | Manter |
+| `TestSettings:Login` | appsettings/env | Login real para autenticar nos testes | Manter |
+| `TestSettings:Password` | appsettings/env | Senha real para autenticar nos testes | Manter |
+| `TestSettings:TimeoutSeconds` | appsettings/env | Timeout do `HttpClient` | Manter |
+| `TESTSETTINGS__BASEURL` | deploy/test runner | Override de `TestSettings:BaseUrl` | Manter |
+| `TESTSETTINGS__LOGIN` | deploy/test runner | Override de `TestSettings:Login` | Manter |
+| `TESTSETTINGS__PASSWORD` | deploy/test runner | Override de `TestSettings:Password` | Manter |
+| `TESTSETTINGS__LOGINPATH` | deploy/test runner | Override de `TestSettings:LoginPath` | Manter |
+| `TESTSETTINGS__TIMEOUTSECONDS` | deploy/test runner | Override de `TestSettings:TimeoutSeconds` | Manter |
+| `IntegrationApi:*` | legado do primeiro corte dos testes | Ainda aceito por compatibilidade temporaria | Remover depois da transicao |
+| `INTEGRATIONAPI__*` | legado do primeiro corte dos testes | Ainda aceito por compatibilidade temporaria | Remover depois da transicao |
 | `YESHUA_API_*` | legado do primeiro corte dos testes | Ainda aceito por compatibilidade | Remover depois da transicao |

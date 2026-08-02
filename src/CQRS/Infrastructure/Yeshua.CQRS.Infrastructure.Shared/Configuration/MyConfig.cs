@@ -11,8 +11,6 @@ namespace Shered.Configuration
         public MyConfig() { }
         public string ReadConectionString { get; set; }
         public string WriteConectionString { get; set; }
-        public string ReadConectionStringHML { get; set; }
-        public string WriteConectionStringHML { get; set; }
         public RabbitMqOptions RabbitMQ { get; set; } = new RabbitMqOptions();
 
         public string HttpIPListen { get; set; }
