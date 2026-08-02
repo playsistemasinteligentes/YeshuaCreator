@@ -1,4 +1,4 @@
-using Shered.Services;
+﻿using Shered.Services;
 using Command.Interfaces.Patterns.Queue;
 using Worker.Custon;
 namespace Migrations

@@ -1,4 +1,4 @@
-using Dominio.Interfaces.Strategy;
+﻿using Dominio.Interfaces.Strategy;
 using Dominio.Enum.Strategy;
 using Shered.Patterns.Strategy;
 

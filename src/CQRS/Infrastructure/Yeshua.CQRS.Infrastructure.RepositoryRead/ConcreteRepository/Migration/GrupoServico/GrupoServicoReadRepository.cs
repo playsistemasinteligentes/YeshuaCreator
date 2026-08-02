@@ -1,4 +1,4 @@
-using Dapper;
+﻿using Dapper;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;

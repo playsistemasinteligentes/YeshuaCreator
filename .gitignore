@@ -5,6 +5,8 @@
 
 # dotenv files
 .env
+tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings.Local.json
+tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings.*.Local.json
 
 # User-specific files
 *.rsuser

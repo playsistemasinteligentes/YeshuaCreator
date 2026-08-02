@@ -1,4 +1,4 @@
-using Dapper;
+﻿using Dapper;
 using Dominio.Entitys;
 using IRepository.Write;
 using IQuery.Write;

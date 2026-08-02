@@ -1,4 +1,4 @@
-using RepositoryInterfaces.Patterns.Command;
+﻿using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
 using Microsoft.AspNetCore.Http;

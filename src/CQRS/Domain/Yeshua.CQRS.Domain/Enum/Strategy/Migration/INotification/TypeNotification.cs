@@ -1,4 +1,4 @@
-
+﻿
 namespace Dominio.Enum.Strategy;
 
 public enum TypeNotification

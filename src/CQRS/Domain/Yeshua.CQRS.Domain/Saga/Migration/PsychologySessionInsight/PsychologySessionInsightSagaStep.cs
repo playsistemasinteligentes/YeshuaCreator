@@ -1,4 +1,4 @@
-using Dominio.Patterns.Saga;
+﻿using Dominio.Patterns.Saga;
 
 namespace Dominio.Saga
 {

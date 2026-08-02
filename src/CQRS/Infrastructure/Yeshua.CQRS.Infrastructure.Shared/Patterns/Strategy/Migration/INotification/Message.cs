@@ -1,4 +1,4 @@
-
+﻿
 namespace Shered.Patterns.Strategy;
 
 using Dominio.Interfaces.Strategy;

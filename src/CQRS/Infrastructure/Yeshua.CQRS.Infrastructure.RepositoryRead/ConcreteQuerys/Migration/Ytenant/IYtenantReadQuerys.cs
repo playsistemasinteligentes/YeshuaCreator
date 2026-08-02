@@ -1,4 +1,4 @@
-using Shered.DB;
+﻿using Shered.DB;
 namespace IQuery.Read
 {
     public interface IyTenantQueryRead 

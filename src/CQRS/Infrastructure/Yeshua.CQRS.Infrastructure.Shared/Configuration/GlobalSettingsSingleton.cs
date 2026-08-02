@@ -31,6 +31,11 @@ public sealed class GS
             }
 
             // 2️⃣ Override manual por variáveis de ambiente (se existirem)
+            OverrideIfExists("MYCONFIG__READCONECTIONSTRINGHML", v => MYC.ReadConectionStringHML = v);
+            OverrideIfExists("MYCONFIG__WRITECONECTIONSTRINGHML", v => MYC.WriteConectionStringHML = v);
+
+            UseHmlConnectionStringsIfNeeded();
+
             OverrideIfExists("MYCONFIG__READCONECTIONSTRING", v => MYC.ReadConectionString = v);
             OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", v => MYC.WriteConectionString = v);
 
@@ -42,6 +47,35 @@ public sealed class GS
             Console.WriteLine($"Erro ao carregar configurações: {ex.Message}");
             MYC = new MyConfig();
         }
+    }
+
+    private void UseHmlConnectionStringsIfNeeded()
+    {
+        if (!IsHmlEnvironment())
+            return;
+
+        if (!string.IsNullOrWhiteSpace(MYC.ReadConectionStringHML))
+            MYC.ReadConectionString = MYC.ReadConectionStringHML;
+
+        if (!string.IsNullOrWhiteSpace(MYC.WriteConectionStringHML))
+            MYC.WriteConectionString = MYC.WriteConectionStringHML;
+    }
+
+    private static bool IsHmlEnvironment()
+    {
+        var environmentName =
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
+            Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+        return IsEnvironment(environmentName, "HML") ||
+            IsEnvironment(environmentName, "Homologacao") ||
+            IsEnvironment(environmentName, "Homologation") ||
+            IsEnvironment(environmentName, "Staging");
+    }
+
+    private static bool IsEnvironment(string? environmentName, string expected)
+    {
+        return string.Equals(environmentName, expected, StringComparison.OrdinalIgnoreCase);
     }
 
     private void OverrideIfExists(string envKey, Action<string> setter)

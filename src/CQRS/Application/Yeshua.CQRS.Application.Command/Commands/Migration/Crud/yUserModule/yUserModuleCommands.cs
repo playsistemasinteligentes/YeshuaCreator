@@ -1,4 +1,4 @@
-using RepositoryInterfaces.Patterns.Command;
+﻿using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {
     public struct yUserModuleCrudCommand : ICommand

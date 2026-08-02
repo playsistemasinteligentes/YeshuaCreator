@@ -1,4 +1,4 @@
-using Shered.DB;
+﻿using Shered.DB;
 using System.Data.SqlTypes;
 using Command.Read;
 using IQuery.Read;

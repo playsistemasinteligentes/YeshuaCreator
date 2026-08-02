@@ -18,21 +18,21 @@ namespace Migration.Dominio
         protected void EnsureDirectoryExists(string filePath)
         {
             var directory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directory))
+            if (!string.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
         }
 
         // Método protegido para obter o conteúdo atual do arquivo
         protected string ReadFileContent(string filePath)
         {
-            return File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
+            return File.Exists(filePath) ? File.ReadAllText(filePath, Encoding.UTF8) : string.Empty;
         }
 
         // Método protegido para escrever o código no arquivo
         protected void WriteToFile(StringBuilder content, string filePath)
         {
             EnsureDirectoryExists(filePath);
-            File.WriteAllText(filePath, content.ToString());
+            File.WriteAllText(filePath, content.ToString(), Encoding.UTF8);
         }
 
         // Método abstrato para definir a lógica específica de geração de código
@@ -63,7 +63,7 @@ namespace Migration.Dominio
 
                 // Abre ou cria o arquivo com compartilhamento liberado para leitura
                 using (var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read))
-                using (var writer = new StreamWriter(stream))
+                using (var writer = new StreamWriter(stream, Encoding.UTF8))
                 {
 
                     string[] linhas = content.Split(Environment.NewLine);

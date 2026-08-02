@@ -1,4 +1,4 @@
-using Shered.DB;
+﻿using Shered.DB;
 using Dominio.Entitys;
 namespace IQuery.Write
 {

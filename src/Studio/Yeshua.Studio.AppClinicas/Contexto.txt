@@ -305280,3 +305280,1254 @@ return _erroMensagem.Count() <= 0;
                             }
 //Dominio.Schemas.CQRS.SourceCodeEntityMigration
 
+namespace Read.Repository
+{
+    public partial class yTenantReadRepository : IyTenantReadRepository
+    {
+        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IExecutionContext _executionContext;
+       protected readonly IyTenantQueryRead _query;
+        public yTenantReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext,IyTenantQueryRead query)
+        {
+            _unitOfWork = unitOfWork;
+            _executionContext = executionContext;
+            _query = query;
+        }
+        public DataPagination<yTenantDTO> getyTenant(ICommandRead command , bool TakeOffId = false)
+         {
+            if (command is Command.Read.yTenantReadCommand c)
+                return getyTenant(c , TakeOffId);
+            throw new NotImplementedException();
+        }
+        private DataPagination<yTenantDTO> getyTenant(Command.Read.yTenantReadCommand command , bool TakeOffId = false)
+        {
+            var query = _query.yTenantQuery(command , TakeOffId);
+                var itens = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters);
+                return new DataPagination<yTenantDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+        }
+        public bool ExistsById(int value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByIdQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+        public bool ExistsByCnpjCpf(string value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByCnpjCpfQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+        public bool ExistsByNome(string value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByNomeQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+        public bool ExistsByUserId(int value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByUserIdQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+        public bool ExistsByDeleted(bool value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByDeletedQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+        public bool ExistsByChanged(DateTime value , bool TakeOffId = false)
+        {
+            var query = _query.ExistsByChangedQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+        public yTenantDTO FirstById(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByIdQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+        public yTenantDTO FirstByCnpjCpf(string value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+        public yTenantDTO FirstByNome(string value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByNomeQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+        public yTenantDTO FirstByUserId(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByUserIdQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+        public yTenantDTO FirstByDeleted(bool value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByDeletedQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+        public yTenantDTO FirstByChanged(DateTime value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByChangedQuery(value , TakeOffId);
+                var result = _unitOfWork.QueryFirstOrDefault<yTenantDTO>(query.Query, query.Parameters);
+                return result;
+        }
+        public IEnumerable<yTenantDTO> GetAllById(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByIdQuery(value , TakeOffId);
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+        public IEnumerable<yTenantDTO> GetAllByCnpjCpf(string value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+        public IEnumerable<yTenantDTO> GetAllByNome(string value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByNomeQuery(value , TakeOffId);
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+        public IEnumerable<yTenantDTO> GetAllByUserId(int value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByUserIdQuery(value , TakeOffId);
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+        public IEnumerable<yTenantDTO> GetAllByDeleted(bool value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByDeletedQuery(value , TakeOffId);
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+        public IEnumerable<yTenantDTO> GetAllByChanged(DateTime value , bool TakeOffId = false)
+        {
+            var query = _query.FirstByChangedQuery(value , TakeOffId);
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                return result;
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
+
+namespace Query.Read 
+{
+    public class yTenantQueryRead : QueryBase, IyTenantQueryRead
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryRead(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel yTenantQuery(Command.Read.yTenantReadCommand Command , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $@" select Id, CnpjCpf, Nome, UserId, Deleted, Changed from yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+if (!string.IsNullOrEmpty(Command.CnpjCpf)) dict["CnpjCpf"] = $"%{Command.CnpjCpf}%";
+if (!string.IsNullOrEmpty(Command.CnpjCpf)) whereClauses.Add($"CnpjCpf like @CnpjCpf");
+if (!string.IsNullOrEmpty(Command.Nome)) dict["Nome"] = $"%{Command.Nome}%";
+if (!string.IsNullOrEmpty(Command.Nome)) whereClauses.Add($"Nome like @Nome");
+if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
+if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+            if (whereClauses.Any()) 
+                 this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Id"] = value; //04
+                      whereClauses.Add($" Id = @Id ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByCnpjCpfQuery(string value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["CnpjCpf"] = value; //04
+                      whereClauses.Add($" CnpjCpf = @CnpjCpf ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByNomeQuery(string value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Nome"] = value; //04
+                      whereClauses.Add($" Nome = @Nome ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByUserIdQuery(int value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["UserId"] = value; //04
+                      whereClauses.Add($" UserId = @UserId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Deleted"] = value; //04
+                      whereClauses.Add($" Deleted = @Deleted ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Changed"] = value; //04
+                      whereClauses.Add($" Changed = @Changed ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByIdQuery(int value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Id"] = value; //06
+                      whereClauses.Add($" Id = @Id ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByCnpjCpfQuery(string value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["CnpjCpf"] = value; //06
+                      whereClauses.Add($" CnpjCpf = @CnpjCpf ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByNomeQuery(string value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Nome"] = value; //06
+                      whereClauses.Add($" Nome = @Nome ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByUserIdQuery(int value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["UserId"] = value; //06
+                      whereClauses.Add($" UserId = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Deleted"] = value; //06
+                      whereClauses.Add($" Deleted = @Deleted ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffId = false)
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT * FROM yTenant ";
+if (!TakeOffId)  dict["Id"] = _executionContext.TenantID;
+if (!TakeOffId)  whereClauses.Add($"Id = @Id");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Changed"] = value; //06
+                      whereClauses.Add($" Changed = @Changed ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
+
+namespace IQuery.Read
+{
+    public interface IyTenantQueryRead 
+    {
+        public QueryModel yTenantQuery(Command.Read.yTenantReadCommand Command , bool TakeOffId = false);
+        public QueryModel ExistsByIdQuery(int value , bool TakeOffId = false);
+        public QueryModel ExistsByCnpjCpfQuery(string value , bool TakeOffId = false);
+        public QueryModel ExistsByNomeQuery(string value , bool TakeOffId = false);
+        public QueryModel ExistsByUserIdQuery(int value , bool TakeOffId = false);
+        public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffId = false);
+        public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffId = false);
+        public QueryModel FirstByIdQuery(int value , bool TakeOffId = false);
+        public QueryModel FirstByCnpjCpfQuery(string value , bool TakeOffId = false);
+        public QueryModel FirstByNomeQuery(string value , bool TakeOffId = false);
+        public QueryModel FirstByUserIdQuery(int value , bool TakeOffId = false);
+        public QueryModel FirstByDeletedQuery(bool value , bool TakeOffId = false);
+        public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffId = false);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
+
+namespace Input.Repository.yTenant
+{
+    public partial class yTenantWriteRepository : IyTenantWriteRepository
+    {
+        private readonly IUnitOfWork _UnitOfWork;
+       private readonly IyTenantQueryWrite _query; 
+        public yTenantWriteRepository(IUnitOfWork unitOfWork,IyTenantQueryWrite query)
+        {
+             _UnitOfWork= unitOfWork;
+             _query = query;
+        }
+        public void Insert(IyTenantEntity yTenant)
+        {
+            var query = _query.InseriryTenantQuery(yTenant);
+        yTenant.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
+        }
+        public void Update(IyTenantEntity yTenant)
+        {
+            var query = _query.UpdateyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void Delete(IyTenantEntity yTenant)
+        {
+            var query = _query.DeleteyTenantQuery(yTenant);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCnpjCpf(int id, string value)
+        {
+            var query = _query.UpdateCnpjCpf(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateNome(int id, string value)
+        {
+            var query = _query.UpdateNome(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateDeleted(int id, bool value)
+        {
+            var query = _query.UpdateDeleted(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateChanged(int id, DateTime value)
+        {
+            var query = _query.UpdateChanged(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration
+
+namespace Query.Write
+{
+    public class yTenantQueryWrite : QueryBase, IyTenantQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yTenantQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" INSERT INTO yTenant (CnpjCpf, Nome, UserId, Deleted, Changed) OUTPUT INSERTED.Id VALUES(@CnpjCpf, @Nome, @UserId, @Deleted, @Changed) ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = yTenant.UserId,
+                Deleted = 0,
+                Changed = DateTime.Now,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" UPDATE yTenant SET CnpjCpf = @CnpjCpf, Nome = @Nome, UserId = @UserId, Changed = @Changed WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = yTenant.CnpjCpf,
+                Nome = yTenant.Nome,
+                UserId = _executionContext.UserId,
+                Changed = yTenant.Changed,
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateCnpjCpf(int id, string value)
+        {
+            this.Query = $@" UPDATE yTenant SET CnpjCpf = @CnpjCpf WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                CnpjCpf = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateNome(int id, string value)
+        {
+            this.Query = $@" UPDATE yTenant SET Nome = @Nome WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Nome = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE yTenant SET UserId = @UserId WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDeleted(int id, bool value)
+        {
+            this.Query = $@" UPDATE yTenant SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Deleted = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateChanged(int id, DateTime value)
+        {
+            this.Query = $@" UPDATE yTenant SET Changed = @Changed WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Changed = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant)
+        {
+            this.Query = $@" DELETE FROM yTenant WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = yTenant.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+namespace IQuery.Write
+{
+    public interface IyTenantQueryWrite 
+     {
+        public QueryModel InseriryTenantQuery(IyTenantEntity yTenant);
+        public QueryModel UpdateyTenantQuery(IyTenantEntity yTenant);
+        QueryModel UpdateCnpjCpf(int id, string value);
+        QueryModel UpdateNome(int id, string value);
+        QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        public QueryModel DeleteyTenantQuery(IyTenantEntity yTenant);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+
+namespace Yeshua.CQRS.Tests.Integration.Api.Migration.yTenant;
+public partial class yTenantCrudApiIntegrationTests : ApiIntegrationTestBase
+{
+    private const string CreateEndpoint = "/yapi/yTenant/PostyTenant";
+    private const string ReadEndpoint = "/yapi/yTenant/ReadyTenant";
+    private const string UpdateEndpoint = "/yapi/yTenant/PutyTenant";
+    private const string DeleteEndpoint = "/yapi/yTenant/DeleteyTenant";
+    [IntegrationFact]
+    public async Task Crud_should_create_read_update_and_delete_through_api()
+    {
+        var createPayload = BuildCreatePayload();
+        CustomizeCreatePayload(createPayload);
+        var createState = await ApiResponseAssertions.ReadSuccessStateAsync(createResponse);
+        var createdId = ApiJson.GetRequiredProperty(createState, "data", "id");
+        ApiResponseAssertions.AssertNodeHasValue(createdId, "created id");
+        var readPayload = BuildReadByIdPayload(createdId);
+        CustomizeReadPayload(readPayload);
+        var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
+        ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+        var updatePayload = BuildUpdatePayload(createPayload, createdId);
+        CustomizeUpdatePayload(updatePayload);
+        var updateState = await ApiResponseAssertions.ReadSuccessStateAsync(updateResponse);
+        var updatedId = ApiJson.GetRequiredProperty(updateState, "data", "id");
+        ApiResponseAssertions.AssertSameJsonValue(createdId, updatedId, "updated id");
+        var deletePayload = BuildDeletePayload(updatePayload, createdId);
+        CustomizeDeletePayload(deletePayload);
+        var deleteState = await ApiResponseAssertions.ReadSuccessStateAsync(deleteResponse);
+        var deletedId = ApiJson.GetRequiredProperty(deleteState, "data", "id");
+        ApiResponseAssertions.AssertSameJsonValue(createdId, deletedId, "deleted id");
+    }
+    private static JsonObject BuildCreatePayload()
+    {
+        return new JsonObject
+        {
+            ["CnpjCpf"] = ApiTestData.Text("yTenant CnpjCpf", 14),
+            ["Nome"] = ApiTestData.Text("yTenant Nome", 80),
+            ["UserId"] = 1,
+        };
+    }
+    private static JsonObject BuildReadByIdPayload(JsonNode id)
+    {
+        return new JsonObject
+        {
+            ["Id"] = id.DeepClone(),
+            ["Paginacao"] = ApiTestData.Pagination()
+        };
+    }
+    private static JsonObject BuildUpdatePayload(JsonObject createPayload, JsonNode id)
+    {
+        var payload = (JsonObject)createPayload.DeepClone();
+        payload["Id"] = id.DeepClone();
+        payload["CnpjCpf"] = ApiTestData.Text("yTenant CnpjCpf Update", 14);
+        payload["Nome"] = ApiTestData.Text("yTenant Nome Update", 80);
+        payload["UserId"] = 2;
+        return payload;
+    }
+    private static JsonObject BuildDeletePayload(JsonObject updatePayload, JsonNode id)
+    {
+        var payload = (JsonObject)updatePayload.DeepClone();
+        payload["Id"] = id.DeepClone();
+        return payload;
+    }
+    partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeUpdatePayload(JsonObject payload);
+    partial void CustomizeDeletePayload(JsonObject payload);
+}
+//Dominio.Schemas.CQRS.SourceCodeIntegrationApiCrudTestMigration
+
+namespace Yeshua.CQRS.Tests.Integration.Api.Migration.yTenant;
+public partial class yTenantCrudApiIntegrationTests
+{
+    partial void CustomizeCreatePayload(JsonObject payload)
+    {
+    }
+    partial void CustomizeReadPayload(JsonObject payload)
+    {
+    }
+    partial void CustomizeUpdatePayload(JsonObject payload)
+    {
+    }
+    partial void CustomizeDeletePayload(JsonObject payload)
+    {
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeIntegrationApiCrudTestMigration
+
+namespace Command.Receivers.Write
+{
+    public class InsertyTenantReceiver : ReciverBase<ICommand, IyTenantEntity>
+    {
+        private readonly IyTenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        public InsertyTenantReceiver(
+            IyTenantWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _repository = repository;
+            _logger = logger;
+            _executionContext = context;
+        }
+        protected override State<IyTenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Write.yTenantCrudCommand c) 
+             {    
+                 var ytenant = new yTenantFactory(_logger).Create(c.CnpjCpf, c.Nome, c.UserId);
+                 if (!ytenant.isValidInsert())
+                     return ValidationError(ytenant.getErroMensagens(), null);
+                 try
+                 {
+                     _repository.Insert(ytenant);
+                     return Success("OK", ytenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, ytenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class UpdateyTenantReceiver : ReciverBase<ICommand, IyTenantEntity>
+    {
+        private readonly IyTenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        public UpdateyTenantReceiver(
+            IyTenantWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _repository = repository;
+            _logger = logger;
+            _executionContext = context;
+        }
+        protected override State<IyTenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Write.yTenantCrudCommand c) 
+             {    
+                 var ytenant = new yTenantFactory(_logger).Create(c.CnpjCpf, c.Nome, c.UserId);
+                 if (!ytenant.isValidUpdate())
+                     return ValidationError(ytenant.getErroMensagens(), null);
+                 try
+                 {
+                     _repository.Update(ytenant);
+                     return Success("OK", ytenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, ytenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Write
+{
+    public class DeleteyTenantReceiver : ReciverBase<ICommand, IyTenantEntity>
+    {
+        private readonly IyTenantWriteRepository _repository;
+        private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        public DeleteyTenantReceiver(
+            IyTenantWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _repository = repository;
+            _logger = logger;
+            _executionContext = context;
+        }
+        protected override State<IyTenantEntity> Action(ICommand comand)
+        {
+             if(comand is Command.Write.yTenantCrudCommand c) 
+             {    
+                 var ytenant = new yTenantFactory(_logger).Create(c.CnpjCpf, c.Nome, c.UserId);
+                 if (!ytenant.isValidDelete())
+                     return ValidationError(ytenant.getErroMensagens(), null);
+                 try
+                 {
+                     _repository.Delete(ytenant);
+                     return Success("OK", ytenant);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, ytenant);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+namespace Command.Receivers.Read
+{
+    public class yTenantReadReceiver : ReciverBase<ICommand, DataPagination<yTenantDTO>>
+    {
+        private readonly IyTenantReadRepository _repository;
+        private readonly ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        public yTenantReadReceiver(
+            IyTenantReadRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _repository = repository;
+            _logger = logger;
+            _executionContext = context;
+        }
+        protected override State<DataPagination<yTenantDTO>> Action(ICommand comand)
+        {
+            if(comand is Command.Read.yTenantReadCommand c) 
+             {    
+                var yTenantReadRepository = _repository.getyTenant(c);
+                return Success("OK", yTenantReadRepository);
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+namespace Command.Receivers.UseCase
+{
+    public partial class CreateContaHandler : ReciverBase< CreateContaInputCommand, CreateContaOutputCommand>
+    {
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        public CreateContaHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _logger = logger;
+            _executionContext = context;
+        }
+        protected override State<CreateContaOutputCommand> Action(CreateContaInputCommand comand)
+        {
+            try
+            {
+                 State<CreateContaOutputCommand> retorno = Success("OK", null);
+                 CustomActionHook(ref retorno, comand);
+                 return retorno;
+            }
+            catch (ReceiverException<CreateContaOutputCommand> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+// Escopo: Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook
+namespace Command.Receivers.UseCase
+{
+    public partial class RecoveryAccountHandler : ReciverBase< RecoveryAccountInputCommand, RecoveryAccountOutputCommand>
+    {
+		   private readonly Dominio.Interfaces.ILogger _logger;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        public RecoveryAccountHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _logger = logger;
+            _executionContext = context;
+        }
+        protected override State<RecoveryAccountOutputCommand> Action(RecoveryAccountInputCommand comand)
+        {
+            try
+            {
+                 State<RecoveryAccountOutputCommand> retorno = Success("OK", null);
+                 CustomActionHook(ref retorno, comand);
+                 return retorno;
+            }
+            catch (ReceiverException<RecoveryAccountOutputCommand> e)
+            {
+                return e.State;
+            }
+            catch (Exception e)
+            {
+                return Error(e, default);
+            }
+        }
+partial void CustomActionHook(ref State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand);
+}
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Dominio.Enum.Strategy;
+public enum TypeNotification
+{
+    Email = 1,
+    SMS = 2,
+    Whatsapp = 3,
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Dominio.Interfaces.Strategy;
+public interface IMessage
+{
+    String Destination { get; set; }
+    String Body { get; set; }
+    String Subject { get; set; }
+    Byte[] Attachment { get; set; }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Dominio.Interfaces.Strategy;
+public interface INotification
+{
+    TypeNotification Type { get; }
+    void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Shered.Patterns.Strategy;
+public partial class EmailNotification : INotification
+{
+    public TypeNotification Type => TypeNotification.Email;
+    public partial void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Shered.Patterns.Strategy;
+public partial class SMSNotification : INotification
+{
+    public TypeNotification Type => TypeNotification.SMS;
+    public partial void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Shered.Patterns.Strategy;
+public partial class WhatsappNotification : INotification
+{
+    public TypeNotification Type => TypeNotification.Whatsapp;
+    public partial void SendNotification(IMessage menssege);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Dominio.Interfaces.Strategy;
+public interface IINotificationFactory
+{
+    INotification GetType(TypeNotification type);
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Shered.Patterns.Strategy;
+public class NotificationFactory : IINotificationFactory
+{
+    private readonly EmailNotification _emailnotification;
+    private readonly SMSNotification _smsnotification;
+    private readonly WhatsappNotification _whatsappnotification;
+    public NotificationFactory(
+        EmailNotification emailnotification,
+        SMSNotification smsnotification,
+        WhatsappNotification whatsappnotification
+    )
+    {
+        _emailnotification = emailnotification;
+        _smsnotification = smsnotification;
+        _whatsappnotification = whatsappnotification;
+    }
+    public INotification GetType(TypeNotification type)
+    {
+        return type switch
+        {
+            TypeNotification.Email => _emailnotification,
+            TypeNotification.SMS => _smsnotification,
+            TypeNotification.Whatsapp => _whatsappnotification,
+            _ => throw new ArgumentException("Invalid Type")
+        };
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Shered.Patterns.Strategy;
+public partial class Message : IMessage
+{
+    public string Destination { get; set; }
+    public string Body { get; set; }
+    public string Subject { get; set; }
+    public byte[] Attachment { get; set; }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+
+namespace Command.Write
+{
+    public struct yTenantCrudCommand : ICommand
+    {
+        public int? Id { get; set; }
+        public string CnpjCpf { get; set; }
+        public string Nome { get; set; }
+        public int? UserId { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace Command.Read
+{
+    public struct yTenantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public string CnpjCpf { get; set; }
+        public string Nome { get; set; }
+        public int? UserId { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+
+namespace IRepository.Read
+{
+    public partial interface IyTenantReadRepository
+    {
+        public DataPagination<yTenantDTO> getyTenant(ICommandRead command , bool TakeOffId = false);
+        public bool ExistsById(int value , bool TakeOffId = false);
+        public bool ExistsByCnpjCpf(string value , bool TakeOffId = false);
+        public bool ExistsByNome(string value , bool TakeOffId = false);
+        public bool ExistsByUserId(int value , bool TakeOffId = false);
+        public bool ExistsByDeleted(bool value , bool TakeOffId = false);
+        public bool ExistsByChanged(DateTime value , bool TakeOffId = false);
+        public yTenantDTO FirstById(int value , bool TakeOffId = false);
+        public yTenantDTO FirstByCnpjCpf(string value , bool TakeOffId = false);
+        public yTenantDTO FirstByNome(string value , bool TakeOffId = false);
+        public yTenantDTO FirstByUserId(int value , bool TakeOffId = false);
+        public yTenantDTO FirstByDeleted(bool value , bool TakeOffId = false);
+        public yTenantDTO FirstByChanged(DateTime value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllById(int value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByCnpjCpf(string value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByNome(string value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByUserId(int value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByDeleted(bool value , bool TakeOffId = false);
+        public IEnumerable<yTenantDTO> GetAllByChanged(DateTime value , bool TakeOffId = false);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+
+namespace Repositorio.Outputs
+{
+    public partial record yTenantDTO
+    {
+    public int id { get; set; }
+    public string cnpjcpf { get; set; }
+    public string nome { get; set; }
+    public int userid { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+
+namespace IRepository.Write
+{
+    public partial interface IyTenantWriteRepository
+    {
+        void Insert(IyTenantEntity ytenant);
+        void Update(IyTenantEntity ytenant);
+        void Delete(IyTenantEntity ytenant);
+        void UpdateCnpjCpf(int id, string value);
+        void UpdateNome(int id, string value);
+        void UpdateUserId(int id, int value);
+        void UpdateDeleted(int id, bool value);
+        void UpdateChanged(int id, DateTime value);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+
+                namespace Dominio.Entitys
+                {
+                    public interface IyTenantEntity
+{
+    int? Id { get; set; }
+    string CnpjCpf { get; set; }
+    string Nome { get; set; }
+    int? UserId { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class yTenantEntity : IyTenantEntity
+{
+    public int? Id { get; set; }
+    public string CnpjCpf { get; set; }
+    public string Nome { get; set; }
+    public int? UserId { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
+    private List<string> _erroMensagem = null;
+ internal yTenantEntity(string cnpjcpf, string nome, int? userid ){
+ CnpjCpf = cnpjcpf; 
+ Nome = nome; 
+ UserId = userid; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if(string.IsNullOrEmpty(CnpjCpf))
+   this._erroMensagem.Add("Cnpj/Cpf deve ser informado.");
+   if(string.IsNullOrEmpty(Nome))
+   this._erroMensagem.Add("Nome deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                namespace Dominio.Entitys
+                {
+                    public partial class yTenantDecorator : IyTenantEntity
+{
+                        private readonly IyTenantEntity _inner;
+                        private readonly Dominio.Interfaces.ILogger _logger;
+                        public yTenantDecorator(IyTenantEntity inner, Dominio.Interfaces.ILogger logger)
+                        {
+                            _inner = inner;
+                            _logger = logger;
+                        }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
+                                                _inner.Id = value;
+                                            }
+                                        }
+                                    }
+                                    public string CnpjCpf
+                                    {
+                                        get => _inner.CnpjCpf;
+                                        set
+                                        {
+                                            if (_inner.CnpjCpf != value)
+                                            {
+                                                _logger.Info($"Propriedade CnpjCpf: antes={_inner.CnpjCpf}, depois={value}");
+                                                _inner.CnpjCpf = value;
+                                            }
+                                        }
+                                    }
+                                    public string Nome
+                                    {
+                                        get => _inner.Nome;
+                                        set
+                                        {
+                                            if (_inner.Nome != value)
+                                            {
+                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
+                                                _inner.Nome = value;
+                                            }
+                                        }
+                                    }
+                                    public int? UserId
+                                    {
+                                        get => _inner.UserId;
+                                        set
+                                        {
+                                            if (_inner.UserId != value)
+                                            {
+                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
+                                                _inner.UserId = value;
+                                            }
+                                        }
+                                    }
+                                    public bool? Deleted
+                                    {
+                                        get => _inner.Deleted;
+                                        set
+                                        {
+                                            if (_inner.Deleted != value)
+                                            {
+                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
+                                                _inner.Deleted = value;
+                                            }
+                                        }
+                                    }
+                                    public DateTime? Changed
+                                    {
+                                        get => _inner.Changed;
+                                        set
+                                        {
+                                            if (_inner.Changed != value)
+                                            {
+                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
+                                                _inner.Changed = value;
+                                            }
+                                        }
+                                    }
+                        public bool isValidInsert() => _inner.isValidInsert();
+                        public bool isValidUpdate() => _inner.isValidUpdate();
+                        public bool isValidDelete() => _inner.isValidDelete();
+                        public List<string> getErroMensagens() => _inner.getErroMensagens();
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+
+                            namespace Dominio.Entitys
+                            {
+                                public class yTenantFactory
+                                {
+                                    private readonly Dominio.Interfaces.ILogger _logger;
+                                    public yTenantFactory(Dominio.Interfaces.ILogger logger)
+                                    {
+                                        _logger = logger;
+                                    } public IyTenantEntity Create(string cnpjcpf, string nome, int? userid )
+                            {
+                            var entity = new yTenantEntity(cnpjcpf, nome, userid );
+                            var decoratedEntity = new yTenantDecorator(entity, _logger);
+                            return decoratedEntity;
+                                    }
+                                }
+                            }
+//Dominio.Schemas.CQRS.SourceCodeEntityMigration
+

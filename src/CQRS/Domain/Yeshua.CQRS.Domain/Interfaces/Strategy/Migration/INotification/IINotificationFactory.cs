@@ -1,4 +1,4 @@
-using Dominio.Interfaces.Strategy;
+﻿using Dominio.Interfaces.Strategy;
 using Dominio.Enum.Strategy;
 
 namespace Dominio.Interfaces.Strategy;

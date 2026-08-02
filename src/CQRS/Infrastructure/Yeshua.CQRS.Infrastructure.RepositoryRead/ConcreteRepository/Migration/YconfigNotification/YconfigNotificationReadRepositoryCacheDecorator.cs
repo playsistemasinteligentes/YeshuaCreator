@@ -1,4 +1,4 @@
-using Repositorio.Outputs;
+﻿using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using IRepository.Read;

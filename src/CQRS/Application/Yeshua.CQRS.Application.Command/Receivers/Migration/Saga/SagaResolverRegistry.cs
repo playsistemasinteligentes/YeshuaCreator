@@ -1,4 +1,4 @@
-using Command.Saga;
+﻿using Command.Saga;
 using Dominio.Saga;
 using RepositoryInterfaces.Patterns.Saga;
 using Dominio.Patterns.Saga;

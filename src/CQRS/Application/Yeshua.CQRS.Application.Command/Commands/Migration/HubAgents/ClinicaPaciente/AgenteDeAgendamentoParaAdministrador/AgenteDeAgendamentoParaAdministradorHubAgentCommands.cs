@@ -1,4 +1,4 @@
-using Command.Patterns.Command;
+﻿using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 namespace Command.Write
 {

@@ -677,7 +677,113 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateAutomacaoTest(Migration.MigrationBase migration)
         {
-            throw new NotImplementedException();
+            EnsureIntegrationTestProjectFiles();
+
+            foreach (var entity in migration.Entitys)
+            {
+                var filePath = Path.Combine(GetPathTestsIntegrationApi(), $"Migration\\{entity.EntityName}\\{entity.EntityName}CrudApiIntegrationTests.cs");
+                var filePathCuston = Path.Combine(GetPathTestsIntegrationApi(), $"Custon\\{entity.EntityName}\\{entity.EntityName}CrudApiIntegrationTests.cs");
+                var sourceCodeMigration = new SourceCodeIntegrationApiCrudTestMigration(entity);
+                sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+            }
+        }
+
+        private void EnsureIntegrationTestProjectFiles()
+        {
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationTestKit(), "Yeshua.CQRS.Tests.Integration.TestKit.csproj"),
+                @"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include=""xunit"" Version=""2.5.3"" />
+  </ItemGroup>
+
+</Project>");
+
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApi(), "Yeshua.CQRS.Tests.Integration.Api.csproj"),
+                @"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include=""coverlet.collector"" Version=""6.0.0"" />
+    <PackageReference Include=""Microsoft.NET.Test.Sdk"" Version=""17.8.0"" />
+    <PackageReference Include=""xunit"" Version=""2.5.3"" />
+    <PackageReference Include=""xunit.runner.visualstudio"" Version=""2.5.3"" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""..\Yeshua.CQRS.Tests.Integration.TestKit\Yeshua.CQRS.Tests.Integration.TestKit.csproj"" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include=""Xunit"" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update=""appsettings*.json"">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>");
+
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApi(), "GlobalUsings.cs"),
+                "global using Yeshua.CQRS.Tests.Integration.TestKit;");
+
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApi(), "appsettings.json"),
+                @"{
+  ""IntegrationApi"": {
+    ""BaseUrl"": ""https://localhost:7214"",
+    ""LoginPath"": ""/yapi/login"",
+    ""Login"": """",
+    ""Password"": """",
+    ""TimeoutSeconds"": 100
+  }
+}");
+        }
+
+        private void WriteTextIfMissing(string filePath, string content)
+        {
+            if (File.Exists(filePath))
+                return;
+
+            var directory = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrWhiteSpace(directory))
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(filePath, content, Encoding.UTF8);
+        }
+
+        private string GetPathTestsIntegrationTestKit()
+        {
+            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.TestKit");
+        }
+
+        private string GetPathTestsIntegrationApi()
+        {
+            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.Api");
+        }
+
+        private string GetPathTestsCQRS()
+        {
+            return Path.Combine(GetPathAppSolution(), "tests", "CQRS");
         }
 
         public void AppInfraestructureGenerateMigration(Migration.MigrationBase migration)
@@ -845,7 +951,7 @@ namespace Dominio.Schemas.CQRS
             AppInfraestructureGenerateWriteConcreteRepository(migration);
             AppInfraestructureGenerateWriteConcreteQuerys(migration);
 
-            ///////////AppInfraestructureGenerateAutomacaoTest(migration);
+            AppInfraestructureGenerateAutomacaoTest(migration);
 
             AppAplicationGenerateCommandReceivers(migration);
             ///////////AppAplicationGenerateCommandPartterns(migration);

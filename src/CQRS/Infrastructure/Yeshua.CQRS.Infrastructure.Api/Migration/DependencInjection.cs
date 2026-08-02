@@ -1,4 +1,4 @@
-using Shered.Services;
+﻿using Shered.Services;
 using RepositoryInterfaces.Services;
 using Command.Patterns;
 using Command.Interfaces;
