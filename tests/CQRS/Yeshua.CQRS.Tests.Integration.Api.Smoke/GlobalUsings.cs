@@ -1,0 +1,1 @@
+global using Yeshua.CQRS.Tests.Integration.Api.TestKit;

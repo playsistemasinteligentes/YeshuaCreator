@@ -1,4 +1,4 @@
-﻿using Dominio.Migration;
+using Dominio.Migration;
 using Dominio.Saga.Migration;
 using Dominio.Schemas.CQRS.Abstraction;
 using Dominio.TiposPrimitivos;
@@ -679,19 +679,136 @@ namespace Dominio.Schemas.CQRS
         {
             EnsureIntegrationTestProjectFiles();
 
-            foreach (var entity in migration.Entitys)
+            var orderedEntities = OrderEntitiesForApiSmoke(migration.Entitys).ToList();
+            for (var index = 0; index < orderedEntities.Count; index++)
             {
-                var filePath = Path.Combine(GetPathTestsIntegrationApi(), $"Migration\\{entity.EntityName}\\{entity.EntityName}CrudApiIntegrationTests.cs");
-                var filePathCuston = Path.Combine(GetPathTestsIntegrationApi(), $"Custon\\{entity.EntityName}\\{entity.EntityName}CrudApiIntegrationTests.cs");
-                var sourceCodeMigration = new SourceCodeIntegrationApiCrudTestMigration(entity);
+                var entity = orderedEntities[index];
+                var filePath = Path.Combine(GetPathTestsIntegrationApiSmoke(), $"Migration\\{entity.EntityName}\\{entity.EntityName}CrudApiSmokeTests.cs");
+                var filePathCuston = Path.Combine(GetPathTestsIntegrationApiSmoke(), $"Custon\\{entity.EntityName}\\{entity.EntityName}CrudApiSmokeTests.cs");
+                var sourceCodeMigration = new SourceCodeIntegrationApiSmokeCrudTestMigration(entity, index + 1);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
+
+            WriteIntegrationApiSmokeSuiteFile(orderedEntities);
+        }
+
+        private static IEnumerable<Entity> OrderEntitiesForApiSmoke(IEnumerable<Entity> entities)
+        {
+            var ordered = new List<Entity>();
+            var remaining = entities
+                .GroupBy(entity => entity.EntityName, StringComparer.OrdinalIgnoreCase)
+                .Select(group => group.First())
+                .ToList();
+            var entityNames = remaining.Select(entity => entity.EntityName).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            while (remaining.Count > 0)
+            {
+                var progressed = false;
+
+                foreach (var entity in remaining.ToList())
+                {
+                    var hasPendingDependency = GetApiSmokeDependencies(entity, entityNames)
+                        .Any(dependency => remaining.Any(candidate =>
+                            string.Equals(candidate.EntityName, dependency, StringComparison.OrdinalIgnoreCase)));
+
+                    if (hasPendingDependency)
+                        continue;
+
+                    ordered.Add(entity);
+                    remaining.Remove(entity);
+                    progressed = true;
+                }
+
+                if (!progressed)
+                {
+                    ordered.AddRange(remaining);
+                    break;
+                }
+            }
+
+            return ordered;
+        }
+
+        private static IEnumerable<string> GetApiSmokeDependencies(Entity entity, ISet<string> entityNames)
+        {
+            return entity.AddColumns
+                .Where(column =>
+                    column.IsFK &&
+                    !column.IsBackEndField &&
+                    !column.IsValueDefault &&
+                    !string.IsNullOrWhiteSpace(column.FkEntityName) &&
+                    !string.Equals(column.FkEntityName, entity.EntityName, StringComparison.OrdinalIgnoreCase) &&
+                    entityNames.Contains(column.FkEntityName))
+                .Select(column => column.FkEntityName)
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+        }
+
+        private void WriteIntegrationApiSmokeSuiteFile(IReadOnlyList<Entity> orderedEntities)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration;");
+            sb.AppendLine();
+            sb.AppendLine("public sealed class ApiSmokeCrudSuiteTests");
+            sb.AppendLine("{");
+            sb.AppendLine("    [IntegrationFact]");
+            sb.AppendLine("    public async Task Crud_smoke_suite_should_run_entities_in_dependency_order()");
+            sb.AppendLine("    {");
+            sb.AppendLine("        ApiSmokeTestContext.Clear();");
+            sb.AppendLine();
+            sb.AppendLine("        var deleteSteps = new Stack<Func<Task>>();");
+            sb.AppendLine("        var deleteErrors = new List<Exception>();");
+            sb.AppendLine("        Exception? testError = null;");
+            sb.AppendLine();
+            sb.AppendLine("        try");
+            sb.AppendLine("        {");
+
+            for (var index = 0; index < orderedEntities.Count; index++)
+            {
+                var entity = orderedEntities[index];
+                var variableName = $"step{(index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+                sb.AppendLine($"            var {variableName} = new {entity.EntityName}.{entity.EntityName}CrudApiSmokeTests();");
+                sb.AppendLine($"            deleteSteps.Push({variableName}.DeleteAsync);");
+                sb.AppendLine($"            await {variableName}.ExecuteAsync();");
+                sb.AppendLine();
+            }
+
+            sb.AppendLine("        }");
+            sb.AppendLine("        catch (Exception ex)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            testError = ex;");
+            sb.AppendLine("        }");
+            sb.AppendLine("        finally");
+            sb.AppendLine("        {");
+            sb.AppendLine("            while (deleteSteps.Count > 0)");
+            sb.AppendLine("            {");
+            sb.AppendLine("                try");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    await deleteSteps.Pop()();");
+            sb.AppendLine("                }");
+            sb.AppendLine("                catch (Exception ex)");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    deleteErrors.Add(ex);");
+            sb.AppendLine("                }");
+            sb.AppendLine("            }");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine("        if (testError is not null)");
+            sb.AppendLine("            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(testError).Throw();");
+            sb.AppendLine();
+            sb.AppendLine("        if (deleteErrors.Count > 0)");
+            sb.AppendLine("            throw new AggregateException(\"One or more API smoke cleanup steps failed.\", deleteErrors);");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+
+            WriteText(
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "Migration", "ApiSmokeCrudSuiteTests.cs"),
+                sb.ToString());
         }
 
         private void EnsureIntegrationTestProjectFiles()
         {
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationTestKit(), "Yeshua.CQRS.Tests.Integration.TestKit.csproj"),
+                Path.Combine(GetPathTestsIntegrationApiTestKit(), "Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj"),
                 @"<Project Sdk=""Microsoft.NET.Sdk"">
 
   <PropertyGroup>
@@ -708,7 +825,7 @@ namespace Dominio.Schemas.CQRS
 </Project>");
 
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApi(), "Yeshua.CQRS.Tests.Integration.Api.csproj"),
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "Yeshua.CQRS.Tests.Integration.Api.Smoke.csproj"),
                 @"<Project Sdk=""Microsoft.NET.Sdk"">
 
   <PropertyGroup>
@@ -727,7 +844,7 @@ namespace Dominio.Schemas.CQRS
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include=""..\Yeshua.CQRS.Tests.Integration.TestKit\Yeshua.CQRS.Tests.Integration.TestKit.csproj"" />
+    <ProjectReference Include=""..\Yeshua.CQRS.Tests.Integration.Api.TestKit\Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj"" />
   </ItemGroup>
 
   <ItemGroup>
@@ -746,17 +863,17 @@ namespace Dominio.Schemas.CQRS
 </Project>");
 
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApi(), "GlobalUsings.cs"),
-                "global using Yeshua.CQRS.Tests.Integration.TestKit;");
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "GlobalUsings.cs"),
+                "global using Yeshua.CQRS.Tests.Integration.Api.TestKit;");
 
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApi(), "AssemblyInfo.cs"),
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "AssemblyInfo.cs"),
                 @"using Xunit;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true, MaxParallelThreads = 1)]");
 
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApi(), "xunit.runner.json"),
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "xunit.runner.json"),
                 @"{
   ""parallelizeAssembly"": false,
   ""parallelizeTestCollections"": false,
@@ -764,7 +881,7 @@ namespace Dominio.Schemas.CQRS
 }");
 
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApi(), "appsettings.json"),
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "appsettings.json"),
                 @"{
   ""TestSettings"": {
     ""BaseUrl"": ""https://localhost:7214"",
@@ -781,6 +898,11 @@ namespace Dominio.Schemas.CQRS
             if (File.Exists(filePath))
                 return;
 
+            WriteText(filePath, content);
+        }
+
+        private void WriteText(string filePath, string content)
+        {
             var directory = Path.GetDirectoryName(filePath);
             if (!string.IsNullOrWhiteSpace(directory))
                 Directory.CreateDirectory(directory);
@@ -788,14 +910,14 @@ namespace Dominio.Schemas.CQRS
             File.WriteAllText(filePath, content, Encoding.UTF8);
         }
 
-        private string GetPathTestsIntegrationTestKit()
+        private string GetPathTestsIntegrationApiTestKit()
         {
-            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.TestKit");
+            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.Api.TestKit");
         }
 
-        private string GetPathTestsIntegrationApi()
+        private string GetPathTestsIntegrationApiSmoke()
         {
-            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.Api");
+            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.Api.Smoke");
         }
 
         private string GetPathTestsCQRS()

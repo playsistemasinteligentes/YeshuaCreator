@@ -54,9 +54,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yeshua.CQRS.Tests.Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yeshua.CQRS.Tests.Application", "tests\CQRS\Yeshua.CQRS.Tests.Application\Yeshua.CQRS.Tests.Application.csproj", "{D49C46CB-3822-4163-8A6B-9D6152356A46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yeshua.CQRS.Tests.Integration.TestKit", "tests\CQRS\Yeshua.CQRS.Tests.Integration.TestKit\Yeshua.CQRS.Tests.Integration.TestKit.csproj", "{45ED3B3A-C876-4507-BE6D-7991BE6B6C02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yeshua.CQRS.Tests.Integration.Api.TestKit", "tests\CQRS\Yeshua.CQRS.Tests.Integration.Api.TestKit\Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj", "{45ED3B3A-C876-4507-BE6D-7991BE6B6C02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yeshua.CQRS.Tests.Integration.Api", "tests\CQRS\Yeshua.CQRS.Tests.Integration.Api\Yeshua.CQRS.Tests.Integration.Api.csproj", "{9828B569-535F-455C-ADBC-A1B2E34B3DA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yeshua.CQRS.Tests.Integration.Api.Smoke", "tests\CQRS\Yeshua.CQRS.Tests.Integration.Api.Smoke\Yeshua.CQRS.Tests.Integration.Api.Smoke.csproj", "{9828B569-535F-455C-ADBC-A1B2E34B3DA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
