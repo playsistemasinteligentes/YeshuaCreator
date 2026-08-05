@@ -209,5 +209,6 @@ namespace Dominio.Schemas.CQRS
 
             return sb;
         }
+
     }
 }

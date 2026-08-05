@@ -51,29 +51,29 @@ namespace Input.Repository.yPerfilGrant
             var query = _query.UpdateGrantId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateGrant(int id, bool value)
+        public void UpdateCanGrant(int id, bool value)
         {
-            var query = _query.UpdateGrant(id, value);
+            var query = _query.UpdateCanGrant(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateCreate(int id, bool value)
+        public void UpdateCanCreate(int id, bool value)
         {
-            var query = _query.UpdateCreate(id, value);
+            var query = _query.UpdateCanCreate(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateRead(int id, bool value)
+        public void UpdateCanRead(int id, bool value)
         {
-            var query = _query.UpdateRead(id, value);
+            var query = _query.UpdateCanRead(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUpdate(int id, bool value)
+        public void UpdateCanUpdate(int id, bool value)
         {
-            var query = _query.UpdateUpdate(id, value);
+            var query = _query.UpdateCanUpdate(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDelete(int id, bool value)
+        public void UpdateCanDelete(int id, bool value)
         {
-            var query = _query.UpdateDelete(id, value);
+            var query = _query.UpdateCanDelete(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
         public void UpdateValidUntil(int id, DateTime value)

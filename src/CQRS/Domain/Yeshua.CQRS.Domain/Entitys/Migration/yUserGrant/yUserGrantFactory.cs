@@ -9,9 +9,9 @@
                                     public yUserGrantFactory(Dominio.Interfaces.ILogger logger)
                                     {
                                         _logger = logger;
-                                    } public IyUserGrantEntity Create(int? id, int? perfilid, string grantid, bool? grant, bool? create, bool? read, bool? update, bool? delete, DateTime? validuntil )
+                                    } public IyUserGrantEntity Create(int? id, int? perfilid, string grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil )
                             {
-                            var entity = new yUserGrantEntity(id, perfilid, grantid, grant, create, read, update, delete, validuntil );
+                            var entity = new yUserGrantEntity(id, perfilid, grantid, cangrant, cancreate, canread, canupdate, candelete, validuntil );
 
 
                             var decoratedEntity = new yUserGrantDecorator(entity, _logger);

@@ -13,26 +13,26 @@
     public int? Id { get; set; }
     public int? PerfilId { get; set; }
     public string GrantId { get; set; }
-    public bool? Grant { get; set; }
-    public bool? Create { get; set; }
-    public bool? Read { get; set; }
-    public bool? Update { get; set; }
-    public bool? Delete { get; set; }
+    public bool? CanGrant { get; set; }
+    public bool? CanCreate { get; set; }
+    public bool? CanRead { get; set; }
+    public bool? CanUpdate { get; set; }
+    public bool? CanDelete { get; set; }
     public DateTime? ValidUntil { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal yUserGrantEntity(int? id, int? perfilid, string grantid, bool? grant, bool? create, bool? read, bool? update, bool? delete, DateTime? validuntil ){
+ internal yUserGrantEntity(int? id, int? perfilid, string grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil ){
  Id = id; 
  PerfilId = perfilid; 
  GrantId = grantid; 
- Grant = grant; 
- Create = create; 
- Read = read; 
- Update = update; 
- Delete = delete; 
+ CanGrant = cangrant; 
+ CanCreate = cancreate; 
+ CanRead = canread; 
+ CanUpdate = canupdate; 
+ CanDelete = candelete; 
  ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
 }
 public bool isValidData()

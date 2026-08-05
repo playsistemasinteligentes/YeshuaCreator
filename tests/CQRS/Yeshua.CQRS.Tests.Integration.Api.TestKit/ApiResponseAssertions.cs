@@ -37,16 +37,27 @@ public static class ApiResponseAssertions
 
     public static void AssertReadContainsId(JsonObject readState, JsonNode id)
     {
-        var data = ApiJson.GetRequiredProperty(readState, "data");
-        var items = ApiJson.GetProperty(data, "items") as JsonArray;
-        Assert.NotNull(items);
+        var items = GetReadItems(readState);
 
-        var found = items!.Any(item =>
+        var found = items.Any(item =>
         {
             var itemId = ApiJson.GetProperty(item, "id");
             return ApiJson.JsonValueEquals(id, itemId);
         });
 
         Assert.True(found, $"Read response did not contain id {id}.");
+    }
+
+    public static void AssertReadReturnedItems(JsonObject readState)
+    {
+        _ = GetReadItems(readState);
+    }
+
+    private static JsonArray GetReadItems(JsonObject readState)
+    {
+        var data = ApiJson.GetRequiredProperty(readState, "data");
+        var items = ApiJson.GetProperty(data, "items") as JsonArray;
+        Assert.NotNull(items);
+        return items!;
     }
 }

@@ -13,11 +13,11 @@
     int? Id { get; set; }
     int? PerfilId { get; set; }
     string GrantId { get; set; }
-    bool? Grant { get; set; }
-    bool? Create { get; set; }
-    bool? Read { get; set; }
-    bool? Update { get; set; }
-    bool? Delete { get; set; }
+    bool? CanGrant { get; set; }
+    bool? CanCreate { get; set; }
+    bool? CanRead { get; set; }
+    bool? CanUpdate { get; set; }
+    bool? CanDelete { get; set; }
     DateTime? ValidUntil { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

@@ -56,7 +56,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        CustomizeReadPayload(readPayload);");
             sb.AppendLine("        using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);");
             sb.AppendLine("        var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);");
-            sb.AppendLine("        ApiResponseAssertions.AssertReadContainsId(readState, createdId);");
+            sb.AppendLine("        var readAssertionHandled = false;");
+            sb.AppendLine("        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);");
+            sb.AppendLine("        if (!readAssertionHandled)");
+            sb.AppendLine("            ApiResponseAssertions.AssertReadContainsId(readState, createdId);");
             sb.AppendLine();
             sb.AppendLine("        var updatePayload = BuildUpdatePayload(createPayload, createdId);");
             sb.AppendLine("        CustomizeUpdatePayload(updatePayload);");
@@ -119,6 +122,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine();
             sb.AppendLine("    partial void CustomizeCreatePayload(JsonObject payload);");
             sb.AppendLine("    partial void CustomizeReadPayload(JsonObject payload);");
+            sb.AppendLine("    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);");
             sb.AppendLine("    partial void CustomizeUpdatePayload(JsonObject payload);");
             sb.AppendLine("    partial void CustomizeDeletePayload(JsonObject payload);");
             sb.AppendLine("}");

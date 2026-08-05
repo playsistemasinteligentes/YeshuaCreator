@@ -32,7 +32,7 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yUserGrantCrudCommand c) 
              {    
-                 var yusergrant = new yUserGrantFactory(_logger).Create(c.Id, c.PerfilId, c.GrantId, c.Grant, c.Create, c.Read, c.Update, c.Delete, c.ValidUntil);
+                 var yusergrant = new yUserGrantFactory(_logger).Create(c.Id, c.PerfilId, c.GrantId, c.CanGrant, c.CanCreate, c.CanRead, c.CanUpdate, c.CanDelete, c.ValidUntil);
                  if (!yusergrant.isValidDelete())
                      return ValidationError(yusergrant.getErroMensagens(), null);
 

@@ -113,22 +113,22 @@ Polling
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("PerfilId", "ID Perfil").FK("yPerfil", "Id").Int()
             .AddColumn("GrantId", "ID Permição").FK("yGrant", "Id").Varchar(100)
-            .AddColumn("Grant", "Permite acessar").Boolean()
-            .AddColumn("Create", "Permite Criar").Boolean()
-            .AddColumn("Read", "Permite  Ler").Boolean()
-            .AddColumn("Update", "Permite Atualizar").Boolean()
-            .AddColumn("Delete", "Permite Deletar").Boolean()
+            .AddColumn("CanGrant", "Permite acessar").Boolean()
+            .AddColumn("CanCreate", "Permite Criar").Boolean()
+            .AddColumn("CanRead", "Permite Ler").Boolean()
+            .AddColumn("CanUpdate", "Permite Atualizar").Boolean()
+            .AddColumn("CanDelete", "Permite Deletar").Boolean()
             .AddColumn("ValidUntil", "Valido ate").DateTime();
 
             AddEntity("yUserGrant").AddModule("ADM")
             .AddColumn("Id", "ID").Int().Incremento().Key()
             .AddColumn("PerfilId", "ID Perfil").FK("yPerfil", "Id").Int()
             .AddColumn("GrantId", "ID Permição").FK("yGrant", "Id").Varchar(100)
-            .AddColumn("Grant", "Permite acessar").Boolean()
-            .AddColumn("Create", "Permite Criar").Boolean()
-            .AddColumn("Read", "Permite  Ler").Boolean()
-            .AddColumn("Update", "Permite Atualizar").Boolean()
-            .AddColumn("Delete", "Permite Deletar").Boolean()
+            .AddColumn("CanGrant", "Permite acessar").Boolean()
+            .AddColumn("CanCreate", "Permite Criar").Boolean()
+            .AddColumn("CanRead", "Permite Ler").Boolean()
+            .AddColumn("CanUpdate", "Permite Atualizar").Boolean()
+            .AddColumn("CanDelete", "Permite Deletar").Boolean()
             .AddColumn("ValidUntil", "Valido ate").DateTime();
         }
     }

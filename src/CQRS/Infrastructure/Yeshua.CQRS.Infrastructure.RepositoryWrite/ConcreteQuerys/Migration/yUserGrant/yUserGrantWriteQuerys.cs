@@ -20,16 +20,16 @@ namespace Query.Write
         }
         public QueryModel InseriryUserGrantQuery(IyUserGrantEntity yUserGrant)
         {
-            this.Query = $@" INSERT INTO yUserGrant (PerfilId, GrantId, Grant, Create, Read, Update, Delete, ValidUntil, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PerfilId, @GrantId, @Grant, @Create, @Read, @Update, @Delete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yUserGrant (PerfilId, GrantId, CanGrant, CanCreate, CanRead, CanUpdate, CanDelete, ValidUntil, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PerfilId = yUserGrant.PerfilId,
                 GrantId = yUserGrant.GrantId,
-                Grant = yUserGrant.Grant,
-                Create = yUserGrant.Create,
-                Read = yUserGrant.Read,
-                Update = yUserGrant.Update,
-                Delete = yUserGrant.Delete,
+                CanGrant = yUserGrant.CanGrant,
+                CanCreate = yUserGrant.CanCreate,
+                CanRead = yUserGrant.CanRead,
+                CanUpdate = yUserGrant.CanUpdate,
+                CanDelete = yUserGrant.CanDelete,
                 ValidUntil = yUserGrant.ValidUntil,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
@@ -40,16 +40,16 @@ namespace Query.Write
         }
         public QueryModel UpdateyUserGrantQuery(IyUserGrantEntity yUserGrant)
         {
-            this.Query = $@" UPDATE yUserGrant SET PerfilId = @PerfilId, GrantId = @GrantId, Grant = @Grant, Create = @Create, Read = @Read, Update = @Update, Delete = @Delete, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserGrant SET PerfilId = @PerfilId, GrantId = @GrantId, CanGrant = @CanGrant, CanCreate = @CanCreate, CanRead = @CanRead, CanUpdate = @CanUpdate, CanDelete = @CanDelete, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
             this.Parameters = new
             {
                 PerfilId = yUserGrant.PerfilId,
                 GrantId = yUserGrant.GrantId,
-                Grant = yUserGrant.Grant,
-                Create = yUserGrant.Create,
-                Read = yUserGrant.Read,
-                Update = yUserGrant.Update,
-                Delete = yUserGrant.Delete,
+                CanGrant = yUserGrant.CanGrant,
+                CanCreate = yUserGrant.CanCreate,
+                CanRead = yUserGrant.CanRead,
+                CanUpdate = yUserGrant.CanUpdate,
+                CanDelete = yUserGrant.CanDelete,
                 ValidUntil = yUserGrant.ValidUntil,
                 Changed = yUserGrant.Changed,
                 UserId = _executionContext.UserId,
@@ -77,52 +77,52 @@ namespace Query.Write
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateGrant(int id, bool value)
+        public QueryModel UpdateCanGrant(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Grant = @Grant WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserGrant SET CanGrant = @CanGrant WHERE Id = @Id ";
             this.Parameters = new
             {
-                Grant = value,
+                CanGrant = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateCreate(int id, bool value)
+        public QueryModel UpdateCanCreate(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Create = @Create WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserGrant SET CanCreate = @CanCreate WHERE Id = @Id ";
             this.Parameters = new
             {
-                Create = value,
+                CanCreate = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateRead(int id, bool value)
+        public QueryModel UpdateCanRead(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Read = @Read WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserGrant SET CanRead = @CanRead WHERE Id = @Id ";
             this.Parameters = new
             {
-                Read = value,
+                CanRead = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateUpdate(int id, bool value)
+        public QueryModel UpdateCanUpdate(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Update = @Update WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserGrant SET CanUpdate = @CanUpdate WHERE Id = @Id ";
             this.Parameters = new
             {
-                Update = value,
+                CanUpdate = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
-        public QueryModel UpdateDelete(int id, bool value)
+        public QueryModel UpdateCanDelete(int id, bool value)
         {
-            this.Query = $@" UPDATE yUserGrant SET Delete = @Delete WHERE Id = @Id ";
+            this.Query = $@" UPDATE yUserGrant SET CanDelete = @CanDelete WHERE Id = @Id ";
             this.Parameters = new
             {
-                Delete = value,
+                CanDelete = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

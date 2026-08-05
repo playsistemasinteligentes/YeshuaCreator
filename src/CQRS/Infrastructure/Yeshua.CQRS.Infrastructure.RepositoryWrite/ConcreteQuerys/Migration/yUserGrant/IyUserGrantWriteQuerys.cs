@@ -9,11 +9,11 @@ namespace IQuery.Write
         public QueryModel UpdateyUserGrantQuery(IyUserGrantEntity yUserGrant);
         QueryModel UpdatePerfilId(int id, int value);
         QueryModel UpdateGrantId(int id, string value);
-        QueryModel UpdateGrant(int id, bool value);
-        QueryModel UpdateCreate(int id, bool value);
-        QueryModel UpdateRead(int id, bool value);
-        QueryModel UpdateUpdate(int id, bool value);
-        QueryModel UpdateDelete(int id, bool value);
+        QueryModel UpdateCanGrant(int id, bool value);
+        QueryModel UpdateCanCreate(int id, bool value);
+        QueryModel UpdateCanRead(int id, bool value);
+        QueryModel UpdateCanUpdate(int id, bool value);
+        QueryModel UpdateCanDelete(int id, bool value);
         QueryModel UpdateValidUntil(int id, DateTime value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);

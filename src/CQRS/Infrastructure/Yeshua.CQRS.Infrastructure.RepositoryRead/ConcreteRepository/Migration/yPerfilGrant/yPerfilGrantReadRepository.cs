@@ -144,41 +144,41 @@ namespace Read.Repository
                 return result == 1;
         }
 
-        public bool ExistsByGrant(bool value )
+        public bool ExistsByCanGrant(bool value )
         {
-            var query = _query.ExistsByGrantQuery(value );
+            var query = _query.ExistsByCanGrantQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByCreate(bool value )
+        public bool ExistsByCanCreate(bool value )
         {
-            var query = _query.ExistsByCreateQuery(value );
+            var query = _query.ExistsByCanCreateQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByRead(bool value )
+        public bool ExistsByCanRead(bool value )
         {
-            var query = _query.ExistsByReadQuery(value );
+            var query = _query.ExistsByCanReadQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByUpdate(bool value )
+        public bool ExistsByCanUpdate(bool value )
         {
-            var query = _query.ExistsByUpdateQuery(value );
+            var query = _query.ExistsByCanUpdateQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
         }
 
-        public bool ExistsByDelete(bool value )
+        public bool ExistsByCanDelete(bool value )
         {
-            var query = _query.ExistsByDeleteQuery(value );
+            var query = _query.ExistsByCanDeleteQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -248,41 +248,41 @@ namespace Read.Repository
                 return result;
         }
 
-        public yPerfilGrantDTO FirstByGrant(bool value )
+        public yPerfilGrantDTO FirstByCanGrant(bool value )
         {
-            var query = _query.FirstByGrantQuery(value );
+            var query = _query.FirstByCanGrantQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yPerfilGrantDTO FirstByCreate(bool value )
+        public yPerfilGrantDTO FirstByCanCreate(bool value )
         {
-            var query = _query.FirstByCreateQuery(value );
+            var query = _query.FirstByCanCreateQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yPerfilGrantDTO FirstByRead(bool value )
+        public yPerfilGrantDTO FirstByCanRead(bool value )
         {
-            var query = _query.FirstByReadQuery(value );
+            var query = _query.FirstByCanReadQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yPerfilGrantDTO FirstByUpdate(bool value )
+        public yPerfilGrantDTO FirstByCanUpdate(bool value )
         {
-            var query = _query.FirstByUpdateQuery(value );
+            var query = _query.FirstByCanUpdateQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
         }
 
-        public yPerfilGrantDTO FirstByDelete(bool value )
+        public yPerfilGrantDTO FirstByCanDelete(bool value )
         {
-            var query = _query.FirstByDeleteQuery(value );
+            var query = _query.FirstByCanDeleteQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<yPerfilGrantDTO>(query.Query, query.Parameters);
                 return result;
@@ -352,41 +352,41 @@ namespace Read.Repository
                 return result;
         }
 
-        public IEnumerable<yPerfilGrantDTO> GetAllByGrant(bool value )
+        public IEnumerable<yPerfilGrantDTO> GetAllByCanGrant(bool value )
         {
-            var query = _query.FirstByGrantQuery(value );
+            var query = _query.FirstByCanGrantQuery(value );
 
                 var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
-        public IEnumerable<yPerfilGrantDTO> GetAllByCreate(bool value )
+        public IEnumerable<yPerfilGrantDTO> GetAllByCanCreate(bool value )
         {
-            var query = _query.FirstByCreateQuery(value );
+            var query = _query.FirstByCanCreateQuery(value );
 
                 var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
-        public IEnumerable<yPerfilGrantDTO> GetAllByRead(bool value )
+        public IEnumerable<yPerfilGrantDTO> GetAllByCanRead(bool value )
         {
-            var query = _query.FirstByReadQuery(value );
+            var query = _query.FirstByCanReadQuery(value );
 
                 var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
-        public IEnumerable<yPerfilGrantDTO> GetAllByUpdate(bool value )
+        public IEnumerable<yPerfilGrantDTO> GetAllByCanUpdate(bool value )
         {
-            var query = _query.FirstByUpdateQuery(value );
+            var query = _query.FirstByCanUpdateQuery(value );
 
                 var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;
         }
 
-        public IEnumerable<yPerfilGrantDTO> GetAllByDelete(bool value )
+        public IEnumerable<yPerfilGrantDTO> GetAllByCanDelete(bool value )
         {
-            var query = _query.FirstByDeleteQuery(value );
+            var query = _query.FirstByCanDeleteQuery(value );
 
                 var result = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters) as List<yPerfilGrantDTO>;
                 return result;

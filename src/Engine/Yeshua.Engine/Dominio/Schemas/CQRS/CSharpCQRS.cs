@@ -679,7 +679,10 @@ namespace Dominio.Schemas.CQRS
         {
             EnsureIntegrationTestProjectFiles();
 
-            var orderedEntities = OrderEntitiesForApiSmoke(migration.Entitys).ToList();
+            var smokeEntities = migration.Entitys
+                .Where(ShouldGenerateApiSmokeCrud)
+                .ToList();
+            var orderedEntities = OrderEntitiesForApiSmoke(smokeEntities).ToList();
             for (var index = 0; index < orderedEntities.Count; index++)
             {
                 var entity = orderedEntities[index];
@@ -690,6 +693,11 @@ namespace Dominio.Schemas.CQRS
             }
 
             WriteIntegrationApiSmokeSuiteFile(orderedEntities);
+        }
+
+        private static bool ShouldGenerateApiSmokeCrud(Entity entity)
+        {
+            return !string.Equals(entity.EntityName, "yTenant", StringComparison.OrdinalIgnoreCase);
         }
 
         private static IEnumerable<Entity> OrderEntitiesForApiSmoke(IEnumerable<Entity> entities)

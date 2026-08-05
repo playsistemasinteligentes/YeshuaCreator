@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration.yPerfilGrant;
 
-[SmokeTestOrder(24)]
+[SmokeTestOrder(25)]
 public partial class yPerfilGrantCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "/yapi/yPerfilGrant/PostyPerfilGrant";
@@ -31,7 +31,10 @@ public partial class yPerfilGrantCrudApiSmokeTests : ApiIntegrationTestBase
         CustomizeReadPayload(readPayload);
         using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);
         var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
-        ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+        var readAssertionHandled = false;
+        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
+        if (!readAssertionHandled)
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -64,11 +67,11 @@ public partial class yPerfilGrantCrudApiSmokeTests : ApiIntegrationTestBase
         {
             ["PerfilId"] = ApiSmokeTestContext.GetRequiredCreatedId("yPerfil", "PerfilId"),
             ["GrantId"] = ApiSmokeTestContext.GetRequiredCreatedId("yGrant", "GrantId"),
-            ["Grant"] = false,
-            ["Create"] = false,
-            ["Read"] = false,
-            ["Update"] = false,
-            ["Delete"] = false,
+            ["CanGrant"] = false,
+            ["CanCreate"] = false,
+            ["CanRead"] = false,
+            ["CanUpdate"] = false,
+            ["CanDelete"] = false,
             ["ValidUntil"] = DateTime.UtcNow,
         };
     }
@@ -88,11 +91,11 @@ public partial class yPerfilGrantCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Id"] = id.DeepClone();
         payload["PerfilId"] = ApiSmokeTestContext.GetRequiredCreatedId("yPerfil", "PerfilId");
         payload["GrantId"] = ApiSmokeTestContext.GetRequiredCreatedId("yGrant", "GrantId");
-        payload["Grant"] = true;
-        payload["Create"] = true;
-        payload["Read"] = true;
-        payload["Update"] = true;
-        payload["Delete"] = true;
+        payload["CanGrant"] = true;
+        payload["CanCreate"] = true;
+        payload["CanRead"] = true;
+        payload["CanUpdate"] = true;
+        payload["CanDelete"] = true;
         payload["ValidUntil"] = DateTime.UtcNow.AddMinutes(1);
         return payload;
     }
@@ -106,6 +109,7 @@ public partial class yPerfilGrantCrudApiSmokeTests : ApiIntegrationTestBase
 
     partial void CustomizeCreatePayload(JsonObject payload);
     partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);
     partial void CustomizeDeletePayload(JsonObject payload);
 }

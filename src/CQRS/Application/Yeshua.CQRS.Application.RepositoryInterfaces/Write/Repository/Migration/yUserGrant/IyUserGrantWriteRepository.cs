@@ -14,11 +14,11 @@ namespace IRepository.Write
         void Delete(IyUserGrantEntity yusergrant);
         void UpdatePerfilId(int id, int value);
         void UpdateGrantId(int id, string value);
-        void UpdateGrant(int id, bool value);
-        void UpdateCreate(int id, bool value);
-        void UpdateRead(int id, bool value);
-        void UpdateUpdate(int id, bool value);
-        void UpdateDelete(int id, bool value);
+        void UpdateCanGrant(int id, bool value);
+        void UpdateCanCreate(int id, bool value);
+        void UpdateCanRead(int id, bool value);
+        void UpdateCanUpdate(int id, bool value);
+        void UpdateCanDelete(int id, bool value);
         void UpdateValidUntil(int id, DateTime value);
         void UpdateTenantID(int id, int value);
         void UpdateDeleted(int id, bool value);

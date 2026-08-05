@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration.ySagaStep;
 
-[SmokeTestOrder(20)]
+[SmokeTestOrder(14)]
 public partial class ySagaStepCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "/yapi/ySagaStep/PostySagaStep";
@@ -31,7 +31,10 @@ public partial class ySagaStepCrudApiSmokeTests : ApiIntegrationTestBase
         CustomizeReadPayload(readPayload);
         using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);
         var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
-        ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+        var readAssertionHandled = false;
+        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
+        if (!readAssertionHandled)
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -112,6 +115,7 @@ public partial class ySagaStepCrudApiSmokeTests : ApiIntegrationTestBase
 
     partial void CustomizeCreatePayload(JsonObject payload);
     partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);
     partial void CustomizeDeletePayload(JsonObject payload);
 }

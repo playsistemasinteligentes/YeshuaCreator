@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration.yFileUpload;
 
-[SmokeTestOrder(8)]
+[SmokeTestOrder(12)]
 public partial class yFileUploadCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "/yapi/yFileUpload/PostyFileUpload";
@@ -31,7 +31,10 @@ public partial class yFileUploadCrudApiSmokeTests : ApiIntegrationTestBase
         CustomizeReadPayload(readPayload);
         using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);
         var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
-        ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+        var readAssertionHandled = false;
+        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
+        if (!readAssertionHandled)
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -106,6 +109,7 @@ public partial class yFileUploadCrudApiSmokeTests : ApiIntegrationTestBase
 
     partial void CustomizeCreatePayload(JsonObject payload);
     partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);
     partial void CustomizeDeletePayload(JsonObject payload);
 }

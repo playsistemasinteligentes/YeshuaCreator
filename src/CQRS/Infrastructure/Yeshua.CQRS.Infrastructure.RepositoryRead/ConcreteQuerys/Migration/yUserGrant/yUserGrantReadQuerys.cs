@@ -25,7 +25,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, PerfilId, GrantId, Grant, Create, Read, Update, Delete, ValidUntil, TenantID, Deleted, Changed, UserId from yUserGrant ";
+            this.Query = $@" select Id, PerfilId, GrantId, CanGrant, CanCreate, CanRead, CanUpdate, CanDelete, ValidUntil, TenantID, Deleted, Changed, UserId from yUserGrant ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (Command.PerfilId.HasValue) dict["PerfilId"] = Command.PerfilId.Value;
@@ -223,7 +223,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByGrantQuery(bool value )
+        public QueryModel ExistsByCanGrantQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -234,14 +234,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Grant"] = value; //04
-                      whereClauses.Add($" Grant = @Grant ");//04
+                      dict["CanGrant"] = value; //04
+                      whereClauses.Add($" CanGrant = @CanGrant ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByCreateQuery(bool value )
+        public QueryModel ExistsByCanCreateQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -252,14 +252,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Create"] = value; //04
-                      whereClauses.Add($" Create = @Create ");//04
+                      dict["CanCreate"] = value; //04
+                      whereClauses.Add($" CanCreate = @CanCreate ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByReadQuery(bool value )
+        public QueryModel ExistsByCanReadQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -270,14 +270,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Read"] = value; //04
-                      whereClauses.Add($" Read = @Read ");//04
+                      dict["CanRead"] = value; //04
+                      whereClauses.Add($" CanRead = @CanRead ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByUpdateQuery(bool value )
+        public QueryModel ExistsByCanUpdateQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -288,14 +288,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Update"] = value; //04
-                      whereClauses.Add($" Update = @Update ");//04
+                      dict["CanUpdate"] = value; //04
+                      whereClauses.Add($" CanUpdate = @CanUpdate ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel ExistsByDeleteQuery(bool value )
+        public QueryModel ExistsByCanDeleteQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -306,8 +306,8 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Delete"] = value; //04
-                      whereClauses.Add($" Delete = @Delete ");//04
+                      dict["CanDelete"] = value; //04
+                      whereClauses.Add($" CanDelete = @CanDelete ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -457,7 +457,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByGrantQuery(bool value )
+        public QueryModel FirstByCanGrantQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -468,14 +468,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Grant"] = value; //06
-                      whereClauses.Add($" Grant = @Grant ");//06
+                      dict["CanGrant"] = value; //06
+                      whereClauses.Add($" CanGrant = @CanGrant ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByCreateQuery(bool value )
+        public QueryModel FirstByCanCreateQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -486,14 +486,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Create"] = value; //06
-                      whereClauses.Add($" Create = @Create ");//06
+                      dict["CanCreate"] = value; //06
+                      whereClauses.Add($" CanCreate = @CanCreate ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByReadQuery(bool value )
+        public QueryModel FirstByCanReadQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -504,14 +504,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Read"] = value; //06
-                      whereClauses.Add($" Read = @Read ");//06
+                      dict["CanRead"] = value; //06
+                      whereClauses.Add($" CanRead = @CanRead ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByUpdateQuery(bool value )
+        public QueryModel FirstByCanUpdateQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -522,14 +522,14 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Update"] = value; //06
-                      whereClauses.Add($" Update = @Update ");//06
+                      dict["CanUpdate"] = value; //06
+                      whereClauses.Add($" CanUpdate = @CanUpdate ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
-        public QueryModel FirstByDeleteQuery(bool value )
+        public QueryModel FirstByCanDeleteQuery(bool value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
@@ -540,8 +540,8 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
-                      dict["Delete"] = value; //06
-                      whereClauses.Add($" Delete = @Delete ");//06
+                      dict["CanDelete"] = value; //06
+                      whereClauses.Add($" CanDelete = @CanDelete ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

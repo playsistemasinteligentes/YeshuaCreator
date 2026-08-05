@@ -57,67 +57,67 @@
                                         }
                                     }
 
-                                    public bool? Grant
+                                    public bool? CanGrant
                                     {
-                                        get => _inner.Grant;
+                                        get => _inner.CanGrant;
                                         set
                                         {
-                                            if (_inner.Grant != value)
+                                            if (_inner.CanGrant != value)
                                             {
-                                                _logger.Info($"Propriedade Grant: antes={_inner.Grant}, depois={value}");
-                                                _inner.Grant = value;
+                                                _logger.Info($"Propriedade CanGrant: antes={_inner.CanGrant}, depois={value}");
+                                                _inner.CanGrant = value;
                                             }
                                         }
                                     }
 
-                                    public bool? Create
+                                    public bool? CanCreate
                                     {
-                                        get => _inner.Create;
+                                        get => _inner.CanCreate;
                                         set
                                         {
-                                            if (_inner.Create != value)
+                                            if (_inner.CanCreate != value)
                                             {
-                                                _logger.Info($"Propriedade Create: antes={_inner.Create}, depois={value}");
-                                                _inner.Create = value;
+                                                _logger.Info($"Propriedade CanCreate: antes={_inner.CanCreate}, depois={value}");
+                                                _inner.CanCreate = value;
                                             }
                                         }
                                     }
 
-                                    public bool? Read
+                                    public bool? CanRead
                                     {
-                                        get => _inner.Read;
+                                        get => _inner.CanRead;
                                         set
                                         {
-                                            if (_inner.Read != value)
+                                            if (_inner.CanRead != value)
                                             {
-                                                _logger.Info($"Propriedade Read: antes={_inner.Read}, depois={value}");
-                                                _inner.Read = value;
+                                                _logger.Info($"Propriedade CanRead: antes={_inner.CanRead}, depois={value}");
+                                                _inner.CanRead = value;
                                             }
                                         }
                                     }
 
-                                    public bool? Update
+                                    public bool? CanUpdate
                                     {
-                                        get => _inner.Update;
+                                        get => _inner.CanUpdate;
                                         set
                                         {
-                                            if (_inner.Update != value)
+                                            if (_inner.CanUpdate != value)
                                             {
-                                                _logger.Info($"Propriedade Update: antes={_inner.Update}, depois={value}");
-                                                _inner.Update = value;
+                                                _logger.Info($"Propriedade CanUpdate: antes={_inner.CanUpdate}, depois={value}");
+                                                _inner.CanUpdate = value;
                                             }
                                         }
                                     }
 
-                                    public bool? Delete
+                                    public bool? CanDelete
                                     {
-                                        get => _inner.Delete;
+                                        get => _inner.CanDelete;
                                         set
                                         {
-                                            if (_inner.Delete != value)
+                                            if (_inner.CanDelete != value)
                                             {
-                                                _logger.Info($"Propriedade Delete: antes={_inner.Delete}, depois={value}");
-                                                _inner.Delete = value;
+                                                _logger.Info($"Propriedade CanDelete: antes={_inner.CanDelete}, depois={value}");
+                                                _inner.CanDelete = value;
                                             }
                                         }
                                     }
