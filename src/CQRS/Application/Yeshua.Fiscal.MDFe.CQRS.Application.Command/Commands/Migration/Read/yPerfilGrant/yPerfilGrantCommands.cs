@@ -1,0 +1,22 @@
+﻿using RepositoryInterfaces.Patterns.Command;
+namespace Command.Read
+{
+    public struct yPerfilGrantReadCommand : ICommandRead
+    {
+        public int? Id { get; set; }
+        public int? PerfilId { get; set; }
+        public string GrantId { get; set; }
+        public bool? CanGrant { get; set; }
+        public bool? CanCreate { get; set; }
+        public bool? CanRead { get; set; }
+        public bool? CanUpdate { get; set; }
+        public bool? CanDelete { get; set; }
+        public DateTime? ValidUntil { get; set; }
+        public int? TenantID { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+ public Pagination Paginacao { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

@@ -425,7 +425,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppAplicationCommand()
         {
-            return Path.Combine(GetPathAppAplication(), "Yeshua.CQRS.Application.Command");
+            return Path.Combine(GetPathAppAplication(), GetApplicationCommandProjectName());
         }
 
         private string GetPathAppAplication()
@@ -1079,7 +1079,7 @@ namespace Dominio.Schemas.CQRS
 
         public void AppSolutionGenerate(Migration.MigrationBase migration)
         {
-            var sharedProjectPath = Path.Combine(
+            var sharedDomainProjectPath = Path.Combine(
                 GetPathAppSolution(),
                 "src",
                 "CQRS",
@@ -1087,25 +1087,25 @@ namespace Dominio.Schemas.CQRS
                 "Yeshua.CQRS.Domain",
                 "Yeshua.CQRS.Domain.csproj");
 
-            if (!File.Exists(sharedProjectPath))
-                throw new FileNotFoundException("O projeto de dominio compartilhado nao foi encontrado.", sharedProjectPath);
+            if (!File.Exists(sharedDomainProjectPath))
+                throw new FileNotFoundException("O projeto de dominio compartilhado nao foi encontrado.", sharedDomainProjectPath);
 
-            var applicationProjectName = GetApplicationDomainProjectName();
-            var applicationProjectDirectory = Path.Combine(
+            var applicationDomainProjectName = GetApplicationDomainProjectName();
+            var applicationDomainProjectDirectory = Path.Combine(
                 GetPathAppSolution(),
                 "src",
                 "CQRS",
                 "Domain",
-                applicationProjectName);
-            var applicationProjectPath = Path.Combine(
-                applicationProjectDirectory,
-                $"{applicationProjectName}.csproj");
+                applicationDomainProjectName);
+            var applicationDomainProjectPath = Path.Combine(
+                applicationDomainProjectDirectory,
+                $"{applicationDomainProjectName}.csproj");
 
-            if (!File.Exists(applicationProjectPath))
+            if (!File.Exists(applicationDomainProjectPath))
             {
-                var sharedProjectReference = Path.GetRelativePath(applicationProjectDirectory, sharedProjectPath);
+                var sharedProjectReference = Path.GetRelativePath(applicationDomainProjectDirectory, sharedDomainProjectPath);
                 WriteText(
-                    applicationProjectPath,
+                    applicationDomainProjectPath,
                     $@"<Project Sdk=""Microsoft.NET.Sdk"">
 
   <PropertyGroup>
@@ -1121,22 +1121,80 @@ namespace Dominio.Schemas.CQRS
 </Project>");
             }
 
-            AddProjectToSolution(applicationProjectPath);
+            AddProjectToSolution(applicationDomainProjectPath, "Yeshua.CQRS.Domain");
+
+            var sharedCommandProjectPath = Path.Combine(
+                GetPathAppSolution(),
+                "src",
+                "CQRS",
+                "Application",
+                "Yeshua.CQRS.Application.Command",
+                "Yeshua.CQRS.Application.Command.csproj");
+
+            if (!File.Exists(sharedCommandProjectPath))
+                throw new FileNotFoundException("O projeto Command compartilhado nao foi encontrado.", sharedCommandProjectPath);
+
+            var applicationCommandProjectName = GetApplicationCommandProjectName();
+            var applicationCommandProjectDirectory = Path.Combine(
+                GetPathAppAplication(),
+                applicationCommandProjectName);
+            var applicationCommandProjectPath = Path.Combine(
+                applicationCommandProjectDirectory,
+                $"{applicationCommandProjectName}.csproj");
+
+            if (!File.Exists(applicationCommandProjectPath))
+            {
+                var sharedCommandProjectReference = Path.GetRelativePath(
+                    applicationCommandProjectDirectory,
+                    sharedCommandProjectPath);
+                var applicationDomainProjectReference = Path.GetRelativePath(
+                    applicationCommandProjectDirectory,
+                    applicationDomainProjectPath);
+
+                WriteText(
+                    applicationCommandProjectPath,
+                    $@"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""{sharedCommandProjectReference}"" />
+    <ProjectReference Include=""{applicationDomainProjectReference}"" />
+  </ItemGroup>
+
+</Project>");
+            }
+
+            AddProjectToSolution(applicationCommandProjectPath, "Yeshua.CQRS.Application");
         }
 
         private string GetApplicationDomainProjectName()
         {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Domain";
+        }
+
+        private string GetApplicationCommandProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Application.Command";
+        }
+
+        private string GetApplicationName()
+        {
             var applicationName = _name?.Trim();
             if (string.IsNullOrWhiteSpace(applicationName))
-                throw new InvalidOperationException("O nome do aplicativo deve ser informado para criar o projeto de dominio.");
+                throw new InvalidOperationException("O nome do aplicativo deve ser informado para criar os projetos.");
 
             if (applicationName is "." or ".." || applicationName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 throw new InvalidOperationException($"O nome do aplicativo '{applicationName}' nao pode ser usado em um projeto.");
 
-            return $"Yeshua.{applicationName}.CQRS.Domain";
+            return applicationName;
         }
 
-        private void AddProjectToSolution(string projectPath)
+        private void AddProjectToSolution(string projectPath, string solutionFolder)
         {
             var solutionFiles = Directory.GetFiles(GetPathAppSolution(), "*.sln", System.IO.SearchOption.TopDirectoryOnly);
             if (solutionFiles.Length != 1)
@@ -1164,7 +1222,7 @@ namespace Dominio.Schemas.CQRS
             processStartInfo.ArgumentList.Add("add");
             processStartInfo.ArgumentList.Add(projectPath);
             processStartInfo.ArgumentList.Add("--solution-folder");
-            processStartInfo.ArgumentList.Add("Yeshua.CQRS.Domain");
+            processStartInfo.ArgumentList.Add(solutionFolder);
 
             using var process = Process.Start(processStartInfo)
                 ?? throw new InvalidOperationException("Nao foi possivel iniciar o dotnet para atualizar a solucao.");
@@ -1175,7 +1233,7 @@ namespace Dominio.Schemas.CQRS
             if (process.ExitCode != 0)
             {
                 throw new InvalidOperationException(
-                    $"Nao foi possivel adicionar o projeto de dominio a solucao.{Environment.NewLine}" +
+                    $"Nao foi possivel adicionar o projeto a solucao.{Environment.NewLine}" +
                     standardOutput.GetAwaiter().GetResult() +
                     standardError.GetAwaiter().GetResult());
             }
