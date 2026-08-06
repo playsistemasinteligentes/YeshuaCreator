@@ -29,14 +29,14 @@ public sealed class GS
             }
 
             MYC.Source = ResolveDefault(MYC.Source, FindSolutionRoot());
-            MYC.Project = ResolveDefault(MYC.Project, "MDFe");
+            MYC.Project = ResolveDefault(MYC.Project, "Fiscal.MDFe");
         }
         catch
         {
             MYC = new MyConfig
             {
                 Source = FindSolutionRoot(),
-                Project = "MDFe"
+                Project = "Fiscal.MDFe"
             };
         }
     }

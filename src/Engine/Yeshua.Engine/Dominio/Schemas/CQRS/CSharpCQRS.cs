@@ -554,7 +554,12 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppDominio()
         {
-            return Path.Combine(GetPathAppSolution(), "src", "CQRS", "Domain", "Yeshua.CQRS.Domain");
+            return Path.Combine(
+                GetPathAppSolution(),
+                "src",
+                "CQRS",
+                "Domain",
+                GetApplicationDomainProjectName());
         }
 
         private string GetPathAppSolution()
@@ -1074,12 +1079,111 @@ namespace Dominio.Schemas.CQRS
 
         public void AppSolutionGenerate(Migration.MigrationBase migration)
         {
-            throw new NotImplementedException();
+            var sharedProjectPath = Path.Combine(
+                GetPathAppSolution(),
+                "src",
+                "CQRS",
+                "Domain",
+                "Yeshua.CQRS.Domain",
+                "Yeshua.CQRS.Domain.csproj");
+
+            if (!File.Exists(sharedProjectPath))
+                throw new FileNotFoundException("O projeto de dominio compartilhado nao foi encontrado.", sharedProjectPath);
+
+            var applicationProjectName = GetApplicationDomainProjectName();
+            var applicationProjectDirectory = Path.Combine(
+                GetPathAppSolution(),
+                "src",
+                "CQRS",
+                "Domain",
+                applicationProjectName);
+            var applicationProjectPath = Path.Combine(
+                applicationProjectDirectory,
+                $"{applicationProjectName}.csproj");
+
+            if (!File.Exists(applicationProjectPath))
+            {
+                var sharedProjectReference = Path.GetRelativePath(applicationProjectDirectory, sharedProjectPath);
+                WriteText(
+                    applicationProjectPath,
+                    $@"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""{sharedProjectReference}"" />
+  </ItemGroup>
+
+</Project>");
+            }
+
+            AddProjectToSolution(applicationProjectPath);
+        }
+
+        private string GetApplicationDomainProjectName()
+        {
+            var applicationName = _name?.Trim();
+            if (string.IsNullOrWhiteSpace(applicationName))
+                throw new InvalidOperationException("O nome do aplicativo deve ser informado para criar o projeto de dominio.");
+
+            if (applicationName is "." or ".." || applicationName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                throw new InvalidOperationException($"O nome do aplicativo '{applicationName}' nao pode ser usado em um projeto.");
+
+            return $"Yeshua.{applicationName}.CQRS.Domain";
+        }
+
+        private void AddProjectToSolution(string projectPath)
+        {
+            var solutionFiles = Directory.GetFiles(GetPathAppSolution(), "*.sln", System.IO.SearchOption.TopDirectoryOnly);
+            if (solutionFiles.Length != 1)
+                throw new InvalidOperationException("A raiz da solucao deve conter exatamente um arquivo .sln.");
+
+            var solutionPath = solutionFiles[0];
+            var relativeProjectPath = Path.GetRelativePath(GetPathAppSolution(), projectPath)
+                .Replace('/', '\\');
+            var solutionContent = File.ReadAllText(solutionPath);
+
+            if (solutionContent.Contains(relativeProjectPath, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            var processStartInfo = new ProcessStartInfo("dotnet")
+            {
+                WorkingDirectory = GetPathAppSolution(),
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            processStartInfo.ArgumentList.Add("sln");
+            processStartInfo.ArgumentList.Add(solutionPath);
+            processStartInfo.ArgumentList.Add("add");
+            processStartInfo.ArgumentList.Add(projectPath);
+            processStartInfo.ArgumentList.Add("--solution-folder");
+            processStartInfo.ArgumentList.Add("Yeshua.CQRS.Domain");
+
+            using var process = Process.Start(processStartInfo)
+                ?? throw new InvalidOperationException("Nao foi possivel iniciar o dotnet para atualizar a solucao.");
+            var standardOutput = process.StandardOutput.ReadToEndAsync();
+            var standardError = process.StandardError.ReadToEndAsync();
+            process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                throw new InvalidOperationException(
+                    $"Nao foi possivel adicionar o projeto de dominio a solucao.{Environment.NewLine}" +
+                    standardOutput.GetAwaiter().GetResult() +
+                    standardError.GetAwaiter().GetResult());
+            }
         }
 
         public void CodeGenaration(Migration.MigrationBase migration)
         {
-            ///////////AppSolutionGenerate(migration);
+            AppSolutionGenerate(migration);
 
             AppInfraestructureGenerateAPI(migration);
             AppInfraestructureGenerateWorker(migration);

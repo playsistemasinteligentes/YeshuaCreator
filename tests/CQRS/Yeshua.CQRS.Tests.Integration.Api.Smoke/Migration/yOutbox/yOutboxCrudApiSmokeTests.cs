@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration.yOutbox;
 
-[SmokeTestOrder(6)]
+[SmokeTestOrder(15)]
 public partial class yOutboxCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "/yapi/yOutbox/PostyOutbox";

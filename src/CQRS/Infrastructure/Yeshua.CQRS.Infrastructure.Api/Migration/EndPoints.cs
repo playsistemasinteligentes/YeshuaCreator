@@ -9,20 +9,101 @@ public static class Endpoints
 {
 public static void MapEndpoints(this WebApplication app)
 {
-app.MapPost("/yapi/MDFe/PostMDFe", async ([FromServices] Command.Receivers.Write.InsertMDFeReceiver receiver, [FromBody] Command.Write.MDFeCrudCommand command) =>
+app.MapPost("/yapi/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFeEncerramento/PostMDFeEncerramento", async ([FromServices] Command.Receivers.Write.InsertMDFeEncerramentoReceiver receiver, [FromBody] Command.Write.MDFeEncerramentoCrudCommand command) =>
+app.MapPost("/yapi/Especialidade/PostEspecialidade", async ([FromServices] Command.Receivers.Write.InsertEspecialidadeReceiver receiver, [FromBody] Command.Write.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Profissional/PostProfissional", async ([FromServices] Command.Receivers.Write.InsertProfissionalReceiver receiver, [FromBody] Command.Write.ProfissionalCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/DisponibilidadeAgenda/PostDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.InsertDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Write.DisponibilidadeAgendaCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/GrupoServico/PostGrupoServico", async ([FromServices] Command.Receivers.Write.InsertGrupoServicoReceiver receiver, [FromBody] Command.Write.GrupoServicoCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Servico/PostServico", async ([FromServices] Command.Receivers.Write.InsertServicoReceiver receiver, [FromBody] Command.Write.ServicoCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Paciente/PostPaciente", async ([FromServices] Command.Receivers.Write.InsertPacienteReceiver receiver, [FromBody] Command.Write.PacienteCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/PostMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.InsertMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Write.MovimentacaoFinanceiraCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/PostSesoes", async ([FromServices] Command.Receivers.Write.InsertSesoesReceiver receiver, [FromBody] Command.Write.SesoesCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/PlanoConta/PostPlanoConta", async ([FromServices] Command.Receivers.Write.InsertPlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/PostMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.InsertMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -171,20 +252,101 @@ app.MapPost("/yapi/yUserGrant/PostyUserGrant", async ([FromServices] Command.Rec
 .RequireAuthorization();
 
 
-app.MapPut("/yapi/MDFe/PutMDFe", async ([FromServices] Command.Receivers.Write.UpdateMDFeReceiver receiver, [FromBody] Command.Write.MDFeCrudCommand command) =>
+app.MapPut("/yapi/Clinica/PutClinica", async ([FromServices] Command.Receivers.Write.UpdateClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapPut("/yapi/MDFeEncerramento/PutMDFeEncerramento", async ([FromServices] Command.Receivers.Write.UpdateMDFeEncerramentoReceiver receiver, [FromBody] Command.Write.MDFeEncerramentoCrudCommand command) =>
+app.MapPut("/yapi/Especialidade/PutEspecialidade", async ([FromServices] Command.Receivers.Write.UpdateEspecialidadeReceiver receiver, [FromBody] Command.Write.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/Profissional/PutProfissional", async ([FromServices] Command.Receivers.Write.UpdateProfissionalReceiver receiver, [FromBody] Command.Write.ProfissionalCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/DisponibilidadeAgenda/PutDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.UpdateDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Write.DisponibilidadeAgendaCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/GrupoServico/PutGrupoServico", async ([FromServices] Command.Receivers.Write.UpdateGrupoServicoReceiver receiver, [FromBody] Command.Write.GrupoServicoCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/Servico/PutServico", async ([FromServices] Command.Receivers.Write.UpdateServicoReceiver receiver, [FromBody] Command.Write.ServicoCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/Paciente/PutPaciente", async ([FromServices] Command.Receivers.Write.UpdatePacienteReceiver receiver, [FromBody] Command.Write.PacienteCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/MovimentacaoFinanceira/PutMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.UpdateMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Write.MovimentacaoFinanceiraCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/Sesoes/PutSesoes", async ([FromServices] Command.Receivers.Write.UpdateSesoesReceiver receiver, [FromBody] Command.Write.SesoesCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/PlanoConta/PutPlanoConta", async ([FromServices] Command.Receivers.Write.UpdatePlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/MovimentoFinanceiro/PutMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.UpdateMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -333,20 +495,101 @@ app.MapPut("/yapi/yUserGrant/PutyUserGrant", async ([FromServices] Command.Recei
 .RequireAuthorization();
 
 
-app.MapDelete("/yapi/MDFe/DeleteMDFe", async ([FromServices] Command.Receivers.Write.DeleteMDFeReceiver receiver, [FromBody] Command.Write.MDFeCrudCommand command) =>
+app.MapDelete("/yapi/Clinica/DeleteClinica", async ([FromServices] Command.Receivers.Write.DeleteClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapDelete("/yapi/MDFeEncerramento/DeleteMDFeEncerramento", async ([FromServices] Command.Receivers.Write.DeleteMDFeEncerramentoReceiver receiver, [FromBody] Command.Write.MDFeEncerramentoCrudCommand command) =>
+app.MapDelete("/yapi/Especialidade/DeleteEspecialidade", async ([FromServices] Command.Receivers.Write.DeleteEspecialidadeReceiver receiver, [FromBody] Command.Write.EspecialidadeCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/Profissional/DeleteProfissional", async ([FromServices] Command.Receivers.Write.DeleteProfissionalReceiver receiver, [FromBody] Command.Write.ProfissionalCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Write.DeleteDisponibilidadeAgendaReceiver receiver, [FromBody] Command.Write.DisponibilidadeAgendaCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/GrupoServico/DeleteGrupoServico", async ([FromServices] Command.Receivers.Write.DeleteGrupoServicoReceiver receiver, [FromBody] Command.Write.GrupoServicoCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/Servico/DeleteServico", async ([FromServices] Command.Receivers.Write.DeleteServicoReceiver receiver, [FromBody] Command.Write.ServicoCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/Paciente/DeletePaciente", async ([FromServices] Command.Receivers.Write.DeletePacienteReceiver receiver, [FromBody] Command.Write.PacienteCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Write.DeleteMovimentacaoFinanceiraReceiver receiver, [FromBody] Command.Write.MovimentacaoFinanceiraCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/Sesoes/DeleteSesoes", async ([FromServices] Command.Receivers.Write.DeleteSesoesReceiver receiver, [FromBody] Command.Write.SesoesCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/PlanoConta/DeletePlanoConta", async ([FromServices] Command.Receivers.Write.DeletePlanoContaReceiver receiver, [FromBody] Command.Write.PlanoContaCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/MovimentoFinanceiro/DeleteMovimentoFinanceiro", async ([FromServices] Command.Receivers.Write.DeleteMovimentoFinanceiroReceiver receiver, [FromBody] Command.Write.MovimentoFinanceiroCrudCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -522,20 +765,101 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                         return Results.Ok(result);
                     }).RequireAuthorization();
             
-app.MapPost("/yapi/MDFe/ReadMDFe", async ([FromServices] Command.Receivers.Read.MDFeReadReceiver receiver, [FromBody] Command.Read.MDFeReadCommand command) =>
+app.MapPost("/yapi/Clinica/ReadClinica", async ([FromServices] Command.Receivers.Read.ClinicaReadReceiver receiver, [FromBody] Command.Read.ClinicaReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFeEncerramento/ReadMDFeEncerramento", async ([FromServices] Command.Receivers.Read.MDFeEncerramentoReadReceiver receiver, [FromBody] Command.Read.MDFeEncerramentoReadCommand command) =>
+app.MapPost("/yapi/Especialidade/ReadEspecialidade", async ([FromServices] Command.Receivers.Read.EspecialidadeReadReceiver receiver, [FromBody] Command.Read.EspecialidadeReadCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
-}).Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status200OK)
-.Produces<State<Dominio.Entitys.MDFeEncerramentoEntity>>(StatusCodes.Status400BadRequest)
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Profissional/ReadProfissional", async ([FromServices] Command.Receivers.Read.ProfissionalReadReceiver receiver, [FromBody] Command.Read.ProfissionalReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/DisponibilidadeAgenda/ReadDisponibilidadeAgenda", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadReceiver receiver, [FromBody] Command.Read.DisponibilidadeAgendaReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/GrupoServico/ReadGrupoServico", async ([FromServices] Command.Receivers.Read.GrupoServicoReadReceiver receiver, [FromBody] Command.Read.GrupoServicoReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Servico/ReadServico", async ([FromServices] Command.Receivers.Read.ServicoReadReceiver receiver, [FromBody] Command.Read.ServicoReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Paciente/ReadPaciente", async ([FromServices] Command.Receivers.Read.PacienteReadReceiver receiver, [FromBody] Command.Read.PacienteReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/ReadMovimentacaoFinanceira", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadReceiver receiver, [FromBody] Command.Read.MovimentacaoFinanceiraReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/ReadSesoes", async ([FromServices] Command.Receivers.Read.SesoesReadReceiver receiver, [FromBody] Command.Read.SesoesReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/PlanoConta/ReadPlanoConta", async ([FromServices] Command.Receivers.Read.PlanoContaReadReceiver receiver, [FromBody] Command.Read.PlanoContaReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/ReadMovimentoFinanceiro", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadReceiver receiver, [FromBody] Command.Read.MovimentoFinanceiroReadCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -684,6 +1008,60 @@ app.MapPost("/yapi/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Rec
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/Paciente/ReadPacienteGeral", async ([FromServices] Command.Receivers.Read.PacienteReadQueryGeralReceiver receiver, [FromBody] Command.Read.PacienteGeralCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Paciente/ReadPacienteMes", async ([FromServices] Command.Receivers.Read.PacienteReadQueryMesReceiver receiver, [FromBody] Command.Read.PacienteMesCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/ReadSesoesGeral", async ([FromServices] Command.Receivers.Read.SesoesReadQueryGeralReceiver receiver, [FromBody] Command.Read.SesoesGeralCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/ReadSesoesHoje", async ([FromServices] Command.Receivers.Read.SesoesReadQueryHojeReceiver receiver, [FromBody] Command.Read.SesoesHojeCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/ReadSesoesSemana", async ([FromServices] Command.Receivers.Read.SesoesReadQuerySemanaReceiver receiver, [FromBody] Command.Read.SesoesSemanaCommand command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/ReadSesoesD30", async ([FromServices] Command.Receivers.Read.SesoesReadQueryD30Receiver receiver, [FromBody] Command.Read.SesoesD30Command command) =>
+{
+ return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yOutbox/ReadyOutboxProximaPendente", async ([FromServices] Command.Receivers.Read.yOutboxReadQueryProximaPendenteReceiver receiver, [FromBody] Command.Read.yOutboxProximaPendenteCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
@@ -693,7 +1071,7 @@ app.MapPost("/yapi/yOutbox/ReadyOutboxProximaPendente", async ([FromServices] Co
 .RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFe/MDFeReadFKTenantID", async ([FromServices] Command.Receivers.Read.MDFeReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Clinica/ClinicaReadFKTenantID", async ([FromServices] Command.Receivers.Read.ClinicaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -710,7 +1088,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFe/MDFeReadFKUserId", async ([FromServices] Command.Receivers.Read.MDFeReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Clinica/ClinicaReadFKUserId", async ([FromServices] Command.Receivers.Read.ClinicaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -727,7 +1105,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFeEncerramento/MDFeEncerramentoReadFKMDFeId", async ([FromServices] Command.Receivers.Read.MDFeEncerramentoReadFKMDFeIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Especialidade/EspecialidadeReadFKTenantID", async ([FromServices] Command.Receivers.Read.EspecialidadeReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -744,7 +1122,7 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFeEncerramento/MDFeEncerramentoReadFKTenantID", async ([FromServices] Command.Receivers.Read.MDFeEncerramentoReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Especialidade/EspecialidadeReadFKUserId", async ([FromServices] Command.Receivers.Read.EspecialidadeReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -761,7 +1139,466 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/MDFeEncerramento/MDFeEncerramentoReadFKUserId", async ([FromServices] Command.Receivers.Read.MDFeEncerramentoReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+app.MapPost("/yapi/Profissional/ProfissionalReadFKEspecialidadeId", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKEspecialidadeIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Profissional/ProfissionalReadFKTenantID", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Profissional/ProfissionalReadFKUserId", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKProfissionalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKTenantID", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKUserId", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/GrupoServico/GrupoServicoReadFKTenantID", async ([FromServices] Command.Receivers.Read.GrupoServicoReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/GrupoServico/GrupoServicoReadFKUserId", async ([FromServices] Command.Receivers.Read.GrupoServicoReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Servico/ServicoReadFKGrupoServicoId", async ([FromServices] Command.Receivers.Read.ServicoReadFKGrupoServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Servico/ServicoReadFKTenantID", async ([FromServices] Command.Receivers.Read.ServicoReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Servico/ServicoReadFKUserId", async ([FromServices] Command.Receivers.Read.ServicoReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Paciente/PacienteReadFKTenantID", async ([FromServices] Command.Receivers.Read.PacienteReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Paciente/PacienteReadFKUserId", async ([FromServices] Command.Receivers.Read.PacienteReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKPacienteIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKTenantID", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKUserId", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKPacienteId", async ([FromServices] Command.Receivers.Read.SesoesReadFKPacienteIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKServicoId", async ([FromServices] Command.Receivers.Read.SesoesReadFKServicoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKMovimentacaoFinanceiraId", async ([FromServices] Command.Receivers.Read.SesoesReadFKMovimentacaoFinanceiraIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKTenantID", async ([FromServices] Command.Receivers.Read.SesoesReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKUserId", async ([FromServices] Command.Receivers.Read.SesoesReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/PlanoConta/PlanoContaReadFKTenantID", async ([FromServices] Command.Receivers.Read.PlanoContaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/PlanoConta/PlanoContaReadFKUserId", async ([FromServices] Command.Receivers.Read.PlanoContaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKTenantID", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = receiver.Execute(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/MovimentoFinanceiroReadFKUserId", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -1424,50 +2261,32 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapGet("/yapi/getMetaDataMDFe", (HttpContext context) =>
+app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (string.IsNullOrEmpty(userId))
         return Results.Unauthorized();
     var metadatacrud = new
     {
-        entityDescription = "MDFe",
+        entityDescription = "Clinica",
         search = new[]{
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/MDFe/ReadMDFe",
+                endpoint = "/Clinica/ReadClinica",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "chaveacesso", label = "Chave de Acesso", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "serie", label = "Serie", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "numero", label = "Numero", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "emitidoem", label = "Emitido em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "iniciadoem", label = "Inicio do Transporte", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "encerradoem", label = "Encerrado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "canceladoem", label = "Cancelado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "situacao", label = "Situacao do MDF-e", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
+                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "chaveacesso", label = "Chave de Acesso", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "serie", label = "Serie", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "numero", label = "Numero", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "emitidoem", label = "Emitido em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "iniciadoem", label = "Inicio do Transporte", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "encerradoem", label = "Encerrado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "canceladoem", label = "Cancelado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "situacao", label = "Situacao do MDF-e", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
+                new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -1478,98 +2297,574 @@ app.MapGet("/yapi/getMetaDataMDFe", (HttpContext context) =>
         formFields = new[]
         {
             new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitidoem", label = "Emitido em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "iniciadoem", label = "Inicio do Transporte", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "encerradoem", label = "Encerrado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canceladoem", label = "Cancelado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "situacao", label = "Situacao do MDF-e", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
+            new { id = "nome", label = "Nome da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "endereco", label = "Endereço da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         endpoints = new
         {
-            create = "/MDFe/PostMDFe",
-            read = "/MDFe/ReadMDFe",
-            update = "/MDFe/PutMDFe",
-            delete = "/MDFe/DeleteMDFe"
+            create = "/Clinica/PostClinica",
+            read = "/Clinica/ReadClinica",
+            update = "/Clinica/PutClinica",
+            delete = "/Clinica/DeleteClinica"
         }
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
-app.MapGet("/yapi/getMetaDataMDFeEncerramento", (HttpContext context) =>
+app.MapGet("/yapi/getMetaDataEspecialidade", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (string.IsNullOrEmpty(userId))
         return Results.Unauthorized();
     var metadatacrud = new
     {
-        entityDescription = "MDFeEncerramento",
+        entityDescription = "Especialidade",
         search = new[]{
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/MDFeEncerramento/ReadMDFeEncerramento",
+                endpoint = "/Especialidade/ReadEspecialidade",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "mdfeid", label = "MDF-e", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataMDFe", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "chaveacesso", label = "Chave de Acesso", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "solicitadoem", label = "Solicitado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "protocolo", label = "Protocolo SEFAZ", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "codigoretorno", label = "Codigo de Retorno", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "descricao", label = "Descrição da Especialidade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "mdfeid", label = "MDF-e", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataMDFe", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "chaveacesso", label = "Chave de Acesso", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "solicitadoem", label = "Solicitado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "protocolo", label = "Protocolo SEFAZ", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "codigoretorno", label = "Codigo de Retorno", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "descricao", label = "Descrição da Especialidade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
             {
-                mdfeid = "/MDFeEncerramento/MDFeEncerramentoReadFKMDFeId",
             }
             },
         },
         formFields = new[]
         {
             new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfeid", label = "MDF-e", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataMDFe", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "solicitadoem", label = "Solicitado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "protocolo", label = "Protocolo SEFAZ", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigoretorno", label = "Codigo de Retorno", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "descricao", label = "Descrição da Especialidade", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         endpoints = new
         {
-                 mdfeid = "/MDFeEncerramento/MDFeEncerramentoReadFKMDFeId",
-            create = "/MDFeEncerramento/PostMDFeEncerramento",
-            read = "/MDFeEncerramento/ReadMDFeEncerramento",
-            update = "/MDFeEncerramento/PutMDFeEncerramento",
-            delete = "/MDFeEncerramento/DeleteMDFeEncerramento"
+            create = "/Especialidade/PostEspecialidade",
+            read = "/Especialidade/ReadEspecialidade",
+            update = "/Especialidade/PutEspecialidade",
+            delete = "/Especialidade/DeleteEspecialidade"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Profissional",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/Profissional/ReadProfissional",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome do Profissional", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone do Profissional", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+                 especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
+            create = "/Profissional/PostProfissional",
+            read = "/Profissional/ReadProfissional",
+            update = "/Profissional/PutProfissional",
+            delete = "/Profissional/DeleteProfissional"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "DisponibilidadeAgenda",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datahora", label = "Horário Disponível", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datahora", label = "Horário Disponível", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                profissionalid = "/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "profissionalid", label = "Profissional", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datahora", label = "Horário Disponível", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+                 profissionalid = "/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId",
+            create = "/DisponibilidadeAgenda/PostDisponibilidadeAgenda",
+            read = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
+            update = "/DisponibilidadeAgenda/PutDisponibilidadeAgenda",
+            delete = "/DisponibilidadeAgenda/DeleteDisponibilidadeAgenda"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataGrupoServico", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "GrupoServico",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/GrupoServico/ReadGrupoServico",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+            create = "/GrupoServico/PostGrupoServico",
+            read = "/GrupoServico/ReadGrupoServico",
+            update = "/GrupoServico/PutGrupoServico",
+            delete = "/GrupoServico/DeleteGrupoServico"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataServico", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Servico",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/Servico/ReadServico",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                gruposervicoid = "/Servico/ServicoReadFKGrupoServicoId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome do Serviço", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor do Serviço", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+                 gruposervicoid = "/Servico/ServicoReadFKGrupoServicoId",
+            create = "/Servico/PostServico",
+            read = "/Servico/ReadServico",
+            update = "/Servico/PutServico",
+            delete = "/Servico/DeleteServico"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataPaciente", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Paciente",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/Paciente/ReadPacienteGeral",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = new[]
+            {
+                new { id = "Mes", label = "Mes", icon = "calendar-day", endpoint = "/Paciente/ReadPacienteMes" },
+            },
+            fkEndpoints = new
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome do Paciente", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "genero", label = "Gênero", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Mascolino" }, new { value = 2, display = "Feminino" }, new { value = 3, display = "Outros" },}, },
+            new { id = "escolaridade", label = "Escolaridade", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "profissao", label = "Profissão", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "endereco", label = "Endereço", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "observacao", label = "Observacao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+            create = "/Paciente/PostPaciente",
+            read = "/Paciente/ReadPaciente",
+            update = "/Paciente/PutPaciente",
+            delete = "/Paciente/DeletePaciente"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "MovimentacaoFinanceira",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor da Transação", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
+                new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor da Transação", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
+                new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                pacienteid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId",
+                servicoid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pacienteid", label = "Paciente", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "servicoid", label = "Serviço", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor da Transação", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
+            new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+                 pacienteid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId",
+                 servicoid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId",
+            create = "/MovimentacaoFinanceira/PostMovimentacaoFinanceira",
+            read = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
+            update = "/MovimentacaoFinanceira/PutMovimentacaoFinanceira",
+            delete = "/MovimentacaoFinanceira/DeleteMovimentacaoFinanceira"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "Sesoes",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/Sesoes/ReadSesoesGeral",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" },}, },
+                new { id = "statusprontuario", label = "Status Prontuario", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
+            },
+            filterFields = new[]
+            {
+                new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" },}, },
+                new { id = "statusprontuario", label = "Status Prontuario", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
+            },
+            quickSearches = new[]
+            {
+                new { id = "Hoje", label = "Hoje", icon = "calendar-day", endpoint = "/Sesoes/ReadSesoesHoje" },
+                new { id = "Semana", label = "Semana", icon = "calendar-day", endpoint = "/Sesoes/ReadSesoesSemana" },
+                new { id = "D30", label = "D30", icon = "calendar-day", endpoint = "/Sesoes/ReadSesoesD30" },
+            },
+            fkEndpoints = new
+            {
+                pacienteid = "/Sesoes/SesoesReadFKPacienteId",
+                servicoid = "/Sesoes/SesoesReadFKServicoId",
+                movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
+                profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "pacienteid", label = "Paciente", type = "int", required = false, displaygroup = "Agenda", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datainicio", label = "Data Inicio", type = "DateTime", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datafim", label = "Data Fim", type = "DateTime", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" },}, },
+            new { id = "statusprontuario", label = "Status Prontuario", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
+            new { id = "prontuario", label = "Prontuario", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registrodocumental", label = "Registro Documental", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sintomasrelatados", label = "Sintomas relatados", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", type = "enum", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Menteve" }, new { value = 2, display = "Melhora" }, new { value = 3, display = "Piora" }, new { value = 4, display = "Eventos novos" },}, },
+            new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "usomedicacao", label = "Uso de Medicação", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "memo", required = false, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "memo", required = false, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "memo", required = false, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "memo", required = false, displaygroup = "Diagnóstico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "memo", required = false, displaygroup = "Anotações Extras", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", required = false, displaygroup = "Anotações Extras", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "IDs", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "servicoid", label = "Serviço", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "profissionalid", label = "Profissional", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+        },
+        endpoints = new
+        {
+                 pacienteid = "/Sesoes/SesoesReadFKPacienteId",
+                 servicoid = "/Sesoes/SesoesReadFKServicoId",
+                 movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
+                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+            create = "/Sesoes/PostSesoes",
+            read = "/Sesoes/ReadSesoes",
+            update = "/Sesoes/PutSesoes",
+            delete = "/Sesoes/DeleteSesoes"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataPlanoConta", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "PlanoConta",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/PlanoConta/ReadPlanoConta",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigo", label = "Código da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipo", label = "Tipo da Conta", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+        },
+        endpoints = new
+        {
+            create = "/PlanoConta/PostPlanoConta",
+            read = "/PlanoConta/ReadPlanoConta",
+            update = "/PlanoConta/PutPlanoConta",
+            delete = "/PlanoConta/DeletePlanoConta"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataMovimentoFinanceiro", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityDescription = "MovimentoFinanceiro",
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "idorigem", label = "Identificador de Origem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "contadebitoid", label = "Conta Débito", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor do Movimento", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status do Movimento", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+        },
+        endpoints = new
+        {
+                 contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
+            create = "/MovimentoFinanceiro/PostMovimentoFinanceiro",
+            read = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
+            update = "/MovimentoFinanceiro/PutMovimentoFinanceiro",
+            delete = "/MovimentoFinanceiro/DeleteMovimentoFinanceiro"
         }
     };
     return Results.Ok(metadatacrud);
@@ -2524,23 +3819,6 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
 #region ServicesMethod
-app.MapPost("/yapi/FiscalMDFe/EncerramentoEncerrarMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.EncerrarMDFeHandler receiver, [FromBody] Command.UseCase.EncerrarMDFeInputCommand command) =>
-{
-try
-{
-var result = receiver.Execute(command);
-if (result.StatusCode == 200)
-    return Results.Ok(result.Data);
-else
-    return Results.BadRequest(result);
-}
-catch (Exception ex)
-{
-return Results.Problem(ex.Message);
-}
-}).RequireAuthorization();
-
-
 app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.StarSessionUploadHandler receiver, [FromBody] Command.UseCase.StarSessionUploadInputCommand command) =>
 {
 try
