@@ -59,22 +59,8 @@ namespace Migration
             //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
-            builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>, SagaWorkerCommandHandler>();
-            builder.Services.AddScoped<SagaWorkerCommandHandler>();
-            builder.Services.AddHostedService(sp =>
-                 new PollingWorker<
-                     SagaWorkerCommandHandler,
-                     InputCommand,
-                     OutputCommand>(
-                     sp,
-                     sp.GetRequiredService<
-                         ILogger<PollingWorker<SagaWorkerCommandHandler, InputCommand, OutputCommand>>>(),
-                     TimeSpan.FromMilliseconds(5000)
-                 ));
+            
 
-
-
-            //builder.Services.AddScoped<IReceiver<InputCommand, OutputCommand>, SagaWorkerCommandHandler>();
             builder.Services.AddScoped<yOutBoxWorkerHandler>();
             builder.Services.AddHostedService(sp =>
                  new PollingWorker< yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>(
@@ -83,36 +69,6 @@ namespace Migration
                          ILogger<PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
                      TimeSpan.FromMilliseconds(5000)
                  ));
-
-
-            //builder.Services.AddScoped<IReceiver<InboxInputCommand, OutputCommand>, SagaInboxWorkerCommandHandler>();
-            builder.Services.AddScoped<SagaInboxWorkerCommandHandler>();
-            builder.Services.AddHostedService(sp =>
-                 new PollingWorker<
-                     SagaInboxWorkerCommandHandler,
-                     InputCommand,
-                     OutputCommand>(
-                     sp,
-                     sp.GetRequiredService<
-                         ILogger<PollingWorker<SagaInboxWorkerCommandHandler, InputCommand, OutputCommand>>>(),
-                     TimeSpan.FromMilliseconds(5000)
-                 ));
-
-
-
-            // pendecia colocar no motor baseado nas filas inbox  acho que os serviços de cimo podem ficar o oque caracteriza algo fora do motor mas este em especifico a quantidade de filas pode variar 
-            builder.Services.AddScoped<InboxListenerHandler>();
-
-            builder.Services.AddHostedService(sp =>
-            {
-                var listener = sp.GetRequiredService<IQueueListener>();
-                var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<InboxListenerHandler, InboxInputCommand, InboxOutputCommand>>>();
-                return new QueueListenerWorker<InboxListenerHandler, InboxInputCommand, InboxOutputCommand>(
-                    sp, listener, logger,
-                    "text.summarized.inbox",
-                    "audio.transcribed.inbox"
-                );
-            });
 
             /*
              * 

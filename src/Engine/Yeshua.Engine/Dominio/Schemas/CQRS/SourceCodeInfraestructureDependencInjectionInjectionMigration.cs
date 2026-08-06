@@ -31,6 +31,7 @@ namespace Dominio.Schemas.CQRS
         {
             var sb = new StringBuilder();
 
+            sb.AppendLine("using System;");
             sb.AppendLine("using Shered.Services;");
             sb.AppendLine("using RepositoryInterfaces.Services;");
             sb.AppendLine("using Command.Patterns;");
@@ -56,26 +57,24 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("public static void MapDependencInjection(WebApplicationBuilder builder)");
             sb.AppendLine("{");
 
-            sb.AppendLine(@$"
-                    
-                    
-                    builder.Services.AddScoped<UnitOfWork>();
-                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
-                        new InstrumentedUnitOfWork(
-                            sp.GetRequiredService<UnitOfWork>(),
-                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
-                            sp.GetRequiredService<IExecutionContext>()
-                        ));
-
-
-                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
-                    builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
-                    builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
-                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
-                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
-                    builder.Services.AddScoped<OutboxService>();
-
-            ");
+            sb.AppendLine("");
+            sb.AppendLine("");
+            sb.AppendLine("                    builder.Services.AddScoped<UnitOfWork>();");
+            sb.AppendLine("                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>");
+            sb.AppendLine("                        new InstrumentedUnitOfWork(");
+            sb.AppendLine("                            sp.GetRequiredService<UnitOfWork>(),");
+            sb.AppendLine("                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),");
+            sb.AppendLine("                            sp.GetRequiredService<IExecutionContext>()");
+            sb.AppendLine("                        ));");
+            sb.AppendLine("");
+            sb.AppendLine("");
+            sb.AppendLine("                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));");
+            sb.AppendLine("                    builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();");
+            sb.AppendLine("                    builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();");
+            sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");
+            sb.AppendLine("                    // pendencia: a configuracao de saga nao deve depender de Project no motor; essa decisao precisa vir do Studio/contexto da DSL.");
+            sb.AppendLine("                    builder.Services.AddScoped<OutboxService>();");
+            sb.AppendLine("");
         
 
             // ingeção dependencia 
@@ -159,26 +158,35 @@ namespace Dominio.Schemas.CQRS
 
 
 
+            var sagas = _migration.UseCaseGroup
+                .SelectMany(group => group.UseCaseSubGroup)
+                .SelectMany(subGroup => subGroup.Saga)
+                .ToList();
+
+            if (sagas.Any())
+            {
+                foreach (var saga in sagas)
+                {
+                    // pendencia: separar dependencias entre projetos de Studio quando houver mais de um contexto ativo; hoje a geracao de DI de saga pode puxar registries de outro projeto.
+                    // pendencia: a decisao agora vem da DSL; o motor so inclui saga quando o modelo a declara. Ainda falta separar melhor o catalogo de aplicacoes.
+
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceDominioSaga}.{saga.Name.SourceType()}Saga>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceSagaHandlerResolver}.{saga.Name.SourceType()}SagaHandlerResolver>();");
+
+                    foreach (var stepGroup in saga.SagaStepGroup)
+                    {
+                        foreach (var step in stepGroup.Steps)
+                        {
+                            sb.AppendLine($"builder.Services.AddTransient<{$"{step.Name.SourceType()}Handler"}>();");
+                        }
+                    }
+                }
+            }
+
             foreach (var group in _migration.UseCaseGroup)
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-
-                    foreach (var saga in subGroup.Saga)
-                    {
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceDominioSaga}.{saga.Name.SourceType()}Saga>();");
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceSagaHandlerResolver}.{saga.Name.SourceType()}SagaHandlerResolver>();");
-
-                        foreach (var stepGroup in saga.SagaStepGroup)
-                        {
-                            foreach (var step in stepGroup.Steps)
-                            {
-                                sb.AppendLine($"builder.Services.AddTransient<{$"{step.Name.SourceType()}Handler"}>();");
-
-                            }
-                        }
-                    }
-
                     foreach (var useCase in subGroup.UseCaseCommand)
                     {
                         sb.AppendLine("");

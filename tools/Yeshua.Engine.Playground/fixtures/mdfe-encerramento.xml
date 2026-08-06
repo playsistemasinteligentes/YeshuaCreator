@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  pendencia: este arquivo precisa ser substituido pelo XML oficial do evento de encerramento do MDF-e.
+  O playground existe para isolar a chamada ao SEFAZ, sem mexer no motor nem no CQRS.
+-->
+<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="3.00">
+  <infEvento Id="ID1101123126075715254300014158020000005605100056059101">
+    <cOrgao>31</cOrgao>
+    <tpAmb>1</tpAmb>
+    <CNPJ>57152543000141</CNPJ>
+    <chMDFe>31260757152543000141580200000056051000560591</chMDFe>
+    <dhEvento>2026-08-06T00:00:00-03:00</dhEvento>
+    <tpEvento>110112</tpEvento>
+    <nSeqEvento>1</nSeqEvento>
+    <detEvento versaoEvento="3.00">
+      <evEncMDFe>
+        <descEvento>Encerramento</descEvento>
+        <nProt>931260037261399</nProt>
+        <dtEnc>2026-08-06</dtEnc>
+        <cUF>31</cUF>
+        <cMun>3167202</cMun>
+      </evEncMDFe>
+    </detEvento>
+  </infEvento>
+</eventoMDFe>

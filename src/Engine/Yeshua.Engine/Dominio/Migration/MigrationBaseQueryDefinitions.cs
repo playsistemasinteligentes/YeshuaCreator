@@ -57,6 +57,7 @@ namespace Dominio.Migration
         public string SqlBase { get; set; } = string.Empty;
         //public List<QuerySelectField> SelectFields { get; set; } = new();
         public List<QueryField> SelectFields { get; set; } = new();
+        // pendencia: este metadado de DSL ainda fica guardado no motor; a persistencia oficial precisa morar no Studio para cada aplicativo, e o motor deve reter apenas o necessario para suas migrations internas.
         public Dictionary<string, List<QueryCondition>> WhereContextParameters { get; set; } = new();
         public Dictionary<string, List<QueryCondition>> WhereParameters { get; set; } = new();
 

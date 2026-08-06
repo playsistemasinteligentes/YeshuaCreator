@@ -441,6 +441,7 @@ namespace Dominio.Schemas.CQRS
 
 
                 // 🔥 CONSTRUTOR DINÂMICO COM DI
+                // pendencia: revisar a DSL para definir quais sagas pertencem ao Studio ativo antes de montar o registry; hoje o registry assume contexto global.
                 sb.Append("        public SagaResolverRegistry(");
 
                 for (int i = 0; i < _sagas.Count; i++)
