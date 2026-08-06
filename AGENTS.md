@@ -74,6 +74,37 @@ Preservar e fortalecer essa divisao.
 - Antes de alterar arquivos gerados, avaliar se a mudanca pertence ao template do motor.
 - Evitar colocar regra de negocio em codigo que sera sobrescrito pelo motor.
 
+## Propriedade Do Codigo
+
+Esta divisao deve orientar a separacao dos projetos e impedir que a Engine ou o
+Shared acumulem codigo pertencente a um aplicativo especifico.
+
+### Engine
+
+- Ferramenta de geracao.
+- Templates e interpretacao da DSL.
+- Nao contem codigo de aplicacao gerado.
+
+### Shared
+
+- Codigo estatico e generico.
+- Independente de Clinica, MDF-e ou qualquer aplicativo.
+- Contratos basicos, CQRS base, UnitOfWork, cache, logging, saga e outbox genericos.
+
+### Aplicativo
+
+- Todo codigo gerado pela Engine.
+- Todo codigo customizado especifico do aplicativo.
+- Miolos escritos por IA/dev.
+- Integracoes especificas.
+
+Regra resumida:
+
+- Gerado e especifico pertence ao aplicativo.
+- Customizado e especifico pertence ao aplicativo.
+- Estatico e generico pertence ao Shared.
+- Gerador, templates e interpretacao da DSL pertencem a Engine.
+
 ## Studio Como Camada De Especificacao
 
 `src/Studio` representa a camada de especificacao da Engenharia Yeshua.
