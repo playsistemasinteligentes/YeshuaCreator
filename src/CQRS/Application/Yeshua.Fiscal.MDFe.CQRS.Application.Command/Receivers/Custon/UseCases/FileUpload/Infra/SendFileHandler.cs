@@ -1,12 +1,9 @@
 using Aplication.Interfaces.Services;
-using Command.Interfaces;
 using Command.Interfaces.Patterns.FileStore;
-using Command.Patterns.OutBox;
 using Command.Receivers.Custon.UseCases.FileUpload.Infra;
 using Command.UseCase;
 using Dominio.Entitys;
 using Dominio.Interfaces;
-using Dominio.Saga;
 using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
@@ -21,10 +18,6 @@ namespace Command.Receivers.UseCase
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly IFileStorage _fileStorage;
-        private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
-        private readonly IySagaWriteRepository _ySagaWriteRepository;
-        private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
-        private readonly ISagaExecutor _sagaExecutor;
         
 
 
@@ -33,10 +26,6 @@ namespace Command.Receivers.UseCase
             IyFileUploadReadRepository repReadyFileUpload,
             IyFileUploadWriteRepository repWriteyFileUpload,
             IFileStorage fileStorage,
-            IyOutboxWriteRepository yOutboxWriteRepository,
-            IySagaWriteRepository ySagaWriteRepository,
-            PsychologySessionInsightSaga psychologySessionInsightSaga,
-            ISagaExecutor sagaExecutor,
             Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
@@ -45,10 +34,6 @@ namespace Command.Receivers.UseCase
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
             _fileStorage = fileStorage;
-            _yOutboxWriteRepository = yOutboxWriteRepository;
-            _ySagaWriteRepository = ySagaWriteRepository;
-            _psychologySessionInsightSaga = psychologySessionInsightSaga;
-            _sagaExecutor = sagaExecutor;
             _logger = logger;
             _executionContext = context;
         }
@@ -136,13 +121,10 @@ namespace Command.Receivers.UseCase
                 // 🧩 aqui você pode juntar os chunks se necessário  
                 //var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
 
-                _psychologySessionInsightSaga.Start(uploadId.ToString(), "yFileUpload");
-
                 _unitOfWork.BeginTran();
                 _repWriteyFileUpload.UpdateFilePath(uploadId, finalPath.Value);
                 _repWriteyFileUpload.UpdateStatus(uploadId, 1);
                 _repWriteyFileUpload.UpdateCompletedAt(uploadId, DateTime.UtcNow);
-                _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
                 _unitOfWork.Commit();
 
                 

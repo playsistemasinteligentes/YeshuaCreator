@@ -1,0 +1,156 @@
+{
+  "Version": "1.0",
+  "Application": "Fiscal.MDFe",
+  "Resources": [
+    {
+      "Name": "sqlserver",
+      "Identity": "sql01",
+      "Kind": "DatabaseServer",
+      "Configuration": {
+        "Engine": "SqlServer"
+      },
+      "Secrets": [
+        {
+          "Target": "MSSQL_SA_PASSWORD",
+          "Secret": "sql01-sa-password"
+        }
+      ],
+      "Persistence": [
+        {
+          "Name": "sql-data",
+          "MountPath": "/var/opt/mssql"
+        }
+      ]
+    },
+    {
+      "Name": "database",
+      "Identity": "fiscal-mdfe-database",
+      "Kind": "DatabaseCatalog",
+      "Parent": "sqlserver",
+      "Configuration": {
+        "Catalog": "MDFE"
+      },
+      "Secrets": [],
+      "Persistence": []
+    }
+  ],
+  "Workloads": [
+    {
+      "Name": "api",
+      "Identity": "fiscal-mdfe-api",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Api/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Api.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Fiscal.MDFe/Migration/workloads/api/Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "database"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "Secrets": [
+        {
+          "Target": "MYCONFIG__READCONECTIONSTRING",
+          "Secret": "mdfe-database-read-connection"
+        },
+        {
+          "Target": "MYCONFIG__WRITECONECTIONSTRING",
+          "Secret": "mdfe-database-write-connection"
+        }
+      ],
+      "Ports": [
+        {
+          "Name": "http",
+          "ContainerPort": 7214,
+          "Protocol": "Http",
+          "Route": "/mdfe/yapi",
+          "UpstreamRoute": "/yapi"
+        }
+      ],
+      "Mounts": [],
+      "HealthCheck": {
+        "Kind": "Tcp",
+        "Port": "http",
+        "Command": [],
+        "IntervalSeconds": 30,
+        "TimeoutSeconds": 5,
+        "Retries": 3
+      }
+    },
+    {
+      "Name": "front",
+      "Identity": "fiscal-mdfe-front",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Front.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Fiscal.MDFe/Migration/workloads/front/Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "api"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "Secrets": [],
+      "Ports": [
+        {
+          "Name": "http",
+          "ContainerPort": 8080,
+          "Protocol": "Http",
+          "Route": "/mdfe",
+          "UpstreamRoute": "/"
+        }
+      ],
+      "Mounts": [],
+      "HealthCheck": {
+        "Kind": "Tcp",
+        "Port": "http",
+        "Command": [],
+        "IntervalSeconds": 30,
+        "TimeoutSeconds": 5,
+        "Retries": 3
+      }
+    },
+    {
+      "Name": "migration",
+      "Identity": "fiscal-mdfe-migration",
+      "Mode": "Job",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/Studio/Yeshua.Studio.Fiscal.MDFe/Yeshua.Studio.Fiscal.MDFe.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Fiscal.MDFe/Migration/workloads/migration/Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "database"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {},
+      "Secrets": [
+        {
+          "Target": "MYCONFIG__READCONECTIONSTRING",
+          "Secret": "mdfe-database-read-connection"
+        },
+        {
+          "Target": "MYCONFIG__WRITECONECTIONSTRING",
+          "Secret": "mdfe-database-write-connection"
+        }
+      ],
+      "Ports": [],
+      "Mounts": []
+    }
+  ]
+}

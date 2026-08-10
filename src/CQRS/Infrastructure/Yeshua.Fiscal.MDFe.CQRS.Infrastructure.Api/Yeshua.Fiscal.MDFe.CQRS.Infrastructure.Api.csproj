@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Yeshua.Fiscal.MDFe.CQRS.Domain\Yeshua.Fiscal.MDFe.CQRS.Domain.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.Command\Yeshua.Fiscal.MDFe.CQRS.Application.Command.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces.csproj" />
+    <ProjectReference Include="..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead.csproj" />
+    <ProjectReference Include="..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite.csproj" />
+    <ProjectReference Include="..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+</Project>

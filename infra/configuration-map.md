@@ -72,15 +72,19 @@ padrao do ASP.NET.
 | `ConnectionStrings__Default` | api, worker, migration | Nao ha `GetConnectionString("Default")` encontrado | Candidato a remover |
 | `Redis__Host` | api, worker | Nao ha cliente Redis/configuracao encontrada | Candidato a remover |
 | `SA__PASSWORD` | api, front, migration | Nao ha leitura C# encontrada | Candidato a remover |
-| `SA_PASSWORD` | sqlserver | Imagem SQL Server | Manter |
+| `MSSQL_SA_PASSWORD` | sql01 | Imagem SQL Server | Manter como referencia de segredo |
 | `ACCEPT_EULA` | sqlserver | Imagem SQL Server | Manter |
 | `MSSQL_PID` | sqlserver | Imagem SQL Server | Manter |
 | `RABBITMQ_DEFAULT_USER` | rabbitmq | Imagem RabbitMQ | Manter |
 | `RABBITMQ_DEFAULT_PASS` | rabbitmq | Imagem RabbitMQ | Manter |
 | `CELERY_BROKER_URL` | ai-worker, ai-summarizer | Python Celery/messaging | Manter |
-| `STORAGE_ROOT` | ai-worker | Python worker | Manter |
+| `STORAGE_ROOT` | ai-worker | O worker baixa o audio pela URL e nao usa o volume diretamente | Removido do manifesto |
 | `SUMMARIZER_MODEL` | ai-summarizer | Python summarizer | Manter |
 | `SUMMARIZER_DEVICE` | ai-summarizer | Python summarizer | Manter |
+
+O Compose ativo e gerado em `infra/Environments/Production/Migration`. Clinica
+e MDF-e possuem connection strings distintas, enquanto `sql01` e a persistencia
+fisica do SQL sao compartilhados pelo ambiente.
 
 ## Testes integrados
 

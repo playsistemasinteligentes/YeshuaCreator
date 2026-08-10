@@ -1,0 +1,361 @@
+{
+  "Version": "1.0",
+  "Application": "Clinica",
+  "Resources": [
+    {
+      "Name": "sqlserver",
+      "Identity": "sql01",
+      "Kind": "DatabaseServer",
+      "Configuration": {
+        "Engine": "SqlServer"
+      },
+      "Secrets": [
+        {
+          "Target": "MSSQL_SA_PASSWORD",
+          "Secret": "sql01-sa-password"
+        }
+      ],
+      "Persistence": [
+        {
+          "Name": "sql-data",
+          "MountPath": "/var/opt/mssql"
+        }
+      ]
+    },
+    {
+      "Name": "database",
+      "Identity": "clinica-database",
+      "Kind": "DatabaseCatalog",
+      "Parent": "sqlserver",
+      "Configuration": {
+        "Catalog": "CLINICA"
+      },
+      "Secrets": [],
+      "Persistence": []
+    },
+    {
+      "Name": "redis",
+      "Identity": "redis01",
+      "Kind": "Cache",
+      "Configuration": {},
+      "Secrets": [],
+      "Persistence": []
+    },
+    {
+      "Name": "rabbitmq",
+      "Identity": "rabbit01",
+      "Kind": "MessageBroker",
+      "Configuration": {},
+      "Secrets": [
+        {
+          "Target": "RABBITMQ_DEFAULT_USER",
+          "Secret": "rabbit01-username"
+        },
+        {
+          "Target": "RABBITMQ_DEFAULT_PASS",
+          "Secret": "rabbit01-password"
+        }
+      ],
+      "Persistence": []
+    },
+    {
+      "Name": "storage",
+      "Identity": "storage01",
+      "Kind": "Storage",
+      "Configuration": {},
+      "Secrets": [],
+      "Persistence": [
+        {
+          "Name": "application-storage",
+          "MountPath": "/storage"
+        }
+      ]
+    }
+  ],
+  "Workloads": [
+    {
+      "Name": "api",
+      "Identity": "clinica-api",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Clinica/Migration/workloads/api/Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "database",
+        "redis",
+        "storage"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "Redis__Host": "redis01",
+        "Storage__Providers__Disk__Root": "/storage",
+        "Storage__Providers__Disk__BaseUrl": "https://playsis.com.br",
+        "Storage__Locations__volatile/ia/transcriptions/input": "Disk",
+        "Storage__Locations__volatile/ia/transcriptions/output": "Disk",
+        "Storage__Locations__volatile/reports/input": "Disk",
+        "Storage__Locations__volatile/reports/output": "Disk",
+        "Storage__Locations__persistent/docs/input": "Disk",
+        "Storage__Locations__persistent/docs/output": "Disk"
+      },
+      "Secrets": [
+        {
+          "Target": "MYCONFIG__READCONECTIONSTRING",
+          "Secret": "clinica-database-read-connection"
+        },
+        {
+          "Target": "MYCONFIG__WRITECONECTIONSTRING",
+          "Secret": "clinica-database-write-connection"
+        }
+      ],
+      "Ports": [
+        {
+          "Name": "http",
+          "ContainerPort": 7214,
+          "Protocol": "Http",
+          "Route": "/yapi"
+        }
+      ],
+      "Mounts": [
+        {
+          "Resource": "storage",
+          "MountPath": "/storage",
+          "ReadOnly": false
+        }
+      ],
+      "HealthCheck": {
+        "Kind": "Tcp",
+        "Port": "http",
+        "Command": [],
+        "IntervalSeconds": 30,
+        "TimeoutSeconds": 5,
+        "Retries": 3
+      }
+    },
+    {
+      "Name": "front",
+      "Identity": "clinica-front",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front/Yeshua.Clinica.CQRS.Infrastructure.Front.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Clinica/Migration/workloads/front/Dockerfile"
+      },
+      "Replicas": 2,
+      "Requires": [
+        "api"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "Secrets": [],
+      "Ports": [
+        {
+          "Name": "http",
+          "ContainerPort": 8080,
+          "Protocol": "Http",
+          "Route": "/"
+        }
+      ],
+      "Mounts": [],
+      "HealthCheck": {
+        "Kind": "Tcp",
+        "Port": "http",
+        "Command": [],
+        "IntervalSeconds": 30,
+        "TimeoutSeconds": 5,
+        "Retries": 3
+      }
+    },
+    {
+      "Name": "worker",
+      "Identity": "clinica-worker",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Clinica/Migration/workloads/worker/Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "database",
+        "redis",
+        "rabbitmq",
+        "storage"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "Redis__Host": "redis01",
+        "Storage__Providers__Disk__Root": "/storage",
+        "Storage__Providers__Disk__BaseUrl": "https://playsis.com.br",
+        "Storage__Locations__volatile/ia/transcriptions/input": "Disk",
+        "Storage__Locations__volatile/ia/transcriptions/output": "Disk",
+        "Storage__Locations__volatile/reports/input": "Disk",
+        "Storage__Locations__volatile/reports/output": "Disk",
+        "Storage__Locations__persistent/docs/input": "Disk",
+        "Storage__Locations__persistent/docs/output": "Disk",
+        "RabbitMq__HostName": "rabbit01",
+        "RabbitMq__Port": "5672",
+        "RabbitMq__VirtualHost": "/",
+        "RabbitMq__Exchange": "kiwi.exchange",
+        "RabbitMq__Queue": "kiwi.queue",
+        "RabbitMq__RoutingKey": "kiwi.routing"
+      },
+      "Secrets": [
+        {
+          "Target": "MYCONFIG__READCONECTIONSTRING",
+          "Secret": "clinica-database-read-connection"
+        },
+        {
+          "Target": "MYCONFIG__WRITECONECTIONSTRING",
+          "Secret": "clinica-database-write-connection"
+        },
+        {
+          "Target": "RabbitMq__Username",
+          "Secret": "rabbit01-username"
+        },
+        {
+          "Target": "RabbitMq__Password",
+          "Secret": "rabbit01-password"
+        }
+      ],
+      "Ports": [
+        {
+          "Name": "http",
+          "ContainerPort": 7215,
+          "Protocol": "Http",
+          "Route": "/yworker"
+        }
+      ],
+      "Mounts": [
+        {
+          "Resource": "storage",
+          "MountPath": "/storage",
+          "ReadOnly": false
+        }
+      ],
+      "HealthCheck": {
+        "Kind": "Tcp",
+        "Port": "http",
+        "Command": [],
+        "IntervalSeconds": 30,
+        "TimeoutSeconds": 5,
+        "Retries": 3
+      }
+    },
+    {
+      "Name": "migration",
+      "Identity": "clinica-migration",
+      "Mode": "Job",
+      "Source": {
+        "Kind": "Project",
+        "ProjectPath": "src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj",
+        "BuildContext": ".",
+        "Dockerfile": "infra/Clinica/Migration/workloads/migration/Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "database"
+      ],
+      "Consumes": [],
+      "Produces": [],
+      "Configuration": {},
+      "Secrets": [
+        {
+          "Target": "MYCONFIG__READCONECTIONSTRING",
+          "Secret": "clinica-database-read-connection"
+        },
+        {
+          "Target": "MYCONFIG__WRITECONECTIONSTRING",
+          "Secret": "clinica-database-write-connection"
+        }
+      ],
+      "Ports": [],
+      "Mounts": []
+    },
+    {
+      "Name": "ai-worker",
+      "Identity": "clinica-ai-worker",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "BuildContext",
+        "BuildContext": "infra/docker/ai-worker",
+        "Dockerfile": "Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "rabbitmq"
+      ],
+      "Consumes": [
+        "audio.transcribe.outbox"
+      ],
+      "Produces": [
+        "audio.transcribed.inbox"
+      ],
+      "Configuration": {},
+      "Secrets": [
+        {
+          "Target": "CELERY_BROKER_URL",
+          "Secret": "rabbit01-celery-url"
+        }
+      ],
+      "Ports": [],
+      "Mounts": [],
+      "Compute": {
+        "CpuRequest": "500m",
+        "CpuLimit": "4",
+        "MemoryRequest": "2Gi",
+        "MemoryLimit": "8Gi"
+      }
+    },
+    {
+      "Name": "ai-summarizer",
+      "Identity": "clinica-ai-summarizer",
+      "Mode": "Service",
+      "Source": {
+        "Kind": "BuildContext",
+        "BuildContext": "infra/docker/ai-summarizer",
+        "Dockerfile": "Dockerfile"
+      },
+      "Replicas": 1,
+      "Requires": [
+        "rabbitmq"
+      ],
+      "Consumes": [
+        "text.summarize.outbox"
+      ],
+      "Produces": [
+        "text.summarized.inbox"
+      ],
+      "Configuration": {
+        "SUMMARIZER_MODEL": "Qwen/Qwen2.5-0.5B-Instruct",
+        "SUMMARIZER_DEVICE": "cpu"
+      },
+      "Secrets": [
+        {
+          "Target": "CELERY_BROKER_URL",
+          "Secret": "rabbit01-celery-url"
+        }
+      ],
+      "Ports": [],
+      "Mounts": [],
+      "Compute": {
+        "CpuRequest": "500m",
+        "CpuLimit": "4",
+        "MemoryRequest": "2Gi",
+        "MemoryLimit": "8Gi"
+      }
+    }
+  ]
+}

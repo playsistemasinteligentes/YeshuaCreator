@@ -1,5 +1,5 @@
 ﻿using Dominio.Migration;
-using MyApp.Domain.Entities;
+using Yeshua.Studio.AppClinicas.Domain.Entities;
 using MyApp.QueryBuilder;
 using System;
 using System.Collections.Generic;
@@ -60,10 +60,10 @@ namespace AppClinicas
                 .AddColumn("TelefoneResponsavel", "Telefone Responsavel").Varchar(15)
                 .AddColumn("Observacao", "Observacao").Varchar(2000);
 
-            AddQuery<Paciente>("Standard", q => q
-             .WhereContext("Mes", s => s.Nome == "")
-             .Where("Geral", s => s.Nome == "")
-             .Select(s => new { s.Id, s.Nome }));
+//            AddQuery<Paciente>("Standard", q => q
+//             .WhereContext("Mes", s => s.Nome == "")
+//             .Where("Geral", s => s.Nome == "")
+//             .Select(s => new { s.Id, s.Nome }));
 
             AddEntity("MovimentacaoFinanceira").AddModule("PSI")
                 .AddColumn("Id", "ID").Int().Incremento().Key()
@@ -144,13 +144,13 @@ namespace AppClinicas
             //.Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.Profissional.Especialidade.Descricao })
             //.ToCommand();
 
-            AddQuery<Sesoes>("Standard", q => q
-            .WhereContext("Hoje", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(1))
-             .WhereContext("Semana", s => s.DataInicio >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && s.DataInicio < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek))
-            .WhereContext("D30", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(30))
-             .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
-
-             .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.StatusAgendamento, s.StatusProntuario }));
+ //           AddQuery<Sesoes>("Standard", q => q
+ //           .WhereContext("Hoje", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(1))
+ //            .WhereContext("Semana", s => s.DataInicio >= DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek) && s.DataInicio < DateTime.Today.AddDays(7 - (int)DateTime.Today.DayOfWeek))
+ //           .WhereContext("D30", s => s.DataInicio >= DateTime.Today && s.DataInicio < DateTime.Today.AddDays(30))
+ //            .Where("Geral", s => s.DataInicio >= DateTime.Today && s.DataFim <= DateTime.Today && s.StatusAgendamento == 0 && s.StatusProntuario == 0)
+ //
+ //            .Select(s => new { s.Id, s.DataInicio, s.Paciente.Nome, s.StatusAgendamento, s.StatusProntuario }));
 
             /*
             saga eventos S001 sesao e financeiro 

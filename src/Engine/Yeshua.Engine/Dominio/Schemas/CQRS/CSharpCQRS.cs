@@ -14,7 +14,10 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static Dapper.SqlMapper;
 using static Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers;
 using CommandType = Migration.Dominio.Schemas.CQRS.CommandType;
@@ -23,14 +26,19 @@ namespace Dominio.Schemas.CQRS
 {
     public class CSharpCQRS : ICSharpCQRS
     {
-        public CSharpCQRS(string name, string solutionDirectory)
+        public CSharpCQRS(
+            string name,
+            string solutionDirectory,
+            string? studioProjectName = null)
         {
             _name = name;
             _solutionDirectory = solutionDirectory;
+            _studioProjectName = studioProjectName;
         }
 
         public string _name { get; set; }
         public string _solutionDirectory { get; set; }
+        private readonly string? _studioProjectName;
 
         public void AppAplicationGenerateCommand(Migration.MigrationBase migration)
         {
@@ -278,6 +286,14 @@ namespace Dominio.Schemas.CQRS
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"SagaResolverRegistry.cs");
                 var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(sagas);
                 sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston, null);
+
+                var sagaWorkerPath = Path.Combine(GetPathAppAplicationCommandSagaPatterns("Migration"), "SagaWorkerCommandHandler.cs");
+                var sagaWorkerCustonPath = Path.Combine(GetPathAppAplicationCommandSagaPatterns("Custon"), "SagaWorkerCommandHandler.cs");
+                new SourceCodeApplicationSagaWorker(false).WriteCode(null, sagaWorkerPath, sagaWorkerCustonPath);
+
+                var sagaInboxWorkerPath = Path.Combine(GetPathAppAplicationCommandSagaPatterns("Migration"), "SagaInboxWorkerCommandHandler.cs");
+                var sagaInboxWorkerCustonPath = Path.Combine(GetPathAppAplicationCommandSagaPatterns("Custon"), "SagaInboxWorkerCommandHandler.cs");
+                new SourceCodeApplicationSagaWorker(true).WriteCode(null, sagaInboxWorkerPath, sagaInboxWorkerCustonPath);
             }
 
 
@@ -428,6 +444,11 @@ namespace Dominio.Schemas.CQRS
             return Path.Combine(GetPathAppAplication(), GetApplicationCommandProjectName());
         }
 
+        private string GetPathAppAplicationCommandSagaPatterns(string directory)
+        {
+            return Path.Combine(GetPathAppAplicationCommand(), "Patterns", directory, "Saga");
+        }
+
         private string GetPathAppAplication()
         {
             return Path.Combine(GetPathAppSolution(), "src", "CQRS", "Application");
@@ -510,7 +531,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppAplicationRepositoryInterfaces()
         {
-            return Path.Combine(GetPathAppAplication(), "Yeshua.CQRS.Application.RepositoryInterfaces");
+            return Path.Combine(GetPathAppAplication(), GetApplicationRepositoryInterfacesProjectName());
         }
 
         public void AppAplicationGenerateRepositoryInterfacesWrite(Migration.MigrationBase migration)
@@ -596,10 +617,46 @@ namespace Dominio.Schemas.CQRS
 
         private void AppInternalEntitys(MigrationBase migration)
         {
+            // pendencia: separar o dicionario das migrations internas da Engine do dicionario do aplicativo.
+            // observacao: durante o bootstrap a Engine ainda mantem esta copia; cada Studio recebe sua copia propria abaixo.
             var filePath = Path.Combine(GetPathEngineDominioOrm(), "entities.cs");
             var filePathCuston = Path.Combine(GetPathEngineDominioOrm(), "Custonentities.cs");
             var sourceCodeMigration = new SourceCodeEntityInternalMigration(migration.Entitys);
             sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
+        }
+
+        public void AppStudioGenerateEntityDictionary(MigrationBase migration)
+        {
+            if (string.IsNullOrWhiteSpace(_studioProjectName))
+                return;
+
+            var studioProjectName = _studioProjectName.Trim();
+            var studioProjectDirectory = Path.Combine(
+                GetPathAppSolution(),
+                "src",
+                "Studio",
+                studioProjectName);
+            var studioProjectPath = Path.Combine(
+                studioProjectDirectory,
+                $"{studioProjectName}.csproj");
+
+            if (!File.Exists(studioProjectPath))
+            {
+                throw new InvalidOperationException(
+                    $"O projeto Studio '{studioProjectPath}' nao foi encontrado. " +
+                    "Informe o nome exato do projeto para gerar o dicionario local.");
+            }
+
+            var filePath = Path.Combine(
+                studioProjectDirectory,
+                "Dominio",
+                "ORM",
+                "entities.cs");
+            var namespaceName = $"{studioProjectName}.Domain.Entities";
+            var sourceCodeMigration = new SourceCodeEntityInternalMigration(
+                migration.Entitys,
+                namespaceName);
+            sourceCodeMigration.WriteMigrationCode(filePath);
         }
 
         private string GetPathEngineDominioOrm()
@@ -669,15 +726,15 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureGenerateAPI()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Api");
+            return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureApiProjectName());
         }
         private string GetPathAppInfraestructureGenerateWorker()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Worker");
+            return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureWorkerProjectName());
         }
         private string GetPathAppInfraestructureGenerateModules()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Api");
+            return GetPathAppInfraestructureGenerateAPI();
         }
 
         public void AppInfraestructureGenerateAutomacaoTest(Migration.MigrationBase migration)
@@ -980,11 +1037,13 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureRead()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.RepositoryRead");
+            return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureRepositoryReadProjectName());
         }
         private string GetPathAppInfraestructureShered()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.Shared");
+            return Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureSharedProjectName());
         }
         private string GetPathAppInfraestructureSheredStrategy(string directory)
         {
@@ -1046,7 +1105,7 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathAppInfraestructureWrite()
         {
-            return Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.RepositoryWrite");
+            return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureRepositoryWriteProjectName());
         }
 
         public void AppInfraestructureGenerateWriteConcreteQuerys(Migration.MigrationBase migration)
@@ -1123,6 +1182,55 @@ namespace Dominio.Schemas.CQRS
 
             AddProjectToSolution(applicationDomainProjectPath, "Yeshua.CQRS.Domain");
 
+            var sharedRepositoryInterfacesProjectPath = Path.Combine(
+                GetPathAppAplication(),
+                "Yeshua.CQRS.Application.RepositoryInterfaces",
+                "Yeshua.CQRS.Application.RepositoryInterfaces.csproj");
+
+            if (!File.Exists(sharedRepositoryInterfacesProjectPath))
+            {
+                throw new FileNotFoundException(
+                    "O projeto RepositoryInterfaces compartilhado nao foi encontrado.",
+                    sharedRepositoryInterfacesProjectPath);
+            }
+
+            var applicationRepositoryInterfacesProjectName = GetApplicationRepositoryInterfacesProjectName();
+            var applicationRepositoryInterfacesProjectDirectory = Path.Combine(
+                GetPathAppAplication(),
+                applicationRepositoryInterfacesProjectName);
+            var applicationRepositoryInterfacesProjectPath = Path.Combine(
+                applicationRepositoryInterfacesProjectDirectory,
+                $"{applicationRepositoryInterfacesProjectName}.csproj");
+
+            if (!File.Exists(applicationRepositoryInterfacesProjectPath))
+            {
+                var sharedRepositoryInterfacesProjectReference = Path.GetRelativePath(
+                    applicationRepositoryInterfacesProjectDirectory,
+                    sharedRepositoryInterfacesProjectPath);
+                var applicationDomainProjectReference = Path.GetRelativePath(
+                    applicationRepositoryInterfacesProjectDirectory,
+                    applicationDomainProjectPath);
+
+                WriteText(
+                    applicationRepositoryInterfacesProjectPath,
+                    $@"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""{sharedRepositoryInterfacesProjectReference}"" />
+    <ProjectReference Include=""{applicationDomainProjectReference}"" />
+  </ItemGroup>
+
+</Project>");
+            }
+
+            AddProjectToSolution(applicationRepositoryInterfacesProjectPath, "Yeshua.CQRS.Application");
+
             var sharedCommandProjectPath = Path.Combine(
                 GetPathAppSolution(),
                 "src",
@@ -1150,6 +1258,9 @@ namespace Dominio.Schemas.CQRS
                 var applicationDomainProjectReference = Path.GetRelativePath(
                     applicationCommandProjectDirectory,
                     applicationDomainProjectPath);
+                var applicationRepositoryInterfacesProjectReference = Path.GetRelativePath(
+                    applicationCommandProjectDirectory,
+                    applicationRepositoryInterfacesProjectPath);
 
                 WriteText(
                     applicationCommandProjectPath,
@@ -1162,14 +1273,310 @@ namespace Dominio.Schemas.CQRS
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include=""{sharedCommandProjectReference}"" />
+                    <ProjectReference Include=""{sharedCommandProjectReference}"" />
+                    <ProjectReference Include=""{applicationDomainProjectReference}"" />
+                    <ProjectReference Include=""{applicationRepositoryInterfacesProjectReference}"" />
+                  </ItemGroup>
+
+</Project>");
+            }
+
+            EnsureProjectReference(applicationCommandProjectPath, applicationRepositoryInterfacesProjectPath);
+            AddProjectToSolution(applicationCommandProjectPath, "Yeshua.CQRS.Application");
+
+            var sharedInfrastructureProjectPath = Path.Combine(
+                GetPathAppInfraestructure(),
+                "Yeshua.CQRS.Infrastructure.Shared",
+                "Yeshua.CQRS.Infrastructure.Shared.csproj");
+
+            if (!File.Exists(sharedInfrastructureProjectPath))
+            {
+                throw new FileNotFoundException(
+                    "O projeto de infraestrutura compartilhada nao foi encontrado.",
+                    sharedInfrastructureProjectPath);
+            }
+
+            var applicationInfrastructureSharedProjectName =
+                GetApplicationInfrastructureSharedProjectName();
+            var applicationInfrastructureSharedProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                applicationInfrastructureSharedProjectName);
+            var applicationInfrastructureSharedProjectPath = Path.Combine(
+                applicationInfrastructureSharedProjectDirectory,
+                $"{applicationInfrastructureSharedProjectName}.csproj");
+
+            if (!File.Exists(applicationInfrastructureSharedProjectPath))
+            {
+                var sharedInfrastructureProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureSharedProjectDirectory,
+                    sharedInfrastructureProjectPath);
+                var applicationDomainProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureSharedProjectDirectory,
+                    applicationDomainProjectPath);
+                var applicationRepositoryInterfacesProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureSharedProjectDirectory,
+                    applicationRepositoryInterfacesProjectPath);
+
+                WriteText(
+                    applicationInfrastructureSharedProjectPath,
+                    $@"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""{sharedInfrastructureProjectReference}"" />
     <ProjectReference Include=""{applicationDomainProjectReference}"" />
+    <ProjectReference Include=""{applicationRepositoryInterfacesProjectReference}"" />
   </ItemGroup>
 
 </Project>");
             }
 
-            AddProjectToSolution(applicationCommandProjectPath, "Yeshua.CQRS.Application");
+            EnsureProjectReference(
+                applicationInfrastructureSharedProjectPath,
+                sharedInfrastructureProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureSharedProjectPath,
+                applicationDomainProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureSharedProjectPath,
+                applicationRepositoryInterfacesProjectPath);
+            AddProjectToSolution(
+                applicationInfrastructureSharedProjectPath,
+                "Yeshua.CQRS.Infrastructure");
+
+            var applicationInfrastructureRepositoryReadProjectName =
+                GetApplicationInfrastructureRepositoryReadProjectName();
+            var applicationInfrastructureRepositoryReadProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                applicationInfrastructureRepositoryReadProjectName);
+            var applicationInfrastructureRepositoryReadProjectPath = Path.Combine(
+                applicationInfrastructureRepositoryReadProjectDirectory,
+                $"{applicationInfrastructureRepositoryReadProjectName}.csproj");
+
+            if (!File.Exists(applicationInfrastructureRepositoryReadProjectPath))
+            {
+                var sharedInfrastructureProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureRepositoryReadProjectDirectory,
+                    sharedInfrastructureProjectPath);
+                var applicationCommandProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureRepositoryReadProjectDirectory,
+                    applicationCommandProjectPath);
+                var applicationRepositoryInterfacesProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureRepositoryReadProjectDirectory,
+                    applicationRepositoryInterfacesProjectPath);
+
+                WriteText(
+                    applicationInfrastructureRepositoryReadProjectPath,
+                    $@"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""{sharedInfrastructureProjectReference}"" />
+    <ProjectReference Include=""{applicationCommandProjectReference}"" />
+    <ProjectReference Include=""{applicationRepositoryInterfacesProjectReference}"" />
+  </ItemGroup>
+
+</Project>");
+            }
+
+            EnsureProjectReference(
+                applicationInfrastructureRepositoryReadProjectPath,
+                sharedInfrastructureProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureRepositoryReadProjectPath,
+                applicationCommandProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureRepositoryReadProjectPath,
+                applicationRepositoryInterfacesProjectPath);
+            AddProjectToSolution(
+                applicationInfrastructureRepositoryReadProjectPath,
+                "Yeshua.CQRS.Infrastructure");
+
+            var applicationInfrastructureRepositoryWriteProjectName =
+                GetApplicationInfrastructureRepositoryWriteProjectName();
+            var applicationInfrastructureRepositoryWriteProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                applicationInfrastructureRepositoryWriteProjectName);
+            var applicationInfrastructureRepositoryWriteProjectPath = Path.Combine(
+                applicationInfrastructureRepositoryWriteProjectDirectory,
+                $"{applicationInfrastructureRepositoryWriteProjectName}.csproj");
+
+            if (!File.Exists(applicationInfrastructureRepositoryWriteProjectPath))
+            {
+                var sharedInfrastructureProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureRepositoryWriteProjectDirectory,
+                    sharedInfrastructureProjectPath);
+                var applicationCommandProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureRepositoryWriteProjectDirectory,
+                    applicationCommandProjectPath);
+                var applicationRepositoryInterfacesProjectReference = Path.GetRelativePath(
+                    applicationInfrastructureRepositoryWriteProjectDirectory,
+                    applicationRepositoryInterfacesProjectPath);
+
+                WriteText(
+                    applicationInfrastructureRepositoryWriteProjectPath,
+                    $@"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""{sharedInfrastructureProjectReference}"" />
+    <ProjectReference Include=""{applicationCommandProjectReference}"" />
+    <ProjectReference Include=""{applicationRepositoryInterfacesProjectReference}"" />
+  </ItemGroup>
+
+</Project>");
+            }
+
+            EnsureProjectReference(
+                applicationInfrastructureRepositoryWriteProjectPath,
+                sharedInfrastructureProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureRepositoryWriteProjectPath,
+                applicationCommandProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureRepositoryWriteProjectPath,
+                applicationRepositoryInterfacesProjectPath);
+            AddProjectToSolution(
+                applicationInfrastructureRepositoryWriteProjectPath,
+                "Yeshua.CQRS.Infrastructure");
+
+            var applicationInfrastructureApiProjectName =
+                GetApplicationInfrastructureApiProjectName();
+            var applicationInfrastructureApiProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                applicationInfrastructureApiProjectName);
+            var applicationInfrastructureApiProjectPath = Path.Combine(
+                applicationInfrastructureApiProjectDirectory,
+                $"{applicationInfrastructureApiProjectName}.csproj");
+
+            if (!File.Exists(applicationInfrastructureApiProjectPath))
+            {
+                WriteText(
+                    applicationInfrastructureApiProjectPath,
+                    @"<Project Sdk=""Microsoft.NET.Sdk.Web"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include=""Microsoft.AspNetCore.Authentication.JwtBearer"" Version=""8.0.14"" />
+    <PackageReference Include=""Swashbuckle.AspNetCore"" Version=""6.5.0"" />
+  </ItemGroup>
+
+</Project>");
+            }
+
+            EnsureProjectReference(
+                applicationInfrastructureApiProjectPath,
+                applicationInfrastructureSharedProjectPath);
+            RemoveProjectReference(
+                applicationInfrastructureApiProjectPath,
+                sharedInfrastructureProjectPath);
+            EnsureProjectReference(applicationInfrastructureApiProjectPath, applicationDomainProjectPath);
+            EnsureProjectReference(applicationInfrastructureApiProjectPath, applicationCommandProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureApiProjectPath,
+                applicationRepositoryInterfacesProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureApiProjectPath,
+                applicationInfrastructureRepositoryReadProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureApiProjectPath,
+                applicationInfrastructureRepositoryWriteProjectPath);
+            EnsureApplicationInfrastructureApiFiles(applicationInfrastructureApiProjectDirectory);
+            AddProjectToSolution(applicationInfrastructureApiProjectPath, "Yeshua.CQRS.Infrastructure");
+
+            // pendencia: criar o Worker apenas quando a DSL do aplicativo declarar fila, polling ou outro processamento em segundo plano.
+            var applicationInfrastructureWorkerProjectName =
+                GetApplicationInfrastructureWorkerProjectName();
+            var applicationInfrastructureWorkerProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                applicationInfrastructureWorkerProjectName);
+            var applicationInfrastructureWorkerProjectPath = Path.Combine(
+                applicationInfrastructureWorkerProjectDirectory,
+                $"{applicationInfrastructureWorkerProjectName}.csproj");
+
+            if (!File.Exists(applicationInfrastructureWorkerProjectPath))
+            {
+                WriteText(
+                    applicationInfrastructureWorkerProjectPath,
+                    @"<Project Sdk=""Microsoft.NET.Sdk.Web"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+</Project>");
+            }
+
+            EnsureProjectReference(
+                applicationInfrastructureWorkerProjectPath,
+                applicationInfrastructureSharedProjectPath);
+            RemoveProjectReference(
+                applicationInfrastructureWorkerProjectPath,
+                sharedInfrastructureProjectPath);
+            EnsureProjectReference(applicationInfrastructureWorkerProjectPath, applicationDomainProjectPath);
+            EnsureProjectReference(applicationInfrastructureWorkerProjectPath, applicationCommandProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureWorkerProjectPath,
+                applicationRepositoryInterfacesProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureWorkerProjectPath,
+                applicationInfrastructureRepositoryReadProjectPath);
+            EnsureProjectReference(
+                applicationInfrastructureWorkerProjectPath,
+                applicationInfrastructureRepositoryWriteProjectPath);
+            EnsureApplicationInfrastructureWorkerFiles(applicationInfrastructureWorkerProjectDirectory);
+            AddProjectToSolution(applicationInfrastructureWorkerProjectPath, "Yeshua.CQRS.Infrastructure");
+
+            var applicationInfrastructureFrontProjectName =
+                GetApplicationInfrastructureFrontProjectName();
+            var applicationInfrastructureFrontProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                applicationInfrastructureFrontProjectName);
+            var applicationInfrastructureFrontProjectPath = Path.Combine(
+                applicationInfrastructureFrontProjectDirectory,
+                $"{applicationInfrastructureFrontProjectName}.csproj");
+
+            if (!File.Exists(applicationInfrastructureFrontProjectPath))
+            {
+                WriteText(
+                    applicationInfrastructureFrontProjectPath,
+                    @"<Project Sdk=""Microsoft.NET.Sdk.Web"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>");
+            }
+
+            EnsureApplicationInfrastructureFrontFiles(applicationInfrastructureFrontProjectDirectory);
+            AddProjectToSolution(applicationInfrastructureFrontProjectPath, "Yeshua.CQRS.Infrastructure");
         }
 
         private string GetApplicationDomainProjectName()
@@ -1182,6 +1589,635 @@ namespace Dominio.Schemas.CQRS
             return $"Yeshua.{GetApplicationName()}.CQRS.Application.Command";
         }
 
+        private string GetApplicationRepositoryInterfacesProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Application.RepositoryInterfaces";
+        }
+
+        private string GetApplicationInfrastructureRepositoryReadProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Infrastructure.RepositoryRead";
+        }
+
+        private string GetApplicationInfrastructureSharedProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Infrastructure.Shared";
+        }
+
+        private string GetApplicationInfrastructureRepositoryWriteProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Infrastructure.RepositoryWrite";
+        }
+
+        private string GetApplicationInfrastructureApiProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Infrastructure.Api";
+        }
+
+        private string GetApplicationInfrastructureWorkerProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Infrastructure.Worker";
+        }
+
+        private string GetApplicationInfrastructureFrontProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Infrastructure.Front";
+        }
+
+        private void EnsureApplicationInfrastructureApiFiles(string projectDirectory)
+        {
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Program.cs"),
+                @"using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMemoryCache();
+builder.Services.AddResponseCompression();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        var origins = builder.Configuration.GetSection(""Cors:Origins"").Get<string[]>() ?? [];
+        if (origins.Length > 0)
+            policy.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+    });
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc(""v1"", new OpenApiInfo { Title = builder.Environment.ApplicationName, Version = ""v1"" });
+    options.AddSecurityDefinition(""Bearer"", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = ""Authorization"",
+        Type = SecuritySchemeType.Http,
+        Scheme = ""bearer"",
+        BearerFormat = ""JWT""
+    });
+});
+
+Migrations.DependencInjection.MapDependencInjection(builder);
+Migrations.DependenceInjectionCuston.MapDependenceInjection(builder);
+
+var jwtSettings = new JwtSettings();
+builder.Configuration.Bind(""JwtSettings"", jwtSettings);
+builder.Services.AddSingleton(jwtSettings);
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true
+        };
+    });
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
+
+app.UseResponseCompression();
+app.UseCors();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseAuthentication();
+app.UseAuthorization();
+
+API.Migrations.Endpoints.MapEndpoints(app);
+API.Migrations.EndpointsCuston.MapEndpoints(app);
+
+app.Run();");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "StateResults.cs"),
+                @"using Microsoft.AspNetCore.Http.HttpResults;
+using RepositoryInterfaces.Patterns.Command;
+
+namespace API;
+
+public static class StateResults
+{
+    public static Results<Ok<State<T>>, BadRequest<State<T>>, ProblemHttpResult> From<T>(State<T> state)
+    {
+        return state.StatusCode switch
+        {
+            >= 200 and < 300 => TypedResults.Ok(state),
+            >= 400 and < 500 => TypedResults.BadRequest(state),
+            _ => TypedResults.Problem(state.Message)
+        };
+    }
+
+    public static Results<Ok<State<T>>, BadRequest<State<T>>, ProblemHttpResult> Try<T>(Func<State<T>> action)
+    {
+        try
+        {
+            return From(action());
+        }
+        catch (ReceiverException<T> exception)
+        {
+            return TypedResults.BadRequest(exception.State);
+        }
+        catch
+        {
+            return TypedResults.Problem(""Nao foi possivel concluir a operacao."");
+        }
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Services", "CurrentUserHttp.cs"),
+                @"using Aplication.Interfaces.Services;
+using System.Security.Claims;
+
+namespace Shered.Services;
+
+public sealed class executionContextHttp : IExecutionContext
+{
+    private readonly IHttpContextAccessor _http;
+    private readonly string _fallbackTraceId = Guid.NewGuid().ToString(""N"");
+    private int? _manualTenantId;
+    private int? _manualUserId;
+    private string? _manualTraceId;
+    private ExecutionOrigin? _manualOrigin;
+
+    public executionContextHttp(IHttpContextAccessor http) => _http = http;
+
+    public int TenantID => _manualTenantId ?? GetTenantId();
+    public int UserId => _manualUserId ?? GetUserId();
+    public IEnumerable<Claim> Claims => _http.HttpContext?.User?.Claims ?? Enumerable.Empty<Claim>();
+    public string TraceId => _manualTraceId ?? _http.HttpContext?.TraceIdentifier ?? _fallbackTraceId;
+    public ExecutionOrigin Origem =>
+        _manualOrigin ?? (_http.HttpContext is null ? ExecutionOrigin.Worker : ExecutionOrigin.Http);
+
+    public void SetTenantId(int id) => _manualTenantId = id;
+    public void SetUserId(int id) => _manualUserId = id;
+    public void SetTraceId(string traceId) => _manualTraceId = traceId;
+    public void SetOrigem(ExecutionOrigin origem) => _manualOrigin = origem;
+
+    private int GetTenantId() => GetIntClaim(""tenantId"");
+    private int GetUserId() => GetIntClaim(ClaimTypes.NameIdentifier);
+
+    private int GetIntClaim(string claimType)
+    {
+        var value = _http.HttpContext?.User?.FindFirst(claimType)?.Value;
+        return int.TryParse(value, out var id) ? id : 0;
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Custon", "IndependenceInjection.cs"),
+                @"using Aplication.Interfaces.Services;
+using Command.Interfaces.Patterns.FileStore;
+using Command.Interfaces.Patterns.Queue;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using Shared.InterfacesConcrete.Queue.RabbitMQ;
+using Shered.ConcretInterfaces.Queue.RabbitMQ;
+using Shered.DB.Connection;
+using Shered.Patterns.FileStore;
+using Shered.Services;
+
+namespace Migrations;
+
+public static class DependenceInjectionCuston
+{
+    public static void MapDependenceInjection(WebApplicationBuilder builder)
+    {
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<IExecutionContext, executionContextHttp>();
+
+        builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection(""RabbitMq""));
+        builder.Services.AddSingleton<RabbitMqConnectionManager>();
+        builder.Services.AddSingleton<IQueueTopologyInitializer, RabbitMqTopologyInitializer>();
+        builder.Services.AddSingleton<IQueuePublisher, RabbitMQQueuePublisher>();
+        builder.Services.AddSingleton<IQueueListener, RabbitMQQueueListener>();
+
+        builder.Services.Configure<StorageSettings>(builder.Configuration.GetSection(""Storage""));
+        builder.Services.AddScoped<IFileStorage, StorageService>();
+        builder.Services.AddScoped<IStorageProvider, DiskStorageProvider>();
+        builder.Services.AddScoped<StorageResolver>();
+
+        builder.Services.AddScoped<ISqlFactory>(_ =>
+            new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Custon", "EndPoints.cs"),
+                @"namespace API.Migrations;
+
+public static class EndpointsCuston
+{
+    public static void MapEndpoints(this WebApplication app)
+    {
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "appsettings.json"),
+                @"{
+  ""Cors"": {
+    ""Origins"": []
+  },
+  ""JwtSettings"": {
+    ""SecretKey"": ""configure-using-user-secrets-or-environment-variables"",
+    ""ExpirationMinutes"": 60
+  },
+  ""RabbitMq"": {},
+  ""Storage"": {}
+}");
+
+            EnsureApplicationInfrastructureApiLaunchSettings(projectDirectory);
+        }
+
+        private void EnsureApplicationInfrastructureApiLaunchSettings(string projectDirectory)
+        {
+            var launchSettingsPath = Path.Combine(
+                projectDirectory,
+                "Properties",
+                "launchSettings.json");
+            JsonObject root;
+
+            if (File.Exists(launchSettingsPath))
+            {
+                root = JsonNode.Parse(File.ReadAllText(launchSettingsPath)) as JsonObject
+                    ?? throw new InvalidOperationException(
+                        $"O arquivo '{launchSettingsPath}' nao possui um objeto JSON valido.");
+            }
+            else
+            {
+                root = new JsonObject();
+            }
+
+            var profiles = root["profiles"] as JsonObject;
+            if (profiles is null)
+            {
+                profiles = new JsonObject();
+                root["profiles"] = profiles;
+            }
+
+            var projectProfiles = profiles
+                .Where(profile => profile.Value is JsonObject profileObject
+                    && string.Equals(
+                        profileObject["commandName"]?.GetValue<string>(),
+                        "Project",
+                        StringComparison.OrdinalIgnoreCase))
+                .Select(profile => (JsonObject)profile.Value!)
+                .ToList();
+
+            if (projectProfiles.Count == 0)
+            {
+                var projectProfile = new JsonObject
+                {
+                    ["commandName"] = "Project",
+                    ["environmentVariables"] = new JsonObject
+                    {
+                        ["ASPNETCORE_ENVIRONMENT"] = "Development"
+                    }
+                };
+                profiles[GetApplicationInfrastructureApiProjectName()] = projectProfile;
+                projectProfiles.Add(projectProfile);
+            }
+
+            foreach (var profile in projectProfiles)
+            {
+                profile["launchBrowser"] = true;
+                profile["launchUrl"] = "swagger";
+            }
+
+            WriteText(
+                launchSettingsPath,
+                root.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
+        }
+
+        private void EnsureApplicationInfrastructureFrontFiles(string projectDirectory)
+        {
+            WriteText(
+                Path.Combine(projectDirectory, "Program.cs"),
+                @"var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.Run();");
+
+            WriteText(
+                Path.Combine(projectDirectory, "appsettings.json"),
+                @"{
+  ""Logging"": {
+    ""LogLevel"": {
+      ""Default"": ""Information"",
+      ""Microsoft.AspNetCore"": ""Warning""
+    }
+  },
+  ""AllowedHosts"": ""*""
+}");
+
+            var frontPort = GetApplicationInfrastructureFrontPort();
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Properties", "launchSettings.json"),
+                $@"{{
+  ""profiles"": {{
+    ""{GetApplicationInfrastructureFrontProjectName()}"": {{
+      ""commandName"": ""Project"",
+      ""launchBrowser"": true,
+      ""environmentVariables"": {{
+        ""ASPNETCORE_ENVIRONMENT"": ""Development""
+      }},
+      ""applicationUrl"": ""http://localhost:{frontPort}""
+    }}
+  }}
+}}");
+
+            SyncApplicationInfrastructureFrontStandardFiles(projectDirectory);
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "wwwroot", "Custon", "extensions.js"),
+                @"window.yeshuaExtensions = window.yeshuaExtensions || {};");
+        }
+
+        private int GetApplicationInfrastructureFrontPort()
+        {
+            uint hash = 2166136261;
+            foreach (var character in GetApplicationName())
+            {
+                hash ^= character;
+                hash *= 16777619;
+            }
+
+            return 57000 + (int)(hash % 1000);
+        }
+
+        private void SyncApplicationInfrastructureFrontStandardFiles(string projectDirectory)
+        {
+            var templateDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                "Yeshua.CQRS.Infrastructure.Front",
+                "wwwroot");
+            if (!Directory.Exists(templateDirectory))
+            {
+                throw new DirectoryNotFoundException(
+                    $"A matriz do Front nao foi encontrada em '{templateDirectory}'.");
+            }
+
+            var destinationDirectory = Path.Combine(projectDirectory, "wwwroot");
+            foreach (var sourceFile in Directory.GetFiles(
+                templateDirectory,
+                "*",
+                System.IO.SearchOption.AllDirectories))
+            {
+                var relativePath = Path.GetRelativePath(templateDirectory, sourceFile);
+                var firstDirectory = relativePath.Split(
+                    Path.DirectorySeparatorChar,
+                    Path.AltDirectorySeparatorChar)[0];
+                if (string.Equals(firstDirectory, "Custon", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var destinationFile = Path.Combine(destinationDirectory, relativePath);
+                var destinationFileDirectory = Path.GetDirectoryName(destinationFile);
+                if (!string.IsNullOrWhiteSpace(destinationFileDirectory))
+                    Directory.CreateDirectory(destinationFileDirectory);
+
+                File.Copy(sourceFile, destinationFile, overwrite: true);
+            }
+        }
+
+        private void EnsureApplicationInfrastructureWorkerFiles(string projectDirectory)
+        {
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Program.cs"),
+                @"using Command.Interfaces.Patterns.Queue;
+using Migrations;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMemoryCache();
+DependencInjection.MapDependencInjection(builder);
+WorkerInfrastructure.MapWorkerInfrastructure(builder);
+Worker.Custon.CustonDependenceInjection.MapCustonDependenceInjection(builder);
+WorkersBuilder.MapWorkersBuilder(builder);
+
+var app = builder.Build();
+var topology = DependencInjection.GetQueueTopology();
+
+if (topology.Exchanges.Count > 0)
+{
+    var initializer = app.Services.GetRequiredService<IQueueTopologyInitializer>();
+    await initializer.InitializeAsync(topology);
+}
+
+await app.RunAsync();");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Migration", "WorkerInfrastructure.cs"),
+                @"using Aplication.Interfaces.Services;
+using Command.Interfaces.Patterns.FileStore;
+using Command.Interfaces.Patterns.Queue;
+using Command.Patterns.OutBox;
+using Microsoft.Extensions.Logging;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using Shared.InterfacesConcrete.Queue.RabbitMQ;
+using Shered.ConcretInterfaces.Queue.RabbitMQ;
+using Shered.DB.Connection;
+using Shered.Patterns.FileStore;
+using Worker.Custon;
+
+namespace Migrations;
+
+public static class WorkerInfrastructure
+{
+    public static void MapWorkerInfrastructure(WebApplicationBuilder builder)
+    {
+        builder.Services.AddLogging();
+        builder.Services.AddScoped<IExecutionContext, WorkerExecutionContext>();
+
+        builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection(""RabbitMq""));
+        builder.Services.AddSingleton<RabbitMqConnectionManager>();
+        builder.Services.AddSingleton<IQueueTopologyInitializer, RabbitMqTopologyInitializer>();
+        builder.Services.AddSingleton<IQueuePublisher, RabbitMQQueuePublisher>();
+        builder.Services.AddSingleton<IQueueListener, RabbitMQQueueListener>();
+
+        builder.Services.Configure<StorageSettings>(builder.Configuration.GetSection(""Storage""));
+        builder.Services.AddScoped<IFileStorage, StorageService>();
+        builder.Services.AddScoped<IStorageProvider, DiskStorageProvider>();
+        builder.Services.AddScoped<StorageResolver>();
+
+        builder.Services.AddScoped<ISqlFactory>(_ =>
+            new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        builder.Services.AddScoped<yOutBoxWorkerHandler>();
+        builder.Services.AddHostedService(serviceProvider =>
+            new PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>(
+                serviceProvider,
+                serviceProvider.GetRequiredService<ILogger<
+                    PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
+                TimeSpan.FromSeconds(5)));
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Migration", "PollingWorker.cs"),
+                @"using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using RepositoryInterfaces.Patterns.Command;
+
+namespace Worker.Custon;
+
+public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundService
+    where TReceiver : class, IReceiver<TCommand, TResponse>
+    where TCommand : class, ICommand, new()
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<PollingWorker<TReceiver, TCommand, TResponse>> _logger;
+    private readonly TimeSpan _interval;
+
+    public PollingWorker(
+        IServiceProvider serviceProvider,
+        ILogger<PollingWorker<TReceiver, TCommand, TResponse>> logger,
+        TimeSpan interval)
+    {
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+        _interval = interval;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var workerName = typeof(TReceiver).Name;
+        _logger.LogInformation(""Worker {Worker} iniciado."", workerName);
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
+                var result = receiver.Execute(new TCommand());
+
+                if (result.StatusCode >= 400)
+                    _logger.LogWarning(""Worker {Worker}: {StatusCode} - {Message}"", workerName, result.StatusCode, result.Message);
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                break;
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, ""Erro inesperado no Worker {Worker}."", workerName);
+            }
+
+            await Task.Delay(_interval, stoppingToken);
+        }
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Migration", "QueueListenerWorker.cs"),
+                @"using Command.Interfaces.Patterns.Queue;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using RepositoryInterfaces.Patterns.Command;
+
+namespace Worker.Custon;
+
+public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : BackgroundService
+    where TReceiver : class, IReceiver<TCommand, TResponse>
+    where TCommand : class, ICommand, new()
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IQueueListener _listener;
+    private readonly ILogger<QueueListenerWorker<TReceiver, TCommand, TResponse>> _logger;
+    private readonly string[] _queues;
+
+    public QueueListenerWorker(
+        IServiceProvider serviceProvider,
+        IQueueListener listener,
+        ILogger<QueueListenerWorker<TReceiver, TCommand, TResponse>> logger,
+        params string[] queues)
+    {
+        _serviceProvider = serviceProvider;
+        _listener = listener;
+        _logger = logger;
+        _queues = queues;
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        foreach (var queue in _queues)
+        {
+            _ = Task.Run(() => _listener.ListenAsync<TCommand>(queue, async message =>
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
+                var result = receiver.Execute(message);
+
+                if (result.StatusCode >= 400)
+                    _logger.LogWarning(""Fila {Queue}: {StatusCode} - {Message}"", queue, result.StatusCode, result.Message);
+
+                await Task.CompletedTask;
+            }, stoppingToken), stoppingToken);
+        }
+
+        return Task.CompletedTask;
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Migration", "WorkerExecutionContext.cs"),
+                @"using Aplication.Interfaces.Services;
+using System.Security.Claims;
+
+namespace Worker.Custon;
+
+public sealed class WorkerExecutionContext : IExecutionContext
+{
+    private int _tenantId;
+    private int _userId;
+    private string _traceId = Guid.NewGuid().ToString(""N"");
+    private ExecutionOrigin _origin = ExecutionOrigin.Worker;
+
+    public int UserId => _userId;
+    public int TenantID => _tenantId;
+    public string TraceId => _traceId;
+    public ExecutionOrigin Origem => _origin;
+    public IEnumerable<Claim> Claims => Enumerable.Empty<Claim>();
+
+    public void SetTenantId(int id) => _tenantId = id;
+    public void SetUserId(int id) => _userId = id;
+    public void SetTraceId(string traceId) => _traceId = traceId;
+    public void SetOrigem(ExecutionOrigin origem) => _origin = origem;
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "Custon", "DependencInjection.cs"),
+                @"namespace Worker.Custon;
+
+public static class CustonDependenceInjection
+{
+    public static void MapCustonDependenceInjection(WebApplicationBuilder builder)
+    {
+    }
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(projectDirectory, "appsettings.json"),
+                @"{
+  ""RabbitMq"": {},
+  ""Storage"": {}
+}");
+        }
+
         private string GetApplicationName()
         {
             var applicationName = _name?.Trim();
@@ -1192,6 +2228,66 @@ namespace Dominio.Schemas.CQRS
                 throw new InvalidOperationException($"O nome do aplicativo '{applicationName}' nao pode ser usado em um projeto.");
 
             return applicationName;
+        }
+
+        private void EnsureProjectReference(string projectPath, string referencedProjectPath)
+        {
+            var projectDirectory = Path.GetDirectoryName(projectPath)
+                ?? throw new InvalidOperationException("O diretorio do projeto nao foi encontrado.");
+            var relativeReference = Path.GetRelativePath(projectDirectory, referencedProjectPath)
+                .Replace('/', '\\');
+            var projectDocument = XDocument.Load(projectPath);
+            var projectRoot = projectDocument.Root
+                ?? throw new InvalidOperationException($"O projeto '{projectPath}' nao possui elemento raiz.");
+
+            var referenceExists = projectRoot
+                .Descendants("ProjectReference")
+                .Any(reference => string.Equals(
+                    reference.Attribute("Include")?.Value,
+                    relativeReference,
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (referenceExists)
+                return;
+
+            var referenceGroup = projectRoot
+                .Elements("ItemGroup")
+                .FirstOrDefault(group => group.Elements("ProjectReference").Any());
+
+            if (referenceGroup is null)
+            {
+                referenceGroup = new XElement("ItemGroup");
+                projectRoot.Add(referenceGroup);
+            }
+
+            referenceGroup.Add(new XElement(
+                "ProjectReference",
+                new XAttribute("Include", relativeReference)));
+            WriteText(projectPath, projectDocument.ToString());
+        }
+
+        private void RemoveProjectReference(string projectPath, string referencedProjectPath)
+        {
+            var projectDirectory = Path.GetDirectoryName(projectPath)
+                ?? throw new InvalidOperationException("O diretorio do projeto nao foi encontrado.");
+            var relativeReference = Path.GetRelativePath(projectDirectory, referencedProjectPath)
+                .Replace('/', '\\');
+            var projectDocument = XDocument.Load(projectPath);
+            var references = projectDocument
+                .Descendants("ProjectReference")
+                .Where(reference => string.Equals(
+                    reference.Attribute("Include")?.Value,
+                    relativeReference,
+                    StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (references.Count == 0)
+                return;
+
+            foreach (var reference in references)
+                reference.Remove();
+
+            WriteText(projectPath, projectDocument.ToString());
         }
 
         private void AddProjectToSolution(string projectPath, string solutionFolder)
@@ -1279,6 +2375,7 @@ namespace Dominio.Schemas.CQRS
             //AppDominioGenerateDominioValidation(migration);
 
             AppInternalEntitys(migration);
+            AppStudioGenerateEntityDictionary(migration);
 
         }
     }

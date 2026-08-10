@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "Yeshua.Clinica.CQRS.Infrastructure.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56007;http://localhost:56013",
+      "launchUrl": "swagger"
+    }
+  }
+}

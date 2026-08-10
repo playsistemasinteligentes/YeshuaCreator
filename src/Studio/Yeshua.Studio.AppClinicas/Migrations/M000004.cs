@@ -5,7 +5,7 @@ using Dominio.Saga.Migration;
 using Dominio.Schemas.CQRS.Abstraction;
 using Microsoft.Win32;
 using Migration.Dominio;
-using MyApp.Domain.Entities;
+using Yeshua.Studio.AppClinicas.Domain.Entities;
 using MyApp.QueryBuilder;
 using System;
 using System.Collections;

@@ -9,10 +9,19 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeEntityInternalMigration : SourceCodeBase
     {
         private readonly List<Entity> _entities;
+        private readonly string _namespaceName;
 
-        public SourceCodeEntityInternalMigration(List<Entity> entities)
+        public SourceCodeEntityInternalMigration(
+            List<Entity> entities,
+            string namespaceName = "MyApp.Domain.Entities")
         {
             _entities = entities;
+            _namespaceName = namespaceName;
+        }
+
+        public void WriteMigrationCode(string filePath)
+        {
+            WriteCode(GenerateCode(), filePath, false, false);
         }
 
         protected override StringBuilder GenerateCustonCode()
@@ -26,7 +35,7 @@ namespace Dominio.Schemas.CQRS
             // Cabeçalho do arquivo
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendLine("namespace MyApp.Domain.Entities");
+            sb.AppendLine($"namespace {_namespaceName}");
             sb.AppendLine("{");
 
             foreach (var entity in _entities)

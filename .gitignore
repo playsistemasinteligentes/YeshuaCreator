@@ -5,6 +5,7 @@
 
 # dotenv files
 .env
+infra/legacy/
 tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings.Local.json
 tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings.*.Local.json
 

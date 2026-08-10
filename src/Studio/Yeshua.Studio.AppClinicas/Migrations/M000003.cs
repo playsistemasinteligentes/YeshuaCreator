@@ -1,5 +1,5 @@
 ﻿using Dominio.Migration;
-using MyApp.Domain.Entities;
+using Yeshua.Studio.AppClinicas.Domain.Entities;
 using MyApp.QueryBuilder;
 using System;
 using System.Collections.Generic;

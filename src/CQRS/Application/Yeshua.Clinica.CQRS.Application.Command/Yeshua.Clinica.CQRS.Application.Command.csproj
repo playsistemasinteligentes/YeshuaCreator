@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Yeshua.CQRS.Application.Command\Yeshua.CQRS.Application.Command.csproj" />
     <ProjectReference Include="..\..\Domain\Yeshua.Clinica.CQRS.Domain\Yeshua.Clinica.CQRS.Domain.csproj" />
+    <ProjectReference Include="..\Yeshua.Clinica.CQRS.Application.RepositoryInterfaces\Yeshua.Clinica.CQRS.Application.RepositoryInterfaces.csproj" />
   </ItemGroup>
-
 </Project>

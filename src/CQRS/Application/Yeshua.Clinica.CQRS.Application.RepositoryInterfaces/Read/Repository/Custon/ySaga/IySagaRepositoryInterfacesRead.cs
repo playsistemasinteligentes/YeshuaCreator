@@ -1,0 +1,21 @@
+using System.Collections.Generic;
+using Repositorio.Outputs;
+
+namespace IRepository.Read
+{
+    public partial interface IySagaReadRepository
+    {
+        /// <summary>
+        /// Busca e trava (claim) sagas prontas para execucao
+        /// </summary>
+        IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
+
+        /// <summary>
+        /// Libera o lock de uma saga
+        /// </summary>
+        void ReleaseLock(int sagaId, string workerId);
+
+        ySagaDTO GetByCorrelationId(string correlationId);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

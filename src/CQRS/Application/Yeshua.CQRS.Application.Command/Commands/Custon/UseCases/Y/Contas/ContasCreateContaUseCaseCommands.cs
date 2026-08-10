@@ -1,2 +1,0 @@
-//Dominio.Schemas.CQRS.
-//

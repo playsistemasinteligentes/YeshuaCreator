@@ -221,7 +221,6 @@ namespace Dominio.Schemas.CQRS
             }
             else if (_commandType == CommandType.SagaStepHandler)
             {
-                sb.AppendLine($"using Command.Saga;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfacePatternsSaga};");
@@ -322,7 +321,6 @@ namespace Dominio.Schemas.CQRS
             }
             else if (_commandType == CommandType.SagaHandlerResolver)
             {
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfacePatternsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioSaga};");
                 sb.AppendLine("using System;");
@@ -418,7 +416,6 @@ namespace Dominio.Schemas.CQRS
             }
             else if (_commandType == CommandType.SagaResolverRegistry)
             {
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfacePatternsSaga};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioPatternsSaga};");
@@ -564,7 +561,6 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsUseCases};");
-                sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandCommandsSaga};");
 
                 sb.AppendLine($"using System;");
                 sb.AppendLine($"using System.Collections.Generic;");

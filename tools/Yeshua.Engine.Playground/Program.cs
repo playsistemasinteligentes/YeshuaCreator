@@ -118,11 +118,11 @@ internal sealed record MdfeSefazPlaygroundOptions(
 
         var certificatePath = GetArg(args, "--certificado")
             ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_CERTIFICATE_PATH")
-            ?? @"C:\Users\AngeloRicardoFontana\Downloads\57152543000141.pfx";
+            ?? @"C:\Users\AngeloRicardoFontana\Downloads\51072863000105.pfx";
 
         var certificatePassword = GetArg(args, "--senha")
             ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_CERTIFICATE_PASSWORD")
-            ?? "27111983";
+            ?? "12345678";
 
         var xmlPath = GetArg(args, "--xml")
             ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_XML_PATH")
@@ -176,18 +176,18 @@ internal sealed record MdfeSefazPlaygroundOptions(
   O playground fica isolado do motor e da infra do CQRS, servindo apenas para testar a chamada SEFAZ.
 -->
 <eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="3.00">
-  <infEvento Id="ID1101123126075715254300014158020000005605100056059101">
+  <infEvento Id="ID1101122626085107286300010558105000000630100006309101">
     <cOrgao>31</cOrgao>
     <tpAmb>1</tpAmb>
-    <CNPJ>57152543000141</CNPJ>
-    <chMDFe>31260757152543000141580200000056051000560591</chMDFe>
+    <CNPJ>51072863000105</CNPJ>
+    <chMDFe>26260851072863000105581050000006301000063091</chMDFe>
     <dhEvento>2026-08-06T00:00:00-03:00</dhEvento>
     <tpEvento>110112</tpEvento>
     <nSeqEvento>1</nSeqEvento>
     <detEvento versaoEvento="3.00">
       <evEncMDFe>
         <descEvento>Encerramento</descEvento>
-        <nProt>931260037261399</nProt>
+        <nProt>926260007318465</nProt>
         <dtEnc>2026-08-06</dtEnc>
         <cUF>31</cUF>
         <cMun>3167202</cMun>

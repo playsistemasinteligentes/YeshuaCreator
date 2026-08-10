@@ -1,93 +1,25 @@
-
-
-##
-###!/bin/bash
-##set -e
-##
-##APP_DIR="/root/YeshuaCreator"
-##COMPOSE_DIR="$APP_DIR/infra/docker"
-##
-##echo "====================================="
-##echo " 🤖 DEPLOY – AI WORKER"
-##echo "====================================="
-##
-##cd "$APP_DIR"
-##
-##echo ">> Resetando código local"
-##git reset --hard
-##git clean -fd
-##
-##echo ">> Atualizando repositório"
-##git pull origin main
-##
-##cd "$COMPOSE_DIR"
-##
-##echo ">> Parando apenas o ai-worker"
-##docker compose stop ai-worker || true
-##
-##echo ">> Removendo container antigo"
-##docker compose rm -f ai-worker || true
-##
-##echo ">> Buildando ai-worker"
-##docker compose build ai-worker
-##
-##echo ">> Subindo ai-worker"
-##docker compose up -d ai-worker
-##
-##echo ">> Status"
-##docker compose ps ai-worker
-##
-##echo "====================================="
-##echo " ✅ AI Worker atualizado"
-##echo "====================================="
-##
-##
-
-
-
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 APP_DIR="/root/YeshuaCreator"
-COMPOSE_DIR="$APP_DIR/infra/docker"
+DEPLOY_DIR="$APP_DIR/infra/Environments/Production/Migration"
+TARGET="${1:-all}"
 
-echo "====================================="
-echo " 🚀 DEPLOY – YeshuaCreator"
-echo "====================================="
+git -C "$APP_DIR" pull --ff-only origin main
+chmod +x "$DEPLOY_DIR"/*.sh
 
-cd "$APP_DIR"
-
-echo ">> Resetando código local"
-git reset --hard
-git clean -fd
-
-echo ">> Atualizando repositório"
-git pull origin main
-
-cd "$COMPOSE_DIR"
-
-echo ">> Parando ambiente"
-docker compose down
-
-echo ">> Buildando imagens"
-docker compose build
-
-echo ">> Subindo infraestrutura base (db, redis, rabbitmq)"
-docker compose up -d sqlserver redis rabbitmq
-
-echo ">> Aguardando SQL estabilizar"
-sleep 10
-
-echo ">> Rodando migrations"
-docker compose up migration
-
-echo ">> Subindo aplicação (API + Front + Nginx + Workers)"
-docker compose up -d --scale front=2
-
-echo ">> Status"
-docker compose ps
-
-
-
-echo "====================================="
-echo " ✅ Deploy concluído"
-echo "====================================="
+case "${TARGET,,}" in
+  all)
+    "$DEPLOY_DIR/deploy-all.sh"
+    ;;
+  clinica)
+    "$DEPLOY_DIR/deploy-clinica.sh"
+    ;;
+  mdfe|fiscal.mdfe|fiscal-mdfe)
+    "$DEPLOY_DIR/deploy-fiscal-mdfe.sh"
+    ;;
+  *)
+    echo "Destino invalido: $TARGET. Use all, clinica ou mdfe." >&2
+    exit 1
+    ;;
+esac

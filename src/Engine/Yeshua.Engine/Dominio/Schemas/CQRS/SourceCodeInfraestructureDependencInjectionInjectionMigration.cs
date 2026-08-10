@@ -30,14 +30,19 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCode()
         {
             var sb = new StringBuilder();
+            var hasSagas = _migration.UseCaseGroup.Any(group =>
+                group.UseCaseSubGroup.Any(subGroup => subGroup.Saga.Any()));
 
             sb.AppendLine("using System;");
             sb.AppendLine("using Shered.Services;");
             sb.AppendLine("using RepositoryInterfaces.Services;");
             sb.AppendLine("using Command.Patterns;");
             sb.AppendLine("using Command.Interfaces;");
-            sb.AppendLine("using RepositoryInterfaces.Patterns.Saga;");
-            sb.AppendLine("using Command.Receivers.Migration.Saga;");
+            if (hasSagas)
+            {
+                sb.AppendLine("using RepositoryInterfaces.Patterns.Saga;");
+                sb.AppendLine("using Command.Receivers.Migration.Saga;");
+            }
             sb.AppendLine("using Command.Patterns.OutBox;");
             sb.AppendLine("using Command.Receivers;");
 
@@ -72,7 +77,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                    builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();");
             sb.AppendLine("                    builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();");
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");
-            sb.AppendLine("                    // pendencia: a configuracao de saga nao deve depender de Project no motor; essa decisao precisa vir do Studio/contexto da DSL.");
+            if (hasSagas)
+                sb.AppendLine("                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();");
+            // pendencia: OutboxService e seus handlers usam repositorios gerados do aplicativo.
+            // Ao separar as infraestruturas por aplicativo, gerar/adaptar essas implementacoes no projeto Command local.
             sb.AppendLine("                    builder.Services.AddScoped<OutboxService>();");
             sb.AppendLine("");
         
@@ -192,7 +200,7 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine("");
                         sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversUseCase}.{useCase.Name.SourceType()}Handler>();");
 
-                        //strategy 
+                        // Strategies da DSL ficam no Infrastructure.Shared local do aplicativo.
                         foreach (var strategy in useCase.Estrategys)
                         {
                             var paths = new ExportPathsSourceCodeAplicationCommandReceiversUseCase();

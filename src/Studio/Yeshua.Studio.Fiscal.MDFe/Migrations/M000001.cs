@@ -1,4 +1,5 @@
 using Dominio.Migration;
+using Yeshua.Studio.Fiscal.MDFe.Domain.Entities;
 
 namespace Yeshua.Studio.Fiscal.MDFe.Migrations;
 

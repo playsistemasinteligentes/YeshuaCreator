@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Worker": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56006;http://localhost:56010"
+    }
+  }
+}
