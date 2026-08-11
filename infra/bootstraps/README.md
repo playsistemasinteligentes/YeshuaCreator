@@ -1,18 +1,26 @@
-﻿## 🚀 Provisionamento do Servidor
+# Primeiro Ciclo Do Servidor
 
-### 1. Setup inicial (novo VPS Ubuntu)
+O processo operacional permanece em tres passos.
 
-sudo apt update && sudo apt install -y curl && \
+## 1. Setup
+
+```bash
 nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/bootstraps/setup.sh | bash" > /root/setup.log 2>&1 &
-
 tail -f /root/setup.log
+```
 
-### 3. Emitir certificado SSL
+## 2. Certificado
+
+```bash
 nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/bootstraps/setup-cert.sh | bash" > /root/setup-cert.log 2>&1 &
-
 tail -f /root/setup-cert.log
+```
 
+## 3. Deploys Posteriores
 
+```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/docker/deploy.sh | bash
+```
 
-
-agora é fazer um deploy normal
+O deploy sem argumento atualiza Shared, Clinica e MDF-e. Os argumentos
+`clinica`, `mdfe` e `shared` atualizam somente a unidade escolhida.

@@ -1,79 +1,31 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-
-
-ENV_FILE="/root/YeshuaCreator/infra/Clinica/DockerCompose/.env"
-
-# Carrega variáveis do .env
-#export $(grep -v '^#' "$ENV_FILE" | xargs)
-
+APP_DIR="/root/YeshuaCreator"
+SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
 DOMAIN="playsis.com.br"
 EMAIL="contato@playsis.com.br"
+NGINX_WAS_RUNNING=0
 
-echo "======================================"
-echo "  Setup de Certificado SSL (Let's Encrypt)"
-echo "======================================"
-
-# Root check
-if [ "$EUID" -ne 0 ]; then
-  echo "❌ Execute este script como root."
+if [[ "$EUID" -ne 0 ]]; then
+  echo "Execute este script como root." >&2
   exit 1
 fi
 
+apt update
+DEBIAN_FRONTEND=noninteractive apt install -y certbot
 
-# Validação explícita (importante!)
-if [ -z "$DOMAIN" ]; then
-  echo "❌ CERT__DOMAIN .não definido"
-  exit 1
+if docker ps --format '{{.Names}}' | grep -qx yeshua-nginx; then
+  NGINX_WAS_RUNNING=1
+  docker stop yeshua-nginx
 fi
 
-if [ -z "$EMAIL" ]; then
-  echo "❌ CERT__EMAIL não definido"
-  exit 1
-fi
-
-echo "🌐 Domínio configurado: $DOMAIN"
-echo "📧 Email: $EMAIL"
-echo
-
-
-echo "======================================"
-echo "  Setup de Certificado SSL (Let's Encrypt)"
-echo "======================================"
-echo
-echo "🌐 Domínio configurado: $DOMAIN"
-echo
-
-# Root check
-if [ "$EUID" -ne 0 ]; then
-  echo "❌ Execute este script como root."
-  exit 1
-fi
-
-echo "🔍 Verificando containers usando a porta 80..."
-echo
-
-CONTAINERS_80=$(docker ps --format '{{.ID}} {{.Ports}}' | grep ':80->' | awk '{print $1}')
-
-if [ -n "$CONTAINERS_80" ]; then
-  echo "🛑 Parando containers na porta 80:"
-  echo "$CONTAINERS_80"
-  docker stop $CONTAINERS_80
-else
-  echo "✅ Nenhum container usando a porta 80"
-fi
-
-echo
-echo "🔧 Instalando dependências..."
-echo
-
-apt update -y
-apt install -y certbot
-
-echo
-echo "🔐 Emitindo certificado SSL (modo standalone)..."
-echo
+restore_nginx_on_error() {
+  if [[ "$NGINX_WAS_RUNNING" == "1" ]]; then
+    docker start yeshua-nginx >/dev/null 2>&1 || true
+  fi
+}
+trap restore_nginx_on_error ERR
 
 certbot certonly \
   --standalone \
@@ -82,22 +34,14 @@ certbot certonly \
   --agree-tos \
   -m "$EMAIL"
 
-#echo
-#echo "📅 Verificando renovação automática..."
-#echo
-#
-#certbot renew --dry-run
+cp \
+  "$SHARED_DIR/nginx/conf.d/20-https.conf.disabled" \
+  "$SHARED_DIR/nginx/conf.d/20-https.conf"
 
-echo
-echo "▶️ Restaurando containers Docker..."
-echo
+cd "$SHARED_DIR"
+docker compose up -d nginx
+docker exec yeshua-nginx nginx -t
+docker exec yeshua-nginx nginx -s reload
 
-if [ -n "$CONTAINERS_80" ]; then
-  docker start $CONTAINERS_80
-fi
-
-echo
-echo "======================================"
-echo "✅ Setup de certificado finalizado!"
-echo "🌐 Domínio seguro: https://$DOMAIN"
-echo "======================================"
+trap - ERR
+echo "Certificado instalado para https://$DOMAIN"

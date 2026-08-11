@@ -257,8 +257,20 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Depois da copia, Compose, Dockerfiles, scripts e manifestos pertencem ao aplicativo e nao sao sobrescritos pela Engine.
 - Particularidades devem ser escritas diretamente no formato nativo da tecnologia escolhida.
 - Templates da Engine contem apenas a estrutura padrao do schema; integracoes e workers especificos ficam na infraestrutura do aplicativo.
+- Uma infraestrutura representa um servidor fisico e pode hospedar N aplicativos.
+- O servidor e composto por um projeto Compose Shared e um projeto Compose independente para cada aplicativo.
+- Projetos Compose usam nomes explicitos e se conectam por uma rede externa de nome estavel.
+- SQL Server, Redis, RabbitMQ, nginx, certificados e a rede pertencem ao Shared do servidor atual.
+- Os catalogos `CLINICA` e `MDFE` compartilham a instancia SQL, mas permanecem separados.
+- Cada Studio cria seu proprio catalogo por meio de `UnitOfWork(connection, true)` antes de executar suas migrations.
+- O nginx pertence ao Shared e possui arquivos de rota separados por aplicativo.
+- Deploys de aplicativo nao executam `docker compose down` e nao alteram containers de outros aplicativos.
+- A operacao publica permanece em tres passos: `setup.sh`, `setup-cert.sh` e `deploy.sh`.
+- `deploy.sh` sem argumento atualiza todo o servidor; `clinica`, `mdfe` e `shared` limitam o destino.
 - A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.
-- `infra/docker` permanece temporariamente como entrada compativel com os comandos operacionais historicos da Clinica.
+- A infraestrutura do MDF-e fica em `infra/Fiscal.MDFe/DockerCompose`.
+- A infraestrutura compartilhada fica em `infra/Shared/DockerCompose`.
+- `infra/docker/deploy.sh` permanece como a entrada operacional publica.
 - O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
 - `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
 - `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.

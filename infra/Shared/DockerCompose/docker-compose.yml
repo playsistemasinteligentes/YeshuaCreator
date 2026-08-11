@@ -1,0 +1,59 @@
+name: playsis-shared
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: yeshua-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      SA_PASSWORD: "123qwe!@#QWE"
+    ports:
+      - "1433:1433"
+    volumes:
+      - /root/YeshuaDB/persistent/sql:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: yeshua-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: yeshua-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: yeshua
+      RABBITMQ_DEFAULT_PASS: yeshua123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: yeshua-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/routes:/etc/nginx/routes:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /root/YeshuaStorage:/storage:ro
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+networks:
+  yeshua-net:
+    name: yeshua-net
+

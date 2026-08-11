@@ -1,0 +1,51 @@
+name: playsis-fiscal-mdfe
+
+services:
+  fiscal-mdfe-front:
+    build:
+      context: ../../..
+      dockerfile: infra/Fiscal.MDFe/DockerCompose/front/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
+      ASPNETCORE_ENVIRONMENT: "Production"
+    expose:
+      - "8080"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  fiscal-mdfe-api:
+    build:
+      context: ../../..
+      dockerfile: infra/Fiscal.MDFe/DockerCompose/api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7214"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      SA__PASSWORD: "123qwe!@#QWE"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+    expose:
+      - "7214"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  fiscal-mdfe-migration:
+    build:
+      context: ../../..
+      dockerfile: infra/Fiscal.MDFe/DockerCompose/migration/Dockerfile
+    environment:
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      SA__PASSWORD: "123qwe!@#QWE"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+    restart: "no"
+    networks:
+      - yeshua-net
+
+networks:
+  yeshua-net:
+    external: true
+    name: yeshua-net
+

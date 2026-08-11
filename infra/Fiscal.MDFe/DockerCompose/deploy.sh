@@ -2,7 +2,7 @@
 set -euo pipefail
 
 APP_DIR="/root/YeshuaCreator"
-COMPOSE_DIR="$APP_DIR/infra/Clinica/DockerCompose"
+COMPOSE_DIR="$APP_DIR/infra/Fiscal.MDFe/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
 
 if [[ "${YESHUA_SKIP_LOCK:-0}" != "1" ]]; then
@@ -20,12 +20,9 @@ bash "$SHARED_DIR/deploy.sh"
 
 cd "$COMPOSE_DIR"
 docker compose build
-docker compose run --rm clinica-migration
-docker compose up -d --remove-orphans --scale clinica-front=2 \
-  clinica-api \
-  clinica-front \
-  clinica-worker \
-  clinica-ai-worker \
-  clinica-ai-summarizer
+docker compose run --rm fiscal-mdfe-migration
+docker compose up -d --remove-orphans \
+  fiscal-mdfe-api \
+  fiscal-mdfe-front
 
 docker compose ps

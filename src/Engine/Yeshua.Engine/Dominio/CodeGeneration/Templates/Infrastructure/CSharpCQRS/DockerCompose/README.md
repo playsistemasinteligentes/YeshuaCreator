@@ -10,8 +10,9 @@ Engine.
 Tokens esperados durante a inicializacao:
 
 - `{{APPLICATION_NAME}}`: nome do aplicativo.
+- `{{APPLICATION_SLUG}}`: prefixo dos servicos do aplicativo.
+- `{{COMPOSE_PROJECT_NAME}}`: nome isolado do projeto Compose.
 - `{{DATABASE_NAME}}`: catalogo SQL do aplicativo.
-- `{{PUBLIC_BASE_URL}}`: endereco publico usado pelo storage.
 - `{{SA_PASSWORD}}`: senha inicial do SQL Server.
 - `{{RABBITMQ_USER}}`: usuario inicial do RabbitMQ.
 - `{{RABBITMQ_PASSWORD}}`: senha inicial do RabbitMQ.
@@ -24,6 +25,8 @@ Tokens esperados durante a inicializacao:
 - `{{STUDIO_PROJECT_PATH}}`: caminho do projeto de Studio usado nas migrations.
 - `{{STUDIO_ASSEMBLY}}`: assembly executavel do Studio.
 
-Particularidades como workers externos, imagens de IA, portas publicas,
-credenciais e recursos exclusivos devem ser editadas diretamente na copia do
-aplicativo.
+O template contem apenas API, Front, Worker e Migration. SQL Server, Redis,
+RabbitMQ, nginx, certificados e a rede pertencem ao Shared do servidor.
+
+Particularidades como workers externos, imagens de IA, rotas, credenciais e
+recursos exclusivos devem ser editadas diretamente na copia do aplicativo.

@@ -1,0 +1,24 @@
+# ===== Stage 1: Build =====
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copia todo o repositório
+COPY . .
+
+# Publica APENAS a API (explícito)
+RUN dotnet publish \
+  src/CQRS/Infrastructure/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Api/Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Api.csproj \
+  -c Release \
+  -o /app/publish
+
+
+# ===== Stage 2: Runtime =====
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://0.0.0.0:7214
+EXPOSE 7214
+
+ENTRYPOINT ["dotnet", "Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Api.dll"]

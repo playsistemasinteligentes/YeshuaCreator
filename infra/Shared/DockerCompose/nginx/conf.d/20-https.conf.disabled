@@ -1,0 +1,10 @@
+server {
+    listen 443 ssl;
+    server_name playsis.com.br;
+
+    ssl_certificate /etc/letsencrypt/live/playsis.com.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/playsis.com.br/privkey.pem;
+
+    include /etc/nginx/routes/*.conf;
+}
+

@@ -1,22 +1,18 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/{{APPLICATION_NAME}}/DockerCompose"
+SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
 
-cd "$APP_DIR"
-
-git reset --hard
-git clean -fd
-git pull origin main
+bash "$SHARED_DIR/deploy.sh"
 
 cd "$COMPOSE_DIR"
-
-docker compose down
 docker compose build
-docker compose up -d sqlserver redis rabbitmq
-sleep 10
-docker compose up migration
-docker compose up -d --scale front=2
-docker compose ps
+docker compose run --rm {{APPLICATION_SLUG}}-migration
+docker compose up -d --remove-orphans \
+  {{APPLICATION_SLUG}}-api \
+  {{APPLICATION_SLUG}}-front \
+  {{APPLICATION_SLUG}}-worker
 
+docker compose ps
