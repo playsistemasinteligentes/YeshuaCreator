@@ -7,6 +7,8 @@ using System.Data;
 
 Console.WriteLine("Begin");
 
+bool databaseOnly = args.Contains("--database-only", StringComparer.OrdinalIgnoreCase);
+
 if (args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
 {
     Console.WriteLine("Running code generation only.");
@@ -31,7 +33,7 @@ using (IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, co
         Console.WriteLine("Try Migrations");
 
         MigrationBuilder migration = new MigrationBuilder();
-        if (!string.IsNullOrEmpty(GS.I.MYC.Source))
+        if (!databaseOnly && !string.IsNullOrEmpty(GS.I.MYC.Source))
             migration.ADDSchema(new CSharpCQRS(
                 GS.I.MYC.Project,
                 GS.I.MYC.Source,

@@ -6,4 +6,4 @@ RUN dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinica
 FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "Yeshua.Studio.AppClinicas.dll"]
+ENTRYPOINT ["dotnet", "Yeshua.Studio.AppClinicas.dll", "--database-only"]

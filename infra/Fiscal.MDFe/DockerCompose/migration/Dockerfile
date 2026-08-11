@@ -6,4 +6,4 @@ RUN dotnet publish src/Studio/Yeshua.Studio.Fiscal.MDFe/Yeshua.Studio.Fiscal.MDF
 FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "Yeshua.Studio.Fiscal.MDFe.dll"]
+ENTRYPOINT ["dotnet", "Yeshua.Studio.Fiscal.MDFe.dll", "--database-only"]

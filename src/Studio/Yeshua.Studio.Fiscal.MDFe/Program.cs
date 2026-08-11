@@ -8,6 +8,8 @@ using System.Data;
 
 Console.WriteLine("Begin MDF-e");
 
+bool databaseOnly = args.Contains("--database-only", StringComparer.OrdinalIgnoreCase);
+
 if (args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
 {
     Console.WriteLine("Running code generation only.");
@@ -22,7 +24,7 @@ if (args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
 }
 MigrationBuilder migration = new MigrationBuilder();
 
-if (!string.IsNullOrWhiteSpace(GS.I.MYC.Source))
+if (!databaseOnly && !string.IsNullOrWhiteSpace(GS.I.MYC.Source))
 {
     migration.ADDSchema(new CSharpCQRS(
         GS.I.MYC.Project,

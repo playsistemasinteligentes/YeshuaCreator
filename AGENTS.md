@@ -263,6 +263,7 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - SQL Server, Redis, RabbitMQ, nginx, certificados e a rede pertencem ao Shared do servidor atual.
 - Os catalogos `CLINICA` e `MDFE` compartilham a instancia SQL, mas permanecem separados.
 - Cada Studio cria seu proprio catalogo por meio de `UnitOfWork(connection, true)` antes de executar suas migrations.
+- Containers de Migration executam o Studio com `--database-only`; geracao de codigo nunca acontece durante o deploy.
 - O nginx pertence ao Shared e possui arquivos de rota separados por aplicativo.
 - Deploys de aplicativo nao executam `docker compose down` e nao alteram containers de outros aplicativos.
 - A operacao publica permanece em tres passos: `setup.sh`, `setup-cert.sh` e `deploy.sh`.
