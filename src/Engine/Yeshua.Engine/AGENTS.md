@@ -132,6 +132,16 @@ Para mudancas de codigo da engine:
 - Se a mudanca alterar geracao, conferir os arquivos gerados e a preservacao de `Custon`.
 - Nao tentar zerar todos os warnings como parte de uma evolucao funcional, salvo se a tarefa pedir isso.
 
+## Templates De Infraestrutura
+
+- A infraestrutura e construida em paralelo e nao faz parte da execucao dos Studios.
+- Um schema pode oferecer templates iniciais nativos para Docker Compose, Kubernetes ou outra tecnologia.
+- O template Docker Compose do `CSharpCQRS` fica em `Dominio/CodeGeneration/Templates/Infrastructure/CSharpCQRS/DockerCompose`.
+- Templates de tecnologias diferentes sao independentes; nao criar um modelo universal obrigatorio para traduzi-los.
+- A Engine pode copiar e substituir tokens apenas na inicializacao explicita da infraestrutura.
+- Depois da primeira copia, os arquivos pertencem ao aplicativo e nunca devem ser sobrescritos pela Engine.
+- Dependencias e particularidades do aplicativo devem ser editadas diretamente no Compose, Dockerfile ou manifesto nativo copiado.
+
 ## Dividas E Cuidados Conhecidos
 
 - `CSharpCQRS.cs` concentra muita orquestracao; refatorar com cuidado e em passos pequenos.

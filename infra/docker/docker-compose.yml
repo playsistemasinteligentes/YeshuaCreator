@@ -1,4 +1,4 @@
-# Compatibilidade temporaria com o caminho antigo.
-# A fonte gerada do ambiente fica em infra/Environments/Production/Migration.
+# Compatibilidade com o caminho operacional historico da Clinica.
+# A fonte customizada fica em infra/Clinica/DockerCompose.
 include:
-  - ../Environments/Production/Migration/docker-compose.yml
+  - ../Clinica/DockerCompose/docker-compose.yml

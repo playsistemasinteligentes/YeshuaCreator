@@ -1,0 +1,154 @@
+services:
+  front:
+    build:
+      context: ../../..
+      dockerfile: infra/{{APPLICATION_NAME}}/DockerCompose/front/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+    expose:
+      - "8080"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  api:
+    build:
+      context: ../../..
+      dockerfile: infra/{{APPLICATION_NAME}}/DockerCompose/api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7214"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      Redis__Host: redis
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      Storage__Providers__Disk__Root: "/storage"
+      Storage__Providers__Disk__BaseUrl: "{{PUBLIC_BASE_URL}}"
+      Storage__Locations__volatile/ia/transcriptions/input: "Disk"
+      Storage__Locations__volatile/ia/transcriptions/output: "Disk"
+      Storage__Locations__volatile/reports/input: "Disk"
+      Storage__Locations__volatile/reports/output: "Disk"
+      Storage__Locations__persistent/docs/input: "Disk"
+      Storage__Locations__persistent/docs/output: "Disk"
+    expose:
+      - "7214"
+    depends_on:
+      - sqlserver
+      - redis
+    volumes:
+      - /root/YeshuaStorage:/storage
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  worker:
+    build:
+      context: ../../..
+      dockerfile: infra/{{APPLICATION_NAME}}/DockerCompose/worker/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:7215"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      Redis__Host: redis
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      Storage__Providers__Disk__Root: "/storage"
+      Storage__Providers__Disk__BaseUrl: "{{PUBLIC_BASE_URL}}"
+      Storage__Locations__volatile/ia/transcriptions/input: "Disk"
+      Storage__Locations__volatile/ia/transcriptions/output: "Disk"
+      Storage__Locations__volatile/reports/input: "Disk"
+      Storage__Locations__volatile/reports/output: "Disk"
+      Storage__Locations__persistent/docs/input: "Disk"
+      Storage__Locations__persistent/docs/output: "Disk"
+      RabbitMq__HostName: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: "{{RABBITMQ_USER}}"
+      RabbitMq__Password: "{{RABBITMQ_PASSWORD}}"
+      RabbitMq__VirtualHost: /
+      RabbitMq__Exchange: kiwi.exchange
+      RabbitMq__Queue: kiwi.queue
+      RabbitMq__RoutingKey: kiwi.routing
+    expose:
+      - "7215"
+    depends_on:
+      - sqlserver
+      - redis
+      - rabbitmq
+    volumes:
+      - /root/YeshuaStorage:/storage
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  migration:
+    build:
+      context: ../../..
+      dockerfile: infra/{{APPLICATION_NAME}}/DockerCompose/migration/Dockerfile
+    environment:
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+    depends_on:
+      - sqlserver
+    restart: "no"
+    networks:
+      - yeshua-net
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /root/YeshuaStorage:/storage
+    depends_on:
+      - front
+      - api
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      SA_PASSWORD: "{{SA_PASSWORD}}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - /root/YeshuaDB/persistent/sql:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "{{RABBITMQ_USER}}"
+      RABBITMQ_DEFAULT_PASS: "{{RABBITMQ_PASSWORD}}"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
+networks:
+  yeshua-net:
+    driver: bridge
+

@@ -7,7 +7,7 @@ COPY . .
 
 # Publica APENAS a API (explícito)
 RUN dotnet publish \
-  src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj \
+  {{WORKER_PROJECT_PATH}} \
   -c Release \
   -o /app/publish
 
@@ -20,4 +20,4 @@ COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://0.0.0.0:7215
 EXPOSE 7215
 
-ENTRYPOINT ["dotnet", "Yeshua.Clinica.CQRS.Infrastructure.Worker.dll"]
+ENTRYPOINT ["dotnet", "{{WORKER_ASSEMBLY}}"]

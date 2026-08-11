@@ -1,92 +1,67 @@
 # Infra YeshuaCreator
 
-A infraestrutura e declarada por aplicativo e agregada por ambiente. O ambiente
-`Production` compartilha os recursos de maquina, mas permite implantar Clinica e
-MDF-e separadamente.
+A infraestrutura e mantida em paralelo aos Studios e ao codigo gerado. Executar
+um Studio nao gera nem altera Docker Compose, Dockerfiles ou scripts de deploy.
 
-## Gerar Os Manifestos
+## Clinica
 
-Execute primeiro os aplicativos e depois o ambiente:
+A infraestrutura funcional da Clinica fica em:
 
-```bash
-dotnet run --project src/Studio/Yeshua.Studio.AppClinicas -- --deployment-only
-dotnet run --project src/Studio/Yeshua.Studio.Fiscal.MDFe -- --deployment-only
-dotnet run --project src/Studio/Yeshua.Studio.Environment.Production
-```
+`infra/Clinica/DockerCompose`
 
-As saidas ficam em:
+Ela preserva a topologia anterior: Front, API, Worker, Migration, Nginx,
+SQL Server, Redis, RabbitMQ, AI Worker e AI Summarizer.
 
-- `infra/Clinica/Migration/deployment-model.json`
-- `infra/Fiscal.MDFe/Migration/deployment-model.json`
-- `infra/Environments/Production/Migration`
+O caminho historico `infra/docker` continua valido como entrada de
+compatibilidade.
 
-## Bootstrap Da Maquina
-
-O bootstrap instala Docker, prepara os diretorios persistentes e baixa o
-repositorio. Ele nao implanta aplicativos.
+## Preparar Servidor
 
 ```bash
 sudo apt update && sudo apt install -y curl && \
 sudo curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup.sh | sudo bash
 ```
 
-## Referencias De Segredo
+O setup prepara os diretorios persistentes, instala Docker, atualiza o
+repositorio e sobe a infraestrutura da Clinica.
 
-Antes do primeiro deploy, crie o arquivo `.env` no servidor:
-
-```bash
-cd /root/YeshuaCreator/infra/Environments/Production/Migration
-cp .env.example .env
-```
-
-O `.env.example` contem apenas os nomes esperados. A definicao e provisao dos
-valores sera tratada em uma etapa posterior.
-
-## Deploy Independente
-
-Clinica:
+## Deploy Da Clinica
 
 ```bash
-/root/YeshuaCreator/infra/Environments/Production/Migration/deploy-clinica.sh
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash
 ```
 
-MDF-e:
+O deploy preserva o comportamento historico: atualiza o repositorio, derruba o
+Compose da Clinica, recompila as imagens, sobe SQL Server, Redis e RabbitMQ,
+executa a migration e sobe os servicos com duas instancias do Front.
 
-```bash
-/root/YeshuaCreator/infra/Environments/Production/Migration/deploy-fiscal-mdfe.sh
-```
-
-Todos os aplicativos:
-
-```bash
-/root/YeshuaCreator/infra/Environments/Production/Migration/deploy-all.sh
-```
-
-O script de compatibilidade tambem aceita um destino:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- mdfe
-```
-
-Nenhum deploy executa `docker compose down`, `git reset` ou `git clean`.
+Atencao: o script executa `git reset --hard` e `git clean -fd` no repositorio do
+servidor antes de atualizar a branch `main`.
 
 ## Certificado
-
-Depois que o gateway HTTP estiver no ar:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup-cert.sh | bash
 ```
 
-O script le o dominio do manifesto, emite o certificado, habilita a configuracao
-HTTPS previamente gerada e reinicia somente o gateway.
+Durante a emissao, o script para os containers que ocupam a porta 80 e os
+restaura ao final.
 
-## Pendencia Conhecida
+## Template CSharpCQRS
 
-Em uma maquina totalmente vazia, os catalogos `CLINICA` e `MDFE` ainda precisam
-existir antes das migrations. A criacao automatica dos catalogos sera definida
-junto da estrategia de segredos do SQL Server.
+O Compose inicial padrao do schema fica em:
 
-O backup da infraestrutura anterior esta em
-`infra/legacy/pre-deployment-v1-2026-08-09`.
+`src/Engine/Yeshua.Engine/Dominio/CodeGeneration/Templates/Infrastructure/CSharpCQRS/DockerCompose`
+
+Ele e uma matriz de copia unica. Depois de copiado para um aplicativo, os
+arquivos tornam-se customizados e nao sao sobrescritos pela Engine.
+
+## Seguranca
+
+As credenciais diretas foram mantidas nesta restauracao para preservar o fluxo
+operacional anterior. A externalizacao e rotacao dos segredos sera tratada em
+uma etapa posterior.
+
+O backup original permanece em:
+
+`infra/legacy/pre-deployment-v1-2026-08-09`

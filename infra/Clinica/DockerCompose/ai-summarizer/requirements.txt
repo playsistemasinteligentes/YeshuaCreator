@@ -1,0 +1,7 @@
+celery==5.3.6
+torch
+transformers>=4.43.0
+accelerate>=0.30.0
+sentencepiece
+pika
+requests

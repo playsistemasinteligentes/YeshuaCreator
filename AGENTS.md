@@ -245,34 +245,21 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - `pendencia`: separar as entidades internas da Engine das entidades declaradas por cada aplicativo.
 - `observacao`: uma entidade nova somente fica disponivel para uso tipado na DSL depois da primeira geracao; resolver esse delay futuramente.
 
-## Modelo De Implantacao
+## Infraestrutura Paralela
 
-- A DSL de infraestrutura fica separada da DSL de dominio e descreve intencoes de implantacao.
-- `DeploymentModel` e o modelo intermediario neutro que alimentara Docker Compose e Kubernetes.
-- A declaracao de deployment fica concentrada no `MigrationBuilder` de cada Studio, junto dos Schemas que constroem o aplicativo.
-- API, Front, Worker, Migration e servicos customizados sao todos `Workload`; diferem somente pela origem e pelo modo de execucao.
-- As origens suportadas inicialmente sao projeto .NET, contexto de build customizado e imagem pronta.
-- Workloads continuos usam modo `Service`; migrations e outras execucoes unicas usam modo `Job`.
-- SQL Server, catalogos, RabbitMQ, Redis e storage sao `Resource`, pois podem ser fornecidos por container, servidor externo ou outro mecanismo.
-- Dependencias entre workloads e resources sao declaradas por nome e validadas antes da geracao.
-- O nome logico `Identity` determina compartilhamento: aplicativos que usam a mesma identidade referenciam o mesmo recurso.
-- Nao usar `SharedHost` ou `DedicatedHost`; o Studio de ambiente fornece recursos por identidade logica.
-- Workloads possuem identidade qualificada pelo aplicativo para evitar colisao entre containers de aplicativos diferentes.
-- Segredos sao representados apenas por referencias; valores de senha, token ou connection string nunca entram no manifesto gerado.
-- O modelo neutro representa persistencia, portas, rotas, healthcheck, replicas e requisitos de CPU/memoria.
-- Dockerfiles de projetos .NET sao regenerados na area `Migration` usando o projeto especifico do aplicativo.
-- Workloads customizados podem solicitar um scaffold de Dockerfile; ele e criado uma vez na area `Custon` e nunca e sobrescrito.
-- Python, pacotes de sistema e dependencias semelhantes pertencem ao Dockerfile, nao ao manifesto neutro.
-- Os manifestos neutros sao gerados em `infra/<Aplicativo>/Migration/deployment-model.json`.
-- Cada Studio aceita `--deployment-only` para atualizar apenas manifesto e Dockerfiles, sem banco e sem regenerar o CQRS.
-- `DeploymentEnvironmentSchema` agrega manifestos completos e rejeita identidades compartilhadas com declaracoes incompativeis.
-- O ambiente `Production` e declarado em `src/Studio/Yeshua.Studio.Environment.Production`.
-- O ambiente fornece imagens, portas publicadas e caminhos fisicos de persistencia; os aplicativos nao conhecem o servidor.
-- O renderizador Docker Compose gera em `infra/Environments/<Ambiente>/Migration` o Compose, gateway Nginx e scripts operacionais.
-- O bootstrap da maquina instala a base e prepara persistencia, mas nao implanta aplicativos.
-- Cada aplicativo possui deploy independente e nenhum deploy executa `docker compose down`.
-- Rotas podem declarar caminho externo e interno para isolar aplicativos sob prefixos como `/mdfe`.
-- `pendencia`: criar um renderizador Kubernetes a partir do mesmo modelo de ambiente.
-- `pendencia`: definir provisao e rotacao dos valores referenciados em `.env.example`.
-- `pendencia`: criar cada catalogo de forma idempotente no host SQL compartilhado antes de executar as migrations do aplicativo.
-- `pendencia`: mover os servicos externos atuais da Clinica para sua area `Custon` sem acopla-los ao MDF-e.
+- A geracao da aplicacao e a construcao da infraestrutura sao processos separados.
+- Projetos de Studio nao declaram workloads, hosts, portas, volumes ou providers.
+- O `MigrationBuilder` dos aplicativos executa apenas geracao de codigo e migrations de dados.
+- Cada schema pode oferecer templates iniciais de infraestrutura para tecnologias diferentes.
+- O `CSharpCQRS` possui um template Docker Compose e podera possuir um template Kubernetes independente.
+- Nao criar um modelo intermediario obrigatorio para traduzir Docker Compose em Kubernetes.
+- O template e copiado uma unica vez para o aplicativo.
+- Depois da copia, Compose, Dockerfiles, scripts e manifestos pertencem ao aplicativo e nao sao sobrescritos pela Engine.
+- Particularidades devem ser escritas diretamente no formato nativo da tecnologia escolhida.
+- Templates da Engine contem apenas a estrutura padrao do schema; integracoes e workers especificos ficam na infraestrutura do aplicativo.
+- A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.
+- `infra/docker` permanece temporariamente como entrada compativel com os comandos operacionais historicos da Clinica.
+- O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
+- `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
+- `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.
+- `pendencia`: definir depois a estrategia de segredos sem bloquear a recuperacao operacional atual.
