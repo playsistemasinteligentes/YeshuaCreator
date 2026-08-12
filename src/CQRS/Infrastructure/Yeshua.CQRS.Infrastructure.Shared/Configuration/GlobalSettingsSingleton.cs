@@ -10,9 +10,10 @@ public sealed class GS
 
     private GS()
     {
+        MYC = new MyConfig();
+
         try
         {
-            // 1️⃣ Carrega appsettings.json (fallback)
             var jsonPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "appsettings.json"
@@ -22,26 +23,22 @@ public sealed class GS
             {
                 var json = File.ReadAllText(jsonPath);
                 var jsonObject = JsonConvert.DeserializeObject<dynamic>(json);
-                MYC = jsonObject.MyConfig.ToObject<MyConfig>();
+                var myConfig = jsonObject?.MyConfig?.ToObject<MyConfig>();
+                if (myConfig is not null)
+                    MYC = myConfig;
             }
             else
             {
                 Console.WriteLine("appsettings.json não encontrado, usando defaults.");
-                MYC = new MyConfig();
             }
-
-            // 2️⃣ Override manual por variáveis de ambiente (se existirem)
-            OverrideIfExists("MYCONFIG__READCONECTIONSTRING", v => MYC.ReadConectionString = v);
-            OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", v => MYC.WriteConectionString = v);
-
-
-
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Erro ao carregar configurações: {ex.Message}");
-            MYC = new MyConfig();
         }
+
+        OverrideIfExists("MYCONFIG__READCONECTIONSTRING", v => MYC.ReadConectionString = v);
+        OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", v => MYC.WriteConectionString = v);
     }
 
     private void OverrideIfExists(string envKey, Action<string> setter)
