@@ -142,6 +142,19 @@ Regra resumida:
 - Configuracoes de banco, certificados e outros dados de um aplicativo nao
   podem ser copiados da matriz para os Fronts gerados.
 
+## Smoke Tests De API Por Aplicativo
+
+- `Yeshua.CQRS.Tests.Integration.Api.TestKit` contem apenas a infraestrutura
+  estatica e generica para testes de integracao HTTP.
+- A Engine cria um projeto de smoke tests para cada aplicativo, seguindo
+  `Yeshua.<Aplicativo>.CQRS.Tests.Integration.Api.Smoke`.
+- Cada projeto recebe somente entidades, ordem de dependencias, configuracao e
+  customizacoes do proprio aplicativo.
+- Endpoints gerados sao relativos a `BaseUrl`, permitindo hospedar um
+  aplicativo na raiz e outro em um prefixo como `/mdfe/`.
+- Smoke tests sao executados pelo Test Explorer ou `dotnet test`; iniciar o
+  projeto com F5 nao representa a execucao da suite.
+
 ## Studio Como Camada De Especificacao
 
 `src/Studio` representa a camada de especificacao da Engenharia Yeshua.

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -10,39 +11,26 @@ var options = MdfeSefazPlaygroundOptions.FromArgs(args);
 
 Console.WriteLine("Yeshua.Engine.Playground - MDF-e encerramento isolado");
 Console.WriteLine($"Endpoint: {options.Endpoint}");
-Console.WriteLine($"XML: {options.XmlPath}");
-Console.WriteLine($"Certificado: {options.CertificatePath}");
+Console.WriteLine($"Certificado: {options.Event.CertificatePath}");
+Console.WriteLine($"Chave: {options.Event.ChaveAcesso}");
+Console.WriteLine($"Orgao: {options.Event.CodigoOrgao}");
+Console.WriteLine($"Encerramento: {options.Event.CodigoMunicipioEncerramento}/{options.Event.CodigoUfEncerramento}");
 Console.WriteLine();
 
-if (!File.Exists(options.XmlPath))
-{
-    Directory.CreateDirectory(Path.GetDirectoryName(options.XmlPath)!);
-    await File.WriteAllTextAsync(options.XmlPath, MdfeSefazPlaygroundOptions.TemplateXml, Encoding.UTF8);
-    Console.WriteLine("O XML de teste ainda nao existia.");
-    Console.WriteLine("Criei um template em:");
-    Console.WriteLine(options.XmlPath);
-    Console.WriteLine("Preencha com o leiaute oficial do evento de encerramento e rode de novo.");
-    return;
-}
+options.Event.Validate();
 
-if (string.IsNullOrWhiteSpace(options.CertificatePath) || !File.Exists(options.CertificatePath))
+if (string.IsNullOrWhiteSpace(options.Event.CertificatePath) || !File.Exists(options.Event.CertificatePath))
 {
     Console.WriteLine("Certificado nao encontrado.");
-    Console.WriteLine("Defina YESHUA_MDFE_CERTIFICATE_PATH ou use --certificado.");
+    Console.WriteLine($"Caminho configurado: {options.Event.CertificatePath}");
     return;
 }
 
-var xml = await File.ReadAllTextAsync(options.XmlPath, Encoding.UTF8);
-if (string.IsNullOrWhiteSpace(xml))
-{
-    Console.WriteLine("O arquivo XML esta vazio.");
-    return;
-}
+var xml = MdfeSefazPlaygroundOptions.BuildEventoXml(options.Event);
 
-using var certificate = new X509Certificate2(
-    options.CertificatePath,
-    options.CertificatePassword,
-    X509KeyStorageFlags.UserKeySet | X509KeyStorageFlags.Exportable);
+using var certificate = MdfeSefazPlaygroundOptions.LoadCertificate(
+    options.Event.CertificatePath,
+    options.Event.CertificatePassword);
 
 var signedEventoXml = MdfeSefazPlaygroundOptions.SignEventoXml(xml, certificate);
 MdfeSefazPlaygroundOptions.ValidateNoFormattingWhitespace(signedEventoXml, "evento MDF-e assinado");
@@ -68,7 +56,9 @@ if (args.Contains("--consultar-wsdl", StringComparer.OrdinalIgnoreCase))
     return;
 }
 
-var soapEnvelope = MdfeSefazPlaygroundOptions.WrapInSoapEnvelope(signedEventoXml);
+var soapEnvelope = MdfeSefazPlaygroundOptions.WrapInSoapEnvelope(
+    signedEventoXml,
+    options.Event.CodigoOrgao);
 MdfeSefazPlaygroundOptions.ValidateXml(soapEnvelope, "envelope SOAP");
 MdfeSefazPlaygroundOptions.ValidateNoFormattingWhitespace(soapEnvelope, "envelope SOAP");
 
@@ -101,32 +91,89 @@ if (!string.IsNullOrWhiteSpace(responseBody))
     Console.WriteLine(responseBody);
 }
 
-internal sealed record MdfeSefazPlaygroundOptions(
-    string Endpoint,
+internal sealed record MdfeEncerramentoParameters(
+    int CodigoOrgao,
+    int Ambiente,
+    string Cnpj,
+    string ChaveAcesso,
+    string ProtocoloAutorizacao,
     string CertificatePath,
     string CertificatePassword,
-    string XmlPath,
+    int CodigoUfEncerramento,
+    int CodigoMunicipioEncerramento,
+    int SequenciaEvento)
+{
+    public const string TipoEvento = "110112";
+
+    // Parametros fixos do MDF-e atual. O documento e de PE, mas sera encerrado em Sete Lagoas/MG.
+    public static MdfeEncerramentoParameters FixedPernambuco { get; } = new(
+        CodigoOrgao: 26,
+        Ambiente: 1,
+        Cnpj: "63249950000174",
+        ChaveAcesso: "26260863249950000174580100000002241000022490",
+        ProtocoloAutorizacao: "926260007714300",
+        CertificatePath: @"C:\Users\AngeloRicardoFontana\Downloads\63249950000174.pfx",
+        CertificatePassword: "zanata123",
+        CodigoUfEncerramento: 31,
+        CodigoMunicipioEncerramento: 3167202,
+        SequenciaEvento: 1);
+
+
+
+
+    public string EventId => $"ID{TipoEvento}{ChaveAcesso}{SequenciaEvento:D2}";
+
+    public void Validate()
+    {
+        ValidateDigits(ChaveAcesso, 44, nameof(ChaveAcesso));
+        ValidateDigits(Cnpj, 14, nameof(Cnpj));
+        ValidateDigits(ProtocoloAutorizacao, 15, nameof(ProtocoloAutorizacao));
+
+        if (string.IsNullOrWhiteSpace(CertificatePath))
+            throw new InvalidOperationException("O caminho do certificado deve ser informado.");
+
+        if (string.IsNullOrWhiteSpace(CertificatePassword) ||
+            CertificatePassword == "PREENCHER_SENHA_DO_CERTIFICADO")
+        {
+            throw new InvalidOperationException("Preencha a senha do certificado nos parametros fixos do MDF-e.");
+        }
+
+        if (Ambiente is not 1 and not 2)
+            throw new InvalidOperationException("O ambiente deve ser 1 (producao) ou 2 (homologacao).");
+
+        if (!ChaveAcesso.StartsWith(CodigoOrgao.ToString("D2"), StringComparison.Ordinal))
+            throw new InvalidOperationException("O cOrgao nao corresponde a UF presente na chave do MDF-e.");
+
+        if (!string.Equals(ChaveAcesso.Substring(6, 14), Cnpj, StringComparison.Ordinal))
+            throw new InvalidOperationException("O CNPJ configurado nao corresponde ao CNPJ presente na chave do MDF-e.");
+
+        var municipio = CodigoMunicipioEncerramento.ToString("D7");
+        if (!municipio.StartsWith(CodigoUfEncerramento.ToString("D2"), StringComparison.Ordinal))
+            throw new InvalidOperationException("O municipio de encerramento nao pertence a UF de encerramento configurada.");
+
+        if (SequenciaEvento is < 1 or > 99)
+            throw new InvalidOperationException("A sequencia do evento deve estar entre 1 e 99.");
+    }
+
+    private static void ValidateDigits(string value, int length, string fieldName)
+    {
+        if (value.Length != length || value.Any(character => character is < '0' or > '9'))
+            throw new InvalidOperationException($"{fieldName} deve possuir exatamente {length} digitos.");
+    }
+}
+
+internal sealed record MdfeSefazPlaygroundOptions(
+    string Endpoint,
     string SoapAction,
     string ContentMediaType,
-    int TimeoutSeconds)
+    int TimeoutSeconds,
+    MdfeEncerramentoParameters Event)
 {
     public static MdfeSefazPlaygroundOptions FromArgs(string[] args)
     {
         var endpoint = GetArg(args, "--endpoint")
             ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_ENDPOINT")
             ?? "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx";
-
-        var certificatePath = GetArg(args, "--certificado")
-            ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_CERTIFICATE_PATH")
-            ?? @"C:\Users\AngeloRicardoFontana\Downloads\51072863000105.pfx";
-
-        var certificatePassword = GetArg(args, "--senha")
-            ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_CERTIFICATE_PASSWORD")
-            ?? "12345678";
-
-        var xmlPath = GetArg(args, "--xml")
-            ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_XML_PATH")
-            ?? Path.Combine(AppContext.BaseDirectory, "fixtures", "mdfe-encerramento.xml");
 
         var soapAction = GetArg(args, "--soap-action")
             ?? Environment.GetEnvironmentVariable("YESHUA_MDFE_SOAP_ACTION")
@@ -148,12 +195,10 @@ internal sealed record MdfeSefazPlaygroundOptions(
 
         return new MdfeSefazPlaygroundOptions(
             endpoint,
-            certificatePath,
-            certificatePassword,
-            xmlPath,
             soapAction,
             contentType,
-            timeoutSeconds);
+            timeoutSeconds,
+            MdfeEncerramentoParameters.FixedPernambuco);
     }
 
     private static string? GetArg(string[] args, string name)
@@ -169,33 +214,67 @@ internal sealed record MdfeSefazPlaygroundOptions(
         return null;
     }
 
-    public const string TemplateXml = """
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  pendencia: substituir este payload pelo leiaute oficial do evento 110112 do MDF-e.
-  O playground fica isolado do motor e da infra do CQRS, servindo apenas para testar a chamada SEFAZ.
--->
-<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="3.00">
-  <infEvento Id="ID1101122626085107286300010558105000000630100006309101">
-    <cOrgao>31</cOrgao>
-    <tpAmb>1</tpAmb>
-    <CNPJ>51072863000105</CNPJ>
-    <chMDFe>26260851072863000105581050000006301000063091</chMDFe>
-    <dhEvento>2026-08-06T00:00:00-03:00</dhEvento>
-    <tpEvento>110112</tpEvento>
-    <nSeqEvento>1</nSeqEvento>
-    <detEvento versaoEvento="3.00">
-      <evEncMDFe>
-        <descEvento>Encerramento</descEvento>
-        <nProt>926260007318465</nProt>
-        <dtEnc>2026-08-06</dtEnc>
-        <cUF>31</cUF>
-        <cMun>3167202</cMun>
-      </evEncMDFe>
-    </detEvento>
-  </infEvento>
-</eventoMDFe>
-""";
+    public static string BuildEventoXml(MdfeEncerramentoParameters parameters)
+    {
+        const string mdfeNamespace = "http://www.portalfiscal.inf.br/mdfe";
+        var now = DateTimeOffset.Now;
+        var doc = new XmlDocument { PreserveWhitespace = false };
+        var evento = doc.CreateElement("eventoMDFe", mdfeNamespace);
+        evento.SetAttribute("versao", "3.00");
+        doc.AppendChild(evento);
+
+        var infEvento = doc.CreateElement("infEvento", mdfeNamespace);
+        infEvento.SetAttribute("Id", parameters.EventId);
+        evento.AppendChild(infEvento);
+
+        AppendElement(doc, infEvento, "cOrgao", parameters.CodigoOrgao.ToString(), mdfeNamespace);
+        AppendElement(doc, infEvento, "tpAmb", parameters.Ambiente.ToString(), mdfeNamespace);
+        AppendElement(doc, infEvento, "CNPJ", parameters.Cnpj, mdfeNamespace);
+        AppendElement(doc, infEvento, "chMDFe", parameters.ChaveAcesso, mdfeNamespace);
+        AppendElement(doc, infEvento, "dhEvento", now.ToString("yyyy-MM-dd'T'HH:mm:sszzz"), mdfeNamespace);
+        AppendElement(doc, infEvento, "tpEvento", MdfeEncerramentoParameters.TipoEvento, mdfeNamespace);
+        AppendElement(doc, infEvento, "nSeqEvento", parameters.SequenciaEvento.ToString(), mdfeNamespace);
+
+        var detEvento = doc.CreateElement("detEvento", mdfeNamespace);
+        detEvento.SetAttribute("versaoEvento", "3.00");
+        infEvento.AppendChild(detEvento);
+
+        var encerramento = doc.CreateElement("evEncMDFe", mdfeNamespace);
+        detEvento.AppendChild(encerramento);
+        AppendElement(doc, encerramento, "descEvento", "Encerramento", mdfeNamespace);
+        AppendElement(doc, encerramento, "nProt", parameters.ProtocoloAutorizacao, mdfeNamespace);
+        AppendElement(doc, encerramento, "dtEnc", now.ToString("yyyy-MM-dd"), mdfeNamespace);
+        AppendElement(doc, encerramento, "cUF", parameters.CodigoUfEncerramento.ToString(), mdfeNamespace);
+        AppendElement(doc, encerramento, "cMun", parameters.CodigoMunicipioEncerramento.ToString(), mdfeNamespace);
+
+        return doc.OuterXml;
+    }
+
+    public static X509Certificate2 LoadCertificate(string path, string password)
+    {
+        X509Certificate2? certificate = null;
+        try
+        {
+            certificate = new X509Certificate2(
+                path,
+                password,
+                X509KeyStorageFlags.UserKeySet | X509KeyStorageFlags.Exportable);
+
+            using var privateKey = certificate.GetRSAPrivateKey();
+            if (privateKey is null)
+                throw new InvalidOperationException("O certificado nao possui chave privada RSA.");
+
+            return certificate;
+        }
+        catch (CryptographicException)
+        {
+            certificate?.Dispose();
+            return new X509Certificate2(
+                path,
+                password,
+                X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.Exportable);
+        }
+    }
 
     public static string SignEventoXml(string xml, X509Certificate2 certificate)
     {
@@ -265,7 +344,7 @@ internal sealed record MdfeSefazPlaygroundOptions(
         closingDateNode!.InnerText = now.ToString("yyyy-MM-dd");
     }
 
-    public static string WrapInSoapEnvelope(string innerXml)
+    public static string WrapInSoapEnvelope(string innerXml, int codigoOrgao)
     {
         const string soapNamespace = "http://www.w3.org/2003/05/soap-envelope";
         const string serviceNamespace = "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento";
@@ -282,7 +361,7 @@ internal sealed record MdfeSefazPlaygroundOptions(
 
         var cabecalho = soap.CreateElement("mdfeCabecMsg", serviceNamespace);
         header.AppendChild(cabecalho);
-        AppendElement(soap, cabecalho, "cUF", "31", serviceNamespace);
+        AppendElement(soap, cabecalho, "cUF", codigoOrgao.ToString(), serviceNamespace);
         AppendElement(soap, cabecalho, "versaoDados", "3.00", serviceNamespace);
 
         var body = soap.CreateElement("soap12", "Body", soapNamespace);

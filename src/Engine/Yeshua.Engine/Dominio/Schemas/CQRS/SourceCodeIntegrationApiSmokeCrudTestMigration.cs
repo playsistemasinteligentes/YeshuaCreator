@@ -8,12 +8,14 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
         private readonly int _order;
+        private readonly string _rootNamespace;
 
-        public SourceCodeIntegrationApiSmokeCrudTestMigration(Entity entity, int order)
+        public SourceCodeIntegrationApiSmokeCrudTestMigration(Entity entity, int order, string rootNamespace)
             : base()
         {
             _entity = entity;
             _order = order;
+            _rootNamespace = rootNamespace;
         }
 
         protected override StringBuilder GenerateCode()
@@ -26,15 +28,15 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using System.Net.Http.Json;");
             sb.AppendLine("using System.Text.Json.Nodes;");
             sb.AppendLine();
-            sb.AppendLine($"namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration.{_entity.EntityName};");
+            sb.AppendLine($"namespace {_rootNamespace}.Migration.{_entity.EntityName};");
             sb.AppendLine();
             sb.AppendLine($"[SmokeTestOrder({_order.ToString(CultureInfo.InvariantCulture)})]");
             sb.AppendLine($"public partial class {className} : ApiIntegrationTestBase");
             sb.AppendLine("{");
-            sb.AppendLine($"    private const string CreateEndpoint = \"/yapi/{_entity.EntityName}/Post{_entity.EntityName}\";");
-            sb.AppendLine($"    private const string ReadEndpoint = \"/yapi/{_entity.EntityName}/Read{_entity.EntityName}\";");
-            sb.AppendLine($"    private const string UpdateEndpoint = \"/yapi/{_entity.EntityName}/Put{_entity.EntityName}\";");
-            sb.AppendLine($"    private const string DeleteEndpoint = \"/yapi/{_entity.EntityName}/Delete{_entity.EntityName}\";");
+            sb.AppendLine($"    private const string CreateEndpoint = \"yapi/{_entity.EntityName}/Post{_entity.EntityName}\";");
+            sb.AppendLine($"    private const string ReadEndpoint = \"yapi/{_entity.EntityName}/Read{_entity.EntityName}\";");
+            sb.AppendLine($"    private const string UpdateEndpoint = \"yapi/{_entity.EntityName}/Put{_entity.EntityName}\";");
+            sb.AppendLine($"    private const string DeleteEndpoint = \"yapi/{_entity.EntityName}/Delete{_entity.EntityName}\";");
             sb.AppendLine();
             sb.AppendLine("    public async Task ExecuteAsync()");
             sb.AppendLine("    {");
@@ -137,7 +139,7 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("using System.Text.Json.Nodes;");
             sb.AppendLine();
-            sb.AppendLine($"namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration.{_entity.EntityName};");
+            sb.AppendLine($"namespace {_rootNamespace}.Migration.{_entity.EntityName};");
             sb.AppendLine();
             sb.AppendLine($"public partial class {className}");
             sb.AppendLine("{");

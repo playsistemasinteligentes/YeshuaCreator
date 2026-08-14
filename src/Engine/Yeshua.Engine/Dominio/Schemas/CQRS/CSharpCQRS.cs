@@ -750,7 +750,10 @@ namespace Dominio.Schemas.CQRS
                 var entity = orderedEntities[index];
                 var filePath = Path.Combine(GetPathTestsIntegrationApiSmoke(), $"Migration\\{entity.EntityName}\\{entity.EntityName}CrudApiSmokeTests.cs");
                 var filePathCuston = Path.Combine(GetPathTestsIntegrationApiSmoke(), $"Custon\\{entity.EntityName}\\{entity.EntityName}CrudApiSmokeTests.cs");
-                var sourceCodeMigration = new SourceCodeIntegrationApiSmokeCrudTestMigration(entity, index + 1);
+                var sourceCodeMigration = new SourceCodeIntegrationApiSmokeCrudTestMigration(
+                    entity,
+                    index + 1,
+                    GetApplicationIntegrationApiSmokeProjectName());
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
 
@@ -816,7 +819,7 @@ namespace Dominio.Schemas.CQRS
         private void WriteIntegrationApiSmokeSuiteFile(IReadOnlyList<Entity> orderedEntities)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("namespace Yeshua.CQRS.Tests.Integration.Api.Smoke.Migration;");
+            sb.AppendLine($"namespace {GetApplicationIntegrationApiSmokeProjectName()}.Migration;");
             sb.AppendLine();
             sb.AppendLine("public sealed class ApiSmokeCrudSuiteTests");
             sb.AppendLine("{");
@@ -877,8 +880,16 @@ namespace Dominio.Schemas.CQRS
 
         private void EnsureIntegrationTestProjectFiles()
         {
+            var testKitProjectPath = Path.Combine(
+                GetPathTestsIntegrationApiTestKit(),
+                "Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj");
+            var smokeProjectName = GetApplicationIntegrationApiSmokeProjectName();
+            var smokeProjectPath = Path.Combine(
+                GetPathTestsIntegrationApiSmoke(),
+                $"{smokeProjectName}.csproj");
+
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApiTestKit(), "Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj"),
+                testKitProjectPath,
                 @"<Project Sdk=""Microsoft.NET.Sdk"">
 
   <PropertyGroup>
@@ -895,7 +906,7 @@ namespace Dominio.Schemas.CQRS
 </Project>");
 
             WriteTextIfMissing(
-                Path.Combine(GetPathTestsIntegrationApiSmoke(), "Yeshua.CQRS.Tests.Integration.Api.Smoke.csproj"),
+                smokeProjectPath,
                 @"<Project Sdk=""Microsoft.NET.Sdk"">
 
   <PropertyGroup>
@@ -954,13 +965,16 @@ namespace Dominio.Schemas.CQRS
                 Path.Combine(GetPathTestsIntegrationApiSmoke(), "appsettings.json"),
                 @"{
   ""TestSettings"": {
-    ""BaseUrl"": ""https://localhost:7214"",
-    ""LoginPath"": ""/yapi/login"",
+    ""BaseUrl"": ""https://localhost:7214/"",
+    ""LoginPath"": ""yapi/login"",
     ""Login"": """",
     ""Password"": """",
     ""TimeoutSeconds"": 100
   }
 }");
+
+            AddProjectToSolution(testKitProjectPath, "Yeshua.Tests");
+            AddProjectToSolution(smokeProjectPath, "Yeshua.Tests");
         }
 
         private void WriteTextIfMissing(string filePath, string content)
@@ -987,7 +1001,12 @@ namespace Dominio.Schemas.CQRS
 
         private string GetPathTestsIntegrationApiSmoke()
         {
-            return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.Api.Smoke");
+            return Path.Combine(GetPathTestsCQRS(), GetApplicationIntegrationApiSmokeProjectName());
+        }
+
+        private string GetApplicationIntegrationApiSmokeProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Tests.Integration.Api.Smoke";
         }
 
         private string GetPathTestsCQRS()
@@ -2215,7 +2234,7 @@ public static class CustonDependenceInjection
                 @"{
   ""RabbitMq"": {},
   ""Storage"": {}
-}");
+        }");
         }
 
         private string GetApplicationName()

@@ -89,7 +89,7 @@ public sealed class ApiIntegrationSettings
             return false;
         }
 
-        var baseUrl = GetValue(values, BaseUrlKey, LegacyBaseUrlKey) ?? DiscoverBaseUrlFromApiLaunchSettings();
+        var baseUrl = GetValue(values, BaseUrlKey, LegacyBaseUrlKey);
         var login = GetValue(values, LoginKey, LegacyLoginKey);
         var password = GetValue(values, PasswordKey, LegacyPasswordKey);
         var loginPath = GetValue(values, LoginPathKey, LegacyLoginPathKey);
@@ -117,7 +117,7 @@ public sealed class ApiIntegrationSettings
 
         settings = new ApiIntegrationSettings(
             baseUri,
-            string.IsNullOrWhiteSpace(loginPath) ? "/yapi/login" : loginPath,
+            string.IsNullOrWhiteSpace(loginPath) ? "yapi/login" : loginPath,
             login,
             password,
             TimeSpan.FromSeconds(timeoutSeconds));
@@ -153,13 +153,6 @@ public sealed class ApiIntegrationSettings
         var directories = new List<string>();
         AddDirectory(directories, AppContext.BaseDirectory);
         AddDirectory(directories, Directory.GetCurrentDirectory());
-
-        var repositoryRoot = FindRepositoryRoot();
-        if (repositoryRoot is not null)
-        {
-            AddDirectory(directories, Path.Combine(repositoryRoot, "src", "CQRS", "Infrastructure", "Yeshua.CQRS.Infrastructure.Api"));
-            AddDirectory(directories, Path.Combine(repositoryRoot, "tests", "CQRS", "Yeshua.CQRS.Tests.Integration.Api.Smoke"));
-        }
 
         return directories;
     }
@@ -289,73 +282,6 @@ public sealed class ApiIntegrationSettings
         {
             if (values.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value))
                 return value;
-        }
-
-        return null;
-    }
-
-    private static string? DiscoverBaseUrlFromApiLaunchSettings()
-    {
-        var repositoryRoot = FindRepositoryRoot();
-        if (repositoryRoot is null)
-            return null;
-
-        var launchSettingsPath = Path.Combine(
-            repositoryRoot,
-            "src",
-            "CQRS",
-            "Infrastructure",
-            "Yeshua.CQRS.Infrastructure.Api",
-            "Properties",
-            "launchSettings.json");
-
-        if (!File.Exists(launchSettingsPath))
-            return null;
-
-        using var document = JsonDocument.Parse(File.ReadAllText(launchSettingsPath, Encoding.UTF8));
-        if (!document.RootElement.TryGetProperty("profiles", out var profiles) ||
-            profiles.ValueKind != JsonValueKind.Object)
-        {
-            return null;
-        }
-
-        var urls = new List<string>();
-        foreach (var profile in profiles.EnumerateObject())
-        {
-            if (profile.Value.TryGetProperty("applicationUrl", out var applicationUrl) &&
-                applicationUrl.ValueKind == JsonValueKind.String)
-            {
-                urls.AddRange(applicationUrl.GetString()!.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
-            }
-        }
-
-        return PickUrl(urls);
-    }
-
-    private static string? PickUrl(IEnumerable<string> urls)
-    {
-        var validUris = urls
-            .Select(url => Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri : null)
-            .Where(uri => uri is not null)
-            .Cast<Uri>()
-            .ToList();
-
-        return validUris.FirstOrDefault(uri => uri.Scheme == Uri.UriSchemeHttps)?.ToString() ??
-            validUris.FirstOrDefault()?.ToString();
-    }
-
-    private static string? FindRepositoryRoot()
-    {
-        foreach (var startDirectory in new[] { AppContext.BaseDirectory, Directory.GetCurrentDirectory() })
-        {
-            var directory = new DirectoryInfo(startDirectory);
-            while (directory is not null)
-            {
-                if (File.Exists(Path.Combine(directory.FullName, "YeshuaCreator.sln")))
-                    return directory.FullName;
-
-                directory = directory.Parent;
-            }
         }
 
         return null;
