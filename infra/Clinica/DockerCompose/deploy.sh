@@ -24,8 +24,14 @@ docker compose run --rm clinica-migration
 docker compose up -d --remove-orphans --scale clinica-front=2 \
   clinica-api \
   clinica-front \
-  clinica-worker \
-  clinica-ai-worker \
-  clinica-ai-summarizer
+  clinica-worker
+
+# pendencia: subir os ambientes de IA somente quando o fluxo de execucao deles estiver fechado.
+# docker compose up -d --remove-orphans --scale clinica-front=2 \
+#   clinica-api \
+#   clinica-front \
+#   clinica-worker \
+#   clinica-ai-worker \
+#   clinica-ai-summarizer
 
 docker compose ps

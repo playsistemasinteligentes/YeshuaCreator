@@ -99,38 +99,39 @@ services:
     networks:
       - yeshua-net
 
-  clinica-ai-worker:
-    build:
-      context: ./ai-worker
-      dockerfile: Dockerfile
-    environment:
-      CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
-      STORAGE_ROOT: "/storage"
-      RabbitMq__HostName: rabbitmq
-      RabbitMq__Port: 5672
-      RabbitMq__Username: yeshua
-      RabbitMq__Password: yeshua123
-      RabbitMq__VirtualHost: /
-      RabbitMq__Exchange: kiwi.exchange
-      RabbitMq__Queue: kiwi.queue
-      RabbitMq__RoutingKey: kiwi.routing
-    volumes:
-      - /root/YeshuaStorage:/storage
-    restart: unless-stopped
-    networks:
-      - yeshua-net
+  # pendencia: ambientes de IA ficam desativados ate fecharmos o fluxo de execucao deles.
+  # clinica-ai-worker:
+  #   build:
+  #     context: ./ai-worker
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+  #     STORAGE_ROOT: "/storage"
+  #     RabbitMq__HostName: rabbitmq
+  #     RabbitMq__Port: 5672
+  #     RabbitMq__Username: yeshua
+  #     RabbitMq__Password: yeshua123
+  #     RabbitMq__VirtualHost: /
+  #     RabbitMq__Exchange: kiwi.exchange
+  #     RabbitMq__Queue: kiwi.queue
+  #     RabbitMq__RoutingKey: kiwi.routing
+  #   volumes:
+  #     - /root/YeshuaStorage:/storage
+  #   restart: unless-stopped
+  #   networks:
+  #     - yeshua-net
 
-  clinica-ai-summarizer:
-    build:
-      context: ./ai-summarizer
-      dockerfile: Dockerfile
-    environment:
-      CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
-      SUMMARIZER_MODEL: "Qwen/Qwen2.5-0.5B-Instruct"
-      SUMMARIZER_DEVICE: "cpu"
-    restart: unless-stopped
-    networks:
-      - yeshua-net
+  # clinica-ai-summarizer:
+  #   build:
+  #     context: ./ai-summarizer
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+  #     SUMMARIZER_MODEL: "Qwen/Qwen2.5-0.5B-Instruct"
+  #     SUMMARIZER_DEVICE: "cpu"
+  #   restart: unless-stopped
+  #   networks:
+  #     - yeshua-net
 
 networks:
   yeshua-net:
