@@ -289,3 +289,24 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
 - `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.
 - `pendencia`: definir depois a estrategia de segredos sem bloquear a recuperacao operacional atual.
+
+## Inteligencia Operacional
+
+- `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
+- O indice operacional usa um database proprio chamado `YeshuaOperationalIntelligence`.
+- Esse database pode compartilhar a instancia SQL da Clinica e do MDF-e, mas nunca os catalogos dos aplicativos.
+- `Yeshua.OperationalIntelligence.Api` consulta o indice e nao referencia a Engine nem projetos de aplicativos.
+- A API, o orquestrador e os coletores permanecem no mesmo projeto e processo nesta fase.
+- Endpoints HTTP cuidam apenas do transporte; `OperationalContextOrchestrator` seleciona e coordena coletores.
+- Cada fonte adicional de contexto implementa `IContextCollector` e devolve evidencias normalizadas.
+- O GPT recebera futuramente um pacote de evidencias consolidado pelo orquestrador; coletores nao chamam o GPT diretamente.
+- A primeira API pesquisa aplicativos, builds, campos, classes, funcoes e investigacoes combinadas.
+- `POST /api/investigations` preserva o diagnostico bruto dos coletores.
+- `POST /api/investigations/context` entrega ao agente somente a pergunta, a instrucao e os fontes ranqueados com linhas relevantes; referencias e cadeias detalhadas permanecem no diagnostico bruto.
+- A API seleciona os fontes; o Codex le diretamente o codigo selecionado para interpretar a regra e responder a pergunta.
+- O contexto compacto instrui o agente a consultar exclusivamente os fontes listados, citar as evidencias utilizadas e declarar insuficiencia sem ampliar a busca automaticamente.
+- `pendencia`: distinguir escrita sintatica em campos C# de escrita semantica realizada por SQL, ORM ou integracao externa.
+- Tenant nao pertence ao indice estatico; aplicativo, versao, arquivo e linha identificam o recorte do fonte.
+- `pendencia`: publicar o indice diretamente pelo AIContextBuilder sem depender da execucao manual do script de carga.
+- `pendencia`: adicionar coletores de logs, metricas, traces, banco operacional e APIs legadas antes da integracao com GPT.
+- `pendencia`: mover a coleta para Worker somente quando houver execucoes longas, fila ou necessidade de continuidade apos a requisicao HTTP.
