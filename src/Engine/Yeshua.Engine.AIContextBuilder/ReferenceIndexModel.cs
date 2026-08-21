@@ -6,18 +6,22 @@ internal sealed class ReferenceIndexModel
     public required Guid ApplicationId { get; init; }
     public required Guid BuildId { get; init; }
     public required string ApplicationName { get; init; }
+    public required string SystemType { get; init; }
     public required string Version { get; init; }
     public string? CommitSha { get; init; }
     public required string SourceSolution { get; init; }
+    public required string ManifestHashSha256 { get; init; }
     public DateTimeOffset GeneratedAtUtc { get; init; } = DateTimeOffset.UtcNow;
 
     public Dictionary<Guid, ReferenceProjectRow> Projects { get; } = new();
     public Dictionary<Guid, ReferenceFileRow> Files { get; } = new();
+    public Dictionary<string, ReferenceSourceContentRow> SourceContents { get; } = new(StringComparer.OrdinalIgnoreCase);
     public Dictionary<Guid, ReferenceSymbolRow> Symbols { get; } = new();
     public Dictionary<Guid, ReferenceDeclarationRow> Declarations { get; } = new();
     public Dictionary<Guid, FieldReferenceRow> FieldReferences { get; } = new();
     public Dictionary<Guid, ClassInstantiationRow> ClassInstantiations { get; } = new();
     public Dictionary<Guid, FunctionCallRow> FunctionCalls { get; } = new();
+    public Dictionary<Guid, TextReferenceRow> TextReferences { get; } = new();
 
     public Guid CreateId(string category, string identity)
         => StableGuid.Create($"{BuildId:N}|{category}|{identity}");
@@ -43,6 +47,7 @@ internal sealed record ReferenceProjectRow(
     string Name,
     string? AssemblyName,
     string? ProjectPath,
+    string? SourceDirectory,
     bool IsSeedProject);
 
 internal sealed record ReferenceFileRow(
@@ -50,7 +55,17 @@ internal sealed record ReferenceFileRow(
     Guid BuildId,
     Guid ProjectId,
     string RelativePath,
-    string HashSha256);
+    string HashSha256,
+    string ArtifactKind,
+    string SourceRole,
+    string Ownership,
+    bool Editable,
+    string SourceOfTruth);
+
+internal sealed record ReferenceSourceContentRow(
+    string HashSha256,
+    string Content,
+    int ByteLength);
 
 internal sealed record ReferenceSymbolRow(
     Guid SymbolId,
@@ -103,3 +118,13 @@ internal sealed record FunctionCallRow(
     int? Line,
     int? Column,
     string ResolutionKind);
+
+internal sealed record TextReferenceRow(
+    Guid TextReferenceId,
+    Guid BuildId,
+    Guid FileId,
+    string Token,
+    string ReferenceKind,
+    int Line,
+    int Column,
+    string ContextSnippet);

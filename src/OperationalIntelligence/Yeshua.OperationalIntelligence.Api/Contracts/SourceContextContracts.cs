@@ -63,7 +63,33 @@ public sealed record FunctionChain(
     int? ReferenceLine,
     bool IsRoot);
 
-public sealed record SourceFileCandidate(string File, string Reason);
+public sealed class SourceFileCandidate
+{
+    public string File { get; init; } = string.Empty;
+    public string Reason { get; init; } = string.Empty;
+    public string ArtifactKind { get; init; } = "UNKNOWN";
+    public string SourceRole { get; init; } = "APPLICATION_SOURCE";
+    public string Ownership { get; init; } = "UNKNOWN";
+    public bool Editable { get; init; } = true;
+    public string SourceOfTruth { get; init; } = "THIS_FILE";
+}
+
+public sealed record SourceFileContent(
+    string File,
+    string ArtifactKind,
+    string SourceRole,
+    string Ownership,
+    bool Editable,
+    string SourceOfTruth,
+    string Content);
+
+public sealed record SourceFileHistory(
+    string File,
+    string CommitSha,
+    DateTime CommittedAtUtc,
+    string? AuthorName,
+    string? Message,
+    string ChangeType);
 
 public sealed record SourceContextResponse(
     BuildSummary Build,

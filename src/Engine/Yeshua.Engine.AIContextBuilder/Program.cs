@@ -12,6 +12,44 @@ var outputPath = @"C:\temp\source";
 var builder = new AiContextBuilder();
 var sw = Stopwatch.StartNew();
 
+if (args.Length == 0)
+{
+    args = SelectCommandInteractively();
+    if (args.Length == 0)
+        return;
+}
+
+if (args.Contains("--reverse-engineering", StringComparer.OrdinalIgnoreCase))
+{
+    var manifestPath = GetArg(args, "--manifest")
+        ?? SelectManifestInteractively(GetArg(args, "--manifests-dir"));
+    var connectionString = GetArg(args, "--connection")
+        ?? Environment.GetEnvironmentVariable("ConnectionStrings__OperationalIntelligence")
+        ?? "Server=69.164.247.138,1433;Database=Context_CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;";
+
+    var manifest = await ReverseEngineeringManifest.LoadAsync(manifestPath);
+    Console.WriteLine($"Engenharia reversa: {manifest.System} ({manifest.SystemType})");
+    Console.WriteLine($"Versao: {manifest.Version}");
+    Console.WriteLine($"Projetos selecionados: {manifest.Projects.Count}");
+
+    var exporter = new ReferenceSqlExporter();
+    var model = await exporter.CollectAsync(manifest);
+    Console.WriteLine($"Arquivos coletados: {model.Files.Count}");
+    Console.WriteLine($"Simbolos coletados: {model.Symbols.Count}");
+    Console.WriteLine($"Referencias de campo coletadas: {model.FieldReferences.Count}");
+    Console.WriteLine($"Referencias textuais coletadas: {model.TextReferences.Count}");
+    await new ReferenceSqlPublisher().PublishAsync(model, connectionString);
+    var importedCommits = await new GitHistoryImporter().ImportAsync(manifest, connectionString);
+
+    sw.Stop();
+    Console.WriteLine($"Build publicado: {model.BuildId}");
+    Console.WriteLine($"Arquivos publicados: {model.Files.Count}");
+    Console.WriteLine($"Conteudos unicos publicados: {model.SourceContents.Count}");
+    Console.WriteLine($"Novos commits Git importados: {importedCommits}");
+    Console.WriteLine($"Engenharia reversa finalizada em {sw.ElapsedMilliseconds} ms.");
+    return;
+}
+
 if (args.Contains("--reference-sql", StringComparer.OrdinalIgnoreCase))
 {
     var referenceSolutionPath = GetArg(args, "--solution") ?? solutionPath;
@@ -109,4 +147,136 @@ static string? GetArg(string[] args, string name)
     }
 
     return null;
+}
+
+static string[] SelectCommandInteractively()
+{
+    Console.WriteLine();
+    Console.WriteLine("Yeshua Engine AI Context Builder");
+    Console.WriteLine("1. Executar engenharia reversa");
+    Console.WriteLine("2. Gerar inventario tecnico da solucao");
+    Console.WriteLine("3. Gerar indice SQL de referencias");
+    Console.WriteLine("4. Gerar inventario sintatico de um diretorio");
+    Console.WriteLine("5. Gerar contexto de receivers");
+    Console.WriteLine("0. Sair");
+
+    while (true)
+    {
+        Console.Write("Escolha uma opcao: ");
+        switch (Console.ReadLine()?.Trim())
+        {
+            case "1":
+                return ["--reverse-engineering"];
+            case "2":
+                return ["--inventory"];
+            case "3":
+                return ["--reference-sql"];
+            case "4":
+                Console.Write("Diretorio de fontes: ");
+                var sourceDirectory = Console.ReadLine()?.Trim();
+                if (string.IsNullOrWhiteSpace(sourceDirectory))
+                {
+                    Console.WriteLine("O diretorio de fontes e obrigatorio.");
+                    continue;
+                }
+                return ["--source-dir", sourceDirectory];
+            case "5":
+                return ["--receiver-context"];
+            case "0":
+                return [];
+            default:
+                Console.WriteLine("Opcao invalida.");
+                break;
+        }
+    }
+}
+
+static string SelectManifestInteractively(string? configuredDirectory)
+{
+    var manifestDirectory = FindManifestDirectory(configuredDirectory);
+    var manifests = Directory
+        .EnumerateFiles(manifestDirectory, "*.json", SearchOption.TopDirectoryOnly)
+        .OrderBy(path => path, StringComparer.OrdinalIgnoreCase)
+        .ToArray();
+
+    if (manifests.Length == 0)
+        throw new InvalidOperationException($"Nenhum manifesto foi encontrado em '{manifestDirectory}'.");
+
+    Console.WriteLine();
+    Console.WriteLine("Manifestos disponiveis:");
+    for (var index = 0; index < manifests.Length; index++)
+        Console.WriteLine($"{index + 1}. {DescribeManifest(manifests[index])}");
+
+    while (true)
+    {
+        Console.Write("Escolha o manifesto: ");
+        if (int.TryParse(Console.ReadLine(), out var selected) &&
+            selected >= 1 &&
+            selected <= manifests.Length)
+        {
+            return manifests[selected - 1];
+        }
+
+        Console.WriteLine($"Informe um numero entre 1 e {manifests.Length}.");
+    }
+}
+
+static string FindManifestDirectory(string? configuredDirectory)
+{
+    if (!string.IsNullOrWhiteSpace(configuredDirectory))
+    {
+        var configuredFullPath = Path.GetFullPath(configuredDirectory);
+        if (!Directory.Exists(configuredFullPath))
+            throw new DirectoryNotFoundException(
+                $"O diretorio de manifestos nao foi encontrado: {configuredFullPath}");
+        return configuredFullPath;
+    }
+
+    foreach (var searchRoot in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory })
+    {
+        var current = new DirectoryInfo(searchRoot);
+        while (current != null)
+        {
+            var candidates = new[]
+            {
+                Path.Combine(current.FullName, "Manifests"),
+                Path.Combine(
+                    current.FullName,
+                    "src",
+                    "Engine",
+                    "Yeshua.Engine.AIContextBuilder",
+                    "Manifests")
+            };
+
+            var match = candidates.FirstOrDefault(Directory.Exists);
+            if (match != null)
+                return match;
+
+            current = current.Parent;
+        }
+    }
+
+    throw new DirectoryNotFoundException(
+        "O diretorio Manifests nao foi encontrado. Use --manifests-dir <diretorio>.");
+}
+
+static string DescribeManifest(string path)
+{
+    try
+    {
+        using var document = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
+        var root = document.RootElement;
+        var system = root.TryGetProperty("system", out var systemProperty)
+            ? systemProperty.GetString()
+            : null;
+        var version = root.TryGetProperty("version", out var versionProperty)
+            ? versionProperty.GetString()
+            : null;
+
+        return $"{system ?? "Sistema nao informado"} | {version ?? "versao nao informada"} | {Path.GetFileName(path)}";
+    }
+    catch (System.Text.Json.JsonException)
+    {
+        return $"JSON invalido | {Path.GetFileName(path)}";
+    }
 }

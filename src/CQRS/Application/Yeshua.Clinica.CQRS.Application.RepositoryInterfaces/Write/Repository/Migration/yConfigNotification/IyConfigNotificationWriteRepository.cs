@@ -1,4 +1,14 @@
-﻿using Dominio.Entitys;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
+// </yeshua>
+
+using Dominio.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;

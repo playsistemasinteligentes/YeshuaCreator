@@ -1,0 +1,84 @@
+{
+  "system": "Clinica",
+  "systemType": "Yeshua",
+  "version": "commit-fec665473d7a",
+  "commitSha": "fec665473d7acf406fb8901ee3007803bb8267dc",
+  "solution": "../../../../YeshuaCreator.sln",
+  "projects": [
+    {
+      "name": "Studio",
+      "projectFile": "../../../../src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj",
+      "sourceDirectory": "../../../../src/Studio/Yeshua.Studio.AppClinicas"
+    },
+    {
+      "name": "Shared Domain",
+      "projectFile": "../../../../src/CQRS/Domain/Yeshua.CQRS.Domain/Yeshua.CQRS.Domain.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Domain/Yeshua.CQRS.Domain"
+    },
+    {
+      "name": "Clinica Domain",
+      "projectFile": "../../../../src/CQRS/Domain/Yeshua.Clinica.CQRS.Domain/Yeshua.Clinica.CQRS.Domain.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Domain/Yeshua.Clinica.CQRS.Domain"
+    },
+    {
+      "name": "Shared Application Command",
+      "projectFile": "../../../../src/CQRS/Application/Yeshua.CQRS.Application.Command/Yeshua.CQRS.Application.Command.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Application/Yeshua.CQRS.Application.Command"
+    },
+    {
+      "name": "Clinica Application Command",
+      "projectFile": "../../../../src/CQRS/Application/Yeshua.Clinica.CQRS.Application.Command/Yeshua.Clinica.CQRS.Application.Command.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Application/Yeshua.Clinica.CQRS.Application.Command"
+    },
+    {
+      "name": "Shared Repository Interfaces",
+      "projectFile": "../../../../src/CQRS/Application/Yeshua.CQRS.Application.RepositoryInterfaces/Yeshua.CQRS.Application.RepositoryInterfaces.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Application/Yeshua.CQRS.Application.RepositoryInterfaces"
+    },
+    {
+      "name": "Clinica Repository Interfaces",
+      "projectFile": "../../../../src/CQRS/Application/Yeshua.Clinica.CQRS.Application.RepositoryInterfaces/Yeshua.Clinica.CQRS.Application.RepositoryInterfaces.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Application/Yeshua.Clinica.CQRS.Application.RepositoryInterfaces"
+    },
+    {
+      "name": "Global Infrastructure Shared",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/Yeshua.CQRS.Infrastructure.Shared.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared"
+    },
+    {
+      "name": "Clinica Infrastructure Shared",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared/Yeshua.Clinica.CQRS.Infrastructure.Shared.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared"
+    },
+    {
+      "name": "Clinica Repository Read",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead/Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead"
+    },
+    {
+      "name": "Clinica Repository Write",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite/Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite"
+    },
+    {
+      "name": "Clinica API",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api"
+    },
+    {
+      "name": "Clinica Worker",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker"
+    },
+    {
+      "name": "Clinica Front",
+      "projectFile": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front/Yeshua.Clinica.CQRS.Infrastructure.Front.csproj",
+      "sourceDirectory": "../../../../src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Front"
+    }
+  ],
+  "repositories": [
+    {
+      "root": "../../../.."
+    }
+  ]
+}

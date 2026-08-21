@@ -1,4 +1,14 @@
-﻿using Command.Interfaces;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeApplicationSagaWorker
+// </yeshua>
+
+using Command.Interfaces;
 using Command.Patterns.Command;
 using Command.Receivers.Migration.Saga;
 using Dominio.Patterns.Saga;

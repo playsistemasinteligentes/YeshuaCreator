@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using Yeshua.OperationalIntelligence.Api.Configuration;
 using Yeshua.OperationalIntelligence.Api.Contracts;
 using Yeshua.OperationalIntelligence.Api.Database;
+using System.IO.Compression;
+using System.Text;
 
 namespace Yeshua.OperationalIntelligence.Api.Repositories;
 
@@ -139,6 +141,84 @@ public sealed class SourceContextRepository : ISourceContextRepository
         return Response(build, matches, references, chains, files);
     }
 
+    public async Task<IReadOnlyList<SourceFileContent>> GetSourceContentsAsync(
+        Guid buildId,
+        IReadOnlyList<string> files,
+        CancellationToken cancellationToken)
+    {
+        if (files.Count == 0)
+            return [];
+
+        const string sql = """
+            SELECT f.RelativePath AS [File], f.ArtifactKind, f.SourceRole, f.Ownership,
+                   f.Editable, f.SourceOfTruth, c.Compression, c.Content
+            FROM OI_Files f
+            JOIN OI_SourceContents c ON c.HashSha256 = f.HashSha256
+            WHERE f.BuildId = @BuildId AND f.RelativePath IN @Files;
+            """;
+
+        await using var connection = await _database.OpenConnectionAsync(cancellationToken);
+        var rows = await connection.QueryAsync<SourceContentRow>(
+            Command(sql, new { BuildId = buildId, Files = files }, cancellationToken));
+        return rows.Select(row => new SourceFileContent(
+                row.File,
+                row.ArtifactKind,
+                row.SourceRole,
+                row.Ownership,
+                row.Editable,
+                row.SourceOfTruth,
+                Decompress(row.Content, row.Compression)))
+            .ToArray();
+    }
+
+    public async Task<IReadOnlyList<SourceFileHistory>> GetFileHistoryAsync(
+        Guid buildId,
+        IReadOnlyList<string> files,
+        CancellationToken cancellationToken)
+    {
+        if (files.Count == 0)
+            return [];
+
+        const string sql = """
+            WITH RankedHistory AS
+            (
+                SELECT COALESCE(c.NewPath, c.OldPath) AS [File], gc.CommitSha,
+                       gc.CommittedAtUtc, gc.AuthorName, gc.Message, c.ChangeType,
+                       ROW_NUMBER() OVER
+                       (
+                           PARTITION BY COALESCE(c.NewPath, c.OldPath)
+                           ORDER BY gc.CommittedAtUtc DESC
+                       ) AS RowNumber
+                FROM OI_Builds b
+                JOIN OI_GitRepositories r ON r.ApplicationId = b.ApplicationId
+                JOIN OI_GitCommits gc ON gc.RepositoryId = r.RepositoryId
+                JOIN OI_GitFileChanges c ON c.CommitId = gc.CommitId
+                WHERE b.BuildId = @BuildId
+                  AND COALESCE(c.NewPath, c.OldPath) IN @Files
+            )
+            SELECT [File], CommitSha, CommittedAtUtc, AuthorName, Message, ChangeType
+            FROM RankedHistory
+            WHERE RowNumber <= 5
+            ORDER BY [File], CommittedAtUtc DESC;
+            """;
+
+        await using var connection = await _database.OpenConnectionAsync(cancellationToken);
+        var rows = await connection.QueryAsync<SourceFileHistory>(
+            Command(sql, new { BuildId = buildId, Files = files }, cancellationToken));
+        return rows.AsList();
+    }
+
+    private static string Decompress(byte[] content, string compression)
+    {
+        if (!string.Equals(compression, "GZIP", StringComparison.OrdinalIgnoreCase))
+            return Encoding.UTF8.GetString(content);
+
+        using var input = new MemoryStream(content);
+        using var gzip = new GZipStream(input, CompressionMode.Decompress);
+        using var reader = new StreamReader(gzip, Encoding.UTF8);
+        return reader.ReadToEnd();
+    }
+
     private async Task<BuildSummary> ResolveBuildAsync(
         string application,
         string? version,
@@ -193,7 +273,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         IReadOnlyList<FunctionChain> chains,
         IReadOnlyList<SourceFileCandidate> files)
     {
-        var warnings = matches.Count == 0
+        var warnings = matches.Count == 0 && references.Count == 0
             ? new[] { "No matching source symbol was found in the selected build." }
             : Array.Empty<string>();
         return new SourceContextResponse(build, matches, references, chains, files, warnings);
@@ -233,15 +313,26 @@ public sealed class SourceContextRepository : ISourceContextRepository
         LEFT JOIN OI_Files f ON f.FileId = d.FileId
         ORDER BY t.MatchKind, s.QualifiedName, f.RelativePath, d.StartLine;
 
-        SELECT TOP (@MaxResults) N'FIELD_REFERENCE' AS Kind, s.QualifiedName AS Symbol,
-               r.AccessKind, owner.QualifiedName AS ContainingFunction,
-               f.RelativePath AS [File], r.Line, r.ColumnNumber AS [Column]
-        FROM #Targets t
-        JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
-        JOIN OI_FieldReferences r ON r.BuildId = @BuildId AND r.FieldSymbolId = t.SymbolId
-        JOIN OI_Files f ON f.FileId = r.FileId
-        LEFT JOIN OI_Symbols owner ON owner.SymbolId = r.ContainingFunctionId
-        ORDER BY r.AccessKind, f.RelativePath, r.Line;
+        SELECT TOP (@MaxResults) evidence.Kind, evidence.Symbol, evidence.AccessKind,
+               evidence.ContainingFunction, evidence.[File], evidence.Line, evidence.[Column]
+        FROM
+        (
+            SELECT N'FIELD_REFERENCE' AS Kind, s.QualifiedName AS Symbol,
+                   r.AccessKind, owner.QualifiedName AS ContainingFunction,
+                   f.RelativePath AS [File], r.Line, r.ColumnNumber AS [Column]
+            FROM #Targets t
+            JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
+            JOIN OI_FieldReferences r ON r.BuildId = @BuildId AND r.FieldSymbolId = t.SymbolId
+            JOIN OI_Files f ON f.FileId = r.FileId
+            LEFT JOIN OI_Symbols owner ON owner.SymbolId = r.ContainingFunctionId
+            UNION ALL
+            SELECT N'TEXT_REFERENCE', tr.Token, tr.ReferenceKind,
+                   CAST(NULL AS NVARCHAR(MAX)), f.RelativePath, tr.Line, tr.ColumnNumber
+            FROM OI_TextReferences tr
+            JOIN OI_Files f ON f.FileId = tr.FileId
+            WHERE tr.BuildId = @BuildId AND tr.Token = @FieldName
+        ) evidence
+        ORDER BY evidence.[File], evidence.Line;
 
         CREATE TABLE #Chains
         (
@@ -299,13 +390,19 @@ public sealed class SourceContextRepository : ISourceContextRepository
             UNION
             SELECT d.FileId, N'CALLER_CHAIN'
             FROM #Chains c JOIN OI_Declarations d ON d.SymbolId = c.FunctionId AND d.BuildId = @BuildId
+            UNION
+            SELECT tr.FileId, N'TEXT_REFERENCE'
+            FROM OI_TextReferences tr
+            WHERE tr.BuildId = @BuildId AND tr.Token = @FieldName
         )
-        SELECT TOP (@MaxResults) f.RelativePath AS [File], rf.Reason
+        SELECT TOP (@MaxResults) f.RelativePath AS [File], rf.Reason,
+               f.ArtifactKind, f.SourceRole, f.Ownership, f.Editable, f.SourceOfTruth
         FROM RelevantFiles rf JOIN OI_Files f ON f.FileId = rf.FileId
         ORDER BY f.RelativePath, rf.Reason;
         """;
 
     private const string ClassSql = """
+        DECLARE @ClassName NVARCHAR(500) = RIGHT(@ClassSearch, CHARINDEX('.', REVERSE(@ClassSearch) + '.') - 1);
         CREATE TABLE #Targets
         (
             SymbolId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
@@ -322,7 +419,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
             INSERT INTO #Targets
             SELECT s.SymbolId, N'SAME_NAME_CANDIDATE'
             FROM OI_Symbols s
-            WHERE s.BuildId = @BuildId AND s.Kind = N'CLASS' AND s.Name = @ClassSearch
+            WHERE s.BuildId = @BuildId AND s.Kind = N'CLASS' AND s.Name = @ClassName
               AND NOT EXISTS (SELECT 1 FROM #Targets t WHERE t.SymbolId = s.SymbolId);
         END;
 
@@ -334,15 +431,26 @@ public sealed class SourceContextRepository : ISourceContextRepository
         LEFT JOIN OI_Files f ON f.FileId = d.FileId
         ORDER BY t.MatchKind, s.QualifiedName, f.RelativePath, d.StartLine;
 
-        SELECT TOP (@MaxResults) N'CLASS_INSTANTIATION' AS Kind, s.QualifiedName AS Symbol,
-               CAST(NULL AS NVARCHAR(20)) AS AccessKind, owner.QualifiedName AS ContainingFunction,
-               f.RelativePath AS [File], i.Line, i.ColumnNumber AS [Column]
-        FROM #Targets t
-        JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
-        JOIN OI_ClassInstantiations i ON i.BuildId = @BuildId AND i.ClassSymbolId = t.SymbolId
-        JOIN OI_Files f ON f.FileId = i.FileId
-        LEFT JOIN OI_Symbols owner ON owner.SymbolId = i.ContainingFunctionId
-        ORDER BY f.RelativePath, i.Line;
+        SELECT TOP (@MaxResults) evidence.Kind, evidence.Symbol, evidence.AccessKind,
+               evidence.ContainingFunction, evidence.[File], evidence.Line, evidence.[Column]
+        FROM
+        (
+            SELECT N'CLASS_INSTANTIATION' AS Kind, s.QualifiedName AS Symbol,
+                   CAST(NULL AS NVARCHAR(50)) AS AccessKind, owner.QualifiedName AS ContainingFunction,
+                   f.RelativePath AS [File], i.Line, i.ColumnNumber AS [Column]
+            FROM #Targets t
+            JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
+            JOIN OI_ClassInstantiations i ON i.BuildId = @BuildId AND i.ClassSymbolId = t.SymbolId
+            JOIN OI_Files f ON f.FileId = i.FileId
+            LEFT JOIN OI_Symbols owner ON owner.SymbolId = i.ContainingFunctionId
+            UNION ALL
+            SELECT N'TEXT_REFERENCE', tr.Token, tr.ReferenceKind,
+                   CAST(NULL AS NVARCHAR(MAX)), f.RelativePath, tr.Line, tr.ColumnNumber
+            FROM OI_TextReferences tr
+            JOIN OI_Files f ON f.FileId = tr.FileId
+            WHERE tr.BuildId = @BuildId AND tr.Token = @ClassName
+        ) evidence
+        ORDER BY evidence.[File], evidence.Line;
 
         CREATE TABLE #Chains
         (
@@ -400,13 +508,19 @@ public sealed class SourceContextRepository : ISourceContextRepository
             UNION
             SELECT d.FileId, N'CALLER_CHAIN'
             FROM #Chains c JOIN OI_Declarations d ON d.SymbolId = c.FunctionId AND d.BuildId = @BuildId
+            UNION
+            SELECT tr.FileId, N'TEXT_REFERENCE'
+            FROM OI_TextReferences tr
+            WHERE tr.BuildId = @BuildId AND tr.Token = @ClassName
         )
-        SELECT TOP (@MaxResults) f.RelativePath AS [File], rf.Reason
+        SELECT TOP (@MaxResults) f.RelativePath AS [File], rf.Reason,
+               f.ArtifactKind, f.SourceRole, f.Ownership, f.Editable, f.SourceOfTruth
         FROM RelevantFiles rf JOIN OI_Files f ON f.FileId = rf.FileId
         ORDER BY f.RelativePath, rf.Reason;
         """;
 
     private const string FunctionSql = """
+        DECLARE @FunctionName NVARCHAR(500) = RIGHT(@FunctionSearch, CHARINDEX('.', REVERSE(@FunctionSearch) + '.') - 1);
         CREATE TABLE #Targets
         (
             SymbolId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
@@ -421,7 +535,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         LEFT JOIN OI_Files f ON f.FileId = d.FileId
         WHERE s.BuildId = @BuildId
           AND s.Kind IN (N'METHOD', N'CONSTRUCTOR', N'ACCESSOR', N'LOCAL_FUNCTION', N'LAMBDA')
-          AND (s.QualifiedName = @FunctionSearch OR s.Name = @FunctionSearch)
+          AND (s.QualifiedName = @FunctionSearch OR s.Name = @FunctionName)
           AND (@FilePath IS NULL OR REPLACE(f.RelativePath, '\', '/') LIKE N'%' + REPLACE(@FilePath, '\', '/') + N'%')
           AND (@Line IS NULL OR @Line BETWEEN d.StartLine AND d.EndLine);
 
@@ -433,14 +547,25 @@ public sealed class SourceContextRepository : ISourceContextRepository
         LEFT JOIN OI_Files f ON f.FileId = d.FileId
         ORDER BY t.MatchKind, s.QualifiedName, f.RelativePath, d.StartLine;
 
-        SELECT TOP (@MaxResults) N'FUNCTION_DECLARATION' AS Kind, s.QualifiedName AS Symbol,
-               CAST(NULL AS NVARCHAR(20)) AS AccessKind, s.QualifiedName AS ContainingFunction,
-               f.RelativePath AS [File], d.StartLine AS Line, d.StartColumn AS [Column]
-        FROM #Targets t
-        JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
-        JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = t.SymbolId
-        JOIN OI_Files f ON f.FileId = d.FileId
-        ORDER BY f.RelativePath, d.StartLine;
+        SELECT TOP (@MaxResults) evidence.Kind, evidence.Symbol, evidence.AccessKind,
+               evidence.ContainingFunction, evidence.[File], evidence.Line, evidence.[Column]
+        FROM
+        (
+            SELECT N'FUNCTION_DECLARATION' AS Kind, s.QualifiedName AS Symbol,
+                   CAST(NULL AS NVARCHAR(50)) AS AccessKind, s.QualifiedName AS ContainingFunction,
+                   f.RelativePath AS [File], d.StartLine AS Line, d.StartColumn AS [Column]
+            FROM #Targets t
+            JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
+            JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = t.SymbolId
+            JOIN OI_Files f ON f.FileId = d.FileId
+            UNION ALL
+            SELECT N'TEXT_REFERENCE', tr.Token, tr.ReferenceKind,
+                   CAST(NULL AS NVARCHAR(MAX)), f.RelativePath, tr.Line, tr.ColumnNumber
+            FROM OI_TextReferences tr
+            JOIN OI_Files f ON f.FileId = tr.FileId
+            WHERE tr.BuildId = @BuildId AND tr.Token = @FunctionName
+        ) evidence
+        ORDER BY evidence.[File], evidence.Line;
 
         CREATE TABLE #Closure
         (
@@ -502,12 +627,33 @@ public sealed class SourceContextRepository : ISourceContextRepository
         FROM #Closure c
         ORDER BY c.Direction, c.Depth, c.FunctionPath;
 
-        SELECT TOP (@MaxResults) f.RelativePath AS [File],
-               CASE c.Direction WHEN N'UPSTREAM' THEN N'UPSTREAM_CALL_CHAIN' ELSE N'DOWNSTREAM_CALL_CHAIN' END AS Reason
-        FROM #Closure c
-        JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = c.FunctionId
-        JOIN OI_Files f ON f.FileId = d.FileId
-        GROUP BY f.RelativePath, c.Direction
+        ;WITH RelevantFiles AS
+        (
+            SELECT d.FileId,
+                   CASE c.Direction WHEN N'UPSTREAM' THEN N'UPSTREAM_CALL_CHAIN' ELSE N'DOWNSTREAM_CALL_CHAIN' END AS Reason
+            FROM #Closure c
+            JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = c.FunctionId
+            UNION
+            SELECT tr.FileId, N'TEXT_REFERENCE'
+            FROM OI_TextReferences tr
+            WHERE tr.BuildId = @BuildId AND tr.Token = @FunctionName
+        )
+        SELECT TOP (@MaxResults) f.RelativePath AS [File], rf.Reason,
+               f.ArtifactKind, f.SourceRole, f.Ownership, f.Editable, f.SourceOfTruth
+        FROM RelevantFiles rf
+        JOIN OI_Files f ON f.FileId = rf.FileId
         ORDER BY f.RelativePath, Reason;
         """;
+
+    private sealed class SourceContentRow
+    {
+        public string File { get; init; } = string.Empty;
+        public string ArtifactKind { get; init; } = string.Empty;
+        public string SourceRole { get; init; } = string.Empty;
+        public string Ownership { get; init; } = string.Empty;
+        public bool Editable { get; init; }
+        public string SourceOfTruth { get; init; } = string.Empty;
+        public string Compression { get; init; } = string.Empty;
+        public byte[] Content { get; init; } = [];
+    }
 }

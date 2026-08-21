@@ -128,6 +128,7 @@ namespace Migration.Dominio
 
         public void WriteCode(StringBuilder code, string path, bool custon, bool context)
         {
+            AddOwnershipMarker(code, custon);
             code.Append("");
             code.Append("");
             code.Append($"//{this.GetType()}");
@@ -139,6 +140,33 @@ namespace Migration.Dominio
 
             if (context)
                 WriteContexto(code.ToString());
+        }
+
+        private void AddOwnershipMarker(StringBuilder code, bool custon)
+        {
+            if (code.ToString().Contains("// <yeshua>", StringComparison.Ordinal))
+                return;
+
+            var artifact = custon
+                ? "DSL_SEEDED_CUSTOM_OWNED_BY_DEV"
+                : "GENERATED_REGENERABLE";
+            var ownership = custon ? "IA_DEV" : "ENGINE";
+            var editable = custon ? "true" : "false";
+            var regeneration = custon ? "NEVER_OVERWRITE" : "REPLACE";
+            var sourceOfTruth = custon ? "THIS_FILE" : "DSL_OR_ENGINE_TEMPLATE";
+            var marker = new StringBuilder()
+                .AppendLine("// <yeshua>")
+                .AppendLine($"// artifact: {artifact}")
+                .AppendLine("// createdBy: DSL")
+                .AppendLine($"// ownership: {ownership}")
+                .AppendLine($"// editable: {editable}")
+                .AppendLine($"// regeneration: {regeneration}")
+                .AppendLine($"// sourceOfTruth: {sourceOfTruth}")
+                .AppendLine($"// generator: {GetType()}")
+                .AppendLine("// </yeshua>")
+                .AppendLine();
+
+            code.Insert(0, marker);
         }
         // Método público para gerar e salvar o código
         public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCaseCommand useCase = null)

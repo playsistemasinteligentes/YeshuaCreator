@@ -292,10 +292,13 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Inteligencia Operacional
 
+- OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define o processo normativo de implantacao e o gate minimo de suportabilidade para aplicativos Yeshua e sistemas legados.
+- Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
-- O indice operacional usa um database proprio chamado `YeshuaOperationalIntelligence`.
+- O indice operacional usa atualmente o database proprio `Context_CLINICA`.
 - Esse database pode compartilhar a instancia SQL da Clinica e do MDF-e, mas nunca os catalogos dos aplicativos.
 - `Yeshua.OperationalIntelligence.Api` consulta o indice e nao referencia a Engine nem projetos de aplicativos.
+- Quando o usuario solicitar uma investigacao, o agente deve chamar diretamente a Operational Intelligence API e interpretar o resultado; o Swagger e opcional e nao deve ser delegado ao usuario sem necessidade.
 - A API, o orquestrador e os coletores permanecem no mesmo projeto e processo nesta fase.
 - Endpoints HTTP cuidam apenas do transporte; `OperationalContextOrchestrator` seleciona e coordena coletores.
 - Cada fonte adicional de contexto implementa `IContextCollector` e devolve evidencias normalizadas.
@@ -310,3 +313,13 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - `pendencia`: publicar o indice diretamente pelo AIContextBuilder sem depender da execucao manual do script de carga.
 - `pendencia`: adicionar coletores de logs, metricas, traces, banco operacional e APIs legadas antes da integracao com GPT.
 - `pendencia`: mover a coleta para Worker somente quando houver execucoes longas, fila ou necessidade de continuidade apos a requisicao HTTP.
+- A engenharia reversa recebe manifesto explicito com sistema, tipo Yeshua/Legacy, versao, solucao e lista fechada de projetos/diretorios.
+- Cada carga Roslyn e um snapshot completo; o historico Git e independente e nao e mecanismo incremental do indice.
+- Historico Git considera somente commits confirmados alcancaveis por `HEAD`; working tree nunca e armazenada.
+- O snapshot preserva o conteudo integral dos fontes comprimido e deduplicado por SHA-256.
+- O bundle de contexto reune fontes, propriedade, editabilidade, fonte da verdade e historico confirmado em um arquivo.
+- O indice e hibrido: Roslyn fornece referencias semanticas C# e um indice textual complementar localiza DSL em strings, JavaScript, TypeScript, HTML, Razor, Vue e SQL.
+- Evidencias textuais sao identificadas como `TEXT_REFERENCE`; elas selecionam fontes candidatos, mas nao devem ser interpretadas como prova semantica de leitura ou escrita.
+- O perfil `BusinessRule` exclui contratos, classes-base, testes e bordas arquiteturais.
+- Arquivos regeneraveis recebem `GENERATED_REGENERABLE`; custom criados uma vez recebem `DSL_SEEDED_CUSTOM_OWNED_BY_DEV` e nunca sao sobrescritos.
+- Especificacoes em projetos Studio sao classificadas como `DSL_SPECIFICATION`.

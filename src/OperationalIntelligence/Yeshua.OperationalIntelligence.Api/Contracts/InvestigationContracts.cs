@@ -5,6 +5,7 @@ public sealed class InvestigationRequest
     public string Application { get; init; } = string.Empty;
     public string? Version { get; init; }
     public string? Question { get; init; }
+    public string? Purpose { get; init; }
     public string? Field { get; init; }
     public string? Class { get; init; }
     public string? Function { get; init; }

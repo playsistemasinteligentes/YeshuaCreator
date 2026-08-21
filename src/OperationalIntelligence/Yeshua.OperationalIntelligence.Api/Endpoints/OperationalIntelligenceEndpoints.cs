@@ -3,6 +3,7 @@ using Yeshua.OperationalIntelligence.Api.Application;
 using Yeshua.OperationalIntelligence.Api.Contracts;
 using Yeshua.OperationalIntelligence.Api.Database;
 using Yeshua.OperationalIntelligence.Api.Repositories;
+using System.Text;
 
 namespace Yeshua.OperationalIntelligence.Api.Endpoints;
 
@@ -90,6 +91,28 @@ public static class OperationalIntelligenceEndpoints
                 return Results.Ok(contextBuilder.Build(request, investigation));
             })
             .WithName("BuildQuestionContext");
+
+        app.MapPost("/api/investigations/context/bundle", async (
+                InvestigationRequest request,
+                OperationalContextOrchestrator orchestrator,
+                QuestionContextBuilder contextBuilder,
+                SourceBundleBuilder bundleBuilder,
+                CancellationToken cancellationToken) =>
+            {
+                if (string.IsNullOrWhiteSpace(request.Application))
+                    return Results.BadRequest(new { error = "Application is required." });
+
+                var investigation = await orchestrator.InvestigateAsync(request, cancellationToken);
+                var context = contextBuilder.Build(request, investigation);
+                var bundle = await bundleBuilder.BuildAsync(context, cancellationToken);
+                var safeApplication = string.Concat(request.Application.Select(character =>
+                    char.IsLetterOrDigit(character) ? character : '-'));
+                return Results.File(
+                    Encoding.UTF8.GetBytes(bundle),
+                    "text/plain; charset=utf-8",
+                    $"{safeApplication}-{context.Version}-source-context.txt");
+            })
+            .WithName("BuildQuestionSourceBundle");
     }
 
     private static async Task<IResult> SearchAsync(

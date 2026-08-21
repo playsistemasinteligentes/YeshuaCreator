@@ -1,0 +1,24 @@
+{
+  "system": "NomeDoLegado",
+  "systemType": "Legacy",
+  "version": "1.0.0",
+  "commitSha": null,
+  "solution": "C:/fontes/Legado/Legado.sln",
+  "projects": [
+    {
+      "name": "Dominio legado",
+      "projectFile": "C:/fontes/Legado/src/Legado.Domain/Legado.Domain.csproj",
+      "sourceDirectory": "C:/fontes/Legado/src/Legado.Domain"
+    },
+    {
+      "name": "Aplicacao legada",
+      "projectFile": "C:/fontes/Legado/src/Legado.Application/Legado.Application.csproj",
+      "sourceDirectory": "C:/fontes/Legado/src/Legado.Application"
+    }
+  ],
+  "repositories": [
+    {
+      "root": "C:/fontes/Legado"
+    }
+  ]
+}

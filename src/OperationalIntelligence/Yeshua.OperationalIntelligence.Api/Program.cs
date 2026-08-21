@@ -4,6 +4,7 @@ using Yeshua.OperationalIntelligence.Api.Collectors;
 using Yeshua.OperationalIntelligence.Api.Configuration;
 using Yeshua.OperationalIntelligence.Api.Database;
 using Yeshua.OperationalIntelligence.Api.Endpoints;
+using Yeshua.OperationalIntelligence.Api.OpenApi;
 using Yeshua.OperationalIntelligence.Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,14 +22,18 @@ builder.Services.AddScoped<ISourceContextRepository, SourceContextRepository>();
 builder.Services.AddScoped<IContextCollector, SourceCodeContextCollector>();
 builder.Services.AddScoped<OperationalContextOrchestrator>();
 builder.Services.AddScoped<QuestionContextBuilder>();
+builder.Services.AddScoped<SourceBundleBuilder>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
+{
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Yeshua Operational Intelligence API",
         Version = "v1"
-    }));
+    });
+    options.OperationFilter<InvestigationRequestExampleOperationFilter>();
+});
 
 var app = builder.Build();
 

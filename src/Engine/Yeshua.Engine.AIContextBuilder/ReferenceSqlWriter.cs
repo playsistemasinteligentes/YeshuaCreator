@@ -8,7 +8,7 @@ internal static class ReferenceSqlWriter
 
         await File.WriteAllTextAsync(
             Path.Combine(outputDirectory, "00-reference-index-schema.sql"),
-            SchemaSql,
+            Schema,
             new UTF8Encoding(false));
 
         await WriteDataAsync(
@@ -33,6 +33,8 @@ internal static class ReferenceSqlWriter
                 GetExampleSymbol(model, "METHOD", "CONSTRUCTOR", "ACCESSOR", "LOCAL_FUNCTION", "LAMBDA")),
             new UTF8Encoding(false));
     }
+
+    internal static string Schema => SchemaSql + Environment.NewLine + ExtensionSchemaSql;
 
     private static string RenderQuery(string template, ReferenceIndexModel model, string exampleSymbol)
     {
@@ -78,9 +80,11 @@ internal static class ReferenceSqlWriter
         await writer.WriteLineAsync($"DECLARE @BuildId UNIQUEIDENTIFIER = {SqlGuid(model.BuildId)};");
         await writer.WriteLineAsync();
         await writer.WriteLineAsync("IF NOT EXISTS (SELECT 1 FROM OI_Applications WHERE ApplicationId = @ApplicationId)");
-        await writer.WriteLineAsync($"    INSERT INTO OI_Applications (ApplicationId, Name) VALUES (@ApplicationId, {SqlString(model.ApplicationName)});");
+        await writer.WriteLineAsync($"    INSERT INTO OI_Applications (ApplicationId, Name, SystemType) VALUES (@ApplicationId, {SqlString(model.ApplicationName)}, {SqlString(model.SystemType)});");
+        await writer.WriteLineAsync($"ELSE UPDATE OI_Applications SET SystemType = {SqlString(model.SystemType)} WHERE ApplicationId = @ApplicationId;");
         await writer.WriteLineAsync();
         await writer.WriteLineAsync("DELETE FROM OI_FunctionCalls WHERE BuildId = @BuildId;");
+        await writer.WriteLineAsync("IF OBJECT_ID(N'OI_TextReferences', N'U') IS NOT NULL DELETE FROM OI_TextReferences WHERE BuildId = @BuildId;");
         await writer.WriteLineAsync("DELETE FROM OI_ClassInstantiations WHERE BuildId = @BuildId;");
         await writer.WriteLineAsync("DELETE FROM OI_FieldReferences WHERE BuildId = @BuildId;");
         await writer.WriteLineAsync("DELETE FROM OI_Declarations WHERE BuildId = @BuildId;");
@@ -90,23 +94,24 @@ internal static class ReferenceSqlWriter
         await writer.WriteLineAsync("DELETE FROM OI_Builds WHERE BuildId = @BuildId;");
         await writer.WriteLineAsync();
         await writer.WriteLineAsync(
-            "INSERT INTO OI_Builds (BuildId, ApplicationId, Version, CommitSha, SourceSolution, GeneratedAtUtc) VALUES " +
+            "INSERT INTO OI_Builds (BuildId, ApplicationId, Version, CommitSha, SourceSolution, GeneratedAtUtc, ManifestHashSha256) VALUES " +
             $"(@BuildId, @ApplicationId, {SqlString(model.Version)}, {SqlString(model.CommitSha)}, " +
-            $"{SqlString(model.SourceSolution)}, {SqlDateTime(model.GeneratedAtUtc)});");
+            $"{SqlString(model.SourceSolution)}, {SqlDateTime(model.GeneratedAtUtc)}, {SqlString(model.ManifestHashSha256)});");
 
         await WriteRowsAsync(
             writer,
             "OI_Projects",
-            "ProjectId, BuildId, Name, AssemblyName, ProjectPath, IsSeedProject",
+            "ProjectId, BuildId, Name, AssemblyName, ProjectPath, SourceDirectory, IsSeedProject",
             model.Projects.Values.OrderBy(row => row.Name),
-            row => $"({SqlGuid(row.ProjectId)}, @BuildId, {SqlString(row.Name)}, {SqlString(row.AssemblyName)}, {SqlString(row.ProjectPath)}, {SqlBool(row.IsSeedProject)})");
+            row => $"({SqlGuid(row.ProjectId)}, @BuildId, {SqlString(row.Name)}, {SqlString(row.AssemblyName)}, {SqlString(row.ProjectPath)}, {SqlString(row.SourceDirectory)}, {SqlBool(row.IsSeedProject)})");
 
         await WriteRowsAsync(
             writer,
             "OI_Files",
-            "FileId, BuildId, ProjectId, RelativePath, HashSha256",
+            "FileId, BuildId, ProjectId, RelativePath, HashSha256, ArtifactKind, SourceRole, Ownership, Editable, SourceOfTruth",
             model.Files.Values.OrderBy(row => row.RelativePath),
-            row => $"({SqlGuid(row.FileId)}, @BuildId, {SqlGuid(row.ProjectId)}, {SqlString(row.RelativePath)}, {SqlString(row.HashSha256)})");
+            row => $"({SqlGuid(row.FileId)}, @BuildId, {SqlGuid(row.ProjectId)}, {SqlString(row.RelativePath)}, {SqlString(row.HashSha256)}, " +
+                   $"{SqlString(row.ArtifactKind)}, {SqlString(row.SourceRole)}, {SqlString(row.Ownership)}, {SqlBool(row.Editable)}, {SqlString(row.SourceOfTruth)})");
 
         await WriteRowsAsync(
             writer,
@@ -147,6 +152,14 @@ internal static class ReferenceSqlWriter
             model.FunctionCalls.Values.OrderBy(row => row.CallerFunctionId).ThenBy(row => row.CalledFunctionId),
             row => $"({SqlGuid(row.FunctionCallId)}, @BuildId, {SqlGuid(row.CallerFunctionId)}, {SqlGuid(row.CalledFunctionId)}, " +
                    $"{SqlGuid(row.FileId)}, {SqlInt(row.Line)}, {SqlInt(row.Column)}, {SqlString(row.ResolutionKind)})");
+
+        await WriteRowsAsync(
+            writer,
+            "OI_TextReferences",
+            "TextReferenceId, BuildId, FileId, Token, ReferenceKind, Line, ColumnNumber, ContextSnippet",
+            model.TextReferences.Values.OrderBy(row => row.FileId).ThenBy(row => row.Line).ThenBy(row => row.Column),
+            row => $"({SqlGuid(row.TextReferenceId)}, @BuildId, {SqlGuid(row.FileId)}, {SqlString(row.Token)}, " +
+                   $"{SqlString(row.ReferenceKind)}, {row.Line}, {row.Column}, {SqlString(row.ContextSnippet)})");
 
         await writer.WriteLineAsync();
         await writer.WriteLineAsync("COMMIT TRANSACTION;");
@@ -335,6 +348,100 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_OI_FunctionCalls_Call
     CREATE INDEX IX_OI_FunctionCalls_Caller ON OI_FunctionCalls(BuildId, CallerFunctionId);
 """;
 
+    private const string ExtensionSchemaSql = """
+IF COL_LENGTH(N'OI_Applications', N'SystemType') IS NULL
+    ALTER TABLE OI_Applications ADD SystemType NVARCHAR(30) NOT NULL CONSTRAINT DF_OI_Applications_SystemType_Script DEFAULT N'LEGACY';
+IF COL_LENGTH(N'OI_Builds', N'ManifestHashSha256') IS NULL
+    ALTER TABLE OI_Builds ADD ManifestHashSha256 CHAR(64) NULL;
+IF COL_LENGTH(N'OI_Projects', N'SourceDirectory') IS NULL
+    ALTER TABLE OI_Projects ADD SourceDirectory NVARCHAR(2000) NULL;
+IF COL_LENGTH(N'OI_Files', N'ArtifactKind') IS NULL
+    ALTER TABLE OI_Files ADD ArtifactKind NVARCHAR(80) NOT NULL CONSTRAINT DF_OI_Files_ArtifactKind_Script DEFAULT N'UNKNOWN';
+IF COL_LENGTH(N'OI_Files', N'SourceRole') IS NULL
+    ALTER TABLE OI_Files ADD SourceRole NVARCHAR(80) NOT NULL CONSTRAINT DF_OI_Files_SourceRole_Script DEFAULT N'APPLICATION_SOURCE';
+IF COL_LENGTH(N'OI_Files', N'Ownership') IS NULL
+    ALTER TABLE OI_Files ADD Ownership NVARCHAR(40) NOT NULL CONSTRAINT DF_OI_Files_Ownership_Script DEFAULT N'UNKNOWN';
+IF COL_LENGTH(N'OI_Files', N'Editable') IS NULL
+    ALTER TABLE OI_Files ADD Editable BIT NOT NULL CONSTRAINT DF_OI_Files_Editable_Script DEFAULT 1;
+IF COL_LENGTH(N'OI_Files', N'SourceOfTruth') IS NULL
+    ALTER TABLE OI_Files ADD SourceOfTruth NVARCHAR(2000) NOT NULL CONSTRAINT DF_OI_Files_SourceOfTruth_Script DEFAULT N'THIS_FILE';
+IF OBJECT_ID(N'OI_SourceContents', N'U') IS NULL
+BEGIN
+    CREATE TABLE OI_SourceContents
+    (
+        HashSha256 CHAR(64) NOT NULL PRIMARY KEY,
+        Compression NVARCHAR(20) NOT NULL,
+        Content VARBINARY(MAX) NOT NULL,
+        OriginalByteLength INT NOT NULL,
+        StoredByteLength INT NOT NULL,
+        CreatedAtUtc DATETIME2(7) NOT NULL
+    );
+END;
+IF OBJECT_ID(N'OI_TextReferences', N'U') IS NULL
+BEGIN
+    CREATE TABLE OI_TextReferences
+    (
+        TextReferenceId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        BuildId UNIQUEIDENTIFIER NOT NULL,
+        FileId UNIQUEIDENTIFIER NOT NULL,
+        Token NVARCHAR(200) NOT NULL,
+        ReferenceKind NVARCHAR(50) NOT NULL,
+        Line INT NOT NULL,
+        ColumnNumber INT NOT NULL,
+        ContextSnippet NVARCHAR(500) NOT NULL
+    );
+END;
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_OI_TextReferences_Build_Token' AND object_id = OBJECT_ID(N'OI_TextReferences'))
+    CREATE INDEX IX_OI_TextReferences_Build_Token
+        ON OI_TextReferences(BuildId, Token)
+        INCLUDE (FileId, ReferenceKind, Line, ColumnNumber);
+IF OBJECT_ID(N'OI_GitRepositories', N'U') IS NULL
+BEGIN
+    CREATE TABLE OI_GitRepositories
+    (
+        RepositoryId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        ApplicationId UNIQUEIDENTIFIER NOT NULL,
+        RootPath NVARCHAR(2000) NOT NULL,
+        RemoteUrl NVARCHAR(2000) NULL,
+        LastImportedCommitSha CHAR(40) NULL,
+        UpdatedAtUtc DATETIME2(7) NOT NULL
+    );
+END;
+IF OBJECT_ID(N'OI_GitCommits', N'U') IS NULL
+BEGIN
+    CREATE TABLE OI_GitCommits
+    (
+        CommitId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        RepositoryId UNIQUEIDENTIFIER NOT NULL,
+        CommitSha CHAR(40) NOT NULL,
+        ParentShas NVARCHAR(500) NULL,
+        AuthorName NVARCHAR(500) NULL,
+        AuthorEmail NVARCHAR(500) NULL,
+        CommittedAtUtc DATETIME2(7) NOT NULL,
+        Message NVARCHAR(MAX) NULL
+    );
+END;
+IF OBJECT_ID(N'OI_GitFileChanges', N'U') IS NULL
+BEGIN
+    CREATE TABLE OI_GitFileChanges
+    (
+        ChangeId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+        CommitId UNIQUEIDENTIFIER NOT NULL,
+        ChangeType NVARCHAR(20) NOT NULL,
+        OldPath NVARCHAR(2000) NULL,
+        NewPath NVARCHAR(2000) NULL,
+        Additions INT NULL,
+        Deletions INT NULL,
+        PatchCompression NVARCHAR(20) NULL,
+        Patch VARBINARY(MAX) NULL
+    );
+END;
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'UX_OI_GitCommits_Repository_Sha' AND object_id = OBJECT_ID(N'OI_GitCommits'))
+    CREATE UNIQUE INDEX UX_OI_GitCommits_Repository_Sha ON OI_GitCommits(RepositoryId, CommitSha);
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_OI_GitFileChanges_NewPath' AND object_id = OBJECT_ID(N'OI_GitFileChanges'))
+    CREATE INDEX IX_OI_GitFileChanges_NewPath ON OI_GitFileChanges(NewPath, CommitId);
+""";
+
     private const string FieldQuerySql = """
 -- Adjust only these values.
 DECLARE @ApplicationName NVARCHAR(300) = __APPLICATION__;
@@ -387,6 +494,12 @@ JOIN OI_FieldReferences r ON r.BuildId = @BuildId AND r.FieldSymbolId = t.Symbol
 JOIN OI_Files f ON f.FileId = r.FileId
 LEFT JOIN OI_Symbols owner ON owner.SymbolId = r.ContainingFunctionId
 ORDER BY t.MatchKind, s.QualifiedName, r.AccessKind, f.RelativePath, r.Line;
+
+SELECT tr.Token, tr.ReferenceKind, f.RelativePath, tr.Line, tr.ColumnNumber, tr.ContextSnippet
+FROM OI_TextReferences tr
+JOIN OI_Files f ON f.FileId = tr.FileId
+WHERE tr.BuildId = @BuildId AND tr.Token = @FieldName
+ORDER BY f.RelativePath, tr.Line, tr.ColumnNumber;
 
 CREATE TABLE #FieldCallerChains
 (
@@ -445,6 +558,10 @@ ORDER BY directFile.RelativePath, r.Line, c.Depth DESC, c.FunctionPath;
     UNION
     SELECT d.FileId, N'CALLER_CHAIN'
     FROM #FieldCallerChains c JOIN OI_Declarations d ON d.SymbolId = c.FunctionId AND d.BuildId = @BuildId
+    UNION
+    SELECT tr.FileId, N'TEXT_REFERENCE'
+    FROM OI_TextReferences tr
+    WHERE tr.BuildId = @BuildId AND tr.Token = @FieldName
 )
 SELECT DISTINCT f.RelativePath, rf.Reason
 FROM RelevantFiles rf JOIN OI_Files f ON f.FileId = rf.FileId
@@ -466,10 +583,13 @@ ORDER BY b.GeneratedAtUtc DESC;
 
 IF @BuildId IS NULL THROW 51000, 'Build not found.', 1;
 
+DECLARE @ClassName NVARCHAR(500) = RIGHT(@ClassQualifiedName, CHARINDEX('.', REVERSE(@ClassQualifiedName) + '.') - 1);
 CREATE TABLE #TargetClasses (SymbolId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY);
 INSERT INTO #TargetClasses
 SELECT SymbolId FROM OI_Symbols
-WHERE BuildId = @BuildId AND Kind = N'CLASS' AND QualifiedName = @ClassQualifiedName;
+WHERE BuildId = @BuildId
+  AND Kind = N'CLASS'
+  AND (QualifiedName = @ClassQualifiedName OR Name = @ClassName);
 
 SELECT s.QualifiedName, f.RelativePath, d.StartLine, d.EndLine
 FROM #TargetClasses t
@@ -486,6 +606,12 @@ JOIN OI_ClassInstantiations i ON i.BuildId = @BuildId AND i.ClassSymbolId = t.Sy
 JOIN OI_Files f ON f.FileId = i.FileId
 LEFT JOIN OI_Symbols owner ON owner.SymbolId = i.ContainingFunctionId
 ORDER BY f.RelativePath, i.Line;
+
+SELECT tr.Token, tr.ReferenceKind, f.RelativePath, tr.Line, tr.ColumnNumber, tr.ContextSnippet
+FROM OI_TextReferences tr
+JOIN OI_Files f ON f.FileId = tr.FileId
+WHERE tr.BuildId = @BuildId AND tr.Token = @ClassName
+ORDER BY f.RelativePath, tr.Line, tr.ColumnNumber;
 
 CREATE TABLE #ClassCallerChains
 (
@@ -544,6 +670,10 @@ ORDER BY sourceFile.RelativePath, i.Line, c.Depth DESC, c.FunctionPath;
     UNION
     SELECT d.FileId, N'CALLER_CHAIN'
     FROM #ClassCallerChains c JOIN OI_Declarations d ON d.SymbolId = c.FunctionId AND d.BuildId = @BuildId
+    UNION
+    SELECT tr.FileId, N'TEXT_REFERENCE'
+    FROM OI_TextReferences tr
+    WHERE tr.BuildId = @BuildId AND tr.Token = @ClassName
 )
 SELECT DISTINCT f.RelativePath, rf.Reason
 FROM RelevantFiles rf JOIN OI_Files f ON f.FileId = rf.FileId
@@ -567,6 +697,7 @@ ORDER BY b.GeneratedAtUtc DESC;
 
 IF @BuildId IS NULL THROW 51000, 'Build not found.', 1;
 
+DECLARE @FunctionName NVARCHAR(500) = RIGHT(@FunctionSearch, CHARINDEX('.', REVERSE(@FunctionSearch) + '.') - 1);
 CREATE TABLE #TargetFunctions (FunctionId UNIQUEIDENTIFIER NOT NULL PRIMARY KEY);
 INSERT INTO #TargetFunctions
 SELECT DISTINCT s.SymbolId
@@ -575,7 +706,7 @@ LEFT JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = s.SymbolId
 LEFT JOIN OI_Files f ON f.FileId = d.FileId
 WHERE s.BuildId = @BuildId
   AND s.Kind IN (N'METHOD', N'CONSTRUCTOR', N'ACCESSOR', N'LOCAL_FUNCTION', N'LAMBDA')
-  AND (s.QualifiedName = @FunctionSearch OR s.Name = @FunctionSearch)
+  AND (s.QualifiedName = @FunctionSearch OR s.Name = @FunctionName)
   AND (@FilePath IS NULL OR REPLACE(f.RelativePath, '\', '/') LIKE N'%' + REPLACE(@FilePath, '\', '/') + N'%')
   AND (@Line IS NULL OR @Line BETWEEN d.StartLine AND d.EndLine);
 
@@ -630,10 +761,15 @@ SELECT DirectionName, Depth, FunctionPath
 FROM #FunctionClosure
 ORDER BY DirectionName, Depth, FunctionPath;
 
-SELECT DISTINCT f.RelativePath, c.DirectionName
+SELECT DISTINCT f.RelativePath AS RelativePath, c.DirectionName AS DirectionName
 FROM #FunctionClosure c
 JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = c.FunctionId
 JOIN OI_Files f ON f.FileId = d.FileId
-ORDER BY f.RelativePath, c.DirectionName;
+UNION
+SELECT DISTINCT f.RelativePath, N'TEXT_REFERENCE'
+FROM OI_TextReferences tr
+JOIN OI_Files f ON f.FileId = tr.FileId
+WHERE tr.BuildId = @BuildId AND tr.Token = @FunctionName
+ORDER BY RelativePath, DirectionName;
 """;
 }

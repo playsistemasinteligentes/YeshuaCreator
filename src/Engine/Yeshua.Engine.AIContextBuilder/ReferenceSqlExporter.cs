@@ -33,25 +33,17 @@ internal sealed class ReferenceSqlExporter
             throw new InvalidOperationException($"Nenhum projeto corresponde ao filtro '{projectNameFilter}'.");
 
         var indexedProjects = ExpandProjectReferences(solution, seedProjects);
-        var model = new ReferenceIndexModel
-        {
-            ApplicationId = StableGuid.Create($"application|{applicationName.Trim().ToUpperInvariant()}"),
-            BuildId = StableGuid.Create(
-                $"build|{applicationName.Trim().ToUpperInvariant()}|{version.Trim()}|{commitSha?.Trim()}"),
-            ApplicationName = applicationName.Trim(),
-            Version = version.Trim(),
-            CommitSha = string.IsNullOrWhiteSpace(commitSha) ? null : commitSha.Trim(),
-            SourceSolution = Path.GetFullPath(solutionPath)
-        };
-
-        var collector = new ReferenceIndexCollector(
-            model,
+        var model = await CollectModelAsync(
             solution,
             indexedProjects,
-            seedProjects.Select(project => project.Id).ToHashSet(),
-            Path.GetDirectoryName(Path.GetFullPath(solutionPath)) ?? Directory.GetCurrentDirectory());
-
-        await collector.CollectAsync();
+            seedProjects,
+            applicationName,
+            "Legacy",
+            version,
+            commitSha,
+            Path.GetFullPath(solutionPath),
+            "LEGACY_REFERENCE_SQL",
+            null);
         await ReferenceSqlWriter.WriteAsync(model, outputDirectory);
 
         Console.WriteLine($"Projetos indexados: {model.Projects.Count}");
@@ -60,6 +52,85 @@ internal sealed class ReferenceSqlExporter
         Console.WriteLine($"Leituras/escritas de campos: {model.FieldReferences.Count}");
         Console.WriteLine($"Instanciacoes de classes: {model.ClassInstantiations.Count}");
         Console.WriteLine($"Chamadas diretas: {model.FunctionCalls.Count}");
+    }
+
+    public async Task<ReferenceIndexModel> CollectAsync(ReverseEngineeringManifest manifest)
+    {
+        using var workspace = MSBuildWorkspace.Create();
+        workspace.WorkspaceFailed += (_, args) =>
+            Console.Error.WriteLine($"Workspace: {args.Diagnostic.Kind} - {args.Diagnostic.Message}");
+
+        var solution = await workspace.OpenSolutionAsync(manifest.Solution);
+        var requestedPaths = manifest.Projects
+            .Select(project => Path.GetFullPath(project.ProjectFile))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var selectedProjects = solution.Projects
+            .Where(project => project.FilePath != null && requestedPaths.Contains(Path.GetFullPath(project.FilePath)))
+            .OrderBy(project => project.Name)
+            .ToArray();
+
+        var foundPaths = selectedProjects
+            .Where(project => project.FilePath != null)
+            .Select(project => Path.GetFullPath(project.FilePath!))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var missing = requestedPaths.Where(path => !foundPaths.Contains(path)).ToArray();
+        if (missing.Length > 0)
+            throw new InvalidOperationException(
+                "Os seguintes projetos nao pertencem a solucao informada: " + string.Join(", ", missing));
+
+        var sourceDirectories = selectedProjects.ToDictionary(
+            project => project.Id,
+            project => manifest.Projects.Single(item =>
+                string.Equals(Path.GetFullPath(item.ProjectFile), Path.GetFullPath(project.FilePath!), StringComparison.OrdinalIgnoreCase)).SourceDirectory);
+
+        return await CollectModelAsync(
+            solution,
+            selectedProjects,
+            selectedProjects,
+            manifest.System,
+            manifest.SystemType,
+            manifest.Version,
+            manifest.CommitSha,
+            manifest.Solution,
+            manifest.ManifestHashSha256,
+            sourceDirectories);
+    }
+
+    private static async Task<ReferenceIndexModel> CollectModelAsync(
+        Solution solution,
+        Project[] indexedProjects,
+        Project[] seedProjects,
+        string applicationName,
+        string systemType,
+        string version,
+        string? commitSha,
+        string solutionPath,
+        string manifestHash,
+        IReadOnlyDictionary<ProjectId, string>? sourceDirectories)
+    {
+        var model = new ReferenceIndexModel
+        {
+            ApplicationId = StableGuid.Create($"application|{applicationName.Trim().ToUpperInvariant()}"),
+            BuildId = StableGuid.Create(
+                $"build|{applicationName.Trim().ToUpperInvariant()}|{version.Trim()}|{commitSha?.Trim()}|{manifestHash}"),
+            ApplicationName = applicationName.Trim(),
+            SystemType = systemType.Trim().ToUpperInvariant(),
+            Version = version.Trim(),
+            CommitSha = string.IsNullOrWhiteSpace(commitSha) ? null : commitSha.Trim(),
+            SourceSolution = Path.GetFullPath(solutionPath),
+            ManifestHashSha256 = manifestHash
+        };
+
+        var collector = new ReferenceIndexCollector(
+            model,
+            solution,
+            indexedProjects,
+            seedProjects.Select(project => project.Id).ToHashSet(),
+            Path.GetDirectoryName(Path.GetFullPath(solutionPath)) ?? Directory.GetCurrentDirectory(),
+            sourceDirectories);
+
+        await collector.CollectAsync();
+        return model;
     }
 
     private static bool MatchesProjectFilter(string projectName, string? projectNameFilter)
@@ -110,19 +181,22 @@ internal sealed class ReferenceIndexCollector
         new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<ProjectId, Compilation> _compilations = new();
     private readonly HashSet<ProjectId> _indexedProjectIds;
+    private readonly IReadOnlyDictionary<ProjectId, string>? _sourceDirectories;
 
     public ReferenceIndexCollector(
         ReferenceIndexModel model,
         Solution solution,
         Project[] projects,
         HashSet<ProjectId> seedProjectIds,
-        string sourceRoot)
+        string sourceRoot,
+        IReadOnlyDictionary<ProjectId, string>? sourceDirectories = null)
     {
         _model = model;
         _solution = solution;
         _projects = projects;
         _seedProjectIds = seedProjectIds;
         _sourceRoot = sourceRoot;
+        _sourceDirectories = sourceDirectories;
         _indexedProjectIds = projects.Select(project => project.Id).ToHashSet();
     }
 
@@ -151,6 +225,7 @@ internal sealed class ReferenceIndexCollector
                 project.Name,
                 project.AssemblyName,
                 ToRelativePath(project.FilePath),
+                _sourceDirectories?.GetValueOrDefault(project.Id) ?? Path.GetDirectoryName(project.FilePath),
                 _seedProjectIds.Contains(project.Id));
 
             _projectRows[project.Id] = projectRow;
@@ -171,36 +246,72 @@ internal sealed class ReferenceIndexCollector
             {
                 if (string.IsNullOrWhiteSpace(document.FilePath))
                     continue;
+                await RegisterFileAsync(project, projectRow, document.FilePath);
+            }
 
-                var fullPath = Path.GetFullPath(document.FilePath);
-                var key = GetFileKey(project.Id, fullPath);
-                if (_filesByProjectAndPath.ContainsKey(key))
-                    continue;
-
-                var relativePath = ToRelativePath(fullPath) ?? fullPath.Replace('\\', '/');
-                var hash = await CalculateFileHashAsync(fullPath);
-                var fileRow = new ReferenceFileRow(
-                    _model.CreateId("file", $"{projectRow.ProjectId:N}|{relativePath}"),
-                    _model.BuildId,
-                    projectRow.ProjectId,
-                    relativePath,
-                    hash);
-
-                _filesByProjectAndPath[key] = fileRow;
-                _model.Files[fileRow.FileId] = fileRow;
-
-                if (!_projectsByFile.TryGetValue(fullPath, out var fileProjects))
-                {
-                    fileProjects = new List<Project>();
-                    _projectsByFile[fullPath] = fileProjects;
-                }
-
-                fileProjects.Add(project);
+            if (!string.IsNullOrWhiteSpace(projectRow.SourceDirectory))
+            {
+                foreach (var path in TextReferenceIndexer.EnumerateSupportedFiles(projectRow.SourceDirectory)
+                         .OrderBy(path => path, StringComparer.OrdinalIgnoreCase))
+                    await RegisterFileAsync(project, projectRow, path);
             }
 
             var compilation = await project.GetCompilationAsync();
             if (compilation != null)
                 _compilations[project.Id] = compilation;
+        }
+    }
+
+    private async Task RegisterFileAsync(Project project, ReferenceProjectRow projectRow, string path)
+    {
+        var fullPath = Path.GetFullPath(path);
+        var key = GetFileKey(project.Id, fullPath);
+        if (_filesByProjectAndPath.ContainsKey(key) || !File.Exists(fullPath))
+            return;
+        if (new FileInfo(fullPath).Length > 2 * 1024 * 1024)
+            return;
+
+        var relativePath = ToRelativePath(fullPath) ?? fullPath.Replace('\\', '/');
+        var content = await File.ReadAllTextAsync(fullPath);
+        var bytes = System.Text.Encoding.UTF8.GetBytes(content);
+        var hash = Convert.ToHexString(SHA256.HashData(bytes));
+        var classification = SourceArtifactClassifier.Classify(relativePath, content, _model.SystemType);
+        var fileRow = new ReferenceFileRow(
+            _model.CreateId("file", $"{projectRow.ProjectId:N}|{relativePath}"),
+            _model.BuildId,
+            projectRow.ProjectId,
+            relativePath,
+            hash,
+            classification.ArtifactKind,
+            classification.SourceRole,
+            classification.Ownership,
+            classification.Editable,
+            classification.SourceOfTruth);
+
+        _filesByProjectAndPath[key] = fileRow;
+        _model.Files[fileRow.FileId] = fileRow;
+        _model.SourceContents.TryAdd(hash, new ReferenceSourceContentRow(hash, content, bytes.Length));
+
+        if (!_projectsByFile.TryGetValue(fullPath, out var fileProjects))
+        {
+            fileProjects = new List<Project>();
+            _projectsByFile[fullPath] = fileProjects;
+        }
+        fileProjects.Add(project);
+
+        foreach (var reference in TextReferenceIndexer.Extract(fullPath, content))
+        {
+            var identity = $"{fileRow.FileId:N}|{reference.Token}|{reference.ReferenceKind}|{reference.Line}|{reference.Column}";
+            var row = new TextReferenceRow(
+                _model.CreateId("text-reference", identity),
+                _model.BuildId,
+                fileRow.FileId,
+                reference.Token,
+                reference.ReferenceKind,
+                reference.Line,
+                reference.Column,
+                reference.ContextSnippet);
+            _model.TextReferences.TryAdd(row.TextReferenceId, row);
         }
     }
 

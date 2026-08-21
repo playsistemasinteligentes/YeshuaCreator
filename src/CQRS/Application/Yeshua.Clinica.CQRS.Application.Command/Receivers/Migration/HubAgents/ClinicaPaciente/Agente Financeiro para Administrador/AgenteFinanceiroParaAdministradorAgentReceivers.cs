@@ -1,4 +1,14 @@
-﻿using Command.Write;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversHubAgents
+// </yeshua>
+
+using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using System;

@@ -1,4 +1,14 @@
-﻿using Command.Patterns.Command;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration
+// </yeshua>
+
+using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Modules;
 using Microsoft.AspNetCore.Mvc;

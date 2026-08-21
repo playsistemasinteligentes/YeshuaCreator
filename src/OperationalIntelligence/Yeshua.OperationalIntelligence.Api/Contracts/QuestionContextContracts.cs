@@ -12,12 +12,19 @@ public sealed record QuestionContextFile(
     string File,
     int Score,
     IReadOnlyList<string> Reasons,
-    IReadOnlyList<int> RelevantLines);
+    IReadOnlyList<int> RelevantLines,
+    string ArtifactKind,
+    string SourceRole,
+    string Ownership,
+    bool Editable,
+    string SourceOfTruth);
 
 public sealed record QuestionContextResponse(
+    Guid BuildId,
     string Application,
     string Version,
     string? Question,
+    string Purpose,
     string AgentInstruction,
     string SourceSolution,
     DateTime GeneratedAtUtc,

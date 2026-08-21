@@ -1,4 +1,14 @@
-﻿using Dominio.Interfaces.Strategy;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
+// </yeshua>
+
+using Dominio.Interfaces.Strategy;
 using Dominio.Enum.Strategy;
 
 namespace Shered.Patterns.Strategy;

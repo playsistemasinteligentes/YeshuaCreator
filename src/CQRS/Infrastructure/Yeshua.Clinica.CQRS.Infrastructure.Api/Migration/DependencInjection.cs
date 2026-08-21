@@ -1,4 +1,14 @@
-﻿using System;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureDependencInjectionInjectionMigration
+// </yeshua>
+
+using System;
 using Shered.Services;
 using RepositoryInterfaces.Services;
 using Command.Patterns;
