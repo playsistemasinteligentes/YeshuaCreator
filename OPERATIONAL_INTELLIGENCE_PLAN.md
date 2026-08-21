@@ -1,5 +1,10 @@
 # Plano De Inteligencia Operacional
 
+Este plano tecnico e complementado por
+OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md, que define as fases normativas,
+evidencias exigidas e o gate minimo para aceitar sistemas Yeshua e legados no
+suporte.
+
 ## Objetivo
 
 Criar uma camada capaz de compreender, diagnosticar e apoiar a evolucao de
