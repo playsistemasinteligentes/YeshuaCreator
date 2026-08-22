@@ -1,5 +1,32 @@
 ﻿namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration;
 
+// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.CSharpCQRS.WriteIntegrationApiSmokeSuiteFile
+// </yeshua>
+
+// <operational-spec>
+// standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD
+// gates: G7
+// depths: D0
+// severities: notApplicable
+// modes: Live
+// dataClassification: OperationalData
+// identities: Application,Environment,Version
+// technicalOutcomes: Success,Failure
+// businessOutcomes: notApplicable
+// evidence: TechnicalSmoke
+// </operational-spec>
+
+[Trait("TestPurpose", "TechnicalSmoke")]
+[Trait("SpecificationGate", "G7")]
+[Trait("DiagnosticDepth", "D0")]
+[Trait("ExecutionMode", "Live")]
 public sealed class ApiSmokeCrudSuiteTests
 {
     [IntegrationFact]

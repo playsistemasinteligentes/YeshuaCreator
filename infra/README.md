@@ -73,8 +73,9 @@ O backup da infraestrutura anterior permanece em
 
 ## Controle Operacional
 
-A central fica disponivel somente no loopback do servidor. A politica atual da
-Clinica pode ser consultada por SSH:
+A central fica disponivel no loopback do servidor e, temporariamente sem
+autenticacao, pelo nginx em `https://playsis.com.br/operational/`. A politica
+atual da Clinica pode ser consultada por SSH:
 
 ```bash
 curl -s http://127.0.0.1:5728/api/operational-control/Clinica/Production
@@ -82,3 +83,6 @@ curl -s http://127.0.0.1:5728/api/operational-control/Clinica/Production
 
 API e Worker da Clinica consultam a central a cada 10 segundos. Alteracoes de
 politica passam a valer sem reiniciar os containers.
+
+`pendencia`: proteger a rota publica `/operational/` com autenticacao e
+autorizacao antes de disponibilizar o controle operacional a terceiros.

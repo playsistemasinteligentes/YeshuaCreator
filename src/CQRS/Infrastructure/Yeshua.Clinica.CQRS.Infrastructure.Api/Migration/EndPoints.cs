@@ -28,6 +28,10 @@ app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILo
     Results.Ok(logger.Snapshot()))
     .AllowAnonymous();
 
+app.MapGet("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.OperationalControl.IOperationalLoggingPolicyAccessor policyAccessor) =>
+    Results.Ok(policyAccessor.Current))
+    .AllowAnonymous();
+
 app.MapGet("/yapi/health/live", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
     Results.Ok(new
     {

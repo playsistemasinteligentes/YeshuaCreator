@@ -213,6 +213,7 @@ obrigatorios para o escopo solicitado.
 | Consulta | busca por OperationId sem acesso administrativo ao servidor |
 | Diagnostico | D2 direcionado, temporario, limitado e auditado |
 | Dados | classificacao, mascaramento, retencao e NeverCapture |
+| Rastreabilidade | artefatos e evidencias vinculados aos conceitos e gates atendidos |
 | Demonstracao | sucesso, rejeicao e falha investigados ate o codigo correto |
 | Operacao continua | metricas, recertificacao e tratamento de lacunas |
 
@@ -341,6 +342,26 @@ O runbook deve explicar:
 - quais operacoes estao fora do escopo;
 - quais dados nunca podem ser capturados.
 
+### 9.10 Rastreabilidade Taxonomica
+
+Todo artefato ou evidencia criado especificamente para atender este padrao deve
+declarar quais conceitos da especificacao fundamentam sua existencia. O
+fabricante escolhe o mecanismo, como metadata, atributos, comentarios
+estruturados, manifesto ou catalogo versionado, desde que a relacao seja
+pesquisavel e verificavel.
+
+A declaracao deve identificar, conforme aplicavel:
+
+- gates G1-G7 atendidos;
+- profundidades D0-D4 produzidas ou suportadas;
+- severidades e modos de execucao aceitos;
+- classificacao dos dados manipulados;
+- identidades e resultados presentes na evidencia;
+- artefato de comprovacao produzido.
+
+Conceitos nao aplicaveis devem ser explicitados como tal. A rastreabilidade nao
+autoriza declarar um gate como atendido sem a respectiva demonstracao.
+
 ## 10. Contrato Minimo De Evento
 
 Cada evento deve possuir, quando aplicavel:
@@ -432,6 +453,7 @@ Um fluxo somente e ELEGIVEL PARA SUPORTE quando comprova G1 a G7.
 - erro levou ao snapshot correto do fonte;
 - bundle produzido com fatos, versao e arquivos;
 - tempo e conclusao registrados.
+- evidencias identificam explicitamente os conceitos e gates que comprovam.
 
 D3, D4, Replay, Simulation, Regression, previsao e analise assistida nao sao
 obrigatorios para o gate inicial. Eles determinam maturidade avancada.

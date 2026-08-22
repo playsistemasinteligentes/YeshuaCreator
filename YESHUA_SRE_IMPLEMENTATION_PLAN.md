@@ -29,6 +29,50 @@ existencia de codigo, nao a homologacao de um ambiente de producao.
 | NAO IMPLEMENTADO | Nao existe implementacao suficiente no repositorio |
 | CONCEITO | Existe somente decisao, desenho ou requisito textual |
 
+### 1.1 Regra De Rastreabilidade Taxonomica
+
+Toda capacidade, contrato, teste, evento, relatorio ou automacao implementada
+no Yeshua deve apontar para a taxonomia do documento externo. O vinculo deve
+identificar, conforme aplicavel:
+
+- gate G1-G7;
+- profundidade D0-D4;
+- severidade;
+- modo de execucao;
+- classificacao de dados;
+- identidade operacional;
+- resultado tecnico e de negocio;
+- estado de suportabilidade.
+
+As familias internas `R` e `Y` servem somente para sequenciamento e leitura de
+maturidade. Elas nao criam requisitos nem classificacoes de codigo.
+
+Quando uma necessidade interna nao puder ser descrita pela taxonomia externa,
+isso indica uma lacuna da especificacao. O conceito deve primeiro ser avaliado
+e incorporado ao documento externo com linguagem neutra para fabricantes e
+tecnologias; somente depois deve orientar uma implementacao interna definitiva.
+
+Formato canonico para artefatos operacionais C#:
+
+```csharp
+// <operational-spec>
+// standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD
+// gates: G2,G7
+// depths: D0
+// severities: notApplicable
+// modes: Live
+// dataClassification: SafeMetadata
+// identities: Application,Environment,Version
+// technicalOutcomes: Success,Failure
+// businessOutcomes: notApplicable
+// evidence: PostBuildHealthReport
+// </operational-spec>
+```
+
+JSON usa `_operationalSpecification`. Testes acrescentam `Trait` para as
+dimensoes que precisam ser filtradas ou executadas. A marcacao declara a
+intencao e a rastreabilidade; somente a evidencia executada comprova o gate.
+
 ## 2. Linha De Base Factual
 
 ### 2.1 Capacidades Implementadas
@@ -648,8 +692,8 @@ metadata da Clinica.
 
 **Criterio de saida:** e possivel distinguir processo vivo e host pronto.
 
-**Estado:** implementada na Engine e aguardando geracao e compilacao da Clinica.
-A API e o Worker recebem liveness e readiness sem chamadas externas. Saude de
+**Estado:** implementada, gerada e compilada para a Clinica. A API e o Worker
+recebem liveness e readiness sem chamadas externas. Saude de
 containers e dependencias permanece responsabilidade da infraestrutura.
 
 ### 10.5 R04 - Progresso De Workers, Inbox E Outbox
@@ -674,10 +718,14 @@ containers e dependencias permanece responsabilidade da infraestrutura.
 **Criterio de saida:** Commands e consultas informam execucoes, falhas e
 duracoes; Workers acrescentam contadores de lote sem instrumentacao propria.
 
-**Estado:** implementacao em andamento na Engine para a Clinica. `ReciverBase`
-concentra a telemetria de Commands; Outbox, Saga e Inbox retornam o contrato de
-resultado; `RepositoryTelemetry` concentra estatisticas das consultas. A forma
-de coleta de backlog permanece deliberadamente aberta.
+**Estado:** implementacao concluida para a Clinica. `ReciverBase` concentra a
+telemetria de Commands; Outbox,
+Saga e Inbox retornam o contrato de resultado; `RepositoryTelemetry` concentra
+estatisticas das consultas. A compilacao Release e os testes locais de Engine,
+Application e Domain foram aprovados em 2026-08-22; a API publicada tambem
+entregou estatisticas de Commands e repositorios. A mudanca dirigida de D0/D1 e
+os logs detalhados permanecem como evidencia pendente. A forma de coleta de
+backlog permanece deliberadamente aberta.
 
 ### 10.6 R05 - Orquestracao Pos-Build E Smoke CRUD
 
@@ -694,10 +742,32 @@ de coleta de backlog permanece deliberadamente aberta.
 **Criterio de saida:** sucesso e falha do gate sao reproduziveis, e uma falha
 obrigatoria impede a promocao do build.
 
+**Estado:** implementacao concluida e compilada para a Clinica.
+`Yeshua.OperationalIntelligence.PostBuild` executa como
+Console transitorio, consulta identidade e saude de API e Worker, confere o
+commit esperado, reutiliza a suite CRUD gerada e produz um unico
+`PostBuildHealthReport` com exit code de aprovacao ou reprovacao. A Engine gera
+`PostBuildManifest.json` dentro do projeto de smoke do aplicativo. O runner nao
+executa dentro da API Central e ainda nao publica o relatorio nela. O projeto e
+o smoke da Clinica passaram na compilacao Release em 2026-08-22, mas o gate
+completo ainda nao foi executado contra o ambiente publicado. A cobertura
+atual de `DependencyHealth` comprova API, autenticacao e SQL pela suite CRUD;
+Redis e RabbitMQ permanecem sem evidencia neste gate.
+
 ### 10.7 R06 - Business Smoke E Vinculo Com Snapshot
 
 **Correlacao:** Passos 2 e 11, Gates G2 e G7, evidencia de teste, conclusao de
 Y1.
+
+`R06` identifica o requisito desta sequencia de implementacao, nao uma
+classificacao arquitetural ou um tipo de projeto. Os artefatos continuam sendo
+testes e devem ser classificados pela finalidade, como `BusinessSmoke`. O
+relatorio apenas registra que essas evidencias atendem R06.
+
+Nesta fase os cenarios especificos pertencem aos projetos de testes de cada
+aplicativo. A evolucao futura deve permitir que a DSL declare os cenarios
+padronizaveis e que a Engine gere suas bordas, preservando em `Custon` somente
+as regras e assercoes especificas escritas por IA/dev.
 
 1. Criar o ponto customizado de `BusinessSmoke` por aplicativo.
 2. Implementar um cenario critico para cada fluxo escolhido em R01.

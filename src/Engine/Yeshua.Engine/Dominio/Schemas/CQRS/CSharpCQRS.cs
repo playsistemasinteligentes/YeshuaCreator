@@ -758,6 +758,60 @@ namespace Dominio.Schemas.CQRS
             }
 
             WriteIntegrationApiSmokeSuiteFile(orderedEntities);
+            WritePostBuildManifest();
+        }
+
+        private void WritePostBuildManifest()
+        {
+            // <operational-spec>
+            // standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD
+            // gates: G2,G7
+            // depths: D0
+            // severities: notApplicable
+            // modes: Live
+            // dataClassification: SafeMetadata
+            // identities: Application,Environment,Version
+            // technicalOutcomes: Success,Failure
+            // businessOutcomes: notApplicable
+            // evidence: PostBuildManifest
+            // </operational-spec>
+            var smokeProjectName = GetApplicationIntegrationApiSmokeProjectName();
+            var relativeProjectDirectory = Path.Combine("tests", "CQRS", smokeProjectName)
+                .Replace('\\', '/');
+            var content = $$"""
+            {
+              "application": "{{GetApplicationName()}}",
+              "environment": "Production",
+              "baseUrlSettingsFile": "{{relativeProjectDirectory}}/appsettings.json",
+              "smokeProject": "{{relativeProjectDirectory}}/{{smokeProjectName}}.csproj",
+              "apiIdentityPath": "yapi/operational/identity",
+              "apiLivenessPath": "yapi/health/live",
+              "apiReadinessPath": "yapi/health/ready",
+              "workerLivenessPath": "yworker/health/live",
+              "workerReadinessPath": "yworker/health/ready",
+              "_yeshua": {
+                "artifact": "GENERATED_REGENERABLE",
+                "ownership": "ENGINE",
+                "sourceOfTruth": "DSL_OR_ENGINE_TEMPLATE"
+              },
+              "_operationalSpecification": {
+                "standard": "OPERATIONAL_SUPPORT_ADOPTION_STANDARD",
+                "gates": ["G2", "G7"],
+                "depths": ["D0"],
+                "severities": ["notApplicable"],
+                "modes": ["Live"],
+                "dataClassification": ["SafeMetadata"],
+                "identities": ["Application", "Environment", "Version"],
+                "technicalOutcomes": ["Success", "Failure"],
+                "businessOutcomes": ["notApplicable"],
+                "evidence": "PostBuildManifest"
+              }
+            }
+            """;
+
+            WriteText(
+                Path.Combine(GetPathTestsIntegrationApiSmoke(), "Migration", "PostBuildManifest.json"),
+                content);
         }
 
         private static bool ShouldGenerateApiSmokeCrud(Entity entity)
@@ -819,8 +873,35 @@ namespace Dominio.Schemas.CQRS
         private void WriteIntegrationApiSmokeSuiteFile(IReadOnlyList<Entity> orderedEntities)
         {
             var sb = new StringBuilder();
+            sb.AppendLine("// <yeshua>");
+            sb.AppendLine("// artifact: GENERATED_REGENERABLE");
+            sb.AppendLine("// createdBy: DSL");
+            sb.AppendLine("// ownership: ENGINE");
+            sb.AppendLine("// editable: false");
+            sb.AppendLine("// regeneration: REPLACE");
+            sb.AppendLine("// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE");
+            sb.AppendLine("// generator: Dominio.Schemas.CQRS.CSharpCQRS.WriteIntegrationApiSmokeSuiteFile");
+            sb.AppendLine("// </yeshua>");
+            sb.AppendLine();
+            sb.AppendLine("// <operational-spec>");
+            sb.AppendLine("// standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD");
+            sb.AppendLine("// gates: G7");
+            sb.AppendLine("// depths: D0");
+            sb.AppendLine("// severities: notApplicable");
+            sb.AppendLine("// modes: Live");
+            sb.AppendLine("// dataClassification: OperationalData");
+            sb.AppendLine("// identities: Application,Environment,Version");
+            sb.AppendLine("// technicalOutcomes: Success,Failure");
+            sb.AppendLine("// businessOutcomes: notApplicable");
+            sb.AppendLine("// evidence: TechnicalSmoke");
+            sb.AppendLine("// </operational-spec>");
+            sb.AppendLine();
             sb.AppendLine($"namespace {GetApplicationIntegrationApiSmokeProjectName()}.Migration;");
             sb.AppendLine();
+            sb.AppendLine("[Trait(\"TestPurpose\", \"TechnicalSmoke\")]");
+            sb.AppendLine("[Trait(\"SpecificationGate\", \"G7\")]");
+            sb.AppendLine("[Trait(\"DiagnosticDepth\", \"D0\")]");
+            sb.AppendLine("[Trait(\"ExecutionMode\", \"Live\")]");
             sb.AppendLine("public sealed class ApiSmokeCrudSuiteTests");
             sb.AppendLine("{");
             sb.AppendLine("    [IntegrationFact]");

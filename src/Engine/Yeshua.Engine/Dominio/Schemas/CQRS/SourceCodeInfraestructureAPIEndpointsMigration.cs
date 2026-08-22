@@ -54,6 +54,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    .AllowAnonymous();");
             sb.AppendLine("");
 
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/logging-policy\", ([FromServices] Yeshua.Generated.OperationalControl.IOperationalLoggingPolicyAccessor policyAccessor) =>");
+            sb.AppendLine("    Results.Ok(policyAccessor.Current))");
+            sb.AppendLine("    .AllowAnonymous();");
+            sb.AppendLine("");
+
             sb.AppendLine($"app.MapGet(\"{getPrefixo()}/health/live\", ([FromServices] IRuntimeIdentityProvider identityProvider) =>");
             sb.AppendLine("    Results.Ok(new");
             sb.AppendLine("    {");

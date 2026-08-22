@@ -100,7 +100,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
             sb.AppendLine("                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));");
             sb.AppendLine("                    builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();");
-            sb.AppendLine("                    builder.Services.AddSingleton<Shered.Logger.Logger>();");
+            sb.AppendLine("                    builder.Services.AddSingleton<Shered.Logger.Logger>(sp =>");
+            sb.AppendLine("                        new Shered.Logger.Logger(");
+            sb.AppendLine("                            sp.GetRequiredService<Dominio.Interfaces.IOperationalTelemetryPolicy>()));");
             sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>");
             sb.AppendLine("                        sp.GetRequiredService<Shered.Logger.Logger>());");
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");

@@ -321,6 +321,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 - OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define os requisitos que fabricantes de software devem comprovar para utilizar o servico de suporte SRE.
 - YESHUA_SRE_IMPLEMENTATION_PLAN.md correlaciona cada requisito externo com a implementacao factual, as lacunas, os testes de aceite e a ordem de evolucao interna do Yeshua.
+- Toda entrega operacional deve possuir vinculo explicito com a taxonomia do documento externo: G, D, severidade, modo de execucao, classificacao de dados, identidades, outcomes ou suportabilidade, conforme aplicavel.
+- As familias internas `R` e `Y` organizam sequencia e maturidade, mas nao criam requisitos ou classificacoes de codigo.
+- Quando um conceito interno nao possuir correspondencia externa, tratar como lacuna da especificacao: definir primeiro o conceito externo em linguagem neutra e somente depois consolidar a implementacao interna.
+- Artefatos operacionais C# usam um bloco estruturado `operational-spec` separado do marcador de ownership `yeshua`; JSON usa `_operationalSpecification` e testes usam `Trait` quando a classificacao precisar ser executavel.
+- O bloco informa `standard`, `gates`, `depths`, `severities`, `modes`, `dataClassification`, `identities`, `technicalOutcomes`, `businessOutcomes` e `evidence`. Valores nao aplicaveis devem usar `notApplicable`; a marcacao nao substitui a evidencia de aceite.
+- YESHUA_OPERATIONAL_EVOLUTION_STATUS.md e o resumo vivo dos conceitos, do que
+  foi implementado e da rodada atual; atualizar esse arquivo antes de avancar
+  para uma nova rodada.
 - A identidade runtime possui contrato generico no Shared estatico; a Engine gera
   por aplicativo o provider, a injecao de dependencia, o endpoint anonimo da API,
   o reporter de inicializacao do Worker e a metadata dos projetos de host.
@@ -354,8 +362,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   fase. Ele possui singleton central carregado por configuracao e overrides
   temporarios em memoria; nao usa o banco de engenharia reversa.
 - A Operational Intelligence API e publicada como servico unico do Compose
-  Shared. Seu controle HTTP fica restrito ao loopback do servidor nesta fase;
-  os aplicativos a consultam pelo nome do servico na rede Docker compartilhada.
+  Shared. Os aplicativos a consultam pelo nome do servico na rede Docker
+  compartilhada. A rota nginx `/operational/` permanece temporariamente publica
+  e deve receber autenticacao e autorizacao na etapa de seguranca.
 - Politicas operacionais sao identificadas por `Application + Environment`,
   permitindo configuracoes independentes para producao e homologacao.
 - Cada host gerado mantem snapshot local e sincroniza a politica por polling. O
@@ -367,6 +376,10 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - `Yeshua.OperationalIntelligence.Api` consulta o indice e nao referencia a Engine nem projetos de aplicativos.
 - Quando o usuario solicitar uma investigacao, o agente deve chamar diretamente a Operational Intelligence API e interpretar o resultado; o Swagger e opcional e nao deve ser delegado ao usuario sem necessidade.
 - A API, o orquestrador e os coletores permanecem no mesmo projeto e processo nesta fase.
+- O gate R05 roda no Console transitorio `Yeshua.OperationalIntelligence.PostBuild`; a API Central nao executa builds ou testes e futuramente apenas recebera os relatorios.
+- A Engine gera `PostBuildManifest.json` por aplicativo junto ao projeto de smoke tests. O runner confere identidade, versao, saude de API e Worker, executa o smoke CRUD e retorna exit code de gate.
+- Identificadores como R05 e R06 representam requisitos/etapas do plano, nunca classificacoes de codigo, namespaces ou projetos. Testes usam categorias funcionais como `TechnicalSmoke` e `BusinessSmoke` e sao mapeados documentalmente aos requisitos que comprovam.
+- Cenarios de `BusinessSmoke` pertencem inicialmente ao projeto de testes do aplicativo; futuramente a DSL declara o que for padronizavel, a Engine gera as bordas e IA/dev mantem somente regras e assercoes especificas em `Custon`.
 - Endpoints HTTP cuidam apenas do transporte; `OperationalContextOrchestrator` seleciona e coordena coletores.
 - Cada fonte adicional de contexto implementa `IContextCollector` e devolve evidencias normalizadas.
 - O GPT recebera futuramente um pacote de evidencias consolidado pelo orquestrador; coletores nao chamam o GPT diretamente.
