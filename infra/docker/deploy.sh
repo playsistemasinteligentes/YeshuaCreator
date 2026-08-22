@@ -128,7 +128,7 @@ deploy_mdfe() {
 
 case "${TARGET,,}" in
   all)
-    bash "$SHARED_DIR/deploy.sh"
+    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_clinica
     deploy_mdfe
     deploy_gateway
@@ -143,7 +143,7 @@ case "${TARGET,,}" in
     deploy_gateway
     ;;
   shared)
-    bash "$SHARED_DIR/deploy.sh"
+    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_gateway
     ;;
   *)

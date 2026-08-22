@@ -5,7 +5,7 @@ Engine nao altera Compose, Dockerfiles, nginx ou scripts de deploy.
 
 O servidor atual hospeda N aplicativos por meio de tres projetos Compose:
 
-- `infra/Shared/DockerCompose`: SQL Server, Redis, RabbitMQ, nginx e rede.
+- `infra/Shared/DockerCompose`: SQL Server, Redis, RabbitMQ, Operational Intelligence API, nginx e rede.
 - `infra/Clinica/DockerCompose`: API, Front, Worker, Migration e IA da Clinica.
 - `infra/Fiscal.MDFe/DockerCompose`: API, Front e Migration do MDF-e.
 
@@ -70,3 +70,15 @@ rotacao serao tratadas posteriormente.
 
 O backup da infraestrutura anterior permanece em
 `infra/legacy/pre-deployment-v1-2026-08-09`.
+
+## Controle Operacional
+
+A central fica disponivel somente no loopback do servidor. A politica atual da
+Clinica pode ser consultada por SSH:
+
+```bash
+curl -s http://127.0.0.1:5728/api/operational-control/Clinica/Production
+```
+
+API e Worker da Clinica consultam a central a cada 10 segundos. Alteracoes de
+politica passam a valer sem reiniciar os containers.

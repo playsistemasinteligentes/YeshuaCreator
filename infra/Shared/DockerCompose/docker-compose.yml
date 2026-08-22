@@ -38,6 +38,20 @@ services:
     networks:
       - yeshua-net
 
+  operational-intelligence-api:
+    build:
+      context: ../../..
+      dockerfile: infra/Shared/DockerCompose/operational-intelligence-api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:5728"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__OperationalIntelligence: "Server=sqlserver,1433;Database=Context_CLINICA;User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;"
+    ports:
+      - "127.0.0.1:5728:5728"
+    restart: unless-stopped
+    networks:
+      - yeshua-net
+
   nginx:
     image: nginx:1.27-alpine
     container_name: yeshua-nginx
@@ -56,4 +70,3 @@ services:
 networks:
   yeshua-net:
     name: yeshua-net
-

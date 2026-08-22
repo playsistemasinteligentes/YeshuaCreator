@@ -27,6 +27,9 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
+      OperationalControl__Endpoint: "http://operational-intelligence-api:5728"
+      OperationalControl__Enabled: "true"
+      OperationalControl__RefreshSeconds: "10"
       ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Redis__Host: redis
       SA__PASSWORD: "123qwe!@#QWE"
@@ -61,6 +64,9 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
+      OperationalControl__Endpoint: "http://operational-intelligence-api:5728"
+      OperationalControl__Enabled: "true"
+      OperationalControl__RefreshSeconds: "10"
       ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Redis__Host: redis
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"

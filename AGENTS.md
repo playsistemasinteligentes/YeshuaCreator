@@ -353,6 +353,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - O modulo `OperationalControl` permanece na Operational Intelligence API nesta
   fase. Ele possui singleton central carregado por configuracao e overrides
   temporarios em memoria; nao usa o banco de engenharia reversa.
+- A Operational Intelligence API e publicada como servico unico do Compose
+  Shared. Seu controle HTTP fica restrito ao loopback do servidor nesta fase;
+  os aplicativos a consultam pelo nome do servico na rede Docker compartilhada.
 - Politicas operacionais sao identificadas por `Application + Environment`,
   permitindo configuracoes independentes para producao e homologacao.
 - Cada host gerado mantem snapshot local e sincroniza a politica por polling. O
