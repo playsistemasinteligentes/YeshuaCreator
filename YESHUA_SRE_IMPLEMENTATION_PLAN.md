@@ -560,6 +560,8 @@ demonstrados.
 
 **Correlacao:** Passo 1, Gate G1, profundidade nao aplicavel.
 
+**Estado:** implementada para o piloto da Clinica; G1 conforme com ressalva.
+
 1. Escolher um fluxo inicial da Clinica.
 2. Escolher um fluxo inicial do MDF-e.
 3. Identificar donos tecnico e funcional.
@@ -571,6 +573,14 @@ demonstrados.
 **Criterio de saida:** cada fluxo possui responsaveis, ambiente, ponto de
 entrada, resultado esperado e procedimento manual atual de verificacao.
 
+**Evidencias da rodada:**
+
+- `docs/operational/clinica/PSYCHOLOGY_SESSION_INSIGHT_SCOPE.md`;
+- `docs/operational/clinica/PSYCHOLOGY_SESSION_INSIGHT_RUNBOOK.md`.
+
+Nesta primeira aplicacao da R01 foi selecionado somente o fluxo da Clinica. O
+MDF-e permanece fora da rodada por decisao de escopo.
+
 ### 10.3 R02 - Identidade Imutavel Do Build
 
 **Correlacao:** Passo 2, Gate G2, fundamento do D0 e do nivel Y1.
@@ -579,7 +589,7 @@ entrada, resultado esperado e procedimento manual atual de verificacao.
 2. Definir como `Application`, `Environment`, `Version`, `CommitSha` e horario
    de build entram no artefato.
 3. Expor a identidade nos hosts sem depender da DSL de dominio.
-4. Gerar testes da Engine para Clinica e MDF-e.
+4. Gerar testes da Engine para Clinica.
 5. Documentar o comando de build que produz a metadata.
 
 **Entrega:** API e Worker conseguem informar a identidade do artefato em
@@ -587,6 +597,41 @@ execucao.
 
 **Criterio de saida:** a identidade permanece igual durante toda a vida do
 processo e corresponde ao artefato compilado.
+
+**Estado:** implementada e validada para a Clinica. O contrato generico fica no
+Shared estatico. A Engine gera o provider local do aplicativo, o registro de DI,
+o endpoint anonimo `GET /yapi/operational/identity`, o reporter de inicializacao
+do Worker e a metadata dos projetos API e Worker. Nenhum arquivo `Custon` foi
+alterado.
+
+`Application`, `Version`, `CommitSha` e `BuiltAtUtc` pertencem ao artefato e sao
+gravados como `AssemblyMetadata`. `Environment` pertence a execucao e e capturado
+uma unica vez quando o processo constroi o provider singleton.
+
+O build ou publish confirmado deve informar a versao, o commit e o horario UTC:
+
+```powershell
+$version = "2.0.0"
+$commitSha = (git rev-parse HEAD).Trim()
+$builtAtUtc = [DateTimeOffset]::UtcNow.ToString("O")
+
+dotnet publish .\src\CQRS\Infrastructure\Yeshua.Clinica.CQRS.Infrastructure.Api\Yeshua.Clinica.CQRS.Infrastructure.Api.csproj `
+  -c Release `
+  -p:Version=$version `
+  -p:YeshuaCommitSha=$commitSha `
+  -p:YeshuaBuildTimestampUtc=$builtAtUtc
+
+dotnet publish .\src\CQRS\Infrastructure\Yeshua.Clinica.CQRS.Infrastructure.Worker\Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj `
+  -c Release `
+  -p:Version=$version `
+  -p:YeshuaCommitSha=$commitSha `
+  -p:YeshuaBuildTimestampUtc=$builtAtUtc
+```
+
+**Evidencia da rodada:** API e Worker compilados com metadata controlada; o
+endpoint da API respondeu duas vezes com a mesma identidade durante o mesmo
+processo; o teste do gerador confirmou geracao idempotente dos artefatos e da
+metadata da Clinica.
 
 ### 10.4 R03 - Saude De API E Worker
 

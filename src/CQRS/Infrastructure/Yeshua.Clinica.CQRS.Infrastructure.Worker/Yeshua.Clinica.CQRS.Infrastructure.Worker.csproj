@@ -4,6 +4,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <YeshuaCommitSha Condition="'$(YeshuaCommitSha)' == ''">$(SourceRevisionId)</YeshuaCommitSha>
+    <YeshuaBuildTimestampUtc Condition="'$(YeshuaBuildTimestampUtc)' == ''">UNSET</YeshuaBuildTimestampUtc>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\Yeshua.Clinica.CQRS.Domain\Yeshua.Clinica.CQRS.Domain.csproj" />
@@ -12,5 +14,11 @@
     <ProjectReference Include="..\Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead\Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead.csproj" />
     <ProjectReference Include="..\Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite\Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite.csproj" />
     <ProjectReference Include="..\Yeshua.Clinica.CQRS.Infrastructure.Shared\Yeshua.Clinica.CQRS.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="YeshuaApplication" Value="Clinica" />
+    <AssemblyMetadata Include="YeshuaVersion" Value="$(Version)" />
+    <AssemblyMetadata Include="YeshuaCommitSha" Value="$(YeshuaCommitSha)" />
+    <AssemblyMetadata Include="YeshuaBuildTimestampUtc" Value="$(YeshuaBuildTimestampUtc)" />
   </ItemGroup>
 </Project>

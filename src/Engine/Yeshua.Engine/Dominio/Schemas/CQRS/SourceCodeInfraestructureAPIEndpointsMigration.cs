@@ -36,12 +36,18 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("using Microsoft.AspNetCore.Mvc;");
             sb.AppendLine("using System.Security.Claims;");
+            sb.AppendLine("using Shared.Operational;");
             sb.AppendLine("namespace API.Migrations");
             sb.AppendLine("{");
             sb.AppendLine("public static class Endpoints");
             sb.AppendLine("{");
             sb.AppendLine("public static void MapEndpoints(this WebApplication app)");
             sb.AppendLine("{");
+
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/identity\", ([FromServices] IRuntimeIdentityProvider identityProvider) =>");
+            sb.AppendLine("    Results.Ok(identityProvider.Current))");
+            sb.AppendLine("    .AllowAnonymous();");
+            sb.AppendLine("");
 
             #region Insert 
             foreach (var entity in _migration.Entitys)

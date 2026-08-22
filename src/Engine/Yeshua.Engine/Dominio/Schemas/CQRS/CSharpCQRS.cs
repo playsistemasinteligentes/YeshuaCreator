@@ -1074,6 +1074,40 @@ namespace Dominio.Schemas.CQRS
             return Path.Combine(GetPathAppSolution(), "src", "CQRS", "Infrastructure");
         }
 
+        public void AppInfrastructureGenerateRuntimeIdentity()
+        {
+            var applicationInfrastructureSharedProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureSharedProjectName());
+            var runtimeIdentityPath = Path.Combine(
+                applicationInfrastructureSharedProjectDirectory,
+                "Operational",
+                "Migration",
+                "RuntimeIdentityProvider.cs");
+            new SourceCodeInfrastructureRuntimeIdentityMigration()
+                .WriteGeneratedCode(runtimeIdentityPath);
+
+            var applicationInfrastructureWorkerProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureWorkerProjectName());
+            var workerReporterPath = Path.Combine(
+                applicationInfrastructureWorkerProjectDirectory,
+                "Migration",
+                "Operational",
+                "RuntimeIdentityReporter.cs");
+            new SourceCodeInfrastructureWorkerRuntimeIdentityReporterMigration()
+                .WriteGeneratedCode(workerReporterPath);
+
+            EnsureRuntimeIdentityMetadata(Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureApiProjectName(),
+                $"{GetApplicationInfrastructureApiProjectName()}.csproj"));
+            EnsureRuntimeIdentityMetadata(Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureWorkerProjectName(),
+                $"{GetApplicationInfrastructureWorkerProjectName()}.csproj"));
+        }
+
         public void AppInfraestructureGenerateReadConcreteQuerys(Migration.MigrationBase migration)
         {
             foreach (var entity in migration.Entitys)
@@ -2249,6 +2283,93 @@ public static class CustonDependenceInjection
             return applicationName;
         }
 
+        private void EnsureRuntimeIdentityMetadata(string projectPath)
+        {
+            if (!File.Exists(projectPath))
+                throw new FileNotFoundException(
+                    "O projeto do host nao foi encontrado para receber a identidade de build.",
+                    projectPath);
+
+            var projectDocument = XDocument.Load(projectPath);
+            var project = projectDocument.Root
+                ?? throw new InvalidOperationException($"O projeto '{projectPath}' nao possui raiz XML.");
+
+            var propertyGroup = project.Elements("PropertyGroup").FirstOrDefault();
+            if (propertyGroup == null)
+            {
+                propertyGroup = new XElement("PropertyGroup");
+                project.AddFirst(propertyGroup);
+            }
+
+            EnsureProjectProperty(
+                propertyGroup,
+                "YeshuaCommitSha",
+                "$(SourceRevisionId)",
+                "'$(YeshuaCommitSha)' == ''");
+            EnsureProjectProperty(
+                propertyGroup,
+                "YeshuaBuildTimestampUtc",
+                "UNSET",
+                "'$(YeshuaBuildTimestampUtc)' == ''");
+
+            var metadataGroup = project.Elements("ItemGroup")
+                .FirstOrDefault(group => group.Elements("AssemblyMetadata").Any());
+            if (metadataGroup == null)
+            {
+                metadataGroup = new XElement("ItemGroup");
+                project.Add(metadataGroup);
+            }
+
+            EnsureAssemblyMetadata(metadataGroup, "YeshuaApplication", GetApplicationName());
+            EnsureAssemblyMetadata(metadataGroup, "YeshuaVersion", "$(Version)");
+            EnsureAssemblyMetadata(metadataGroup, "YeshuaCommitSha", "$(YeshuaCommitSha)");
+            EnsureAssemblyMetadata(
+                metadataGroup,
+                "YeshuaBuildTimestampUtc",
+                "$(YeshuaBuildTimestampUtc)");
+
+            WriteText(projectPath, projectDocument.ToString());
+        }
+
+        private static void EnsureProjectProperty(
+            XElement propertyGroup,
+            string name,
+            string value,
+            string condition)
+        {
+            var property = propertyGroup.Element(name);
+            if (property == null)
+            {
+                property = new XElement(name);
+                propertyGroup.Add(property);
+            }
+
+            property.Value = value;
+            property.SetAttributeValue("Condition", condition);
+        }
+
+        private static void EnsureAssemblyMetadata(XElement itemGroup, string key, string value)
+        {
+            var matchingMetadata = itemGroup.Elements("AssemblyMetadata")
+                .Where(metadata => string.Equals(
+                    metadata.Attribute("Include")?.Value,
+                    key,
+                    StringComparison.Ordinal))
+                .ToList();
+            var metadata = matchingMetadata.FirstOrDefault();
+            if (metadata == null)
+            {
+                metadata = new XElement("AssemblyMetadata");
+                itemGroup.Add(metadata);
+            }
+
+            foreach (var duplicate in matchingMetadata.Skip(1))
+                duplicate.Remove();
+
+            metadata.SetAttributeValue("Include", key);
+            metadata.SetAttributeValue("Value", value);
+        }
+
         private void EnsureProjectReference(string projectPath, string referencedProjectPath)
         {
             var projectDirectory = Path.GetDirectoryName(projectPath)
@@ -2357,6 +2478,7 @@ public static class CustonDependenceInjection
         public void CodeGenaration(Migration.MigrationBase migration)
         {
             AppSolutionGenerate(migration);
+            AppInfrastructureGenerateRuntimeIdentity();
 
             AppInfraestructureGenerateAPI(migration);
             AppInfraestructureGenerateWorker(migration);

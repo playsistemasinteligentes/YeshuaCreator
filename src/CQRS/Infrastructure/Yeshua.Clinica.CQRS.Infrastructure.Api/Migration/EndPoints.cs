@@ -13,12 +13,17 @@ using RepositoryInterfaces.Patterns.Command;
 using Modules;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Shared.Operational;
 namespace API.Migrations
 {
 public static class Endpoints
 {
 public static void MapEndpoints(this WebApplication app)
 {
+app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(identityProvider.Current))
+    .AllowAnonymous();
+
 app.MapPost("/yapi/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));

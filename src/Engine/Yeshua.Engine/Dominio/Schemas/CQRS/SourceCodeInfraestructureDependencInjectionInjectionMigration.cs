@@ -49,6 +49,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using RepositoryInterfaces.Patterns.UnitOfWork;");
             sb.AppendLine("using Shered.DB.Connection;");
             sb.AppendLine("using Aplication.Interfaces.Services;");
+            sb.AppendLine("using Shared.Operational;");
+            sb.AppendLine("using Yeshua.Generated.Operational;");
+            if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
+                sb.AppendLine("using Migrations.Operational;");
 
 
 
@@ -63,6 +67,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
             sb.AppendLine("");
+            sb.AppendLine("");
+            sb.AppendLine("                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(");
+            sb.AppendLine("                        _ => new RuntimeIdentityProvider(builder.Environment.EnvironmentName));");
+            if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
+                sb.AppendLine("                    builder.Services.AddHostedService<RuntimeIdentityReporter>();");
             sb.AppendLine("");
             sb.AppendLine("                    builder.Services.AddScoped<UnitOfWork>();");
             sb.AppendLine("                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>");

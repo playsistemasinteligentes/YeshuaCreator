@@ -20,6 +20,8 @@ using Command.Receivers;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
 using Aplication.Interfaces.Services;
+using Shared.Operational;
+using Yeshua.Generated.Operational;
 namespace Migrations
 {
 public static class DependencInjection
@@ -27,6 +29,9 @@ public static class DependencInjection
 public static void MapDependencInjection(WebApplicationBuilder builder)
 {
 
+
+                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(
+                        _ => new RuntimeIdentityProvider(builder.Environment.EnvironmentName));
 
                     builder.Services.AddScoped<UnitOfWork>();
                     builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>

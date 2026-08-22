@@ -294,6 +294,11 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 - OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define os requisitos que fabricantes de software devem comprovar para utilizar o servico de suporte SRE.
 - YESHUA_SRE_IMPLEMENTATION_PLAN.md correlaciona cada requisito externo com a implementacao factual, as lacunas, os testes de aceite e a ordem de evolucao interna do Yeshua.
+- A identidade runtime possui contrato generico no Shared estatico; a Engine gera
+  por aplicativo o provider, a injecao de dependencia, o endpoint anonimo da API,
+  o reporter de inicializacao do Worker e a metadata dos projetos de host.
+- Aplicativo, versao, commit e horario de build entram no artefato como
+  `AssemblyMetadata`; o ambiente e capturado no inicio de cada processo.
 - Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.
