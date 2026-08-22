@@ -62,6 +62,33 @@ Miolos que IA/dev devem preencher:
 - Preferir comportamentos fortes e nomes substituiveis.
 - Evitar reflection no codigo gerado quando isso afetar performance.
 
+## Performance No Caminho Quente
+
+- O principio e: simples que funciona, com extrema performance.
+- O Yeshua deve evoluir para permitir publicacao por .NET Native AOT
+  (Ahead-of-Time), produzindo binarios nativos quando o ecossistema utilizado
+  pelo aplicativo permitir.
+- Nao ampliar dividas que dificultem trimming ou Native AOT: evitar descoberta
+  dinamica de tipos, carregamento dinamico de assemblies, `dynamic`, geracao de
+  codigo em runtime e reflection usada como mecanismo arquitetural.
+- A Engine deve substituir descoberta runtime por codigo explicito gerado,
+  incluindo registros de DI, mapeamentos, factories, metadata e serializacao
+  source-generated quando aplicavel.
+- Commands, Receivers, Workers e repositorios fazem parte do caminho quente.
+- Reflection e proibida no caminho quente; metadata deve ser resolvida pela
+  Engine durante a geracao ou, quando inevitavel, uma unica vez na inicializacao.
+- Evitar lambdas defensivas, delegates, closures, serializacao, I/O, rede e
+  alocacoes desnecessarias por execucao.
+- Telemetria no caminho quente deve usar chamadas diretas e nunca lancar excecao
+  para o fluxo de negocio; essa garantia pertence a implementacao da telemetria,
+  nao a wrappers repetidos nos chamadores.
+- Valores derivados de tipos, nomes, identificadores e queries devem ser
+  gerados ou calculados uma unica vez, nunca repetidamente por chamada.
+- Detalhamento de logs deve ser decidido antes de construir payloads ou
+  serializar dados.
+- Toda instrumentacao de alta frequencia deve ter custo medido por benchmark;
+  conveniencia arquitetural nao justifica degradar o caminho quente.
+
 ## Codigo Gerado E Codigo Customizado
 
 O projeto ja usa a ideia de separar codigo gerado e codigo customizado.
@@ -297,8 +324,39 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - A identidade runtime possui contrato generico no Shared estatico; a Engine gera
   por aplicativo o provider, a injecao de dependencia, o endpoint anonimo da API,
   o reporter de inicializacao do Worker e a metadata dos projetos de host.
-- Aplicativo, versao, commit e horario de build entram no artefato como
-  `AssemblyMetadata`; o ambiente e capturado no inicio de cada processo.
+- Aplicativo, versao, commit e horario de build entram no `runtimeconfig` do
+  artefato e sao lidos por `AppContext`; o ambiente e capturado no inicio de
+  cada processo sem reflection.
+- A Engine gera liveness e readiness da API e do Worker sem consultar
+  dependencias externas.
+- Docker, Kubernetes e ferramentas de monitoramento permanecem responsaveis
+  pela saude de containers, SQL, Redis, RabbitMQ e demais recursos de infra.
+- Progresso de negocio somente deve ser monitorado em fluxos com backlog e SLA
+  definidos, sem criar heartbeat generico paralelo ao monitoramento de infra.
+- `ReciverBase.Execute` e o ponto unico da telemetria de Commands executados por
+  API, Worker, fila ou outro host. Workers apenas agendam e chamam Receivers.
+- Resultados que implementam `IWorkerCycleResult` alimentam a mesma telemetria
+  com lote, itens capturados, processados e falhas, sem instrumentacao duplicada
+  no Worker.
+- `InstrumentedUnitOfWork` delega a medicao das consultas para
+  `RepositoryTelemetry`, que registra duracao, sucesso, falha e identificador
+  seguro da consulta sem expor SQL ou parametros.
+- Metricas especificas de repositorio, como backlog, usam o mesmo agregador de
+  telemetria. O gatilho de coleta de backlog ainda deve ser definido; nao criar
+  sampler especifico antes dessa decisao.
+- O logger compartilhado e singleton e consolida Commands, repositories e
+  metricas em memoria. Logs detalhados devem ser controlaveis e falhas sempre
+  permanecem visiveis em formato estruturado. O detalhamento obedece a politica
+  recebida do `OperationalControl`, sem exigir reinicio dos hosts.
+- Falhas internas de telemetria nunca podem alterar o resultado de Commands ou
+  repositories.
+- O modulo `OperationalControl` permanece na Operational Intelligence API nesta
+  fase. Ele possui singleton central carregado por configuracao e overrides
+  temporarios em memoria; nao usa o banco de engenharia reversa.
+- Politicas operacionais sao identificadas por `Application + Environment`,
+  permitindo configuracoes independentes para producao e homologacao.
+- Cada host gerado mantem snapshot local e sincroniza a politica por polling. O
+  RabbitMQ somente sera considerado se a latencia ou o custo medidos justificarem.
 - Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.

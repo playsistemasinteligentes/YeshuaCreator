@@ -22,6 +22,7 @@ using Shered.DB.Connection;
 using Aplication.Interfaces.Services;
 using Shared.Operational;
 using Yeshua.Generated.Operational;
+using Yeshua.Generated.OperationalControl;
 namespace Migrations
 {
 public static class DependencInjection
@@ -32,19 +33,30 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
 
                     builder.Services.AddSingleton<IRuntimeIdentityProvider>(
                         _ => new RuntimeIdentityProvider(builder.Environment.EnvironmentName));
+                    builder.Services.AddSingleton<OperationalLoggingPolicyState>(sp =>
+                        new OperationalLoggingPolicyState(
+                            sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Application,
+                            sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Environment));
+                    builder.Services.AddSingleton<IOperationalLoggingPolicyAccessor>(sp =>
+                        sp.GetRequiredService<OperationalLoggingPolicyState>());
+                    builder.Services.AddSingleton<Dominio.Interfaces.IOperationalTelemetryPolicy>(sp =>
+                        sp.GetRequiredService<OperationalLoggingPolicyState>());
+                    builder.Services.AddHostedService<OperationalPolicySynchronizer>();
 
                     builder.Services.AddScoped<UnitOfWork>();
+                    builder.Services.AddScoped<RepositoryTelemetry>();
                     builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>
                         new InstrumentedUnitOfWork(
                             sp.GetRequiredService<UnitOfWork>(),
-                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),
-                            sp.GetRequiredService<IExecutionContext>()
+                            sp.GetRequiredService<RepositoryTelemetry>()
                         ));
 
 
                     builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));
                     builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();
-                    builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();
+                    builder.Services.AddSingleton<Shered.Logger.Logger>();
+                    builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
+                        sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
                     builder.Services.AddScoped<OutboxService>();

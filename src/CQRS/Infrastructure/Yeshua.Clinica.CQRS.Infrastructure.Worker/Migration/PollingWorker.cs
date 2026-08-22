@@ -34,21 +34,19 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                var result = receiver.Execute(new TCommand());
-
-                if (result.StatusCode >= 400)
-                    _logger.LogWarning("Worker {Worker}: {StatusCode} - {Message}", workerName, result.StatusCode, result.Message);
+                receiver.Execute(new TCommand());
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
                 break;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                _logger.LogError(exception, "Erro inesperado no Worker {Worker}.", workerName);
+                // A excecao do Command ja foi registrada pelo ReciverBase.
             }
 
             await Task.Delay(_interval, stoppingToken);
         }
     }
+
 }

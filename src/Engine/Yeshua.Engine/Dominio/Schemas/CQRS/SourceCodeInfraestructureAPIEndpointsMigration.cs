@@ -49,6 +49,34 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    .AllowAnonymous();");
             sb.AppendLine("");
 
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/telemetry\", ([FromServices] Dominio.Interfaces.ILogger logger) =>");
+            sb.AppendLine("    Results.Ok(logger.Snapshot()))");
+            sb.AppendLine("    .AllowAnonymous();");
+            sb.AppendLine("");
+
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/health/live\", ([FromServices] IRuntimeIdentityProvider identityProvider) =>");
+            sb.AppendLine("    Results.Ok(new");
+            sb.AppendLine("    {");
+            sb.AppendLine("        Status = \"Healthy\",");
+            sb.AppendLine("        Check = \"Liveness\",");
+            sb.AppendLine("        Identity = identityProvider.Current,");
+            sb.AppendLine("        ObservedAtUtc = DateTimeOffset.UtcNow");
+            sb.AppendLine("    }))");
+            sb.AppendLine("    .AllowAnonymous();");
+            sb.AppendLine("");
+
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/health/ready\", ([FromServices] IRuntimeIdentityProvider identityProvider) =>");
+            sb.AppendLine("    Results.Ok(new");
+            sb.AppendLine("    {");
+            sb.AppendLine("        Status = \"Ready\",");
+            sb.AppendLine("        Check = \"Readiness\",");
+            sb.AppendLine("        Dependencies = \"NotEvaluated\",");
+            sb.AppendLine("        Identity = identityProvider.Current,");
+            sb.AppendLine("        ObservedAtUtc = DateTimeOffset.UtcNow");
+            sb.AppendLine("    }))");
+            sb.AppendLine("    .AllowAnonymous();");
+            sb.AppendLine("");
+
             #region Insert 
             foreach (var entity in _migration.Entitys)
             {

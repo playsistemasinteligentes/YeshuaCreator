@@ -25,7 +25,7 @@ if (args.Contains("--reverse-engineering", StringComparer.OrdinalIgnoreCase))
         ?? SelectManifestInteractively(GetArg(args, "--manifests-dir"));
     var connectionString = GetArg(args, "--connection")
         ?? Environment.GetEnvironmentVariable("ConnectionStrings__OperationalIntelligence")
-        ?? "Server=69.164.247.138,1433;Database=Context_CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;";
+        ?? "Server=69.164.247.138,1433;Database=Context_CLINICA;User Id=sa;Password=123qwe!@#QWE;Encrypt=False;TrustServerCertificate=True;";
 
     var manifest = await ReverseEngineeringManifest.LoadAsync(manifestPath);
     Console.WriteLine($"Engenharia reversa: {manifest.System} ({manifest.SystemType})");

@@ -1108,6 +1108,51 @@ namespace Dominio.Schemas.CQRS
                 $"{GetApplicationInfrastructureWorkerProjectName()}.csproj"));
         }
 
+        public void AppInfrastructureGenerateOperationalHealth()
+        {
+            var applicationInfrastructureWorkerProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureWorkerProjectName());
+            var workerHealthPath = Path.Combine(
+                applicationInfrastructureWorkerProjectDirectory,
+                "Migration",
+                "Operational",
+                "WorkerOperationalHealth.cs");
+
+            new SourceCodeInfrastructureWorkerOperationalHealthMigration()
+                .WriteGeneratedCode(workerHealthPath);
+        }
+
+        public void AppInfrastructureGenerateOperationalControl()
+        {
+            var applicationInfrastructureSharedProjectDirectory = Path.Combine(
+                GetPathAppInfraestructure(),
+                GetApplicationInfrastructureSharedProjectName());
+            var statePath = Path.Combine(
+                applicationInfrastructureSharedProjectDirectory,
+                "Operational",
+                "Migration",
+                "OperationalLoggingPolicy.cs");
+            new SourceCodeInfrastructureOperationalControlStateMigration()
+                .WriteGeneratedCode(statePath);
+
+            foreach (var hostProjectName in new[]
+                     {
+                         GetApplicationInfrastructureApiProjectName(),
+                         GetApplicationInfrastructureWorkerProjectName()
+                     })
+            {
+                var synchronizerPath = Path.Combine(
+                    GetPathAppInfraestructure(),
+                    hostProjectName,
+                    "Migration",
+                    "Operational",
+                    "OperationalPolicySynchronizer.cs");
+                new SourceCodeInfrastructureOperationalControlSynchronizerMigration()
+                    .WriteGeneratedCode(synchronizerPath);
+            }
+        }
+
         public void AppInfraestructureGenerateReadConcreteQuerys(Migration.MigrationBase migration)
         {
             foreach (var entity in migration.Entitys)
@@ -1859,7 +1904,6 @@ public static class DependenceInjectionCuston
 
         builder.Services.AddScoped<ISqlFactory>(_ =>
             new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }");
 
@@ -2069,7 +2113,7 @@ if (topology.Exchanges.Count > 0)
 
 await app.RunAsync();");
 
-            WriteTextIfMissing(
+            WriteText(
                 Path.Combine(projectDirectory, "Migration", "WorkerInfrastructure.cs"),
                 @"using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
@@ -2105,7 +2149,6 @@ public static class WorkerInfrastructure
 
         builder.Services.AddScoped<ISqlFactory>(_ =>
             new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         builder.Services.AddScoped<yOutBoxWorkerHandler>();
         builder.Services.AddHostedService(serviceProvider =>
@@ -2114,10 +2157,15 @@ public static class WorkerInfrastructure
                 serviceProvider.GetRequiredService<ILogger<
                     PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
                 TimeSpan.FromSeconds(5)));
+
+        // pendencia: registrar SagaWorkerCommandHandler e SagaInboxWorkerCommandHandler
+        // somente quando as sagas do aplicativo estiverem habilitadas pela DSL.
+        // observacao: ambos ja retornam IWorkerCycleResult; o ReciverBase
+        // incorpora os contadores na telemetria do Command.
     }
 }");
 
-            WriteTextIfMissing(
+            WriteText(
                 Path.Combine(projectDirectory, "Migration", "PollingWorker.cs"),
                 @"using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -2155,26 +2203,24 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                var result = receiver.Execute(new TCommand());
-
-                if (result.StatusCode >= 400)
-                    _logger.LogWarning(""Worker {Worker}: {StatusCode} - {Message}"", workerName, result.StatusCode, result.Message);
+                receiver.Execute(new TCommand());
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
                 break;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                _logger.LogError(exception, ""Erro inesperado no Worker {Worker}."", workerName);
+                // A excecao do Command ja foi registrada pelo ReciverBase.
             }
 
             await Task.Delay(_interval, stoppingToken);
         }
     }
+
 }");
 
-            WriteTextIfMissing(
+            WriteText(
                 Path.Combine(projectDirectory, "Migration", "QueueListenerWorker.cs"),
                 @"using Command.Interfaces.Patterns.Queue;
 using Microsoft.Extensions.DependencyInjection;
@@ -2213,10 +2259,7 @@ public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : Backgr
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                var result = receiver.Execute(message);
-
-                if (result.StatusCode >= 400)
-                    _logger.LogWarning(""Fila {Queue}: {StatusCode} - {Message}"", queue, result.StatusCode, result.Message);
+                receiver.Execute(message);
 
                 await Task.CompletedTask;
             }, stoppingToken), stoppingToken);
@@ -2312,21 +2355,46 @@ public static class CustonDependenceInjection
                 "UNSET",
                 "'$(YeshuaBuildTimestampUtc)' == ''");
 
-            var metadataGroup = project.Elements("ItemGroup")
-                .FirstOrDefault(group => group.Elements("AssemblyMetadata").Any());
-            if (metadataGroup == null)
+            var runtimeOptionsGroup = project.Elements("ItemGroup")
+                .FirstOrDefault(group => group.Elements("RuntimeHostConfigurationOption").Any());
+            if (runtimeOptionsGroup == null)
             {
-                metadataGroup = new XElement("ItemGroup");
-                project.Add(metadataGroup);
+                runtimeOptionsGroup = new XElement("ItemGroup");
+                project.Add(runtimeOptionsGroup);
             }
 
-            EnsureAssemblyMetadata(metadataGroup, "YeshuaApplication", GetApplicationName());
-            EnsureAssemblyMetadata(metadataGroup, "YeshuaVersion", "$(Version)");
-            EnsureAssemblyMetadata(metadataGroup, "YeshuaCommitSha", "$(YeshuaCommitSha)");
-            EnsureAssemblyMetadata(
-                metadataGroup,
-                "YeshuaBuildTimestampUtc",
+            EnsureRuntimeHostConfigurationOption(
+                runtimeOptionsGroup,
+                "Yeshua.Application",
+                GetApplicationName());
+            EnsureRuntimeHostConfigurationOption(
+                runtimeOptionsGroup,
+                "Yeshua.Version",
+                "$(Version)");
+            EnsureRuntimeHostConfigurationOption(
+                runtimeOptionsGroup,
+                "Yeshua.CommitSha",
+                "$(YeshuaCommitSha)");
+            EnsureRuntimeHostConfigurationOption(
+                runtimeOptionsGroup,
+                "Yeshua.BuildTimestampUtc",
                 "$(YeshuaBuildTimestampUtc)");
+
+            var legacyKeys = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "YeshuaApplication",
+                "YeshuaVersion",
+                "YeshuaCommitSha",
+                "YeshuaBuildTimestampUtc"
+            };
+            foreach (var legacyMetadata in project
+                         .Descendants("AssemblyMetadata")
+                         .Where(element => legacyKeys.Contains(
+                             element.Attribute("Include")?.Value ?? string.Empty))
+                         .ToList())
+            {
+                legacyMetadata.Remove();
+            }
 
             WriteText(projectPath, projectDocument.ToString());
         }
@@ -2348,26 +2416,29 @@ public static class CustonDependenceInjection
             property.SetAttributeValue("Condition", condition);
         }
 
-        private static void EnsureAssemblyMetadata(XElement itemGroup, string key, string value)
+        private static void EnsureRuntimeHostConfigurationOption(
+            XElement itemGroup,
+            string key,
+            string value)
         {
-            var matchingMetadata = itemGroup.Elements("AssemblyMetadata")
-                .Where(metadata => string.Equals(
-                    metadata.Attribute("Include")?.Value,
+            var matchingOptions = itemGroup.Elements("RuntimeHostConfigurationOption")
+                .Where(option => string.Equals(
+                    option.Attribute("Include")?.Value,
                     key,
                     StringComparison.Ordinal))
                 .ToList();
-            var metadata = matchingMetadata.FirstOrDefault();
-            if (metadata == null)
+            var option = matchingOptions.FirstOrDefault();
+            if (option == null)
             {
-                metadata = new XElement("AssemblyMetadata");
-                itemGroup.Add(metadata);
+                option = new XElement("RuntimeHostConfigurationOption");
+                itemGroup.Add(option);
             }
 
-            foreach (var duplicate in matchingMetadata.Skip(1))
+            foreach (var duplicate in matchingOptions.Skip(1))
                 duplicate.Remove();
 
-            metadata.SetAttributeValue("Include", key);
-            metadata.SetAttributeValue("Value", value);
+            option.SetAttributeValue("Include", key);
+            option.SetAttributeValue("Value", value);
         }
 
         private void EnsureProjectReference(string projectPath, string referencedProjectPath)
@@ -2479,6 +2550,8 @@ public static class CustonDependenceInjection
         {
             AppSolutionGenerate(migration);
             AppInfrastructureGenerateRuntimeIdentity();
+            AppInfrastructureGenerateOperationalHealth();
+            AppInfrastructureGenerateOperationalControl();
 
             AppInfraestructureGenerateAPI(migration);
             AppInfraestructureGenerateWorker(migration);

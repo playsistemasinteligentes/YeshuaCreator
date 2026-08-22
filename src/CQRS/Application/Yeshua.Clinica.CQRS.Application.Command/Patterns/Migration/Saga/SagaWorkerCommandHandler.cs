@@ -16,6 +16,7 @@ using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Patterns.Worker;
 
 namespace Command.Patterns
 {
@@ -48,12 +49,15 @@ namespace Command.Patterns
         {
             try
             {
+                var processed = 0;
+                var failed = 0;
                 var lockedBy = $"Worker_{Environment.MachineName}";
                 var lockedAt = DateTime.UtcNow;
                 var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
 
                 var sagas = _sagaReadRepository
-                    .ClaimRunnableSagas(5, lockedBy, lockedAt, nextExecutionAt);
+                    .ClaimRunnableSagas(5, lockedBy, lockedAt, nextExecutionAt)
+                    .ToList();
 
                 foreach (var sagaDto in sagas)
                 {
@@ -84,6 +88,7 @@ namespace Command.Patterns
                         {
                             _sagaWriteRepository.Save(saga);
                             _unitOfWork.Commit();
+                            processed++;
                         }
                         catch
                         {
@@ -93,6 +98,7 @@ namespace Command.Patterns
                     }
                     catch (Exception ex)
                     {
+                        failed++;
                         Console.WriteLine($"Erro na saga {sagaId}: {ex.Message}");
                     }
                     finally
@@ -101,7 +107,12 @@ namespace Command.Patterns
                     }
                 }
 
-                return Success("OK", null);
+                return Success("OK", new OutputCommand
+                {
+                    Claimed = sagas.Count,
+                    Processed = processed,
+                    Failed = failed
+                });
             }
             catch (ReceiverException<OutputCommand> ex)
             {
@@ -119,8 +130,12 @@ namespace Command.Patterns
         public List<int> lst { get; set; }
     }
 
-    public partial record OutputCommand : ICommand
+    public partial record OutputCommand : ICommand, IWorkerCycleResult
     {
         public List<int> lst { get; set; }
+        public int BatchLimit => 5;
+        public int Claimed { get; init; }
+        public int Processed { get; init; }
+        public int Failed { get; init; }
     }
 }//Dominio.Schemas.CQRS.SourceCodeApplicationSagaWorker

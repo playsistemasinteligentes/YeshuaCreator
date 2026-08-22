@@ -7,6 +7,7 @@ using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Patterns.Worker;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -43,10 +44,13 @@ namespace Command.Patterns.OutBox
         {
             State<yOutboxOutputCommand> state = Success("OK", null);
             var processed = new List<int>();
+            var claimed = 0;
+            var failed = 0;
 
             try
             {
                 var events = _outboxReadRepository.ClaimBatch(10);
+                claimed = events.Count;
 
                 foreach (var evt in events)
                 {
@@ -87,6 +91,7 @@ namespace Command.Patterns.OutBox
                     }
                     catch (Exception exItem)
                     {
+                        failed++;
                         var retry = evt.retrycount + 1;
                         var next = DateTime.UtcNow.AddSeconds(Math.Pow(2, retry));
 
@@ -102,11 +107,21 @@ namespace Command.Patterns.OutBox
                 }
                 _unitOfWork.Commit();
 
-                return Success("OK", default);
+                return Success("OK", new yOutboxOutputCommand
+                {
+                    Claimed = claimed,
+                    Processed = processed.Count,
+                    Failed = failed
+                });
             }
             catch (Exception ex)
             {
-                return Error(ex, default);
+                return Error(ex, new yOutboxOutputCommand
+                {
+                    Claimed = claimed,
+                    Processed = processed.Count,
+                    Failed = Math.Max(1, failed)
+                });
             }
         }
     }
@@ -127,8 +142,12 @@ namespace Command.Patterns.OutBox
         public string Payload { get; set; }
     }
 
-    public partial record yOutboxOutputCommand : ICommand
+    public partial record yOutboxOutputCommand : ICommand, IWorkerCycleResult
     {
         public List<int> lst { get; set; }
+        public int BatchLimit => 10;
+        public int Claimed { get; init; }
+        public int Processed { get; init; }
+        public int Failed { get; init; }
     }
 }

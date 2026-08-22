@@ -6,7 +6,7 @@ namespace IRepository.Read
 {
     public partial interface IySagaStepReadRepository
     {
-        public void SetPendingApply();
+        public int SetPendingApply();
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

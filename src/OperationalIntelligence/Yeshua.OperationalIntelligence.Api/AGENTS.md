@@ -3,6 +3,14 @@
 Este projeto expoe o indice de engenharia reversa e os bundles de codigo-fonte
 para aplicativos Yeshua e sistemas legados.
 
+Tambem hospeda o modulo `OperationalControl`, que mantem em memoria a politica
+central de logging. A configuracao fornece o baseline; overrides temporarios
+sao aplicados por API e se perdem com seguranca quando o processo reinicia.
+Aplicativos consultam
+`GET /api/operational-control/{application}/{environment}` e mantem um snapshot
+local. Aplicativo e ambiente formam a identidade da politica. O modulo nao
+persiste politicas no banco de engenharia reversa.
+
 ## Chamadas Diretas Pelo Agente
 
 Quando o usuario solicitar uma investigacao, uma consulta de contexto ou a

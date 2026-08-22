@@ -77,10 +77,10 @@ public class RuntimeIdentityGenerationTests
     private static void AssertBuildMetadata(string projectPath)
     {
         var project = File.ReadAllText(projectPath);
-        Assert.AreEqual(1, Count(project, "Include=\"YeshuaApplication\""));
-        Assert.AreEqual(1, Count(project, "Include=\"YeshuaVersion\""));
-        Assert.AreEqual(1, Count(project, "Include=\"YeshuaCommitSha\""));
-        Assert.AreEqual(1, Count(project, "Include=\"YeshuaBuildTimestampUtc\""));
+        Assert.AreEqual(1, Count(project, "Include=\"Yeshua.Application\""));
+        Assert.AreEqual(1, Count(project, "Include=\"Yeshua.Version\""));
+        Assert.AreEqual(1, Count(project, "Include=\"Yeshua.CommitSha\""));
+        Assert.AreEqual(1, Count(project, "Include=\"Yeshua.BuildTimestampUtc\""));
         StringAssert.Contains(project, "Value=\"Clinica\"");
     }
 

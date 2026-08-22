@@ -20,7 +20,7 @@ O database padrao atual e `Context_CLINICA`, separado do catalogo transacional
 `CLINICA`. Em outro ambiente, configure a instancia SQL desejada:
 
 ```text
-ConnectionStrings__OperationalIntelligence=Server=sqlserver,1433;Database=Context_CLINICA;User Id=sa;Password=...;TrustServerCertificate=True;
+ConnectionStrings__OperationalIntelligence=Server=sqlserver,1433;Database=Context_CLINICA;User Id=sa;Password=...;Encrypt=False;TrustServerCertificate=True;
 ```
 
 No startup, a API pode criar o database e aplicar as migrations conforme:

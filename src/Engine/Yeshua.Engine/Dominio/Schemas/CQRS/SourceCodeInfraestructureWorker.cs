@@ -56,6 +56,10 @@ namespace Dominio.Schemas.CQRS
                                 //avaliar pois o outbox pode ser mais padronizado sem necessidade de um por step ou por saga podendo eventualmente ser um apenas 
                                 //padronizar o outbox ou seja um outbox por sistema  eventualmente por saga mas tem que ter codigo padrao  
 
+                                // pendencia: ativar os PollingWorkers de Saga e Inbox a partir da DSL.
+                                // observacao: os handlers ja implementam IWorkerCycleResult; ao ativar,
+                                // o ReciverBase incorpora os contadores na telemetria do Command.
+
                                 //if (step.SagaStepUseCaseCommand != null)
                                 //    AppendPollingWorker(sb, step.SagaStepUseCaseCommand);
                                 //

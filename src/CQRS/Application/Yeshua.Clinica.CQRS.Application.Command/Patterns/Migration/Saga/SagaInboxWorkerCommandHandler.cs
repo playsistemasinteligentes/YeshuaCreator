@@ -12,10 +12,11 @@ using Command.Patterns.Command;
 using IRepository.Read;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Patterns.Worker;
 
 namespace Command.Patterns
 {
-    public class SagaInboxWorkerCommandHandler : ReciverBase<InputCommand, OutputCommand>
+    public class SagaInboxWorkerCommandHandler : ReciverBase<InputCommand, InboxOutputCommand>
     {
         private readonly IySagaStepReadRepository _sagaStepReadRepository;
 
@@ -29,14 +30,18 @@ namespace Command.Patterns
             _sagaStepReadRepository = sagaStepReadRepository;
         }
 
-        protected override State<OutputCommand> Action(InputCommand command)
+        protected override State<InboxOutputCommand> Action(InputCommand command)
         {
             try
             {
-                _sagaStepReadRepository.SetPendingApply();
-                return Success("OK", null);
+                var processed = _sagaStepReadRepository.SetPendingApply();
+                return Success("OK", new InboxOutputCommand
+                {
+                    Claimed = processed,
+                    Processed = processed
+                });
             }
-            catch (ReceiverException<OutputCommand> ex)
+            catch (ReceiverException<InboxOutputCommand> ex)
             {
                 return ex.State;
             }
@@ -46,4 +51,13 @@ namespace Command.Patterns
             }
         }
     }
+
+    public partial record InboxOutputCommand : ICommand, IWorkerCycleResult
+    {
+        public int BatchLimit => 0;
+        public int Claimed { get; init; }
+        public int Processed { get; init; }
+        public int Failed { get; init; }
+    }
+
 }//Dominio.Schemas.CQRS.SourceCodeApplicationSagaWorker

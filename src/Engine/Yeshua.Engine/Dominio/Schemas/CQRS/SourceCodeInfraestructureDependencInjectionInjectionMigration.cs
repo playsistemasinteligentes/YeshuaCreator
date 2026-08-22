@@ -51,8 +51,12 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("using Aplication.Interfaces.Services;");
             sb.AppendLine("using Shared.Operational;");
             sb.AppendLine("using Yeshua.Generated.Operational;");
+            sb.AppendLine("using Yeshua.Generated.OperationalControl;");
             if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
+            {
                 sb.AppendLine("using Migrations.Operational;");
+                sb.AppendLine("using Yeshua.Generated.OperationalHealth;");
+            }
 
 
 
@@ -70,21 +74,35 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
             sb.AppendLine("                    builder.Services.AddSingleton<IRuntimeIdentityProvider>(");
             sb.AppendLine("                        _ => new RuntimeIdentityProvider(builder.Environment.EnvironmentName));");
+            sb.AppendLine("                    builder.Services.AddSingleton<OperationalLoggingPolicyState>(sp =>");
+            sb.AppendLine("                        new OperationalLoggingPolicyState(");
+            sb.AppendLine("                            sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Application,");
+            sb.AppendLine("                            sp.GetRequiredService<IRuntimeIdentityProvider>().Current.Environment));");
+            sb.AppendLine("                    builder.Services.AddSingleton<IOperationalLoggingPolicyAccessor>(sp =>");
+            sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
+            sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.IOperationalTelemetryPolicy>(sp =>");
+            sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
+            sb.AppendLine("                    builder.Services.AddHostedService<OperationalPolicySynchronizer>();");
             if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
+            {
                 sb.AppendLine("                    builder.Services.AddHostedService<RuntimeIdentityReporter>();");
+                sb.AppendLine("                    builder.Services.AddSingleton<Microsoft.AspNetCore.Hosting.IStartupFilter, WorkerOperationalHealthStartupFilter>();");
+            }
             sb.AppendLine("");
             sb.AppendLine("                    builder.Services.AddScoped<UnitOfWork>();");
+            sb.AppendLine("                    builder.Services.AddScoped<RepositoryTelemetry>();");
             sb.AppendLine("                    builder.Services.AddScoped<RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork>(sp =>");
             sb.AppendLine("                        new InstrumentedUnitOfWork(");
             sb.AppendLine("                            sp.GetRequiredService<UnitOfWork>(),");
-            sb.AppendLine("                            sp.GetRequiredService<Dominio.Interfaces.ILogger>(),");
-            sb.AppendLine("                            sp.GetRequiredService<IExecutionContext>()");
+            sb.AppendLine("                            sp.GetRequiredService<RepositoryTelemetry>()");
             sb.AppendLine("                        ));");
             sb.AppendLine("");
             sb.AppendLine("");
             sb.AppendLine("                    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));");
             sb.AppendLine("                    builder.Services.AddSingleton<ICacheKeyIndexManager, CacheKeyIndexManager>();");
-            sb.AppendLine("                    builder.Services.AddTransient<Dominio.Interfaces.ILogger, Shered.Logger.Logger>();");
+            sb.AppendLine("                    builder.Services.AddSingleton<Shered.Logger.Logger>();");
+            sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>");
+            sb.AppendLine("                        sp.GetRequiredService<Shered.Logger.Logger>());");
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");
             if (hasSagas)
                 sb.AppendLine("                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();");

@@ -6,6 +6,7 @@ using Yeshua.OperationalIntelligence.Api.Database;
 using Yeshua.OperationalIntelligence.Api.Endpoints;
 using Yeshua.OperationalIntelligence.Api.OpenApi;
 using Yeshua.OperationalIntelligence.Api.Repositories;
+using Yeshua.OperationalIntelligence.Api.Modules.OperationalControl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,10 @@ builder.Services.AddScoped<IContextCollector, SourceCodeContextCollector>();
 builder.Services.AddScoped<OperationalContextOrchestrator>();
 builder.Services.AddScoped<QuestionContextBuilder>();
 builder.Services.AddScoped<SourceBundleBuilder>();
+builder.Services
+    .AddOptions<OperationalControlOptions>()
+    .Bind(builder.Configuration.GetSection(OperationalControlOptions.SectionName));
+builder.Services.AddSingleton<OperationalPolicyState>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -44,6 +49,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapOperationalIntelligenceEndpoints();
+app.MapOperationalControlEndpoints();
 
 app.Run();
 

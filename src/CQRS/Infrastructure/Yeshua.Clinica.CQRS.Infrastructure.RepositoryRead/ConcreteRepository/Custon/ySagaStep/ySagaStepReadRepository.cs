@@ -9,7 +9,7 @@ namespace Read.Repository
 {
     public partial class ySagaStepReadRepository 
     {
-        public void SetPendingApply()
+        public int SetPendingApply()
         {
             var sql = @"
                     BEGIN TRAN
@@ -26,9 +26,12 @@ namespace Read.Repository
                     INNER JOIN ySagaStep s ON s.CorrelationId = i.CorrelationId
                     WHERE s.Status = 4 and i.Status = 0;
 
-                    COMMIT";
+                    DECLARE @Applied INT = @@ROWCOUNT;
 
-            _unitOfWork.Execute(sql);
+                    COMMIT;
+                    SELECT @Applied";
+
+            return _unitOfWork.ExecuteScalar<int>(sql);
         }
     }
 }

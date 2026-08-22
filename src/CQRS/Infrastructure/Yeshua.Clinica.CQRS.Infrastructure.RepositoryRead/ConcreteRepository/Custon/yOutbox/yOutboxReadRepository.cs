@@ -36,6 +36,7 @@ namespace Read.Repository
                 TimeoutMinutes = 5
             }).ToList();
         }
+
         public void MarkAsDone(int id, DateTime sentAt)
         {
             var sql = @"

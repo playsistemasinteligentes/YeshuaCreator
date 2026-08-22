@@ -15,10 +15,11 @@
     <ProjectReference Include="..\Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite\Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite.csproj" />
     <ProjectReference Include="..\Yeshua.Clinica.CQRS.Infrastructure.Shared\Yeshua.Clinica.CQRS.Infrastructure.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <AssemblyMetadata Include="YeshuaApplication" Value="Clinica" />
-    <AssemblyMetadata Include="YeshuaVersion" Value="$(Version)" />
-    <AssemblyMetadata Include="YeshuaCommitSha" Value="$(YeshuaCommitSha)" />
-    <AssemblyMetadata Include="YeshuaBuildTimestampUtc" Value="$(YeshuaBuildTimestampUtc)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.Application" Value="Clinica" />
+    <RuntimeHostConfigurationOption Include="Yeshua.Version" Value="$(Version)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.CommitSha" Value="$(YeshuaCommitSha)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.BuildTimestampUtc" Value="$(YeshuaBuildTimestampUtc)" />
   </ItemGroup>
 </Project>

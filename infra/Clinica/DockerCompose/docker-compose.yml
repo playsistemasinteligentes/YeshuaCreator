@@ -21,6 +21,9 @@ services:
     build:
       context: ../../..
       dockerfile: infra/Clinica/DockerCompose/api/Dockerfile
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -52,6 +55,9 @@ services:
     build:
       context: ../../..
       dockerfile: infra/Clinica/DockerCompose/worker/Dockerfile
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+        YESHUA_BUILD_TIMESTAMP_UTC: "${YESHUA_BUILD_TIMESTAMP_UTC:-UNSET}"
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"

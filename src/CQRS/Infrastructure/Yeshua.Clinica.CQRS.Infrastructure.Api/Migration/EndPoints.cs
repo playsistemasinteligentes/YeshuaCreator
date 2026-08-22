@@ -24,6 +24,31 @@ app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvide
     Results.Ok(identityProvider.Current))
     .AllowAnonymous();
 
+app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILogger logger) =>
+    Results.Ok(logger.Snapshot()))
+    .AllowAnonymous();
+
+app.MapGet("/yapi/health/live", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        Status = "Healthy",
+        Check = "Liveness",
+        Identity = identityProvider.Current,
+        ObservedAtUtc = DateTimeOffset.UtcNow
+    }))
+    .AllowAnonymous();
+
+app.MapGet("/yapi/health/ready", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        Status = "Ready",
+        Check = "Readiness",
+        Dependencies = "NotEvaluated",
+        Identity = identityProvider.Current,
+        ObservedAtUtc = DateTimeOffset.UtcNow
+    }))
+    .AllowAnonymous();
+
 app.MapPost("/yapi/Clinica/PostClinica", async ([FromServices] Command.Receivers.Write.InsertClinicaReceiver receiver, [FromBody] Command.Write.ClinicaCrudCommand command) =>
 {
  return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));

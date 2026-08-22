@@ -16,6 +16,9 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" pull origin main
 fi
 
+export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
+export YESHUA_BUILD_TIMESTAMP_UTC="${YESHUA_BUILD_TIMESTAMP_UTC:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}"
+
 bash "$SHARED_DIR/deploy.sh"
 
 cd "$COMPOSE_DIR"

@@ -639,30 +639,45 @@ metadata da Clinica.
 
 1. Gerar liveness da API sem consultar dependencias.
 2. Gerar readiness inicial da API.
-3. Definir health do Worker por heartbeat e progresso, sem presumir que HTTP
-   sozinho comprova processamento.
+3. Gerar liveness e readiness basicos do Worker, sem executar verificacoes de
+   dependencias ou manter um monitor paralelo de progresso.
 4. Incluir identidade runtime nas respostas e evidencias.
 5. Criar testes para host saudavel e host indisponivel.
 
 **Entrega:** contrato uniforme de saude para API e Worker.
 
-**Criterio de saida:** e possivel distinguir processo vivo, host pronto e
-Worker sem progresso.
+**Criterio de saida:** e possivel distinguir processo vivo e host pronto.
 
-### 10.5 R04 - Saude De Dependencias E Progresso
+**Estado:** implementada na Engine e aguardando geracao e compilacao da Clinica.
+A API e o Worker recebem liveness e readiness sem chamadas externas. Saude de
+containers e dependencias permanece responsabilidade da infraestrutura.
+
+### 10.5 R04 - Progresso De Workers, Inbox E Outbox
 
 **Correlacao:** Passos 6 e 7, Gates G4 e G5, profundidades D0/D1, nivel Y1.
 
-1. Criar contribuidores de health desacoplados por dependencia.
-2. Implementar checks de SQL, Redis e RabbitMQ quando usados pelo aplicativo.
-3. Registrar tempo, resultado e erro sanitizado de cada check.
-4. Verificar Inbox, Outbox, filas e ultimo progresso dos Workers.
-5. Permitir que integracoes especificas fornecam checks customizados.
+1. Manter checks de SQL, Redis, RabbitMQ e containers sob responsabilidade da
+   infraestrutura.
+2. Concentrar inicio, fim, duracao, status e falha em `ReciverBase.Execute`,
+   cobrindo Commands chamados por API, Worker, fila ou outro host.
+3. Fazer resultados de Worker implementarem `IWorkerCycleResult`, permitindo ao
+   Receiver publicar lote, itens capturados, processados e falhas.
+4. Medir consultas no `InstrumentedUnitOfWork` por meio de uma
+   `RepositoryTelemetry`, sem registrar SQL ou parametros sensiveis.
+5. Permitir metricas especificas de repositorio, incluindo backlog, sem definir
+   antecipadamente polling, push ou acoplamento ao ciclo de processamento.
+6. Emitir logs estruturados de falha e manter detalhamento de sucesso
+   controlavel para evitar volume inutil nos containers.
 
-**Entrega:** readiness explica qual dependencia impede a operacao.
+**Entrega:** progresso operacional de Workers separado da saude de infra.
 
-**Criterio de saida:** uma falha controlada em cada dependencia produz um
-resultado identificavel sem executar regra de negocio destrutiva.
+**Criterio de saida:** Commands e consultas informam execucoes, falhas e
+duracoes; Workers acrescentam contadores de lote sem instrumentacao propria.
+
+**Estado:** implementacao em andamento na Engine para a Clinica. `ReciverBase`
+concentra a telemetria de Commands; Outbox, Saga e Inbox retornam o contrato de
+resultado; `RepositoryTelemetry` concentra estatisticas das consultas. A forma
+de coleta de backlog permanece deliberadamente aberta.
 
 ### 10.6 R05 - Orquestracao Pos-Build E Smoke CRUD
 

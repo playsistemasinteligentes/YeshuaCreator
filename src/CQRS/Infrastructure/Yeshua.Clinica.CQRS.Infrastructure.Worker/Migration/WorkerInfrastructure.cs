@@ -32,7 +32,6 @@ public static class WorkerInfrastructure
 
         builder.Services.AddScoped<ISqlFactory>(_ =>
             new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         builder.Services.AddScoped<yOutBoxWorkerHandler>();
         builder.Services.AddHostedService(serviceProvider =>
@@ -41,5 +40,10 @@ public static class WorkerInfrastructure
                 serviceProvider.GetRequiredService<ILogger<
                     PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
                 TimeSpan.FromSeconds(5)));
+
+        // pendencia: registrar SagaWorkerCommandHandler e SagaInboxWorkerCommandHandler
+        // somente quando as sagas do aplicativo estiverem habilitadas pela DSL.
+        // observacao: ambos ja retornam IWorkerCycleResult; o ReciverBase
+        // incorpora os contadores na telemetria do Command.
     }
 }

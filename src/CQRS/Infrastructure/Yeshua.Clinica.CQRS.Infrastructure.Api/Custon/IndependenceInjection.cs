@@ -30,6 +30,5 @@ public static class DependenceInjectionCuston
 
         builder.Services.AddScoped<ISqlFactory>(_ =>
             new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

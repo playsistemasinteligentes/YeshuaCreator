@@ -1,6 +1,7 @@
 ﻿using Aplication.Interfaces.Services;
 using Dominio.Interfaces;
 using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Worker;
 
 namespace Command.Patterns.Command
 {
@@ -8,6 +9,9 @@ namespace Command.Patterns.Command
         : IReceiver<TCommand, TResponse>
         where TCommand : ICommand
     {
+        private static readonly string CommandName =
+            typeof(TCommand).FullName ?? typeof(TCommand).Name;
+
         private readonly ILogger _logger;
         private readonly IExecutionContext _context;
 
@@ -21,31 +25,51 @@ namespace Command.Patterns.Command
 
         public State<TResponse> Execute(TCommand command)
         {
-            var commandName = typeof(TCommand).Name;
             var traceId = _context.TraceId;
-            var sw = System.Diagnostics.Stopwatch.StartNew();
+            var startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
 
-            _logger.Command(commandName, traceId, "iniciado");
+            _logger.CommandStarted(CommandName);
 
             try
             {
                 var result = Action(command);
-                sw.Stop();
 
-                _logger.Command(commandName, traceId,
-                    result.StatusCode == 200 || result.StatusCode == 201
-                        ? "concluido"
-                        : "falhou",
-                    sw.ElapsedMilliseconds);
+                WorkerCycleTelemetry? workerCycle = null;
+                if (result.Data is IWorkerCycleResult progress)
+                {
+                    workerCycle = new WorkerCycleTelemetry(
+                        progress.BatchLimit,
+                        progress.Claimed,
+                        progress.Processed,
+                        progress.Failed);
+                }
+
+                _logger.CommandFinished(
+                    CommandName,
+                    traceId,
+                    result.StatusCode is >= 200 and < 300,
+                    ElapsedMilliseconds(startedAt),
+                    result.StatusCode,
+                    workerCycle);
 
                 return result;
             }
             catch (Exception ex)
             {
-                sw.Stop();
-                _logger.Error(commandName, traceId, ex);
+                _logger.CommandFailed(
+                    CommandName,
+                    traceId,
+                    ex,
+                    ElapsedMilliseconds(startedAt));
                 throw;
             }
+        }
+
+        private static long ElapsedMilliseconds(long startedAt)
+        {
+            return (long)System.Diagnostics.Stopwatch
+                .GetElapsedTime(startedAt)
+                .TotalMilliseconds;
         }
 
         protected static State<TResponse> Error(

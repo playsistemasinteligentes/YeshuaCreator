@@ -2,6 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+ARG YESHUA_COMMIT_SHA=UNSET
+ARG YESHUA_BUILD_TIMESTAMP_UTC=UNSET
+
 # Copia todo o repositório
 COPY . .
 
@@ -9,6 +12,8 @@ COPY . .
 RUN dotnet publish \
   src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj \
   -c Release \
+  -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" \
+  -p:YeshuaBuildTimestampUtc="$YESHUA_BUILD_TIMESTAMP_UTC" \
   -o /app/publish
 
 

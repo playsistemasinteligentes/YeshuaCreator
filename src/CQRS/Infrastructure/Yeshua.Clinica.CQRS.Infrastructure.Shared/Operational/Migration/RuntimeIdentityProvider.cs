@@ -10,7 +10,6 @@
 
 using Shared.Operational;
 using System.Globalization;
-using System.Reflection;
 
 namespace Yeshua.Generated.Operational;
 
@@ -25,19 +24,10 @@ public sealed class RuntimeIdentityProvider : IRuntimeIdentityProvider
 
     private static RuntimeIdentity ReadIdentity(string environment)
     {
-        var assembly = Assembly.GetEntryAssembly() ?? typeof(RuntimeIdentityProvider).Assembly;
-        var metadata = assembly
-            .GetCustomAttributes<AssemblyMetadataAttribute>()
-            .GroupBy(attribute => attribute.Key, StringComparer.Ordinal)
-            .ToDictionary(
-                group => group.Key,
-                group => group.Last().Value,
-                StringComparer.Ordinal);
-
-        metadata.TryGetValue("YeshuaApplication", out var application);
-        metadata.TryGetValue("YeshuaVersion", out var version);
-        metadata.TryGetValue("YeshuaCommitSha", out var commitSha);
-        metadata.TryGetValue("YeshuaBuildTimestampUtc", out var buildTimestamp);
+        var application = AppContext.GetData("Yeshua.Application") as string;
+        var version = AppContext.GetData("Yeshua.Version") as string;
+        var commitSha = AppContext.GetData("Yeshua.CommitSha") as string;
+        var buildTimestamp = AppContext.GetData("Yeshua.BuildTimestampUtc") as string;
 
         DateTimeOffset? builtAtUtc = null;
         if (DateTimeOffset.TryParse(
