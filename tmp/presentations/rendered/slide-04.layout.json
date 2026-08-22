@@ -1,0 +1,1463 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/a7bwy7",
+    "id": "a7bwy7",
+    "slide": 4,
+    "layoutId": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ry1wva94",
+      "id": "1",
+      "name": "section-4",
+      "bbox": [
+        72,
+        32,
+        390,
+        28
+      ],
+      "geometry": "rect",
+      "text": "CRITÉRIO DE ENTRADA",
+      "textPreview": "CRITÉRIO DE ENTRADA",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CRITÉRIO DE ENTRADA"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CRITÉRIO DE ENTRADA",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0B7A3E",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CRITÉRIO DE ENTRADA",
+              "fontSize": 14,
+              "color": "#0B7A3E",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czax4fqp",
+      "id": "2",
+      "name": "title-4",
+      "bbox": [
+        72,
+        76,
+        1110,
+        72
+      ],
+      "geometry": "rect",
+      "text": "Sete gates tornam o sistema suportável",
+      "textPreview": "Sete gates tornam o sistema suportável",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sete gates tornam o sistema suportável"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sete gates tornam o sistema suportável",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#172126",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sete gates tornam o sistema suportável",
+              "fontSize": 39,
+              "color": "#172126",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d0jexkra",
+      "id": "3",
+      "name": "title-rule-4",
+      "bbox": [
+        72,
+        160,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9D0D3",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e1sf6p8v",
+      "id": "4",
+      "name": "brand-4",
+      "bbox": [
+        72,
+        674,
+        340,
+        22
+      ],
+      "geometry": "rect",
+      "text": "by Play Sistemas Inteligentes",
+      "textPreview": "by Play Sistemas Inteligentes",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "by Play Sistemas Inteligentes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "by Play Sistemas Inteligentes",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#657177"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "by Play Sistemas Inteligentes",
+              "fontSize": 12,
+              "color": "#657177"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z2lwzu90",
+      "id": "5",
+      "name": "page-4",
+      "bbox": [
+        1140,
+        674,
+        68,
+        22
+      ],
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#657177",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 12,
+              "color": "#657177",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0nux8zql",
+      "id": "6",
+      "name": "gate-G1",
+      "bbox": [
+        56,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lo3e14r6",
+      "id": "7",
+      "name": "gate-code-G1",
+      "bbox": [
+        72,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G1",
+      "textPreview": "G1",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G1",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G1",
+              "fontSize": 36,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mpcfap8r",
+      "id": "8",
+      "name": "gate-label-G1",
+      "bbox": [
+        70,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Governança",
+      "textPreview": "Governança",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Governança"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Governança",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Governança",
+              "fontSize": 18,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqlw3upc",
+      "id": "9",
+      "name": "gate-G2",
+      "bbox": [
+        224,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vixo3ihk",
+      "id": "10",
+      "name": "gate-code-G2",
+      "bbox": [
+        240,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G2",
+      "textPreview": "G2",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G2",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G2",
+              "fontSize": 36,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uhonadgz",
+      "id": "11",
+      "name": "gate-label-G2",
+      "bbox": [
+        238,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Fonte e versão",
+      "textPreview": "Fonte e versão",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Fonte e"
+          },
+          {
+            "index": 2,
+            "text": "versão"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Fonte e versão",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Fonte e versão",
+              "fontSize": 18,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hkf658zq",
+      "id": "12",
+      "name": "gate-G3",
+      "bbox": [
+        392,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gj65c3y5",
+      "id": "13",
+      "name": "gate-code-G3",
+      "bbox": [
+        408,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G3",
+      "textPreview": "G3",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G3",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G3",
+              "fontSize": 36,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7udozyho",
+      "id": "14",
+      "name": "gate-label-G3",
+      "bbox": [
+        406,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Identidade",
+      "textPreview": "Identidade",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Identidade"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Identidade",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Identidade",
+              "fontSize": 18,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6t4n6tg3",
+      "id": "15",
+      "name": "gate-G4",
+      "bbox": [
+        560,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgf618zu",
+      "id": "16",
+      "name": "gate-code-G4",
+      "bbox": [
+        576,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G4",
+      "textPreview": "G4",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G4"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G4",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G4",
+              "fontSize": 36,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8vm583y9",
+      "id": "17",
+      "name": "gate-label-G4",
+      "bbox": [
+        574,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Evidência",
+      "textPreview": "Evidência",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Evidência"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Evidência",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Evidência",
+              "fontSize": 18,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqhob2hs",
+      "id": "18",
+      "name": "gate-G5",
+      "bbox": [
+        728,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qp872xg7",
+      "id": "19",
+      "name": "gate-code-G5",
+      "bbox": [
+        744,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G5",
+      "textPreview": "G5",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G5"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G5",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G5",
+              "fontSize": 36,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mlsra10f",
+      "id": "20",
+      "name": "gate-label-G5",
+      "bbox": [
+        742,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Consulta",
+      "textPreview": "Consulta",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Consulta"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Consulta",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Consulta",
+              "fontSize": 18,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n6183m10",
+      "id": "21",
+      "name": "gate-G6",
+      "bbox": [
+        896,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7u9cril",
+      "id": "22",
+      "name": "gate-code-G6",
+      "bbox": [
+        912,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G6",
+      "textPreview": "G6",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G6"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G6",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G6",
+              "fontSize": 36,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/983q5wj6",
+      "id": "23",
+      "name": "gate-label-G6",
+      "bbox": [
+        910,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Diagnóstico",
+      "textPreview": "Diagnóstico",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Diagnóstico"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Diagnóstico",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Diagnóstico",
+              "fontSize": 18,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9cre10r",
+      "id": "24",
+      "name": "gate-G7",
+      "bbox": [
+        1064,
+        250,
+        148,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#0B7A3E",
+      "lineColor": "#0B7A3E",
+      "lineWidth": 1
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bals761c",
+      "id": "25",
+      "name": "gate-code-G7",
+      "bbox": [
+        1080,
+        276,
+        116,
+        58
+      ],
+      "geometry": "rect",
+      "text": "G7",
+      "textPreview": "G7",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G7"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G7",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G7",
+              "fontSize": 36,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wbu9gbix",
+      "id": "26",
+      "name": "gate-label-G7",
+      "bbox": [
+        1078,
+        356,
+        120,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Demonstração",
+      "textPreview": "Demonstração",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Demonstraçã"
+          },
+          {
+            "index": 2,
+            "text": "o"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Demonstração",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Demonstração",
+              "fontSize": 18,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xc3a9gj2",
+      "id": "27",
+      "name": "gates-claim",
+      "bbox": [
+        150,
+        520,
+        980,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Todos precisam de evidência executada. Ferramenta instalada, sozinha, não comprova conformidade.",
+      "textPreview": "Todos precisam de evidência executada. Ferramenta instalada, sozinha, não comprova conformidade.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Todos precisam de evidência executada. Ferramenta instalada, sozinha, não comprova"
+          },
+          {
+            "index": 2,
+            "text": "conformidade."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Todos precisam de evidência executada. Ferramenta instalada, sozinha, não comprova conformidade.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Todos precisam de evidência executada. Ferramenta instalada, sozinha, não comprova conformidade.",
+              "fontSize": 24,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

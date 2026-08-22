@@ -1,0 +1,667 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/cfgyyw",
+    "id": "cfgyyw",
+    "slide": 10,
+    "layoutId": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5g3qh8nq",
+      "id": "1",
+      "name": "section-10",
+      "bbox": [
+        72,
+        32,
+        390,
+        28
+      ],
+      "geometry": "rect",
+      "text": "ENTREGÁVEIS",
+      "textPreview": "ENTREGÁVEIS",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ENTREGÁVEIS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ENTREGÁVEIS",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0B7A3E",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ENTREGÁVEIS",
+              "fontSize": 14,
+              "color": "#0B7A3E",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/itc7mdof",
+      "id": "2",
+      "name": "title-10",
+      "bbox": [
+        72,
+        76,
+        1110,
+        72
+      ],
+      "geometry": "rect",
+      "text": "O fabricante entrega capacidade, não um produto específico",
+      "textPreview": "O fabricante entrega capacidade, não um produto específico",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "O fabricante entrega capacidade, não um produto específico"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "O fabricante entrega capacidade, não um produto específico",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#172126",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "O fabricante entrega capacidade, não um produto específico",
+              "fontSize": 39,
+              "color": "#172126",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3el8fi50",
+      "id": "3",
+      "name": "title-rule-10",
+      "bbox": [
+        72,
+        160,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9D0D3",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/grupk369",
+      "id": "4",
+      "name": "brand-10",
+      "bbox": [
+        72,
+        674,
+        340,
+        22
+      ],
+      "geometry": "rect",
+      "text": "by Play Sistemas Inteligentes",
+      "textPreview": "by Play Sistemas Inteligentes",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "by Play Sistemas Inteligentes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "by Play Sistemas Inteligentes",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#657177"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "by Play Sistemas Inteligentes",
+              "fontSize": 12,
+              "color": "#657177"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hs36d8nu",
+      "id": "5",
+      "name": "page-10",
+      "bbox": [
+        1140,
+        674,
+        68,
+        22
+      ],
+      "geometry": "rect",
+      "text": "10",
+      "textPreview": "10",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "10",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#657177",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "10",
+              "fontSize": 12,
+              "color": "#657177",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ups7ito3",
+      "id": "6",
+      "name": "deliver-left",
+      "bbox": [
+        96,
+        225,
+        470,
+        280
+      ],
+      "geometry": "rect",
+      "text": "• repositório e build\n• versão no runtime\n• catálogo de operações\n• instrumentação D0 / D1",
+      "textPreview": "• repositório e build | • versão no runtime | • catálogo de operações | • instrumentação D0 / D1",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• repositório e build"
+          },
+          {
+            "index": 2,
+            "text": "• versão no runtime"
+          },
+          {
+            "index": 3,
+            "text": "• catálogo de operações"
+          },
+          {
+            "index": 4,
+            "text": "• instrumentação D0 / D1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• repositório e build",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• repositório e build",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• versão no runtime",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• versão no runtime",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• catálogo de operações",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• catálogo de operações",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• instrumentação D0 / D1",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• instrumentação D0 / D1",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vq1oby5o",
+      "id": "7",
+      "name": "deliver-right",
+      "bbox": [
+        650,
+        225,
+        470,
+        280
+      ],
+      "geometry": "rect",
+      "text": "• consulta por OperationId\n• D2 direcionado\n• classificação de dados\n• demonstração G7",
+      "textPreview": "• consulta por OperationId | • D2 direcionado | • classificação de dados | • demonstração G7",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• consulta por OperationId"
+          },
+          {
+            "index": 2,
+            "text": "• D2 direcionado"
+          },
+          {
+            "index": 3,
+            "text": "• classificação de dados"
+          },
+          {
+            "index": 4,
+            "text": "• demonstração G7"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• consulta por OperationId",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• consulta por OperationId",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• D2 direcionado",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• D2 direcionado",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• classificação de dados",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• classificação de dados",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• demonstração G7",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• demonstração G7",
+              "fontSize": 24,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0nepwn6t",
+      "id": "8",
+      "name": "deliver-callout",
+      "bbox": [
+        178,
+        532,
+        924,
+        74
+      ],
+      "geometry": "rect",
+      "fillColor": "#0B7A3E",
+      "lineColor": "#0B7A3E",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1onqpsny",
+      "id": "9",
+      "name": "deliver-callout-text",
+      "bbox": [
+        214,
+        542,
+        852,
+        52
+      ],
+      "geometry": "rect",
+      "text": "A tecnologia pode variar. A evidência mínima, não.",
+      "textPreview": "A tecnologia pode variar. A evidência mínima, não.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "A tecnologia pode variar. A evidência mínima, não."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "A tecnologia pode variar. A evidência mínima, não.",
+          "resolvedTextStyle": {
+            "fontSize": 27,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "A tecnologia pode variar. A evidência mínima, não.",
+              "fontSize": 27,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

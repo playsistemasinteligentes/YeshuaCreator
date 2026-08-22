@@ -1,0 +1,768 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/n8hh48",
+    "id": "n8hh48",
+    "slide": 5,
+    "layoutId": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8byx0r25",
+      "id": "1",
+      "name": "section-5",
+      "bbox": [
+        72,
+        32,
+        390,
+        28
+      ],
+      "geometry": "rect",
+      "text": "G1 + G2",
+      "textPreview": "G1 + G2",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G1 + G2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G1 + G2",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#0B7A3E",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G1 + G2",
+              "fontSize": 14,
+              "color": "#0B7A3E",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7apwrm10",
+      "id": "2",
+      "name": "title-5",
+      "bbox": [
+        72,
+        76,
+        1110,
+        72
+      ],
+      "geometry": "rect",
+      "text": "Sem fonte confirmada, não há diagnóstico confiável",
+      "textPreview": "Sem fonte confirmada, não há diagnóstico confiável",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sem fonte confirmada, não há diagnóstico confiável"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sem fonte confirmada, não há diagnóstico confiável",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#172126",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sem fonte confirmada, não há diagnóstico confiável",
+              "fontSize": 39,
+              "color": "#172126",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m9gfyhkf",
+      "id": "3",
+      "name": "title-rule-5",
+      "bbox": [
+        72,
+        160,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9D0D3",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87epcju",
+      "id": "4",
+      "name": "brand-5",
+      "bbox": [
+        72,
+        674,
+        340,
+        22
+      ],
+      "geometry": "rect",
+      "text": "by Play Sistemas Inteligentes",
+      "textPreview": "by Play Sistemas Inteligentes",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "by Play Sistemas Inteligentes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "by Play Sistemas Inteligentes",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#657177"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "by Play Sistemas Inteligentes",
+              "fontSize": 12,
+              "color": "#657177"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/k7ydw729",
+      "id": "5",
+      "name": "page-5",
+      "bbox": [
+        1140,
+        674,
+        68,
+        22
+      ],
+      "geometry": "rect",
+      "text": "05",
+      "textPreview": "05",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 12,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "05"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "05",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "color": "#657177",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "05",
+              "fontSize": 12,
+              "color": "#657177",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z6pwn21o",
+      "id": "6",
+      "name": "g12-left",
+      "bbox": [
+        72,
+        205,
+        500,
+        386
+      ],
+      "geometry": "rect",
+      "fillColor": "#EEF1F2",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y5wvuhk3",
+      "id": "7",
+      "name": "g12-left-title",
+      "bbox": [
+        104,
+        232,
+        420,
+        44
+      ],
+      "geometry": "rect",
+      "text": "G1  Governança",
+      "textPreview": "G1  Governança",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G1  Governança"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G1  Governança",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "color": "#0B7A3E",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G1  Governança",
+              "fontSize": 26,
+              "color": "#0B7A3E",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54re1gjy",
+      "id": "8",
+      "name": "g12-left-body",
+      "bbox": [
+        104,
+        300,
+        410,
+        220
+      ],
+      "geometry": "rect",
+      "text": "• escopo por operação\n• responsáveis identificados\n• acessos e restrições\n• runbook inicial",
+      "textPreview": "• escopo por operação | • responsáveis identificados | • acessos e restrições | • runbook inicial",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• escopo por operação"
+          },
+          {
+            "index": 2,
+            "text": "• responsáveis identificados"
+          },
+          {
+            "index": 3,
+            "text": "• acessos e restrições"
+          },
+          {
+            "index": 4,
+            "text": "• runbook inicial"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• escopo por operação",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• escopo por operação",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• responsáveis identificados",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• responsáveis identificados",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• acessos e restrições",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• acessos e restrições",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• runbook inicial",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• runbook inicial",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/43ix8b2d",
+      "id": "9",
+      "name": "g12-right",
+      "bbox": [
+        632,
+        205,
+        576,
+        386
+      ],
+      "geometry": "rect",
+      "fillColor": "#E8F4ED",
+      "lineColor": "#0B7A3E",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1gjq5ob",
+      "id": "10",
+      "name": "g12-right-title",
+      "bbox": [
+        668,
+        232,
+        492,
+        44
+      ],
+      "geometry": "rect",
+      "text": "G2  Fonte e versão",
+      "textPreview": "G2  Fonte e versão",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "G2  Fonte e versão"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "G2  Fonte e versão",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "color": "#0B7A3E",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "G2  Fonte e versão",
+              "fontSize": 26,
+              "color": "#0B7A3E",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2pkza5w",
+      "id": "11",
+      "name": "g12-right-body",
+      "bbox": [
+        668,
+        292,
+        490,
+        250
+      ],
+      "geometry": "rect",
+      "text": "• repositório e build documentados\n• commit ou build confirmado\n• snapshot indexado\n• mesma versão exposta no runtime\n• working tree nunca representa produção",
+      "textPreview": "• repositório e build documentados | • commit ou build confirmado | • snapshot indexado | • mesma versão exposta no runtime | • working t...",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• repositório e build documentados"
+          },
+          {
+            "index": 2,
+            "text": "• commit ou build confirmado"
+          },
+          {
+            "index": 3,
+            "text": "• snapshot indexado"
+          },
+          {
+            "index": 4,
+            "text": "• mesma versão exposta no runtime"
+          },
+          {
+            "index": 5,
+            "text": "• working tree nunca representa produção"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• repositório e build documentados",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• repositório e build documentados",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• commit ou build confirmado",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• commit ou build confirmado",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• snapshot indexado",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• snapshot indexado",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• mesma versão exposta no runtime",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• mesma versão exposta no runtime",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 5,
+          "text": "• working tree nunca representa produção",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#172126"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• working tree nunca representa produção",
+              "fontSize": 21,
+              "color": "#172126"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

@@ -1,0 +1,513 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/o1yuls",
+    "id": "o1yuls",
+    "slide": 1,
+    "layoutId": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zu1c7i5c",
+      "id": "1",
+      "name": "cover-green-band",
+      "bbox": [
+        0,
+        0,
+        26,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#0B7A3E",
+      "lineColor": "#0B7A3E",
+      "lineWidth": 1
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0fadgnmx",
+      "id": "2",
+      "name": "cover-eyebrow",
+      "bbox": [
+        88,
+        80,
+        720,
+        32
+      ],
+      "geometry": "rect",
+      "text": "PADRAO DE SUPORTABILIDADE OPERACIONAL",
+      "textPreview": "PADRAO DE SUPORTABILIDADE OPERACIONAL",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PADRAO DE SUPORTABILIDADE OPERACIONAL"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PADRAO DE SUPORTABILIDADE OPERACIONAL",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#0B7A3E",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PADRAO DE SUPORTABILIDADE OPERACIONAL",
+              "fontSize": 16,
+              "color": "#0B7A3E",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lgju9sni",
+      "id": "3",
+      "name": "cover-title",
+      "bbox": [
+        88,
+        160,
+        720,
+        190
+      ],
+      "geometry": "rect",
+      "text": "Requisitos mínimos\npara suporte",
+      "textPreview": "Requisitos mínimos | para suporte",
+      "resolvedFontSize": 62,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 62,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Requisitos mínimos"
+          },
+          {
+            "index": 2,
+            "text": "para suporte"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Requisitos mínimos",
+          "resolvedTextStyle": {
+            "fontSize": 62,
+            "color": "#172126",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Requisitos mínimos",
+              "fontSize": 62,
+              "color": "#172126",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "para suporte",
+          "resolvedTextStyle": {
+            "fontSize": 62,
+            "color": "#172126",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "para suporte",
+              "fontSize": 62,
+              "color": "#172126",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhsvix43",
+      "id": "4",
+      "name": "cover-subtitle",
+      "bbox": [
+        88,
+        382,
+        660,
+        100
+      ],
+      "geometry": "rect",
+      "text": "Uma base comum para investigar, corrigir e evoluir sistemas legados com evidências verificáveis.",
+      "textPreview": "Uma base comum para investigar, corrigir e evoluir sistemas legados com evidências verificáveis.",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "color": "#657177",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Uma base comum para investigar, corrigir e evoluir sistemas"
+          },
+          {
+            "index": 2,
+            "text": "legados com evidências verificáveis."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Uma base comum para investigar, corrigir e evoluir sistemas legados com evidências verificáveis.",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "color": "#657177"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Uma base comum para investigar, corrigir e evoluir sistemas legados com evidências verificáveis.",
+              "fontSize": 25,
+              "color": "#657177"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ni1wb258",
+      "id": "5",
+      "name": "cover-seven",
+      "bbox": [
+        910,
+        116,
+        220,
+        270
+      ],
+      "geometry": "rect",
+      "text": "7",
+      "textPreview": "7",
+      "resolvedFontSize": 188,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 188,
+        "typeface": "+mn-lt",
+        "color": "#0B7A3E",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "7"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "7",
+          "resolvedTextStyle": {
+            "fontSize": 188,
+            "color": "#0B7A3E",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "7",
+              "fontSize": 188,
+              "color": "#0B7A3E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jadk7mt",
+      "id": "6",
+      "name": "cover-seven-label",
+      "bbox": [
+        888,
+        370,
+        260,
+        46
+      ],
+      "geometry": "rect",
+      "text": "gates mínimos",
+      "textPreview": "gates mínimos",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172126",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "gates mínimos"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "gates mínimos",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172126",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "gates mínimos",
+              "fontSize": 22,
+              "color": "#172126",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9kjedsne",
+      "id": "7",
+      "name": "cover-rule",
+      "bbox": [
+        88,
+        576,
+        1060,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C9D0D3",
+      "lineColor": "#C9D0D3",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/alcvmx4z",
+      "id": "8",
+      "name": "cover-brand",
+      "bbox": [
+        88,
+        606,
+        420,
+        32
+      ],
+      "geometry": "rect",
+      "text": "by Play Sistemas Inteligentes",
+      "textPreview": "by Play Sistemas Inteligentes",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#246BCE",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "by Play Sistemas Inteligentes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "by Play Sistemas Inteligentes",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#246BCE",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "by Play Sistemas Inteligentes",
+              "fontSize": 18,
+              "color": "#246BCE",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

@@ -1,9 +1,13 @@
 # Plano De Inteligencia Operacional
 
 Este plano tecnico e complementado por
-OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md, que define as fases normativas,
-evidencias exigidas e o gate minimo para aceitar sistemas Yeshua e legados no
-suporte.
+OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md, que define os conceitos, entregaveis,
+evidencias e o gate minimo exigidos de fabricantes de software para o servico
+de suporte SRE.
+
+A correlacao entre esses requisitos, a implementacao factual existente no
+Yeshua, as lacunas e a ordem interna de evolucao esta em
+`YESHUA_SRE_IMPLEMENTATION_PLAN.md`.
 
 ## Objetivo
 

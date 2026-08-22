@@ -292,7 +292,8 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Inteligencia Operacional
 
-- OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define o processo normativo de implantacao e o gate minimo de suportabilidade para aplicativos Yeshua e sistemas legados.
+- OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define os requisitos que fabricantes de software devem comprovar para utilizar o servico de suporte SRE.
+- YESHUA_SRE_IMPLEMENTATION_PLAN.md correlaciona cada requisito externo com a implementacao factual, as lacunas, os testes de aceite e a ordem de evolucao interna do Yeshua.
 - Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.

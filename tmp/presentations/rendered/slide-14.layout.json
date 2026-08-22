@@ -1,0 +1,407 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/xsd3pm",
+    "id": "xsd3pm",
+    "slide": 14,
+    "layoutId": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#172126",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "c9fd64f6-c219-49f6-b893-be65f7dda4f9",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "1e701e01-308e-46a7-b643-42d560e7319a",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jup83alc",
+      "id": "1",
+      "name": "close-eyebrow",
+      "bbox": [
+        90,
+        80,
+        400,
+        32
+      ],
+      "geometry": "rect",
+      "text": "O CRITÉRIO FINAL",
+      "textPreview": "O CRITÉRIO FINAL",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#76D39B",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "O CRITÉRIO FINAL"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "O CRITÉRIO FINAL",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#76D39B",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "O CRITÉRIO FINAL",
+              "fontSize": 16,
+              "color": "#76D39B",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vipwfmh",
+      "id": "2",
+      "name": "close-title",
+      "bbox": [
+        90,
+        160,
+        940,
+        190
+      ],
+      "geometry": "rect",
+      "text": "Uma equipe que não escreveu o sistema consegue explicar a falha.",
+      "textPreview": "Uma equipe que não escreveu o sistema consegue explicar a falha.",
+      "resolvedFontSize": 50,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 50,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Uma equipe que não escreveu o sistema"
+          },
+          {
+            "index": 2,
+            "text": "consegue explicar a falha."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Uma equipe que não escreveu o sistema consegue explicar a falha.",
+          "resolvedTextStyle": {
+            "fontSize": 50,
+            "color": "#FFFFFF",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Uma equipe que não escreveu o sistema consegue explicar a falha.",
+              "fontSize": 50,
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wrq5k32",
+      "id": "3",
+      "name": "close-body",
+      "bbox": [
+        90,
+        390,
+        850,
+        110
+      ],
+      "geometry": "rect",
+      "text": "Ela reconstrói a operação, identifica a versão, localiza os fontes relevantes e apresenta evidências verificáveis.",
+      "textPreview": "Ela reconstrói a operação, identifica a versão, localiza os fontes relevantes e apresenta evidências verificáveis.",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "color": "#D8DEE1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Ela reconstrói a operação, identifica a versão, localiza os fontes relevantes e"
+          },
+          {
+            "index": 2,
+            "text": "apresenta evidências verificáveis."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Ela reconstrói a operação, identifica a versão, localiza os fontes relevantes e apresenta evidências verificáveis.",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "color": "#D8DEE1"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Ela reconstrói a operação, identifica a versão, localiza os fontes relevantes e apresenta evidências verificáveis.",
+              "fontSize": 25,
+              "color": "#D8DEE1"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u5g7ql4f",
+      "id": "4",
+      "name": "close-rule",
+      "bbox": [
+        90,
+        566,
+        1000,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#4D5A60",
+      "lineColor": "#4D5A60",
+      "lineWidth": 1
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v6pozql0",
+      "id": "5",
+      "name": "close-brand",
+      "bbox": [
+        90,
+        600,
+        450,
+        38
+      ],
+      "geometry": "rect",
+      "text": "by Play Sistemas Inteligentes",
+      "textPreview": "by Play Sistemas Inteligentes",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#76D39B",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "by Play Sistemas Inteligentes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "by Play Sistemas Inteligentes",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#76D39B",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "by Play Sistemas Inteligentes",
+              "fontSize": 20,
+              "color": "#76D39B",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7ypsvml",
+      "id": "6",
+      "name": "close-action",
+      "bbox": [
+        690,
+        594,
+        430,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Próximo passo: definir o escopo da avaliação.",
+      "textPreview": "Próximo passo: definir o escopo da avaliação.",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Próximo passo: definir o escopo da avaliação."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Próximo passo: definir o escopo da avaliação.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#FFFFFF",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Próximo passo: definir o escopo da avaliação.",
+              "fontSize": 20,
+              "color": "#FFFFFF",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
