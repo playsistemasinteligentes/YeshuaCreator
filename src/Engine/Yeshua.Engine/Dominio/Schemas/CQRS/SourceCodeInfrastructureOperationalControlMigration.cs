@@ -1,15 +1,27 @@
 using Migration.Dominio;
+using System.Linq;
 using System.Text;
 
 namespace Dominio.Schemas.CQRS;
 
 public sealed class SourceCodeInfrastructureOperationalControlStateMigration : SourceCodeBase
 {
+    private readonly Migration.MigrationBase? _migration;
+
+    public SourceCodeInfrastructureOperationalControlStateMigration(
+        Migration.MigrationBase? migration = null)
+    {
+        _migration = migration;
+    }
+
     protected override StringBuilder GenerateCode()
     {
+        var domainTrackingMaskMethods = GenerateDomainTrackingMaskMethods();
+
         return new StringBuilder(
-            """
+            $$"""
             using Dominio.Interfaces;
+            using Dominio.Entitys;
 
             namespace Yeshua.Generated.OperationalControl;
 
@@ -30,13 +42,19 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 string? RecordId,
                 string Level,
                 string Depth,
-                DateTimeOffset? ExpiresAtUtc);
+                DateTimeOffset? ExpiresAtUtc)
+            {
+                public string? Field { get; init; }
+            }
 
             public readonly record struct OperationalLoggingContext(
                 string? Component,
                 string? Operation,
                 string? Entity,
-                string? RecordId);
+                string? RecordId)
+            {
+                public string? Field { get; init; }
+            }
 
             public readonly record struct OperationalLoggingDecision(
                 bool Enabled,
@@ -52,7 +70,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
 
             public sealed class OperationalLoggingPolicyState :
                 IOperationalLoggingPolicyAccessor,
-                IOperationalTelemetryPolicy
+                IOperationalTelemetryPolicy,
+                IDomainTrackingPolicy
             {
                 private OperationalLoggingPolicy _current;
 
@@ -95,16 +114,29 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     context.Component,
                     context.Operation,
                     context.Entity,
-                    context.RecordId);
+                    context.RecordId,
+                    context.Field);
             }
 
             private OperationalLoggingDecision Evaluate(
                 string? component,
                 string? operation,
                 string? entity,
-                string? recordId)
+                string? recordId,
+                string? field = null)
             {
-                var policy = Current;
+                return Evaluate(Current, component, operation, entity, recordId, field, true);
+            }
+
+            private OperationalLoggingDecision Evaluate(
+                OperationalLoggingPolicy policy,
+                string? component,
+                string? operation,
+                string? entity,
+                string? recordId,
+                string? field,
+                bool useDefault)
+            {
                 DiagnosticTarget? target = null;
                 if (policy.Targets.Count > 0)
                 {
@@ -116,7 +148,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                             !Matches(candidate.Component, component) ||
                             !Matches(candidate.Operation, operation) ||
                             !Matches(candidate.Entity, entity) ||
-                            !Matches(candidate.RecordId, recordId))
+                            !Matches(candidate.RecordId, recordId) ||
+                            !Matches(candidate.Field, field))
                         {
                             continue;
                         }
@@ -129,6 +162,15 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         target = candidate;
                     }
                 }
+
+                    if (!useDefault && target is null)
+                    {
+                        return new OperationalLoggingDecision(
+                            false,
+                            "None",
+                            "D0",
+                            null);
+                    }
 
                     var level = target?.Level ?? policy.DefaultLevel;
                     var depth = target?.Depth ?? policy.DefaultDepth;
@@ -156,6 +198,27 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         decision.Depth);
                 }
 
+                OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
+                    string component,
+                    string? operation,
+                    string? entity,
+                    string? recordId,
+                    string? field)
+                {
+                var decision = Evaluate(
+                    component,
+                    operation,
+                    entity,
+                    recordId,
+                    field);
+                    return new OperationalTelemetryDecision(
+                        decision.Enabled,
+                        decision.Level,
+                        decision.Depth);
+                }
+
+            {{domainTrackingMaskMethods}}
+
                 private static bool Matches(string? expected, string? actual)
                 {
                     return string.IsNullOrWhiteSpace(expected) ||
@@ -169,6 +232,7 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     if (!string.IsNullOrWhiteSpace(target.Operation)) score += 2;
                     if (!string.IsNullOrWhiteSpace(target.Entity)) score += 4;
                     if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 8;
+                    if (!string.IsNullOrWhiteSpace(target.Field)) score += 16;
                     return score;
                 }
             }
@@ -180,6 +244,108 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
     public void WriteGeneratedCode(string filePath)
     {
         WriteCode(GenerateCode(), filePath, false, false);
+    }
+
+    private string GenerateDomainTrackingMaskMethods()
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("                public ulong GetMask(");
+        sb.AppendLine("                    string entity,");
+        sb.AppendLine("                    string? operation = null,");
+        sb.AppendLine("                    string? recordId = null)");
+        sb.AppendLine("                {");
+        sb.AppendLine("                    var policy = Current;");
+        sb.AppendLine("                    if (policy.Targets.Count == 0)");
+        sb.AppendLine("                        return 0UL;");
+        sb.AppendLine("                    if (!HasDomainTrackingTargets(policy))");
+        sb.AppendLine("                        return 0UL;");
+        sb.AppendLine();
+
+        if (_migration is null || !_migration.Entitys.Any())
+        {
+            sb.AppendLine("                    return 0UL;");
+            sb.AppendLine("                }");
+            return sb.ToString();
+        }
+
+        sb.AppendLine("                    return entity switch");
+        sb.AppendLine("                    {");
+        foreach (var entity in _migration.Entitys)
+        {
+            sb.AppendLine($"                        \"{entity.EntityName}\" => Get{entity.EntityName}Mask(policy, operation, recordId),");
+        }
+        sb.AppendLine("                        _ => 0UL");
+        sb.AppendLine("                    };");
+        sb.AppendLine("                }");
+        sb.AppendLine();
+
+        foreach (var entity in _migration.Entitys)
+        {
+            var fields = entity.AddColumns
+                .Where(column => !column.IsBackEndField)
+                .Take(64)
+                .ToList();
+
+            sb.AppendLine($"                private ulong Get{entity.EntityName}Mask(");
+            sb.AppendLine("                    OperationalLoggingPolicy policy,");
+            sb.AppendLine("                    string? operation,");
+            sb.AppendLine("                    string? recordId)");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    ulong mask = 0UL;");
+            foreach (var field in fields)
+            {
+                sb.AppendLine($"                    if (DomainFieldTracked(policy, \"{entity.EntityName}\", operation, recordId, \"{field.Name}\"))");
+                sb.AppendLine($"                        mask |= {entity.EntityName}TrackingFields.{field.Name};");
+            }
+            sb.AppendLine("                    return mask;");
+            sb.AppendLine("                }");
+            sb.AppendLine();
+        }
+
+        sb.AppendLine("                private bool DomainFieldTracked(");
+        sb.AppendLine("                    OperationalLoggingPolicy policy,");
+        sb.AppendLine("                    string entity,");
+        sb.AppendLine("                    string? operation,");
+        sb.AppendLine("                    string? recordId,");
+        sb.AppendLine("                    string field)");
+        sb.AppendLine("                {");
+        sb.AppendLine("                    var decision = Evaluate(");
+        sb.AppendLine("                        policy,");
+        sb.AppendLine("                        \"DomainTracker\",");
+        sb.AppendLine("                        operation,");
+        sb.AppendLine("                        entity,");
+        sb.AppendLine("                        recordId,");
+        sb.AppendLine("                        field,");
+        sb.AppendLine("                        false);");
+        sb.AppendLine();
+        sb.AppendLine("                    return decision.MatchedTarget is { } target &&");
+        sb.AppendLine("                           string.Equals(target.Component, \"DomainTracker\", StringComparison.OrdinalIgnoreCase) &&");
+        sb.AppendLine("                           decision.Enabled &&");
+        sb.AppendLine("                           !decision.Depth.Equals(\"D0\", StringComparison.OrdinalIgnoreCase);");
+        sb.AppendLine("                }");
+        sb.AppendLine();
+        sb.AppendLine("                private static bool HasDomainTrackingTargets(OperationalLoggingPolicy policy)");
+        sb.AppendLine("                {");
+        sb.AppendLine("                    var now = DateTimeOffset.UtcNow;");
+        sb.AppendLine("                    foreach (var target in policy.Targets)");
+        sb.AppendLine("                    {");
+        sb.AppendLine("                        if (target.ExpiresAtUtc is not null && target.ExpiresAtUtc <= now)");
+        sb.AppendLine("                            continue;");
+        sb.AppendLine("                        if (!string.Equals(target.Component, \"DomainTracker\", StringComparison.OrdinalIgnoreCase))");
+        sb.AppendLine("                            continue;");
+        sb.AppendLine("                        if (string.Equals(target.Level, \"None\", StringComparison.OrdinalIgnoreCase))");
+        sb.AppendLine("                            continue;");
+        sb.AppendLine("                        if (string.Equals(target.Depth, \"D0\", StringComparison.OrdinalIgnoreCase))");
+        sb.AppendLine("                            continue;");
+        sb.AppendLine();
+        sb.AppendLine("                        return true;");
+        sb.AppendLine("                    }");
+        sb.AppendLine();
+        sb.AppendLine("                    return false;");
+        sb.AppendLine("                }");
+
+        return sb.ToString();
     }
 }
 

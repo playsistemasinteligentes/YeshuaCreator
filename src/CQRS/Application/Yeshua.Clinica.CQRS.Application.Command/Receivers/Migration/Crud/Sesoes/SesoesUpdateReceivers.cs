@@ -10,8 +10,10 @@
 
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
@@ -25,16 +27,19 @@ namespace Command.Receivers.Write
     {
         private readonly ISesoesWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public UpdateSesoesReceiver(
             ISesoesWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -42,9 +47,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.SesoesCrudCommand c) 
              {    
-                 var sesoes = new SesoesFactory(_logger).Create(c.PacienteId, c.DataInicio, c.DataFim, c.StatusAgendamento, c.StatusProntuario, c.Prontuario, c.QueixaPrincipal, c.RegistroDocumental, c.SintomasRelatados, c.MudancasDesdeUltimaSessaao, c.ComportamentoObservado, c.EstadoEmocionalGeral, c.DiscursoPensamentos, c.UsoMedicacao, c.TecnicasUtilizadas, c.QuestionamentosReflexoesAbordadas, c.ExerciciosTarefasSugeridas, c.DiagnoosticoHipoteseDiagnoostica, c.ObjetivosCurtoPrazo, c.ObjetivosLongoPrazo, c.FrequenciaSugeridaSessooes, c.EncaminhamentoOutrosProfissionais, c.InformacoesRelevantesFuturasConsultas, c.FeedbackPacienteSobreProcessoTerapeeutico, c.Id, c.ServicoId, c.MovimentacaoFinanceiraId, c.ProfissionalId);
-                 if (!sesoes.isValidUpdate())
-                     return ValidationError(sesoes.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateSesoes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateSesoesReceiver), commandName: "Command.Write.SesoesCrudCommand");
+                 var sesoes = new SesoesFactory(_logger, _domainTrackingPolicy).Create(context, c.PacienteId, c.DataInicio, c.DataFim, c.StatusAgendamento, c.StatusProntuario, c.Prontuario, c.QueixaPrincipal, c.RegistroDocumental, c.SintomasRelatados, c.MudancasDesdeUltimaSessaao, c.ComportamentoObservado, c.EstadoEmocionalGeral, c.DiscursoPensamentos, c.UsoMedicacao, c.TecnicasUtilizadas, c.QuestionamentosReflexoesAbordadas, c.ExerciciosTarefasSugeridas, c.DiagnoosticoHipoteseDiagnoostica, c.ObjetivosCurtoPrazo, c.ObjetivosLongoPrazo, c.FrequenciaSugeridaSessooes, c.EncaminhamentoOutrosProfissionais, c.InformacoesRelevantesFuturasConsultas, c.FeedbackPacienteSobreProcessoTerapeeutico, c.Id, c.ServicoId, c.MovimentacaoFinanceiraId, c.ProfissionalId);
+                 var domainResult = SesoesDomainBehavior.Apply(sesoes, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

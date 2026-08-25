@@ -1,0 +1,28 @@
+﻿{
+  "application": "APS.Cadastros",
+  "environment": "Production",
+  "baseUrlSettingsFile": "tests/CQRS/Yeshua.APS.Cadastros.CQRS.Tests.Integration.Api.Smoke/appsettings.json",
+  "smokeProject": "tests/CQRS/Yeshua.APS.Cadastros.CQRS.Tests.Integration.Api.Smoke/Yeshua.APS.Cadastros.CQRS.Tests.Integration.Api.Smoke.csproj",
+  "apiIdentityPath": "yapi/operational/identity",
+  "apiLivenessPath": "yapi/health/live",
+  "apiReadinessPath": "yapi/health/ready",
+  "workerLivenessPath": "yworker/health/live",
+  "workerReadinessPath": "yworker/health/ready",
+  "_yeshua": {
+    "artifact": "GENERATED_REGENERABLE",
+    "ownership": "ENGINE",
+    "sourceOfTruth": "DSL_OR_ENGINE_TEMPLATE"
+  },
+  "_operationalSpecification": {
+    "standard": "OPERATIONAL_SUPPORT_ADOPTION_STANDARD",
+    "gates": ["G2", "G7"],
+    "depths": ["D0"],
+    "severities": ["notApplicable"],
+    "modes": ["Live"],
+    "dataClassification": ["SafeMetadata"],
+    "identities": ["Application", "Environment", "Version"],
+    "technicalOutcomes": ["Success", "Failure"],
+    "businessOutcomes": ["notApplicable"],
+    "evidence": "PostBuildManifest"
+  }
+}

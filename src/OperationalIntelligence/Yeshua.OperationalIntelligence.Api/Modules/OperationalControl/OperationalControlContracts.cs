@@ -17,7 +17,10 @@ public sealed record DiagnosticTarget(
     string? RecordId,
     string Level,
     string Depth,
-    DateTimeOffset? ExpiresAtUtc);
+    DateTimeOffset? ExpiresAtUtc)
+{
+    public string? Field { get; init; }
+}
 
 public sealed record OperationalLoggingPolicyUpdate(
     string DefaultLevel,

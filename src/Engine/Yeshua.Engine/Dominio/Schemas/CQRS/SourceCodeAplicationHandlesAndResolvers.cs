@@ -688,6 +688,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"//scope;");
 
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+                sb.AppendLine($"using {CQRSParam.I.NameSpaceIterfaceAplicationServices};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceUnitOfWork};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
@@ -710,24 +711,27 @@ namespace Dominio.Schemas.CQRS
                 if (_useCase != null && _useCase.Entitys.Count > 0)
                 {
                     sb.AppendLine("        private readonly IUnitOfWork _unitOfWork;");
-                    sb.AppendLine($"        private readonly ILogger _logger;");
+                    sb.AppendLine("        private readonly IDomainTrackingPolicy _domainTrackingPolicy;");
                     foreach (var entity in _useCase.Entitys)
                     {
                         sb.AppendLine($"        private readonly I{entity.EntityName}ReadRepository _repRead{entity.EntityName};");
                         sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName};");
                     }
 
-                    sb.Append($"        public {_useCase.HandlerName}(IUnitOfWork unitOfWork,ILogger logger");
+                    sb.Append($"        public {_useCase.HandlerName}(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy");
                     for (int i = 0; i < _useCase.Entitys.Count; i++)
                     {
                         var entity = _useCase.Entitys[i];
                         sb.Append($",I{entity.EntityName}ReadRepository repRead{entity.EntityName}, I{entity.EntityName}WriteRepository repWrite{entity.EntityName}");
                     }
                     sb.AppendLine(")");
+                    sb.AppendLine("            : base(logger, executionContext)");
                     sb.AppendLine("        {");
 
                     sb.AppendLine($"           _unitOfWork = unitOfWork;");
                     sb.AppendLine($"           _logger = logger;");
+                    sb.AppendLine("           _executionContext = executionContext;");
+                    sb.AppendLine("           _domainTrackingPolicy = domainTrackingPolicy;");
 
 
                     foreach (var entity in _useCase.Entitys)

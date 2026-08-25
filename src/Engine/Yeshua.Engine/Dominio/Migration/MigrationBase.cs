@@ -49,14 +49,20 @@ namespace Dominio.Migration
             return this;
         }
 
-        public Entity AddToListEntity(string EntityName, bool create)
+        public Entity AddToListEntity(string EntityName, bool create, string entityDescription = "")
         {
             _entity = Entitys.Where(x => x.EntityName == EntityName).FirstOrDefault();
             if (_entity == null)
             {
-                _entity = new Entity(EntityName);
+                _entity = string.IsNullOrWhiteSpace(entityDescription)
+                    ? new Entity(EntityName)
+                    : new Entity(EntityName, entityDescription);
                 Entitys.Add(_entity);
                 _entity.create = create;
+            }
+            else if (!string.IsNullOrWhiteSpace(entityDescription))
+            {
+                _entity.SetDescription(entityDescription);
             }
             return _entity;
         }
@@ -72,7 +78,7 @@ namespace Dominio.Migration
         }
         public MigrationBase AddEntity(string EntityName, string EntityDescription)
         {
-            AddToListEntity(EntityName, true);
+            AddToListEntity(EntityName, true, EntityDescription);
             return this;
         }
         public MigrationBase AddEntity(string EntityName)
@@ -80,6 +86,23 @@ namespace Dominio.Migration
             Descricao descricao = new Descricao().Normalize(EntityName);
             AddToListEntity(EntityName, true);
             return this;
+        }
+
+        public MigrationBase LegacySource(string sourceName)
+        {
+            _entity.LegacySource(sourceName);
+            return this;
+        }
+
+        public MigrationBase FromView(string viewName)
+        {
+            _entity.FromView(viewName);
+            return this;
+        }
+
+        public EntityCustomTab CustomTab(string name, string title = "")
+        {
+            return _entity.CustomTab(name, title);
         }
 
 

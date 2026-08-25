@@ -41,6 +41,8 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                         sp.GetRequiredService<OperationalLoggingPolicyState>());
                     builder.Services.AddSingleton<Dominio.Interfaces.IOperationalTelemetryPolicy>(sp =>
                         sp.GetRequiredService<OperationalLoggingPolicyState>());
+                    builder.Services.AddSingleton<Dominio.Interfaces.IDomainTrackingPolicy>(sp =>
+                        sp.GetRequiredService<OperationalLoggingPolicyState>());
                     builder.Services.AddHostedService<OperationalPolicySynchronizer>();
 
                     builder.Services.AddScoped<UnitOfWork>();

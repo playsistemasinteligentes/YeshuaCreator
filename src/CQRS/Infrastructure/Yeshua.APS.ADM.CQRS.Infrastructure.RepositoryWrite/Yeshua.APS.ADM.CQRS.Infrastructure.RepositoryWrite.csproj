@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yeshua.CQRS.Infrastructure.Shared\Yeshua.CQRS.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.APS.ADM.CQRS.Application.Command\Yeshua.APS.ADM.CQRS.Application.Command.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.APS.ADM.CQRS.Application.RepositoryInterfaces\Yeshua.APS.ADM.CQRS.Application.RepositoryInterfaces.csproj" />
+  </ItemGroup>
+
+</Project>

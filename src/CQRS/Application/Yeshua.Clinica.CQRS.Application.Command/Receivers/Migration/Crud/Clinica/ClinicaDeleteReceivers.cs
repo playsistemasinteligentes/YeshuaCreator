@@ -10,8 +10,10 @@
 
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
@@ -25,16 +27,19 @@ namespace Command.Receivers.Write
     {
         private readonly IClinicaWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public DeleteClinicaReceiver(
             IClinicaWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -42,9 +47,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.ClinicaCrudCommand c) 
              {    
-                 var clinica = new ClinicaFactory(_logger).Create(c.Id, c.Nome, c.Endereco, c.Telefone);
-                 if (!clinica.isValidDelete())
-                     return ValidationError(clinica.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteClinica", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteClinicaReceiver), commandName: "Command.Write.ClinicaCrudCommand");
+                 var clinica = new ClinicaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Endereco, c.Telefone);
+                 var domainResult = ClinicaDomainBehavior.Apply(clinica, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

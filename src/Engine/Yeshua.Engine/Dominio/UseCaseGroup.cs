@@ -303,6 +303,13 @@ Command
             return this;
         }
 
+        public UseCaseGroup ExposeAsEntityAction(string entityName, string title, bool forRecord = true)
+        {
+            this.UseCaseSubGroup.Last().UseCaseCommand.Last().EntityActions.Add(
+                new EntityActionExposure(entityName, title, forRecord));
+            return this;
+        }
+
         public UseCaseGroup Strategy(Type type)
         {
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().Estrategys.Add(new Dominio.Strategy(type));

@@ -3,6 +3,7 @@
     showActionModal,
     loadActionContent
 } from "./actionModal.js";
+import { runCrudExtension } from "../extensions.js";
 
 export async function setupCrudActions(metadata, getFormData) {
 
@@ -13,8 +14,13 @@ export async function setupCrudActions(metadata, getFormData) {
     const btnSave = document.getElementById("btn-save");
     if (!btnSave) return;
 
+    const actionsContainer = btnSave.parentElement;
+
     // evita duplicação
-    if (document.getElementById("btn-action-audio")) return;
+    if (document.getElementById("btn-action-audio")) {
+        runCrudExtension("afterSetupActions", { metadata, getFormData, actionsContainer });
+        return;
+    }
 
     // 🔥 teu IF simples
     //if (metadata?.endpoints?.read === "/Sessoes/ReadSessoes") {
@@ -40,6 +46,8 @@ export async function setupCrudActions(metadata, getFormData) {
             );
         };
 
-        btnSave.parentElement.appendChild(btn);
+        actionsContainer.appendChild(btn);
     }
+
+    runCrudExtension("afterSetupActions", { metadata, getFormData, actionsContainer });
 }

@@ -37,13 +37,13 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"        void Delete(I{_entity.EntityName}Entity {_entity.EntityName.ToLower()});");
 
 
-            var key = _entity.AddColumns.First(x => x.IsKey);
-            var keyType = key.getCsharpType();
+            var keys = _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).ToList();
+            var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
 
             foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
             {
                 var type = column.getCsharpType();
-                sb.AppendLine($"        void Update{column.Name}({keyType} id, {type} value);");
+                sb.AppendLine($"        void Update{column.Name}({methodParamsKeys}, {type} value);");
             }
 
             sb.AppendLine("    }");

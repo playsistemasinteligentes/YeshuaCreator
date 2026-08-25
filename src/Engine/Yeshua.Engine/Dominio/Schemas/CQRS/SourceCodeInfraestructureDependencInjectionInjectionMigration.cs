@@ -43,7 +43,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("using RepositoryInterfaces.Patterns.Saga;");
                 sb.AppendLine("using Command.Receivers.Migration.Saga;");
             }
-            sb.AppendLine("using Command.Patterns.OutBox;");
+            if (hasSagas)
+                sb.AppendLine("using Command.Patterns.OutBox;");
             sb.AppendLine("using Command.Receivers;");
 
             sb.AppendLine("using RepositoryInterfaces.Patterns.UnitOfWork;");
@@ -82,6 +83,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
             sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.IOperationalTelemetryPolicy>(sp =>");
             sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
+            sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.IDomainTrackingPolicy>(sp =>");
+            sb.AppendLine("                        sp.GetRequiredService<OperationalLoggingPolicyState>());");
             sb.AppendLine("                    builder.Services.AddHostedService<OperationalPolicySynchronizer>();");
             if (_InfraEstrutctureType == InfraEstrutctureType.Worker)
             {
@@ -108,9 +111,12 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");
             if (hasSagas)
                 sb.AppendLine("                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();");
-            // pendencia: OutboxService e seus handlers usam repositorios gerados do aplicativo.
-            // Ao separar as infraestruturas por aplicativo, gerar/adaptar essas implementacoes no projeto Command local.
-            sb.AppendLine("                    builder.Services.AddScoped<OutboxService>();");
+            if (hasSagas)
+            {
+                // pendencia: OutboxService e seus handlers usam repositorios gerados do aplicativo.
+                // Ao separar as infraestruturas por aplicativo, gerar/adaptar essas implementacoes no projeto Command local.
+                sb.AppendLine("                    builder.Services.AddScoped<OutboxService>();");
+            }
             sb.AppendLine("");
         
 
@@ -127,8 +133,8 @@ namespace Dominio.Schemas.CQRS
                     //builder.Services.AddSingleton<ICacheService<IEnumerable<Y_Tenant_ConfigurationDTO>>, MemoryCacheService<IEnumerable<Y_Tenant_ConfigurationDTO>>>();
                     //builder.Services.AddSingleton<ICacheService<IEnumerable<Y_Tenant_ConfigurationTenantIDDTO>>, MemoryCacheService<IEnumerable<Y_Tenant_ConfigurationTenantIDDTO>>>();
 
-
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                    if (!entity.IsFromView)
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                     //sb.AppendLine($"builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository, Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
 
                     // clase concreta 
@@ -156,10 +162,12 @@ namespace Dominio.Schemas.CQRS
 
                     sb.AppendLine("});");
 
-
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
+                    if (!entity.IsFromView)
+                    {
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
+                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
+                    }
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver>();");
                     foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                     {
@@ -167,14 +175,19 @@ namespace Dominio.Schemas.CQRS
                     }
                 }
 
-                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                if (!entity.IsFromView)
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryRead}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryRead}.I{entity.EntityName}QueryRead, {CQRSParam.I.NameSpaceQueryRead}.{entity.EntityName}QueryRead>();");
-                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryWrite}.I{entity.EntityName}QueryWrite, {CQRSParam.I.NameSpaceQueryWrite}.{entity.EntityName}QueryWrite>();");
+                if (!entity.IsFromView)
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryWrite}.I{entity.EntityName}QueryWrite, {CQRSParam.I.NameSpaceQueryWrite}.{entity.EntityName}QueryWrite>();");
 
-                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
-                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
-                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
+                if (!entity.IsFromView)
+                {
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
+                }
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver>();");
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {

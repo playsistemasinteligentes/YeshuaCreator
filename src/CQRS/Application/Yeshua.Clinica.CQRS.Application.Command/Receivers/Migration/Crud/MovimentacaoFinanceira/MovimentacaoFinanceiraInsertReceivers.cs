@@ -10,8 +10,10 @@
 
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
@@ -25,16 +27,19 @@ namespace Command.Receivers.Write
     {
         private readonly IMovimentacaoFinanceiraWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public InsertMovimentacaoFinanceiraReceiver(
             IMovimentacaoFinanceiraWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -42,9 +47,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.MovimentacaoFinanceiraCrudCommand c) 
              {    
-                 var movimentacaofinanceira = new MovimentacaoFinanceiraFactory(_logger).Create(c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
-                 if (!movimentacaofinanceira.isValidInsert())
-                     return ValidationError(movimentacaofinanceira.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertMovimentacaoFinanceira", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertMovimentacaoFinanceiraReceiver), commandName: "Command.Write.MovimentacaoFinanceiraCrudCommand");
+                 var movimentacaofinanceira = new MovimentacaoFinanceiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
+                 var domainResult = MovimentacaoFinanceiraDomainBehavior.Apply(movimentacaofinanceira, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

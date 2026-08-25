@@ -72,8 +72,10 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
+                sb.AppendLine("using Dominio.Behaviors;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceEntitys};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
+                sb.AppendLine("using Dominio.Patterns.Domain;");
 
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using System;");
@@ -90,16 +92,19 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("    {");
                 sb.AppendLine($"        private readonly I{_entity.EntityName}WriteRepository _repository;");
                 sb.AppendLine($"        private readonly ILogger _logger;");
+                sb.AppendLine("        private readonly IDomainTrackingPolicy _domainTrackingPolicy;");
                 sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
                 sb.AppendLine();
                 sb.AppendLine($"        public {action.ToString()}{_entity.EntityName}Receiver(");
                 sb.AppendLine($"            I{_entity.EntityName}WriteRepository repository,");
                 sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
+                sb.AppendLine($"            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,");
                 sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
                 sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _repository = repository;");
                 sb.AppendLine("            _logger = logger;");
+                sb.AppendLine("            _domainTrackingPolicy = domainTrackingPolicy;");
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -108,9 +113,24 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand c) ");
                 sb.AppendLine("             {    ");
-                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger).Create({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => "c." + c.Name))});");
-                sb.AppendLine($"                 if (!{_entity.EntityName.ToLower()}.isValid{action}())");
-                sb.AppendLine($"                     return ValidationError({_entity.EntityName.ToLower()}.getErroMensagens(), null);");
+                var domainOperation = action switch
+                {
+                    CommandType.Insert => "DomainOperation.Registro",
+                    CommandType.Update => "DomainOperation.Alteracao",
+                    CommandType.Delete => "DomainOperation.Remocao",
+                    _ => "DomainOperation.Alteracao"
+                };
+                var receiverName = $"{action}{_entity.EntityName}Receiver";
+                var commandName = $"{CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand";
+                var factoryArguments = string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => "c." + c.Name));
+                var factoryCallArguments = string.IsNullOrWhiteSpace(factoryArguments)
+                    ? "context"
+                    : $"context, {factoryArguments}";
+                sb.AppendLine($"                 var context = DomainOperationContext.Create({domainOperation}, DomainEntryPoint.Crud, \"{action}{_entity.EntityName}\", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof({receiverName}), commandName: \"{commandName}\");");
+                sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger, _domainTrackingPolicy).Create({factoryCallArguments});");
+                sb.AppendLine($"                 var domainResult = {_entity.EntityName}DomainBehavior.Apply({_entity.EntityName.ToLower()}, context);");
+                sb.AppendLine("                 if (!domainResult.IsValid)");
+                sb.AppendLine("                     return ValidationError(domainResult.Errors, null);");
                 sb.AppendLine();
                 sb.AppendLine("                 try");
                 sb.AppendLine("                 {");

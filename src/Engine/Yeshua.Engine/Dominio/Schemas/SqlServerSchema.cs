@@ -23,6 +23,9 @@ namespace Dominio.Schemas
             List<MigrationQuery> querys = new List<MigrationQuery>();
             foreach (var e in migration.Entitys.Where(x => x.EntityName != "yStandardFields"))
             {
+                if (e.IsFromView)
+                    continue;
+
                 if (e.create)
                     querys.Add(CreateTable(e));
                 else

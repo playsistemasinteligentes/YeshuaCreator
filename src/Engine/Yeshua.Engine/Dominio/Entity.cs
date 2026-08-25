@@ -17,6 +17,14 @@ namespace Dominio
         public List<string> IndexDB = new List<string>();
         public List<Module> AddModules = new List<Module>();
         public List<IMigrationQueryDefinition> Queries { get; } = new List<IMigrationQueryDefinition>();
+        public List<EntityCustomTab> CustomTabs { get; } = new List<EntityCustomTab>();
+        public string LegacySourceName { get; private set; } = string.Empty;
+        public bool HasLegacySource => !string.IsNullOrWhiteSpace(LegacySourceName);
+        public string ViewSourceName { get; private set; } = string.Empty;
+        public bool IsFromView => !string.IsNullOrWhiteSpace(ViewSourceName);
+        public bool CanCreate => !IsFromView;
+        public bool CanUpdate => !IsFromView;
+        public bool CanDelete => !IsFromView;
 
         public bool create { get; set; }
         public int StatusColuns { get; set; }
@@ -29,6 +37,12 @@ namespace Dominio
         public Entity(string entityName, string entityDescription) : this(entityName)
         {
             this.EntityDescription = entityDescription;
+        }
+
+        public Entity SetDescription(string entityDescription)
+        {
+            EntityDescription = entityDescription;
+            return this;
         }
 
         private string Name { get; set; }
@@ -51,6 +65,41 @@ namespace Dominio
         {
             this.CachedTable = true;
             return this;
+        }
+
+        public Entity LegacySource(string sourceName)
+        {
+            this.LegacySourceName = sourceName;
+            return this;
+        }
+
+        public Entity FromView(string viewName)
+        {
+            this.ViewSourceName = viewName;
+            return this;
+        }
+
+        internal void CopyMetadataFrom(Entity entity)
+        {
+            if (entity.HasLegacySource)
+                LegacySource(entity.LegacySourceName);
+
+            if (entity.IsFromView)
+                FromView(entity.ViewSourceName);
+
+            foreach (var customTab in entity.CustomTabs)
+            {
+                CustomTab(customTab.Name, customTab.Title)
+                    .UseCase(customTab.UseCaseName)
+                    .FrontComponent(customTab.FrontComponentName);
+            }
+        }
+
+        public EntityCustomTab CustomTab(string name, string title = "")
+        {
+            var tab = new EntityCustomTab(this, name, title);
+            CustomTabs.Add(tab);
+            return tab;
         }
 
         public Entity AddColumn(string columnName, string description)
@@ -104,6 +153,14 @@ namespace Dominio
                 return this.AddColumns.Last().WhereClauses(WhereClauses);
             else
                 return this.AlterColumns.Last().WhereClauses(WhereClauses);
+        }
+
+        public Entity LegacyColumn(string columnName, string columnType = "", string conversion = "")
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().LegacyColumn(columnName, columnType, conversion);
+            else
+                return this.AlterColumns.Last().LegacyColumn(columnName, columnType, conversion);
         }
 
 
@@ -225,6 +282,21 @@ namespace Dominio
 
             return entity;
         }
+        public Entity RelationTab(string title)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().RelationTab(title);
+            else
+                return this.AlterColumns.Last().RelationTab(title);
+        }
+
+        public Entity RelationTab(string name, string title)
+        {
+            if (this.StatusColuns == 1)
+                return this.AddColumns.Last().RelationTab(name, title);
+            else
+                return this.AlterColumns.Last().RelationTab(name, title);
+        }
         public Entity NotNull()
         {
             if (this.StatusColuns == 1)
@@ -268,5 +340,44 @@ namespace Dominio
         }
 
 
+    }
+
+    public class EntityCustomTab
+    {
+        public EntityCustomTab(Entity entity, string name, string title = "")
+        {
+            Entity = entity;
+            Name = name;
+            Title = string.IsNullOrWhiteSpace(title) ? name : title;
+        }
+
+        public Entity Entity { get; }
+        public string Name { get; }
+        public string Title { get; private set; }
+        public string UseCaseName { get; private set; } = string.Empty;
+        public string FrontComponentName { get; private set; } = string.Empty;
+
+        public EntityCustomTab UseCase(string useCaseName)
+        {
+            UseCaseName = useCaseName;
+            return this;
+        }
+
+        public EntityCustomTab FrontComponent(string frontComponentName)
+        {
+            FrontComponentName = frontComponentName;
+            return this;
+        }
+
+        public EntityCustomTab Label(string title)
+        {
+            Title = title;
+            return this;
+        }
+
+        public Entity Done()
+        {
+            return Entity;
+        }
     }
 }

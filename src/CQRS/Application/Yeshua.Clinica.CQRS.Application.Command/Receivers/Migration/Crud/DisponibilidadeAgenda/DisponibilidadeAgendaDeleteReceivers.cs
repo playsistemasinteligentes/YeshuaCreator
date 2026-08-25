@@ -10,8 +10,10 @@
 
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
@@ -25,16 +27,19 @@ namespace Command.Receivers.Write
     {
         private readonly IDisponibilidadeAgendaWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public DeleteDisponibilidadeAgendaReceiver(
             IDisponibilidadeAgendaWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -42,9 +47,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.DisponibilidadeAgendaCrudCommand c) 
              {    
-                 var disponibilidadeagenda = new DisponibilidadeAgendaFactory(_logger).Create(c.Id, c.ProfissionalId, c.DataHora);
-                 if (!disponibilidadeagenda.isValidDelete())
-                     return ValidationError(disponibilidadeagenda.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteDisponibilidadeAgenda", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteDisponibilidadeAgendaReceiver), commandName: "Command.Write.DisponibilidadeAgendaCrudCommand");
+                 var disponibilidadeagenda = new DisponibilidadeAgendaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProfissionalId, c.DataHora);
+                 var domainResult = DisponibilidadeAgendaDomainBehavior.Apply(disponibilidadeagenda, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

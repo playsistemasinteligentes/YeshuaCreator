@@ -60,6 +60,22 @@ namespace Dominio.Interfaces
             string? operation = null,
             string? entity = null,
             string? recordId = null);
+
+        OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation,
+            string? entity,
+            string? recordId,
+            string? field)
+            => Evaluate(component, operation, entity, recordId);
+    }
+
+    public interface IDomainTrackingPolicy
+    {
+        ulong GetMask(
+            string entity,
+            string? operation = null,
+            string? recordId = null);
     }
 
     public interface ILogger
@@ -85,6 +101,13 @@ namespace Dominio.Interfaces
             bool succeeded,
             long durationMs,
             Exception? exception = null);
+        void DomainValueChanged(
+            string entity,
+            string field,
+            string traceId,
+            string? operation,
+            string? recordId,
+            object? value);
         void Metric(string component, string metric, long value);
         OperationalTelemetrySnapshot Snapshot();
     }

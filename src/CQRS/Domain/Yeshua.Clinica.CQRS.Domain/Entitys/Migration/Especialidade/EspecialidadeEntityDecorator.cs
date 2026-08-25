@@ -18,15 +18,42 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class EspecialidadeDecorator : IEspecialidadeEntity
+                    public static class EspecialidadeTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong Descricao = 1UL << 1;
+            public const ulong TenantID = 1UL << 2;
+            public const ulong Deleted = 1UL << 3;
+            public const ulong Changed = 1UL << 4;
+            public const ulong UserId = 1UL << 5;
+        }
+
+        public partial class EspecialidadeDecorator : IEspecialidadeEntity
 {
 
                         private readonly IEspecialidadeEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public EspecialidadeDecorator(IEspecialidadeEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public EspecialidadeDecorator(
+                            IEspecialidadeEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public int? Id
                                     {
@@ -35,8 +62,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & EspecialidadeTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("Especialidade", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -48,8 +76,9 @@
                                         {
                                             if (_inner.Descricao != value)
                                             {
-                                                _logger.Info($"Propriedade Descricao: antes={_inner.Descricao}, depois={value}");
                                                 _inner.Descricao = value;
+                                                if ((_trackingMask & EspecialidadeTrackingFields.Descricao) != 0UL)
+                                                    _logger.DomainValueChanged("Especialidade", "Descricao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -61,8 +90,9 @@
                                         {
                                             if (_inner.TenantID != value)
                                             {
-                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
                                                 _inner.TenantID = value;
+                                                if ((_trackingMask & EspecialidadeTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("Especialidade", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -74,8 +104,9 @@
                                         {
                                             if (_inner.Deleted != value)
                                             {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
                                                 _inner.Deleted = value;
+                                                if ((_trackingMask & EspecialidadeTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("Especialidade", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -87,8 +118,9 @@
                                         {
                                             if (_inner.Changed != value)
                                             {
-                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
                                                 _inner.Changed = value;
+                                                if ((_trackingMask & EspecialidadeTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("Especialidade", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -100,8 +132,9 @@
                                         {
                                             if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
                                                 _inner.UserId = value;
+                                                if ((_trackingMask & EspecialidadeTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("Especialidade", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

@@ -166,8 +166,25 @@ namespace Shered.Logger
                     traceId,
                     succeeded,
                     durationMs,
-                    exception);
+                exception);
             }
+        }
+
+        public void DomainValueChanged(
+            string entity,
+            string field,
+            string traceId,
+            string? operation,
+            string? recordId,
+            object? value)
+        {
+            WriteDomainValueChanged(
+                entity,
+                field,
+                traceId,
+                operation,
+                recordId,
+                value);
         }
 
         public void Metric(string component, string metric, long value)
@@ -302,6 +319,35 @@ namespace Shered.Logger
             }
         }
 
+        private static void WriteDomainValueChanged(
+            string entity,
+            string field,
+            string traceId,
+            string? operation,
+            string? recordId,
+            object? value)
+        {
+            try
+            {
+                var buffer = new ArrayBufferWriter<byte>(384);
+                using var writer = new Utf8JsonWriter(buffer);
+                WriteHeader(writer, "Information", "DomainTracker");
+                writer.WriteString("Entity", entity);
+                writer.WriteString("Field", field);
+                writer.WriteString("TraceId", traceId);
+                if (!string.IsNullOrWhiteSpace(operation))
+                    writer.WriteString("Operation", operation);
+                if (!string.IsNullOrWhiteSpace(recordId))
+                    writer.WriteString("RecordId", recordId);
+                WriteTelemetryValue(writer, "Value", value);
+                WriteFooter(writer, buffer);
+            }
+            catch
+            {
+                // A escrita de log nunca interrompe o fluxo de negocio.
+            }
+        }
+
         private static void WriteHeader(Utf8JsonWriter writer, string level, string category)
         {
             writer.WriteStartObject();
@@ -320,6 +366,49 @@ namespace Shered.Logger
             writer.WriteEndObject();
             writer.Flush();
             Console.WriteLine(Encoding.UTF8.GetString(buffer.WrittenSpan));
+        }
+
+        private static void WriteTelemetryValue(
+            Utf8JsonWriter writer,
+            string propertyName,
+            object? value)
+        {
+            switch (value)
+            {
+                case null:
+                    writer.WriteNull(propertyName);
+                    break;
+                case string stringValue:
+                    writer.WriteString(propertyName, stringValue);
+                    break;
+                case bool boolValue:
+                    writer.WriteBoolean(propertyName, boolValue);
+                    break;
+                case int intValue:
+                    writer.WriteNumber(propertyName, intValue);
+                    break;
+                case long longValue:
+                    writer.WriteNumber(propertyName, longValue);
+                    break;
+                case decimal decimalValue:
+                    writer.WriteNumber(propertyName, decimalValue);
+                    break;
+                case double doubleValue:
+                    writer.WriteNumber(propertyName, doubleValue);
+                    break;
+                case float floatValue:
+                    writer.WriteNumber(propertyName, floatValue);
+                    break;
+                case DateTime dateTimeValue:
+                    writer.WriteString(propertyName, dateTimeValue);
+                    break;
+                case DateTimeOffset dateTimeOffsetValue:
+                    writer.WriteString(propertyName, dateTimeOffsetValue);
+                    break;
+                default:
+                    writer.WriteString(propertyName, value.ToString());
+                    break;
+            }
         }
 
         private bool DetailEnabled(string component, string operation)

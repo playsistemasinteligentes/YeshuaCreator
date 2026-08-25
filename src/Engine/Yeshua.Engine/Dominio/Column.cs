@@ -54,6 +54,13 @@ namespace Dominio
         public bool IsBackEndField { get; set; } = false;
         public bool WhereNeedBe { get; set; } = false;
         public string DisplayGroup { get; set; } = "Geral";
+        public string LegacyColumnName { get; private set; } = string.Empty;
+        public string LegacyColumnType { get; private set; } = string.Empty;
+        public string LegacyConversion { get; private set; } = string.Empty;
+        public bool HasLegacyColumn => !string.IsNullOrWhiteSpace(LegacyColumnName);
+        public bool IsRelationTab { get; private set; }
+        public string RelationTabName { get; private set; } = string.Empty;
+        public string RelationTabTitle { get; private set; } = string.Empty;
 
         public List<string> NotAplicableStandardFieldToEntity { get; private set; } = new List<string>();
         public string ClausesWhere { get; private set; } = "";
@@ -217,6 +224,19 @@ namespace Dominio
             return this.Entity;
         }
 
+        public Entity RelationTab(string title)
+        {
+            return RelationTab(title, title);
+        }
+
+        public Entity RelationTab(string name, string title)
+        {
+            this.IsRelationTab = true;
+            this.RelationTabName = name;
+            this.RelationTabTitle = string.IsNullOrWhiteSpace(title) ? name : title;
+            return this.Entity;
+        }
+
 
         internal Entity NotNull()
         {
@@ -276,7 +296,14 @@ namespace Dominio
                 ColumnReference = this.ColumnReference,
                 Length = this.Length,
                 Precision = this.Precision,
-                FrontVisibol = this.FrontVisibol
+                FrontVisibol = this.FrontVisibol,
+                LegacyColumnName = this.LegacyColumnName,
+                LegacyColumnType = this.LegacyColumnType,
+                LegacyConversion = this.LegacyConversion,
+                IsRelationTab = this.IsRelationTab,
+                RelationTabName = this.RelationTabName,
+                RelationTabTitle = this.RelationTabTitle,
+                DisplayGroup = this.DisplayGroup
             };
 
             if (this.Enum != null)
@@ -319,6 +346,14 @@ namespace Dominio
         internal Entity WhereClauses(string whereClauses)
         {
             this.ClausesWhere = whereClauses;
+            return this.Entity;
+        }
+
+        internal Entity LegacyColumn(string legacyColumnName, string legacyColumnType = "", string legacyConversion = "")
+        {
+            this.LegacyColumnName = legacyColumnName;
+            this.LegacyColumnType = legacyColumnType;
+            this.LegacyConversion = legacyConversion;
             return this.Entity;
         }
 

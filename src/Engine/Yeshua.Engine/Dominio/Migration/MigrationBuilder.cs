@@ -60,7 +60,7 @@ namespace Dominio.Migration
 
             foreach (var m in migration)
             {
-                foreach (var entity in m.Entitys.Where(x => x.EntityName != "yStandardFields"))
+                foreach (var entity in m.Entitys.Where(x => x.EntityName != "yStandardFields" && !x.IsFromView))
                 {
                     foreach (var col in columns)
                     {
@@ -151,6 +151,8 @@ namespace Dominio.Migration
                 }
                 else
                 {
+                    sanitizedEntity.CopyMetadataFrom(entity);
+
                     int totalColuns = entity.AddColumns.Count;
                     for (var i = 0; i < totalColuns; i++)
                     {

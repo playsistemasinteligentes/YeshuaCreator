@@ -119,8 +119,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
 
 
-                var columnsString = string.Join(", ", _entity.AddColumns.Select(x => x.Name));
-                sb.AppendLine($"            this.Query = $@\" select {columnsString} from {_entity.EntityName} \";");
+                var sourceName = GetReadSourceName(_entity);
+                var columnsString = BuildReadSelectColumns(_entity, _entity.AddColumns);
+                sb.AppendLine($"            this.Query = $@\" select {columnsString} from {sourceName} \";");
 
 
                 foreach (var item in _entity.AddColumns.Where(x => !x.IsBackEndField))
@@ -136,7 +137,10 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            int offset = (page - 1) * pageSize;");
                 sb.AppendLine("            dict[\"Offset\"] = offset;");
                 sb.AppendLine("            dict[\"PageSize\"] = pageSize;");
-                sb.AppendLine("            Query += \" ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
+                var orderColumnModel = _entity.AddColumns.FirstOrDefault(x => x.IsKey && !x.IsBackEndField)
+                    ?? _entity.AddColumns.First(x => !x.IsBackEndField);
+                var orderColumn = GetReadSqlColumn(_entity, orderColumnModel);
+                sb.AppendLine($"            Query += \" ORDER BY {orderColumn} OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\"; ");
 
                 sb.AppendLine($"            this.Parameters = parameters;");
                 sb.AppendLine("            return new QueryModel(this.Query, this.Parameters);");
@@ -148,8 +152,11 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"        public QueryModel {_entity.EntityName}{column.Name}Query({CQRSParam.I.NameSpaceCommandPatterns}.SearchFKCommand Command {takeOff})");
                     sb.AppendLine("        {");
 
-                    columnsString = string.Join(", ", column.EntityFK.AddColumns.Where(x => x.DisplayFK).Select(x => x.Name));
-                    sb.AppendLine($"            this.Query = $@\" select {columnsString} from {column.EntityFK.EntityName} \";");
+                    columnsString = BuildReadSelectColumns(column.EntityFK, column.EntityFK.AddColumns.Where(x => x.DisplayFK));
+                    var fkSourceName = GetReadSourceName(column.EntityFK);
+                    var fkReferenceColumn = column.EntityFK.AddColumns.FirstOrDefault(x => x.Name == column.ColumnReference);
+                    var fkReferenceSqlColumn = fkReferenceColumn == null ? column.ColumnReference : GetReadSqlColumn(column.EntityFK, fkReferenceColumn);
+                    sb.AppendLine($"            this.Query = $@\" select {columnsString} from {fkSourceName} \";");
                     sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
@@ -161,7 +168,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("                 {");
 
                     sb.AppendLine($"                      dict[\"{column.ColumnReference}\"] = numero; //01");
-                    sb.AppendLine($"                      whereClauses.Add($\" {column.ColumnReference} = @{column.ColumnReference}\");//01 ");
+                    sb.AppendLine($"                      whereClauses.Add($\" {fkReferenceSqlColumn} = @{column.ColumnReference}\");//01 ");
 
                     sb.AppendLine("                 }");
                     sb.AppendLine("                 else ");
@@ -170,12 +177,13 @@ namespace Dominio.Schemas.CQRS
                     foreach (var item in column.EntityFK.AddColumns.Where(x => x.DisplayFK))
                     {
                         sb.AppendLine($"                      dict[\"{item.Name}\"] = $\"%{{Command.searchFK}}%\";//02 ");
-                        sb.AppendLine($"                      whereClauses.Add($\" {item.Name} like @{item.Name} \");//02");
+                        var displaySqlColumn = GetReadSqlColumn(column.EntityFK, item);
+                        sb.AppendLine($"                      whereClauses.Add($\" {displaySqlColumn} like @{item.Name} \");//02");
                     }
                     sb.AppendLine("                 }");
                     sb.AppendLine("           }");
                     foreach (var item in column.EntityFK.AddColumns.Where(x => x.WhereNeedBe))
-                        Parameters(sb, item, true);
+                        Parameters(sb, item, true, column.EntityFK);
 
                     if (!string.IsNullOrEmpty(column.ClausesWhere))
                         sb.AppendLine($"                      whereClauses.Add(\" {column.ClausesWhere} \"); //03");
@@ -199,14 +207,14 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
                     sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
-                    sb.AppendLine($"            this.Query = $\"SELECT 1 FROM {_entity.EntityName} \";");
+                    sb.AppendLine($"            this.Query = $\"SELECT 1 FROM {GetReadSourceName(_entity)} \";");
 
                     foreach (var item in _entity.AddColumns.Where(x => x.WhereNeedBe))
                         Parameters(sb, item);
 
 
                     sb.AppendLine($"                      dict[\"{column.Name}\"] = value; //04");
-                    sb.AppendLine($"                      whereClauses.Add($\" {column.Name} = @{column.Name} \");//04");
+                    sb.AppendLine($"                      whereClauses.Add($\" {GetReadSqlColumn(_entity, column)} = @{column.Name} \");//04");
                     sb.AppendLine("            if (whereClauses.Any()) ");
                     sb.AppendLine("            this.Query += $\" WHERE ({string.Join(\" AND \", whereClauses)})\"; "); // pendencia OR
 
@@ -227,12 +235,12 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
                     sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
 
-                    sb.AppendLine($"            this.Query = $\"SELECT * FROM {_entity.EntityName} \";");
+                    sb.AppendLine($"            this.Query = $\"SELECT {BuildReadSelectColumns(_entity, _entity.AddColumns)} FROM {GetReadSourceName(_entity)} \";");
                     foreach (var item in _entity.AddColumns.Where(x => x.WhereNeedBe))
                         Parameters(sb, item);
 
                     sb.AppendLine($"                      dict[\"{column.Name}\"] = value; //06");
-                    sb.AppendLine($"                      whereClauses.Add($\" {column.Name} = @{column.Name} \");//06");
+                    sb.AppendLine($"                      whereClauses.Add($\" {GetReadSqlColumn(_entity, column)} = @{column.Name} \");//06");
                     sb.AppendLine("            if (whereClauses.Any()) ");
                     sb.AppendLine("            this.Query += $\" WHERE ({string.Join(\" AND \", whereClauses)})\"; "); // pendencia OR
 
@@ -448,8 +456,28 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("}");
             }
         }
-        private void Parameters(StringBuilder sb, Column colunm, bool suarchFK = false)
+        private string GetReadSourceName(Entity entity)
         {
+            return entity.IsFromView ? entity.ViewSourceName : entity.EntityName;
+        }
+
+        private string GetReadSqlColumn(Entity entity, Column column)
+        {
+            return entity.IsFromView && column.HasLegacyColumn ? column.LegacyColumnName : column.Name;
+        }
+
+        private string BuildReadSelectColumns(Entity entity, IEnumerable<Column> columns)
+        {
+            return string.Join(", ", columns.Select(column =>
+            {
+                var sqlColumn = GetReadSqlColumn(entity, column);
+                return sqlColumn == column.Name ? column.Name : $"{sqlColumn} AS {column.Name}";
+            }));
+        }
+
+        private void Parameters(StringBuilder sb, Column colunm, bool suarchFK = false, Entity sourceEntity = null)
+        {
+            var sqlColumnName = GetReadSqlColumn(sourceEntity ?? _entity, colunm);
             if (colunm.WhereNeedBe)
             {
                 if (colunm.ValueDefault.StartsWith("#"))
@@ -458,7 +486,7 @@ namespace Dominio.Schemas.CQRS
                 else
                     sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} dict[\"{colunm.Name}\"] = {colunm.ValueDefault};");
 
-                sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
+                sb.AppendLine($"{(colunm.WhereCanTakeOff && !suarchFK ? $"if (!TakeOff{colunm.Name}) " : "")} whereClauses.Add($\"{sqlColumnName} = @{colunm.Name}\");");
             }
             else
             {
@@ -470,12 +498,12 @@ namespace Dominio.Schemas.CQRS
                 else if (colunm.getCsharpType() == "string")
                 {
                     sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{colunm.Name})) dict[\"{colunm.Name}\"] = $\"%{{Command.{colunm.Name}}}%\";");
-                    sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{colunm.Name})) whereClauses.Add($\"{colunm.Name} like @{colunm.Name}\");");
+                    sb.AppendLine($"if (!string.IsNullOrEmpty(Command.{colunm.Name})) whereClauses.Add($\"{sqlColumnName} like @{colunm.Name}\");");
                 }
                 else if (colunm.getCsharpType() == "int")
                 {
                     sb.AppendLine($"if (Command.{colunm.Name}.HasValue) dict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
-                    sb.AppendLine($"if (Command.{colunm.Name}.HasValue) whereClauses.Add($\"{colunm.Name} = @{colunm.Name}\");");
+                    sb.AppendLine($"if (Command.{colunm.Name}.HasValue) whereClauses.Add($\"{sqlColumnName} = @{colunm.Name}\");");
                 }
                 else if (colunm.getCsharpType() == "datetime")
                 {

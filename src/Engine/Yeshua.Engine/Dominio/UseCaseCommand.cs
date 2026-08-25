@@ -47,10 +47,25 @@ namespace Dominio
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();
         public List<Strategy> Estrategys = new List<Strategy>();
+        public List<EntityActionExposure> EntityActions = new List<EntityActionExposure>();
 
         public void AddScope(string scope)
         {
             Scopes.Add(scope);
         }
+    }
+
+    public class EntityActionExposure
+    {
+        public EntityActionExposure(string entityName, string title, bool forRecord)
+        {
+            EntityName = entityName;
+            Title = title;
+            ForRecord = forRecord;
+        }
+
+        public string EntityName { get; }
+        public string Title { get; }
+        public bool ForRecord { get; }
     }
 }

@@ -10,8 +10,10 @@
 
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
@@ -25,16 +27,19 @@ namespace Command.Receivers.Write
     {
         private readonly IGrupoServicoWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public UpdateGrupoServicoReceiver(
             IGrupoServicoWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -42,9 +47,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.GrupoServicoCrudCommand c) 
              {    
-                 var gruposervico = new GrupoServicoFactory(_logger).Create(c.Id, c.Descricao);
-                 if (!gruposervico.isValidUpdate())
-                     return ValidationError(gruposervico.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "UpdateGrupoServico", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(UpdateGrupoServicoReceiver), commandName: "Command.Write.GrupoServicoCrudCommand");
+                 var gruposervico = new GrupoServicoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao);
+                 var domainResult = GrupoServicoDomainBehavior.Apply(gruposervico, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

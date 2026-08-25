@@ -1,6 +1,4 @@
-﻿namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration;
-
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -22,6 +20,8 @@
 // businessOutcomes: notApplicable
 // evidence: TechnicalSmoke
 // </operational-spec>
+
+namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration;
 
 [Trait("TestPurpose", "TechnicalSmoke")]
 [Trait("SpecificationGate", "G7")]

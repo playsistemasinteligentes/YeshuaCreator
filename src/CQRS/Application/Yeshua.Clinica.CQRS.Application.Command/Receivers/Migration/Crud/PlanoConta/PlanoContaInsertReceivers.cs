@@ -10,8 +10,10 @@
 
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
@@ -25,16 +27,19 @@ namespace Command.Receivers.Write
     {
         private readonly IPlanoContaWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public InsertPlanoContaReceiver(
             IPlanoContaWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -42,9 +47,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.PlanoContaCrudCommand c) 
              {    
-                 var planoconta = new PlanoContaFactory(_logger).Create(c.Id, c.Codigo, c.Nome, c.Tipo);
-                 if (!planoconta.isValidInsert())
-                     return ValidationError(planoconta.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertPlanoConta", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertPlanoContaReceiver), commandName: "Command.Write.PlanoContaCrudCommand");
+                 var planoconta = new PlanoContaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Codigo, c.Nome, c.Tipo);
+                 var domainResult = PlanoContaDomainBehavior.Apply(planoconta, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

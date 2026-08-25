@@ -83,7 +83,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
 
             #region Insert 
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(x => !x.IsFromView))
             {
                 sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -100,7 +100,7 @@ namespace Dominio.Schemas.CQRS
             #endregion
 
             // update 
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(x => !x.IsFromView))
             {
                 sb.AppendLine($"app.MapPut(\"{getPrefixo()}/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -116,7 +116,7 @@ namespace Dominio.Schemas.CQRS
             }
 
             // Delete
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(x => !x.IsFromView))
             {
                 sb.AppendLine($"app.MapDelete(\"{getPrefixo()}/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -255,7 +255,19 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("    var metadatacrud = new");
                 sb.AppendLine("    {");
+                sb.AppendLine($"        entityName = \"{entidade.EntityName}\",");
                 sb.AppendLine($"        entityDescription = \"{entidade.getDescription()}\",");
+                sb.AppendLine("        source = new");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            kind = \"{(entidade.IsFromView ? "view" : "table")}\",");
+                sb.AppendLine($"            name = \"{(entidade.IsFromView ? entidade.ViewSourceName : entidade.EntityName)}\"");
+                sb.AppendLine("        },");
+                sb.AppendLine("        capabilities = new");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            create = {entidade.CanCreate.ToString().ToLower()},");
+                sb.AppendLine($"            update = {entidade.CanUpdate.ToString().ToLower()},");
+                sb.AppendLine($"            delete = {entidade.CanDelete.ToString().ToLower()}");
+                sb.AppendLine("        },");
 
                 // 🔎 BLOCO DE PESQUISA
                 sb.AppendLine("        search = new[]{");
@@ -358,15 +370,19 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"            {BuildFieldMeta(item, includeRequired: true, displayGroup: item.DisplayGroup)},");
                 sb.AppendLine("        },");
 
+                AppendRelationTabsMeta(sb, entidade);
+                AppendCustomTabsMeta(sb, entidade);
+                AppendEntityActionsMeta(sb, entidade);
+
                 // 🔎 ENDPOINTS CRUD
                 sb.AppendLine("        endpoints = new");
                 sb.AppendLine("        {");
                 foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
                     sb.AppendLine($"                 {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");
-                sb.AppendLine($"            create = \"/{entidade.EntityName}/Post{entidade.EntityName}\",");
+                sb.AppendLine($"            create = \"{(entidade.CanCreate ? $"/{entidade.EntityName}/Post{entidade.EntityName}" : string.Empty)}\",");
                 sb.AppendLine($"            read = \"/{entidade.EntityName}/{CommandType.Read}{entidade.EntityName}\",");
-                sb.AppendLine($"            update = \"/{entidade.EntityName}/Put{entidade.EntityName}\",");
-                sb.AppendLine($"            delete = \"/{entidade.EntityName}/Delete{entidade.EntityName}\"");
+                sb.AppendLine($"            update = \"{(entidade.CanUpdate ? $"/{entidade.EntityName}/Put{entidade.EntityName}" : string.Empty)}\",");
+                sb.AppendLine($"            delete = \"{(entidade.CanDelete ? $"/{entidade.EntityName}/Delete{entidade.EntityName}" : string.Empty)}\"");
                 sb.AppendLine("        }");
 
                 sb.AppendLine("    };");
@@ -415,6 +431,95 @@ namespace Dominio.Schemas.CQRS
         private string getPrefixo()
         {
             return "/yapi";
+        }
+
+        private void AppendRelationTabsMeta(StringBuilder sb, Entity entidade)
+        {
+            var relationTabs = _migration.Entitys
+                .SelectMany(childEntity => childEntity.AddColumns
+                    .Where(column =>
+                        column.IsFK &&
+                        column.IsRelationTab &&
+                        string.Equals(column.FkEntityName, entidade.EntityName, StringComparison.OrdinalIgnoreCase))
+                    .Select(column => new { ChildEntity = childEntity, Column = column }))
+                .ToList();
+
+            if (relationTabs.Count == 0)
+            {
+                sb.AppendLine("        relationTabs = Array.Empty<object>(),");
+                return;
+            }
+
+            sb.AppendLine("        relationTabs = new[]");
+            sb.AppendLine("        {");
+            foreach (var tab in relationTabs)
+            {
+                sb.AppendLine("            new");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                id = \"{tab.Column.RelationTabName}\",");
+                sb.AppendLine($"                title = \"{tab.Column.RelationTabTitle}\",");
+                sb.AppendLine($"                entity = \"{tab.ChildEntity.EntityName}\",");
+                sb.AppendLine($"                parentField = \"{tab.Column.ColumnReference.ToLower()}\",");
+                sb.AppendLine($"                childField = \"{tab.Column.Name.ToLower()}\",");
+                sb.AppendLine($"                endpoint = \"/{tab.ChildEntity.EntityName}/Read{tab.ChildEntity.EntityName}\"");
+                sb.AppendLine("            },");
+            }
+            sb.AppendLine("        },");
+        }
+
+        private void AppendCustomTabsMeta(StringBuilder sb, Entity entidade)
+        {
+            if (entidade.CustomTabs.Count == 0)
+            {
+                sb.AppendLine("        customTabs = Array.Empty<object>(),");
+                return;
+            }
+
+            sb.AppendLine("        customTabs = new[]");
+            sb.AppendLine("        {");
+            foreach (var tab in entidade.CustomTabs)
+            {
+                sb.AppendLine("            new");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                id = \"{tab.Name}\",");
+                sb.AppendLine($"                title = \"{tab.Title}\",");
+                sb.AppendLine($"                useCase = \"{tab.UseCaseName}\",");
+                sb.AppendLine($"                frontComponent = \"{tab.FrontComponentName}\"");
+                sb.AppendLine("            },");
+            }
+            sb.AppendLine("        },");
+        }
+
+        private void AppendEntityActionsMeta(StringBuilder sb, Entity entidade)
+        {
+            var actions = _migration.UseCaseGroup
+                .SelectMany(group => group.UseCaseSubGroup
+                    .SelectMany(subGroup => subGroup.UseCaseCommand
+                        .SelectMany(useCase => useCase.EntityActions
+                            .Where(action => string.Equals(action.EntityName, entidade.EntityName, StringComparison.OrdinalIgnoreCase))
+                            .Select(action => new { Group = group, SubGroup = subGroup, UseCase = useCase, Action = action }))))
+                .ToList();
+
+            if (actions.Count == 0)
+            {
+                sb.AppendLine("        actions = Array.Empty<object>(),");
+                return;
+            }
+
+            sb.AppendLine("        actions = new[]");
+            sb.AppendLine("        {");
+            foreach (var action in actions)
+            {
+                sb.AppendLine("            new");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                id = \"{action.UseCase.Name.SourceType()}\",");
+                sb.AppendLine($"                title = \"{action.Action.Title}\",");
+                sb.AppendLine($"                forRecord = {action.Action.ForRecord.ToString().ToLower()},");
+                sb.AppendLine($"                useCase = \"{action.Group.Name}.{action.SubGroup.Name}.{action.UseCase.Name}\",");
+                sb.AppendLine($"                endpoint = \"/{action.Group.Name}/{action.SubGroup.Name}{action.UseCase.Name}{CommandType.UseCase}\"");
+                sb.AppendLine("            },");
+            }
+            sb.AppendLine("        },");
         }
 
         private void setResultHttp(StringBuilder sb, string result)

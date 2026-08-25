@@ -18,15 +18,47 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class MovimentoFinanceiroDecorator : IMovimentoFinanceiroEntity
+                    public static class MovimentoFinanceiroTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong IdOrigem = 1UL << 1;
+            public const ulong ContaDebitoId = 1UL << 2;
+            public const ulong Valor = 1UL << 3;
+            public const ulong DataMovimento = 1UL << 4;
+            public const ulong DataVencimento = 1UL << 5;
+            public const ulong Status = 1UL << 6;
+            public const ulong TenantID = 1UL << 7;
+            public const ulong Deleted = 1UL << 8;
+            public const ulong Changed = 1UL << 9;
+            public const ulong UserId = 1UL << 10;
+        }
+
+        public partial class MovimentoFinanceiroDecorator : IMovimentoFinanceiroEntity
 {
 
                         private readonly IMovimentoFinanceiroEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public MovimentoFinanceiroDecorator(IMovimentoFinanceiroEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public MovimentoFinanceiroDecorator(
+                            IMovimentoFinanceiroEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public int? Id
                                     {
@@ -35,8 +67,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -48,8 +81,9 @@
                                         {
                                             if (_inner.IdOrigem != value)
                                             {
-                                                _logger.Info($"Propriedade IdOrigem: antes={_inner.IdOrigem}, depois={value}");
                                                 _inner.IdOrigem = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.IdOrigem) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "IdOrigem", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -61,8 +95,9 @@
                                         {
                                             if (_inner.ContaDebitoId != value)
                                             {
-                                                _logger.Info($"Propriedade ContaDebitoId: antes={_inner.ContaDebitoId}, depois={value}");
                                                 _inner.ContaDebitoId = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.ContaDebitoId) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "ContaDebitoId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -74,8 +109,9 @@
                                         {
                                             if (_inner.Valor != value)
                                             {
-                                                _logger.Info($"Propriedade Valor: antes={_inner.Valor}, depois={value}");
                                                 _inner.Valor = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.Valor) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Valor", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -87,8 +123,9 @@
                                         {
                                             if (_inner.DataMovimento != value)
                                             {
-                                                _logger.Info($"Propriedade DataMovimento: antes={_inner.DataMovimento}, depois={value}");
                                                 _inner.DataMovimento = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.DataMovimento) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "DataMovimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -100,8 +137,9 @@
                                         {
                                             if (_inner.DataVencimento != value)
                                             {
-                                                _logger.Info($"Propriedade DataVencimento: antes={_inner.DataVencimento}, depois={value}");
                                                 _inner.DataVencimento = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.DataVencimento) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "DataVencimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -113,8 +151,9 @@
                                         {
                                             if (_inner.Status != value)
                                             {
-                                                _logger.Info($"Propriedade Status: antes={_inner.Status}, depois={value}");
                                                 _inner.Status = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.Status) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -126,8 +165,9 @@
                                         {
                                             if (_inner.TenantID != value)
                                             {
-                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
                                                 _inner.TenantID = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -139,8 +179,9 @@
                                         {
                                             if (_inner.Deleted != value)
                                             {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
                                                 _inner.Deleted = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -152,8 +193,9 @@
                                         {
                                             if (_inner.Changed != value)
                                             {
-                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
                                                 _inner.Changed = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -165,8 +207,9 @@
                                         {
                                             if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
                                                 _inner.UserId = value;
+                                                if ((_trackingMask & MovimentoFinanceiroTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("MovimentoFinanceiro", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

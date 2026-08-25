@@ -62,6 +62,74 @@ Miolos que IA/dev devem preencher:
 - Preferir comportamentos fortes e nomes substituiveis.
 - Evitar reflection no codigo gerado quando isso afetar performance.
 
+## Comportamento De Dominio E Eventos
+
+- Regras vindas de conceitos legados como before/after devem ser traduzidas
+  para comportamento de dominio, especificacoes, politicas e eventos, nao
+  copiadas como ciclo tecnico de persistencia.
+- `DomainOperationContext` descreve a operacao de negocio, a borda de entrada,
+  a intencao, usuario, tenant, trace, receiver, command, recordId e flags como
+  migracao legada ou fonte confiavel.
+- CRUD, use case, worker, importador e integracoes devem construir contexto e
+  chamar o mesmo comportamento de dominio antes da persistencia ou da
+  orquestracao especifica.
+- Na reengenharia incremental do legado APS, a primeira fase deve ser
+  CRUD-first: nao criar use cases para fluxos legados enquanto a borda CRUD
+  representar corretamente a intencao. Use case so deve nascer quando surgir
+  uma necessidade concreta que o CRUD nao expresse bem.
+- Mapeamento de legado na DSL deve existir como metadata de transicao de dados,
+  usando conceitos como `LegacySource` e `LegacyColumn`; ele nao deve virar
+  alias nem remapeamento em repositories ou no caminho quente do CRUD.
+- Entidades baseadas em views devem continuar sendo entidades na DSL, usando
+  `FromView(nomeDaView)`. Esse conceito indica origem fisica de leitura em uma
+  view, impede DDL de tabela e desliga CRUD direto de escrita; nao exige
+  `ReadOnly`.
+- `FromView` nao substitui `LegacySource`: `FromView` e fonte operacional de
+  leitura, enquanto `LegacySource` e metadata de transicao/migracao.
+- Abas de relacionamento nascem na declaracao da FK do filho, com
+  `RelationTab`. A Engine monta a aba inversa na entidade pai a partir dessa
+  FK logica, mesmo quando a FK nao existir fisicamente no banco legado.
+- Abas customizadas pertencem a entidade como metadata pequena de tela,
+  declaradas por `CustomTab`; renderizacao livre e provedores especificos
+  permanecem no aplicativo.
+- Botoes de acao de entidade devem expor use cases, nao metodos publicos soltos
+  da entidade. Use cases podem publicar a acao na tela com metadata como
+  `ExposeAsEntityAction`, e a execucao continua Command + Receiver.
+- Conversoes de tipo/status/enumeradores entre legado e app novo devem nascer
+  em migrations ou rotinas explicitas de transicao de base, preservando o
+  codigo do aplicativo com os nomes atuais definidos pela DSL.
+- Quando a borda cria uma entidade, o `DomainOperationContext` deve nascer
+  antes da factory; a factory pode receber contexto e politica operacional para
+  decorar tracking, mas preparacoes e validacoes de negocio continuam no
+  `{Entidade}DomainBehavior`.
+- A Engine gera `{Entidade}DomainBehavior` no Domain do aplicativo em
+  `Migration` e cria o partial customizado protegido em `Custon`.
+- O behavior gerado e responsavel pela borda previsivel: preparar, validar a
+  parte estrutural atual, chamar validacoes customizadas e coletar eventos.
+- O miolo customizado do aplicativo implementa preparacoes, validacoes,
+  politicas condicionais e eventos especificos do dominio.
+- Eventos de dominio representam fatos de negocio apos a validacao; entrega,
+  retry e outbox continuam sendo politicas de infraestrutura/persistencia.
+- Tracker de mudanca deve nascer no dominio, nao no banco: registrar o valor
+  novo durante a mutacao da entidade e reconstruir o ciclo pela sequencia de
+  eventos capturados.
+- O dominio nao deve executar consulta adicional para obter estado antigo
+  apenas para observabilidade; qualquer custo de I/O precisa nascer de um fluxo
+  de negocio ou diagnostico explicitamente justificado.
+- Todo campo gerado e potencialmente rastreavel sem engordar a DSL; a Engine
+  gera constantes/masks por entidade/campo e a politica operacional decide em
+  runtime o que fica ligado.
+- O controle operacional usa `Component`, `Operation`, `Entity`, `RecordId`,
+  `Field`, `Level` e `Depth`; o tracker de dominio usa o componente
+  `DomainTracker` para nao herdar detalhamento generico por acidente.
+- Quando desligado, o caminho quente deve pagar somente verificacoes baratas
+  de politica/mascara: sem reflection, sem StackTrace, sem serializacao, sem
+  interpolacao de strings e sem montagem de payload.
+- Codigo especifico de comportamento pertence ao aplicativo; Shared contem
+  somente contratos genericos e Engine contem somente geracao/templates.
+- Evitar reflection no caminho quente: contextos, chamadas de behavior,
+  validacoes e registros devem ser explicitos ou gerados.
+
 ## Performance No Caminho Quente
 
 - O principio e: simples que funciona, com extrema performance.
