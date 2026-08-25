@@ -13,6 +13,7 @@ namespace Command.Read
 {
     public struct RoteiroReadCommand : ICommandRead
     {
+        public int? Id { get; set; }
         public string MaquinaId { get; set; }
         public string ProdutoId { get; set; }
         public int? SequenciaTransformacao { get; set; }

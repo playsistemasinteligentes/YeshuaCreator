@@ -98,6 +98,11 @@ Miolos que IA/dev devem preencher:
 - Conversoes de tipo/status/enumeradores entre legado e app novo devem nascer
   em migrations ou rotinas explicitas de transicao de base, preservando o
   codigo do aplicativo com os nomes atuais definidos pela DSL.
+- Na reengenharia incremental do APS, entidades mutaveis devem preferir `Id`
+  interno simples como identidade operacional do aplicativo. Chaves naturais ou
+  legadas ficam como campos de negocio e metadata de transicao; chave composta
+  so deve nascer quando houver necessidade concreta que justifique o custo no
+  CRUD, nas telas, nas bordas e na operacao.
 - Quando a borda cria uma entidade, o `DomainOperationContext` deve nascer
   antes da factory; a factory pode receber contexto e politica operacional para
   decorar tracking, mas preparacoes e validacoes de negocio continuam no

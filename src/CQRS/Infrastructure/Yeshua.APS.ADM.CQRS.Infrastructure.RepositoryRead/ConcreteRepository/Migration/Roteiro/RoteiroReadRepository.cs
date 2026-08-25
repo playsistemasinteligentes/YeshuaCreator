@@ -166,6 +166,14 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
+        public bool ExistsById(int value )
+        {
+            var query = _query.ExistsByIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByMaquinaId(string value )
         {
             var query = _query.ExistsByMaquinaIdQuery(value );
@@ -350,6 +358,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public RoteiroDTO FirstById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<RoteiroDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public RoteiroDTO FirstByMaquinaId(string value )
         {
             var query = _query.FirstByMaquinaIdQuery(value );
@@ -531,6 +547,14 @@ namespace Read.Repository
             var query = _query.FirstByUserIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<RoteiroDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public IEnumerable<RoteiroDTO> GetAllById(int value )
+        {
+            var query = _query.FirstByIdQuery(value );
+
+                var result = _unitOfWork.Query<RoteiroDTO>(query.Query,query.Parameters) as List<RoteiroDTO>;
                 return result;
         }
 

@@ -29,7 +29,7 @@ public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
         CustomizeCreatePayload(createPayload);
         using var createResponse = await client.PostAsJsonAsync(CreateEndpoint, createPayload, JsonOptions);
         var createState = await ApiResponseAssertions.ReadSuccessStateAsync(createResponse);
-        var createdId = ApiJson.GetRequiredProperty(createState, "data", "maquinaid");
+        var createdId = ApiJson.GetRequiredProperty(createState, "data", "id");
         ApiResponseAssertions.AssertNodeHasValue(createdId, "created id");
         ApiSmokeTestContext.RegisterCreatedId("Roteiro", createdId);
 
@@ -50,7 +50,7 @@ public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
         CustomizeUpdatePayload(updatePayload);
         using var updateResponse = await client.PutAsJsonAsync(UpdateEndpoint, updatePayload, JsonOptions);
         var updateState = await ApiResponseAssertions.ReadSuccessStateAsync(updateResponse);
-        var updatedId = ApiJson.GetRequiredProperty(updateState, "data", "maquinaid");
+        var updatedId = ApiJson.GetRequiredProperty(updateState, "data", "id");
         ApiResponseAssertions.AssertSameJsonValue(createdId, updatedId, "updated id");
 
         var deletePayload = BuildDeletePayload(updatePayload, createdId);
@@ -66,8 +66,8 @@ public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
         using var client = await CreateAuthenticatedClientAsync();
         using var deleteResponse = await client.SendJsonAsync(HttpMethod.Delete, DeleteEndpoint, deletePayload, JsonOptions);
         var deleteState = await ApiResponseAssertions.ReadSuccessStateAsync(deleteResponse);
-        var deletedId = ApiJson.GetRequiredProperty(deleteState, "data", "maquinaid");
-        var expectedId = ApiJson.GetRequiredProperty(deletePayload, "MaquinaId");
+        var deletedId = ApiJson.GetRequiredProperty(deleteState, "data", "id");
+        var expectedId = ApiJson.GetRequiredProperty(deletePayload, "Id");
         ApiResponseAssertions.AssertSameJsonValue(expectedId, deletedId, "deleted id");
     }
 
@@ -101,7 +101,7 @@ public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["MaquinaId"] = id.DeepClone(),
+            ["Id"] = id.DeepClone(),
             ["Paginacao"] = ApiTestData.Pagination()
         };
     }
@@ -109,7 +109,10 @@ public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
     private static JsonObject BuildUpdatePayload(JsonObject createPayload, JsonNode id)
     {
         var payload = (JsonObject)createPayload.DeepClone();
-        payload["MaquinaId"] = id.DeepClone();
+        payload["Id"] = id.DeepClone();
+        payload["MaquinaId"] = ApiSmokeTestContext.GetRequiredCreatedId("Maquina", "MaquinaId");
+        payload["ProdutoId"] = ApiSmokeTestContext.GetRequiredCreatedId("Produto", "ProdutoId");
+        payload["SequenciaTransformacao"] = 2;
         payload["GrupoMaquinaId"] = ApiSmokeTestContext.GetRequiredCreatedId("GrupoMaquina", "GrupoMaquinaId");
         payload["PecasPorPulso"] = 20.5m;
         payload["PrioridadeInformada"] = 20.5m;
@@ -132,7 +135,7 @@ public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
     private static JsonObject BuildDeletePayload(JsonObject updatePayload, JsonNode id)
     {
         var payload = (JsonObject)updatePayload.DeepClone();
-        payload["MaquinaId"] = id.DeepClone();
+        payload["Id"] = id.DeepClone();
         return payload;
     }
 

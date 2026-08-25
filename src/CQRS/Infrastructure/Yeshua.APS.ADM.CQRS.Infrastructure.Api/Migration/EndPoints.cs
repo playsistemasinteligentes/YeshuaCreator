@@ -2087,6 +2087,7 @@ app.MapGet("/yapi/getMetaDataRoteiro", (HttpContext context) =>
                 endpoint = "/Roteiro/ReadRoteiro",
             resultFields = new[]
             {
+                new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "maquinaid", label = "Codigo da Maquina", type = "string", isFk = true, endPontGetMetadata = "/getMetaDataMaquina", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "produtoid", label = "Codigo do Produto", type = "string", isFk = true, endPontGetMetadata = "/getMetaDataProduto", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "sequenciatransformacao", label = "Sequencia de Transformacao", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -2109,6 +2110,7 @@ app.MapGet("/yapi/getMetaDataRoteiro", (HttpContext context) =>
             },
             filterFields = new[]
             {
+                new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "maquinaid", label = "Codigo da Maquina", type = "string", isFk = true, endPontGetMetadata = "/getMetaDataMaquina", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "produtoid", label = "Codigo do Produto", type = "string", isFk = true, endPontGetMetadata = "/getMetaDataProduto", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "sequenciatransformacao", label = "Sequencia de Transformacao", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -2141,6 +2143,7 @@ app.MapGet("/yapi/getMetaDataRoteiro", (HttpContext context) =>
         },
         formFields = new[]
         {
+            new { id = "id", label = "Id", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "maquinaid", label = "Codigo da Maquina", type = "string", required = false, displaygroup = "Principal", isFk = true, endPontGetMetadata = "/getMetaDataMaquina", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "produtoid", label = "Codigo do Produto", type = "string", required = false, displaygroup = "Principal", isFk = true, endPontGetMetadata = "/getMetaDataProduto", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "sequenciatransformacao", label = "Sequencia de Transformacao", type = "int", required = false, displaygroup = "Principal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },

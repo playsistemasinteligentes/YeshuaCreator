@@ -20,6 +20,7 @@
                 {
                     public partial class RoteiroEntity : IRoteiroEntity
 {
+    public int? Id { get; set; }
     public string MaquinaId { get; set; }
     public string ProdutoId { get; set; }
     public int SequenciaTransformacao { get; set; }
@@ -44,7 +45,8 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal RoteiroEntity(string maquinaid, string produtoid, int sequenciatransformacao, string grupomaquinaid, Decimal? pecasporpulso, Decimal? prioridadeinformada, string acao, Decimal performance, Decimal? temposetup, Decimal? temposetupajuste, int? proximasequenciatransformacao, string status, Decimal? hierarquiasequenciatransformacao, int? avaliacusto, string operacoes, string excecaooperacoes, Decimal? percentualiniciopassoanterior, string linhadireta, int? templatedetestesid ){
+ internal RoteiroEntity(int? id, string maquinaid, string produtoid, int sequenciatransformacao, string grupomaquinaid, Decimal? pecasporpulso, Decimal? prioridadeinformada, string acao, Decimal performance, Decimal? temposetup, Decimal? temposetupajuste, int? proximasequenciatransformacao, string status, Decimal? hierarquiasequenciatransformacao, int? avaliacusto, string operacoes, string excecaooperacoes, Decimal? percentualiniciopassoanterior, string linhadireta, int? templatedetestesid ){
+ Id = id; 
  MaquinaId = maquinaid; 
  ProdutoId = produtoid; 
  SequenciaTransformacao = sequenciatransformacao; 

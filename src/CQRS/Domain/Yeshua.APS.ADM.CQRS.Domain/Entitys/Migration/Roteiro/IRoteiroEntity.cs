@@ -20,6 +20,7 @@
                 {
                     public interface IRoteiroEntity
 {
+    int? Id { get; set; }
     string MaquinaId { get; set; }
     string ProdutoId { get; set; }
     int SequenciaTransformacao { get; set; }

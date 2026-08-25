@@ -20,29 +20,30 @@
                 {
                     public static class RoteiroTrackingFields
         {
-            public const ulong MaquinaId = 1UL << 0;
-            public const ulong ProdutoId = 1UL << 1;
-            public const ulong SequenciaTransformacao = 1UL << 2;
-            public const ulong GrupoMaquinaId = 1UL << 3;
-            public const ulong PecasPorPulso = 1UL << 4;
-            public const ulong PrioridadeInformada = 1UL << 5;
-            public const ulong Acao = 1UL << 6;
-            public const ulong Performance = 1UL << 7;
-            public const ulong TempoSetup = 1UL << 8;
-            public const ulong TempoSetupAjuste = 1UL << 9;
-            public const ulong ProximaSequenciaTransformacao = 1UL << 10;
-            public const ulong Status = 1UL << 11;
-            public const ulong HierarquiaSequenciaTransformacao = 1UL << 12;
-            public const ulong AvaliaCusto = 1UL << 13;
-            public const ulong Operacoes = 1UL << 14;
-            public const ulong ExcecaoOperacoes = 1UL << 15;
-            public const ulong PercentualInicioPassoAnterior = 1UL << 16;
-            public const ulong LinhaDireta = 1UL << 17;
-            public const ulong TemplateDeTestesId = 1UL << 18;
-            public const ulong TenantID = 1UL << 19;
-            public const ulong Deleted = 1UL << 20;
-            public const ulong Changed = 1UL << 21;
-            public const ulong UserId = 1UL << 22;
+            public const ulong Id = 1UL << 0;
+            public const ulong MaquinaId = 1UL << 1;
+            public const ulong ProdutoId = 1UL << 2;
+            public const ulong SequenciaTransformacao = 1UL << 3;
+            public const ulong GrupoMaquinaId = 1UL << 4;
+            public const ulong PecasPorPulso = 1UL << 5;
+            public const ulong PrioridadeInformada = 1UL << 6;
+            public const ulong Acao = 1UL << 7;
+            public const ulong Performance = 1UL << 8;
+            public const ulong TempoSetup = 1UL << 9;
+            public const ulong TempoSetupAjuste = 1UL << 10;
+            public const ulong ProximaSequenciaTransformacao = 1UL << 11;
+            public const ulong Status = 1UL << 12;
+            public const ulong HierarquiaSequenciaTransformacao = 1UL << 13;
+            public const ulong AvaliaCusto = 1UL << 14;
+            public const ulong Operacoes = 1UL << 15;
+            public const ulong ExcecaoOperacoes = 1UL << 16;
+            public const ulong PercentualInicioPassoAnterior = 1UL << 17;
+            public const ulong LinhaDireta = 1UL << 18;
+            public const ulong TemplateDeTestesId = 1UL << 19;
+            public const ulong TenantID = 1UL << 20;
+            public const ulong Deleted = 1UL << 21;
+            public const ulong Changed = 1UL << 22;
+            public const ulong UserId = 1UL << 23;
         }
 
         public partial class RoteiroDecorator : IRoteiroEntity
@@ -72,6 +73,20 @@
                             _trackingOperation = context?.Intent;
                             _trackingRecordId = context?.RecordId;
                         }
+                                    public int? Id
+                                    {
+                                        get => _inner.Id;
+                                        set
+                                        {
+                                            if (_inner.Id != value)
+                                            {
+                                                _inner.Id = value;
+                                                if ((_trackingMask & RoteiroTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("Roteiro", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
                                     public string MaquinaId
                                     {
                                         get => _inner.MaquinaId;

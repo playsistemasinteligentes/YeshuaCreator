@@ -30,9 +30,10 @@ public class M000001 : MigrationBase
             .AddColumn("Descricao", "Descricao do Template").Varchar(150).LegacyColumn("TEM_DESCRICAO", "varchar(200)");
 
         AddEntity("Roteiro").LegacySource("T_ROTEIROS").AddModule("APSADM")
-            .AddColumn("MaquinaId", "Codigo da Maquina").FK("Maquina", "Id").Varchar(30).NotNull().Key().Group("Principal").LegacyColumn("MAQ_ID", "varchar(30)")
-            .AddColumn("ProdutoId", "Codigo do Produto").FK("Produto", "Id").Varchar(30).NotNull().Key().Group("Principal").LegacyColumn("PRO_ID", "varchar(30)")
-            .AddColumn("SequenciaTransformacao", "Sequencia de Transformacao").Int().NotNull().Key().Group("Principal").LegacyColumn("ROT_SEQ_TRANFORMACAO", "int")
+            .AddColumn("Id", "Id").Int().Incremento().Key()
+            .AddColumn("MaquinaId", "Codigo da Maquina").FK("Maquina", "Id").Varchar(30).NotNull().Group("Principal").LegacyColumn("MAQ_ID", "varchar(30)")
+            .AddColumn("ProdutoId", "Codigo do Produto").FK("Produto", "Id").Varchar(30).NotNull().Group("Principal").LegacyColumn("PRO_ID", "varchar(30)")
+            .AddColumn("SequenciaTransformacao", "Sequencia de Transformacao").Int().NotNull().Group("Principal").LegacyColumn("ROT_SEQ_TRANFORMACAO", "int")
             .AddColumn("GrupoMaquinaId", "Grupo de Maquinas").FK("GrupoMaquina", "Id").Varchar(30).Group("Principal").LegacyColumn("GMA_ID", "varchar(30)")
             .AddColumn("PecasPorPulso", "Quantidade de Pecas por Pulso").Decimal(18, 6).Group("Principal").LegacyColumn("ROT_PECAS_POR_PULSO", "float", "float_to_decimal_18_6")
             .AddColumn("PrioridadeInformada", "Grau de Prioridade").Decimal(18, 6).Group("Principal").LegacyColumn("ROT_PRIORIDADE_INFORMADA", "float", "float_to_decimal_18_6")

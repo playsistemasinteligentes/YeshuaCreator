@@ -28,6 +28,7 @@ namespace IRepository.Read
         public IEnumerable<RoteiroTemplateDeTestesIdDTO> getRoteiroReadFKTemplateDeTestesId(object command );
         public IEnumerable<RoteiroTenantIDDTO> getRoteiroReadFKTenantID(object command );
         public IEnumerable<RoteiroUserIdDTO> getRoteiroReadFKUserId(object command );
+        public bool ExistsById(int value );
         public bool ExistsByMaquinaId(string value );
         public bool ExistsByProdutoId(string value );
         public bool ExistsBySequenciaTransformacao(int value );
@@ -51,6 +52,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public RoteiroDTO FirstById(int value );
         public RoteiroDTO FirstByMaquinaId(string value );
         public RoteiroDTO FirstByProdutoId(string value );
         public RoteiroDTO FirstBySequenciaTransformacao(int value );
@@ -74,6 +76,7 @@ namespace IRepository.Read
         public RoteiroDTO FirstByDeleted(bool value );
         public RoteiroDTO FirstByChanged(DateTime value );
         public RoteiroDTO FirstByUserId(int value );
+        public IEnumerable<RoteiroDTO> GetAllById(int value );
         public IEnumerable<RoteiroDTO> GetAllByMaquinaId(string value );
         public IEnumerable<RoteiroDTO> GetAllByProdutoId(string value );
         public IEnumerable<RoteiroDTO> GetAllBySequenciaTransformacao(int value );

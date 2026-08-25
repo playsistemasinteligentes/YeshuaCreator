@@ -85,6 +85,8 @@ namespace Dominio.Migration
             foreach (var m in migration)
                 m.Entitys.RemoveAll(x => x.EntityName == "yStandardFields");
 
+            ValidateCompositeKeysAreNotImplemented(migration.SelectMany(m => m.Entitys));
+
             foreach (var schema in _schemas.OfType<ISchemaDataBase>())
             {
                 var (maxID, minID) = GetLastVersion(schema._unitOfWork);
@@ -183,6 +185,22 @@ namespace Dominio.Migration
             foreach (var entity in sanitizedEntities)
                 foreach (var colun in entity.AddColumns.Where(x => x.IsFK))
                     colun.EntityFK = sanitizedEntities.Where(x => x.EntityName == colun.FkEntityName).FirstOrDefault();
+        }
+        public static void ValidateCompositeKeysAreNotImplemented(IEnumerable<Entity> entities)
+        {
+            foreach (var entity in entities.Where(x => !x.IsFromView))
+            {
+                var keys = entity.AddColumns
+                    .Where(x => x.IsKey && !x.IsBackEndField)
+                    .Select(x => x.Name)
+                    .ToArray();
+
+                if (keys.Length > 1)
+                {
+                    throw new NotSupportedException(
+                        $"Chave composta ainda nao esta implementada no Yeshua. Entidade '{entity.EntityName}' declarou {keys.Length} chaves: {string.Join(", ", keys)}. Use um Id interno simples como chave operacional e mantenha a chave natural/legada como campos de negocio ou metadata de transicao.");
+                }
+            }
         }
         private void SanitizeMigrationEndHubAgentsToCodeGenerete(MigrationBase migration)
         {

@@ -20,6 +20,7 @@ namespace IQuery.Read
         public QueryModel RoteiroTemplateDeTestesIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel RoteiroTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel RoteiroUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByMaquinaIdQuery(string value );
         public QueryModel ExistsByProdutoIdQuery(string value );
         public QueryModel ExistsBySequenciaTransformacaoQuery(int value );
@@ -43,6 +44,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByMaquinaIdQuery(string value );
         public QueryModel FirstByProdutoIdQuery(string value );
         public QueryModel FirstBySequenciaTransformacaoQuery(int value );

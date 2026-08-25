@@ -13,6 +13,7 @@ namespace Command.Write
 {
     public struct RoteiroCrudCommand : ICommand
     {
+        public int? Id { get; set; }
         public string MaquinaId { get; set; }
         public string ProdutoId { get; set; }
         public int SequenciaTransformacao { get; set; }

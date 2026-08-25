@@ -12,12 +12,11 @@ using System;
 
 namespace MyApp.Domain.Entities
 {
-    public class Clinica
+    public class Produto
     {
-        public int? Id { get; set; }
-        public string Nome { get; set; }
-        public string Endereco { get; set; }
-        public string Telefone { get; set; }
+        public string Id { get; set; }
+        public string Descricao { get; set; }
+        public string Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -25,10 +24,40 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
 
-        public static MyApp.QueryBuilder.Query<Clinica> Query() => new MyApp.QueryBuilder.Query<Clinica>();
+        public static MyApp.QueryBuilder.Query<Produto> Query() => new MyApp.QueryBuilder.Query<Produto>();
     }
 
-    public class Especialidade
+    public class Maquina
+    {
+        public string Id { get; set; }
+        public string Descricao { get; set; }
+        public string Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<Maquina> Query() => new MyApp.QueryBuilder.Query<Maquina>();
+    }
+
+    public class GrupoMaquina
+    {
+        public string Id { get; set; }
+        public string Descricao { get; set; }
+        public string Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<GrupoMaquina> Query() => new MyApp.QueryBuilder.Query<GrupoMaquina>();
+    }
+
+    public class TemplateDeTestes
     {
         public int? Id { get; set; }
         public string Descricao { get; set; }
@@ -39,16 +68,35 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
 
-        public static MyApp.QueryBuilder.Query<Especialidade> Query() => new MyApp.QueryBuilder.Query<Especialidade>();
+        public static MyApp.QueryBuilder.Query<TemplateDeTestes> Query() => new MyApp.QueryBuilder.Query<TemplateDeTestes>();
     }
 
-    public class Profissional
+    public class Roteiro
     {
         public int? Id { get; set; }
-        public string Nome { get; set; }
-        public int? EspecialidadeId { get; set; }
-        public Especialidade Especialidade { get; set; }
-        public string Telefone { get; set; }
+        public string MaquinaId { get; set; }
+        public Maquina Maquina { get; set; }
+        public string ProdutoId { get; set; }
+        public Produto Produto { get; set; }
+        public int SequenciaTransformacao { get; set; }
+        public string GrupoMaquinaId { get; set; }
+        public GrupoMaquina GrupoMaquina { get; set; }
+        public Decimal? PecasPorPulso { get; set; }
+        public Decimal? PrioridadeInformada { get; set; }
+        public string Acao { get; set; }
+        public Decimal Performance { get; set; }
+        public Decimal? TempoSetup { get; set; }
+        public Decimal? TempoSetupAjuste { get; set; }
+        public int? ProximaSequenciaTransformacao { get; set; }
+        public string Status { get; set; }
+        public Decimal? HierarquiaSequenciaTransformacao { get; set; }
+        public int? AvaliaCusto { get; set; }
+        public string Operacoes { get; set; }
+        public string ExcecaoOperacoes { get; set; }
+        public Decimal? PercentualInicioPassoAnterior { get; set; }
+        public string LinhaDireta { get; set; }
+        public int? TemplateDeTestesId { get; set; }
+        public TemplateDeTestes TemplateDeTestes { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -56,178 +104,62 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
 
-        public static MyApp.QueryBuilder.Query<Profissional> Query() => new MyApp.QueryBuilder.Query<Profissional>();
+        public static MyApp.QueryBuilder.Query<Roteiro> Query() => new MyApp.QueryBuilder.Query<Roteiro>();
     }
 
-    public class DisponibilidadeAgenda
+    public class ConsultaPedido
     {
-        public int? Id { get; set; }
-        public int? ProfissionalId { get; set; }
-        public Profissional Profissional { get; set; }
-        public DateTime DataHora { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
+        public string PedidoId { get; set; }
+        public string ClienteId { get; set; }
+        public string ClienteNome { get; set; }
+        public string RazaoSocial { get; set; }
+        public string ProdutoId { get; set; }
+        public Produto Produto { get; set; }
+        public string ProdutoDescricao { get; set; }
+        public string Status { get; set; }
+        public string Estagio { get; set; }
+        public DateTime DataEntregaDe { get; set; }
+        public DateTime DataEntregaAte { get; set; }
+        public DateTime? EmbarqueAlvo { get; set; }
+        public Decimal Quantidade { get; set; }
+        public Decimal SaldoAProduzir { get; set; }
+        public Decimal? SaldoAExpedir { get; set; }
+        public string CorFila { get; set; }
+        public string PedidoCliente { get; set; }
 
-        public static MyApp.QueryBuilder.Query<DisponibilidadeAgenda> Query() => new MyApp.QueryBuilder.Query<DisponibilidadeAgenda>();
+        public static MyApp.QueryBuilder.Query<ConsultaPedido> Query() => new MyApp.QueryBuilder.Query<ConsultaPedido>();
     }
 
-    public class GrupoServico
+    public class RoteiroPedido
     {
-        public int? Id { get; set; }
-        public string Descricao { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
+        public string PedidoId { get; set; }
+        public ConsultaPedido ConsultaPedido { get; set; }
+        public string MaquinaId { get; set; }
+        public Maquina Maquina { get; set; }
+        public string ProdutoId { get; set; }
+        public Produto Produto { get; set; }
+        public int SequenciaTransformacao { get; set; }
+        public string StatusCadastro { get; set; }
+        public string TipoPlanejamento { get; set; }
+        public int CalendarioId { get; set; }
+        public Decimal? HierarquiaSequenciaTransformacao { get; set; }
+        public int? ProximaSequenciaTransformacao { get; set; }
+        public Decimal? Performance { get; set; }
+        public Decimal? TempoSetup { get; set; }
+        public Decimal? TempoSetupAjuste { get; set; }
+        public Decimal? PecasPorPulso { get; set; }
+        public Decimal? PrioridadeInformada { get; set; }
+        public string Status { get; set; }
+        public string Operacoes { get; set; }
+        public string ExcecaoOperacoes { get; set; }
+        public string LinhaDireta { get; set; }
+        public int? AvaliaCusto { get; set; }
+        public Decimal? PercentualInicioPassoAnterior { get; set; }
+        public Decimal? MaquinaLarguraUtil { get; set; }
+        public Decimal? GrupoTipo { get; set; }
+        public Decimal GrupoPerformanceMetroLinear { get; set; }
 
-        public static MyApp.QueryBuilder.Query<GrupoServico> Query() => new MyApp.QueryBuilder.Query<GrupoServico>();
-    }
-
-    public class Servico
-    {
-        public int? Id { get; set; }
-        public int? GrupoServicoId { get; set; }
-        public GrupoServico GrupoServico { get; set; }
-        public string Nome { get; set; }
-        public Decimal Valor { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Servico> Query() => new MyApp.QueryBuilder.Query<Servico>();
-    }
-
-    public class Paciente
-    {
-        public int? Id { get; set; }
-        public string Nome { get; set; }
-        public string Telefone { get; set; }
-        public DateTime? DataNascimento { get; set; }
-        public int? Genero { get; set; }
-        public string Escolaridade { get; set; }
-        public string Profissao { get; set; }
-        public string Endereco { get; set; }
-        public string NomeResponsavel { get; set; }
-        public string TelefoneResponsavel { get; set; }
-        public string Observacao { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Paciente> Query() => new MyApp.QueryBuilder.Query<Paciente>();
-    }
-
-    public class MovimentacaoFinanceira
-    {
-        public int? Id { get; set; }
-        public int? PacienteId { get; set; }
-        public Paciente Paciente { get; set; }
-        public int? ServicoId { get; set; }
-        public Servico Servico { get; set; }
-        public Decimal Valor { get; set; }
-        public int TipoMovimentacao { get; set; }
-        public DateTime DataMovimentacao { get; set; }
-        public Decimal SaldoAtual { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MovimentacaoFinanceira> Query() => new MyApp.QueryBuilder.Query<MovimentacaoFinanceira>();
-    }
-
-    public class Sesoes
-    {
-        public int? PacienteId { get; set; }
-        public Paciente Paciente { get; set; }
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
-        public int? StatusAgendamento { get; set; }
-        public int? StatusProntuario { get; set; }
-        public string Prontuario { get; set; }
-        public string QueixaPrincipal { get; set; }
-        public string RegistroDocumental { get; set; }
-        public string SintomasRelatados { get; set; }
-        public int? MudancasDesdeUltimaSessaao { get; set; }
-        public string ComportamentoObservado { get; set; }
-        public string EstadoEmocionalGeral { get; set; }
-        public string DiscursoPensamentos { get; set; }
-        public string UsoMedicacao { get; set; }
-        public string TecnicasUtilizadas { get; set; }
-        public string QuestionamentosReflexoesAbordadas { get; set; }
-        public string ExerciciosTarefasSugeridas { get; set; }
-        public string DiagnoosticoHipoteseDiagnoostica { get; set; }
-        public string ObjetivosCurtoPrazo { get; set; }
-        public string ObjetivosLongoPrazo { get; set; }
-        public string FrequenciaSugeridaSessooes { get; set; }
-        public string EncaminhamentoOutrosProfissionais { get; set; }
-        public string InformacoesRelevantesFuturasConsultas { get; set; }
-        public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
-        public int? Id { get; set; }
-        public int? ServicoId { get; set; }
-        public Servico Servico { get; set; }
-        public int? MovimentacaoFinanceiraId { get; set; }
-        public MovimentacaoFinanceira MovimentacaoFinanceira { get; set; }
-        public int? ProfissionalId { get; set; }
-        public Profissional Profissional { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<Sesoes> Query() => new MyApp.QueryBuilder.Query<Sesoes>();
-    }
-
-    public class PlanoConta
-    {
-        public int? Id { get; set; }
-        public string Codigo { get; set; }
-        public string Nome { get; set; }
-        public int Tipo { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<PlanoConta> Query() => new MyApp.QueryBuilder.Query<PlanoConta>();
-    }
-
-    public class MovimentoFinanceiro
-    {
-        public int? Id { get; set; }
-        public string IdOrigem { get; set; }
-        public int ContaDebitoId { get; set; }
-        public PlanoConta PlanoConta { get; set; }
-        public Decimal Valor { get; set; }
-        public DateTime DataMovimento { get; set; }
-        public DateTime? DataVencimento { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MovimentoFinanceiro> Query() => new MyApp.QueryBuilder.Query<MovimentoFinanceiro>();
+        public static MyApp.QueryBuilder.Query<RoteiroPedido> Query() => new MyApp.QueryBuilder.Query<RoteiroPedido>();
     }
 
     public class yFileUpload

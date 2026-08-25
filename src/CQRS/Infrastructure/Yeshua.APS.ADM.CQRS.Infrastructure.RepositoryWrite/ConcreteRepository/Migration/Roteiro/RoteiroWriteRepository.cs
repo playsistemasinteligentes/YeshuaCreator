@@ -38,7 +38,7 @@ namespace Input.Repository.Roteiro
         public void Insert(IRoteiroEntity Roteiro)
         {
             var query = _query.InserirRoteiroQuery(Roteiro);
-                _UnitOfWork.Execute(query.Query, query.Parameters);
+        Roteiro.Id =  _UnitOfWork.ExecuteScalar<int>(query.Query, query.Parameters);
         }
 
         public void Update(IRoteiroEntity Roteiro)
@@ -51,104 +51,119 @@ namespace Input.Repository.Roteiro
             var query = _query.DeleteRoteiroQuery(Roteiro);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateGrupoMaquinaId(string maquinaid, string produtoid, int sequenciatransformacao, string value)
+        public void UpdateMaquinaId(int id, string value)
         {
-            var query = _query.UpdateGrupoMaquinaId(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateMaquinaId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePecasPorPulso(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdateProdutoId(int id, string value)
         {
-            var query = _query.UpdatePecasPorPulso(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateProdutoId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePrioridadeInformada(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdateSequenciaTransformacao(int id, int value)
         {
-            var query = _query.UpdatePrioridadeInformada(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateSequenciaTransformacao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateAcao(string maquinaid, string produtoid, int sequenciatransformacao, string value)
+        public void UpdateGrupoMaquinaId(int id, string value)
         {
-            var query = _query.UpdateAcao(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateGrupoMaquinaId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePerformance(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdatePecasPorPulso(int id, Decimal value)
         {
-            var query = _query.UpdatePerformance(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdatePecasPorPulso(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTempoSetup(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdatePrioridadeInformada(int id, Decimal value)
         {
-            var query = _query.UpdateTempoSetup(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdatePrioridadeInformada(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTempoSetupAjuste(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdateAcao(int id, string value)
         {
-            var query = _query.UpdateTempoSetupAjuste(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateAcao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateProximaSequenciaTransformacao(string maquinaid, string produtoid, int sequenciatransformacao, int value)
+        public void UpdatePerformance(int id, Decimal value)
         {
-            var query = _query.UpdateProximaSequenciaTransformacao(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdatePerformance(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateStatus(string maquinaid, string produtoid, int sequenciatransformacao, string value)
+        public void UpdateTempoSetup(int id, Decimal value)
         {
-            var query = _query.UpdateStatus(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateTempoSetup(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateHierarquiaSequenciaTransformacao(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdateTempoSetupAjuste(int id, Decimal value)
         {
-            var query = _query.UpdateHierarquiaSequenciaTransformacao(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateTempoSetupAjuste(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateAvaliaCusto(string maquinaid, string produtoid, int sequenciatransformacao, int value)
+        public void UpdateProximaSequenciaTransformacao(int id, int value)
         {
-            var query = _query.UpdateAvaliaCusto(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateProximaSequenciaTransformacao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateOperacoes(string maquinaid, string produtoid, int sequenciatransformacao, string value)
+        public void UpdateStatus(int id, string value)
         {
-            var query = _query.UpdateOperacoes(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateStatus(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateExcecaoOperacoes(string maquinaid, string produtoid, int sequenciatransformacao, string value)
+        public void UpdateHierarquiaSequenciaTransformacao(int id, Decimal value)
         {
-            var query = _query.UpdateExcecaoOperacoes(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateHierarquiaSequenciaTransformacao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdatePercentualInicioPassoAnterior(string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
+        public void UpdateAvaliaCusto(int id, int value)
         {
-            var query = _query.UpdatePercentualInicioPassoAnterior(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateAvaliaCusto(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateLinhaDireta(string maquinaid, string produtoid, int sequenciatransformacao, string value)
+        public void UpdateOperacoes(int id, string value)
         {
-            var query = _query.UpdateLinhaDireta(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateOperacoes(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTemplateDeTestesId(string maquinaid, string produtoid, int sequenciatransformacao, int value)
+        public void UpdateExcecaoOperacoes(int id, string value)
         {
-            var query = _query.UpdateTemplateDeTestesId(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateExcecaoOperacoes(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateTenantID(string maquinaid, string produtoid, int sequenciatransformacao, int value)
+        public void UpdatePercentualInicioPassoAnterior(int id, Decimal value)
         {
-            var query = _query.UpdateTenantID(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdatePercentualInicioPassoAnterior(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateDeleted(string maquinaid, string produtoid, int sequenciatransformacao, bool value)
+        public void UpdateLinhaDireta(int id, string value)
         {
-            var query = _query.UpdateDeleted(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateLinhaDireta(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateChanged(string maquinaid, string produtoid, int sequenciatransformacao, DateTime value)
+        public void UpdateTemplateDeTestesId(int id, int value)
         {
-            var query = _query.UpdateChanged(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateTemplateDeTestesId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
-        public void UpdateUserId(string maquinaid, string produtoid, int sequenciatransformacao, int value)
+        public void UpdateTenantID(int id, int value)
         {
-            var query = _query.UpdateUserId(maquinaid, produtoid, sequenciatransformacao, value);
+            var query = _query.UpdateTenantID(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateDeleted(int id, bool value)
+        {
+            var query = _query.UpdateDeleted(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateChanged(int id, DateTime value)
+        {
+            var query = _query.UpdateChanged(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateUserId(int id, int value)
+        {
+            var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

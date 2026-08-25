@@ -341,6 +341,8 @@ private OperationalLoggingDecision Evaluate(
                     string? recordId)
                 {
                     ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "Id"))
+                        mask |= RoteiroTrackingFields.Id;
                     if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "MaquinaId"))
                         mask |= RoteiroTrackingFields.MaquinaId;
                     if (DomainFieldTracked(policy, "Roteiro", operation, recordId, "ProdutoId"))

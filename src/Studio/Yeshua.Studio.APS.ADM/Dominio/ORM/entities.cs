@@ -73,6 +73,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
 
     public class Roteiro
     {
+        public int? Id { get; set; }
         public string MaquinaId { get; set; }
         public Maquina Maquina { get; set; }
         public string ProdutoId { get; set; }

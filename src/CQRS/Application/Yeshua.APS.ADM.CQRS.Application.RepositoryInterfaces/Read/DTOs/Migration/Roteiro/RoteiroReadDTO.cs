@@ -18,6 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record RoteiroDTO
     {
+    public int id { get; set; }
     public string maquinaid { get; set; }
     public string produtoid { get; set; }
     public int sequenciatransformacao { get; set; }

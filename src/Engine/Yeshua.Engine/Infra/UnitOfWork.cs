@@ -100,7 +100,7 @@ namespace Infra
         {
             try
             {
-                _connection.Execute(sql, parameters, _transaction);
+                 _connection.Execute(sql, parameters, _transaction);
 
             }
             catch (Exception )

@@ -48,7 +48,7 @@ namespace Command.Receivers.Write
              if(comand is Command.Write.RoteiroCrudCommand c) 
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertRoteiro", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertRoteiroReceiver), commandName: "Command.Write.RoteiroCrudCommand");
-                 var roteiro = new RoteiroFactory(_logger, _domainTrackingPolicy).Create(context, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.GrupoMaquinaId, c.PecasPorPulso, c.PrioridadeInformada, c.Acao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.ProximaSequenciaTransformacao, c.Status, c.HierarquiaSequenciaTransformacao, c.AvaliaCusto, c.Operacoes, c.ExcecaoOperacoes, c.PercentualInicioPassoAnterior, c.LinhaDireta, c.TemplateDeTestesId);
+                 var roteiro = new RoteiroFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MaquinaId, c.ProdutoId, c.SequenciaTransformacao, c.GrupoMaquinaId, c.PecasPorPulso, c.PrioridadeInformada, c.Acao, c.Performance, c.TempoSetup, c.TempoSetupAjuste, c.ProximaSequenciaTransformacao, c.Status, c.HierarquiaSequenciaTransformacao, c.AvaliaCusto, c.Operacoes, c.ExcecaoOperacoes, c.PercentualInicioPassoAnterior, c.LinhaDireta, c.TemplateDeTestesId);
                  var domainResult = RoteiroDomainBehavior.Apply(roteiro, context);
                  if (!domainResult.IsValid)
                      return ValidationError(domainResult.Errors, null);
