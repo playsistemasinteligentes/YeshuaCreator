@@ -1092,6 +1092,69 @@ namespace Dominio.Schemas.CQRS
             File.WriteAllText(filePath, content, Encoding.UTF8);
         }
 
+        private void EnsureApplicationHostMyConfig(string projectDirectory)
+        {
+            var myConfig = TryReadStudioHostMyConfig();
+            if (myConfig is null)
+                return;
+
+            var appSettingsPath = Path.Combine(projectDirectory, "appsettings.json");
+            JsonObject root;
+
+            if (File.Exists(appSettingsPath))
+            {
+                root = JsonNode.Parse(File.ReadAllText(appSettingsPath)) as JsonObject
+                    ?? throw new InvalidOperationException(
+                        $"O arquivo '{appSettingsPath}' nao possui um objeto JSON valido.");
+            }
+            else
+            {
+                root = new JsonObject();
+            }
+
+            root["MyConfig"] = myConfig;
+            WriteText(
+                appSettingsPath,
+                root.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
+        }
+
+        private JsonObject? TryReadStudioHostMyConfig()
+        {
+            if (string.IsNullOrWhiteSpace(_studioProjectName))
+                return null;
+
+            var appSettingsPath = Path.Combine(
+                _solutionDirectory,
+                "src",
+                "Studio",
+                _studioProjectName,
+                "appsettings.json");
+
+            if (!File.Exists(appSettingsPath))
+                return null;
+
+            var root = JsonNode.Parse(File.ReadAllText(appSettingsPath)) as JsonObject
+                ?? throw new InvalidOperationException(
+                    $"O arquivo '{appSettingsPath}' nao possui um objeto JSON valido.");
+
+            if (root["MyConfig"] is not JsonObject myConfig)
+                return null;
+
+            var hostMyConfig = new JsonObject();
+            CopyJsonProperty(myConfig, hostMyConfig, "ReadConectionString");
+            CopyJsonProperty(myConfig, hostMyConfig, "WriteConectionString");
+
+            return hostMyConfig.Count == 0 ? null : hostMyConfig;
+        }
+
+        private static void CopyJsonProperty(JsonObject source, JsonObject destination, string propertyName)
+        {
+            if (source[propertyName] is null)
+                return;
+
+            destination[propertyName] = JsonNode.Parse(source[propertyName]!.ToJsonString());
+        }
+
         private string GetPathTestsIntegrationApiTestKit()
         {
             return Path.Combine(GetPathTestsCQRS(), "Yeshua.CQRS.Tests.Integration.Api.TestKit");
@@ -2030,6 +2093,7 @@ public static class EndpointsCuston
   ""Storage"": {}
 }");
 
+            EnsureApplicationHostMyConfig(projectDirectory);
             EnsureApplicationInfrastructureApiLaunchSettings(projectDirectory);
         }
 
@@ -2401,6 +2465,8 @@ public static class CustonDependenceInjection
   ""RabbitMq"": {},
   ""Storage"": {}
         }");
+
+            EnsureApplicationHostMyConfig(projectDirectory);
         }
 
         private string GetApplicationName()

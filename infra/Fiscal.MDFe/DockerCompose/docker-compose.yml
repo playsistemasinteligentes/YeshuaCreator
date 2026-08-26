@@ -21,8 +21,6 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      SA__PASSWORD: "123qwe!@#QWE"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     expose:
@@ -36,8 +34,6 @@ services:
       context: ../../..
       dockerfile: infra/Fiscal.MDFe/DockerCompose/migration/Dockerfile
     environment:
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      SA__PASSWORD: "123qwe!@#QWE"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=MDFE;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     restart: "no"
@@ -48,4 +44,3 @@ networks:
   yeshua-net:
     external: true
     name: yeshua-net
-

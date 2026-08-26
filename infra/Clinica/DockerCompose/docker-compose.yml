@@ -8,7 +8,6 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
       ASPNETCORE_ENVIRONMENT: "Production"
-      SA__PASSWORD: "123qwe!@#QWE"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     expose:
@@ -30,16 +29,10 @@ services:
       OperationalControl__Endpoint: "http://operational-intelligence-api:5728"
       OperationalControl__Enabled: "true"
       OperationalControl__RefreshSeconds: "10"
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      Redis__Host: redis
-      SA__PASSWORD: "123qwe!@#QWE"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Storage__Providers__Disk__Root: "/storage"
       Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
-      Storage__Providers__S3__Bucket: my-bucket
-      Storage__Providers__S3__Region: us-east-1
-      Storage__Providers__S3__BaseUrl: https://cdn.seusite.com
       Storage__Locations__volatile/ia/transcriptions/input: "Disk"
       Storage__Locations__volatile/ia/transcriptions/output: "Disk"
       Storage__Locations__volatile/reports/input: "Disk"
@@ -67,15 +60,10 @@ services:
       OperationalControl__Endpoint: "http://operational-intelligence-api:5728"
       OperationalControl__Enabled: "true"
       OperationalControl__RefreshSeconds: "10"
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      Redis__Host: redis
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       Storage__Providers__Disk__Root: "/storage"
       Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
-      Storage__Providers__S3__Bucket: my-bucket
-      Storage__Providers__S3__Region: us-east-1
-      Storage__Providers__S3__BaseUrl: https://cdn.seusite.com
       Storage__Locations__volatile/ia/transcriptions/input: "Disk"
       Storage__Locations__volatile/ia/transcriptions/output: "Disk"
       Storage__Locations__volatile/reports/input: "Disk"
@@ -87,9 +75,6 @@ services:
       RabbitMq__Username: yeshua
       RabbitMq__Password: yeshua123
       RabbitMq__VirtualHost: /
-      RabbitMq__Exchange: kiwi.exchange
-      RabbitMq__Queue: kiwi.queue
-      RabbitMq__RoutingKey: kiwi.routing
     expose:
       - "7215"
     volumes:
@@ -103,8 +88,6 @@ services:
       context: ../../..
       dockerfile: infra/Clinica/DockerCompose/migration/Dockerfile
     environment:
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      SA__PASSWORD: "123qwe!@#QWE"
       MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
       MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=CLINICA;User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
     restart: "no"

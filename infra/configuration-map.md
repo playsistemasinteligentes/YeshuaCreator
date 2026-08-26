@@ -16,22 +16,22 @@ parece ativo do que parece sobra historica.
 
 | Chave | Onde aparece | Uso atual | Status |
 | --- | --- | --- | --- |
-| `MyConfig:ReadConectionString` | API, Worker, Front, Studio appsettings | `GS.I.MYC.ReadConectionString` cria `SqlFactory` | Manter |
-| `MyConfig:WriteConectionString` | API, Worker, Front, Studio appsettings | Mantida pelo contrato de leitura/escrita; pode apontar para o mesmo banco da leitura | Manter |
+| `MyConfig:ReadConectionString` | API, Worker, Studio appsettings | `GS.I.MYC.ReadConectionString` cria `SqlFactory` | Manter |
+| `MyConfig:WriteConectionString` | API, Worker, Studio appsettings | Mantida pelo contrato de leitura/escrita; pode apontar para o mesmo banco da leitura | Manter |
 | `MYCONFIG__READCONECTIONSTRING` | Docker compose, `GS` | Override real da conexao de leitura | Manter |
 | `MYCONFIG__WRITECONECTIONSTRING` | Docker compose, `GS` | Override real da conexao de escrita | Manter por enquanto |
-| `MyConfig:MaxConcurrentConnections` | appsettings API/Worker/Front | Kestrel da API/Front | Manter |
-| `MyConfig:MaxConcurrentUpgradedConnections` | appsettings API/Worker/Front | Kestrel da API/Front | Manter |
-| `MyConfig:MaxRequestBodySize` | appsettings API/Worker/Front | Kestrel da API/Front | Manter |
-| `MyConfig:CorsOrigins` | appsettings API/Front | CORS da API | Manter |
-| `MyConfig:xReadConectionString` | appsettings | Nao existe no modelo `MyConfig` e nao ha leitura encontrada | Candidato a remover |
-| `MyConfig:xWriteConectionString` | appsettings | Nao existe no modelo `MyConfig` e nao ha leitura encontrada | Candidato a remover |
-| `MyConfig:HttpIPListen` | appsettings | Nao foi encontrado uso no Kestrel atual | Candidato a remover ou implementar |
-| `MyConfig:HttpPortListen` | appsettings | Nao foi encontrado uso no Kestrel atual | Candidato a remover ou implementar |
-| `MyConfig:HttpsIPListen` | appsettings | Nao foi encontrado uso no Kestrel atual | Candidato a remover ou implementar |
-| `MyConfig:HttpsPortListen` | appsettings | Nao foi encontrado uso no Kestrel atual | Candidato a remover ou implementar |
-| `MyConfig:HttpsPathCertificado` | appsettings | Nao foi encontrado uso no Kestrel atual | Candidato a remover ou implementar |
-| `MyConfig:HttpssenhaCertificado` | appsettings | Nao foi encontrado uso no Kestrel atual | Candidato a remover ou implementar |
+| `MyConfig:MaxConcurrentConnections` | appsettings da matriz antiga API/Front | Kestrel da API/Front globais antigos | Manter enquanto esses hosts existirem |
+| `MyConfig:MaxConcurrentUpgradedConnections` | appsettings da matriz antiga API/Front | Kestrel da API/Front globais antigos | Manter enquanto esses hosts existirem |
+| `MyConfig:MaxRequestBodySize` | appsettings da matriz antiga API/Front | Kestrel da API/Front globais antigos | Manter enquanto esses hosts existirem |
+| `MyConfig:CorsOrigins` | appsettings da matriz antiga API | CORS da API global antiga | Manter enquanto esse host existir |
+| `MyConfig:xReadConectionString` | appsettings antigos | Nao existe no modelo `MyConfig` e nao ha leitura encontrada | Removido dos artefatos ativos |
+| `MyConfig:xWriteConectionString` | appsettings antigos | Nao existe no modelo `MyConfig` e nao ha leitura encontrada | Removido dos artefatos ativos |
+| `MyConfig:HttpIPListen` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
+| `MyConfig:HttpPortListen` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
+| `MyConfig:HttpsIPListen` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
+| `MyConfig:HttpsPortListen` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
+| `MyConfig:HttpsPathCertificado` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
+| `MyConfig:HttpssenhaCertificado` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
 | `JwtSettings:SecretKey` | `Program.cs`, default em `JwtSettings` | JWT da API | Manter, mas configurar explicitamente em deploy |
 | `JwtSettings:ExpirationMinutes` | `Program.cs`, default em `JwtSettings` | JWT da API | Manter |
 
@@ -47,7 +47,7 @@ padrao do ASP.NET.
 | `Storage:Providers:Disk:Root` | API/Worker appsettings, Docker | `DiskStorageProvider` | Manter |
 | `Storage:Providers:Disk:BaseUrl` | API/Worker appsettings, Docker | `DiskStorageProvider.GetBaseUrl` | Manter |
 | `Storage:Locations:*` | API/Worker appsettings, Docker | `StorageResolver` escolhe provider por prefixo | Manter |
-| `Storage:Providers:S3:*` | API/Worker appsettings, Docker | `S3StorageProvider` esta vazio e nao registrado | Candidato a remover ou deixar como roadmap |
+| `Storage:Providers:S3:*` | appsettings/Compose antigos | `S3StorageProvider` esta vazio e nao registrado | Removido dos artefatos ativos; roadmap futuro |
 
 ## RabbitMQ
 
@@ -58,10 +58,10 @@ padrao do ASP.NET.
 | `RabbitMq:Username` / `RabbitMq:UserName` | Worker appsettings, Docker | Binder alimenta `UserName` | Manter, padronizar para `UserName` depois |
 | `RabbitMq:Password` | Worker appsettings, Docker | `RabbitMqConnectionManager` e topology initializer | Manter |
 | `RabbitMq:VirtualHost` | Worker appsettings, Docker | `RabbitMqConnectionManager` e topology initializer | Manter |
-| `RabbitMq:Exchange` | Worker appsettings, Docker | Nao existe na classe de options usada | Candidato a remover ou implementar |
-| `RabbitMq:Queue` | Worker appsettings, Docker | Nao existe na classe de options usada | Candidato a remover ou implementar |
-| `RabbitMq:RoutingKey` | Worker appsettings, Docker | Nao existe na classe de options usada | Candidato a remover ou implementar |
-| `MyConfig:RabbitMQ` | classe `MyConfig` | Nao foi encontrado uso | Candidato a remover |
+| `RabbitMq:Exchange` | Compose antigo | Nao existe na classe de options usada; topology vem do codigo gerado | Removido dos artefatos ativos |
+| `RabbitMq:Queue` | Compose antigo | Nao existe na classe de options usada; topology vem do codigo gerado | Removido dos artefatos ativos |
+| `RabbitMq:RoutingKey` | Compose antigo | Nao existe na classe de options usada; topology vem do codigo gerado | Removido dos artefatos ativos |
+| `MyConfig:RabbitMQ` | classe `MyConfig` antiga | Nao foi encontrado uso | Removido |
 
 ## Docker e infra
 
@@ -69,9 +69,9 @@ padrao do ASP.NET.
 | --- | --- | --- | --- |
 | `ASPNETCORE_URLS` | api, worker, front | Runtime ASP.NET | Manter |
 | `ASPNETCORE_ENVIRONMENT` | api, worker, front | Runtime ASP.NET | Manter |
-| `ConnectionStrings__Default` | api, worker, migration | Nao ha `GetConnectionString("Default")` encontrado | Candidato a remover |
-| `Redis__Host` | api, worker | Nao ha cliente Redis/configuracao encontrada | Candidato a remover |
-| `SA__PASSWORD` | api, front, migration | Nao ha leitura C# encontrada | Candidato a remover |
+| `ConnectionStrings__Default` | Compose antigo de app | Nao ha `GetConnectionString("Default")` encontrado | Removido dos Compose ativos |
+| `Redis__Host` | Compose antigo de app | Nao ha cliente Redis/configuracao encontrada | Removido dos Compose ativos |
+| `SA__PASSWORD` | Compose antigo de app | Nao ha leitura C# encontrada | Removido dos Compose ativos |
 | `MSSQL_SA_PASSWORD` | sql01 | Imagem SQL Server | Manter como referencia de segredo |
 | `ACCEPT_EULA` | sqlserver | Imagem SQL Server | Manter |
 | `MSSQL_PID` | sqlserver | Imagem SQL Server | Manter |
@@ -82,9 +82,10 @@ padrao do ASP.NET.
 | `SUMMARIZER_MODEL` | ai-summarizer | Python summarizer | Manter |
 | `SUMMARIZER_DEVICE` | ai-summarizer | Python summarizer | Manter |
 
-O Compose ativo e gerado em `infra/Environments/Production/Migration`. Clinica
-e MDF-e possuem connection strings distintas, enquanto `sql01` e a persistencia
-fisica do SQL sao compartilhados pelo ambiente.
+O deploy publico atual usa `infra/Clinica/DockerCompose` e
+`infra/Fiscal.MDFe/DockerCompose`, orquestrados por `infra/docker/deploy.sh`.
+Clinica e MDF-e possuem connection strings distintas, enquanto `sqlserver` e a
+persistencia fisica do SQL sao compartilhados pelo ambiente.
 
 ## Testes integrados
 

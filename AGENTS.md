@@ -379,6 +379,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Containers de Migration executam o Studio com `--database-only`; geracao de codigo nunca acontece durante o deploy.
 - O nginx pertence ao Shared e possui arquivos de rota separados por aplicativo.
 - Deploys de aplicativo nao executam `docker compose down` e nao alteram containers de outros aplicativos.
+- Para execucao local no Windows, a Engine replica do `appsettings.json` do
+  Studio para API e Worker apenas `MyConfig.ReadConectionString` e
+  `MyConfig.WriteConectionString`; demais parametros de host antigos nao devem
+  ser propagados para os hosts gerados se nao forem consumidos.
+- Em Docker/Compose, conexoes continuam sendo fornecidas por variaveis de
+  ambiente `MYCONFIG__READCONECTIONSTRING` e
+  `MYCONFIG__WRITECONECTIONSTRING`, mantendo o `appsettings` como fallback
+  local.
 - A operacao publica permanece em tres passos: `setup.sh`, `setup-cert.sh` e `deploy.sh`.
 - `deploy.sh` sem argumento atualiza todo o servidor; `clinica`, `mdfe` e `shared` limitam o destino.
 - A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.
