@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.Order;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class OrderDomainBehavior
     {
+        static partial void ValidateCustom(IOrderEntity order, DomainOperationContext context, List<string> errors)
+        {
+            OrderBusinessRules.Validate(order, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.FilaProducao;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class FilaProducaoDomainBehavior
     {
+        static partial void ValidateCustom(IFilaProducaoEntity filaproducao, DomainOperationContext context, List<string> errors)
+        {
+            FilaProducaoBusinessRules.Validate(filaproducao, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

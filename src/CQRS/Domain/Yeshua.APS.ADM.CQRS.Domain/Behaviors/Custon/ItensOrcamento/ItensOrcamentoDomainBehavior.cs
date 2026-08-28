@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.ItensOrcamento;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class ItensOrcamentoDomainBehavior
     {
+        static partial void PrepareCustom(IItensOrcamentoEntity itensorcamento, DomainOperationContext context)
+        {
+            ItensOrcamentoBusinessRules.Prepare(itensorcamento, context);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

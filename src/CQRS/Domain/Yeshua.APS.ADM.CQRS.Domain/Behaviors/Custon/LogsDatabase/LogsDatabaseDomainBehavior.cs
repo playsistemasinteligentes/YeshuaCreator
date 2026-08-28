@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.LogsDatabase;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class LogsDatabaseDomainBehavior
     {
+        static partial void PrepareCustom(ILogsDatabaseEntity logsdatabase, DomainOperationContext context)
+        {
+            LogsDatabaseBusinessRules.Prepare(logsdatabase, context);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

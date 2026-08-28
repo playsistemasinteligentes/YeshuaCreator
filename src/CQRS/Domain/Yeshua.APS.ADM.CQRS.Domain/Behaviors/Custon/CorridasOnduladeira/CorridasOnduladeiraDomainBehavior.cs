@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.CorridasOnduladeira;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class CorridasOnduladeiraDomainBehavior
     {
+        static partial void ValidateCustom(ICorridasOnduladeiraEntity corridasonduladeira, DomainOperationContext context, List<string> errors)
+        {
+            CorridasOnduladeiraBusinessRules.Validate(corridasonduladeira, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

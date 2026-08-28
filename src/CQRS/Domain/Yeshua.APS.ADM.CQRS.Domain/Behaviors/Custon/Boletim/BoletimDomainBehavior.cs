@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.Boletim;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class BoletimDomainBehavior
     {
+        static partial void ValidateCustom(IBoletimEntity boletim, DomainOperationContext context, List<string> errors)
+        {
+            BoletimBusinessRules.Validate(boletim, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

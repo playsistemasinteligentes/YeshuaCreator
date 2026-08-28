@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.Usuario;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class UsuarioDomainBehavior
     {
+        static partial void PrepareCustom(IUsuarioEntity usuario, DomainOperationContext context)
+        {
+            UsuarioBusinessRules.Prepare(usuario, context);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

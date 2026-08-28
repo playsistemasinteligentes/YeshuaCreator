@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.GrupoMaquina;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class GrupoMaquinaDomainBehavior
     {
+        static partial void ValidateCustom(IGrupoMaquinaEntity grupomaquina, DomainOperationContext context, List<string> errors)
+        {
+            GrupoMaquinaBusinessRules.Validate(grupomaquina, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

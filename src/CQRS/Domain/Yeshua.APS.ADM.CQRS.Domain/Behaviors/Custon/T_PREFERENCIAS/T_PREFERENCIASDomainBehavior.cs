@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.T_PREFERENCIAS;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class T_PREFERENCIASDomainBehavior
     {
+        static partial void PrepareCustom(IT_PREFERENCIASEntity t_preferencias, DomainOperationContext context)
+        {
+            T_PREFERENCIASBusinessRules.Prepare(t_preferencias, context);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

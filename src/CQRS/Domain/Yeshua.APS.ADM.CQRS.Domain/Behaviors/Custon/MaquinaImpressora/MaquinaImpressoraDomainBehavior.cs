@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.MaquinaImpressora;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class MaquinaImpressoraDomainBehavior
     {
+        static partial void ValidateCustom(IMaquinaImpressoraEntity maquinaimpressora, DomainOperationContext context, List<string> errors)
+        {
+            MaquinaImpressoraBusinessRules.Validate(maquinaimpressora, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

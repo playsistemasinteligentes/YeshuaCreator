@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.TempoSetupOnduladeira;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,15 @@ namespace Dominio.Behaviors
 {
     public static partial class TempoSetupOnduladeiraDomainBehavior
     {
+        static partial void PrepareCustom(ITempoSetupOnduladeiraEntity temposetuponduladeira, DomainOperationContext context)
+        {
+            TempoSetupOnduladeiraBusinessRules.Prepare(temposetuponduladeira, context);
+        }
+
+        static partial void ValidateCustom(ITempoSetupOnduladeiraEntity temposetuponduladeira, DomainOperationContext context, List<string> errors)
+        {
+            TempoSetupOnduladeiraBusinessRules.Validate(temposetuponduladeira, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

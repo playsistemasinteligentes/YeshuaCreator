@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.Operacoes;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class OperacoesDomainBehavior
     {
+        static partial void ValidateCustom(IOperacoesEntity operacoes, DomainOperationContext context, List<string> errors)
+        {
+            OperacoesBusinessRules.Validate(operacoes, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

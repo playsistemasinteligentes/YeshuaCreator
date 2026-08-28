@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Dominio.Entitys;
+using Dominio.Entitys.Custon.Ocorrencia;
 using Dominio.Patterns.Domain;
 using System.Collections.Generic;
 
@@ -16,6 +17,10 @@ namespace Dominio.Behaviors
 {
     public static partial class OcorrenciaDomainBehavior
     {
+        static partial void ValidateCustom(IOcorrenciaEntity ocorrencia, DomainOperationContext context, List<string> errors)
+        {
+            OcorrenciaBusinessRules.Validate(ocorrencia, context, errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration
