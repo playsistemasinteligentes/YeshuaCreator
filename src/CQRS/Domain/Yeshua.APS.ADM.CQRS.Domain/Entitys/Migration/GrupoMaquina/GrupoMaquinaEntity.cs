@@ -27,11 +27,13 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string GMA_TIPO_PLANEJAMENTO { get; set; }
     private List<string> _erroMensagem = null;
- internal GrupoMaquinaEntity(string id, string descricao, string status ){
+ internal GrupoMaquinaEntity(string id, string descricao, string status, string gma_tipo_planejamento ){
  Id = id; 
  Descricao = descricao; 
  Status = status; 
+ GMA_TIPO_PLANEJAMENTO = gma_tipo_planejamento; 
 }
 public bool isValidData()
 {

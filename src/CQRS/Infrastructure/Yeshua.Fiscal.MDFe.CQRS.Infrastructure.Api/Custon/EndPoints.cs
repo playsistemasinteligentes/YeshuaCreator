@@ -15,7 +15,7 @@ public static class EndpointsCuston
 
     public static void MapEndpoints(this WebApplication app)
     {
-        app.MapPost("/yapi/login", (
+        app.MapPost("/yapi/login", async (
             UserLogin user,
             JwtSettings jwtSettings,
             [FromServices] Command.Receivers.UseCase.LoginHandler receiver) =>
@@ -25,12 +25,12 @@ public static class EndpointsCuston
                 email = user.Login,
                 password = user.Password
             };
-            var result = StateResults.Try(() => receiver.Execute(command));
+            var result = await receiver.ExecuteAsync(command);
 
-            if (result.Result is not Ok<State<Command.UseCase.LoginOutputCommand>> okResult)
+            if (result.StatusCode is < 200 or >= 300 || result.Data is null)
                 return Results.Unauthorized();
 
-            var authenticatedUser = okResult.Value.Data;
+            var authenticatedUser = result.Data;
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, authenticatedUser.UserId.ToString()),
@@ -72,7 +72,7 @@ public static class EndpointsCuston
                 ContentType = form["contentType"],
                 FileStream = form.Files["fileStream"]
             };
-            var result = receiver.Execute(command);
+            var result = await receiver.ExecuteAsync(command);
             return result.StatusCode == 200 ? Results.Ok(result.Data) : Results.BadRequest(result);
         }).RequireAuthorization();
     }

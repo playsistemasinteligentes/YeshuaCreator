@@ -108,6 +108,7 @@ namespace Dominio.Migration
             {
                 SanitizeMigrationEndEntityToCodeGenerete(migration);
                 SanitizeMigrationEndHubAgentsToCodeGenerete(migration);
+                SanitizeMigrationExternalConnectorsToCodeGenerete(migration);
             }
         }
         private void SanitizeMigrationEndEntityToCodeGenerete(MigrationBase migration)
@@ -207,6 +208,36 @@ namespace Dominio.Migration
             foreach (var hub in migration.UseCaseGroup)
             {
                 _migrationConcriteBase.UseCaseGroup.Add(hub);
+            }
+        }
+
+        private void SanitizeMigrationExternalConnectorsToCodeGenerete(MigrationBase migration)
+        {
+            foreach (var connector in migration.ExternalConnectors)
+            {
+                var target = _migrationConcriteBase.ExternalConnectors.FirstOrDefault(x =>
+                    string.Equals(x.Key, connector.Key, StringComparison.OrdinalIgnoreCase));
+
+                if (target == null)
+                {
+                    _migrationConcriteBase.ExternalConnectors.Add(connector);
+                    continue;
+                }
+
+                target.Protocol = connector.Protocol;
+                target.TokenRequired = target.TokenRequired || connector.TokenRequired;
+
+                foreach (var operation in connector.Operations)
+                {
+                    if (target.Operations.Any(x =>
+                            string.Equals(x.Service, operation.Service, StringComparison.OrdinalIgnoreCase) &&
+                            string.Equals(x.Operation, operation.Operation, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    target.Operations.Add(operation);
+                }
             }
         }
         private void AplyQuerys(List<MigrationQuery> migrationQueries, IUnitOfWork unitOfWork, MigrationBase migration)

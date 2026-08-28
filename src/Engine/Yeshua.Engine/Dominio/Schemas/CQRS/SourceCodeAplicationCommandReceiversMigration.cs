@@ -82,6 +82,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using System.Collections.Generic;");
                 sb.AppendLine($"using System.Linq;");
                 sb.AppendLine($"using System.Text;");
+                sb.AppendLine($"using System.Threading;");
                 sb.AppendLine($"using System.Threading.Tasks;");
                 sb.AppendLine();
 
@@ -108,7 +109,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<I{_entity.EntityName}Entity> Action(ICommand comand)");
+                sb.AppendLine($"        protected override async Task<State<I{_entity.EntityName}Entity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand c) ");
@@ -160,6 +161,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
+                sb.AppendLine($"using System.Threading;");
+                sb.AppendLine($"using System.Threading.Tasks;");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
@@ -181,7 +184,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}DTO>> Action(ICommand comand)");
+                sb.AppendLine($"        protected override async Task<State<DataPagination<{_entity.EntityName}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
                 sb.AppendLine("             {    ");
@@ -206,6 +209,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceDominioInterface};");
                 sb.AppendLine($"using Repositorio.Outputs;");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
+                sb.AppendLine($"using System.Threading;");
+                sb.AppendLine($"using System.Threading.Tasks;");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
@@ -227,7 +232,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>> Action(ICommand comand)");
+                sb.AppendLine($"        protected override async Task<State<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_whereName}Command c) ");
                 sb.AppendLine("             {    ");
@@ -254,6 +259,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryRead};");
                 sb.AppendLine($"using {CQRSParam.I.NameSpaceIRepositoryWrite};");
                 sb.AppendLine($"using Repositorio.Outputs;");
+                sb.AppendLine($"using System.Threading;");
+                sb.AppendLine($"using System.Threading.Tasks;");
                 sb.AppendLine();
                 sb.AppendLine($"namespace {_nameSpace}");
                 sb.AppendLine("{");
@@ -275,7 +282,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State <IEnumerable<{_entity.EntityName}{_column}DTO>> Action(ICommand comand)");
+                sb.AppendLine($"        protected override async Task<State<IEnumerable<{_entity.EntityName}{_column}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"            if(comand is SearchFKCommand c) ");

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 //scope;
 
 using Command.Patterns.Command;
@@ -36,7 +38,7 @@ namespace Command.Receivers.UseCase
             _executionContext = context;
         }
 
-        partial void CustomActionHook(ref State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand)
+        protected partial async Task<State<RecoveryAccountOutputCommand>> CustomActionHookAsync(State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand, CancellationToken cancellationToken)
         {
             var notification = _factory.GetType(comand.typeNotification);
             var us = new yUserReadCommand();
@@ -72,7 +74,7 @@ namespace Command.Receivers.UseCase
 
 
             notification.SendNotification(_messege);
-
+            return state;
         }
     }
 }

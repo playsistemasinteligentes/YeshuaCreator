@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.ySaga;
 
-[SmokeTestOrder(7)]
+[SmokeTestOrder(122)]
 public partial class ySagaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/ySaga/PostySaga";

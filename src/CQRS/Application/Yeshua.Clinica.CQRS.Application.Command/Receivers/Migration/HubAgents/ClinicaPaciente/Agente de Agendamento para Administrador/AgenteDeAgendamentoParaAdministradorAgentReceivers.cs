@@ -1,4 +1,5 @@
-﻿// <yeshua>
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -34,7 +35,7 @@ namespace Comandos.Receivers.AgenteDeAgendamentoParaAdministrador
         }
 
 
-        protected override State<AgenteDeAgendamentoParaAdministradorHubAgentReceiver> Action(ICommand comand)
+        protected override async Task<State<AgenteDeAgendamentoParaAdministradorHubAgentReceiver>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             try
             {

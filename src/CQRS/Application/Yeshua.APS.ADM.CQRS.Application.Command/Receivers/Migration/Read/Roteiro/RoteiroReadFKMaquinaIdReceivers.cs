@@ -15,6 +15,8 @@ using Dominio.Interfaces;
 using IRepository.Read;
 using IRepository.Write;
 using Repositorio.Outputs;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Receivers.Read
 {
@@ -35,7 +37,7 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override State <IEnumerable<RoteiroMaquinaIdDTO>> Action(ICommand comand)
+        protected override async Task<State<IEnumerable<RoteiroMaquinaIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    

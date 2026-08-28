@@ -34,6 +34,8 @@ using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using RepositoryInterfaces.Patterns.Worker;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Patterns
 {
@@ -62,7 +64,7 @@ namespace Command.Patterns
             _unitOfWork = unitOfWork;
         }
 
-        protected override State<OutputCommand> Action(InputCommand command)
+        protected override async Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -167,6 +169,8 @@ using IRepository.Read;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using RepositoryInterfaces.Patterns.Worker;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Patterns
 {
@@ -184,7 +188,7 @@ namespace Command.Patterns
             _sagaStepReadRepository = sagaStepReadRepository;
         }
 
-        protected override State<InboxOutputCommand> Action(InputCommand command)
+        protected override async Task<State<InboxOutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {

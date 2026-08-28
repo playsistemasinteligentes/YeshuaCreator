@@ -1,4 +1,6 @@
-﻿// <yeshua>
+using System.Threading.Tasks;
+using System.Threading;
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -20,9 +22,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class RecoveryAccountHandler
     {
-partial void CustomActionHook(ref State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand)
+protected partial async Task<State<RecoveryAccountOutputCommand>> CustomActionHookAsync(State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand, CancellationToken cancellationToken)
 {
-}
+            return state;
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

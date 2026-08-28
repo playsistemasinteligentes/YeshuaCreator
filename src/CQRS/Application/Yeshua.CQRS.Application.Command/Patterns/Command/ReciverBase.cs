@@ -2,6 +2,8 @@
 using Dominio.Interfaces;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Worker;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Patterns.Command
 {
@@ -21,9 +23,13 @@ namespace Command.Patterns.Command
             _context = context;
         }
 
-        protected abstract State<TResponse> Action(TCommand command);
+        protected abstract Task<State<TResponse>> ActionAsync(
+            TCommand command,
+            CancellationToken cancellationToken = default);
 
-        public State<TResponse> Execute(TCommand command)
+        public async Task<State<TResponse>> ExecuteAsync(
+            TCommand command,
+            CancellationToken cancellationToken = default)
         {
             var traceId = _context.TraceId;
             var startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -32,7 +38,7 @@ namespace Command.Patterns.Command
 
             try
             {
-                var result = Action(command);
+                var result = await ActionAsync(command, cancellationToken);
 
                 WorkerCycleTelemetry? workerCycle = null;
                 if (result.Data is IWorkerCycleResult progress)
@@ -92,6 +98,11 @@ namespace Command.Patterns.Command
             string message,
             TResponse data = default)
             => new State<TResponse>(201, message, data);
+
+        protected static State<TResponse> Accepted(
+            string message,
+            TResponse data = default)
+            => new State<TResponse>(202, message, data);
 
         protected static State<TResponse> ValidationError(
             string message,

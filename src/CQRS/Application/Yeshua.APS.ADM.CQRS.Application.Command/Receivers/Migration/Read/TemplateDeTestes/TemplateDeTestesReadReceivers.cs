@@ -15,6 +15,8 @@ using Dominio.Entitys;
 using Dominio.Interfaces;
 using Repositorio.Outputs;
 using IRepository.Read;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Receivers.Read
 {
@@ -35,7 +37,7 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override State<DataPagination<TemplateDeTestesDTO>> Action(ICommand comand)
+        protected override async Task<State<DataPagination<TemplateDeTestesDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.TemplateDeTestesReadCommand c) 
              {    

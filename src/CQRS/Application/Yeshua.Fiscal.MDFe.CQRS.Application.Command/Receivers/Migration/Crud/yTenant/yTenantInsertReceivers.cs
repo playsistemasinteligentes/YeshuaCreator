@@ -1,4 +1,5 @@
-﻿using Command.Patterns.Command;
+using System.Threading;
+using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
@@ -28,7 +29,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override State<IyTenantEntity> Action(ICommand comand)
+        protected override async Task<State<IyTenantEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yTenantCrudCommand c) 
              {    

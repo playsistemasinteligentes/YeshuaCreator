@@ -366,7 +366,6 @@ public sealed class SourceCodeInfrastructureOperationalControlSynchronizerMigrat
             {
                 private readonly OperationalLoggingPolicyState _state;
                 private readonly IRuntimeIdentityProvider _identityProvider;
-                private readonly ILogger<OperationalPolicySynchronizer> _logger;
                 private readonly HttpClient _httpClient;
                 private readonly string _endpoint;
                 private readonly TimeSpan _refreshInterval;
@@ -376,12 +375,10 @@ public sealed class SourceCodeInfrastructureOperationalControlSynchronizerMigrat
                 public OperationalPolicySynchronizer(
                     OperationalLoggingPolicyState state,
                     IRuntimeIdentityProvider identityProvider,
-                    IConfiguration configuration,
-                    ILogger<OperationalPolicySynchronizer> logger)
+                    IConfiguration configuration)
                 {
                     _state = state;
                     _identityProvider = identityProvider;
-                    _logger = logger;
                     _endpoint = (configuration["OperationalControl:Endpoint"] ?? "http://localhost:5728")
                         .TrimEnd('/');
                     _enabled = !bool.TryParse(
@@ -456,9 +453,8 @@ public sealed class SourceCodeInfrastructureOperationalControlSynchronizerMigrat
                         return;
 
                     _centralAvailable = false;
-                    _logger.LogWarning(
-                        "Operational control unavailable. Local policy remains active. Reason={Reason}",
-                        reason);
+                    Console.WriteLine(
+                        $"[OperationalControl] unavailable. Local policy remains active. Reason={reason}");
                 }
 
                 private void MarkCentralAvailable()
@@ -467,7 +463,7 @@ public sealed class SourceCodeInfrastructureOperationalControlSynchronizerMigrat
                         return;
 
                     _centralAvailable = true;
-                    _logger.LogInformation("Operational control connection restored.");
+                    Console.WriteLine("[OperationalControl] connection restored.");
                 }
 
             }

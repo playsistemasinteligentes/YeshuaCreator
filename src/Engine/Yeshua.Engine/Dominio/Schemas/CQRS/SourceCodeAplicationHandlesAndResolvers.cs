@@ -566,6 +566,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"using System.Collections.Generic;");
                 sb.AppendLine($"using System.Linq;");
                 sb.AppendLine($"using System.Text;");
+                sb.AppendLine($"using System.Threading;");
                 sb.AppendLine($"using System.Threading.Tasks;");
                 sb.AppendLine();
 
@@ -592,7 +593,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine();
 
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<{_useCase.OutputCommandName}> Action({_useCase.InputCommandName} comand)");
+                sb.AppendLine($"        protected override async Task<State<{_useCase.OutputCommandName}>> ActionAsync({_useCase.InputCommandName} comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            try");
                 sb.AppendLine("            {");
@@ -601,15 +602,14 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"                 State<{_useCase.OutputCommandName}> retorno = Success(\"OK\", null);");
 
 
-                sb.AppendLine("                 CustomActionHook(ref retorno, comand);");
-                sb.AppendLine("                 return retorno;");
+                sb.AppendLine("                 return await CustomActionHookAsync(retorno, comand, cancellationToken);");
 
                 sb.AppendLine("            }");
 
                 CQRSParam.I.AddExeptionReceiver(sb, $"{_useCase.OutputCommandName}");
 
                 sb.AppendLine("        }");
-                sb.AppendLine($"partial void CustomActionHook(ref State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand);");
+                sb.AppendLine($"protected partial Task<State<{_useCase.OutputCommandName}>> CustomActionHookAsync(State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand, CancellationToken cancellationToken);");
                 sb.AppendLine("}");
                 //foreach (var menu in _agent.Menus)
                 //{
@@ -743,8 +743,9 @@ namespace Dominio.Schemas.CQRS
                 }
 
 
-                sb.AppendLine($"partial void CustomActionHook(ref State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand)");
+                sb.AppendLine($"protected partial async Task<State<{_useCase.OutputCommandName}>> CustomActionHookAsync(State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand, CancellationToken cancellationToken)");
                 sb.AppendLine("{");
+                sb.AppendLine("    return state;");
                 sb.AppendLine("}");
 
 

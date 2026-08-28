@@ -1,4 +1,5 @@
-﻿// <yeshua>
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -38,13 +39,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<CadastrarRoteiroOutputCommand> Action(CadastrarRoteiroInputCommand comand)
+        protected override async Task<State<CadastrarRoteiroOutputCommand>> ActionAsync(CadastrarRoteiroInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<CadastrarRoteiroOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<CadastrarRoteiroOutputCommand> e)
             {
@@ -55,7 +55,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<CadastrarRoteiroOutputCommand> state, CadastrarRoteiroInputCommand comand);
+protected partial Task<State<CadastrarRoteiroOutputCommand>> CustomActionHookAsync(State<CadastrarRoteiroOutputCommand> state, CadastrarRoteiroInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

@@ -1,4 +1,6 @@
-﻿using Command.Interfaces;
+using System.Threading.Tasks;
+using System.Threading;
+using Command.Interfaces;
 using Command.Patterns.Command;
 using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
@@ -35,7 +37,7 @@ namespace Command.Patterns.OutBox
             _logger = logger;
             _executionContext = context;
         }
-        protected override State<InboxOutputCommand> Action(InboxInputCommand command)
+        protected override async Task<State<InboxOutputCommand>> ActionAsync(InboxInputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {

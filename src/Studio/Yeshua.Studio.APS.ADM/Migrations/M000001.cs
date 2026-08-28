@@ -10,7 +10,7 @@ public class M000001 : MigrationBase
     {
         AddModule("APSADM", "APS ADM");
 
-        AddEntity("Produto").LegacySource("V_PRODUTOS").AddModule("APSADM")
+        AddEntity("Produto").LegacySource("T_PRODUTOS").AddModule("APSADM")
             .AddColumn("Id", "Codigo do Produto").Varchar(30).Key().LegacyColumn("PRO_ID", "varchar(30)")
             .AddColumn("Descricao", "Descricao do Produto").Varchar(150).LegacyColumn("PRO_DESCRICAO", "varchar(100)")
             .AddColumn("Status", "Status do Produto").Varchar(2).LegacyColumn("PRO_STATUS", "varchar(2)");
@@ -97,5 +97,13 @@ public class M000001 : MigrationBase
             .AddColumn("MaquinaLarguraUtil", "Largura Util da Maquina").Decimal(18, 6).Group("Custo").LegacyColumn("MAQ_LARGURA_UTIL", "float", "float_to_decimal_18_6")
             .AddColumn("GrupoTipo", "Tipo do Grupo").Decimal(18, 6).Group("Custo").LegacyColumn("GRP_TIPO", "float", "float_to_decimal_18_6")
             .AddColumn("GrupoPerformanceMetroLinear", "Performance Metro Linear").Decimal(18, 6).NotNull().Group("Custo").LegacyColumn("GRP_PERFORMANCE_METRO_LINEAR_POR_SEGUNDO", "float", "float_to_decimal_18_6");
+
+        AddExternalConnector("FabricaSoftware01", "Fabrica de Software 01")
+            .UseSoap()
+            .RequireToken()
+            .AddOperation("Pedidos", "AdicionarPedido")
+            .AddOperation("Cargas", "AdicionarCarga")
+            .AddOperation("Cargas", "AdicionarPedido")
+            .AddOperation("NFe", "IntegrarNotasFiscais");
     }
 }

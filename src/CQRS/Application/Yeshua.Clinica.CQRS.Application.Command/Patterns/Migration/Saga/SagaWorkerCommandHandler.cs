@@ -1,4 +1,6 @@
-﻿// <yeshua>
+using System.Threading.Tasks;
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -45,7 +47,7 @@ namespace Command.Patterns
             _unitOfWork = unitOfWork;
         }
 
-        protected override State<OutputCommand> Action(InputCommand command)
+        protected override async Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {

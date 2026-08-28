@@ -25,4 +25,10 @@
     <RuntimeHostConfigurationOption Include="Yeshua.CommitSha" Value="$(YeshuaCommitSha)" />
     <RuntimeHostConfigurationOption Include="Yeshua.BuildTimestampUtc" Value="$(YeshuaBuildTimestampUtc)" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Custon\ExternalConnectors\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
 </Project>

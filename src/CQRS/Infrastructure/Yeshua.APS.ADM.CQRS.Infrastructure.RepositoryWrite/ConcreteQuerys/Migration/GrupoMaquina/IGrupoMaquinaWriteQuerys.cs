@@ -23,6 +23,7 @@ namespace IQuery.Write
         QueryModel UpdateDeleted(string id, bool value);
         QueryModel UpdateChanged(string id, DateTime value);
         QueryModel UpdateUserId(string id, int value);
+        QueryModel UpdateGMA_TIPO_PLANEJAMENTO(string id, string value);
         public QueryModel DeleteGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina);
     }
 }

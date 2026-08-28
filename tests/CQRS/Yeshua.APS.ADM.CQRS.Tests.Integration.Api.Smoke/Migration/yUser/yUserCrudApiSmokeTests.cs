@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.yUser;
 
-[SmokeTestOrder(11)]
+[SmokeTestOrder(127)]
 public partial class yUserCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yUser/PostyUser";

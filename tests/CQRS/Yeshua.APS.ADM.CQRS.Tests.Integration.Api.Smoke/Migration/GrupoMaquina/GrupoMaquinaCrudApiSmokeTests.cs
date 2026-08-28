@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.GrupoMaquina;
 
-[SmokeTestOrder(3)]
+[SmokeTestOrder(1)]
 public partial class GrupoMaquinaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/GrupoMaquina/PostGrupoMaquina";
@@ -78,6 +78,7 @@ public partial class GrupoMaquinaCrudApiSmokeTests : ApiIntegrationTestBase
             ["Id"] = ApiTestData.Text("GrupoMaquina Id", 30),
             ["Descricao"] = ApiTestData.Text("GrupoMaquina Descricao", 80),
             ["Status"] = ApiTestData.Text("GrupoMaquina Status", 2),
+            ["GMA_TIPO_PLANEJAMENTO"] = ApiTestData.Text("GrupoMaquina GMA_TIPO_PLANEJAMENTO", 30),
         };
     }
 
@@ -96,6 +97,7 @@ public partial class GrupoMaquinaCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Id"] = id.DeepClone();
         payload["Descricao"] = ApiTestData.Text("GrupoMaquina Descricao Update", 80);
         payload["Status"] = ApiTestData.Text("GrupoMaquina Status Update", 2);
+        payload["GMA_TIPO_PLANEJAMENTO"] = ApiTestData.Text("GrupoMaquina GMA_TIPO_PLANEJAMENTO Update", 30);
         return payload;
     }
 

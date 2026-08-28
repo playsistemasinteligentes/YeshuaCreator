@@ -150,6 +150,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByGMA_TIPO_PLANEJAMENTO(string value )
+        {
+            var query = _query.ExistsByGMA_TIPO_PLANEJAMENTOQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public GrupoMaquinaDTO FirstById(string value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -206,6 +214,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public GrupoMaquinaDTO FirstByGMA_TIPO_PLANEJAMENTO(string value )
+        {
+            var query = _query.FirstByGMA_TIPO_PLANEJAMENTOQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<GrupoMaquinaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<GrupoMaquinaDTO> GetAllById(string value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -257,6 +273,14 @@ namespace Read.Repository
         public IEnumerable<GrupoMaquinaDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<GrupoMaquinaDTO>(query.Query,query.Parameters) as List<GrupoMaquinaDTO>;
+                return result;
+        }
+
+        public IEnumerable<GrupoMaquinaDTO> GetAllByGMA_TIPO_PLANEJAMENTO(string value )
+        {
+            var query = _query.FirstByGMA_TIPO_PLANEJAMENTOQuery(value );
 
                 var result = _unitOfWork.Query<GrupoMaquinaDTO>(query.Query,query.Parameters) as List<GrupoMaquinaDTO>;
                 return result;

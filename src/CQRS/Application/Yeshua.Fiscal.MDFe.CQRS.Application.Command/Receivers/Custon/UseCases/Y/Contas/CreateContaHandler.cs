@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 //scope;
 using Aplication.Interfaces.Services;
 using Command.UseCase;
@@ -37,7 +39,7 @@ namespace Command.Receivers.UseCase
             _executionContext = context;
         }
 
-        partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand)
+        protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken)
 {
             try
             {
@@ -107,7 +109,7 @@ namespace Command.Receivers.UseCase
                 _unitOfWork.Rollback();
                 throw new ReceiverException<CreateContaOutputCommand>(Error(ex, default));
             }
-
+            return state;
         }
     }
 }

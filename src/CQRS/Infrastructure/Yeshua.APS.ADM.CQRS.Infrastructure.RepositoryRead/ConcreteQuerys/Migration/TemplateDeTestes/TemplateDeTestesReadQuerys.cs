@@ -35,7 +35,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Descricao, TenantID, Deleted, Changed, UserId from TemplateDeTestes ";
+            this.Query = $@" select Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao from TemplateDeTestes ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"Id = @Id");
 if (!string.IsNullOrEmpty(Command.Descricao)) dict["Descricao"] = $"%{Command.Descricao}%";
@@ -46,6 +46,8 @@ if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like 
  whereClauses.Add($"Deleted = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
+if (!string.IsNullOrEmpty(Command.Observacao)) dict["Observacao"] = $"%{Command.Observacao}%";
+if (!string.IsNullOrEmpty(Command.Observacao)) whereClauses.Add($"Observacao like @Observacao");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -227,13 +229,31 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByObservacaoQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM TemplateDeTestes ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Observacao"] = value; //04
+                      whereClauses.Add($" Observacao = @Observacao ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByIdQuery(int value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId FROM TemplateDeTestes ";
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -251,7 +271,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId FROM TemplateDeTestes ";
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -269,7 +289,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId FROM TemplateDeTestes ";
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -287,7 +307,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId FROM TemplateDeTestes ";
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -305,7 +325,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId FROM TemplateDeTestes ";
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -323,13 +343,31 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId FROM TemplateDeTestes ";
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" UserId = @UserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByObservacaoQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT Id, Descricao, TenantID, Deleted, Changed, UserId, Observacao FROM TemplateDeTestes ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"TenantID = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"Deleted = @Deleted");
+                      dict["Observacao"] = value; //06
+                      whereClauses.Add($" Observacao = @Observacao ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

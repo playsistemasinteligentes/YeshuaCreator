@@ -9,10 +9,9 @@ public sealed class WorkerTemplate : WorkerBase
         _receiver = receiver;
     }
 
-    protected override Task ExecuteAsync(CancellationToken ct)
+    protected override async Task ExecuteAsync(CancellationToken ct)
     {
         var command = new WorkerTemplateCommand();
-        _receiver.Execute(command);
-        return Task.CompletedTask;
+        await _receiver.ExecuteAsync(command, ct);
     }
 }

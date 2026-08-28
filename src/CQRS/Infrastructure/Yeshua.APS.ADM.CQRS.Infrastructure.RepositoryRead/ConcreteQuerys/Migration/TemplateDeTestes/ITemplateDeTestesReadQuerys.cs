@@ -22,12 +22,14 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByObservacaoQuery(string value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByDescricaoQuery(string value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByObservacaoQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

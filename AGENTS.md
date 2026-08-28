@@ -130,6 +130,9 @@ Miolos que IA/dev devem preencher:
 - Quando desligado, o caminho quente deve pagar somente verificacoes baratas
   de politica/mascara: sem reflection, sem StackTrace, sem serializacao, sem
   interpolacao de strings e sem montagem de payload.
+- `pendencia`: evoluir o tracker de dominio para suportar entidades com mais
+  de 64 campos usando mascaras multiplas geradas; a versao atual evita erro de
+  compilacao omitindo tracking de setter para campos alem da primeira mascara.
 - Codigo especifico de comportamento pertence ao aplicativo; Shared contem
   somente contratos genericos e Engine contem somente geracao/templates.
 - Evitar reflection no caminho quente: contextos, chamadas de behavior,
@@ -288,6 +291,42 @@ A relacao correta e:
 `Studio/*` especifica -> `Yeshua.Engine` interpreta -> `CQRS/Application`,
 `CQRS/Domain` e `CQRS/Infrastructure` recebem codigo gerado -> IA/dev preenche
 os miolos customizados.
+
+## Conectores Externos E Tokens
+
+- Conectores externos representam bordas tecnicas para integracao com sistemas
+  de terceiros, legados ou clientes que precisam manter contratos existentes.
+- A DSL declara o conector por mnemônico neutro, protocolo e operacoes; nomes
+  reais de fabricantes nao devem aparecer quando houver risco comercial ou
+  confidencial.
+- A Engine gera as rotas/adapters iniciais dentro da API do proprio aplicativo,
+  preservando a organizacao logica por conector, protocolo, servico e operacao.
+- A borda do conector deve aceitar token desde o primeiro momento, pois o token
+  sera o caminho para resolver tenant, cliente, permissoes e contexto
+  operacional sem exigir uma instancia de API por cliente.
+- Em conectores SOAP que copiam contratos legados, o token de autenticacao deve
+  respeitar o contrato externo. No primeiro conector APS, o legado le o token no
+  SOAP Header `Token` com namespace `Token`; headers HTTP como
+  `X-Yeshua-Token`, `Authorization: Bearer` e query string sao apenas fallback
+  tecnico para testes e integracoes novas.
+- Em conectores SOAP, a Engine gera a casca tecnica `.svc` e `.svc?wsdl`,
+  extrai token, identifica operacao e protege rotas/aliases previsiveis. O WSDL
+  e os XSDs reais sao artefatos customizados do aplicativo em
+  `Custon/ExternalConnectors` e nao devem ser modelados integralmente na DSL.
+- Para compatibilidade com clientes legados, a Engine pode gerar alias de rota
+  como `/SGT.WebService/{Service}.svc`; o contrato servido deve reescrever o
+  `soap:address` para o host atual.
+- `yToken` pertence as migrations internas padrao do Yeshua, nao a um dominio
+  especifico de negocio. A primeira versao garante a existencia do token; regras
+  de hash, validade, auditoria, permissoes finas e rotacao serao aprofundadas
+  depois.
+- Payloads recebidos por conectores podem ser processados sincronamente ou
+  apenas armazenados para processamento posterior. A decisao pertence ao miolo
+  do aplicativo/receiver, nao ao contrato externo.
+- `pendencia`: resolver token em `yToken`, carregar `TenantID`/contexto e
+  encaminhar para receivers customizados de integracao.
+- `pendencia`: definir se o payload bruto de conectores sera persistido em
+  `yInbox` ou em tabelas especificas de integracao.
 
 ## Estrutura Atual Do Repositorio
 

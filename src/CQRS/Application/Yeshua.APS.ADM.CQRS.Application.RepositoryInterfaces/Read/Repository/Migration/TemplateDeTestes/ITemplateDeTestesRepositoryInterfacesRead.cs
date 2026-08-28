@@ -30,18 +30,21 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByObservacao(string value );
         public TemplateDeTestesDTO FirstById(int value );
         public TemplateDeTestesDTO FirstByDescricao(string value );
         public TemplateDeTestesDTO FirstByTenantID(int value );
         public TemplateDeTestesDTO FirstByDeleted(bool value );
         public TemplateDeTestesDTO FirstByChanged(DateTime value );
         public TemplateDeTestesDTO FirstByUserId(int value );
+        public TemplateDeTestesDTO FirstByObservacao(string value );
         public IEnumerable<TemplateDeTestesDTO> GetAllById(int value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByDescricao(string value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByTenantID(int value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByDeleted(bool value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByChanged(DateTime value );
         public IEnumerable<TemplateDeTestesDTO> GetAllByUserId(int value );
+        public IEnumerable<TemplateDeTestesDTO> GetAllByObservacao(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

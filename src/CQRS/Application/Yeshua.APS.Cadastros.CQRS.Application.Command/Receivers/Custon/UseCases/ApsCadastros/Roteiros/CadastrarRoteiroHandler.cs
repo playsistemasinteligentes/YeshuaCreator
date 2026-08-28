@@ -1,4 +1,6 @@
-﻿// <yeshua>
+using System.Threading.Tasks;
+using System.Threading;
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -40,7 +42,7 @@ namespace Command.Receivers.UseCase
             _repReadRoteiro = repReadRoteiro;
             _repWriteRoteiro = repWriteRoteiro;
         }
-partial void CustomActionHook(ref State<CadastrarRoteiroOutputCommand> state, CadastrarRoteiroInputCommand comand)
+protected partial async Task<State<CadastrarRoteiroOutputCommand>> CustomActionHookAsync(State<CadastrarRoteiroOutputCommand> state, CadastrarRoteiroInputCommand comand, CancellationToken cancellationToken)
 {
             var transactionStarted = false;
 
@@ -123,7 +125,8 @@ partial void CustomActionHook(ref State<CadastrarRoteiroOutputCommand> state, Ca
                 throw new ReceiverException<CadastrarRoteiroOutputCommand>(
                     Error(ex, default));
             }
-}
+            return state;
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

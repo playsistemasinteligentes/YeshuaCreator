@@ -1,0 +1,181 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
+// </yeshua>
+
+using Shered.DB;
+namespace IQuery.Read
+{
+    public interface IOrderQueryRead 
+    {
+        public QueryModel OrderQuery(Command.Read.OrderReadCommand Command );
+        public QueryModel OrderCLI_IDQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel OrderMUN_ID_ENTREGAQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel OrderORD_REGIAO_ENTREGAQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel OrderOCO_ID_CANCELAMENTOQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel OrderTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel OrderUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ExistsByORD_IDQuery(string value );
+        public QueryModel ExistsByORD_ID_RESERVAQuery(string value );
+        public QueryModel ExistsByORD_ID_CONJUNTOQuery(string value );
+        public QueryModel ExistsByPRO_IDQuery(string value );
+        public QueryModel ExistsByPRO_ID_CONJUNTOQuery(string value );
+        public QueryModel ExistsByCLI_IDQuery(string value );
+        public QueryModel ExistsByORD_PRECO_UNITARIOQuery(Decimal value );
+        public QueryModel ExistsByORD_QUANTIDADEQuery(Decimal value );
+        public QueryModel ExistsByORD_DATA_ENTREGA_DEQuery(DateTime value );
+        public QueryModel ExistsByORD_DATA_ENTREGA_ATEQuery(DateTime value );
+        public QueryModel ExistsByORD_TIPOQuery(int value );
+        public QueryModel ExistsByORD_TOLERANCIA_MAISQuery(Decimal value );
+        public QueryModel ExistsByORD_TOLERANCIA_MENOSQuery(Decimal value );
+        public QueryModel ExistsByHASH_KEYQuery(string value );
+        public QueryModel ExistsByORD_INICIO_JANELA_EMBARQUEQuery(DateTime value );
+        public QueryModel ExistsByORD_FIM_JANELA_EMBARQUEQuery(DateTime value );
+        public QueryModel ExistsByORD_EMBARQUE_ALVOQuery(DateTime value );
+        public QueryModel ExistsByORD_INICIO_GRUPO_PRODUTIVOQuery(DateTime value );
+        public QueryModel ExistsByORD_FIM_GRUPO_PRODUTIVOQuery(DateTime value );
+        public QueryModel ExistsByORD_PESO_UNITARIOQuery(Decimal value );
+        public QueryModel ExistsByORD_PESO_UNITARIO_BRUTOQuery(Decimal value );
+        public QueryModel ExistsByORD_M2_UNITARIOQuery(Decimal value );
+        public QueryModel ExistsByORD_MITQuery(string value );
+        public QueryModel ExistsByCAR_TIPO_CARREGAMENTOQuery(string value );
+        public QueryModel ExistsByORD_STATUSQuery(string value );
+        public QueryModel ExistsByORD_TIPO_FRETEQuery(string value );
+        public QueryModel ExistsByORD_ENDERECO_ENTREGAQuery(string value );
+        public QueryModel ExistsByORD_BAIRRO_ENTREGAQuery(string value );
+        public QueryModel ExistsByUF_ID_ENTREGAQuery(string value );
+        public QueryModel ExistsByORD_CEP_ENTREGAQuery(string value );
+        public QueryModel ExistsByMUN_ID_ENTREGAQuery(string value );
+        public QueryModel ExistsByORD_REGIAO_ENTREGAQuery(string value );
+        public QueryModel ExistsByORD_LARGURAQuery(Decimal value );
+        public QueryModel ExistsByORD_COMPRIMENTOQuery(Decimal value );
+        public QueryModel ExistsByORD_GRAMATURAQuery(Decimal value );
+        public QueryModel ExistsByGRP_IDQuery(string value );
+        public QueryModel ExistsByORD_ID_INTEGRACAOQuery(string value );
+        public QueryModel ExistsByORD_OBSERVACAO_OTIMIZADORQuery(string value );
+        public QueryModel ExistsByORD_COR_FILAQuery(string value );
+        public QueryModel ExistsByORD_PED_CLIQuery(string value );
+        public QueryModel ExistsByORD_OP_INTEGRACAOQuery(string value );
+        public QueryModel ExistsByORD_LOTE_PILOTOQuery(string value );
+        public QueryModel ExistsByORD_PRIORIDADEQuery(int value );
+        public QueryModel ExistsByORD_EMISSAOQuery(DateTime value );
+        public QueryModel ExistsByREP_IDQuery(string value );
+        public QueryModel ExistsByORD_RESINAQuery(string value );
+        public QueryModel ExistsByORD_ENDURECEDOR_MIOLOQuery(string value );
+        public QueryModel ExistsByPRO_ID_INTEGRACAO_ERPQuery(string value );
+        public QueryModel ExistsByORD_VINCOS_ONDULADEIRAQuery(string value );
+        public QueryModel ExistsByORD_ERP_CUSTOS_FIXOSQuery(Decimal value );
+        public QueryModel ExistsByORD_ERP_CUSTOS_VARIAVEISQuery(Decimal value );
+        public QueryModel ExistsByORD_ERP_DESPESAS_VAR_VENDAQuery(Decimal value );
+        public QueryModel ExistsByORD_ERP_IMPOSTOSQuery(Decimal value );
+        public QueryModel ExistsByORD_STATUS_PLANEJAMENTOQuery(string value );
+        public QueryModel ExistsByORD_TOLERANCIA_DIMENSAO_CHAPA_DEQuery(int value );
+        public QueryModel ExistsByORD_TOLERANCIA_DIMENSAO_CHAPA_ATEQuery(int value );
+        public QueryModel ExistsByORD_PROMOVE_DEQuery(Decimal value );
+        public QueryModel ExistsByORD_PROMOVE_ATEQuery(Decimal value );
+        public QueryModel ExistsByORD_TRAVA_COMPOSICAOQuery(string value );
+        public QueryModel ExistsByORD_TRAVA_RESINAQuery(string value );
+        public QueryModel ExistsByORD_PROMOVE_RESINAQuery(string value );
+        public QueryModel ExistsByORD_LATITUDE_ENTREGAQuery(Decimal value );
+        public QueryModel ExistsByORD_LONGITUDE_ENTREGAQuery(Decimal value );
+        public QueryModel ExistsByOCO_ID_CANCELAMENTOQuery(string value );
+        public QueryModel ExistsByTMP_TIPO_CARGAQuery(string value );
+        public QueryModel ExistsByPRO_ID_PALETEQuery(string value );
+        public QueryModel ExistsByPRO_ID_TAMPOQuery(string value );
+        public QueryModel ExistsByORD_PILHAS_POR_PALETEQuery(int value );
+        public QueryModel ExistsByORD_CHAPAS_POR_PILHAQuery(int value );
+        public QueryModel ExistsByORD_DATA_CANCELAMENTOQuery(DateTime value );
+        public QueryModel ExistsByORD_STATUS_ESTATISTICAQuery(string value );
+        public QueryModel ExistsByORD_DATA_ESTATISTICAQuery(DateTime value );
+        public QueryModel ExistsByOCO_ID_MOTIVO_ATRASOQuery(string value );
+        public QueryModel ExistsByOTK_VERSSAOQuery(int value );
+        public QueryModel ExistsByTenantIDQuery(int value );
+        public QueryModel ExistsByDeletedQuery(bool value );
+        public QueryModel ExistsByChangedQuery(DateTime value );
+        public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel FirstByORD_IDQuery(string value );
+        public QueryModel FirstByORD_ID_RESERVAQuery(string value );
+        public QueryModel FirstByORD_ID_CONJUNTOQuery(string value );
+        public QueryModel FirstByPRO_IDQuery(string value );
+        public QueryModel FirstByPRO_ID_CONJUNTOQuery(string value );
+        public QueryModel FirstByCLI_IDQuery(string value );
+        public QueryModel FirstByORD_PRECO_UNITARIOQuery(Decimal value );
+        public QueryModel FirstByORD_QUANTIDADEQuery(Decimal value );
+        public QueryModel FirstByORD_DATA_ENTREGA_DEQuery(DateTime value );
+        public QueryModel FirstByORD_DATA_ENTREGA_ATEQuery(DateTime value );
+        public QueryModel FirstByORD_TIPOQuery(int value );
+        public QueryModel FirstByORD_TOLERANCIA_MAISQuery(Decimal value );
+        public QueryModel FirstByORD_TOLERANCIA_MENOSQuery(Decimal value );
+        public QueryModel FirstByHASH_KEYQuery(string value );
+        public QueryModel FirstByORD_INICIO_JANELA_EMBARQUEQuery(DateTime value );
+        public QueryModel FirstByORD_FIM_JANELA_EMBARQUEQuery(DateTime value );
+        public QueryModel FirstByORD_EMBARQUE_ALVOQuery(DateTime value );
+        public QueryModel FirstByORD_INICIO_GRUPO_PRODUTIVOQuery(DateTime value );
+        public QueryModel FirstByORD_FIM_GRUPO_PRODUTIVOQuery(DateTime value );
+        public QueryModel FirstByORD_PESO_UNITARIOQuery(Decimal value );
+        public QueryModel FirstByORD_PESO_UNITARIO_BRUTOQuery(Decimal value );
+        public QueryModel FirstByORD_M2_UNITARIOQuery(Decimal value );
+        public QueryModel FirstByORD_MITQuery(string value );
+        public QueryModel FirstByCAR_TIPO_CARREGAMENTOQuery(string value );
+        public QueryModel FirstByORD_STATUSQuery(string value );
+        public QueryModel FirstByORD_TIPO_FRETEQuery(string value );
+        public QueryModel FirstByORD_ENDERECO_ENTREGAQuery(string value );
+        public QueryModel FirstByORD_BAIRRO_ENTREGAQuery(string value );
+        public QueryModel FirstByUF_ID_ENTREGAQuery(string value );
+        public QueryModel FirstByORD_CEP_ENTREGAQuery(string value );
+        public QueryModel FirstByMUN_ID_ENTREGAQuery(string value );
+        public QueryModel FirstByORD_REGIAO_ENTREGAQuery(string value );
+        public QueryModel FirstByORD_LARGURAQuery(Decimal value );
+        public QueryModel FirstByORD_COMPRIMENTOQuery(Decimal value );
+        public QueryModel FirstByORD_GRAMATURAQuery(Decimal value );
+        public QueryModel FirstByGRP_IDQuery(string value );
+        public QueryModel FirstByORD_ID_INTEGRACAOQuery(string value );
+        public QueryModel FirstByORD_OBSERVACAO_OTIMIZADORQuery(string value );
+        public QueryModel FirstByORD_COR_FILAQuery(string value );
+        public QueryModel FirstByORD_PED_CLIQuery(string value );
+        public QueryModel FirstByORD_OP_INTEGRACAOQuery(string value );
+        public QueryModel FirstByORD_LOTE_PILOTOQuery(string value );
+        public QueryModel FirstByORD_PRIORIDADEQuery(int value );
+        public QueryModel FirstByORD_EMISSAOQuery(DateTime value );
+        public QueryModel FirstByREP_IDQuery(string value );
+        public QueryModel FirstByORD_RESINAQuery(string value );
+        public QueryModel FirstByORD_ENDURECEDOR_MIOLOQuery(string value );
+        public QueryModel FirstByPRO_ID_INTEGRACAO_ERPQuery(string value );
+        public QueryModel FirstByORD_VINCOS_ONDULADEIRAQuery(string value );
+        public QueryModel FirstByORD_ERP_CUSTOS_FIXOSQuery(Decimal value );
+        public QueryModel FirstByORD_ERP_CUSTOS_VARIAVEISQuery(Decimal value );
+        public QueryModel FirstByORD_ERP_DESPESAS_VAR_VENDAQuery(Decimal value );
+        public QueryModel FirstByORD_ERP_IMPOSTOSQuery(Decimal value );
+        public QueryModel FirstByORD_STATUS_PLANEJAMENTOQuery(string value );
+        public QueryModel FirstByORD_TOLERANCIA_DIMENSAO_CHAPA_DEQuery(int value );
+        public QueryModel FirstByORD_TOLERANCIA_DIMENSAO_CHAPA_ATEQuery(int value );
+        public QueryModel FirstByORD_PROMOVE_DEQuery(Decimal value );
+        public QueryModel FirstByORD_PROMOVE_ATEQuery(Decimal value );
+        public QueryModel FirstByORD_TRAVA_COMPOSICAOQuery(string value );
+        public QueryModel FirstByORD_TRAVA_RESINAQuery(string value );
+        public QueryModel FirstByORD_PROMOVE_RESINAQuery(string value );
+        public QueryModel FirstByORD_LATITUDE_ENTREGAQuery(Decimal value );
+        public QueryModel FirstByORD_LONGITUDE_ENTREGAQuery(Decimal value );
+        public QueryModel FirstByOCO_ID_CANCELAMENTOQuery(string value );
+        public QueryModel FirstByTMP_TIPO_CARGAQuery(string value );
+        public QueryModel FirstByPRO_ID_PALETEQuery(string value );
+        public QueryModel FirstByPRO_ID_TAMPOQuery(string value );
+        public QueryModel FirstByORD_PILHAS_POR_PALETEQuery(int value );
+        public QueryModel FirstByORD_CHAPAS_POR_PILHAQuery(int value );
+        public QueryModel FirstByORD_DATA_CANCELAMENTOQuery(DateTime value );
+        public QueryModel FirstByORD_STATUS_ESTATISTICAQuery(string value );
+        public QueryModel FirstByORD_DATA_ESTATISTICAQuery(DateTime value );
+        public QueryModel FirstByOCO_ID_MOTIVO_ATRASOQuery(string value );
+        public QueryModel FirstByOTK_VERSSAOQuery(int value );
+        public QueryModel FirstByTenantIDQuery(int value );
+        public QueryModel FirstByDeletedQuery(bool value );
+        public QueryModel FirstByChangedQuery(DateTime value );
+        public QueryModel FirstByUserIdQuery(int value );
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

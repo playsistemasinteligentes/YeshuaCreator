@@ -1761,6 +1761,7 @@ namespace Dominio.Schemas.CQRS
             EnsureProjectReference(
                 applicationInfrastructureApiProjectPath,
                 applicationInfrastructureRepositoryWriteProjectPath);
+            EnsureExternalConnectorContentMetadata(applicationInfrastructureApiProjectPath);
             EnsureApplicationInfrastructureApiFiles(applicationInfrastructureApiProjectDirectory);
             AddProjectToSolution(applicationInfrastructureApiProjectPath, "Yeshua.CQRS.Infrastructure");
 
@@ -1957,28 +1958,29 @@ app.Run();");
 
             WriteTextIfMissing(
                 Path.Combine(projectDirectory, "StateResults.cs"),
-                @"using Microsoft.AspNetCore.Http.HttpResults;
+                @"using Microsoft.AspNetCore.Http;
 using RepositoryInterfaces.Patterns.Command;
 
 namespace API;
 
 public static class StateResults
 {
-    public static Results<Ok<State<T>>, BadRequest<State<T>>, ProblemHttpResult> From<T>(State<T> state)
+    public static IResult From<T>(State<T> state)
     {
         return state.StatusCode switch
         {
+            202 => TypedResults.Accepted((string?)null, state),
             >= 200 and < 300 => TypedResults.Ok(state),
             >= 400 and < 500 => TypedResults.BadRequest(state),
             _ => TypedResults.Problem(state.Message)
         };
     }
 
-    public static Results<Ok<State<T>>, BadRequest<State<T>>, ProblemHttpResult> Try<T>(Func<State<T>> action)
+    public static async Task<IResult> TryAsync<T>(Func<Task<State<T>>> action)
     {
         try
         {
-            return From(action());
+            return From(await action());
         }
         catch (ReceiverException<T> exception)
         {
@@ -2356,7 +2358,7 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                receiver.Execute(new TCommand());
+                await receiver.ExecuteAsync(new TCommand(), stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
@@ -2412,9 +2414,7 @@ public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : Backgr
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                receiver.Execute(message);
-
-                await Task.CompletedTask;
+                await receiver.ExecuteAsync(message, stoppingToken);
             }, stoppingToken), stoppingToken);
         }
 
@@ -2594,6 +2594,68 @@ public static class CustonDependenceInjection
 
             option.SetAttributeValue("Include", key);
             option.SetAttributeValue("Value", value);
+        }
+
+        private void EnsureExternalConnectorContentMetadata(string projectPath)
+        {
+            if (!File.Exists(projectPath))
+                throw new FileNotFoundException(
+                    "O projeto da API nao foi encontrado para receber os artefatos dos conectores.",
+                    projectPath);
+
+            var projectDocument = XDocument.Load(projectPath);
+            var projectRoot = projectDocument.Root
+                ?? throw new InvalidOperationException($"O projeto '{projectPath}' nao possui elemento raiz.");
+
+            var itemGroup = projectRoot.Elements("ItemGroup")
+                .FirstOrDefault(group => group.Elements("None")
+                    .Any(item => string.Equals(
+                        item.Attribute("Update")?.Value,
+                        @"Custon\ExternalConnectors\**\*.*",
+                        StringComparison.OrdinalIgnoreCase)));
+
+            if (itemGroup == null)
+            {
+                itemGroup = new XElement("ItemGroup");
+                projectRoot.Add(itemGroup);
+            }
+
+            var matchingItems = itemGroup.Elements("None")
+                .Where(item => string.Equals(
+                    item.Attribute("Update")?.Value,
+                    @"Custon\ExternalConnectors\**\*.*",
+                    StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            var item = matchingItems.FirstOrDefault();
+            if (item == null)
+            {
+                item = new XElement("None");
+                itemGroup.Add(item);
+            }
+
+            foreach (var duplicate in matchingItems.Skip(1))
+                duplicate.Remove();
+
+            item.SetAttributeValue("Update", @"Custon\ExternalConnectors\**\*.*");
+            SetChildElementValue(item, "CopyToOutputDirectory", "PreserveNewest");
+            SetChildElementValue(item, "CopyToPublishDirectory", "PreserveNewest");
+
+            WriteText(projectPath, projectDocument.ToString());
+        }
+
+        private static void SetChildElementValue(
+            XElement element,
+            string name,
+            string value)
+        {
+            var child = element.Element(name);
+            if (child == null)
+            {
+                child = new XElement(name);
+                element.Add(child);
+            }
+
+            child.Value = value;
         }
 
         private void EnsureProjectReference(string projectPath, string referencedProjectPath)

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
@@ -38,13 +39,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<RecoveryAccountOutputCommand> Action(RecoveryAccountInputCommand comand)
+        protected override async Task<State<RecoveryAccountOutputCommand>> ActionAsync(RecoveryAccountInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<RecoveryAccountOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<RecoveryAccountOutputCommand> e)
             {
@@ -55,7 +55,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand);
+protected partial Task<State<RecoveryAccountOutputCommand>> CustomActionHookAsync(State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

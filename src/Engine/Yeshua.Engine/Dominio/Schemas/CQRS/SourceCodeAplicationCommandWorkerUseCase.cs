@@ -110,7 +110,7 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("            _menssage = menssage;");
                 //sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override State<{_classeOutputCommand}> Action({_classeInputCommand} comand)");
+                sb.AppendLine($"        protected override async Task<State<{_classeOutputCommand}>> ActionAsync({_classeInputCommand} comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            try");
                 sb.AppendLine("            {");
@@ -122,15 +122,14 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"                 State<{_classeOutputCommand}> retorno = Success(\"OK\", null);");
 
 
-                sb.AppendLine("                 CustomActionHook(ref retorno, comand);");
-                sb.AppendLine("                 return retorno;");
+                sb.AppendLine("                 return await CustomActionHookAsync(retorno, comand, cancellationToken);");
 
                 sb.AppendLine("            }");
 
                 CQRSParam.I.AddExeptionReceiver(sb, $"{_classeOutputCommand}");
 
                 sb.AppendLine("        }");
-                sb.AppendLine($"partial void CustomActionHook(ref State<{_classeOutputCommand}> state, {_nameSpaceCommand}.{_classeInputCommand} comand);");
+                sb.AppendLine($"protected partial Task<State<{_classeOutputCommand}>> CustomActionHookAsync(State<{_classeOutputCommand}> state, {_nameSpaceCommand}.{_classeInputCommand} comand, CancellationToken cancellationToken);");
                 sb.AppendLine("}");
                 //foreach (var menu in _agent.Menus)
                 //{
@@ -239,8 +238,9 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-            sb.AppendLine($"partial void CustomActionHook(ref State<{_classeOutputCommand}> state, {_classeInputCommand} comand)");
+            sb.AppendLine($"protected partial async Task<State<{_classeOutputCommand}>> CustomActionHookAsync(State<{_classeOutputCommand}> state, {_classeInputCommand} comand, CancellationToken cancellationToken)");
             sb.AppendLine("{");
+            sb.AppendLine("    return state;");
             sb.AppendLine("}");
 
 

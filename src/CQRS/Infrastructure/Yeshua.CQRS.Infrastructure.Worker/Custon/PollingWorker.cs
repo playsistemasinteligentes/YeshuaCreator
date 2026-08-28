@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepositoryInterfaces.Patterns.Command;
@@ -38,7 +38,7 @@ public class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundService
 
                 var command = new TCommand();
 
-                var result = receiver.Execute(command);
+                var result = await receiver.ExecuteAsync(command);
 
                 if (result.StatusCode >= 400)
                 {

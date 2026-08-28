@@ -20,6 +20,7 @@ namespace Command.Read
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string GMA_TIPO_PLANEJAMENTO { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

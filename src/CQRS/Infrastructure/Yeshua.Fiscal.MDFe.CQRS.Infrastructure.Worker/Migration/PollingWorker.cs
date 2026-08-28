@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepositoryInterfaces.Patterns.Command;
@@ -34,7 +34,7 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                var result = receiver.Execute(new TCommand());
+                var result = await receiver.ExecuteAsync(new TCommand(), stoppingToken);
 
                 if (result.StatusCode >= 400)
                     _logger.LogWarning("Worker {Worker}: {StatusCode} - {Message}", workerName, result.StatusCode, result.Message);

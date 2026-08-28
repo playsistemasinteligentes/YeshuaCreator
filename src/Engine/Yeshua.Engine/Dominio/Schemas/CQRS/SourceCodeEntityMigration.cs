@@ -140,7 +140,8 @@ namespace Dominio.Schemas.CQRS
 
 
             // atributos
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
+            var entityColumns = _entity.AddColumns.Where(x => !x.IsBackEndField).ToList();
+            foreach (var column in entityColumns)
             {
                 if (_commandType == CommandType.IEntity)
                     sb.AppendLine($"    {column.getCsharpType(true)} {column.Name} {{ get; set; }}");
@@ -150,6 +151,12 @@ namespace Dominio.Schemas.CQRS
 
                 if (_commandType == CommandType.EntityDecorator)
                 {
+                    var trackingIndex = entityColumns.IndexOf(column);
+                    var trackingBlock = trackingIndex < 64
+                        ? $@"                                                if ((_trackingMask & {_entity.EntityName}TrackingFields.{column.Name}) != 0UL)
+                                                    _logger.DomainValueChanged(""{_entity.EntityName}"", ""{column.Name}"", _trackingTraceId, _trackingOperation, _trackingRecordId, value);"
+                        : string.Empty;
+
                     sb.AppendLine($@"
                                     public {column.getCsharpType(true)} {column.Name}
                                     {{
@@ -159,8 +166,7 @@ namespace Dominio.Schemas.CQRS
                                             if (_inner.{column.Name} != value)
                                             {{
                                                 _inner.{column.Name} = value;
-                                                if ((_trackingMask & {_entity.EntityName}TrackingFields.{column.Name}) != 0UL)
-                                                    _logger.DomainValueChanged(""{_entity.EntityName}"", ""{column.Name}"", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+{trackingBlock}
                                             }}
                                         }}
                                     }}");

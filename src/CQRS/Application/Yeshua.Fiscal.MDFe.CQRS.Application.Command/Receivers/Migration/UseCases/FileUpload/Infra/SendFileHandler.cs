@@ -1,4 +1,5 @@
-﻿// Escopo: 
+using System.Threading;
+// Escopo: 
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
@@ -28,13 +29,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<SendFileOutputCommand> Action(SendFileInputCommand comand)
+        protected override async Task<State<SendFileOutputCommand>> ActionAsync(SendFileInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<SendFileOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<SendFileOutputCommand> e)
             {
@@ -45,7 +45,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileInputCommand comand);
+protected partial Task<State<SendFileOutputCommand>> CustomActionHookAsync(State<SendFileOutputCommand> state, SendFileInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

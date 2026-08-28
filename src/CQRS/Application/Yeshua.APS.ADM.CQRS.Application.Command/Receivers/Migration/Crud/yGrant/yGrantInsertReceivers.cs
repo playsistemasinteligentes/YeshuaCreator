@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -43,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override State<IyGrantEntity> Action(ICommand comand)
+        protected override async Task<State<IyGrantEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yGrantCrudCommand c) 
              {    

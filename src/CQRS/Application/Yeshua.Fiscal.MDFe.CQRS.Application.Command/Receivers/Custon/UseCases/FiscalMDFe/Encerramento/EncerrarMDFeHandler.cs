@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 using Aplication.Interfaces.Services;
 using Command.UseCase;
 using Dominio.Entitys;
@@ -34,7 +36,7 @@ namespace Command.Receivers.UseCase
             _executionContext = context;
         }
 
-        partial void CustomActionHook(ref State<EncerrarMDFeOutputCommand> state, EncerrarMDFeInputCommand comand)
+        protected partial async Task<State<EncerrarMDFeOutputCommand>> CustomActionHookAsync(State<EncerrarMDFeOutputCommand> state, EncerrarMDFeInputCommand comand, CancellationToken cancellationToken)
         {
             try
             {
@@ -115,6 +117,7 @@ namespace Command.Receivers.UseCase
                 _unitOfWork.Rollback();
                 throw new ReceiverException<EncerrarMDFeOutputCommand>(Error(ex, default));
             }
+            return state;
         }
 
         private static string NormalizeUf(string value)

@@ -35,9 +35,7 @@ public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : Backgr
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                receiver.Execute(message);
-
-                await Task.CompletedTask;
+                await receiver.ExecuteAsync(message, stoppingToken);
             }, stoppingToken), stoppingToken);
         }
 

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -43,12 +44,12 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override State<ITemplateDeTestesEntity> Action(ICommand comand)
+        protected override async Task<State<ITemplateDeTestesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.TemplateDeTestesCrudCommand c) 
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteTemplateDeTestes", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteTemplateDeTestesReceiver), commandName: "Command.Write.TemplateDeTestesCrudCommand");
-                 var templatedetestes = new TemplateDeTestesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao);
+                 var templatedetestes = new TemplateDeTestesFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Observacao);
                  var domainResult = TemplateDeTestesDomainBehavior.Apply(templatedetestes, context);
                  if (!domainResult.IsValid)
                      return ValidationError(domainResult.Errors, null);

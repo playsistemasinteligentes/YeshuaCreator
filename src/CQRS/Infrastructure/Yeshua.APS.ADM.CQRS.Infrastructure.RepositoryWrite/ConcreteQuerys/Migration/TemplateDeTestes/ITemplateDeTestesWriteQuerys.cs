@@ -22,6 +22,7 @@ namespace IQuery.Write
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateObservacao(int id, string value);
         public QueryModel DeleteTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes);
     }
 }

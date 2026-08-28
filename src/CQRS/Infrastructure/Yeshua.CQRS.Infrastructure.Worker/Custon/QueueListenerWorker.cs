@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Command.Interfaces.Patterns.Queue;
@@ -36,7 +36,7 @@ namespace Worker.Custon
                 {
                     using var scope = _serviceProvider.CreateScope();
                     var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                    var result = receiver.Execute(message);
+                    var result = await receiver.ExecuteAsync(message, stoppingToken);
                     if (result.StatusCode >= 400)
                         _logger.LogWarning("Erro {StatusCode} - {Message}", result.StatusCode, result.Message);
                     else

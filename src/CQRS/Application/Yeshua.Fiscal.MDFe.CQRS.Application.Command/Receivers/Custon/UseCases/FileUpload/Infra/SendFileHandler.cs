@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Receivers.Custon.UseCases.FileUpload.Infra;
@@ -40,7 +42,7 @@ namespace Command.Receivers.UseCase
 
 
 
-        partial void CustomActionHook(ref State<SendFileOutputCommand> state, SendFileInputCommand comand)
+        protected partial async Task<State<SendFileOutputCommand>> CustomActionHookAsync(State<SendFileOutputCommand> state, SendFileInputCommand comand, CancellationToken cancellationToken)
 {
 
             try
@@ -95,7 +97,7 @@ namespace Command.Receivers.UseCase
                         IsFinalized = false
                     });
 
-                    return;
+                    return state;
                 }
 
                 // --------------------------------
@@ -147,8 +149,8 @@ namespace Command.Receivers.UseCase
                 throw new ReceiverException<SendFileOutputCommand>(
                     Error(ex, default));
             }
-
-    }
+            return state;
+        }
     }
     public record UploadCompletedEvent(string FilePath);
 }

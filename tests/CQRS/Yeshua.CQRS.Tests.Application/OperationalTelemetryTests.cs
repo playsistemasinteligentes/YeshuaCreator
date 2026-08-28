@@ -5,19 +5,21 @@ using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Worker;
 using Shered.DB.Connection;
 using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Yeshua.CQRS.Tests.Application;
 
 public sealed class OperationalTelemetryTests
 {
     [Fact]
-    public void Receiver_tracks_success_and_worker_cycle_measurements()
+    public async Task Receiver_tracks_success_and_worker_cycle_measurements()
     {
         var logger = new Shered.Logger.Logger();
         var receiver = new TestReceiver(logger, new TestExecutionContext(), command =>
             new State<WorkerResult>(200, "ok", command.Result));
 
-        var result = receiver.Execute(new TestCommand(new WorkerResult(10, 8, 7, 1)));
+        var result = await receiver.ExecuteAsync(new TestCommand(new WorkerResult(10, 8, 7, 1)));
 
         Assert.Equal(200, result.StatusCode);
         var telemetry = Assert.Single(logger.Snapshot().Commands);
@@ -32,13 +34,13 @@ public sealed class OperationalTelemetryTests
     }
 
     [Fact]
-    public void Receiver_tracks_returned_failure()
+    public async Task Receiver_tracks_returned_failure()
     {
         var logger = new Shered.Logger.Logger();
         var receiver = new TestReceiver(logger, new TestExecutionContext(), command =>
             new State<WorkerResult>(422, "invalid", command.Result, propagation: false));
 
-        var result = receiver.Execute(new TestCommand(new WorkerResult(1, 0, 0, 0)));
+        var result = await receiver.ExecuteAsync(new TestCommand(new WorkerResult(1, 0, 0, 0)));
 
         Assert.Equal(422, result.StatusCode);
         var telemetry = Assert.Single(logger.Snapshot().Commands);
@@ -48,14 +50,14 @@ public sealed class OperationalTelemetryTests
     }
 
     [Fact]
-    public void Receiver_tracks_exception_and_preserves_original_exception()
+    public async Task Receiver_tracks_exception_and_preserves_original_exception()
     {
         var logger = new Shered.Logger.Logger();
         var expected = new InvalidOperationException("business failure");
         var receiver = new TestReceiver(logger, new TestExecutionContext(), _ => throw expected);
 
-        var actual = Assert.Throws<InvalidOperationException>(() =>
-            receiver.Execute(new TestCommand(new WorkerResult(1, 0, 0, 0))));
+        var actual = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            receiver.ExecuteAsync(new TestCommand(new WorkerResult(1, 0, 0, 0))));
 
         Assert.Same(expected, actual);
         var telemetry = Assert.Single(logger.Snapshot().Commands);
@@ -66,7 +68,7 @@ public sealed class OperationalTelemetryTests
     }
 
     [Fact]
-    public void Receiver_result_is_not_changed_when_policy_fails()
+    public async Task Receiver_result_is_not_changed_when_policy_fails()
     {
         var logger = new Shered.Logger.Logger(new ThrowingPolicy());
         var receiver = new TestReceiver(
@@ -74,7 +76,7 @@ public sealed class OperationalTelemetryTests
             new TestExecutionContext(),
             command => new State<WorkerResult>(200, "ok", command.Result));
 
-        var result = receiver.Execute(new TestCommand(new WorkerResult(1, 1, 1, 0)));
+        var result = await receiver.ExecuteAsync(new TestCommand(new WorkerResult(1, 1, 1, 0)));
 
         Assert.Equal(200, result.StatusCode);
         Assert.Equal(1, result.Data.Processed);
@@ -129,7 +131,10 @@ public sealed class OperationalTelemetryTests
             _action = action;
         }
 
-        protected override State<WorkerResult> Action(TestCommand command) => _action(command);
+        protected override Task<State<WorkerResult>> ActionAsync(
+            TestCommand command,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(_action(command));
     }
 
     private sealed class TestExecutionContext : IExecutionContext

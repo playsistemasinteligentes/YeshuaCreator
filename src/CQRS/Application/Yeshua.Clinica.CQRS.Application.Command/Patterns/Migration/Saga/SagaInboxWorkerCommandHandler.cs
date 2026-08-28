@@ -1,4 +1,6 @@
-﻿// <yeshua>
+using System.Threading.Tasks;
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -30,7 +32,7 @@ namespace Command.Patterns
             _sagaStepReadRepository = sagaStepReadRepository;
         }
 
-        protected override State<InboxOutputCommand> Action(InputCommand command)
+        protected override async Task<State<InboxOutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {

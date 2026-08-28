@@ -1,4 +1,5 @@
-﻿// <yeshua>
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -43,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override State<IDisponibilidadeAgendaEntity> Action(ICommand comand)
+        protected override async Task<State<IDisponibilidadeAgendaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.DisponibilidadeAgendaCrudCommand c) 
              {    

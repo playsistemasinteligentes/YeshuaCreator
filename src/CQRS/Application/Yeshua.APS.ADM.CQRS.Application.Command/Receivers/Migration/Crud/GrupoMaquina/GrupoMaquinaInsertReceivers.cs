@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -43,12 +44,12 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override State<IGrupoMaquinaEntity> Action(ICommand comand)
+        protected override async Task<State<IGrupoMaquinaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.GrupoMaquinaCrudCommand c) 
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertGrupoMaquina", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertGrupoMaquinaReceiver), commandName: "Command.Write.GrupoMaquinaCrudCommand");
-                 var grupomaquina = new GrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Status);
+                 var grupomaquina = new GrupoMaquinaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Descricao, c.Status, c.GMA_TIPO_PLANEJAMENTO);
                  var domainResult = GrupoMaquinaDomainBehavior.Apply(grupomaquina, context);
                  if (!domainResult.IsValid)
                      return ValidationError(domainResult.Errors, null);

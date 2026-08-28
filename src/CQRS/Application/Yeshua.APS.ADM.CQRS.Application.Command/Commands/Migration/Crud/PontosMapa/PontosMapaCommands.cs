@@ -1,0 +1,28 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration
+// </yeshua>
+
+using RepositoryInterfaces.Patterns.Command;
+namespace Command.Write
+{
+    public struct PontosMapaCrudCommand : ICommand
+    {
+        public string PON_ID { get; set; }
+        public string PON_DESCRICAO { get; set; }
+        public string PON_TIPO { get; set; }
+        public Decimal? PON_LATITUDE { get; set; }
+        public Decimal? PON_LONGITUDE { get; set; }
+        public Decimal? PON_DISTANCIA_KM { get; set; }
+        public int? TenantID { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

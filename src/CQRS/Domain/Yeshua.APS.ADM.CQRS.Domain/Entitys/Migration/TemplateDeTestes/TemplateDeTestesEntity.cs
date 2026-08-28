@@ -26,10 +26,12 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
+    public string Observacao { get; set; }
     private List<string> _erroMensagem = null;
- internal TemplateDeTestesEntity(int? id, string descricao ){
+ internal TemplateDeTestesEntity(int? id, string descricao, string observacao ){
  Id = id; 
  Descricao = descricao; 
+ Observacao = observacao; 
 }
 public bool isValidData()
 {

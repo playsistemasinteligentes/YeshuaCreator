@@ -81,6 +81,11 @@ namespace Input.Repository.GrupoMaquina
             var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateGMA_TIPO_PLANEJAMENTO(string id, string value)
+        {
+            var query = _query.UpdateGMA_TIPO_PLANEJAMENTO(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

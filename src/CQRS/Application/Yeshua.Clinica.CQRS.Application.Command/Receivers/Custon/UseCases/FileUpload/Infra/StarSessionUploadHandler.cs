@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 using Aplication.Interfaces.Services;
 using Command.Receivers.Custon.UseCases.FileUpload.Infra;
 using Command.UseCase;
@@ -33,7 +35,7 @@ namespace Command.Receivers.UseCase
         }
 
 
-        partial void CustomActionHook(ref State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand)
+        protected partial async Task<State<StarSessionUploadOutputCommand>> CustomActionHookAsync(State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand, CancellationToken cancellationToken)
 {
             try
             {
@@ -79,7 +81,7 @@ namespace Command.Receivers.UseCase
                 _unitOfWork.Rollback();
                 throw;
             }
-
+            return state;
         }
     }
 }

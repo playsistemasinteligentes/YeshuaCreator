@@ -76,6 +76,11 @@ namespace Input.Repository.TemplateDeTestes
             var query = _query.UpdateUserId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateObservacao(int id, string value)
+        {
+            var query = _query.UpdateObservacao(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

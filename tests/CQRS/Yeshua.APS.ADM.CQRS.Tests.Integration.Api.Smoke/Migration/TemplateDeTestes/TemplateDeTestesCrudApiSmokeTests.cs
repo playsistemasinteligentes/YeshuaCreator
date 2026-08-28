@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.TemplateDeTestes;
 
-[SmokeTestOrder(4)]
+[SmokeTestOrder(2)]
 public partial class TemplateDeTestesCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/TemplateDeTestes/PostTemplateDeTestes";
@@ -76,6 +76,7 @@ public partial class TemplateDeTestesCrudApiSmokeTests : ApiIntegrationTestBase
         return new JsonObject
         {
             ["Descricao"] = ApiTestData.Text("TemplateDeTestes Descricao", 80),
+            ["Observacao"] = ApiTestData.Text("TemplateDeTestes Observacao", 80),
         };
     }
 
@@ -93,6 +94,7 @@ public partial class TemplateDeTestesCrudApiSmokeTests : ApiIntegrationTestBase
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
         payload["Descricao"] = ApiTestData.Text("TemplateDeTestes Descricao Update", 80);
+        payload["Observacao"] = ApiTestData.Text("TemplateDeTestes Observacao Update", 80);
         return payload;
     }
 

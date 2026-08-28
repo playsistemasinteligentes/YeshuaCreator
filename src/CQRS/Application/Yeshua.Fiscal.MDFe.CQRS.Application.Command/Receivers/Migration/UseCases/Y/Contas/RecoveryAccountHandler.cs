@@ -1,4 +1,5 @@
-﻿// Escopo: Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook
+using System.Threading;
+// Escopo: Implemente use case para recuperação de contas, use strategy para implementar os diferentes tipos de mensagens de recuperação, use CustomActionHook
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
@@ -28,13 +29,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<RecoveryAccountOutputCommand> Action(RecoveryAccountInputCommand comand)
+        protected override async Task<State<RecoveryAccountOutputCommand>> ActionAsync(RecoveryAccountInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<RecoveryAccountOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<RecoveryAccountOutputCommand> e)
             {
@@ -45,7 +45,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand);
+protected partial Task<State<RecoveryAccountOutputCommand>> CustomActionHookAsync(State<RecoveryAccountOutputCommand> state, RecoveryAccountInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

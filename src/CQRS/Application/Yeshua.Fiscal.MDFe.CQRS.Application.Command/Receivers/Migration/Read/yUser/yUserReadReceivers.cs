@@ -1,4 +1,6 @@
-﻿using Command.Patterns.Command;
+using System.Threading.Tasks;
+using System.Threading;
+using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.Repository;
 using Dominio.Entitys;
@@ -25,7 +27,7 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override State<DataPagination<yUserDTO>> Action(ICommand comand)
+        protected override async Task<State<DataPagination<yUserDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.yUserReadCommand c) 
              {    

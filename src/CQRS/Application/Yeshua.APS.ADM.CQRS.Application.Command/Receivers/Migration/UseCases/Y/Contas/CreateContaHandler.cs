@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
@@ -38,13 +39,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<CreateContaOutputCommand> Action(CreateContaInputCommand comand)
+        protected override async Task<State<CreateContaOutputCommand>> ActionAsync(CreateContaInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<CreateContaOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<CreateContaOutputCommand> e)
             {
@@ -55,7 +55,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand);
+protected partial Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

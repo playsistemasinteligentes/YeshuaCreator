@@ -23,6 +23,7 @@ namespace IQuery.Read
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
+        public QueryModel ExistsByGMA_TIPO_PLANEJAMENTOQuery(string value );
         public QueryModel FirstByIdQuery(string value );
         public QueryModel FirstByDescricaoQuery(string value );
         public QueryModel FirstByStatusQuery(string value );
@@ -30,6 +31,7 @@ namespace IQuery.Read
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
+        public QueryModel FirstByGMA_TIPO_PLANEJAMENTOQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

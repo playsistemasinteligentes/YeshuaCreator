@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 using Aplication.Interfaces.Services;
 using Command.UseCase;
 using Dominio.Interfaces;
@@ -43,7 +45,7 @@ namespace Command.Receivers.UseCase
             _logger = logger;
             _executionContext = context;
         }
-        partial void CustomActionHook(ref State<LoginOutputCommand> state, LoginInputCommand comand)
+        protected partial async Task<State<LoginOutputCommand>> CustomActionHookAsync(State<LoginOutputCommand> state, LoginInputCommand comand, CancellationToken cancellationToken)
 {
             try
             {
@@ -81,7 +83,7 @@ namespace Command.Receivers.UseCase
             {
                 throw new ReceiverException<LoginOutputCommand>(Error(ex, default));
             }
-
+            return state;
         }
     }
 }

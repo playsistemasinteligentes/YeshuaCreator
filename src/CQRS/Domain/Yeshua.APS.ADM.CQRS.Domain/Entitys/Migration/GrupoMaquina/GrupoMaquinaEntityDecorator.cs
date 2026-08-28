@@ -27,6 +27,7 @@
             public const ulong Deleted = 1UL << 4;
             public const ulong Changed = 1UL << 5;
             public const ulong UserId = 1UL << 6;
+            public const ulong GMA_TIPO_PLANEJAMENTO = 1UL << 7;
         }
 
         public partial class GrupoMaquinaDecorator : IGrupoMaquinaEntity
@@ -150,6 +151,20 @@
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & GrupoMaquinaTrackingFields.UserId) != 0UL)
                                                     _logger.DomainValueChanged("GrupoMaquina", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string GMA_TIPO_PLANEJAMENTO
+                                    {
+                                        get => _inner.GMA_TIPO_PLANEJAMENTO;
+                                        set
+                                        {
+                                            if (_inner.GMA_TIPO_PLANEJAMENTO != value)
+                                            {
+                                                _inner.GMA_TIPO_PLANEJAMENTO = value;
+                                                if ((_trackingMask & GrupoMaquinaTrackingFields.GMA_TIPO_PLANEJAMENTO) != 0UL)
+                                                    _logger.DomainValueChanged("GrupoMaquina", "GMA_TIPO_PLANEJAMENTO", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

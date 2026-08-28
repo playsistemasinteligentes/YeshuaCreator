@@ -1,4 +1,6 @@
-﻿// <yeshua>
+using System.Threading.Tasks;
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -35,7 +37,7 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override State<DataPagination<yUserGrantDTO>> Action(ICommand comand)
+        protected override async Task<State<DataPagination<yUserGrantDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.yUserGrantReadCommand c) 
              {    

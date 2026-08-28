@@ -19,6 +19,7 @@ namespace Command.Read
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
+        public string Observacao { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

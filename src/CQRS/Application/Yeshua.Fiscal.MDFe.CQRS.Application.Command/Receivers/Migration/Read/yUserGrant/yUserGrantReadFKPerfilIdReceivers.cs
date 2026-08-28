@@ -1,4 +1,6 @@
-﻿using Command.Patterns.Command;
+using System.Threading.Tasks;
+using System.Threading;
+using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Dominio.Entitys;
 using Dominio.Interfaces;
@@ -25,7 +27,7 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override State <IEnumerable<yUserGrantPerfilIdDTO>> Action(ICommand comand)
+        protected override async Task<State<IEnumerable<yUserGrantPerfilIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 // <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
@@ -57,7 +59,7 @@ namespace Command.Receivers.UseCase
             _repReadYtenantRepository = repReadYtenantRepository;
         }
 
-        partial void CustomActionHook(ref State<LoginOutputCommand> state, LoginInputCommand comand)
+        protected partial async Task<State<LoginOutputCommand>> CustomActionHookAsync(State<LoginOutputCommand> state, LoginInputCommand comand, CancellationToken cancellationToken)
         {
             try
             {
@@ -99,6 +101,7 @@ namespace Command.Receivers.UseCase
             {
                 throw new ReceiverException<LoginOutputCommand>(Error(ex, default));
             }
+            return state;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿// <yeshua>
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -38,13 +39,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<LoginOutputCommand> Action(LoginInputCommand comand)
+        protected override async Task<State<LoginOutputCommand>> ActionAsync(LoginInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<LoginOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<LoginOutputCommand> e)
             {
@@ -55,7 +55,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<LoginOutputCommand> state, LoginInputCommand comand);
+protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<LoginOutputCommand> state, LoginInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

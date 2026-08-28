@@ -117,7 +117,7 @@ namespace Dominio.Schemas.CQRS
         {
             sb.AppendLine("try");
             sb.AppendLine("{");
-            sb.AppendLine("var result = receiver.Execute(command);");
+            sb.AppendLine("var result = await receiver.ExecuteAsync(command);");
             sb.AppendLine("if (result.StatusCode == 200)");
             sb.AppendLine($"    return Results.Ok({result});");
             sb.AppendLine("else");

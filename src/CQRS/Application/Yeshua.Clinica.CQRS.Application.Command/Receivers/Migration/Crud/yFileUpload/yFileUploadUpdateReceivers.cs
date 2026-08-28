@@ -1,4 +1,5 @@
-﻿// <yeshua>
+using System.Threading;
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -43,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override State<IyFileUploadEntity> Action(ICommand comand)
+        protected override async Task<State<IyFileUploadEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yFileUploadCrudCommand c) 
              {    

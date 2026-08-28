@@ -31,6 +31,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByGMA_TIPO_PLANEJAMENTO(string value );
         public GrupoMaquinaDTO FirstById(string value );
         public GrupoMaquinaDTO FirstByDescricao(string value );
         public GrupoMaquinaDTO FirstByStatus(string value );
@@ -38,6 +39,7 @@ namespace IRepository.Read
         public GrupoMaquinaDTO FirstByDeleted(bool value );
         public GrupoMaquinaDTO FirstByChanged(DateTime value );
         public GrupoMaquinaDTO FirstByUserId(int value );
+        public GrupoMaquinaDTO FirstByGMA_TIPO_PLANEJAMENTO(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllById(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByDescricao(string value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByStatus(string value );
@@ -45,6 +47,7 @@ namespace IRepository.Read
         public IEnumerable<GrupoMaquinaDTO> GetAllByDeleted(bool value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<GrupoMaquinaDTO> GetAllByUserId(int value );
+        public IEnumerable<GrupoMaquinaDTO> GetAllByGMA_TIPO_PLANEJAMENTO(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

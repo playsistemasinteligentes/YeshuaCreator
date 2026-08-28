@@ -26,6 +26,7 @@
             public const ulong Deleted = 1UL << 3;
             public const ulong Changed = 1UL << 4;
             public const ulong UserId = 1UL << 5;
+            public const ulong Observacao = 1UL << 6;
         }
 
         public partial class TemplateDeTestesDecorator : ITemplateDeTestesEntity
@@ -135,6 +136,20 @@
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & TemplateDeTestesTrackingFields.UserId) != 0UL)
                                                     _logger.DomainValueChanged("TemplateDeTestes", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string Observacao
+                                    {
+                                        get => _inner.Observacao;
+                                        set
+                                        {
+                                            if (_inner.Observacao != value)
+                                            {
+                                                _inner.Observacao = value;
+                                                if ((_trackingMask & TemplateDeTestesTrackingFields.Observacao) != 0UL)
+                                                    _logger.DomainValueChanged("TemplateDeTestes", "Observacao", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

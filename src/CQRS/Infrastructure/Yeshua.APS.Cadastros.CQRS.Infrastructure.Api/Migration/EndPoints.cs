@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -55,7 +55,7 @@ app.MapGet("/yapi/health/ready", ([FromServices] IRuntimeIdentityProvider identi
 
 app.MapPost("/yapi/Produto/PostProduto", async ([FromServices] Command.Receivers.Write.InsertProdutoReceiver receiver, [FromBody] Command.Write.ProdutoCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -64,7 +64,7 @@ app.MapPost("/yapi/Produto/PostProduto", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/Maquina/PostMaquina", async ([FromServices] Command.Receivers.Write.InsertMaquinaReceiver receiver, [FromBody] Command.Write.MaquinaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -73,7 +73,7 @@ app.MapPost("/yapi/Maquina/PostMaquina", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/GrupoMaquina/PostGrupoMaquina", async ([FromServices] Command.Receivers.Write.InsertGrupoMaquinaReceiver receiver, [FromBody] Command.Write.GrupoMaquinaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -82,7 +82,7 @@ app.MapPost("/yapi/GrupoMaquina/PostGrupoMaquina", async ([FromServices] Command
 
 app.MapPost("/yapi/TemplateDeTestes/PostTemplateDeTestes", async ([FromServices] Command.Receivers.Write.InsertTemplateDeTestesReceiver receiver, [FromBody] Command.Write.TemplateDeTestesCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -91,7 +91,7 @@ app.MapPost("/yapi/TemplateDeTestes/PostTemplateDeTestes", async ([FromServices]
 
 app.MapPost("/yapi/Roteiro/PostRoteiro", async ([FromServices] Command.Receivers.Write.InsertRoteiroReceiver receiver, [FromBody] Command.Write.RoteiroCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -100,7 +100,7 @@ app.MapPost("/yapi/Roteiro/PostRoteiro", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yFileUpload/PostyFileUpload", async ([FromServices] Command.Receivers.Write.InsertyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -109,7 +109,7 @@ app.MapPost("/yapi/yFileUpload/PostyFileUpload", async ([FromServices] Command.R
 
 app.MapPost("/yapi/ySaga/PostySaga", async ([FromServices] Command.Receivers.Write.InsertySagaReceiver receiver, [FromBody] Command.Write.ySagaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -118,7 +118,7 @@ app.MapPost("/yapi/ySaga/PostySaga", async ([FromServices] Command.Receivers.Wri
 
 app.MapPost("/yapi/ySagaStep/PostySagaStep", async ([FromServices] Command.Receivers.Write.InsertySagaStepReceiver receiver, [FromBody] Command.Write.ySagaStepCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -127,7 +127,7 @@ app.MapPost("/yapi/ySagaStep/PostySagaStep", async ([FromServices] Command.Recei
 
 app.MapPost("/yapi/yOutbox/PostyOutbox", async ([FromServices] Command.Receivers.Write.InsertyOutboxReceiver receiver, [FromBody] Command.Write.yOutboxCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -136,7 +136,7 @@ app.MapPost("/yapi/yOutbox/PostyOutbox", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yInbox/PostyInbox", async ([FromServices] Command.Receivers.Write.InsertyInboxReceiver receiver, [FromBody] Command.Write.yInboxCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -145,7 +145,7 @@ app.MapPost("/yapi/yInbox/PostyInbox", async ([FromServices] Command.Receivers.W
 
 app.MapPost("/yapi/yTenant/PostyTenant", async ([FromServices] Command.Receivers.Write.InsertyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -154,7 +154,7 @@ app.MapPost("/yapi/yTenant/PostyTenant", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yUser/PostyUser", async ([FromServices] Command.Receivers.Write.InsertyUserReceiver receiver, [FromBody] Command.Write.yUserCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -163,7 +163,7 @@ app.MapPost("/yapi/yUser/PostyUser", async ([FromServices] Command.Receivers.Wri
 
 app.MapPost("/yapi/yConfigArcteture/PostyConfigArcteture", async ([FromServices] Command.Receivers.Write.InsertyConfigArctetureReceiver receiver, [FromBody] Command.Write.yConfigArctetureCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -172,7 +172,7 @@ app.MapPost("/yapi/yConfigArcteture/PostyConfigArcteture", async ([FromServices]
 
 app.MapPost("/yapi/yConfigNotification/PostyConfigNotification", async ([FromServices] Command.Receivers.Write.InsertyConfigNotificationReceiver receiver, [FromBody] Command.Write.yConfigNotificationCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -181,7 +181,7 @@ app.MapPost("/yapi/yConfigNotification/PostyConfigNotification", async ([FromSer
 
 app.MapPost("/yapi/yPerfil/PostyPerfil", async ([FromServices] Command.Receivers.Write.InsertyPerfilReceiver receiver, [FromBody] Command.Write.yPerfilCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -190,7 +190,7 @@ app.MapPost("/yapi/yPerfil/PostyPerfil", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yModule/PostyModule", async ([FromServices] Command.Receivers.Write.InsertyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -199,7 +199,7 @@ app.MapPost("/yapi/yModule/PostyModule", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yTenantModule/PostyTenantModule", async ([FromServices] Command.Receivers.Write.InsertyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -208,7 +208,7 @@ app.MapPost("/yapi/yTenantModule/PostyTenantModule", async ([FromServices] Comma
 
 app.MapPost("/yapi/yUserModule/PostyUserModule", async ([FromServices] Command.Receivers.Write.InsertyUserModuleReceiver receiver, [FromBody] Command.Write.yUserModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -217,7 +217,7 @@ app.MapPost("/yapi/yUserModule/PostyUserModule", async ([FromServices] Command.R
 
 app.MapPost("/yapi/yGrant/PostyGrant", async ([FromServices] Command.Receivers.Write.InsertyGrantReceiver receiver, [FromBody] Command.Write.yGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -226,7 +226,7 @@ app.MapPost("/yapi/yGrant/PostyGrant", async ([FromServices] Command.Receivers.W
 
 app.MapPost("/yapi/yPerfilGrant/PostyPerfilGrant", async ([FromServices] Command.Receivers.Write.InsertyPerfilGrantReceiver receiver, [FromBody] Command.Write.yPerfilGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -235,7 +235,7 @@ app.MapPost("/yapi/yPerfilGrant/PostyPerfilGrant", async ([FromServices] Command
 
 app.MapPost("/yapi/yUserGrant/PostyUserGrant", async ([FromServices] Command.Receivers.Write.InsertyUserGrantReceiver receiver, [FromBody] Command.Write.yUserGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -244,7 +244,7 @@ app.MapPost("/yapi/yUserGrant/PostyUserGrant", async ([FromServices] Command.Rec
 
 app.MapPut("/yapi/Produto/PutProduto", async ([FromServices] Command.Receivers.Write.UpdateProdutoReceiver receiver, [FromBody] Command.Write.ProdutoCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -253,7 +253,7 @@ app.MapPut("/yapi/Produto/PutProduto", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/Maquina/PutMaquina", async ([FromServices] Command.Receivers.Write.UpdateMaquinaReceiver receiver, [FromBody] Command.Write.MaquinaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -262,7 +262,7 @@ app.MapPut("/yapi/Maquina/PutMaquina", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/GrupoMaquina/PutGrupoMaquina", async ([FromServices] Command.Receivers.Write.UpdateGrupoMaquinaReceiver receiver, [FromBody] Command.Write.GrupoMaquinaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -271,7 +271,7 @@ app.MapPut("/yapi/GrupoMaquina/PutGrupoMaquina", async ([FromServices] Command.R
 
 app.MapPut("/yapi/TemplateDeTestes/PutTemplateDeTestes", async ([FromServices] Command.Receivers.Write.UpdateTemplateDeTestesReceiver receiver, [FromBody] Command.Write.TemplateDeTestesCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -280,7 +280,7 @@ app.MapPut("/yapi/TemplateDeTestes/PutTemplateDeTestes", async ([FromServices] C
 
 app.MapPut("/yapi/Roteiro/PutRoteiro", async ([FromServices] Command.Receivers.Write.UpdateRoteiroReceiver receiver, [FromBody] Command.Write.RoteiroCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -289,7 +289,7 @@ app.MapPut("/yapi/Roteiro/PutRoteiro", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/yFileUpload/PutyFileUpload", async ([FromServices] Command.Receivers.Write.UpdateyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -298,7 +298,7 @@ app.MapPut("/yapi/yFileUpload/PutyFileUpload", async ([FromServices] Command.Rec
 
 app.MapPut("/yapi/ySaga/PutySaga", async ([FromServices] Command.Receivers.Write.UpdateySagaReceiver receiver, [FromBody] Command.Write.ySagaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -307,7 +307,7 @@ app.MapPut("/yapi/ySaga/PutySaga", async ([FromServices] Command.Receivers.Write
 
 app.MapPut("/yapi/ySagaStep/PutySagaStep", async ([FromServices] Command.Receivers.Write.UpdateySagaStepReceiver receiver, [FromBody] Command.Write.ySagaStepCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -316,7 +316,7 @@ app.MapPut("/yapi/ySagaStep/PutySagaStep", async ([FromServices] Command.Receive
 
 app.MapPut("/yapi/yOutbox/PutyOutbox", async ([FromServices] Command.Receivers.Write.UpdateyOutboxReceiver receiver, [FromBody] Command.Write.yOutboxCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -325,7 +325,7 @@ app.MapPut("/yapi/yOutbox/PutyOutbox", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/yInbox/PutyInbox", async ([FromServices] Command.Receivers.Write.UpdateyInboxReceiver receiver, [FromBody] Command.Write.yInboxCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -334,7 +334,7 @@ app.MapPut("/yapi/yInbox/PutyInbox", async ([FromServices] Command.Receivers.Wri
 
 app.MapPut("/yapi/yTenant/PutyTenant", async ([FromServices] Command.Receivers.Write.UpdateyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -343,7 +343,7 @@ app.MapPut("/yapi/yTenant/PutyTenant", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/yUser/PutyUser", async ([FromServices] Command.Receivers.Write.UpdateyUserReceiver receiver, [FromBody] Command.Write.yUserCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -352,7 +352,7 @@ app.MapPut("/yapi/yUser/PutyUser", async ([FromServices] Command.Receivers.Write
 
 app.MapPut("/yapi/yConfigArcteture/PutyConfigArcteture", async ([FromServices] Command.Receivers.Write.UpdateyConfigArctetureReceiver receiver, [FromBody] Command.Write.yConfigArctetureCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -361,7 +361,7 @@ app.MapPut("/yapi/yConfigArcteture/PutyConfigArcteture", async ([FromServices] C
 
 app.MapPut("/yapi/yConfigNotification/PutyConfigNotification", async ([FromServices] Command.Receivers.Write.UpdateyConfigNotificationReceiver receiver, [FromBody] Command.Write.yConfigNotificationCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -370,7 +370,7 @@ app.MapPut("/yapi/yConfigNotification/PutyConfigNotification", async ([FromServi
 
 app.MapPut("/yapi/yPerfil/PutyPerfil", async ([FromServices] Command.Receivers.Write.UpdateyPerfilReceiver receiver, [FromBody] Command.Write.yPerfilCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -379,7 +379,7 @@ app.MapPut("/yapi/yPerfil/PutyPerfil", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/yModule/PutyModule", async ([FromServices] Command.Receivers.Write.UpdateyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -388,7 +388,7 @@ app.MapPut("/yapi/yModule/PutyModule", async ([FromServices] Command.Receivers.W
 
 app.MapPut("/yapi/yTenantModule/PutyTenantModule", async ([FromServices] Command.Receivers.Write.UpdateyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -397,7 +397,7 @@ app.MapPut("/yapi/yTenantModule/PutyTenantModule", async ([FromServices] Command
 
 app.MapPut("/yapi/yUserModule/PutyUserModule", async ([FromServices] Command.Receivers.Write.UpdateyUserModuleReceiver receiver, [FromBody] Command.Write.yUserModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -406,7 +406,7 @@ app.MapPut("/yapi/yUserModule/PutyUserModule", async ([FromServices] Command.Rec
 
 app.MapPut("/yapi/yGrant/PutyGrant", async ([FromServices] Command.Receivers.Write.UpdateyGrantReceiver receiver, [FromBody] Command.Write.yGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -415,7 +415,7 @@ app.MapPut("/yapi/yGrant/PutyGrant", async ([FromServices] Command.Receivers.Wri
 
 app.MapPut("/yapi/yPerfilGrant/PutyPerfilGrant", async ([FromServices] Command.Receivers.Write.UpdateyPerfilGrantReceiver receiver, [FromBody] Command.Write.yPerfilGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -424,7 +424,7 @@ app.MapPut("/yapi/yPerfilGrant/PutyPerfilGrant", async ([FromServices] Command.R
 
 app.MapPut("/yapi/yUserGrant/PutyUserGrant", async ([FromServices] Command.Receivers.Write.UpdateyUserGrantReceiver receiver, [FromBody] Command.Write.yUserGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -433,7 +433,7 @@ app.MapPut("/yapi/yUserGrant/PutyUserGrant", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/Produto/DeleteProduto", async ([FromServices] Command.Receivers.Write.DeleteProdutoReceiver receiver, [FromBody] Command.Write.ProdutoCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -442,7 +442,7 @@ app.MapDelete("/yapi/Produto/DeleteProduto", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/Maquina/DeleteMaquina", async ([FromServices] Command.Receivers.Write.DeleteMaquinaReceiver receiver, [FromBody] Command.Write.MaquinaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -451,7 +451,7 @@ app.MapDelete("/yapi/Maquina/DeleteMaquina", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/GrupoMaquina/DeleteGrupoMaquina", async ([FromServices] Command.Receivers.Write.DeleteGrupoMaquinaReceiver receiver, [FromBody] Command.Write.GrupoMaquinaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -460,7 +460,7 @@ app.MapDelete("/yapi/GrupoMaquina/DeleteGrupoMaquina", async ([FromServices] Com
 
 app.MapDelete("/yapi/TemplateDeTestes/DeleteTemplateDeTestes", async ([FromServices] Command.Receivers.Write.DeleteTemplateDeTestesReceiver receiver, [FromBody] Command.Write.TemplateDeTestesCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -469,7 +469,7 @@ app.MapDelete("/yapi/TemplateDeTestes/DeleteTemplateDeTestes", async ([FromServi
 
 app.MapDelete("/yapi/Roteiro/DeleteRoteiro", async ([FromServices] Command.Receivers.Write.DeleteRoteiroReceiver receiver, [FromBody] Command.Write.RoteiroCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -478,7 +478,7 @@ app.MapDelete("/yapi/Roteiro/DeleteRoteiro", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/yFileUpload/DeleteyFileUpload", async ([FromServices] Command.Receivers.Write.DeleteyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -487,7 +487,7 @@ app.MapDelete("/yapi/yFileUpload/DeleteyFileUpload", async ([FromServices] Comma
 
 app.MapDelete("/yapi/ySaga/DeleteySaga", async ([FromServices] Command.Receivers.Write.DeleteySagaReceiver receiver, [FromBody] Command.Write.ySagaCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -496,7 +496,7 @@ app.MapDelete("/yapi/ySaga/DeleteySaga", async ([FromServices] Command.Receivers
 
 app.MapDelete("/yapi/ySagaStep/DeleteySagaStep", async ([FromServices] Command.Receivers.Write.DeleteySagaStepReceiver receiver, [FromBody] Command.Write.ySagaStepCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -505,7 +505,7 @@ app.MapDelete("/yapi/ySagaStep/DeleteySagaStep", async ([FromServices] Command.R
 
 app.MapDelete("/yapi/yOutbox/DeleteyOutbox", async ([FromServices] Command.Receivers.Write.DeleteyOutboxReceiver receiver, [FromBody] Command.Write.yOutboxCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -514,7 +514,7 @@ app.MapDelete("/yapi/yOutbox/DeleteyOutbox", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/yInbox/DeleteyInbox", async ([FromServices] Command.Receivers.Write.DeleteyInboxReceiver receiver, [FromBody] Command.Write.yInboxCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -523,7 +523,7 @@ app.MapDelete("/yapi/yInbox/DeleteyInbox", async ([FromServices] Command.Receive
 
 app.MapDelete("/yapi/yTenant/DeleteyTenant", async ([FromServices] Command.Receivers.Write.DeleteyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -532,7 +532,7 @@ app.MapDelete("/yapi/yTenant/DeleteyTenant", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/yUser/DeleteyUser", async ([FromServices] Command.Receivers.Write.DeleteyUserReceiver receiver, [FromBody] Command.Write.yUserCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -541,7 +541,7 @@ app.MapDelete("/yapi/yUser/DeleteyUser", async ([FromServices] Command.Receivers
 
 app.MapDelete("/yapi/yConfigArcteture/DeleteyConfigArcteture", async ([FromServices] Command.Receivers.Write.DeleteyConfigArctetureReceiver receiver, [FromBody] Command.Write.yConfigArctetureCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -550,7 +550,7 @@ app.MapDelete("/yapi/yConfigArcteture/DeleteyConfigArcteture", async ([FromServi
 
 app.MapDelete("/yapi/yConfigNotification/DeleteyConfigNotification", async ([FromServices] Command.Receivers.Write.DeleteyConfigNotificationReceiver receiver, [FromBody] Command.Write.yConfigNotificationCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -559,7 +559,7 @@ app.MapDelete("/yapi/yConfigNotification/DeleteyConfigNotification", async ([Fro
 
 app.MapDelete("/yapi/yPerfil/DeleteyPerfil", async ([FromServices] Command.Receivers.Write.DeleteyPerfilReceiver receiver, [FromBody] Command.Write.yPerfilCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -568,7 +568,7 @@ app.MapDelete("/yapi/yPerfil/DeleteyPerfil", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/yModule/DeleteyModule", async ([FromServices] Command.Receivers.Write.DeleteyModuleReceiver receiver, [FromBody] Command.Write.yModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -577,7 +577,7 @@ app.MapDelete("/yapi/yModule/DeleteyModule", async ([FromServices] Command.Recei
 
 app.MapDelete("/yapi/yTenantModule/DeleteyTenantModule", async ([FromServices] Command.Receivers.Write.DeleteyTenantModuleReceiver receiver, [FromBody] Command.Write.yTenantModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -586,7 +586,7 @@ app.MapDelete("/yapi/yTenantModule/DeleteyTenantModule", async ([FromServices] C
 
 app.MapDelete("/yapi/yUserModule/DeleteyUserModule", async ([FromServices] Command.Receivers.Write.DeleteyUserModuleReceiver receiver, [FromBody] Command.Write.yUserModuleCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -595,7 +595,7 @@ app.MapDelete("/yapi/yUserModule/DeleteyUserModule", async ([FromServices] Comma
 
 app.MapDelete("/yapi/yGrant/DeleteyGrant", async ([FromServices] Command.Receivers.Write.DeleteyGrantReceiver receiver, [FromBody] Command.Write.yGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -604,7 +604,7 @@ app.MapDelete("/yapi/yGrant/DeleteyGrant", async ([FromServices] Command.Receive
 
 app.MapDelete("/yapi/yPerfilGrant/DeleteyPerfilGrant", async ([FromServices] Command.Receivers.Write.DeleteyPerfilGrantReceiver receiver, [FromBody] Command.Write.yPerfilGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -613,7 +613,7 @@ app.MapDelete("/yapi/yPerfilGrant/DeleteyPerfilGrant", async ([FromServices] Com
 
 app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command.Receivers.Write.DeleteyUserGrantReceiver receiver, [FromBody] Command.Write.yUserGrantCrudCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -649,7 +649,7 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
             
 app.MapPost("/yapi/Produto/ReadProduto", async ([FromServices] Command.Receivers.Read.ProdutoReadReceiver receiver, [FromBody] Command.Read.ProdutoReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ProdutoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -658,7 +658,7 @@ app.MapPost("/yapi/Produto/ReadProduto", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/Maquina/ReadMaquina", async ([FromServices] Command.Receivers.Read.MaquinaReadReceiver receiver, [FromBody] Command.Read.MaquinaReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.MaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -667,7 +667,7 @@ app.MapPost("/yapi/Maquina/ReadMaquina", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/GrupoMaquina/ReadGrupoMaquina", async ([FromServices] Command.Receivers.Read.GrupoMaquinaReadReceiver receiver, [FromBody] Command.Read.GrupoMaquinaReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.GrupoMaquinaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -676,7 +676,7 @@ app.MapPost("/yapi/GrupoMaquina/ReadGrupoMaquina", async ([FromServices] Command
 
 app.MapPost("/yapi/TemplateDeTestes/ReadTemplateDeTestes", async ([FromServices] Command.Receivers.Read.TemplateDeTestesReadReceiver receiver, [FromBody] Command.Read.TemplateDeTestesReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TemplateDeTestesEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -685,7 +685,7 @@ app.MapPost("/yapi/TemplateDeTestes/ReadTemplateDeTestes", async ([FromServices]
 
 app.MapPost("/yapi/Roteiro/ReadRoteiro", async ([FromServices] Command.Receivers.Read.RoteiroReadReceiver receiver, [FromBody] Command.Read.RoteiroReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -694,7 +694,7 @@ app.MapPost("/yapi/Roteiro/ReadRoteiro", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yFileUpload/ReadyFileUpload", async ([FromServices] Command.Receivers.Read.yFileUploadReadReceiver receiver, [FromBody] Command.Read.yFileUploadReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yFileUploadEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -703,7 +703,7 @@ app.MapPost("/yapi/yFileUpload/ReadyFileUpload", async ([FromServices] Command.R
 
 app.MapPost("/yapi/ySaga/ReadySaga", async ([FromServices] Command.Receivers.Read.ySagaReadReceiver receiver, [FromBody] Command.Read.ySagaReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -712,7 +712,7 @@ app.MapPost("/yapi/ySaga/ReadySaga", async ([FromServices] Command.Receivers.Rea
 
 app.MapPost("/yapi/ySagaStep/ReadySagaStep", async ([FromServices] Command.Receivers.Read.ySagaStepReadReceiver receiver, [FromBody] Command.Read.ySagaStepReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.ySagaStepEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -721,7 +721,7 @@ app.MapPost("/yapi/ySagaStep/ReadySagaStep", async ([FromServices] Command.Recei
 
 app.MapPost("/yapi/yOutbox/ReadyOutbox", async ([FromServices] Command.Receivers.Read.yOutboxReadReceiver receiver, [FromBody] Command.Read.yOutboxReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -730,7 +730,7 @@ app.MapPost("/yapi/yOutbox/ReadyOutbox", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yInbox/ReadyInbox", async ([FromServices] Command.Receivers.Read.yInboxReadReceiver receiver, [FromBody] Command.Read.yInboxReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -739,7 +739,7 @@ app.MapPost("/yapi/yInbox/ReadyInbox", async ([FromServices] Command.Receivers.R
 
 app.MapPost("/yapi/yTenant/ReadyTenant", async ([FromServices] Command.Receivers.Read.yTenantReadReceiver receiver, [FromBody] Command.Read.yTenantReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -748,7 +748,7 @@ app.MapPost("/yapi/yTenant/ReadyTenant", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yUser/ReadyUser", async ([FromServices] Command.Receivers.Read.yUserReadReceiver receiver, [FromBody] Command.Read.yUserReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -757,7 +757,7 @@ app.MapPost("/yapi/yUser/ReadyUser", async ([FromServices] Command.Receivers.Rea
 
 app.MapPost("/yapi/yConfigArcteture/ReadyConfigArcteture", async ([FromServices] Command.Receivers.Read.yConfigArctetureReadReceiver receiver, [FromBody] Command.Read.yConfigArctetureReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigArctetureEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -766,7 +766,7 @@ app.MapPost("/yapi/yConfigArcteture/ReadyConfigArcteture", async ([FromServices]
 
 app.MapPost("/yapi/yConfigNotification/ReadyConfigNotification", async ([FromServices] Command.Receivers.Read.yConfigNotificationReadReceiver receiver, [FromBody] Command.Read.yConfigNotificationReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yConfigNotificationEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -775,7 +775,7 @@ app.MapPost("/yapi/yConfigNotification/ReadyConfigNotification", async ([FromSer
 
 app.MapPost("/yapi/yPerfil/ReadyPerfil", async ([FromServices] Command.Receivers.Read.yPerfilReadReceiver receiver, [FromBody] Command.Read.yPerfilReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -784,7 +784,7 @@ app.MapPost("/yapi/yPerfil/ReadyPerfil", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yModule/ReadyModule", async ([FromServices] Command.Receivers.Read.yModuleReadReceiver receiver, [FromBody] Command.Read.yModuleReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -793,7 +793,7 @@ app.MapPost("/yapi/yModule/ReadyModule", async ([FromServices] Command.Receivers
 
 app.MapPost("/yapi/yTenantModule/ReadyTenantModule", async ([FromServices] Command.Receivers.Read.yTenantModuleReadReceiver receiver, [FromBody] Command.Read.yTenantModuleReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yTenantModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -802,7 +802,7 @@ app.MapPost("/yapi/yTenantModule/ReadyTenantModule", async ([FromServices] Comma
 
 app.MapPost("/yapi/yUserModule/ReadyUserModule", async ([FromServices] Command.Receivers.Read.yUserModuleReadReceiver receiver, [FromBody] Command.Read.yUserModuleReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserModuleEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -811,7 +811,7 @@ app.MapPost("/yapi/yUserModule/ReadyUserModule", async ([FromServices] Command.R
 
 app.MapPost("/yapi/yGrant/ReadyGrant", async ([FromServices] Command.Receivers.Read.yGrantReadReceiver receiver, [FromBody] Command.Read.yGrantReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -820,7 +820,7 @@ app.MapPost("/yapi/yGrant/ReadyGrant", async ([FromServices] Command.Receivers.R
 
 app.MapPost("/yapi/yPerfilGrant/ReadyPerfilGrant", async ([FromServices] Command.Receivers.Read.yPerfilGrantReadReceiver receiver, [FromBody] Command.Read.yPerfilGrantReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yPerfilGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -829,7 +829,7 @@ app.MapPost("/yapi/yPerfilGrant/ReadyPerfilGrant", async ([FromServices] Command
 
 app.MapPost("/yapi/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Receivers.Read.yUserGrantReadReceiver receiver, [FromBody] Command.Read.yUserGrantReadCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yUserGrantEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -838,7 +838,7 @@ app.MapPost("/yapi/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Rec
 
 app.MapPost("/yapi/yOutbox/ReadyOutboxProximaPendente", async ([FromServices] Command.Receivers.Read.yOutboxReadQueryProximaPendenteReceiver receiver, [FromBody] Command.Read.yOutboxProximaPendenteCommand command) =>
 {
- return await Task.FromResult(StateResults.Try(() => receiver.Execute(command)));
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yOutboxEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
@@ -849,7 +849,7 @@ app.MapPost("/yapi/Produto/ProdutoReadFKTenantID", async ([FromServices] Command
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -866,7 +866,7 @@ app.MapPost("/yapi/Produto/ProdutoReadFKUserId", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -883,7 +883,7 @@ app.MapPost("/yapi/Maquina/MaquinaReadFKTenantID", async ([FromServices] Command
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -900,7 +900,7 @@ app.MapPost("/yapi/Maquina/MaquinaReadFKUserId", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -917,7 +917,7 @@ app.MapPost("/yapi/GrupoMaquina/GrupoMaquinaReadFKTenantID", async ([FromService
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -934,7 +934,7 @@ app.MapPost("/yapi/GrupoMaquina/GrupoMaquinaReadFKUserId", async ([FromServices]
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -951,7 +951,7 @@ app.MapPost("/yapi/TemplateDeTestes/TemplateDeTestesReadFKTenantID", async ([Fro
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -968,7 +968,7 @@ app.MapPost("/yapi/TemplateDeTestes/TemplateDeTestesReadFKUserId", async ([FromS
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -985,7 +985,7 @@ app.MapPost("/yapi/Roteiro/RoteiroReadFKMAQ_ID", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1002,7 +1002,7 @@ app.MapPost("/yapi/Roteiro/RoteiroReadFKPRO_ID", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1019,7 +1019,7 @@ app.MapPost("/yapi/Roteiro/RoteiroReadFKGMA_ID", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1036,7 +1036,7 @@ app.MapPost("/yapi/Roteiro/RoteiroReadFKTEM_ID", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1053,7 +1053,7 @@ app.MapPost("/yapi/Roteiro/RoteiroReadFKTenantID", async ([FromServices] Command
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1070,7 +1070,7 @@ app.MapPost("/yapi/Roteiro/RoteiroReadFKUserId", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1087,7 +1087,7 @@ app.MapPost("/yapi/yFileUpload/yFileUploadReadFKTenantID", async ([FromServices]
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1104,7 +1104,7 @@ app.MapPost("/yapi/yFileUpload/yFileUploadReadFKUserId", async ([FromServices] C
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1121,7 +1121,7 @@ app.MapPost("/yapi/ySaga/ySagaReadFKTenantID", async ([FromServices] Command.Rec
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1138,7 +1138,7 @@ app.MapPost("/yapi/ySaga/ySagaReadFKUserId", async ([FromServices] Command.Recei
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1155,7 +1155,7 @@ app.MapPost("/yapi/ySagaStep/ySagaStepReadFKSagaId", async ([FromServices] Comma
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1172,7 +1172,7 @@ app.MapPost("/yapi/ySagaStep/ySagaStepReadFKTenantID", async ([FromServices] Com
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1189,7 +1189,7 @@ app.MapPost("/yapi/ySagaStep/ySagaStepReadFKUserId", async ([FromServices] Comma
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1206,7 +1206,7 @@ app.MapPost("/yapi/yOutbox/yOutboxReadFKSagaId", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1223,7 +1223,7 @@ app.MapPost("/yapi/yOutbox/yOutboxReadFKSagaStepId", async ([FromServices] Comma
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1240,7 +1240,7 @@ app.MapPost("/yapi/yOutbox/yOutboxReadFKTenantID", async ([FromServices] Command
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1257,7 +1257,7 @@ app.MapPost("/yapi/yOutbox/yOutboxReadFKUserId", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1274,7 +1274,7 @@ app.MapPost("/yapi/yInbox/yInboxReadFKSagaId", async ([FromServices] Command.Rec
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1291,7 +1291,7 @@ app.MapPost("/yapi/yInbox/yInboxReadFKSagaStepId", async ([FromServices] Command
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1308,7 +1308,7 @@ app.MapPost("/yapi/yInbox/yInboxReadFKTenantID", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1325,7 +1325,7 @@ app.MapPost("/yapi/yInbox/yInboxReadFKUserId", async ([FromServices] Command.Rec
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1342,7 +1342,7 @@ app.MapPost("/yapi/yUser/yUserReadFKTenantID", async ([FromServices] Command.Rec
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1359,7 +1359,7 @@ app.MapPost("/yapi/yConfigArcteture/yConfigArctetureReadFKTenantID", async ([Fro
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1376,7 +1376,7 @@ app.MapPost("/yapi/yConfigArcteture/yConfigArctetureReadFKUserId", async ([FromS
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1393,7 +1393,7 @@ app.MapPost("/yapi/yConfigNotification/yConfigNotificationReadFKTenantID", async
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1410,7 +1410,7 @@ app.MapPost("/yapi/yConfigNotification/yConfigNotificationReadFKUserId", async (
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1427,7 +1427,7 @@ app.MapPost("/yapi/yPerfil/yPerfilReadFKTenantID", async ([FromServices] Command
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1444,7 +1444,7 @@ app.MapPost("/yapi/yPerfil/yPerfilReadFKUserId", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1461,7 +1461,7 @@ app.MapPost("/yapi/yTenantModule/yTenantModuleReadFKModuleId", async ([FromServi
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1478,7 +1478,7 @@ app.MapPost("/yapi/yTenantModule/yTenantModuleReadFKTenantID", async ([FromServi
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1495,7 +1495,7 @@ app.MapPost("/yapi/yTenantModule/yTenantModuleReadFKUserId", async ([FromService
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1512,7 +1512,7 @@ app.MapPost("/yapi/yUserModule/yUserModuleReadFKModuleId", async ([FromServices]
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1529,7 +1529,7 @@ app.MapPost("/yapi/yUserModule/yUserModuleReadFKUserId", async ([FromServices] C
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1546,7 +1546,7 @@ app.MapPost("/yapi/yUserModule/yUserModuleReadFKTenantID", async ([FromServices]
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1563,7 +1563,7 @@ app.MapPost("/yapi/yGrant/yGrantReadFKTenantID", async ([FromServices] Command.R
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1580,7 +1580,7 @@ app.MapPost("/yapi/yGrant/yGrantReadFKUserId", async ([FromServices] Command.Rec
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1597,7 +1597,7 @@ app.MapPost("/yapi/yPerfilGrant/yPerfilGrantReadFKPerfilId", async ([FromService
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1614,7 +1614,7 @@ app.MapPost("/yapi/yPerfilGrant/yPerfilGrantReadFKGrantId", async ([FromServices
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1631,7 +1631,7 @@ app.MapPost("/yapi/yPerfilGrant/yPerfilGrantReadFKTenantID", async ([FromService
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1648,7 +1648,7 @@ app.MapPost("/yapi/yPerfilGrant/yPerfilGrantReadFKUserId", async ([FromServices]
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1665,7 +1665,7 @@ app.MapPost("/yapi/yUserGrant/yUserGrantReadFKPerfilId", async ([FromServices] C
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1682,7 +1682,7 @@ app.MapPost("/yapi/yUserGrant/yUserGrantReadFKGrantId", async ([FromServices] Co
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1699,7 +1699,7 @@ app.MapPost("/yapi/yUserGrant/yUserGrantReadFKTenantID", async ([FromServices] C
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -1716,7 +1716,7 @@ app.MapPost("/yapi/yUserGrant/yUserGrantReadFKUserId", async ([FromServices] Com
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -2971,7 +2971,7 @@ app.MapPost("/yapi/ApsCadastros/RoteirosCadastrarRoteiroUseCase", async ([FromSe
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -2988,7 +2988,7 @@ app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServic
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -3005,7 +3005,7 @@ app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Comma
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -3022,7 +3022,7 @@ app.MapPost("/yapi/Y/ContascreateContaUseCase", async ([FromServices] Command.Re
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -3039,7 +3039,7 @@ app.MapPost("/yapi/Y/ContasLoginUseCase", async ([FromServices] Command.Receiver
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else
@@ -3056,7 +3056,7 @@ app.MapPost("/yapi/Y/ContasRecoveryAccountUseCase", async ([FromServices] Comman
 {
 try
 {
-var result = receiver.Execute(command);
+var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else

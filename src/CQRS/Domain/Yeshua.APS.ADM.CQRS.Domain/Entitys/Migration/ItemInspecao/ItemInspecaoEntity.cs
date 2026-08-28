@@ -1,0 +1,50 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
+                using System;
+                using Dominio.TiposPrimitivos;
+                using System.Collections.Generic;
+                using System.Linq;
+                using System.Text;
+                using System.Threading.Tasks;
+
+                namespace Dominio.Entitys
+                {
+                    public partial class ItemInspecaoEntity : IItemInspecaoEntity
+{
+    public int? Id { get; set; }
+    public int ITI_ID { get; set; }
+    public string ITI_DESC { get; set; }
+    public int? TenantID { get; set; }
+    public bool? Deleted { get; set; }
+    public DateTime? Changed { get; set; }
+    public int? UserId { get; set; }
+    private List<string> _erroMensagem = null;
+ internal ItemInspecaoEntity(int? id, int iti_id, string iti_desc ){
+ Id = id; 
+ ITI_ID = iti_id; 
+ ITI_DESC = iti_desc; 
+}
+public bool isValidData()
+{
+_erroMensagem = new List<string>();
+   if (ITI_ID == null)
+   this._erroMensagem.Add("ITI ID deve ser informado.");
+return _erroMensagem.Count() <= 0;
+}
+
+                        public bool isValidInsert() => isValidData();
+                        public bool isValidUpdate() => isValidData();
+                        public bool isValidDelete() => true;
+                        public List<string> getErroMensagens() => _erroMensagem;
+                
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes)
         {
-            this.Query = $@" INSERT INTO TemplateDeTestes (Descricao, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO TemplateDeTestes (Descricao, TenantID, Deleted, Changed, UserId, Observacao) OUTPUT INSERTED.Id VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId, @Observacao) ";
             this.Parameters = new
             {
                 Descricao = TemplateDeTestes.Descricao,
@@ -38,17 +38,19 @@ namespace Query.Write
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                Observacao = TemplateDeTestes.Observacao,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET Descricao = @Descricao, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE TemplateDeTestes SET Descricao = @Descricao, Changed = @Changed, UserId = @UserId, Observacao = @Observacao WHERE Id = @Id ";
             this.Parameters = new
             {
                 Descricao = TemplateDeTestes.Descricao,
                 Changed = TemplateDeTestes.Changed,
                 UserId = _executionContext.UserId,
+                Observacao = TemplateDeTestes.Observacao,
                 Id = TemplateDeTestes.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -99,6 +101,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateObservacao(int id, string value)
+        {
+            this.Query = $@" UPDATE TemplateDeTestes SET Observacao = @Observacao WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Observacao = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

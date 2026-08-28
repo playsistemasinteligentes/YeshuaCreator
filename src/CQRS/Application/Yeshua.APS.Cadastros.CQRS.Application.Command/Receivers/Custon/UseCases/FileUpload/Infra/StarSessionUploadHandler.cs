@@ -1,4 +1,6 @@
-﻿// <yeshua>
+using System.Threading.Tasks;
+using System.Threading;
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -32,9 +34,10 @@ namespace Command.Receivers.UseCase
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
         }
-partial void CustomActionHook(ref State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand)
+protected partial async Task<State<StarSessionUploadOutputCommand>> CustomActionHookAsync(State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand, CancellationToken cancellationToken)
 {
-}
+            return state;
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

@@ -1,4 +1,5 @@
-﻿// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
+using System.Threading;
+// Escopo: Criar um tenant, e um user baseado command(string idcompany, string email, string phone, string password, string confirmpassword), controlar transação.
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
@@ -28,13 +29,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<CreateContaOutputCommand> Action(CreateContaInputCommand comand)
+        protected override async Task<State<CreateContaOutputCommand>> ActionAsync(CreateContaInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<CreateContaOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<CreateContaOutputCommand> e)
             {
@@ -45,7 +45,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand);
+protected partial Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

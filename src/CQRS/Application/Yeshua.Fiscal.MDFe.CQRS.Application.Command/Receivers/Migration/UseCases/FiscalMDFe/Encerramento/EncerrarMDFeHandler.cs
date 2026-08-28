@@ -1,4 +1,5 @@
-﻿// Escopo: mdfe.encerrar
+using System.Threading;
+// Escopo: mdfe.encerrar
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
@@ -28,13 +29,12 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override State<EncerrarMDFeOutputCommand> Action(EncerrarMDFeInputCommand comand)
+        protected override async Task<State<EncerrarMDFeOutputCommand>> ActionAsync(EncerrarMDFeInputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
                  State<EncerrarMDFeOutputCommand> retorno = Success("OK", null);
-                 CustomActionHook(ref retorno, comand);
-                 return retorno;
+                 return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<EncerrarMDFeOutputCommand> e)
             {
@@ -45,7 +45,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-partial void CustomActionHook(ref State<EncerrarMDFeOutputCommand> state, EncerrarMDFeInputCommand comand);
+protected partial Task<State<EncerrarMDFeOutputCommand>> CustomActionHookAsync(State<EncerrarMDFeOutputCommand> state, EncerrarMDFeInputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

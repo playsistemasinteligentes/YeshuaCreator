@@ -34,7 +34,7 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                receiver.Execute(new TCommand());
+                await receiver.ExecuteAsync(new TCommand(), stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {

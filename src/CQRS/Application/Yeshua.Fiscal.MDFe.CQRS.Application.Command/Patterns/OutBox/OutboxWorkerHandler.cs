@@ -1,4 +1,6 @@
-﻿using Command.Interfaces.Patterns.Queue;
+using System.Threading.Tasks;
+using System.Threading;
+using Command.Interfaces.Patterns.Queue;
 using Command.Patterns.Command;
 using Command.Patterns.Queue;
 using Command.UseCase;
@@ -39,7 +41,7 @@ namespace Command.Patterns.OutBox
             _executionContext = context;
         }
 
-        protected override State<yOutboxOutputCommand> Action(yOutboxInputCommand command)
+        protected override async Task<State<yOutboxOutputCommand>> ActionAsync(yOutboxInputCommand command, CancellationToken cancellationToken = default)
         {
             State<yOutboxOutputCommand> state = Success("OK", null);
             var processed = new List<int>();

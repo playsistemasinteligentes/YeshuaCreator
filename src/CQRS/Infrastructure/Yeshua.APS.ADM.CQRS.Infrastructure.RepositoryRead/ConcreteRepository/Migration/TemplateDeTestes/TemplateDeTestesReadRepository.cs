@@ -142,6 +142,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByObservacao(string value )
+        {
+            var query = _query.ExistsByObservacaoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public TemplateDeTestesDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -190,6 +198,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public TemplateDeTestesDTO FirstByObservacao(string value )
+        {
+            var query = _query.FirstByObservacaoQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TemplateDeTestesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<TemplateDeTestesDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -233,6 +249,14 @@ namespace Read.Repository
         public IEnumerable<TemplateDeTestesDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<TemplateDeTestesDTO>(query.Query,query.Parameters) as List<TemplateDeTestesDTO>;
+                return result;
+        }
+
+        public IEnumerable<TemplateDeTestesDTO> GetAllByObservacao(string value )
+        {
+            var query = _query.FirstByObservacaoQuery(value );
 
                 var result = _unitOfWork.Query<TemplateDeTestesDTO>(query.Query,query.Parameters) as List<TemplateDeTestesDTO>;
                 return result;

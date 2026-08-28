@@ -29,7 +29,7 @@ namespace API.Migrations
                 var command = new Command.UseCase.LoginInputCommand();
                 command.email = user.Login;
                 command.password = user.Password;
-                var result = StateResults.Try(() => receiver.Execute(command));
+                var result = await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 
                 if (result.Result is Ok<State<Command.UseCase.LoginOutputCommand>> okResult)
                 {
@@ -98,7 +98,7 @@ namespace API.Migrations
                         FileStream = file
                     };
 
-                    var result = receiver.Execute(command);
+                    var result = await receiver.ExecuteAsync(command);
 
                     if (result.StatusCode == 200)
                         return Results.Ok(result.Data);
@@ -119,7 +119,7 @@ namespace API.Migrations
                 {
                     var request = context.Request;
                     if (!request.HasFormContentType)
-                        return Results.BadRequest("Requisição inválida. Esperado form-data.");
+                        return Results.BadRequest("Requisiï¿½ï¿½o invï¿½lida. Esperado form-data.");
 
                     var form = await request.ReadFormAsync();
                     var file = form.Files["audio"];
@@ -127,7 +127,7 @@ namespace API.Migrations
                     if (file == null || file.Length == 0)
                         return Results.BadRequest("Nenhum arquivo foi enviado.");
 
-                    // Define o caminho onde os áudios serão salvos
+                    // Define o caminho onde os ï¿½udios serï¿½o salvos
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
                     Directory.CreateDirectory(uploadsFolder); // Garante que a pasta existe
 

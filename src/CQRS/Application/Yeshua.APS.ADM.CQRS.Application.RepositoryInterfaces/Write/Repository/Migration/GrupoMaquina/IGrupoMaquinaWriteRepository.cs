@@ -28,6 +28,7 @@ namespace IRepository.Write
         void UpdateDeleted(string id, bool value);
         void UpdateChanged(string id, DateTime value);
         void UpdateUserId(string id, int value);
+        void UpdateGMA_TIPO_PLANEJAMENTO(string id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

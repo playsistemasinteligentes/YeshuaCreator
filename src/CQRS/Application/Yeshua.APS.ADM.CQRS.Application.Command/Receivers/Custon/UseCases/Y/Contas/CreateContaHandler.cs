@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 // <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
@@ -49,7 +51,7 @@ namespace Command.Receivers.UseCase
             _repWriteyUser = repWriteyUser;
         }
 
-        partial void CustomActionHook(ref State<CreateContaOutputCommand> state, CreateContaInputCommand comand)
+        protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken)
         {
             try
             {
@@ -126,6 +128,7 @@ namespace Command.Receivers.UseCase
                 _unitOfWork.Rollback();
                 throw new ReceiverException<CreateContaOutputCommand>(Error(ex, default));
             }
+            return state;
         }
     }
 }

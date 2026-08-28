@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Roteiro;
 
-[SmokeTestOrder(5)]
+[SmokeTestOrder(181)]
 public partial class RoteiroCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Roteiro/PostRoteiro";

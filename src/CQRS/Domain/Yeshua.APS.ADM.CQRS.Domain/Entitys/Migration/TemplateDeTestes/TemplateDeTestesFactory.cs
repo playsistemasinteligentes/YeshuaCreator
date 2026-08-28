@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ITemplateDeTestesEntity Create(int? id, string descricao )
+                                    } public ITemplateDeTestesEntity Create(int? id, string descricao, string observacao )
                             {
-                                return Create(null, id, descricao);
+                                return Create(null, id, descricao, observacao);
                             }
 
                             public ITemplateDeTestesEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string descricao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string descricao, string observacao )
                             {
-                            var entity = new TemplateDeTestesEntity(id, descricao );
+                            var entity = new TemplateDeTestesEntity(id, descricao, observacao );
 
 
                             var trackingMask = _trackingPolicy?.GetMask("TemplateDeTestes", context?.Intent, context?.RecordId) ?? 0UL;

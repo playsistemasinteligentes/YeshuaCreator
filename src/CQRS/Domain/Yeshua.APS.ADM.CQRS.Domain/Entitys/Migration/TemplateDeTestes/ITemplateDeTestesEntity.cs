@@ -26,6 +26,7 @@
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string Observacao { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

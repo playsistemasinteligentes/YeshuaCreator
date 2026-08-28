@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina)
         {
-            this.Query = $@" INSERT INTO GrupoMaquina (Id, Descricao, Status, TenantID, Deleted, Changed, UserId) VALUES(@Id, @Descricao, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO GrupoMaquina (Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO) VALUES(@Id, @Descricao, @Status, @TenantID, @Deleted, @Changed, @UserId, @GMA_TIPO_PLANEJAMENTO) ";
             this.Parameters = new
             {
                 Id = GrupoMaquina.Id,
@@ -40,18 +40,20 @@ namespace Query.Write
                 Deleted = 0,
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
+                GMA_TIPO_PLANEJAMENTO = GrupoMaquina.GMA_TIPO_PLANEJAMENTO,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET Descricao = @Descricao, Status = @Status, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE GrupoMaquina SET Descricao = @Descricao, Status = @Status, Changed = @Changed, UserId = @UserId, GMA_TIPO_PLANEJAMENTO = @GMA_TIPO_PLANEJAMENTO WHERE Id = @Id ";
             this.Parameters = new
             {
                 Descricao = GrupoMaquina.Descricao,
                 Status = GrupoMaquina.Status,
                 Changed = GrupoMaquina.Changed,
                 UserId = _executionContext.UserId,
+                GMA_TIPO_PLANEJAMENTO = GrupoMaquina.GMA_TIPO_PLANEJAMENTO,
                 Id = GrupoMaquina.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -112,6 +114,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 UserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateGMA_TIPO_PLANEJAMENTO(string id, string value)
+        {
+            this.Query = $@" UPDATE GrupoMaquina SET GMA_TIPO_PLANEJAMENTO = @GMA_TIPO_PLANEJAMENTO WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                GMA_TIPO_PLANEJAMENTO = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);
