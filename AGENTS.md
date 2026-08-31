@@ -80,12 +80,15 @@ Miolos que IA/dev devem preencher:
 - Mapeamento de legado na DSL deve existir como metadata de transicao de dados,
   usando conceitos como `LegacySource` e `LegacyColumn`; ele nao deve virar
   alias nem remapeamento em repositories ou no caminho quente do CRUD.
-- Entidades baseadas em views devem continuar sendo entidades na DSL, usando
-  `FromView(nomeDaView)`. Esse conceito indica origem fisica de leitura em uma
-  view, impede DDL de tabela e desliga CRUD direto de escrita; nao exige
-  `ReadOnly`.
-- `FromView` nao substitui `LegacySource`: `FromView` e fonte operacional de
-  leitura, enquanto `LegacySource` e metadata de transicao/migracao.
+- Entidades baseadas em visoes de leitura devem continuar sendo entidades na
+  DSL, usando `FromView(nomeDaVisao)`. Esse conceito representa uma projection
+  ou read model resolvido pelo repositorio de leitura do aplicativo; por padrao
+  nao cria view fisica no banco, impede DDL de tabela e desliga CRUD direto de
+  escrita; nao exige `ReadOnly`.
+- `FromView` nao substitui `LegacySource`: `FromView` declara a visao
+  operacional de leitura da aplicacao, enquanto `LegacySource` e metadata de
+  transicao/migracao. Quando uma view fisica legada existir, ela pode ser usada
+  como detalhe customizado do repositorio, sem virar obrigacao arquitetural.
 - Abas de relacionamento nascem na declaracao da FK do filho, com
   `RelationTab`. A Engine monta a aba inversa na entidade pai a partir dessa
   FK logica, mesmo quando a FK nao existir fisicamente no banco legado.
@@ -323,10 +326,114 @@ os miolos customizados.
 - Payloads recebidos por conectores podem ser processados sincronamente ou
   apenas armazenados para processamento posterior. A decisao pertence ao miolo
   do aplicativo/receiver, nao ao contrato externo.
+- Conectores SOAP/REST/arquivo/planilha sao bordas externas de compatibilidade
+  com clientes, fabricantes, contingencia e sistemas legados; nao devem ser
+  usados como integracao normal entre modulos Yeshua.
 - `pendencia`: resolver token em `yToken`, carregar `TenantID`/contexto e
   encaminhar para receivers customizados de integracao.
 - `pendencia`: definir se o payload bruto de conectores sera persistido em
   `yInbox` ou em tabelas especificas de integracao.
+
+## Fiscal CT-e E MDF-e
+
+- Modulos fiscais devem partir dos manuais, schemas XML e notas tecnicas
+  oficiais do Portal CT-e/MDF-e; regras fiscais nao devem ser inferidas apenas
+  por comportamento observado em bibliotecas ou sistemas legados.
+- O primeiro recorte de CT-e e o modelo 57 em versao 4.00, com autorizacao
+  sincrona por `CTeRecepcaoSincV4`, assinatura digital, validacao XSD,
+  interpretacao do retorno e persistencia do XML/protocolo.
+- Em CT-e 4.00, o MOC registra a eliminacao do SOAP Header dos webservices e da
+  autorizacao assincrona; novos clientes SEFAZ devem seguir o contrato 4.00 em
+  vez de copiar o modelo usado no teste isolado de MDF-e.
+- Autorizador, endpoint, contingencia e QR Code sao configuracoes por UF e
+  ambiente. Para PE, AP e RR o autorizador CT-e e a SVSP; a contingencia desses
+  estados usa SVC-RS.
+- CT-e, MDF-e e NF-e devem ser pensados como modulos fiscais vendaveis e
+  implantaveis isoladamente quando possivel. Um agregador `Fiscal` pode existir
+  comercialmente, mas nao deve justificar acoplamento tecnico entre documentos.
+- Dentro do CT-e, separar entrada, normalizacao, orquestracao de emissao,
+  rateio de frete, calculo fiscal, numeracao/chave, XML SEFAZ, assinatura,
+  validacao XSD, cliente SEFAZ, interpretacao de retorno, eventos, DACTE,
+  consulta/distribuicao e contingencia.
+- Funcoes oficiais da SEFAZ devem ser mapeadas para capacidades internas do
+  modulo, nao copiadas como um monolito tecnico. `CTeRecepcaoEventoV4`, por
+  exemplo, e uma borda unica, mas cancelamento, carta de correcao, comprovante
+  de entrega e outros eventos devem nascer como fluxos separados.
+- O aplicativo Fiscal.CTe deve ser pensado como produto independente. CT-e
+  carga modelo 57, CT-e Simplificado, CT-e OS, GTV-e, eventos, distribuicao,
+  DACTE/QR Code e contingencia sao familias distintas; reutilizam infraestrutura
+  fiscal, mas nao devem dividir um miolo central.
+- O aplicativo Fiscal.MDFe tambem deve ser pensado como produto independente.
+  Encerramento, consulta, nao encerrados, eventos, emissao rodoviaria, DAMDFE,
+  distribuicao, CIOT/contrato/pagamento, MDF-e Integrado, InfraSA/DTe, PAA/NFF
+  e modais especiais sao familias distintas; reutilizam infraestrutura fiscal,
+  mas nao devem dividir um miolo central.
+- O primeiro recorte de MDF-e e encerramento de MDF-e autorizado via evento
+  `110112` no webservice `MDFeRecepcaoEvento` versao 3.00, com assinatura
+  digital, validacao XSD, interpretacao do retorno e persistencia do XML,
+  protocolo, `cStat` e `xMotivo`.
+- O playground `tools/Yeshua.Engine.Playground` preserva a prova isolada do
+  encerramento real de MDF-e. Esse conhecimento deve migrar para miolo
+  customizado do aplicativo Fiscal.MDFe; o playground nao e arquitetura final.
+- MDF-e usa a relacao oficial de servicos do Portal MDF-e/SVRS por ambiente.
+  Endpoints, QR Code, timeout, certificado e versao de schema sao configuracoes
+  do aplicativo fiscal, nunca constantes escondidas na Engine.
+- A pesquisa de CT-e deve evoluir por subassuntos pequenos, conforme
+  `docs/Fiscal/CTe/CTE_PLANO_DE_PESQUISA.md`; implementar somente quando houver
+  fonte oficial, contrato de entrada, persistencia, erro esperado e evidencia
+  minima definidos.
+- `docs/Fiscal/CTe/CTE_DOSSIE_ASSUNTOS.md` e o mapa detalhado dos subassuntos
+  CT-e; `docs/Fiscal/CTe/CTE_BACKLOG_IMPLEMENTACAO.md` traduz esse mapa para
+  fases executaveis, separando Engine, aplicativo fiscal, conectores e
+  pendencias.
+- A pesquisa de MDF-e deve evoluir por subassuntos pequenos, conforme
+  `docs/Fiscal/MDFe/MDFE_PLANO_DE_PESQUISA.md`; implementar somente quando
+  houver fonte oficial, contrato de entrada, persistencia, erro esperado e
+  evidencia minima definidos.
+- `docs/Fiscal/MDFe/MDFE_DOSSIE_ASSUNTOS.md` e o mapa detalhado dos
+  subassuntos MDF-e; `docs/Fiscal/MDFe/MDFE_BACKLOG_IMPLEMENTACAO.md` traduz
+  esse mapa para fases executaveis, separando Engine, aplicativo fiscal,
+  conectores e pendencias.
+- CT-e deve receber snapshots/requests de pedido, carga e nota fiscal; nao deve
+  acessar diretamente o miolo ou tabelas internas de outros modulos como forma
+  normal de integracao.
+- No primeiro recorte do Fiscal.CTe, conectores legados nao ficam dentro do
+  modulo fiscal. Eles pertencem aos modulos anteriores de recepcao,
+  montagem/execucao de carga ou integracao, que convertem contratos externos
+  para mensagens oficiais Yeshua.
+- `docs/Fiscal/CTe/CTE_INTERFACE_ENTRADA.md` define a entrada canonica do
+  modulo CT-e. Antes de ligar modulos anteriores ou adapters externos, usar
+  esse contrato como regua: a mensagem oficial alimenta classificacao,
+  emissao, eventos e integracao SEFAZ.
+- `docs/Fiscal/CTe/CTE_FLUXO_ENTRADA_SEFAZ_MDFE.md` define o fluxo de
+  algoritmo, negocio e arquitetura da entrada CT-e ate a autorizacao SEFAZ e a
+  saida para MDF-e. CT-e publica snapshot/evento autorizado em outbox; MDF-e
+  consome por inbox/worker e executa command proprio, sem acessar tabelas
+  internas do CT-e nem usar SOAP/REST interno como caminho normal.
+- MDF-e deve receber snapshots/requests de documentos originarios, carga,
+  veiculo, condutor, percurso e dados rodoviarios; nao deve acessar diretamente
+  o miolo ou tabelas internas de CT-e, NF-e, pedido, carga ou APS como forma
+  normal de integracao.
+- A Engine gera bordas, comandos, receivers, endpoints, workers, repositorios e
+  pontos de extensao. XML fiscal, assinatura, schemas, DACTE/DAMDFE, tratamento
+  de `cStat` e comunicacao SEFAZ pertencem ao aplicativo fiscal.
+- O material oficial inicial de CT-e fica em `docs/Fiscal/CTe`; atualizar esse
+  dossie antes de implementar mudancas fiscais relevantes.
+- Referencias open-source de CT-e sao apoio tecnico, nao fonte fiscal oficial.
+  As primeiras referencias locais baixadas sao DFe.NET em
+  `C:\Users\AngeloRicardoFontana\Documents\Yeshua\ReferenciasOpenSource\DFe.NET`;
+  e Unimake.DFe em
+  `C:\Users\AngeloRicardoFontana\Documents\Yeshua\ReferenciasOpenSource\Unimake.DFe`;
+  consultar `docs/Fiscal/CTe/REFERENCIAS_CODIGO_ABERTO.md` antes de decidir
+  entre biblioteca pronta e implementacao propria.
+- O material oficial inicial de MDF-e fica em `docs/Fiscal/MDFe`; atualizar
+  esse dossie antes de implementar mudancas fiscais relevantes.
+- Referencias open-source de MDF-e ficam em
+  `docs/Fiscal/MDFe/REFERENCIAS_CODIGO_ABERTO.md`. Elas sao apoio tecnico para
+  SOAP, assinatura, parser, transporte, DAMDFE e organizacao de codigo, mas nao
+  fonte fiscal oficial. Os snapshots locais atuais de DFe.NET e Unimake.DFe
+  ainda precisam ser ampliados com as pastas MDF-e completas antes de qualquer
+  decisao definitiva de biblioteca.
 
 ## Estrutura Atual Do Repositorio
 
@@ -347,6 +454,11 @@ Ao evoluir o Yeshua, pensar primeiro no motor como um gerador de bordas.
 A pergunta principal deve ser:
 
 "Isso e estrutura padronizavel ou regra especifica?"
+
+`docs/Arquitetura/OBJETOS_DA_ARQUITETURA_YESHUA.md` e a referencia dos
+conceitos reconhecidos pela DSL e pela arquitetura. Se surgir um conceito fora
+desse inventario, ele deve ser definido la antes de virar padrao de geracao,
+fonte, projeto ou decisao arquitetural.
 
 Se for estrutura padronizavel, tende a pertencer ao motor/template.
 Se for regra especifica, tende a pertencer ao miolo escrito por IA/dev.
