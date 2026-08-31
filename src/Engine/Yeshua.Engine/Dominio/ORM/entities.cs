@@ -3950,6 +3950,104 @@ namespace MyApp.Domain.Entities
         public static MyApp.QueryBuilder.Query<TipoAvaliacao> Query() => new MyApp.QueryBuilder.Query<TipoAvaliacao>();
     }
 
+    public class PedidoPlanejavel
+    {
+        public string PedidoId { get; set; }
+        public string ClienteId { get; set; }
+        public string ClienteNome { get; set; }
+        public string Estado { get; set; }
+        public string Municipio { get; set; }
+        public string Regiao { get; set; }
+        public string Bairro { get; set; }
+        public string RotaId { get; set; }
+        public DateTime? EmbarqueAlvo { get; set; }
+        public DateTime? DataEntregaDe { get; set; }
+        public DateTime? DataEntregaAte { get; set; }
+        public Decimal? Peso { get; set; }
+        public Decimal? Volume { get; set; }
+        public Decimal? SaldoAExpedir { get; set; }
+        public string Status { get; set; }
+        public string CargaAtualId { get; set; }
+        public string VersaoPlanejamento { get; set; }
+        public string AlertasResumo { get; set; }
+
+        public static MyApp.QueryBuilder.Query<PedidoPlanejavel> Query() => new MyApp.QueryBuilder.Query<PedidoPlanejavel>();
+    }
+
+    public class CargaPlanejavel
+    {
+        public string CargaId { get; set; }
+        public string Status { get; set; }
+        public string TransportadoraId { get; set; }
+        public string VeiculoId { get; set; }
+        public int? TipoVeiculoId { get; set; }
+        public Decimal? PesoTeorico { get; set; }
+        public Decimal? VolumeTeorico { get; set; }
+        public DateTime? InicioJanelaEmbarque { get; set; }
+        public DateTime? FimJanelaEmbarque { get; set; }
+        public DateTime? EmbarqueAlvo { get; set; }
+        public int? QuantidadePedidos { get; set; }
+        public string AlertasResumo { get; set; }
+
+        public static MyApp.QueryBuilder.Query<CargaPlanejavel> Query() => new MyApp.QueryBuilder.Query<CargaPlanejavel>();
+    }
+
+    public class OpcaoPlanejamentoTransporte
+    {
+        public string OpcaoId { get; set; }
+        public string GrupoDecisaoId { get; set; }
+        public Decimal? Peso { get; set; }
+        public Decimal? Volume { get; set; }
+        public Decimal? CustoEstimado { get; set; }
+        public Decimal? AderenciaCubagem { get; set; }
+        public Decimal? AderenciaJanelaEntrega { get; set; }
+        public string RiscoResumo { get; set; }
+        public string PedidosResumo { get; set; }
+        public string OpcoesConflitantesResumo { get; set; }
+
+        public static MyApp.QueryBuilder.Query<OpcaoPlanejamentoTransporte> Query() => new MyApp.QueryBuilder.Query<OpcaoPlanejamentoTransporte>();
+    }
+
+    public class CenarioPlanejamentoTransporte
+    {
+        public string CenarioId { get; set; }
+        public string Descricao { get; set; }
+        public string Objetivo { get; set; }
+        public int? QuantidadeCargas { get; set; }
+        public int? QuantidadePedidosNaoAtendidos { get; set; }
+        public Decimal? CustoTotal { get; set; }
+        public Decimal? AderenciaCubagem { get; set; }
+        public Decimal? AtrasoPrevisto { get; set; }
+        public string AlertasResumo { get; set; }
+
+        public static MyApp.QueryBuilder.Query<CenarioPlanejamentoTransporte> Query() => new MyApp.QueryBuilder.Query<CenarioPlanejamentoTransporte>();
+    }
+
+    public class ExperienciaPlanejamentoTransporte
+    {
+        public int? Id { get; set; }
+        public int Tipo { get; set; }
+        public string Referencia { get; set; }
+        public string PedidoId { get; set; }
+        public string ClienteId { get; set; }
+        public string Municipio { get; set; }
+        public string Regiao { get; set; }
+        public string RotaId { get; set; }
+        public Decimal? Peso { get; set; }
+        public Decimal? Volume { get; set; }
+        public string Observacao { get; set; }
+        public DateTime CriadoEm { get; set; }
+        public string CriadoPor { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<ExperienciaPlanejamentoTransporte> Query() => new MyApp.QueryBuilder.Query<ExperienciaPlanejamentoTransporte>();
+    }
+
     public class yFileUpload
     {
         public int? Id { get; set; }

@@ -773,7 +773,20 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
 
+            for (var index = 0; index < orderedEntities.Count; index++)
+            {
+                var entity = orderedEntities[index];
+                var filePath = Path.Combine(GetPathTestsIntegrationApiSeed(), $"Migration\\{entity.EntityName}\\{entity.EntityName}CrudApiSeedTests.cs");
+                var filePathCuston = Path.Combine(GetPathTestsIntegrationApiSeed(), $"Custon\\{entity.EntityName}\\{entity.EntityName}CrudApiSeedTests.cs");
+                var sourceCodeMigration = new SourceCodeIntegrationApiSeedCrudTestMigration(
+                    entity,
+                    index + 1,
+                    GetApplicationIntegrationApiSeedProjectName());
+                sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+            }
+
             WriteIntegrationApiSmokeSuiteFile(orderedEntities);
+            WriteIntegrationApiSeedSuiteFile(orderedEntities);
             WritePostBuildManifest();
         }
 
@@ -976,6 +989,63 @@ namespace Dominio.Schemas.CQRS
                 sb.ToString());
         }
 
+        private void WriteIntegrationApiSeedSuiteFile(IReadOnlyList<Entity> orderedEntities)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("// <yeshua>");
+            sb.AppendLine("// artifact: GENERATED_REGENERABLE");
+            sb.AppendLine("// createdBy: DSL");
+            sb.AppendLine("// ownership: ENGINE");
+            sb.AppendLine("// editable: false");
+            sb.AppendLine("// regeneration: REPLACE");
+            sb.AppendLine("// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE");
+            sb.AppendLine("// generator: Dominio.Schemas.CQRS.CSharpCQRS.WriteIntegrationApiSeedSuiteFile");
+            sb.AppendLine("// </yeshua>");
+            sb.AppendLine();
+            sb.AppendLine("// <operational-spec>");
+            sb.AppendLine("// standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD");
+            sb.AppendLine("// gates: G7");
+            sb.AppendLine("// depths: D0");
+            sb.AppendLine("// severities: notApplicable");
+            sb.AppendLine("// modes: Live");
+            sb.AppendLine("// dataClassification: OperationalData");
+            sb.AppendLine("// identities: Application,Environment,Version");
+            sb.AppendLine("// technicalOutcomes: Success,Failure");
+            sb.AppendLine("// businessOutcomes: notApplicable");
+            sb.AppendLine("// evidence: TestDataSeed");
+            sb.AppendLine("// </operational-spec>");
+            sb.AppendLine();
+            sb.AppendLine($"namespace {GetApplicationIntegrationApiSeedProjectName()}.Migration;");
+            sb.AppendLine();
+            sb.AppendLine("[Trait(\"TestPurpose\", \"TestDataSeed\")]");
+            sb.AppendLine("[Trait(\"SpecificationGate\", \"G7\")]");
+            sb.AppendLine("[Trait(\"DiagnosticDepth\", \"D0\")]");
+            sb.AppendLine("[Trait(\"ExecutionMode\", \"Live\")]");
+            sb.AppendLine("public sealed class ApiSeedCrudSuiteTests");
+            sb.AppendLine("{");
+            sb.AppendLine("    [IntegrationFact]");
+            sb.AppendLine("    public async Task Crud_seed_suite_should_create_entities_in_dependency_order_without_cleanup()");
+            sb.AppendLine("    {");
+            sb.AppendLine("        ApiSeedTestContext.Clear();");
+            sb.AppendLine();
+
+            for (var index = 0; index < orderedEntities.Count; index++)
+            {
+                var entity = orderedEntities[index];
+                var variableName = $"step{(index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+                sb.AppendLine($"        var {variableName} = new {entity.EntityName}.{entity.EntityName}CrudApiSeedTests();");
+                sb.AppendLine($"        await {variableName}.ExecuteAsync();");
+                sb.AppendLine();
+            }
+
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+
+            WriteText(
+                Path.Combine(GetPathTestsIntegrationApiSeed(), "Migration", "ApiSeedCrudSuiteTests.cs"),
+                sb.ToString());
+        }
+
         private void EnsureIntegrationTestProjectFiles()
         {
             var testKitProjectPath = Path.Combine(
@@ -985,6 +1055,10 @@ namespace Dominio.Schemas.CQRS
             var smokeProjectPath = Path.Combine(
                 GetPathTestsIntegrationApiSmoke(),
                 $"{smokeProjectName}.csproj");
+            var seedProjectName = GetApplicationIntegrationApiSeedProjectName();
+            var seedProjectPath = Path.Combine(
+                GetPathTestsIntegrationApiSeed(),
+                $"{seedProjectName}.csproj");
 
             WriteTextIfMissing(
                 testKitProjectPath,
@@ -1042,7 +1116,49 @@ namespace Dominio.Schemas.CQRS
 </Project>");
 
             WriteTextIfMissing(
+                seedProjectPath,
+                @"<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include=""coverlet.collector"" Version=""6.0.0"" />
+    <PackageReference Include=""Microsoft.NET.Test.Sdk"" Version=""17.8.0"" />
+    <PackageReference Include=""xunit"" Version=""2.5.3"" />
+    <PackageReference Include=""xunit.runner.visualstudio"" Version=""2.5.3"" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include=""..\Yeshua.CQRS.Tests.Integration.Api.TestKit\Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj"" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include=""Xunit"" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update=""appsettings*.json"">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update=""xunit.runner.json"">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>");
+
+            WriteTextIfMissing(
                 Path.Combine(GetPathTestsIntegrationApiSmoke(), "GlobalUsings.cs"),
+                "global using Yeshua.CQRS.Tests.Integration.Api.TestKit;");
+
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApiSeed(), "GlobalUsings.cs"),
                 "global using Yeshua.CQRS.Tests.Integration.Api.TestKit;");
 
             WriteTextIfMissing(
@@ -1052,7 +1168,21 @@ namespace Dominio.Schemas.CQRS
 [assembly: CollectionBehavior(DisableTestParallelization = true, MaxParallelThreads = 1)]");
 
             WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApiSeed(), "AssemblyInfo.cs"),
+                @"using Xunit;
+
+[assembly: CollectionBehavior(DisableTestParallelization = true, MaxParallelThreads = 1)]");
+
+            WriteTextIfMissing(
                 Path.Combine(GetPathTestsIntegrationApiSmoke(), "xunit.runner.json"),
+                @"{
+  ""parallelizeAssembly"": false,
+  ""parallelizeTestCollections"": false,
+  ""maxParallelThreads"": 1
+}");
+
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApiSeed(), "xunit.runner.json"),
                 @"{
   ""parallelizeAssembly"": false,
   ""parallelizeTestCollections"": false,
@@ -1071,8 +1201,21 @@ namespace Dominio.Schemas.CQRS
   }
 }");
 
+            WriteTextIfMissing(
+                Path.Combine(GetPathTestsIntegrationApiSeed(), "appsettings.json"),
+                @"{
+  ""TestSettings"": {
+    ""BaseUrl"": ""https://localhost:7214/"",
+    ""LoginPath"": ""yapi/login"",
+    ""Login"": """",
+    ""Password"": """",
+    ""TimeoutSeconds"": 100
+  }
+}");
+
             AddProjectToSolution(testKitProjectPath, "Yeshua.Tests");
             AddProjectToSolution(smokeProjectPath, "Yeshua.Tests");
+            AddProjectToSolution(seedProjectPath, "Yeshua.Tests");
         }
 
         private void WriteTextIfMissing(string filePath, string content)
@@ -1165,9 +1308,19 @@ namespace Dominio.Schemas.CQRS
             return Path.Combine(GetPathTestsCQRS(), GetApplicationIntegrationApiSmokeProjectName());
         }
 
+        private string GetPathTestsIntegrationApiSeed()
+        {
+            return Path.Combine(GetPathTestsCQRS(), GetApplicationIntegrationApiSeedProjectName());
+        }
+
         private string GetApplicationIntegrationApiSmokeProjectName()
         {
             return $"Yeshua.{GetApplicationName()}.CQRS.Tests.Integration.Api.Smoke";
+        }
+
+        private string GetApplicationIntegrationApiSeedProjectName()
+        {
+            return $"Yeshua.{GetApplicationName()}.CQRS.Tests.Integration.Api.Seed";
         }
 
         private string GetPathTestsCQRS()

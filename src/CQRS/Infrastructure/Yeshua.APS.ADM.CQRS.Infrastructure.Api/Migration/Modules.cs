@@ -236,6 +236,11 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("TemplateTipoInspecaoVisual"));
         Modules.LastOrDefault().Menus.Add(new Menu("TemplateTipoTeste"));
         Modules.LastOrDefault().Menus.Add(new Menu("TipoAvaliacao"));
+        Modules.LastOrDefault().Menus.Add(new Menu("PedidoPlanejavel"));
+        Modules.LastOrDefault().Menus.Add(new Menu("CargaPlanejavel"));
+        Modules.LastOrDefault().Menus.Add(new Menu("OpcaoPlanejamentoTransporte"));
+        Modules.LastOrDefault().Menus.Add(new Menu("CenarioPlanejamentoTransporte"));
+        Modules.LastOrDefault().Menus.Add(new Menu("ExperienciaPlanejamentoTransporte"));
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload"));
         Modules.LastOrDefault().Menus.Add(new Menu("ySaga"));

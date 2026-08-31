@@ -1,0 +1,82 @@
+<section class="aps-transport-page">
+    <div class="aps-transport-header">
+        <div>
+            <p class="aps-transport-kicker">APS ADM</p>
+            <h1>Planejamento Transporte</h1>
+        </div>
+        <div class="aps-transport-actions">
+            <button id="aps-load-context" type="button">Atualizar</button>
+            <button id="aps-create-load" type="button" class="primary">Criar carga</button>
+        </div>
+    </div>
+
+    <div class="aps-transport-filters">
+        <label>
+            Embarque de
+            <input id="aps-date-from" type="date">
+        </label>
+        <label>
+            Embarque ate
+            <input id="aps-date-to" type="date">
+        </label>
+        <label>
+            Lente
+            <select id="aps-lens-select"></select>
+        </label>
+        <label>
+            Limite
+            <input id="aps-limit" type="number" min="50" step="50" value="500">
+        </label>
+    </div>
+
+    <div class="aps-transport-pillars" role="tablist" aria-label="Pilares do planejamento">
+        <button id="aps-tab-lenses" type="button" class="active">Lentes de pedidos</button>
+        <button id="aps-tab-options" type="button">Grupos de decisao</button>
+        <button id="aps-tab-scenarios" type="button">Cenarios prontos</button>
+    </div>
+
+    <div class="aps-transport-layout">
+        <aside class="aps-transport-panel">
+            <div class="aps-panel-title">
+                <h2>Agrupamentos</h2>
+                <span id="aps-context-status">sem contexto</span>
+            </div>
+            <div id="aps-lens-tree" class="aps-tree"></div>
+        </aside>
+
+        <main class="aps-transport-panel aps-transport-workbench">
+            <div class="aps-panel-title">
+                <h2>Pedidos selecionados</h2>
+                <span id="aps-selection-count">0 pedidos</span>
+            </div>
+            <div id="aps-selected-orders" class="aps-selected-orders"></div>
+        </main>
+
+        <aside class="aps-transport-panel">
+            <div class="aps-panel-title">
+                <h2>Resumo</h2>
+                <span id="aps-data-mode">simulacao</span>
+            </div>
+            <dl class="aps-summary">
+                <div>
+                    <dt>Peso</dt>
+                    <dd id="aps-summary-weight">0,00</dd>
+                </div>
+                <div>
+                    <dt>Volume</dt>
+                    <dd id="aps-summary-volume">0,00</dd>
+                </div>
+                <div>
+                    <dt>Pedidos</dt>
+                    <dd id="aps-summary-orders">0</dd>
+                </div>
+            </dl>
+            <div class="aps-stack">
+                <button id="aps-generate-options" type="button">Gerar grupos de decisao</button>
+                <button id="aps-generate-scenarios" type="button">Gerar cenarios prontos</button>
+                <button id="aps-clear-selection" type="button">Limpar selecao</button>
+            </div>
+            <div id="aps-feedback" class="aps-feedback"></div>
+        </aside>
+    </div>
+</section>

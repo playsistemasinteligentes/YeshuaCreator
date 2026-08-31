@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.ItensCalendario;
 
-[SmokeTestOrder(148)]
+[SmokeTestOrder(149)]
 public partial class ItensCalendarioCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/ItensCalendario/PostItensCalendario";

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.EstruturaImpressao;
 
-[SmokeTestOrder(141)]
+[SmokeTestOrder(142)]
 public partial class EstruturaImpressaoCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/EstruturaImpressao/PostEstruturaImpressao";

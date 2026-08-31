@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Etiqueta;
 
-[SmokeTestOrder(167)]
+[SmokeTestOrder(168)]
 public partial class EtiquetaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Etiqueta/PostEtiqueta";

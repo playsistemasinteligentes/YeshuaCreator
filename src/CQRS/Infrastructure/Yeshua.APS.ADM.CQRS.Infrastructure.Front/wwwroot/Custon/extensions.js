@@ -1,4 +1,30 @@
 window.yeshuaExtensions = window.yeshuaExtensions || {};
+window.yeshuaExtensions.menu = window.yeshuaExtensions.menu || {};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
+
+window.yeshuaExtensions.menu.extend = function extendApsAdmMenu(menuItems) {
+    const items = Array.isArray(menuItems) ? menuItems : [];
+    const apsAdm = items.find(item => item?.id === 'APSADM') || items[0];
+    if (!apsAdm) return items;
+
+    apsAdm.children = Array.isArray(apsAdm.children) ? apsAdm.children : [];
+
+    const exists = apsAdm.children.some(child => child?.page === 'planejamento-transporte');
+    if (!exists) {
+        apsAdm.children.unshift({
+            description: 'Planejamento Transporte',
+            type: 'customPage',
+            page: 'planejamento-transporte'
+        });
+    }
+
+    return items;
+};
+
+window.yeshuaExtensions.pages['planejamento-transporte'] = async function openPlanejamentoTransporte() {
+    const page = await import('/Custon/pages/planejamento-transporte.js');
+    await page.renderPlanejamentoTransporte();
+};
 
 function apsNormalizeName(value) {
     return String(value || '').toLowerCase();

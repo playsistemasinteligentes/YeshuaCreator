@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.yConfigNotification;
 
-[SmokeTestOrder(129)]
+[SmokeTestOrder(130)]
 public partial class yConfigNotificationCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yConfigNotification/PostyConfigNotification";

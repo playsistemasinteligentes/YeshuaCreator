@@ -1,0 +1,72 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+
+using Dominio.Entitys;
+using Shered.DB;
+using Command.Write;
+using IQuery.Write;
+using Aplication.Interfaces.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Query.Write
+{
+    public class yModuleQueryWrite : QueryBase, IyModuleQueryWrite
+    {
+        protected readonly IExecutionContext _executionContext;
+        public yModuleQueryWrite(IExecutionContext executionContext)
+        {
+            _executionContext = executionContext;
+        }
+        public QueryModel InseriryModuleQuery(IyModuleEntity yModule)
+        {
+            this.Query = $@" INSERT INTO yModule (Id, Description) VALUES(@Id, @Description) ";
+            this.Parameters = new
+            {
+                Id = yModule.Id,
+                Description = yModule.Description,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateyModuleQuery(IyModuleEntity yModule)
+        {
+            this.Query = $@" UPDATE yModule SET Description = @Description WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Description = yModule.Description,
+                Id = yModule.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateDescription(string id, string value)
+        {
+            this.Query = $@" UPDATE yModule SET Description = @Description WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Description = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel DeleteyModuleQuery(IyModuleEntity yModule)
+        {
+            this.Query = $@" DELETE FROM yModule WHERE Id = @Id ";
+            this.Parameters = new
+            {
+                Id = yModule.Id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

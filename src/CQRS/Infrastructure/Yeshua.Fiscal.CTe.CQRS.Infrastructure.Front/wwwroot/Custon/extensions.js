@@ -1,0 +1,1 @@
+﻿window.yeshuaExtensions = window.yeshuaExtensions || {};

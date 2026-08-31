@@ -1,0 +1,90 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration
+// </yeshua>
+
+using System.Net.Http.Json;
+using System.Text.Json.Nodes;
+
+namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.Semaforo;
+
+[SeedTestOrder(80)]
+public partial class SemaforoCrudApiSeedTests : ApiIntegrationTestBase
+{
+    private const string CreateEndpoint = "yapi/Semaforo/PostSemaforo";
+    private const string ReadEndpoint = "yapi/Semaforo/ReadSemaforo";
+    private const string UpdateEndpoint = "yapi/Semaforo/PutSemaforo";
+
+    public async Task ExecuteAsync()
+    {
+        using var client = await CreateAuthenticatedClientAsync();
+
+        var createPayload = BuildCreatePayload();
+        CustomizeCreatePayload(createPayload);
+        using var createResponse = await client.PostAsJsonAsync(CreateEndpoint, createPayload, JsonOptions);
+        var createState = await ApiResponseAssertions.ReadSuccessStateAsync(createResponse);
+        var createdId = ApiJson.GetRequiredProperty(createState, "data", "id");
+        ApiResponseAssertions.AssertNodeHasValue(createdId, "created id");
+        ApiSeedTestContext.RegisterCreatedId("Semaforo", createdId);
+
+        var readPayload = BuildReadByIdPayload(createdId);
+        CustomizeReadPayload(readPayload);
+        using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);
+        var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
+        var readAssertionHandled = false;
+        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
+        if (!readAssertionHandled)
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+
+        var updatePayload = BuildUpdatePayload(createPayload, createdId);
+        CustomizeUpdatePayload(updatePayload);
+        using var updateResponse = await client.PutAsJsonAsync(UpdateEndpoint, updatePayload, JsonOptions);
+        var updateState = await ApiResponseAssertions.ReadSuccessStateAsync(updateResponse);
+        var updatedId = ApiJson.GetRequiredProperty(updateState, "data", "id");
+        ApiResponseAssertions.AssertSameJsonValue(createdId, updatedId, "updated id");
+    }
+
+    private static JsonObject BuildCreatePayload()
+    {
+        return new JsonObject
+        {
+            ["SEM_ID"] = ApiTestData.Text("Semaforo SEM_ID", 30),
+            ["SEM_STATUS"] = ApiTestData.Text("Semaforo SEM_STATUS", 2),
+            ["SEM_ORIGEM"] = ApiTestData.Text("Semaforo SEM_ORIGEM", 30),
+            ["SEM_EMISSAO"] = DateTime.UtcNow,
+            ["SEM_ID_CONEXAO"] = ApiTestData.Text("Semaforo SEM_ID_CONEXAO", 30),
+        };
+    }
+
+    private static JsonObject BuildReadByIdPayload(JsonNode id)
+    {
+        return new JsonObject
+        {
+            ["Id"] = id.DeepClone(),
+            ["Paginacao"] = ApiTestData.Pagination()
+        };
+    }
+
+    private static JsonObject BuildUpdatePayload(JsonObject createPayload, JsonNode id)
+    {
+        var payload = (JsonObject)createPayload.DeepClone();
+        payload["Id"] = id.DeepClone();
+        payload["SEM_ID"] = ApiTestData.Text("Semaforo SEM_ID Update", 30);
+        payload["SEM_STATUS"] = ApiTestData.Text("Semaforo SEM_STATUS Update", 2);
+        payload["SEM_ORIGEM"] = ApiTestData.Text("Semaforo SEM_ORIGEM Update", 30);
+        payload["SEM_EMISSAO"] = DateTime.UtcNow.AddMinutes(1);
+        payload["SEM_ID_CONEXAO"] = ApiTestData.Text("Semaforo SEM_ID_CONEXAO Update", 30);
+        return payload;
+    }
+
+    partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
+    partial void CustomizeUpdatePayload(JsonObject payload);
+}
+//Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.TemplateTipoTeste;
 
-[SmokeTestOrder(164)]
+[SmokeTestOrder(165)]
 public partial class TemplateTipoTesteCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/TemplateTipoTeste/PostTemplateTipoTeste";

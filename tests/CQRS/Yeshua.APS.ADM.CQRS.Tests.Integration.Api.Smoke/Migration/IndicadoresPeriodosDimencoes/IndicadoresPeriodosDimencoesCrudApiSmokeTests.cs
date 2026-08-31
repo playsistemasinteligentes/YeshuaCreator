@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.IndicadoresPeriodosDimencoes;
 
-[SmokeTestOrder(147)]
+[SmokeTestOrder(148)]
 public partial class IndicadoresPeriodosDimencoesCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/IndicadoresPeriodosDimencoes/PostIndicadoresPeriodosDimencoes";

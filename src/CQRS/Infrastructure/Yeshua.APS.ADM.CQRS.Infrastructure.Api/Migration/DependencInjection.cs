@@ -2022,6 +2022,33 @@ builder.Services.AddTransient<Command.Receivers.Read.TipoAvaliacaoReadReceiver>(
 builder.Services.AddTransient<Command.Receivers.Read.TipoAvaliacaoReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.TipoAvaliacaoReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Read.IPedidoPlanejavelReadRepository, Read.Repository.PedidoPlanejavelReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IPedidoPlanejavelQueryRead, Query.Read.PedidoPlanejavelQueryRead>();
+builder.Services.AddTransient<Command.Receivers.Read.PedidoPlanejavelReadReceiver>();
+
+builder.Services.AddTransient<IRepository.Read.ICargaPlanejavelReadRepository, Read.Repository.CargaPlanejavelReadRepository>();
+builder.Services.AddTransient<IQuery.Read.ICargaPlanejavelQueryRead, Query.Read.CargaPlanejavelQueryRead>();
+builder.Services.AddTransient<Command.Receivers.Read.CargaPlanejavelReadReceiver>();
+
+builder.Services.AddTransient<IRepository.Read.IOpcaoPlanejamentoTransporteReadRepository, Read.Repository.OpcaoPlanejamentoTransporteReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IOpcaoPlanejamentoTransporteQueryRead, Query.Read.OpcaoPlanejamentoTransporteQueryRead>();
+builder.Services.AddTransient<Command.Receivers.Read.OpcaoPlanejamentoTransporteReadReceiver>();
+
+builder.Services.AddTransient<IRepository.Read.ICenarioPlanejamentoTransporteReadRepository, Read.Repository.CenarioPlanejamentoTransporteReadRepository>();
+builder.Services.AddTransient<IQuery.Read.ICenarioPlanejamentoTransporteQueryRead, Query.Read.CenarioPlanejamentoTransporteQueryRead>();
+builder.Services.AddTransient<Command.Receivers.Read.CenarioPlanejamentoTransporteReadReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IExperienciaPlanejamentoTransporteWriteRepository, Input.Repository.ExperienciaPlanejamentoTransporte.ExperienciaPlanejamentoTransporteWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IExperienciaPlanejamentoTransporteReadRepository, Read.Repository.ExperienciaPlanejamentoTransporteReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IExperienciaPlanejamentoTransporteQueryRead, Query.Read.ExperienciaPlanejamentoTransporteQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IExperienciaPlanejamentoTransporteQueryWrite, Query.Write.ExperienciaPlanejamentoTransporteQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertExperienciaPlanejamentoTransporteReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateExperienciaPlanejamentoTransporteReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteExperienciaPlanejamentoTransporteReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ExperienciaPlanejamentoTransporteReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ExperienciaPlanejamentoTransporteReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ExperienciaPlanejamentoTransporteReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
@@ -2249,6 +2276,38 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ListarLentesPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AbrirNoLentePlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.RevalidarSelecaoPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CriarCargaDaSelecaoPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ListarCargasAbertasPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.RemoverPedidoDaCargaPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.TrocarPedidoEntreCargasPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.UnirCargasPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.DividirCargaPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.GerarGruposDecisaoPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AceitarOpcaoPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.DescartarOpcaoPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.GerarCenariosPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AplicarCenarioPlanejamentoTransporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CatalogarExperienciaPlanejamentoTransporteHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

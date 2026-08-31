@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.T_HORARIO_RECEBIMENTO;
 
-[SmokeTestOrder(142)]
+[SmokeTestOrder(143)]
 public partial class T_HORARIO_RECEBIMENTOCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_HORARIO_RECEBIMENTO/PostT_HORARIO_RECEBIMENTO";

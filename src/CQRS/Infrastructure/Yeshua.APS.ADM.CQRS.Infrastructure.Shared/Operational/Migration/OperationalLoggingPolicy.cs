@@ -388,6 +388,11 @@ private OperationalLoggingDecision Evaluate(
                         "TemplateTipoInspecaoVisual" => GetTemplateTipoInspecaoVisualMask(policy, operation, recordId),
                         "TemplateTipoTeste" => GetTemplateTipoTesteMask(policy, operation, recordId),
                         "TipoAvaliacao" => GetTipoAvaliacaoMask(policy, operation, recordId),
+                        "PedidoPlanejavel" => GetPedidoPlanejavelMask(policy, operation, recordId),
+                        "CargaPlanejavel" => GetCargaPlanejavelMask(policy, operation, recordId),
+                        "OpcaoPlanejamentoTransporte" => GetOpcaoPlanejamentoTransporteMask(policy, operation, recordId),
+                        "CenarioPlanejamentoTransporte" => GetCenarioPlanejamentoTransporteMask(policy, operation, recordId),
+                        "ExperienciaPlanejamentoTransporte" => GetExperienciaPlanejamentoTransporteMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -6686,6 +6691,183 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TipoAvaliacaoTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "TipoAvaliacao", operation, recordId, "UserId"))
                         mask |= TipoAvaliacaoTrackingFields.UserId;
+                    return mask;
+                }
+
+                private ulong GetPedidoPlanejavelMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "PedidoId"))
+                        mask |= PedidoPlanejavelTrackingFields.PedidoId;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "ClienteId"))
+                        mask |= PedidoPlanejavelTrackingFields.ClienteId;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "ClienteNome"))
+                        mask |= PedidoPlanejavelTrackingFields.ClienteNome;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Estado"))
+                        mask |= PedidoPlanejavelTrackingFields.Estado;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Municipio"))
+                        mask |= PedidoPlanejavelTrackingFields.Municipio;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Regiao"))
+                        mask |= PedidoPlanejavelTrackingFields.Regiao;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Bairro"))
+                        mask |= PedidoPlanejavelTrackingFields.Bairro;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "RotaId"))
+                        mask |= PedidoPlanejavelTrackingFields.RotaId;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "EmbarqueAlvo"))
+                        mask |= PedidoPlanejavelTrackingFields.EmbarqueAlvo;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "DataEntregaDe"))
+                        mask |= PedidoPlanejavelTrackingFields.DataEntregaDe;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "DataEntregaAte"))
+                        mask |= PedidoPlanejavelTrackingFields.DataEntregaAte;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Peso"))
+                        mask |= PedidoPlanejavelTrackingFields.Peso;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Volume"))
+                        mask |= PedidoPlanejavelTrackingFields.Volume;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "SaldoAExpedir"))
+                        mask |= PedidoPlanejavelTrackingFields.SaldoAExpedir;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "Status"))
+                        mask |= PedidoPlanejavelTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "CargaAtualId"))
+                        mask |= PedidoPlanejavelTrackingFields.CargaAtualId;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "VersaoPlanejamento"))
+                        mask |= PedidoPlanejavelTrackingFields.VersaoPlanejamento;
+                    if (DomainFieldTracked(policy, "PedidoPlanejavel", operation, recordId, "AlertasResumo"))
+                        mask |= PedidoPlanejavelTrackingFields.AlertasResumo;
+                    return mask;
+                }
+
+                private ulong GetCargaPlanejavelMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "CargaId"))
+                        mask |= CargaPlanejavelTrackingFields.CargaId;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "Status"))
+                        mask |= CargaPlanejavelTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "TransportadoraId"))
+                        mask |= CargaPlanejavelTrackingFields.TransportadoraId;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "VeiculoId"))
+                        mask |= CargaPlanejavelTrackingFields.VeiculoId;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "TipoVeiculoId"))
+                        mask |= CargaPlanejavelTrackingFields.TipoVeiculoId;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "PesoTeorico"))
+                        mask |= CargaPlanejavelTrackingFields.PesoTeorico;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "VolumeTeorico"))
+                        mask |= CargaPlanejavelTrackingFields.VolumeTeorico;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "InicioJanelaEmbarque"))
+                        mask |= CargaPlanejavelTrackingFields.InicioJanelaEmbarque;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "FimJanelaEmbarque"))
+                        mask |= CargaPlanejavelTrackingFields.FimJanelaEmbarque;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "EmbarqueAlvo"))
+                        mask |= CargaPlanejavelTrackingFields.EmbarqueAlvo;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "QuantidadePedidos"))
+                        mask |= CargaPlanejavelTrackingFields.QuantidadePedidos;
+                    if (DomainFieldTracked(policy, "CargaPlanejavel", operation, recordId, "AlertasResumo"))
+                        mask |= CargaPlanejavelTrackingFields.AlertasResumo;
+                    return mask;
+                }
+
+                private ulong GetOpcaoPlanejamentoTransporteMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "OpcaoId"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.OpcaoId;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "GrupoDecisaoId"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.GrupoDecisaoId;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "Peso"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.Peso;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "Volume"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.Volume;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "CustoEstimado"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.CustoEstimado;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "AderenciaCubagem"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.AderenciaCubagem;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "AderenciaJanelaEntrega"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.AderenciaJanelaEntrega;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "RiscoResumo"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.RiscoResumo;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "PedidosResumo"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.PedidosResumo;
+                    if (DomainFieldTracked(policy, "OpcaoPlanejamentoTransporte", operation, recordId, "OpcoesConflitantesResumo"))
+                        mask |= OpcaoPlanejamentoTransporteTrackingFields.OpcoesConflitantesResumo;
+                    return mask;
+                }
+
+                private ulong GetCenarioPlanejamentoTransporteMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "CenarioId"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.CenarioId;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "Descricao"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.Descricao;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "Objetivo"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.Objetivo;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "QuantidadeCargas"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.QuantidadeCargas;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "QuantidadePedidosNaoAtendidos"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.QuantidadePedidosNaoAtendidos;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "CustoTotal"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.CustoTotal;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "AderenciaCubagem"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.AderenciaCubagem;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "AtrasoPrevisto"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.AtrasoPrevisto;
+                    if (DomainFieldTracked(policy, "CenarioPlanejamentoTransporte", operation, recordId, "AlertasResumo"))
+                        mask |= CenarioPlanejamentoTransporteTrackingFields.AlertasResumo;
+                    return mask;
+                }
+
+                private ulong GetExperienciaPlanejamentoTransporteMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Id"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Tipo"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Tipo;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Referencia"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Referencia;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "PedidoId"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.PedidoId;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "ClienteId"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.ClienteId;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Municipio"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Municipio;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Regiao"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Regiao;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "RotaId"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.RotaId;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Peso"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Peso;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Volume"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Volume;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Observacao"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Observacao;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "CriadoEm"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.CriadoEm;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "CriadoPor"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.CriadoPor;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "TenantID"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Deleted"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "Changed"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "ExperienciaPlanejamentoTransporte", operation, recordId, "UserId"))
+                        mask |= ExperienciaPlanejamentoTransporteTrackingFields.UserId;
                     return mask;
                 }
 

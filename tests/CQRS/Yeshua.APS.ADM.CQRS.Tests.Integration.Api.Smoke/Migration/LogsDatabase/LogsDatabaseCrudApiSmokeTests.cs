@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.LogsDatabase;
 
-[SmokeTestOrder(149)]
+[SmokeTestOrder(150)]
 public partial class LogsDatabaseCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/LogsDatabase/PostLogsDatabase";

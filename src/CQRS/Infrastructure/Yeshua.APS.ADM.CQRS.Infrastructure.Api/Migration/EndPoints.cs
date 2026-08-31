@@ -1802,6 +1802,15 @@ app.MapPost("/yapi/TipoAvaliacao/PostTipoAvaliacao", async ([FromServices] Comma
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/ExperienciaPlanejamentoTransporte/PostExperienciaPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.InsertExperienciaPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.ExperienciaPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yFileUpload/PostyFileUpload", async ([FromServices] Command.Receivers.Write.InsertyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -3467,6 +3476,15 @@ app.MapPut("/yapi/TipoAvaliacao/PutTipoAvaliacao", async ([FromServices] Command
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/ExperienciaPlanejamentoTransporte/PutExperienciaPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.UpdateExperienciaPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.ExperienciaPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yFileUpload/PutyFileUpload", async ([FromServices] Command.Receivers.Write.UpdateyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -5128,6 +5146,15 @@ app.MapDelete("/yapi/TipoAvaliacao/DeleteTipoAvaliacao", async ([FromServices] C
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TipoAvaliacaoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TipoAvaliacaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/ExperienciaPlanejamentoTransporte/DeleteExperienciaPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.DeleteExperienciaPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.ExperienciaPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -6838,6 +6865,51 @@ app.MapPost("/yapi/TipoAvaliacao/ReadTipoAvaliacao", async ([FromServices] Comma
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TipoAvaliacaoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TipoAvaliacaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/PedidoPlanejavel/ReadPedidoPlanejavel", async ([FromServices] Command.Receivers.Read.PedidoPlanejavelReadReceiver receiver, [FromBody] Command.Read.PedidoPlanejavelReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/CargaPlanejavel/ReadCargaPlanejavel", async ([FromServices] Command.Receivers.Read.CargaPlanejavelReadReceiver receiver, [FromBody] Command.Read.CargaPlanejavelReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/OpcaoPlanejamentoTransporte/ReadOpcaoPlanejamentoTransporte", async ([FromServices] Command.Receivers.Read.OpcaoPlanejamentoTransporteReadReceiver receiver, [FromBody] Command.Read.OpcaoPlanejamentoTransporteReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/CenarioPlanejamentoTransporte/ReadCenarioPlanejamentoTransporte", async ([FromServices] Command.Receivers.Read.CenarioPlanejamentoTransporteReadReceiver receiver, [FromBody] Command.Read.CenarioPlanejamentoTransporteReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/ExperienciaPlanejamentoTransporte/ReadExperienciaPlanejamentoTransporte", async ([FromServices] Command.Receivers.Read.ExperienciaPlanejamentoTransporteReadReceiver receiver, [FromBody] Command.Read.ExperienciaPlanejamentoTransporteReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ExperienciaPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -14485,6 +14557,40 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/TipoAvaliacao/TipoAvaliacaoReadFKUserId", async ([FromServices] Command.Receivers.Read.TipoAvaliacaoReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/ExperienciaPlanejamentoTransporte/ExperienciaPlanejamentoTransporteReadFKTenantID", async ([FromServices] Command.Receivers.Read.ExperienciaPlanejamentoTransporteReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/ExperienciaPlanejamentoTransporte/ExperienciaPlanejamentoTransporteReadFKUserId", async ([FromServices] Command.Receivers.Read.ExperienciaPlanejamentoTransporteReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -30771,6 +30877,457 @@ app.MapGet("/yapi/getMetaDataTipoAvaliacao", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataPedidoPlanejavel", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "PedidoPlanejavel",
+        entityDescription = "Pedido Planejavel",
+        source = new
+        {
+            kind = "view",
+            name = "PedidoPlanejavel"
+        },
+        capabilities = new
+        {
+            create = false,
+            update = false,
+            delete = false
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/PedidoPlanejavel/ReadPedidoPlanejavel",
+            resultFields = new[]
+            {
+                new { id = "pedidoid", label = "Pedido", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "clienteid", label = "Cliente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "clientenome", label = "Nome do Cliente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "estado", label = "Estado", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipio", label = "Municipio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "regiao", label = "Regiao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "bairro", label = "Bairro", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rotaid", label = "Rota", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "embarquealvo", label = "Embarque Alvo", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "dataentregade", label = "Entrega De", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "dataentregaate", label = "Entrega Ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "peso", label = "Peso", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "saldoaexpedir", label = "Saldo A Expedir", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "cargaatualid", label = "Carga Atual", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versaoplanejamento", label = "Versao Planejamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "alertasresumo", label = "Alertas", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "pedidoid", label = "Pedido", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "clienteid", label = "Cliente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "clientenome", label = "Nome do Cliente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "estado", label = "Estado", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipio", label = "Municipio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "regiao", label = "Regiao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "bairro", label = "Bairro", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rotaid", label = "Rota", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "embarquealvo", label = "Embarque Alvo", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "dataentregade", label = "Entrega De", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "dataentregaate", label = "Entrega Ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "peso", label = "Peso", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "saldoaexpedir", label = "Saldo A Expedir", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "cargaatualid", label = "Carga Atual", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versaoplanejamento", label = "Versao Planejamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "alertasresumo", label = "Alertas", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "pedidoid", label = "Pedido", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "clienteid", label = "Cliente", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "clientenome", label = "Nome do Cliente", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "estado", label = "Estado", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipio", label = "Municipio", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "regiao", label = "Regiao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "bairro", label = "Bairro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "rotaid", label = "Rota", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "embarquealvo", label = "Embarque Alvo", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "dataentregade", label = "Entrega De", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "dataentregaate", label = "Entrega Ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "peso", label = "Peso", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "saldoaexpedir", label = "Saldo A Expedir", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaatualid", label = "Carga Atual", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versaoplanejamento", label = "Versao Planejamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "alertasresumo", label = "Alertas", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "",
+            read = "/PedidoPlanejavel/ReadPedidoPlanejavel",
+            update = "",
+            delete = ""
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataCargaPlanejavel", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "CargaPlanejavel",
+        entityDescription = "Carga Planejavel",
+        source = new
+        {
+            kind = "view",
+            name = "CargaPlanejavel"
+        },
+        capabilities = new
+        {
+            create = false,
+            update = false,
+            delete = false
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/CargaPlanejavel/ReadCargaPlanejavel",
+            resultFields = new[]
+            {
+                new { id = "cargaid", label = "Carga", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "transportadoraid", label = "Transportadora", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "veiculoid", label = "Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipoveiculoid", label = "Tipo Veiculo", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pesoteorico", label = "Peso Teorico", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volumeteorico", label = "Volume Teorico", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "iniciojanelaembarque", label = "Inicio Janela Embarque", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "fimjanelaembarque", label = "Fim Janela Embarque", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "embarquealvo", label = "Embarque Alvo", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadepedidos", label = "Quantidade Pedidos", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "alertasresumo", label = "Alertas", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "cargaid", label = "Carga", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "transportadoraid", label = "Transportadora", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "veiculoid", label = "Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipoveiculoid", label = "Tipo Veiculo", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pesoteorico", label = "Peso Teorico", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volumeteorico", label = "Volume Teorico", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "iniciojanelaembarque", label = "Inicio Janela Embarque", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "fimjanelaembarque", label = "Fim Janela Embarque", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "embarquealvo", label = "Embarque Alvo", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadepedidos", label = "Quantidade Pedidos", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "alertasresumo", label = "Alertas", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "transportadoraid", label = "Transportadora", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "veiculoid", label = "Veiculo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipoveiculoid", label = "Tipo Veiculo", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesoteorico", label = "Peso Teorico", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volumeteorico", label = "Volume Teorico", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "iniciojanelaembarque", label = "Inicio Janela Embarque", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "fimjanelaembarque", label = "Fim Janela Embarque", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "embarquealvo", label = "Embarque Alvo", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadepedidos", label = "Quantidade Pedidos", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "alertasresumo", label = "Alertas", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "",
+            read = "/CargaPlanejavel/ReadCargaPlanejavel",
+            update = "",
+            delete = ""
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataOpcaoPlanejamentoTransporte", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "OpcaoPlanejamentoTransporte",
+        entityDescription = "Opcao Planejamento Transporte",
+        source = new
+        {
+            kind = "view",
+            name = "OpcaoPlanejamentoTransporte"
+        },
+        capabilities = new
+        {
+            create = false,
+            update = false,
+            delete = false
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/OpcaoPlanejamentoTransporte/ReadOpcaoPlanejamentoTransporte",
+            resultFields = new[]
+            {
+                new { id = "opcaoid", label = "Opcao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "grupodecisaoid", label = "Grupo Decisao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "peso", label = "Peso", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "custoestimado", label = "Custo Estimado", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aderenciacubagem", label = "Aderencia Cubagem", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aderenciajanelaentrega", label = "Aderencia Janela Entrega", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "riscoresumo", label = "Risco", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pedidosresumo", label = "Pedidos", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "opcoesconflitantesresumo", label = "Opcoes Conflitantes", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "opcaoid", label = "Opcao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "grupodecisaoid", label = "Grupo Decisao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "peso", label = "Peso", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "custoestimado", label = "Custo Estimado", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aderenciacubagem", label = "Aderencia Cubagem", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aderenciajanelaentrega", label = "Aderencia Janela Entrega", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "riscoresumo", label = "Risco", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pedidosresumo", label = "Pedidos", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "opcoesconflitantesresumo", label = "Opcoes Conflitantes", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "opcaoid", label = "Opcao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "grupodecisaoid", label = "Grupo Decisao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "peso", label = "Peso", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "custoestimado", label = "Custo Estimado", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "aderenciacubagem", label = "Aderencia Cubagem", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "aderenciajanelaentrega", label = "Aderencia Janela Entrega", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "riscoresumo", label = "Risco", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pedidosresumo", label = "Pedidos", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "opcoesconflitantesresumo", label = "Opcoes Conflitantes", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "",
+            read = "/OpcaoPlanejamentoTransporte/ReadOpcaoPlanejamentoTransporte",
+            update = "",
+            delete = ""
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataCenarioPlanejamentoTransporte", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "CenarioPlanejamentoTransporte",
+        entityDescription = "Cenario Planejamento Transporte",
+        source = new
+        {
+            kind = "view",
+            name = "CenarioPlanejamentoTransporte"
+        },
+        capabilities = new
+        {
+            create = false,
+            update = false,
+            delete = false
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/CenarioPlanejamentoTransporte/ReadCenarioPlanejamentoTransporte",
+            resultFields = new[]
+            {
+                new { id = "cenarioid", label = "Cenario", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "descricao", label = "Descricao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "objetivo", label = "Objetivo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadecargas", label = "Quantidade Cargas", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadepedidosnaoatendidos", label = "Pedidos Nao Atendidos", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "custototal", label = "Custo Total", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aderenciacubagem", label = "Aderencia Cubagem", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atrasoprevisto", label = "Atraso Previsto", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "alertasresumo", label = "Alertas", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "cenarioid", label = "Cenario", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "descricao", label = "Descricao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "objetivo", label = "Objetivo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadecargas", label = "Quantidade Cargas", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadepedidosnaoatendidos", label = "Pedidos Nao Atendidos", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "custototal", label = "Custo Total", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aderenciacubagem", label = "Aderencia Cubagem", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atrasoprevisto", label = "Atraso Previsto", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "alertasresumo", label = "Alertas", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "cenarioid", label = "Cenario", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "descricao", label = "Descricao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "objetivo", label = "Objetivo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadecargas", label = "Quantidade Cargas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadepedidosnaoatendidos", label = "Pedidos Nao Atendidos", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "custototal", label = "Custo Total", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "aderenciacubagem", label = "Aderencia Cubagem", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atrasoprevisto", label = "Atraso Previsto", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "alertasresumo", label = "Alertas", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "",
+            read = "/CenarioPlanejamentoTransporte/ReadCenarioPlanejamentoTransporte",
+            update = "",
+            delete = ""
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataExperienciaPlanejamentoTransporte", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "ExperienciaPlanejamentoTransporte",
+        entityDescription = "Experiencia Planejamento Transporte",
+        source = new
+        {
+            kind = "table",
+            name = "ExperienciaPlanejamentoTransporte"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/ExperienciaPlanejamentoTransporte/ReadExperienciaPlanejamentoTransporte",
+            resultFields = new[]
+            {
+                new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipo", label = "Tipo", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "RoteiroBom" }, new { value = 2, display = "RoteiroRuim" }, new { value = 3, display = "CombinacaoImpraticavel" }, new { value = 4, display = "RestricaoHumana" },}, },
+                new { id = "referencia", label = "Referencia", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pedidoid", label = "Pedido", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "clienteid", label = "Cliente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipio", label = "Municipio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "regiao", label = "Regiao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rotaid", label = "Rota", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "peso", label = "Peso", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "observacao", label = "Observacao", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "criadoem", label = "Criado Em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "criadopor", label = "Criado Por", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipo", label = "Tipo", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "RoteiroBom" }, new { value = 2, display = "RoteiroRuim" }, new { value = 3, display = "CombinacaoImpraticavel" }, new { value = 4, display = "RestricaoHumana" },}, },
+                new { id = "referencia", label = "Referencia", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pedidoid", label = "Pedido", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "clienteid", label = "Cliente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipio", label = "Municipio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "regiao", label = "Regiao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rotaid", label = "Rota", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "peso", label = "Peso", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "observacao", label = "Observacao", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "criadoem", label = "Criado Em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "criadopor", label = "Criado Por", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "Id", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipo", label = "Tipo", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "RoteiroBom" }, new { value = 2, display = "RoteiroRuim" }, new { value = 3, display = "CombinacaoImpraticavel" }, new { value = 4, display = "RestricaoHumana" },}, },
+            new { id = "referencia", label = "Referencia", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pedidoid", label = "Pedido", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "clienteid", label = "Cliente", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipio", label = "Municipio", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "regiao", label = "Regiao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "rotaid", label = "Rota", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "peso", label = "Peso", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "observacao", label = "Observacao", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadoem", label = "Criado Em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadopor", label = "Criado Por", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "/ExperienciaPlanejamentoTransporte/PostExperienciaPlanejamentoTransporte",
+            read = "/ExperienciaPlanejamentoTransporte/ReadExperienciaPlanejamentoTransporte",
+            update = "/ExperienciaPlanejamentoTransporte/PutExperienciaPlanejamentoTransporte",
+            delete = "/ExperienciaPlanejamentoTransporte/DeleteExperienciaPlanejamentoTransporte"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -32038,6 +32595,278 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
 #region ServicesMethod
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteBuscarContextoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.BuscarContextoPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteListarLentesPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.ListarLentesPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.ListarLentesPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteAbrirNoLentePlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.AbrirNoLentePlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.AbrirNoLentePlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteRevalidarSelecaoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.RevalidarSelecaoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.RevalidarSelecaoPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteCriarCargaDaSelecaoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.CriarCargaDaSelecaoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.CriarCargaDaSelecaoPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteListarCargasAbertasPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.ListarCargasAbertasPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.ListarCargasAbertasPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteRemoverPedidoDaCargaPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.RemoverPedidoDaCargaPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.RemoverPedidoDaCargaPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteTrocarPedidoEntreCargasPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.TrocarPedidoEntreCargasPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.TrocarPedidoEntreCargasPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteUnirCargasPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.UnirCargasPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.UnirCargasPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteDividirCargaPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.DividirCargaPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.DividirCargaPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteGerarGruposDecisaoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.GerarGruposDecisaoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.GerarGruposDecisaoPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteAceitarOpcaoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.AceitarOpcaoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.AceitarOpcaoPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteDescartarOpcaoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.DescartarOpcaoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.DescartarOpcaoPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteGerarCenariosPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.GerarCenariosPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.GerarCenariosPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteAplicarCenarioPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.AplicarCenarioPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.AplicarCenarioPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteCatalogarExperienciaPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.CatalogarExperienciaPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.CatalogarExperienciaPlanejamentoTransporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.StarSessionUploadHandler receiver, [FromBody] Command.UseCase.StarSessionUploadInputCommand command) =>
 {
 try

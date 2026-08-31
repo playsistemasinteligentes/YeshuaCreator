@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Auditoria;
 
-[SmokeTestOrder(138)]
+[SmokeTestOrder(139)]
 public partial class AuditoriaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Auditoria/PostAuditoria";

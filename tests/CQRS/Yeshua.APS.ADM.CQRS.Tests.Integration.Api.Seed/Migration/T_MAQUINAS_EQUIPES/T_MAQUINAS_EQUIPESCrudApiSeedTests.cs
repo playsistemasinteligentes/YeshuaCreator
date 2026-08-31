@@ -1,0 +1,88 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration
+// </yeshua>
+
+using System.Net.Http.Json;
+using System.Text.Json.Nodes;
+
+namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Seed.Migration.T_MAQUINAS_EQUIPES;
+
+[SeedTestOrder(44)]
+public partial class T_MAQUINAS_EQUIPESCrudApiSeedTests : ApiIntegrationTestBase
+{
+    private const string CreateEndpoint = "yapi/T_MAQUINAS_EQUIPES/PostT_MAQUINAS_EQUIPES";
+    private const string ReadEndpoint = "yapi/T_MAQUINAS_EQUIPES/ReadT_MAQUINAS_EQUIPES";
+    private const string UpdateEndpoint = "yapi/T_MAQUINAS_EQUIPES/PutT_MAQUINAS_EQUIPES";
+
+    public async Task ExecuteAsync()
+    {
+        using var client = await CreateAuthenticatedClientAsync();
+
+        var createPayload = BuildCreatePayload();
+        CustomizeCreatePayload(createPayload);
+        using var createResponse = await client.PostAsJsonAsync(CreateEndpoint, createPayload, JsonOptions);
+        var createState = await ApiResponseAssertions.ReadSuccessStateAsync(createResponse);
+        var createdId = ApiJson.GetRequiredProperty(createState, "data", "id");
+        ApiResponseAssertions.AssertNodeHasValue(createdId, "created id");
+        ApiSeedTestContext.RegisterCreatedId("T_MAQUINAS_EQUIPES", createdId);
+
+        var readPayload = BuildReadByIdPayload(createdId);
+        CustomizeReadPayload(readPayload);
+        using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);
+        var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
+        var readAssertionHandled = false;
+        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
+        if (!readAssertionHandled)
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+
+        var updatePayload = BuildUpdatePayload(createPayload, createdId);
+        CustomizeUpdatePayload(updatePayload);
+        using var updateResponse = await client.PutAsJsonAsync(UpdateEndpoint, updatePayload, JsonOptions);
+        var updateState = await ApiResponseAssertions.ReadSuccessStateAsync(updateResponse);
+        var updatedId = ApiJson.GetRequiredProperty(updateState, "data", "id");
+        ApiResponseAssertions.AssertSameJsonValue(createdId, updatedId, "updated id");
+    }
+
+    private static JsonObject BuildCreatePayload()
+    {
+        return new JsonObject
+        {
+            ["MAQ_ID"] = ApiTestData.Text("T_MAQUINAS_EQUIPES MAQ_ID", 30),
+            ["EQU_ID"] = ApiTestData.Text("T_MAQUINAS_EQUIPES EQU_ID", 30),
+            ["CAL_ID"] = 1,
+            ["CLI_ID"] = ApiTestData.Text("T_MAQUINAS_EQUIPES CLI_ID", 30),
+        };
+    }
+
+    private static JsonObject BuildReadByIdPayload(JsonNode id)
+    {
+        return new JsonObject
+        {
+            ["Id"] = id.DeepClone(),
+            ["Paginacao"] = ApiTestData.Pagination()
+        };
+    }
+
+    private static JsonObject BuildUpdatePayload(JsonObject createPayload, JsonNode id)
+    {
+        var payload = (JsonObject)createPayload.DeepClone();
+        payload["Id"] = id.DeepClone();
+        payload["MAQ_ID"] = ApiTestData.Text("T_MAQUINAS_EQUIPES MAQ_ID Update", 30);
+        payload["EQU_ID"] = ApiTestData.Text("T_MAQUINAS_EQUIPES EQU_ID Update", 30);
+        payload["CAL_ID"] = 2;
+        payload["CLI_ID"] = ApiTestData.Text("T_MAQUINAS_EQUIPES CLI_ID Update", 30);
+        return payload;
+    }
+
+    partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
+    partial void CustomizeUpdatePayload(JsonObject payload);
+}
+//Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration

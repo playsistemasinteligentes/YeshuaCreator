@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.TempoSetupOnduladeira;
 
-[SmokeTestOrder(158)]
+[SmokeTestOrder(159)]
 public partial class TempoSetupOnduladeiraCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/TempoSetupOnduladeira/PostTempoSetupOnduladeira";

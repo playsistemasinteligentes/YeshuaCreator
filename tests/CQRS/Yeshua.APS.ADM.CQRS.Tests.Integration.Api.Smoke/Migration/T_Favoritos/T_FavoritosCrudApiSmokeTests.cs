@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.T_Favoritos;
 
-[SmokeTestOrder(168)]
+[SmokeTestOrder(169)]
 public partial class T_FavoritosCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/T_Favoritos/PostT_Favoritos";

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.yConfigArcteture;
 
-[SmokeTestOrder(128)]
+[SmokeTestOrder(129)]
 public partial class yConfigArctetureCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yConfigArcteture/PostyConfigArcteture";

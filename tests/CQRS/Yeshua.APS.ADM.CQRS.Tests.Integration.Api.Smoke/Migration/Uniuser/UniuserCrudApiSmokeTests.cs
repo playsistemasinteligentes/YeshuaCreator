@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Uniuser;
 
-[SmokeTestOrder(161)]
+[SmokeTestOrder(162)]
 public partial class UniuserCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Uniuser/PostUniuser";

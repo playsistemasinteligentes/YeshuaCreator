@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.APS.ADM.CQRS.Tests.Integration.Api.Smoke.Migration.Feedback;
 
-[SmokeTestOrder(169)]
+[SmokeTestOrder(170)]
 public partial class FeedbackCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Feedback/PostFeedback";
