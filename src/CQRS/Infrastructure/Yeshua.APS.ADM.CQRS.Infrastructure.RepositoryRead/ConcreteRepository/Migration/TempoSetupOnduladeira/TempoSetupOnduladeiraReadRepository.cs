@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTempoSetupOnduladeiraCustom(Command.Read.TempoSetupOnduladeiraReadCommand command, ref DataPagination<TempoSetupOnduladeiraDTO> result, ref bool handled);
+
         public DataPagination<TempoSetupOnduladeiraDTO> getTempoSetupOnduladeira(ICommandRead command )
          {
             if (command is Command.Read.TempoSetupOnduladeiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TempoSetupOnduladeiraDTO> getTempoSetupOnduladeira(Command.Read.TempoSetupOnduladeiraReadCommand command )
         {
+            DataPagination<TempoSetupOnduladeiraDTO> customResult = null;
+            var customHandled = false;
+            TryGetTempoSetupOnduladeiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TempoSetupOnduladeiraQuery(command );
 
                 var itens = _unitOfWork.Query<TempoSetupOnduladeiraDTO>(query.Query,query.Parameters);

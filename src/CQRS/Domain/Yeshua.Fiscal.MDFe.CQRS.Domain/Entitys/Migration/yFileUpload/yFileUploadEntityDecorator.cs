@@ -1,4 +1,14 @@
-﻿
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
                 using System;
                 using Dominio.TiposPrimitivos;
                 using System.Collections.Generic;
@@ -8,15 +18,49 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class yFileUploadDecorator : IyFileUploadEntity
+                    public static class yFileUploadTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong Type = 1UL << 1;
+            public const ulong Status = 1UL << 2;
+            public const ulong FilePath = 1UL << 3;
+            public const ulong FileSize = 1UL << 4;
+            public const ulong EntityType = 1UL << 5;
+            public const ulong EntityId = 1UL << 6;
+            public const ulong CreatedAt = 1UL << 7;
+            public const ulong CompletedAt = 1UL << 8;
+            public const ulong TenantID = 1UL << 9;
+            public const ulong Deleted = 1UL << 10;
+            public const ulong Changed = 1UL << 11;
+            public const ulong UserId = 1UL << 12;
+        }
+
+        public partial class yFileUploadDecorator : IyFileUploadEntity
 {
 
                         private readonly IyFileUploadEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public yFileUploadDecorator(IyFileUploadEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public yFileUploadDecorator(
+                            IyFileUploadEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public int? Id
                                     {
@@ -25,8 +69,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -38,8 +83,9 @@
                                         {
                                             if (_inner.Type != value)
                                             {
-                                                _logger.Info($"Propriedade Type: antes={_inner.Type}, depois={value}");
                                                 _inner.Type = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.Type) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -51,8 +97,9 @@
                                         {
                                             if (_inner.Status != value)
                                             {
-                                                _logger.Info($"Propriedade Status: antes={_inner.Status}, depois={value}");
                                                 _inner.Status = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.Status) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -64,8 +111,9 @@
                                         {
                                             if (_inner.FilePath != value)
                                             {
-                                                _logger.Info($"Propriedade FilePath: antes={_inner.FilePath}, depois={value}");
                                                 _inner.FilePath = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.FilePath) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "FilePath", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -77,8 +125,9 @@
                                         {
                                             if (_inner.FileSize != value)
                                             {
-                                                _logger.Info($"Propriedade FileSize: antes={_inner.FileSize}, depois={value}");
                                                 _inner.FileSize = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.FileSize) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "FileSize", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -90,8 +139,9 @@
                                         {
                                             if (_inner.EntityType != value)
                                             {
-                                                _logger.Info($"Propriedade EntityType: antes={_inner.EntityType}, depois={value}");
                                                 _inner.EntityType = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.EntityType) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -103,8 +153,9 @@
                                         {
                                             if (_inner.EntityId != value)
                                             {
-                                                _logger.Info($"Propriedade EntityId: antes={_inner.EntityId}, depois={value}");
                                                 _inner.EntityId = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.EntityId) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -116,8 +167,9 @@
                                         {
                                             if (_inner.CreatedAt != value)
                                             {
-                                                _logger.Info($"Propriedade CreatedAt: antes={_inner.CreatedAt}, depois={value}");
                                                 _inner.CreatedAt = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.CreatedAt) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -129,8 +181,9 @@
                                         {
                                             if (_inner.CompletedAt != value)
                                             {
-                                                _logger.Info($"Propriedade CompletedAt: antes={_inner.CompletedAt}, depois={value}");
                                                 _inner.CompletedAt = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.CompletedAt) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "CompletedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -142,8 +195,9 @@
                                         {
                                             if (_inner.TenantID != value)
                                             {
-                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
                                                 _inner.TenantID = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -155,8 +209,9 @@
                                         {
                                             if (_inner.Deleted != value)
                                             {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
                                                 _inner.Deleted = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -168,8 +223,9 @@
                                         {
                                             if (_inner.Changed != value)
                                             {
-                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
                                                 _inner.Changed = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -181,8 +237,9 @@
                                         {
                                             if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
                                                 _inner.UserId = value;
+                                                if ((_trackingMask & yFileUploadTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("yFileUpload", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

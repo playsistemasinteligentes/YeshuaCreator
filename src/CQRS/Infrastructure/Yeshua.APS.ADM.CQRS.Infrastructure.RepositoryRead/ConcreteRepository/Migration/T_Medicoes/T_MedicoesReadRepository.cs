@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_MedicoesCustom(Command.Read.T_MedicoesReadCommand command, ref DataPagination<T_MedicoesDTO> result, ref bool handled);
+
         public DataPagination<T_MedicoesDTO> getT_Medicoes(ICommandRead command )
          {
             if (command is Command.Read.T_MedicoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_MedicoesDTO> getT_Medicoes(Command.Read.T_MedicoesReadCommand command )
         {
+            DataPagination<T_MedicoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_MedicoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_MedicoesQuery(command );
 
                 var itens = _unitOfWork.Query<T_MedicoesDTO>(query.Query,query.Parameters);

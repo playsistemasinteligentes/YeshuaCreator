@@ -1,4 +1,4 @@
-using Command.Interfaces.Patterns.Queue;
+﻿using Command.Interfaces.Patterns.Queue;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -35,12 +35,7 @@ public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : Backgr
             {
                 using var scope = _serviceProvider.CreateScope();
                 var receiver = scope.ServiceProvider.GetRequiredService<TReceiver>();
-                var result = await receiver.ExecuteAsync(message, stoppingToken);
-
-                if (result.StatusCode >= 400)
-                    _logger.LogWarning("Fila {Queue}: {StatusCode} - {Message}", queue, result.StatusCode, result.Message);
-
-                await Task.CompletedTask;
+                await receiver.ExecuteAsync(message, stoppingToken);
             }, stoppingToken), stoppingToken);
         }
 

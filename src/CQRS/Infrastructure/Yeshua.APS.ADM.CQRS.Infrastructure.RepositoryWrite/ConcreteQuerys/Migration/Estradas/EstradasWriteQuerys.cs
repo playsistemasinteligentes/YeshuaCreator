@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirEstradasQuery(IEstradasEntity Estradas)
         {
-            this.Query = $@" INSERT INTO Estradas (EST_DESCRICAO, EST_ID_LIGACAO_PONTO_A, EST_ID_LIGACAO_PONTO_B, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@EST_DESCRICAO, @EST_ID_LIGACAO_PONTO_A, @EST_ID_LIGACAO_PONTO_B, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO Estradas (EST_ID, EST_DESCRICAO, EST_ID_LIGACAO_PONTO_A, EST_ID_LIGACAO_PONTO_B, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@EST_ID, @EST_DESCRICAO, @EST_ID_LIGACAO_PONTO_A, @EST_ID_LIGACAO_PONTO_B, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                EST_ID = Estradas.EST_ID,
                 EST_DESCRICAO = Estradas.EST_DESCRICAO,
                 EST_ID_LIGACAO_PONTO_A = Estradas.EST_ID_LIGACAO_PONTO_A,
                 EST_ID_LIGACAO_PONTO_B = Estradas.EST_ID_LIGACAO_PONTO_B,

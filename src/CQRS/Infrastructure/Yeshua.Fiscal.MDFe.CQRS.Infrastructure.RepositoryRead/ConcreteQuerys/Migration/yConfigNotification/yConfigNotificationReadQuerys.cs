@@ -1,4 +1,14 @@
-﻿using Shered.DB;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
+// </yeshua>
+
+using Shered.DB;
 using System.Data.SqlTypes;
 using Command.Read;
 using IQuery.Read;
@@ -265,7 +275,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Id"] = value; //06
@@ -281,7 +291,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["TenantID"] = value; //06
@@ -297,7 +307,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EmailSmtpClient"] = value; //06
@@ -313,7 +323,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EmailPort"] = value; //06
@@ -329,7 +339,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EmailUserName"] = value; //06
@@ -345,7 +355,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["EmailPassword"] = value; //06
@@ -361,7 +371,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Deleted"] = value; //06
@@ -377,7 +387,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["Changed"] = value; //06
@@ -393,7 +403,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yConfigNotification ";
+            this.Query = $"SELECT Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId FROM yConfigNotification ";
  dict["Deleted"] = 0;
  whereClauses.Add($"Deleted = @Deleted");
                       dict["UserId"] = value; //06

@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirMapaQuery(IMapaEntity Mapa)
         {
-            this.Query = $@" INSERT INTO Mapa (PON_ID, PON_ID_VIZINHO, MAP_DISTANCIA, MAP_CUSTO_PEDAGIO_POR_EIXO, ROD_ID, MAP_ALTURA_ROD, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PON_ID, @PON_ID_VIZINHO, @MAP_DISTANCIA, @MAP_CUSTO_PEDAGIO_POR_EIXO, @ROD_ID, @MAP_ALTURA_ROD, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO Mapa (MAP_ID, PON_ID, PON_ID_VIZINHO, MAP_DISTANCIA, MAP_CUSTO_PEDAGIO_POR_EIXO, ROD_ID, MAP_ALTURA_ROD, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MAP_ID, @PON_ID, @PON_ID_VIZINHO, @MAP_DISTANCIA, @MAP_CUSTO_PEDAGIO_POR_EIXO, @ROD_ID, @MAP_ALTURA_ROD, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                MAP_ID = Mapa.MAP_ID,
                 PON_ID = Mapa.PON_ID,
                 PON_ID_VIZINHO = Mapa.PON_ID_VIZINHO,
                 MAP_DISTANCIA = Mapa.MAP_DISTANCIA,

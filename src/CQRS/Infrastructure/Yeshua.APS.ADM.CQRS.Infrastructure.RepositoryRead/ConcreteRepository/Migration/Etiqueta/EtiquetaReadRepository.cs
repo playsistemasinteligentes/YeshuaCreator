@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetEtiquetaCustom(Command.Read.EtiquetaReadCommand command, ref DataPagination<EtiquetaDTO> result, ref bool handled);
+
         public DataPagination<EtiquetaDTO> getEtiqueta(ICommandRead command )
          {
             if (command is Command.Read.EtiquetaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<EtiquetaDTO> getEtiqueta(Command.Read.EtiquetaReadCommand command )
         {
+            DataPagination<EtiquetaDTO> customResult = null;
+            var customHandled = false;
+            TryGetEtiquetaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.EtiquetaQuery(command );
 
                 var itens = _unitOfWork.Query<EtiquetaDTO>(query.Query,query.Parameters);

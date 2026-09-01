@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetObservacoesCustom(Command.Read.ObservacoesReadCommand command, ref DataPagination<ObservacoesDTO> result, ref bool handled);
+
         public DataPagination<ObservacoesDTO> getObservacoes(ICommandRead command )
          {
             if (command is Command.Read.ObservacoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ObservacoesDTO> getObservacoes(Command.Read.ObservacoesReadCommand command )
         {
+            DataPagination<ObservacoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetObservacoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ObservacoesQuery(command );
 
                 var itens = _unitOfWork.Query<ObservacoesDTO>(query.Query,query.Parameters);

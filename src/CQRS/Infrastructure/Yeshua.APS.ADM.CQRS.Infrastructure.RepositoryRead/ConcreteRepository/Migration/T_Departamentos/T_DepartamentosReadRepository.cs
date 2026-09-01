@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_DepartamentosCustom(Command.Read.T_DepartamentosReadCommand command, ref DataPagination<T_DepartamentosDTO> result, ref bool handled);
+
         public DataPagination<T_DepartamentosDTO> getT_Departamentos(ICommandRead command )
          {
             if (command is Command.Read.T_DepartamentosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_DepartamentosDTO> getT_Departamentos(Command.Read.T_DepartamentosReadCommand command )
         {
+            DataPagination<T_DepartamentosDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_DepartamentosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_DepartamentosQuery(command );
 
                 var itens = _unitOfWork.Query<T_DepartamentosDTO>(query.Query,query.Parameters);

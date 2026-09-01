@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetEstruturaCustoCustom(Command.Read.EstruturaCustoReadCommand command, ref DataPagination<EstruturaCustoDTO> result, ref bool handled);
+
         public DataPagination<EstruturaCustoDTO> getEstruturaCusto(ICommandRead command )
          {
             if (command is Command.Read.EstruturaCustoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<EstruturaCustoDTO> getEstruturaCusto(Command.Read.EstruturaCustoReadCommand command )
         {
+            DataPagination<EstruturaCustoDTO> customResult = null;
+            var customHandled = false;
+            TryGetEstruturaCustoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.EstruturaCustoQuery(command );
 
                 var itens = _unitOfWork.Query<EstruturaCustoDTO>(query.Query,query.Parameters);

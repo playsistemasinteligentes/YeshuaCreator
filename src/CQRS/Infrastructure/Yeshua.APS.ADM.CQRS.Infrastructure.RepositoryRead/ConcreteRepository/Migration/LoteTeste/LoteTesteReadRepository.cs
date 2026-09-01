@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetLoteTesteCustom(Command.Read.LoteTesteReadCommand command, ref DataPagination<LoteTesteDTO> result, ref bool handled);
+
         public DataPagination<LoteTesteDTO> getLoteTeste(ICommandRead command )
          {
             if (command is Command.Read.LoteTesteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<LoteTesteDTO> getLoteTeste(Command.Read.LoteTesteReadCommand command )
         {
+            DataPagination<LoteTesteDTO> customResult = null;
+            var customHandled = false;
+            TryGetLoteTesteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.LoteTesteQuery(command );
 
                 var itens = _unitOfWork.Query<LoteTesteDTO>(query.Query,query.Parameters);

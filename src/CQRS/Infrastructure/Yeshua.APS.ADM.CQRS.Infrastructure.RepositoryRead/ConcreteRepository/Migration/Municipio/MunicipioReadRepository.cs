@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMunicipioCustom(Command.Read.MunicipioReadCommand command, ref DataPagination<MunicipioDTO> result, ref bool handled);
+
         public DataPagination<MunicipioDTO> getMunicipio(ICommandRead command )
          {
             if (command is Command.Read.MunicipioReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MunicipioDTO> getMunicipio(Command.Read.MunicipioReadCommand command )
         {
+            DataPagination<MunicipioDTO> customResult = null;
+            var customHandled = false;
+            TryGetMunicipioCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MunicipioQuery(command );
 
                 var itens = _unitOfWork.Query<MunicipioDTO>(query.Query,query.Parameters);

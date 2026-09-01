@@ -1,13 +1,25 @@
-using System.Threading;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+// </yeshua>
+
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -16,16 +28,19 @@ namespace Command.Receivers.Write
     {
         private readonly IyInboxWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public InsertyInboxReceiver(
             IyInboxWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -33,9 +48,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yInboxCrudCommand c) 
              {    
-                 var yinbox = new yInboxFactory(_logger).Create(c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.CreatedAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId);
-                 if (!yinbox.isValidInsert())
-                     return ValidationError(yinbox.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertyInbox", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertyInboxReceiver), commandName: "Command.Write.yInboxCrudCommand");
+                 var yinbox = new yInboxFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MessageId, c.Type, c.EntityType, c.EntityId, c.CorrelationId, c.Payload, c.Status, c.CreatedAt, c.RetryCount, c.LastError, c.ProcessingAt, c.NextAttemptAt, c.SagaId, c.SagaStepId);
+                 var domainResult = yInboxDomainBehavior.Apply(yinbox, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

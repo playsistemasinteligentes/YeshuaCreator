@@ -1,4 +1,14 @@
-﻿
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
                 using System;
                 using Dominio.TiposPrimitivos;
                 using System.Collections.Generic;
@@ -8,15 +18,42 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class yTenantDecorator : IyTenantEntity
+                    public static class yTenantTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong CnpjCpf = 1UL << 1;
+            public const ulong Nome = 1UL << 2;
+            public const ulong UserId = 1UL << 3;
+            public const ulong Deleted = 1UL << 4;
+            public const ulong Changed = 1UL << 5;
+        }
+
+        public partial class yTenantDecorator : IyTenantEntity
 {
 
                         private readonly IyTenantEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public yTenantDecorator(IyTenantEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public yTenantDecorator(
+                            IyTenantEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public int? Id
                                     {
@@ -25,8 +62,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & yTenantTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("yTenant", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -38,8 +76,9 @@
                                         {
                                             if (_inner.CnpjCpf != value)
                                             {
-                                                _logger.Info($"Propriedade CnpjCpf: antes={_inner.CnpjCpf}, depois={value}");
                                                 _inner.CnpjCpf = value;
+                                                if ((_trackingMask & yTenantTrackingFields.CnpjCpf) != 0UL)
+                                                    _logger.DomainValueChanged("yTenant", "CnpjCpf", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -51,8 +90,9 @@
                                         {
                                             if (_inner.Nome != value)
                                             {
-                                                _logger.Info($"Propriedade Nome: antes={_inner.Nome}, depois={value}");
                                                 _inner.Nome = value;
+                                                if ((_trackingMask & yTenantTrackingFields.Nome) != 0UL)
+                                                    _logger.DomainValueChanged("yTenant", "Nome", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -64,8 +104,9 @@
                                         {
                                             if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
                                                 _inner.UserId = value;
+                                                if ((_trackingMask & yTenantTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("yTenant", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -77,8 +118,9 @@
                                         {
                                             if (_inner.Deleted != value)
                                             {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
                                                 _inner.Deleted = value;
+                                                if ((_trackingMask & yTenantTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("yTenant", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -90,8 +132,9 @@
                                         {
                                             if (_inner.Changed != value)
                                             {
-                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
                                                 _inner.Changed = value;
+                                                if ((_trackingMask & yTenantTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("yTenant", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

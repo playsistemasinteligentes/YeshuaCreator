@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCorridasOnduladeiraCustom(Command.Read.CorridasOnduladeiraReadCommand command, ref DataPagination<CorridasOnduladeiraDTO> result, ref bool handled);
+
         public DataPagination<CorridasOnduladeiraDTO> getCorridasOnduladeira(ICommandRead command )
          {
             if (command is Command.Read.CorridasOnduladeiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CorridasOnduladeiraDTO> getCorridasOnduladeira(Command.Read.CorridasOnduladeiraReadCommand command )
         {
+            DataPagination<CorridasOnduladeiraDTO> customResult = null;
+            var customHandled = false;
+            TryGetCorridasOnduladeiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CorridasOnduladeiraQuery(command );
 
                 var itens = _unitOfWork.Query<CorridasOnduladeiraDTO>(query.Query,query.Parameters);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyUserModuleCustom(Command.Read.yUserModuleReadCommand command, ref DataPagination<yUserModuleDTO> result, ref bool handled);
+
         public DataPagination<yUserModuleDTO> getyUserModule(ICommandRead command )
          {
             if (command is Command.Read.yUserModuleReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yUserModuleDTO> getyUserModule(Command.Read.yUserModuleReadCommand command )
         {
+            DataPagination<yUserModuleDTO> customResult = null;
+            var customHandled = false;
+            TryGetyUserModuleCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yUserModuleQuery(command );
 
                 var itens = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters);

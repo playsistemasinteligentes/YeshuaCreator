@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRepresentantesCustom(Command.Read.RepresentantesReadCommand command, ref DataPagination<RepresentantesDTO> result, ref bool handled);
+
         public DataPagination<RepresentantesDTO> getRepresentantes(ICommandRead command )
          {
             if (command is Command.Read.RepresentantesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RepresentantesDTO> getRepresentantes(Command.Read.RepresentantesReadCommand command )
         {
+            DataPagination<RepresentantesDTO> customResult = null;
+            var customHandled = false;
+            TryGetRepresentantesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RepresentantesQuery(command );
 
                 var itens = _unitOfWork.Query<RepresentantesDTO>(query.Query,query.Parameters);

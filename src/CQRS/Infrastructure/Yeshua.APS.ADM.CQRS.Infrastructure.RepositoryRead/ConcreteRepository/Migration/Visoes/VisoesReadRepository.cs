@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetVisoesCustom(Command.Read.VisoesReadCommand command, ref DataPagination<VisoesDTO> result, ref bool handled);
+
         public DataPagination<VisoesDTO> getVisoes(ICommandRead command )
          {
             if (command is Command.Read.VisoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<VisoesDTO> getVisoes(Command.Read.VisoesReadCommand command )
         {
+            DataPagination<VisoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetVisoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.VisoesQuery(command );
 
                 var itens = _unitOfWork.Query<VisoesDTO>(query.Query,query.Parameters);

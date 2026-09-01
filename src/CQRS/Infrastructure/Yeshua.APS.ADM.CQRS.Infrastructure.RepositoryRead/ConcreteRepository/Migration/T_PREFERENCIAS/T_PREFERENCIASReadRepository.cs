@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_PREFERENCIASCustom(Command.Read.T_PREFERENCIASReadCommand command, ref DataPagination<T_PREFERENCIASDTO> result, ref bool handled);
+
         public DataPagination<T_PREFERENCIASDTO> getT_PREFERENCIAS(ICommandRead command )
          {
             if (command is Command.Read.T_PREFERENCIASReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_PREFERENCIASDTO> getT_PREFERENCIAS(Command.Read.T_PREFERENCIASReadCommand command )
         {
+            DataPagination<T_PREFERENCIASDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_PREFERENCIASCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_PREFERENCIASQuery(command );
 
                 var itens = _unitOfWork.Query<T_PREFERENCIASDTO>(query.Query,query.Parameters);

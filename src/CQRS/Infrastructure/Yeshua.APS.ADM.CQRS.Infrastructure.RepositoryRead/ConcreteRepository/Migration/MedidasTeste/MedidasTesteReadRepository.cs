@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMedidasTesteCustom(Command.Read.MedidasTesteReadCommand command, ref DataPagination<MedidasTesteDTO> result, ref bool handled);
+
         public DataPagination<MedidasTesteDTO> getMedidasTeste(ICommandRead command )
          {
             if (command is Command.Read.MedidasTesteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MedidasTesteDTO> getMedidasTeste(Command.Read.MedidasTesteReadCommand command )
         {
+            DataPagination<MedidasTesteDTO> customResult = null;
+            var customHandled = false;
+            TryGetMedidasTesteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MedidasTesteQuery(command );
 
                 var itens = _unitOfWork.Query<MedidasTesteDTO>(query.Query,query.Parameters);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetParametrosDeCustoCustom(Command.Read.ParametrosDeCustoReadCommand command, ref DataPagination<ParametrosDeCustoDTO> result, ref bool handled);
+
         public DataPagination<ParametrosDeCustoDTO> getParametrosDeCusto(ICommandRead command )
          {
             if (command is Command.Read.ParametrosDeCustoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ParametrosDeCustoDTO> getParametrosDeCusto(Command.Read.ParametrosDeCustoReadCommand command )
         {
+            DataPagination<ParametrosDeCustoDTO> customResult = null;
+            var customHandled = false;
+            TryGetParametrosDeCustoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ParametrosDeCustoQuery(command );
 
                 var itens = _unitOfWork.Query<ParametrosDeCustoDTO>(query.Query,query.Parameters);

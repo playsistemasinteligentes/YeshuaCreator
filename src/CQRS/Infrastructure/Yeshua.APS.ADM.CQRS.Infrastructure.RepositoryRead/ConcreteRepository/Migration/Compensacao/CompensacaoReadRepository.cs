@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCompensacaoCustom(Command.Read.CompensacaoReadCommand command, ref DataPagination<CompensacaoDTO> result, ref bool handled);
+
         public DataPagination<CompensacaoDTO> getCompensacao(ICommandRead command )
          {
             if (command is Command.Read.CompensacaoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CompensacaoDTO> getCompensacao(Command.Read.CompensacaoReadCommand command )
         {
+            DataPagination<CompensacaoDTO> customResult = null;
+            var customHandled = false;
+            TryGetCompensacaoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CompensacaoQuery(command );
 
                 var itens = _unitOfWork.Query<CompensacaoDTO>(query.Query,query.Parameters);

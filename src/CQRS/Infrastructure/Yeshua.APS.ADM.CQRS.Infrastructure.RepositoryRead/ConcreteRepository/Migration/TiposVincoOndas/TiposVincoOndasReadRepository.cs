@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTiposVincoOndasCustom(Command.Read.TiposVincoOndasReadCommand command, ref DataPagination<TiposVincoOndasDTO> result, ref bool handled);
+
         public DataPagination<TiposVincoOndasDTO> getTiposVincoOndas(ICommandRead command )
          {
             if (command is Command.Read.TiposVincoOndasReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TiposVincoOndasDTO> getTiposVincoOndas(Command.Read.TiposVincoOndasReadCommand command )
         {
+            DataPagination<TiposVincoOndasDTO> customResult = null;
+            var customHandled = false;
+            TryGetTiposVincoOndasCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TiposVincoOndasQuery(command );
 
                 var itens = _unitOfWork.Query<TiposVincoOndasDTO>(query.Query,query.Parameters);

@@ -75,6 +75,7 @@ public partial class VerssaoCustoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["VER_ID"] = 1,
             ["VER_STATUS"] = ApiTestData.Text("VerssaoCusto VER_STATUS", 1),
             ["VER_DATA_VERSSAO_CUSTO"] = DateTime.UtcNow,
             ["VER_OBS"] = ApiTestData.Text("VerssaoCusto VER_OBS", 80),
@@ -94,6 +95,7 @@ public partial class VerssaoCustoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["VER_ID"] = 2;
         payload["VER_STATUS"] = ApiTestData.Text("VerssaoCusto VER_STATUS Update", 1);
         payload["VER_DATA_VERSSAO_CUSTO"] = DateTime.UtcNow.AddMinutes(1);
         payload["VER_OBS"] = ApiTestData.Text("VerssaoCusto VER_OBS Update", 80);

@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirPeriodicidadeTesteQuery(IPeriodicidadeTesteEntity PeriodicidadeTeste)
         {
-            this.Query = $@" INSERT INTO PeriodicidadeTeste (PER_QTD, UNI_ID, GRP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PER_QTD, @UNI_ID, @GRP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO PeriodicidadeTeste (PER_ID, PER_QTD, UNI_ID, GRP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PER_ID, @PER_QTD, @UNI_ID, @GRP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                PER_ID = PeriodicidadeTeste.PER_ID,
                 PER_QTD = PeriodicidadeTeste.PER_QTD,
                 UNI_ID = PeriodicidadeTeste.UNI_ID,
                 GRP_ID = PeriodicidadeTeste.GRP_ID,

@@ -31,13 +31,5 @@ public partial record BuscarContextoPlanejamentoTransporteOutputCommand : IComma
     public List<PlanejamentoLenteResumo> Lentes { get; set; }
 }
 
-public partial record PlanejamentoLenteResumo : ICommand
-{
-    public string LenteId { get; set; }
-    public string Descricao { get; set; }
-    public string Niveis { get; set; }
-    public bool ExpansaoRemota { get; set; }
-}
-
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

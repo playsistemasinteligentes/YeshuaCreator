@@ -1,4 +1,14 @@
-﻿namespace Modules
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureModulesMigration
+// </yeshua>
+
+namespace Modules
 {
     public class Module
     {
@@ -64,6 +74,7 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("ySagaStep"));
         Modules.LastOrDefault().Menus.Add(new Menu("yOutbox"));
         Modules.LastOrDefault().Menus.Add(new Menu("yInbox"));
+        Modules.LastOrDefault().Menus.Add(new Menu("yToken"));
         Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));
         Modules.LastOrDefault().Menus.Add(new Menu("yUser"));
         Modules.LastOrDefault().Menus.Add(new Menu("yConfigArcteture"));

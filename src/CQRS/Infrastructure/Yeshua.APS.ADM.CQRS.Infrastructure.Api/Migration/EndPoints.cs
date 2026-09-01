@@ -335,6 +335,24 @@ app.MapPost("/yapi/Roteiro/PostRoteiro", async ([FromServices] Command.Receivers
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/ConsultaPedido/PostConsultaPedido", async ([FromServices] Command.Receivers.Write.InsertConsultaPedidoReceiver receiver, [FromBody] Command.Write.ConsultaPedidoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ConsultaPedidoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ConsultaPedidoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/RoteiroPedido/PostRoteiroPedido", async ([FromServices] Command.Receivers.Write.InsertRoteiroPedidoReceiver receiver, [FromBody] Command.Write.RoteiroPedidoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RoteiroPedidoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RoteiroPedidoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/T_AGENDA_SCHEDULE/PostT_AGENDA_SCHEDULE", async ([FromServices] Command.Receivers.Write.InsertT_AGENDA_SCHEDULEReceiver receiver, [FromBody] Command.Write.T_AGENDA_SCHEDULECrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1802,6 +1820,42 @@ app.MapPost("/yapi/TipoAvaliacao/PostTipoAvaliacao", async ([FromServices] Comma
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/PedidoPlanejavel/PostPedidoPlanejavel", async ([FromServices] Command.Receivers.Write.InsertPedidoPlanejavelReceiver receiver, [FromBody] Command.Write.PedidoPlanejavelCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/CargaPlanejavel/PostCargaPlanejavel", async ([FromServices] Command.Receivers.Write.InsertCargaPlanejavelReceiver receiver, [FromBody] Command.Write.CargaPlanejavelCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/OpcaoPlanejamentoTransporte/PostOpcaoPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.InsertOpcaoPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.OpcaoPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/CenarioPlanejamentoTransporte/PostCenarioPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.InsertCenarioPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.CenarioPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/ExperienciaPlanejamentoTransporte/PostExperienciaPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.InsertExperienciaPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.ExperienciaPlanejamentoTransporteCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2005,6 +2059,24 @@ app.MapPut("/yapi/Roteiro/PutRoteiro", async ([FromServices] Command.Receivers.W
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/ConsultaPedido/PutConsultaPedido", async ([FromServices] Command.Receivers.Write.UpdateConsultaPedidoReceiver receiver, [FromBody] Command.Write.ConsultaPedidoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ConsultaPedidoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ConsultaPedidoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/RoteiroPedido/PutRoteiroPedido", async ([FromServices] Command.Receivers.Write.UpdateRoteiroPedidoReceiver receiver, [FromBody] Command.Write.RoteiroPedidoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RoteiroPedidoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RoteiroPedidoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -3476,6 +3548,42 @@ app.MapPut("/yapi/TipoAvaliacao/PutTipoAvaliacao", async ([FromServices] Command
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/PedidoPlanejavel/PutPedidoPlanejavel", async ([FromServices] Command.Receivers.Write.UpdatePedidoPlanejavelReceiver receiver, [FromBody] Command.Write.PedidoPlanejavelCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/CargaPlanejavel/PutCargaPlanejavel", async ([FromServices] Command.Receivers.Write.UpdateCargaPlanejavelReceiver receiver, [FromBody] Command.Write.CargaPlanejavelCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/OpcaoPlanejamentoTransporte/PutOpcaoPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.UpdateOpcaoPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.OpcaoPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPut("/yapi/CenarioPlanejamentoTransporte/PutCenarioPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.UpdateCenarioPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.CenarioPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/ExperienciaPlanejamentoTransporte/PutExperienciaPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.UpdateExperienciaPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.ExperienciaPlanejamentoTransporteCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -3679,6 +3787,24 @@ app.MapDelete("/yapi/Roteiro/DeleteRoteiro", async ([FromServices] Command.Recei
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.RoteiroEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/ConsultaPedido/DeleteConsultaPedido", async ([FromServices] Command.Receivers.Write.DeleteConsultaPedidoReceiver receiver, [FromBody] Command.Write.ConsultaPedidoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ConsultaPedidoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ConsultaPedidoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/RoteiroPedido/DeleteRoteiroPedido", async ([FromServices] Command.Receivers.Write.DeleteRoteiroPedidoReceiver receiver, [FromBody] Command.Write.RoteiroPedidoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RoteiroPedidoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RoteiroPedidoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -5146,6 +5272,42 @@ app.MapDelete("/yapi/TipoAvaliacao/DeleteTipoAvaliacao", async ([FromServices] C
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.TipoAvaliacaoEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.TipoAvaliacaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/PedidoPlanejavel/DeletePedidoPlanejavel", async ([FromServices] Command.Receivers.Write.DeletePedidoPlanejavelReceiver receiver, [FromBody] Command.Write.PedidoPlanejavelCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PedidoPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/CargaPlanejavel/DeleteCargaPlanejavel", async ([FromServices] Command.Receivers.Write.DeleteCargaPlanejavelReceiver receiver, [FromBody] Command.Write.CargaPlanejavelCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CargaPlanejavelEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/OpcaoPlanejamentoTransporte/DeleteOpcaoPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.DeleteOpcaoPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.OpcaoPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.OpcaoPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/CenarioPlanejamentoTransporte/DeleteCenarioPlanejamentoTransporte", async ([FromServices] Command.Receivers.Write.DeleteCenarioPlanejamentoTransporteReceiver receiver, [FromBody] Command.Write.CenarioPlanejamentoTransporteCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CenarioPlanejamentoTransporteEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -16294,9 +16456,9 @@ app.MapGet("/yapi/getMetaDataConsultaPedido", (HttpContext context) =>
         },
         capabilities = new
         {
-            create = false,
-            update = false,
-            delete = false
+            create = true,
+            update = true,
+            delete = true
         },
         search = new[]{
             new {
@@ -16393,10 +16555,10 @@ app.MapGet("/yapi/getMetaDataConsultaPedido", (HttpContext context) =>
         endpoints = new
         {
                  produtoid = "/ConsultaPedido/ConsultaPedidoReadFKProdutoId",
-            create = "",
+            create = "/ConsultaPedido/PostConsultaPedido",
             read = "/ConsultaPedido/ReadConsultaPedido",
-            update = "",
-            delete = ""
+            update = "/ConsultaPedido/PutConsultaPedido",
+            delete = "/ConsultaPedido/DeleteConsultaPedido"
         }
     };
     return Results.Ok(metadatacrud);
@@ -16417,9 +16579,9 @@ app.MapGet("/yapi/getMetaDataRoteiroPedido", (HttpContext context) =>
         },
         capabilities = new
         {
-            create = false,
-            update = false,
-            delete = false
+            create = true,
+            update = true,
+            delete = true
         },
         search = new[]{
             new {
@@ -16521,10 +16683,10 @@ app.MapGet("/yapi/getMetaDataRoteiroPedido", (HttpContext context) =>
                  pedidoid = "/RoteiroPedido/RoteiroPedidoReadFKPedidoId",
                  maquinaid = "/RoteiroPedido/RoteiroPedidoReadFKMaquinaId",
                  produtoid = "/RoteiroPedido/RoteiroPedidoReadFKProdutoId",
-            create = "",
+            create = "/RoteiroPedido/PostRoteiroPedido",
             read = "/RoteiroPedido/ReadRoteiroPedido",
-            update = "",
-            delete = ""
+            update = "/RoteiroPedido/PutRoteiroPedido",
+            delete = "/RoteiroPedido/DeleteRoteiroPedido"
         }
     };
     return Results.Ok(metadatacrud);
@@ -30893,9 +31055,9 @@ app.MapGet("/yapi/getMetaDataPedidoPlanejavel", (HttpContext context) =>
         },
         capabilities = new
         {
-            create = false,
-            update = false,
-            delete = false
+            create = true,
+            update = true,
+            delete = true
         },
         search = new[]{
             new {
@@ -30976,10 +31138,10 @@ app.MapGet("/yapi/getMetaDataPedidoPlanejavel", (HttpContext context) =>
         actions = Array.Empty<object>(),
         endpoints = new
         {
-            create = "",
+            create = "/PedidoPlanejavel/PostPedidoPlanejavel",
             read = "/PedidoPlanejavel/ReadPedidoPlanejavel",
-            update = "",
-            delete = ""
+            update = "/PedidoPlanejavel/PutPedidoPlanejavel",
+            delete = "/PedidoPlanejavel/DeletePedidoPlanejavel"
         }
     };
     return Results.Ok(metadatacrud);
@@ -31000,9 +31162,9 @@ app.MapGet("/yapi/getMetaDataCargaPlanejavel", (HttpContext context) =>
         },
         capabilities = new
         {
-            create = false,
-            update = false,
-            delete = false
+            create = true,
+            update = true,
+            delete = true
         },
         search = new[]{
             new {
@@ -31065,10 +31227,10 @@ app.MapGet("/yapi/getMetaDataCargaPlanejavel", (HttpContext context) =>
         actions = Array.Empty<object>(),
         endpoints = new
         {
-            create = "",
+            create = "/CargaPlanejavel/PostCargaPlanejavel",
             read = "/CargaPlanejavel/ReadCargaPlanejavel",
-            update = "",
-            delete = ""
+            update = "/CargaPlanejavel/PutCargaPlanejavel",
+            delete = "/CargaPlanejavel/DeleteCargaPlanejavel"
         }
     };
     return Results.Ok(metadatacrud);
@@ -31089,9 +31251,9 @@ app.MapGet("/yapi/getMetaDataOpcaoPlanejamentoTransporte", (HttpContext context)
         },
         capabilities = new
         {
-            create = false,
-            update = false,
-            delete = false
+            create = true,
+            update = true,
+            delete = true
         },
         search = new[]{
             new {
@@ -31148,10 +31310,10 @@ app.MapGet("/yapi/getMetaDataOpcaoPlanejamentoTransporte", (HttpContext context)
         actions = Array.Empty<object>(),
         endpoints = new
         {
-            create = "",
+            create = "/OpcaoPlanejamentoTransporte/PostOpcaoPlanejamentoTransporte",
             read = "/OpcaoPlanejamentoTransporte/ReadOpcaoPlanejamentoTransporte",
-            update = "",
-            delete = ""
+            update = "/OpcaoPlanejamentoTransporte/PutOpcaoPlanejamentoTransporte",
+            delete = "/OpcaoPlanejamentoTransporte/DeleteOpcaoPlanejamentoTransporte"
         }
     };
     return Results.Ok(metadatacrud);
@@ -31172,9 +31334,9 @@ app.MapGet("/yapi/getMetaDataCenarioPlanejamentoTransporte", (HttpContext contex
         },
         capabilities = new
         {
-            create = false,
-            update = false,
-            delete = false
+            create = true,
+            update = true,
+            delete = true
         },
         search = new[]{
             new {
@@ -31228,10 +31390,10 @@ app.MapGet("/yapi/getMetaDataCenarioPlanejamentoTransporte", (HttpContext contex
         actions = Array.Empty<object>(),
         endpoints = new
         {
-            create = "",
+            create = "/CenarioPlanejamentoTransporte/PostCenarioPlanejamentoTransporte",
             read = "/CenarioPlanejamentoTransporte/ReadCenarioPlanejamentoTransporte",
-            update = "",
-            delete = ""
+            update = "/CenarioPlanejamentoTransporte/PutCenarioPlanejamentoTransporte",
+            delete = "/CenarioPlanejamentoTransporte/DeleteCenarioPlanejamentoTransporte"
         }
     };
     return Results.Ok(metadatacrud);

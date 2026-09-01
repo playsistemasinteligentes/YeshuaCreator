@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirT_PREFERENCIASQuery(IT_PREFERENCIASEntity T_PREFERENCIAS)
         {
-            this.Query = $@" INSERT INTO T_PREFERENCIAS (PRE_DESCRICAO, PRE_NAMESPACE, PRE_TIPO, PRE_VALOR, USE_ID, PER_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PRE_DESCRICAO, @PRE_NAMESPACE, @PRE_TIPO, @PRE_VALOR, @USE_ID, @PER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO T_PREFERENCIAS (PRE_ID, PRE_DESCRICAO, PRE_NAMESPACE, PRE_TIPO, PRE_VALOR, USE_ID, PER_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PRE_ID, @PRE_DESCRICAO, @PRE_NAMESPACE, @PRE_TIPO, @PRE_VALOR, @USE_ID, @PER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                PRE_ID = T_PREFERENCIAS.PRE_ID,
                 PRE_DESCRICAO = T_PREFERENCIAS.PRE_DESCRICAO,
                 PRE_NAMESPACE = T_PREFERENCIAS.PRE_NAMESPACE,
                 PRE_TIPO = T_PREFERENCIAS.PRE_TIPO,

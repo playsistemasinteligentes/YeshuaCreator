@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirTesteFisicoQuery(ITesteFisicoEntity TesteFisico)
         {
-            this.Query = $@" INSERT INTO TesteFisico (ITE_ID, USR_ID, TES_NOME_TECNICO, TES_AMOSTRA, TES_OP, TES_VALOR_NUMERICO, TES_VALOR_DATA, TES_VALOR_TEXTO, TES_EMISSAO, ORD_ID, PRO_ID, MAQ_ID, FPR_SEQ_REPETICAO, FPR_SEQ_TRANFORMACAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ITE_ID, @USR_ID, @TES_NOME_TECNICO, @TES_AMOSTRA, @TES_OP, @TES_VALOR_NUMERICO, @TES_VALOR_DATA, @TES_VALOR_TEXTO, @TES_EMISSAO, @ORD_ID, @PRO_ID, @MAQ_ID, @FPR_SEQ_REPETICAO, @FPR_SEQ_TRANFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO TesteFisico (TES_ID, ITE_ID, USR_ID, TES_NOME_TECNICO, TES_AMOSTRA, TES_OP, TES_VALOR_NUMERICO, TES_VALOR_DATA, TES_VALOR_TEXTO, TES_EMISSAO, ORD_ID, PRO_ID, MAQ_ID, FPR_SEQ_REPETICAO, FPR_SEQ_TRANFORMACAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TES_ID, @ITE_ID, @USR_ID, @TES_NOME_TECNICO, @TES_AMOSTRA, @TES_OP, @TES_VALOR_NUMERICO, @TES_VALOR_DATA, @TES_VALOR_TEXTO, @TES_EMISSAO, @ORD_ID, @PRO_ID, @MAQ_ID, @FPR_SEQ_REPETICAO, @FPR_SEQ_TRANFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                TES_ID = TesteFisico.TES_ID,
                 ITE_ID = TesteFisico.ITE_ID,
                 USR_ID = TesteFisico.USR_ID,
                 TES_NOME_TECNICO = TesteFisico.TES_NOME_TECNICO,

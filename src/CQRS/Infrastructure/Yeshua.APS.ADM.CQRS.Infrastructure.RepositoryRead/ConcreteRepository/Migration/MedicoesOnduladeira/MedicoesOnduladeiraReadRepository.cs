@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMedicoesOnduladeiraCustom(Command.Read.MedicoesOnduladeiraReadCommand command, ref DataPagination<MedicoesOnduladeiraDTO> result, ref bool handled);
+
         public DataPagination<MedicoesOnduladeiraDTO> getMedicoesOnduladeira(ICommandRead command )
          {
             if (command is Command.Read.MedicoesOnduladeiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MedicoesOnduladeiraDTO> getMedicoesOnduladeira(Command.Read.MedicoesOnduladeiraReadCommand command )
         {
+            DataPagination<MedicoesOnduladeiraDTO> customResult = null;
+            var customHandled = false;
+            TryGetMedicoesOnduladeiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MedicoesOnduladeiraQuery(command );
 
                 var itens = _unitOfWork.Query<MedicoesOnduladeiraDTO>(query.Query,query.Parameters);

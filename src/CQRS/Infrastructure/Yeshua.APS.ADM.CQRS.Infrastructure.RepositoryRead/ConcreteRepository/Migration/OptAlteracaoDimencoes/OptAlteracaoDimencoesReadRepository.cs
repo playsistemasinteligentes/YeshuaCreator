@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetOptAlteracaoDimencoesCustom(Command.Read.OptAlteracaoDimencoesReadCommand command, ref DataPagination<OptAlteracaoDimencoesDTO> result, ref bool handled);
+
         public DataPagination<OptAlteracaoDimencoesDTO> getOptAlteracaoDimencoes(ICommandRead command )
          {
             if (command is Command.Read.OptAlteracaoDimencoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<OptAlteracaoDimencoesDTO> getOptAlteracaoDimencoes(Command.Read.OptAlteracaoDimencoesReadCommand command )
         {
+            DataPagination<OptAlteracaoDimencoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetOptAlteracaoDimencoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.OptAlteracaoDimencoesQuery(command );
 
                 var itens = _unitOfWork.Query<OptAlteracaoDimencoesDTO>(query.Query,query.Parameters);

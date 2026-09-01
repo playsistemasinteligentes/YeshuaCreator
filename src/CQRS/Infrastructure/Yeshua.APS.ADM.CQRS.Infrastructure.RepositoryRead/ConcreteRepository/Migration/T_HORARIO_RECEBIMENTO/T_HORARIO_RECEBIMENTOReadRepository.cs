@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_HORARIO_RECEBIMENTOCustom(Command.Read.T_HORARIO_RECEBIMENTOReadCommand command, ref DataPagination<T_HORARIO_RECEBIMENTODTO> result, ref bool handled);
+
         public DataPagination<T_HORARIO_RECEBIMENTODTO> getT_HORARIO_RECEBIMENTO(ICommandRead command )
          {
             if (command is Command.Read.T_HORARIO_RECEBIMENTOReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_HORARIO_RECEBIMENTODTO> getT_HORARIO_RECEBIMENTO(Command.Read.T_HORARIO_RECEBIMENTOReadCommand command )
         {
+            DataPagination<T_HORARIO_RECEBIMENTODTO> customResult = null;
+            var customHandled = false;
+            TryGetT_HORARIO_RECEBIMENTOCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_HORARIO_RECEBIMENTOQuery(command );
 
                 var itens = _unitOfWork.Query<T_HORARIO_RECEBIMENTODTO>(query.Query,query.Parameters);

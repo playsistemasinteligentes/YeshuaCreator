@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMapaCustom(Command.Read.MapaReadCommand command, ref DataPagination<MapaDTO> result, ref bool handled);
+
         public DataPagination<MapaDTO> getMapa(ICommandRead command )
          {
             if (command is Command.Read.MapaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MapaDTO> getMapa(Command.Read.MapaReadCommand command )
         {
+            DataPagination<MapaDTO> customResult = null;
+            var customHandled = false;
+            TryGetMapaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MapaQuery(command );
 
                 var itens = _unitOfWork.Query<MapaDTO>(query.Query,query.Parameters);

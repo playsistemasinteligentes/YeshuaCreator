@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetItenCargaCustom(Command.Read.ItenCargaReadCommand command, ref DataPagination<ItenCargaDTO> result, ref bool handled);
+
         public DataPagination<ItenCargaDTO> getItenCarga(ICommandRead command )
          {
             if (command is Command.Read.ItenCargaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ItenCargaDTO> getItenCarga(Command.Read.ItenCargaReadCommand command )
         {
+            DataPagination<ItenCargaDTO> customResult = null;
+            var customHandled = false;
+            TryGetItenCargaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ItenCargaQuery(command );
 
                 var itens = _unitOfWork.Query<ItenCargaDTO>(query.Query,query.Parameters);

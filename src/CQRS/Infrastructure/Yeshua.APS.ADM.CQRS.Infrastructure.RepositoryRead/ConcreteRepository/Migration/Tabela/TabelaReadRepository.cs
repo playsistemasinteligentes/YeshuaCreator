@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTabelaCustom(Command.Read.TabelaReadCommand command, ref DataPagination<TabelaDTO> result, ref bool handled);
+
         public DataPagination<TabelaDTO> getTabela(ICommandRead command )
          {
             if (command is Command.Read.TabelaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TabelaDTO> getTabela(Command.Read.TabelaReadCommand command )
         {
+            DataPagination<TabelaDTO> customResult = null;
+            var customHandled = false;
+            TryGetTabelaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TabelaQuery(command );
 
                 var itens = _unitOfWork.Query<TabelaDTO>(query.Query,query.Parameters);

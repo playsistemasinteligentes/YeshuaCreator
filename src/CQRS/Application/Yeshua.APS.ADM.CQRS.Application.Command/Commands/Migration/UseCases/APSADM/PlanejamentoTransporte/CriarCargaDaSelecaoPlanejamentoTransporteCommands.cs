@@ -22,12 +22,6 @@ public partial record CriarCargaDaSelecaoPlanejamentoTransporteInputCommand : IC
     public string Observacao { get; set; }
 }
 
-public partial record PedidoPlanejamentoRef : ICommand
-{
-    public string PedidoId { get; set; }
-    public string VersaoPlanejamento { get; set; }
-}
-
 public partial record CriarCargaDaSelecaoPlanejamentoTransporteOutputCommand : ICommand
 {
     public string CargaId { get; set; }

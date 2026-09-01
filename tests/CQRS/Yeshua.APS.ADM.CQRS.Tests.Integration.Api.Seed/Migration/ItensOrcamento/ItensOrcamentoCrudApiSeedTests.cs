@@ -53,6 +53,7 @@ public partial class ItensOrcamentoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["ITO_ID"] = 1,
             ["ORC_ID"] = 1,
             ["TIP_ID"] = 1,
             ["PRO_ID"] = ApiTestData.Text("ItensOrcamento PRO_ID", 30),
@@ -86,6 +87,7 @@ public partial class ItensOrcamentoCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["ITO_ID"] = 2;
         payload["ORC_ID"] = 2;
         payload["TIP_ID"] = 2;
         payload["PRO_ID"] = ApiTestData.Text("ItensOrcamento PRO_ID Update", 30);

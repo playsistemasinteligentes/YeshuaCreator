@@ -24,7 +24,7 @@ export async function loadDataMenu() {
 
         if (!response.ok) throw new Error('Token inválido ou expirado');
 
-        const menuItems = await response.json();
+        const menuItems = extendMenuItems(await response.json());
         const menuList = document.getElementById('menu');
         if (!menuList) return;
 
@@ -60,7 +60,7 @@ export async function loadDataMenu() {
                         e.preventDefault();
                         closeMenu();          // fecha menu no mobile
                         closeAllSubmenus();   // fecha submenu no desktop
-                        loadDataCrud(`${environments.urlApi}${child.endpoint}`, child.type);
+                        openMenuItem(child);
                     });
                     submenuList.appendChild(link);
                 });
@@ -89,7 +89,7 @@ export async function loadDataMenu() {
                     e.preventDefault();
                     closeMenu();          // mobile
                     closeAllSubmenus();   // desktop
-                    loadDataCrud(`${environments.urlApi}${item.endpoint}`, item.type);
+                    openMenuItem(item);
                 });
                 menuList.appendChild(link);
             }
@@ -104,6 +104,55 @@ export async function loadDataMenu() {
 
     } catch (error) {
         erroRequestResponse(error);
+    }
+}
+
+async function openMenuItem(item) {
+    if (isCustomPage(item)) {
+        await openCustomPage(item);
+        return;
+    }
+
+    closeCustomPage();
+    loadDataCrud(`${environments.urlApi}${item.endpoint}`, item.type);
+}
+
+function isCustomPage(item) {
+    const type = String(item?.type || '').toLowerCase();
+    return type === 'custompage' || type === 'custom-page' || type === 'custon';
+}
+
+async function openCustomPage(item) {
+    const pages = window.yeshuaExtensions?.pages || {};
+    const pageKey = item.page || item.endpoint || item.description;
+    const handler = pages[pageKey] || pages[String(pageKey).replace(/^#/, '')];
+
+    if (typeof handler !== 'function') {
+        console.error(`Custom page handler not found: ${pageKey}`);
+        return;
+    }
+
+    await handler({ item });
+}
+
+function closeCustomPage() {
+    const customPage = document.getElementById('custom-page-container');
+    if (customPage) {
+        customPage.classList.add('hidden');
+        customPage.innerHTML = '';
+    }
+}
+
+function extendMenuItems(menuItems) {
+    const menuExtension = window.yeshuaExtensions?.menu;
+    if (typeof menuExtension?.extend !== 'function') return menuItems;
+
+    try {
+        const extended = menuExtension.extend(menuItems);
+        return Array.isArray(extended) ? extended : menuItems;
+    } catch (error) {
+        console.error('Yeshua menu extension failed', error);
+        return menuItems;
     }
 }
 

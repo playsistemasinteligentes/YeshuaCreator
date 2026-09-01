@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTesteFisicoCustom(Command.Read.TesteFisicoReadCommand command, ref DataPagination<TesteFisicoDTO> result, ref bool handled);
+
         public DataPagination<TesteFisicoDTO> getTesteFisico(ICommandRead command )
          {
             if (command is Command.Read.TesteFisicoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TesteFisicoDTO> getTesteFisico(Command.Read.TesteFisicoReadCommand command )
         {
+            DataPagination<TesteFisicoDTO> customResult = null;
+            var customHandled = false;
+            TryGetTesteFisicoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TesteFisicoQuery(command );
 
                 var itens = _unitOfWork.Query<TesteFisicoDTO>(query.Query,query.Parameters);

@@ -83,8 +83,11 @@ Miolos que IA/dev devem preencher:
 - Entidades baseadas em visoes de leitura devem continuar sendo entidades na
   DSL, usando `FromView(nomeDaVisao)`. Esse conceito representa uma projection
   ou read model resolvido pelo repositorio de leitura do aplicativo; por padrao
-  nao cria view fisica no banco, impede DDL de tabela e desliga CRUD direto de
-  escrita; nao exige `ReadOnly`.
+  nao cria view fisica no banco nem DDL de tabela, mas permanece o mais proximo
+  possivel de uma entidade normal nas bordas, DTOs, tela, commands, receivers e
+  endpoints. Escritas contra `FromView`, quando existirem, devem poder ser
+  retrabalhadas no codigo customizado do aplicativo sem exigir mudanca imediata
+  no front; nao exige `ReadOnly`.
 - `FromView` nao substitui `LegacySource`: `FromView` declara a visao
   operacional de leitura da aplicacao, enquanto `LegacySource` e metadata de
   transicao/migracao. Quando uma view fisica legada existir, ela pode ser usada

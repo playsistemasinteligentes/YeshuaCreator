@@ -10,7 +10,7 @@ public class M000002 : MigrationBase
     {
         AddEntity("T_AGENDA_SCHEDULE").LegacySource("T_AGENDA_SCHEDULE").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("AGE_ID", "AGE ID").Int().Incremento().NotNull().LegacyColumn("AGE_ID", "int")
+            .AddColumn("AGE_ID", "AGE ID").Int().NotNull().LegacyColumn("AGE_ID", "int")
             .AddColumn("AGE_DATA_ESPECIFICA", "AGE DATA ESPECIFICA").DateTime().LegacyColumn("AGE_DATA_ESPECIFICA", "datetime")
             .AddColumn("AGE_HORARIO_INICIO", "AGE HORARIO INICIO").Varchar(16).LegacyColumn("AGE_HORARIO_INICIO", "time", "time_to_string")
             .AddColumn("AGE_HORARIO_FIM", "AGE HORARIO FIM").Varchar(16).LegacyColumn("AGE_HORARIO_FIM", "time", "time_to_string")
@@ -93,7 +93,7 @@ public class M000002 : MigrationBase
 
         AddEntity("CalendarioDisponibilidadeVeiculos").LegacySource("T_CALENDARIO_DISPONIBILIDADE_VEICULOS").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("CDV_ID", "CDV ID").Int().Incremento().NotNull().LegacyColumn("CDV_ID", "int")
+            .AddColumn("CDV_ID", "CDV ID").Int().NotNull().LegacyColumn("CDV_ID", "int")
             .AddColumn("CDV_DATA_DE", "CDV DATA DE").DateTime().LegacyColumn("CDV_DATA_DE", "datetime")
             .AddColumn("CDV_DATA_ATE", "CDV DATA ATE").DateTime().LegacyColumn("CDV_DATA_ATE", "datetime")
             .AddColumn("CDV_SEGUNDA", "CDV SEGUNDA").Int().LegacyColumn("CDV_SEGUNDA", "int")
@@ -226,7 +226,7 @@ public class M000002 : MigrationBase
 
         AddEntity("ClpMedicoes").LegacySource("T_CLP_MEDICOES").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("Id2", "Id2").Int().Incremento().NotNull().LegacyColumn("ID", "int")
+            .AddColumn("Id2", "Id2").Int().NotNull().LegacyColumn("ID", "int")
             .AddColumn("MaquinaId", "MaquinaId").Varchar(30).NotNull().LegacyColumn("MAQUINA_ID", "varchar(30)")
             .AddColumn("DataInicio", "DataInicio").DateTime().NotNull().LegacyColumn("DATA_INI", "datetime")
             .AddColumn("DataFim", "DataFim").DateTime().NotNull().LegacyColumn("DATA_FIM", "datetime")
@@ -275,7 +275,7 @@ public class M000002 : MigrationBase
 
         AddEntity("Compensacao").LegacySource("T_COMPENSACOES").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("COM_ID", "COM ID").Int().Incremento().NotNull().LegacyColumn("COM_ID", "int")
+            .AddColumn("COM_ID", "COM ID").Int().NotNull().LegacyColumn("COM_ID", "int")
             .AddColumn("GRP_ID", "GRP ID").FK("GrupoProdutoAbstrato", "GRP_ID").RelationTab("Compensacao", "Compensacao").Varchar(30).LegacyColumn("GRP_ID", "varchar(30)")
             .AddColumn("OND_ID", "OND ID").FK("Onda", "OND_ID").RelationTab("Compensacao", "Compensacao").Varchar(10).LegacyColumn("OND_ID", "varchar(10)")
             .AddColumn("COM_VINCO1_OND", "COM VINCO1 OND").Int().LegacyColumn("COM_VINCO1_OND", "int")
@@ -379,7 +379,7 @@ public class M000002 : MigrationBase
 
         AddEntity("Cotas").LegacySource("T_COTAS").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("COT_ID", "COT ID").Int().Incremento().NotNull().LegacyColumn("COT_ID", "int")
+            .AddColumn("COT_ID", "COT ID").Int().NotNull().LegacyColumn("COT_ID", "int")
             .AddColumn("COT_DATA_DE", "COT DATA DE").DateTime().LegacyColumn("COT_DATA_DE", "date")
             .AddColumn("COT_DATA_ATE", "COT DATA ATE").DateTime().LegacyColumn("COT_DATA_ATE", "date")
             .AddColumn("COT_VALOR", "COT VALOR").Decimal(18, 6).LegacyColumn("COT_VALOR", "decimal")
@@ -401,7 +401,7 @@ public class M000002 : MigrationBase
 
         AddEntity("Estradas").LegacySource("T_ESTRADAS").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("EST_ID", "EST ID").Int().Incremento().NotNull().LegacyColumn("EST_ID", "int")
+            .AddColumn("EST_ID", "EST ID").Int().NotNull().LegacyColumn("EST_ID", "int")
             .AddColumn("EST_DESCRICAO", "EST DESCRICAO").Varchar(500).LegacyColumn("EST_DESCRICAO", "varchar(500)")
             .AddColumn("EST_ID_LIGACAO_PONTO_A", "EST ID LIGACAO PONTO A").Int().LegacyColumn("EST_ID_LIGACAO_PONTO_A", "int")
             .AddColumn("EST_ID_LIGACAO_PONTO_B", "EST ID LIGACAO PONTO B").Int().LegacyColumn("EST_ID_LIGACAO_PONTO_B", "int");
@@ -473,7 +473,7 @@ public class M000002 : MigrationBase
 
         AddEntity("FechamentoTeste").LegacySource("T_FECHAMENTO_TESTE").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("FEC_ID", "FEC ID").Int().Incremento().NotNull().LegacyColumn("FEC_ID", "int")
+            .AddColumn("FEC_ID", "FEC ID").Int().NotNull().LegacyColumn("FEC_ID", "int")
             .AddColumn("FEC_QTD", "FEC QTD").Int().LegacyColumn("FEC_QTD", "int")
             .AddColumn("GRP_ID", "GRP ID").Varchar(30).LegacyColumn("GRP_ID", "varchar(30)");
 
@@ -538,7 +538,7 @@ public class M000002 : MigrationBase
             .AddColumn("FPR_TRUNCADO", "FPR TRUNCADO").Varchar(1).LegacyColumn("FPR_TRUNCADO", "varchar(1)")
             .AddColumn("FPR_DATA_TRUNC_INI", "FPR DATA TRUNC INI").DateTime().LegacyColumn("FPR_DATA_TRUNC_INI", "datetime")
             .AddColumn("FPR_DATA_TRUNC_FIM", "FPR DATA TRUNC FIM").DateTime().LegacyColumn("FPR_DATA_TRUNC_FIM", "datetime")
-            .AddColumn("FPR_ID", "FPR ID").Int().Incremento().NotNull().LegacyColumn("FPR_ID", "int")
+            .AddColumn("FPR_ID", "FPR ID").Int().NotNull().LegacyColumn("FPR_ID", "int")
             .AddColumn("FPR_COR_FILA", "FPR COR FILA").Varchar(30).LegacyColumn("FPR_COR_FILA", "varchar(30)")
             .AddColumn("MAQ_ID_MANUAL", "MAQ ID MANUAL").Varchar(30).LegacyColumn("MAQ_ID_MANUAL", "varchar(30)")
             .AddColumn("MAQ_ID_RESTRINGIDA", "MAQ ID RESTRINGIDA").Varchar(150).LegacyColumn("MAQ_ID_RESTRINGIDA", "varchar(150)")
@@ -603,7 +603,7 @@ public class M000002 : MigrationBase
             .AddColumn("FPR_TRUNCADO", "FPR TRUNCADO").Varchar(1).LegacyColumn("FPR_TRUNCADO", "varchar(1)")
             .AddColumn("FPR_DATA_TRUNC_INI", "FPR DATA TRUNC INI").DateTime().LegacyColumn("FPR_DATA_TRUNC_INI", "datetime")
             .AddColumn("FPR_DATA_TRUNC_FIM", "FPR DATA TRUNC FIM").DateTime().LegacyColumn("FPR_DATA_TRUNC_FIM", "datetime")
-            .AddColumn("FPR_ID", "FPR ID").Int().Incremento().NotNull().LegacyColumn("FPR_ID", "int")
+            .AddColumn("FPR_ID", "FPR ID").Int().NotNull().LegacyColumn("FPR_ID", "int")
             .AddColumn("FPR_COR_FILA", "FPR COR FILA").Varchar(30).LegacyColumn("FPR_COR_FILA", "varchar(30)")
             .AddColumn("MAQ_ID_MANUAL", "MAQ ID MANUAL").Varchar(30).LegacyColumn("MAQ_ID_MANUAL", "varchar(30)")
             .AddColumn("MAQ_ID_RESTRINGIDA", "MAQ ID RESTRINGIDA").Varchar(150).LegacyColumn("MAQ_ID_RESTRINGIDA", "varchar(150)")
@@ -774,12 +774,12 @@ public class M000002 : MigrationBase
 
         AddEntity("ItemInspecao").LegacySource("T_ITEM_INSPECAO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("ITI_ID", "ITI ID").Int().Incremento().NotNull().LegacyColumn("ITI_ID", "int")
+            .AddColumn("ITI_ID", "ITI ID").Int().NotNull().LegacyColumn("ITI_ID", "int")
             .AddColumn("ITI_DESC", "ITI DESC").Varchar(120).LegacyColumn("ITI_DESC", "varchar(120)");
 
         AddEntity("ItemTestavel").LegacySource("T_ITEM_TESTAVEL").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("ITE_ID", "ITE ID").Int().Incremento().NotNull().LegacyColumn("ITE_ID", "int")
+            .AddColumn("ITE_ID", "ITE ID").Int().NotNull().LegacyColumn("ITE_ID", "int")
             .AddColumn("ITE_DESCRICAO", "ITE DESCRICAO").Varchar(200).LegacyColumn("ITE_DESCRICAO", "varchar(200)")
             .AddColumn("ITE_OBS", "ITE OBS").Varchar(10).LegacyColumn("ITE_OBS", "varchar(10)")
             .AddColumn("ITE_NUMERO_DE_TESTES", "ITE NUMERO DE TESTES").Int().LegacyColumn("ITE_NUMERO_DE_TESTES", "int")
@@ -826,7 +826,7 @@ public class M000002 : MigrationBase
 
         AddEntity("ItensOrcamento").LegacySource("T_ITENS_ORCAMENTO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("ITO_ID", "ITO ID").Int().Incremento().NotNull().LegacyColumn("ITO_ID", "int")
+            .AddColumn("ITO_ID", "ITO ID").Int().NotNull().LegacyColumn("ITO_ID", "int")
             .AddColumn("ORC_ID", "ORC ID").Int().LegacyColumn("ORC_ID", "int")
             .AddColumn("TIP_ID", "TIP ID").Int().LegacyColumn("TIP_ID", "int")
             .AddColumn("PRO_ID", "PRO ID").Varchar(30).LegacyColumn("PRO_ID", "varchar(30)")
@@ -861,7 +861,7 @@ public class M000002 : MigrationBase
 
         AddEntity("LaudoTesteFisico").LegacySource("T_LAUDO_TESTE_FISICO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("LTF_ID", "LTF ID").Int().Incremento().NotNull().LegacyColumn("LTF_ID", "int")
+            .AddColumn("LTF_ID", "LTF ID").Int().NotNull().LegacyColumn("LTF_ID", "int")
             .AddColumn("LTF_EMISSAO", "LTF EMISSAO").DateTime().LegacyColumn("LTF_EMISSAO", "datetime")
             .AddColumn("LTF_VALOR", "LTF VALOR").Decimal(18, 6).LegacyColumn("LTF_VALOR", "float", "float_to_decimal_18_6")
             .AddColumn("LTF_OBS", "LTF OBS").Varchar(120).LegacyColumn("LTF_OBS", "varchar(120)")
@@ -876,7 +876,7 @@ public class M000002 : MigrationBase
             .AddColumn("LOG_CHAVE", "LOG CHAVE").Varchar(100).LegacyColumn("LOG_CHAVE", "varchar(100)")
             .AddColumn("LOG_CONTEXTO", "LOG CONTEXTO").Varchar(100).LegacyColumn("LOG_CONTEXTO", "varchar(100)")
             .AddColumn("LOG_CONTEUDO", "LOG CONTEUDO").Varchar(3500, true).LegacyColumn("LOG_CONTEUDO", "varchar(3500)")
-            .AddColumn("LOG_ID", "LOG ID").Int().Incremento().NotNull().LegacyColumn("LOG_ID", "int")
+            .AddColumn("LOG_ID", "LOG ID").Int().NotNull().LegacyColumn("LOG_ID", "int")
             .AddColumn("LOG_EMISSAO", "LOG EMISSAO").DateTime().LegacyColumn("LOG_EMISSAO", "datetime");
 
         AddEntity("LogsDatabase").LegacySource("T_LOGS_DATABASE").AddModule("APSADM")
@@ -903,7 +903,7 @@ public class M000002 : MigrationBase
 
         AddEntity("LoteTeste").LegacySource("T_LOTE_TESTE").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("LT_ID", "LT ID").Int().Incremento().NotNull().LegacyColumn("LT_ID", "int")
+            .AddColumn("LT_ID", "LT ID").Int().NotNull().LegacyColumn("LT_ID", "int")
             .AddColumn("TES_ID", "TES ID").Int().LegacyColumn("TES_ID", "int")
             .AddColumn("RL_ID", "RL ID").Int().LegacyColumn("RL_ID", "int");
 
@@ -917,7 +917,7 @@ public class M000002 : MigrationBase
 
         AddEntity("Mapa").LegacySource("T_MAPA").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("MAP_ID", "MAP ID").Int().Incremento().NotNull().LegacyColumn("MAP_ID", "int")
+            .AddColumn("MAP_ID", "MAP ID").Int().NotNull().LegacyColumn("MAP_ID", "int")
             .AddColumn("PON_ID", "PON ID").FK("PontosMapa", "PON_ID").RelationTab("Mapa", "Mapa").Varchar(100).NotNull().LegacyColumn("PON_ID", "varchar(100)")
             .AddColumn("PON_ID_VIZINHO", "PON ID VIZINHO").Varchar(100).NotNull().LegacyColumn("PON_ID_VIZINHO", "varchar(100)")
             .AddColumn("MAP_DISTANCIA", "MAP DISTANCIA").Decimal(18, 6).NotNull().LegacyColumn("MAP_DISTANCIA", "float", "float_to_decimal_18_6")
@@ -1012,7 +1012,7 @@ public class M000002 : MigrationBase
 
         AddEntity("T_Medicoes").LegacySource("T_MEDICOES").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("MED_ID", "MED ID").Int().Incremento().NotNull().LegacyColumn("MED_ID", "int")
+            .AddColumn("MED_ID", "MED ID").Int().NotNull().LegacyColumn("MED_ID", "int")
             .AddColumn("IND_ID", "IND ID").Int().LegacyColumn("IND_ID", "int")
             .AddColumn("MET_ID", "MET ID").Int().LegacyColumn("MET_ID", "int")
             .AddColumn("UNI_ID", "UNI ID").Int().LegacyColumn("UNI_ID", "int")
@@ -1039,7 +1039,7 @@ public class M000002 : MigrationBase
 
         AddEntity("MedidasTeste").LegacySource("T_MEDIDAS_TESTE").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("MDT_ID", "MDT ID").Int().Incremento().NotNull().LegacyColumn("MDT_ID", "int")
+            .AddColumn("MDT_ID", "MDT ID").Int().NotNull().LegacyColumn("MDT_ID", "int")
             .AddColumn("MDT_DESC", "MDT DESC").Varchar(10).LegacyColumn("MDT_DESC", "nchar(10)")
             .AddColumn("MDT_VALOR_ESPERADO", "MDT VALOR ESPERADO").Decimal(18, 6).LegacyColumn("MDT_VALOR_ESPERADO", "float", "float_to_decimal_18_6")
             .AddColumn("MDT_ENCONTRADO", "MDT ENCONTRADO").Decimal(18, 6).LegacyColumn("MDT_ENCONTRADO", "float", "float_to_decimal_18_6")
@@ -1204,7 +1204,7 @@ public class M000002 : MigrationBase
 
         AddEntity("Orcamento").LegacySource("T_ORCAMENTO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("ORC_ID", "ORC ID").Int().Incremento().NotNull().LegacyColumn("ORC_ID", "int")
+            .AddColumn("ORC_ID", "ORC ID").Int().NotNull().LegacyColumn("ORC_ID", "int")
             .AddColumn("REP_ID", "REP ID").Varchar(30).LegacyColumn("REP_ID", "varchar(30)")
             .AddColumn("CON_ID", "CON ID").Varchar(30).LegacyColumn("CON_ID", "varchar(30)")
             .AddColumn("ORC_TIPO_FRETE", "ORC TIPO FRETE").Varchar(3).LegacyColumn("ORC_TIPO_FRETE", "varchar(3)")
@@ -1214,7 +1214,7 @@ public class M000002 : MigrationBase
 
         AddEntity("OrderTrack").LegacySource("T_ORDEN_TRACK").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("OTK_ID", "OTK ID").Int().Incremento().NotNull().LegacyColumn("OTK_ID", "int")
+            .AddColumn("OTK_ID", "OTK ID").Int().NotNull().LegacyColumn("OTK_ID", "int")
             .AddColumn("OTK_SEQUENCIA", "OTK SEQUENCIA").Decimal(18, 6).NotNull().LegacyColumn("OTK_SEQUENCIA", "float", "float_to_decimal_18_6")
             .AddColumn("OTK_VERSSAO", "OTK VERSSAO").Int().NotNull().LegacyColumn("OTK_VERSSAO", "int")
             .AddColumn("ORD_ID", "ORD ID").FK("Order", "ORD_ID").RelationTab("OrderTrack", "OrderTrack").Varchar(60).NotNull().LegacyColumn("ORD_ID", "varchar(60)")
@@ -1310,7 +1310,7 @@ public class M000002 : MigrationBase
 
         AddEntity("ParametrosDeCusto").LegacySource("T_PARAMETROS_DE_CUSTO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("PAR_ID", "PAR ID").Int().Incremento().NotNull().LegacyColumn("PAR_ID", "int")
+            .AddColumn("PAR_ID", "PAR ID").Int().NotNull().LegacyColumn("PAR_ID", "int")
             .AddColumn("PRO_ID", "PRO ID").Varchar(30).NotNull().LegacyColumn("PRO_ID", "varchar(30)")
             .AddColumn("CUS_ID", "CUS ID").Varchar(50).NotNull().LegacyColumn("CUS_ID", "varchar(50)")
             .AddColumn("PAR_VALOR", "PAR VALOR").Varchar(100).NotNull().LegacyColumn("PAR_VALOR", "varchar(100)");
@@ -1336,7 +1336,7 @@ public class M000002 : MigrationBase
 
         AddEntity("PeriodicidadeTeste").LegacySource("T_PERIODICIDADE_TESTE").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("PER_ID", "PER ID").Int().Incremento().NotNull().LegacyColumn("PER_ID", "int")
+            .AddColumn("PER_ID", "PER ID").Int().NotNull().LegacyColumn("PER_ID", "int")
             .AddColumn("PER_QTD", "PER QTD").Varchar(10).LegacyColumn("PER_QTD", "nchar(10)")
             .AddColumn("UNI_ID", "UNI ID").Varchar(30).LegacyColumn("UNI_ID", "varchar(30)")
             .AddColumn("GRP_ID", "GRP ID").Varchar(30).LegacyColumn("GRP_ID", "varchar(30)");
@@ -1370,7 +1370,7 @@ public class M000002 : MigrationBase
 
         AddEntity("PoliticaOnduladeira").LegacySource("T_POLITICA_ONDULADEIRA").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("POL_ID", "POL ID").Int().Incremento().NotNull().LegacyColumn("POL_ID", "int")
+            .AddColumn("POL_ID", "POL ID").Int().NotNull().LegacyColumn("POL_ID", "int")
             .AddColumn("POL_NIVEL", "POL NIVEL").Int().LegacyColumn("POL_NIVEL", "int")
             .AddColumn("POL_PROMOCAO", "POL PROMOCAO").Int().LegacyColumn("POL_PROMOCAO", "int")
             .AddColumn("POL_DIAS_ANTECIPACAO", "POL DIAS ANTECIPACAO").Int().LegacyColumn("POL_DIAS_ANTECIPACAO", "int")
@@ -1386,7 +1386,7 @@ public class M000002 : MigrationBase
 
         AddEntity("T_PREFERENCIAS").LegacySource("T_PREFERENCIAS").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("PRE_ID", "PRE ID").Int().Incremento().NotNull().LegacyColumn("PRE_ID", "int")
+            .AddColumn("PRE_ID", "PRE ID").Int().NotNull().LegacyColumn("PRE_ID", "int")
             .AddColumn("PRE_DESCRICAO", "PRE DESCRICAO").Varchar(140).LegacyColumn("PRE_DESCRICAO", "varchar(140)")
             .AddColumn("PRE_NAMESPACE", "PRE NAMESPACE").Varchar(100).LegacyColumn("PRE_NAMESPACE", "varchar(100)")
             .AddColumn("PRE_TIPO", "PRE TIPO").Varchar(50).LegacyColumn("PRE_TIPO", "varchar(50)")
@@ -1544,7 +1544,7 @@ public class M000002 : MigrationBase
 
         AddEntity("RegistrosOnduladeira").LegacySource("T_REGISTROS_ONDULADEIRA").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("REG_ID", "REG ID").Int().Incremento().NotNull().LegacyColumn("REG_ID", "int")
+            .AddColumn("REG_ID", "REG ID").Int().NotNull().LegacyColumn("REG_ID", "int")
             .AddColumn("REG_RESPOSTA", "REG RESPOSTA").Varchar(8000, true).NotNull().LegacyColumn("REG_RESPOSTA", "varchar(8000)")
             .AddColumn("REG_STATUS", "REG STATUS").Varchar(50).NotNull().LegacyColumn("REG_STATUS", "varchar(50)")
             .AddColumn("REG_DATA_INICIO", "REG DATA INICIO").DateTime().NotNull().LegacyColumn("REG_DATA_INICIO", "datetime");
@@ -1556,14 +1556,14 @@ public class M000002 : MigrationBase
 
         AddEntity("RespInspVisual").LegacySource("T_RESP_INSP_VISUAL").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("RIV_ID", "RIV ID").Int().Incremento().NotNull().LegacyColumn("RIV_ID", "int")
+            .AddColumn("RIV_ID", "RIV ID").Int().NotNull().LegacyColumn("RIV_ID", "int")
             .AddColumn("IPV_ID", "IPV ID").Int().LegacyColumn("IPV_ID", "int")
             .AddColumn("ITI_ID", "ITI ID").Int().LegacyColumn("ITI_ID", "int")
             .AddColumn("RIV_STATUS", "RIV STATUS").Varchar(15).LegacyColumn("RIV_STATUS", "varchar(15)");
 
         AddEntity("RestricoesDeRodagem").LegacySource("T_RESTRICOES_DE_RODAGEM").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("RES_ID", "RES ID").Int().Incremento().NotNull().LegacyColumn("RES_ID", "int")
+            .AddColumn("RES_ID", "RES ID").Int().NotNull().LegacyColumn("RES_ID", "int")
             .AddColumn("RES_TIPO", "RES TIPO").Varchar(1).NotNull().LegacyColumn("RES_TIPO", "varchar(1)")
             .AddColumn("RES_HORA_INI", "RES HORA INI").Varchar(5).LegacyColumn("RES_HORA_INI", "varchar(5)")
             .AddColumn("RES_HORA_FIM", "RES HORA FIM").Varchar(10).LegacyColumn("RES_HORA_FIM", "varchar(10)")
@@ -1576,13 +1576,13 @@ public class M000002 : MigrationBase
 
         AddEntity("ResultMedida").LegacySource("RESULT_MEDIDA").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("RSM_ID", "RSM ID").Int().Incremento().NotNull().LegacyColumn("RSM_ID", "int")
+            .AddColumn("RSM_ID", "RSM ID").Int().NotNull().LegacyColumn("RSM_ID", "int")
             .AddColumn("RL_ID", "RL ID").Int().LegacyColumn("RL_ID", "int")
             .AddColumn("MDT_ID", "MDT ID").Int().LegacyColumn("MDT_ID", "int");
 
         AddEntity("Rodovias").LegacySource("T_RODOVIAS").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("ROD_ID", "ROD ID").Int().Incremento().NotNull().LegacyColumn("ROD_ID", "int")
+            .AddColumn("ROD_ID", "ROD ID").Int().NotNull().LegacyColumn("ROD_ID", "int")
             .AddColumn("ROD_DESCRICAO", "ROD DESCRICAO").Varchar(100).LegacyColumn("ROD_DESCRICAO", "varchar(100)");
 
         AddEntity("RotaRealizada").LegacySource("T_ROTA_REALIZADA").AddModule("APSADM")
@@ -1724,7 +1724,7 @@ public class M000002 : MigrationBase
 
         AddEntity("TesteFisico").LegacySource("T_TESTE_FISICO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("TES_ID", "TES ID").Int().Incremento().NotNull().LegacyColumn("TES_ID", "int")
+            .AddColumn("TES_ID", "TES ID").Int().NotNull().LegacyColumn("TES_ID", "int")
             .AddColumn("ITE_ID", "ITE ID").Int().LegacyColumn("ITE_ID", "int")
             .AddColumn("USR_ID", "USR ID").FK("Usuario", "USE_ID").RelationTab("TesteFisico", "TesteFisico").Int().LegacyColumn("USR_ID", "int")
             .AddColumn("TES_NOME_TECNICO", "TES NOME TECNICO").Varchar(200).LegacyColumn("TES_NOME_TECNICO", "varchar(200)")
@@ -1762,13 +1762,13 @@ public class M000002 : MigrationBase
 
         AddEntity("TipoInspecaoItens").LegacySource("T_TIPO_INSPECAO_ITENS").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("TII_ID", "TII ID").Int().Incremento().NotNull().LegacyColumn("TII_ID", "int")
+            .AddColumn("TII_ID", "TII ID").Int().NotNull().LegacyColumn("TII_ID", "int")
             .AddColumn("TIV_ID", "TIV ID").Int().LegacyColumn("TIV_ID", "int")
             .AddColumn("ITI_ID", "ITI ID").Int().LegacyColumn("ITI_ID", "int");
 
         AddEntity("TipoInspecaoVisual").LegacySource("T_TIPO_INSPECAO_VISUAL").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("TIV_ID", "TIV ID").Int().Incremento().NotNull().LegacyColumn("TIV_ID", "int");
+            .AddColumn("TIV_ID", "TIV ID").Int().NotNull().LegacyColumn("TIV_ID", "int");
 
         AddEntity("TipoMovimentoEstoque").LegacySource("T_TIPO_MOV_ESTOQUE").AddModule("APSADM")
             .AddColumn("TIP_ID", "TIP ID").Varchar(3).Key().NotNull().LegacyColumn("TIP_ID", "varchar(3)")
@@ -1788,7 +1788,7 @@ public class M000002 : MigrationBase
 
         AddEntity("TipoVeiculo").LegacySource("T_TIPO_VEICULO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("TIP_ID", "TIP ID").Int().Incremento().NotNull().LegacyColumn("TIP_ID", "int")
+            .AddColumn("TIP_ID", "TIP ID").Int().NotNull().LegacyColumn("TIP_ID", "int")
             .AddColumn("TIP_DESCRICAO", "TIP DESCRICAO").Varchar(100).LegacyColumn("TIP_DESCRICAO", "varchar(100)")
             .AddColumn("TIP_QTD_DISPONIVEL", "TIP QTD DISPONIVEL").Int().LegacyColumn("TIP_QTD_DISPONIVEL", "int")
             .AddColumn("TIP_VALOR_KM", "TIP VALOR KM").Decimal(18, 6).LegacyColumn("TIP_VALOR_KM", "float", "float_to_decimal_18_6")
@@ -1948,13 +1948,13 @@ public class M000002 : MigrationBase
 
         AddEntity("VersaoCusto").LegacySource("T_VERSAO_CUSTO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("VER_ID", "VER ID").Int().Incremento().NotNull().LegacyColumn("VER_ID", "int")
+            .AddColumn("VER_ID", "VER ID").Int().NotNull().LegacyColumn("VER_ID", "int")
             .AddColumn("VER_STATUS", "VER STATUS").Varchar(1).LegacyColumn("VER_STATUS", "varchar")
             .AddColumn("VER_OBS", "VER OBS").Varchar(2000, true).LegacyColumn("VER_OBS", "varchar(2000)");
 
         AddEntity("VerssaoCusto").LegacySource("T_VERSSAO_CUSTO").AddModule("APSADM")
             .AddColumn("Id", "Id").Int().Incremento().Key()
-            .AddColumn("VER_ID", "VER ID").Int().Incremento().NotNull().LegacyColumn("VER_ID", "int")
+            .AddColumn("VER_ID", "VER ID").Int().NotNull().LegacyColumn("VER_ID", "int")
             .AddColumn("VER_STATUS", "VER STATUS").Varchar(1).LegacyColumn("VER_STATUS", "varchar")
             .AddColumn("VER_DATA_VERSSAO_CUSTO", "VER DATA VERSSAO CUSTO").DateTime().LegacyColumn("VER_DATA_VERSSAO_CUSTO", "datetime")
             .AddColumn("VER_OBS", "VER OBS").Varchar(2000, true).LegacyColumn("VER_OBS", "varchar(2000)");

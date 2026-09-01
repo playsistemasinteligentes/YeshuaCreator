@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetVincoCustom(Command.Read.VincoReadCommand command, ref DataPagination<VincoDTO> result, ref bool handled);
+
         public DataPagination<VincoDTO> getVinco(ICommandRead command )
          {
             if (command is Command.Read.VincoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<VincoDTO> getVinco(Command.Read.VincoReadCommand command )
         {
+            DataPagination<VincoDTO> customResult = null;
+            var customHandled = false;
+            TryGetVincoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.VincoQuery(command );
 
                 var itens = _unitOfWork.Query<VincoDTO>(query.Query,query.Parameters);

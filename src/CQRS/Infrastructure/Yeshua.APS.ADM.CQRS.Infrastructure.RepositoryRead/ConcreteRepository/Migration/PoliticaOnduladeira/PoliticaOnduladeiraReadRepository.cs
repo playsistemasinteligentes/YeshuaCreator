@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPoliticaOnduladeiraCustom(Command.Read.PoliticaOnduladeiraReadCommand command, ref DataPagination<PoliticaOnduladeiraDTO> result, ref bool handled);
+
         public DataPagination<PoliticaOnduladeiraDTO> getPoliticaOnduladeira(ICommandRead command )
          {
             if (command is Command.Read.PoliticaOnduladeiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PoliticaOnduladeiraDTO> getPoliticaOnduladeira(Command.Read.PoliticaOnduladeiraReadCommand command )
         {
+            DataPagination<PoliticaOnduladeiraDTO> customResult = null;
+            var customHandled = false;
+            TryGetPoliticaOnduladeiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PoliticaOnduladeiraQuery(command );
 
                 var itens = _unitOfWork.Query<PoliticaOnduladeiraDTO>(query.Query,query.Parameters);

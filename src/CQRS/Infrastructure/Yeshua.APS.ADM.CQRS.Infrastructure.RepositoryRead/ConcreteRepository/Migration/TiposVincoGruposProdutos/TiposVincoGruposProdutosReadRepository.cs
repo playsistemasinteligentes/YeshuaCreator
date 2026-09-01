@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTiposVincoGruposProdutosCustom(Command.Read.TiposVincoGruposProdutosReadCommand command, ref DataPagination<TiposVincoGruposProdutosDTO> result, ref bool handled);
+
         public DataPagination<TiposVincoGruposProdutosDTO> getTiposVincoGruposProdutos(ICommandRead command )
          {
             if (command is Command.Read.TiposVincoGruposProdutosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TiposVincoGruposProdutosDTO> getTiposVincoGruposProdutos(Command.Read.TiposVincoGruposProdutosReadCommand command )
         {
+            DataPagination<TiposVincoGruposProdutosDTO> customResult = null;
+            var customHandled = false;
+            TryGetTiposVincoGruposProdutosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TiposVincoGruposProdutosQuery(command );
 
                 var itens = _unitOfWork.Query<TiposVincoGruposProdutosDTO>(query.Query,query.Parameters);

@@ -22,9 +22,9 @@ namespace Dominio
         public bool HasLegacySource => !string.IsNullOrWhiteSpace(LegacySourceName);
         public string ViewSourceName { get; private set; } = string.Empty;
         public bool IsFromView => !string.IsNullOrWhiteSpace(ViewSourceName);
-        public bool CanCreate => !IsFromView;
-        public bool CanUpdate => !IsFromView;
-        public bool CanDelete => !IsFromView;
+        public bool CanCreate => true;
+        public bool CanUpdate => true;
+        public bool CanDelete => true;
 
         public bool create { get; set; }
         public int StatusColuns { get; set; }

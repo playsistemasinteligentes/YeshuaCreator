@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetFilaProducaoCustom(Command.Read.FilaProducaoReadCommand command, ref DataPagination<FilaProducaoDTO> result, ref bool handled);
+
         public DataPagination<FilaProducaoDTO> getFilaProducao(ICommandRead command )
          {
             if (command is Command.Read.FilaProducaoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<FilaProducaoDTO> getFilaProducao(Command.Read.FilaProducaoReadCommand command )
         {
+            DataPagination<FilaProducaoDTO> customResult = null;
+            var customHandled = false;
+            TryGetFilaProducaoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.FilaProducaoQuery(command );
 
                 var itens = _unitOfWork.Query<FilaProducaoDTO>(query.Query,query.Parameters);

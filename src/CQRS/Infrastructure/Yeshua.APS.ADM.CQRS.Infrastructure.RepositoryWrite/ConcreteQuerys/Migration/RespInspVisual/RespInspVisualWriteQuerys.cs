@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirRespInspVisualQuery(IRespInspVisualEntity RespInspVisual)
         {
-            this.Query = $@" INSERT INTO RespInspVisual (IPV_ID, ITI_ID, RIV_STATUS, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IPV_ID, @ITI_ID, @RIV_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO RespInspVisual (RIV_ID, IPV_ID, ITI_ID, RIV_STATUS, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RIV_ID, @IPV_ID, @ITI_ID, @RIV_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                RIV_ID = RespInspVisual.RIV_ID,
                 IPV_ID = RespInspVisual.IPV_ID,
                 ITI_ID = RespInspVisual.ITI_ID,
                 RIV_STATUS = RespInspVisual.RIV_STATUS,

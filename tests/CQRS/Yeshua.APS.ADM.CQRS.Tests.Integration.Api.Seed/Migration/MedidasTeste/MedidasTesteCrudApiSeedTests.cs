@@ -53,6 +53,7 @@ public partial class MedidasTesteCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["MDT_ID"] = 1,
             ["MDT_DESC"] = ApiTestData.Text("MedidasTeste MDT_DESC", 10),
             ["MDT_VALOR_ESPERADO"] = 10.5m,
             ["MDT_ENCONTRADO"] = 10.5m,
@@ -73,6 +74,7 @@ public partial class MedidasTesteCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["MDT_ID"] = 2;
         payload["MDT_DESC"] = ApiTestData.Text("MedidasTeste MDT_DESC Update", 10);
         payload["MDT_VALOR_ESPERADO"] = 20.5m;
         payload["MDT_ENCONTRADO"] = 20.5m;

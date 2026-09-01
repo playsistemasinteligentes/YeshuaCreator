@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_IndicadoresCustom(Command.Read.T_IndicadoresReadCommand command, ref DataPagination<T_IndicadoresDTO> result, ref bool handled);
+
         public DataPagination<T_IndicadoresDTO> getT_Indicadores(ICommandRead command )
          {
             if (command is Command.Read.T_IndicadoresReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_IndicadoresDTO> getT_Indicadores(Command.Read.T_IndicadoresReadCommand command )
         {
+            DataPagination<T_IndicadoresDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_IndicadoresCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_IndicadoresQuery(command );
 
                 var itens = _unitOfWork.Query<T_IndicadoresDTO>(query.Query,query.Parameters);

@@ -1,0 +1,191 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
+// </yeshua>
+
+using Repositorio.Outputs;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IRepository.Read
+{
+    public partial interface IMovimentoEstoqueReadRepository
+    {
+        public DataPagination<MovimentoEstoqueDTO> getMovimentoEstoque(ICommandRead command );
+        public IEnumerable<MovimentoEstoqueOrderIdDTO> getMovimentoEstoqueReadFKOrderId(object command );
+        public IEnumerable<MovimentoEstoqueTipoDTO> getMovimentoEstoqueReadFKTipo(object command );
+        public IEnumerable<MovimentoEstoqueTurnoIdDTO> getMovimentoEstoqueReadFKTurnoId(object command );
+        public IEnumerable<MovimentoEstoqueTurmaIdDTO> getMovimentoEstoqueReadFKTurmaId(object command );
+        public IEnumerable<MovimentoEstoqueOcorrenciaIdDTO> getMovimentoEstoqueReadFKOcorrenciaId(object command );
+        public IEnumerable<MovimentoEstoqueCLI_IDDTO> getMovimentoEstoqueReadFKCLI_ID(object command );
+        public IEnumerable<MovimentoEstoqueTenantIDDTO> getMovimentoEstoqueReadFKTenantID(object command );
+        public IEnumerable<MovimentoEstoqueUserIdDTO> getMovimentoEstoqueReadFKUserId(object command );
+        public bool ExistsById(int value );
+        public bool ExistsByProdutoId(string value );
+        public bool ExistsByOrderId(string value );
+        public bool ExistsByTipo(string value );
+        public bool ExistsByTurnoId(string value );
+        public bool ExistsByTurmaId(string value );
+        public bool ExistsByQuantidade(Decimal value );
+        public bool ExistsByMOV_PESO_UNITARIO(Decimal value );
+        public bool ExistsByDataHoraCriacao(DateTime value );
+        public bool ExistsByDataHoraEmissao(DateTime value );
+        public bool ExistsByDiaTurma(string value );
+        public bool ExistsByLote(string value );
+        public bool ExistsBySubLote(string value );
+        public bool ExistsByMaquinaId(string value );
+        public bool ExistsByUSE_ID(int value );
+        public bool ExistsByObservacao(string value );
+        public bool ExistsByOcorrenciaId(string value );
+        public bool ExistsByArmazem(string value );
+        public bool ExistsByEndereco(string value );
+        public bool ExistsByEstorno(string value );
+        public bool ExistsBySequenciaTransformacao(int value );
+        public bool ExistsBySequenciaRepeticao(int value );
+        public bool ExistsByObsOpParcial(string value );
+        public bool ExistsByOcoIdOpParcial(string value );
+        public bool ExistsByMOV_ID_INTEGRACAO(string value );
+        public bool ExistsByMOV_ID_INTEGRACAO_ERP(string value );
+        public bool ExistsByCAR_ID(string value );
+        public bool ExistsByMOV_ID_DESTINO(int value );
+        public bool ExistsByPRO_ID_DESTINO(string value );
+        public bool ExistsByMOV_LOTE_DESTINO(string value );
+        public bool ExistsByMOV_SUB_LOTE_DESTINO(string value );
+        public bool ExistsByMOV_ID_ORIGEM(int value );
+        public bool ExistsByPRO_ID_ORIGEM(string value );
+        public bool ExistsByMOV_LOTE_ORIGEM(string value );
+        public bool ExistsByMOV_SUB_LOTE_ORIGEM(string value );
+        public bool ExistsByMOV_TYPE(int value );
+        public bool ExistsByMOV_DOC(string value );
+        public bool ExistsByMOV_APROVEITAMENTO(string value );
+        public bool ExistsByMOV_RETIDO(string value );
+        public bool ExistsByMOV_VINCOS_ONDULADEIRA(string value );
+        public bool ExistsByBOL_ID(string value );
+        public bool ExistsByORD_ID_ORIGEM(string value );
+        public bool ExistsByCOR_SEQUENCIA(int value );
+        public bool ExistsByVER_ID(int value );
+        public bool ExistsByMOV_TIPO_CUSTO(string value );
+        public bool ExistsByMOV_GRUPO_CONTABIL(string value );
+        public bool ExistsByFOR_ID(string value );
+        public bool ExistsByCLI_ID(string value );
+        public bool ExistsByTenantID(int value );
+        public bool ExistsByDeleted(bool value );
+        public bool ExistsByChanged(DateTime value );
+        public bool ExistsByUserId(int value );
+        public MovimentoEstoqueDTO FirstById(int value );
+        public MovimentoEstoqueDTO FirstByProdutoId(string value );
+        public MovimentoEstoqueDTO FirstByOrderId(string value );
+        public MovimentoEstoqueDTO FirstByTipo(string value );
+        public MovimentoEstoqueDTO FirstByTurnoId(string value );
+        public MovimentoEstoqueDTO FirstByTurmaId(string value );
+        public MovimentoEstoqueDTO FirstByQuantidade(Decimal value );
+        public MovimentoEstoqueDTO FirstByMOV_PESO_UNITARIO(Decimal value );
+        public MovimentoEstoqueDTO FirstByDataHoraCriacao(DateTime value );
+        public MovimentoEstoqueDTO FirstByDataHoraEmissao(DateTime value );
+        public MovimentoEstoqueDTO FirstByDiaTurma(string value );
+        public MovimentoEstoqueDTO FirstByLote(string value );
+        public MovimentoEstoqueDTO FirstBySubLote(string value );
+        public MovimentoEstoqueDTO FirstByMaquinaId(string value );
+        public MovimentoEstoqueDTO FirstByUSE_ID(int value );
+        public MovimentoEstoqueDTO FirstByObservacao(string value );
+        public MovimentoEstoqueDTO FirstByOcorrenciaId(string value );
+        public MovimentoEstoqueDTO FirstByArmazem(string value );
+        public MovimentoEstoqueDTO FirstByEndereco(string value );
+        public MovimentoEstoqueDTO FirstByEstorno(string value );
+        public MovimentoEstoqueDTO FirstBySequenciaTransformacao(int value );
+        public MovimentoEstoqueDTO FirstBySequenciaRepeticao(int value );
+        public MovimentoEstoqueDTO FirstByObsOpParcial(string value );
+        public MovimentoEstoqueDTO FirstByOcoIdOpParcial(string value );
+        public MovimentoEstoqueDTO FirstByMOV_ID_INTEGRACAO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_ID_INTEGRACAO_ERP(string value );
+        public MovimentoEstoqueDTO FirstByCAR_ID(string value );
+        public MovimentoEstoqueDTO FirstByMOV_ID_DESTINO(int value );
+        public MovimentoEstoqueDTO FirstByPRO_ID_DESTINO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_LOTE_DESTINO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_SUB_LOTE_DESTINO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_ID_ORIGEM(int value );
+        public MovimentoEstoqueDTO FirstByPRO_ID_ORIGEM(string value );
+        public MovimentoEstoqueDTO FirstByMOV_LOTE_ORIGEM(string value );
+        public MovimentoEstoqueDTO FirstByMOV_SUB_LOTE_ORIGEM(string value );
+        public MovimentoEstoqueDTO FirstByMOV_TYPE(int value );
+        public MovimentoEstoqueDTO FirstByMOV_DOC(string value );
+        public MovimentoEstoqueDTO FirstByMOV_APROVEITAMENTO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_RETIDO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_VINCOS_ONDULADEIRA(string value );
+        public MovimentoEstoqueDTO FirstByBOL_ID(string value );
+        public MovimentoEstoqueDTO FirstByORD_ID_ORIGEM(string value );
+        public MovimentoEstoqueDTO FirstByCOR_SEQUENCIA(int value );
+        public MovimentoEstoqueDTO FirstByVER_ID(int value );
+        public MovimentoEstoqueDTO FirstByMOV_TIPO_CUSTO(string value );
+        public MovimentoEstoqueDTO FirstByMOV_GRUPO_CONTABIL(string value );
+        public MovimentoEstoqueDTO FirstByFOR_ID(string value );
+        public MovimentoEstoqueDTO FirstByCLI_ID(string value );
+        public MovimentoEstoqueDTO FirstByTenantID(int value );
+        public MovimentoEstoqueDTO FirstByDeleted(bool value );
+        public MovimentoEstoqueDTO FirstByChanged(DateTime value );
+        public MovimentoEstoqueDTO FirstByUserId(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllById(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByProdutoId(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByOrderId(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByTipo(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByTurnoId(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByTurmaId(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByQuantidade(Decimal value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_PESO_UNITARIO(Decimal value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByDataHoraCriacao(DateTime value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByDataHoraEmissao(DateTime value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByDiaTurma(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByLote(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllBySubLote(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMaquinaId(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByUSE_ID(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByObservacao(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByOcorrenciaId(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByArmazem(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByEndereco(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByEstorno(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllBySequenciaTransformacao(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllBySequenciaRepeticao(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByObsOpParcial(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByOcoIdOpParcial(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_ID_INTEGRACAO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_ID_INTEGRACAO_ERP(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByCAR_ID(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_ID_DESTINO(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByPRO_ID_DESTINO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_LOTE_DESTINO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_SUB_LOTE_DESTINO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_ID_ORIGEM(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByPRO_ID_ORIGEM(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_LOTE_ORIGEM(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_SUB_LOTE_ORIGEM(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_TYPE(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_DOC(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_APROVEITAMENTO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_RETIDO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_VINCOS_ONDULADEIRA(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByBOL_ID(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByORD_ID_ORIGEM(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByCOR_SEQUENCIA(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByVER_ID(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_TIPO_CUSTO(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByMOV_GRUPO_CONTABIL(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByFOR_ID(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByCLI_ID(string value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByTenantID(int value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByDeleted(bool value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByChanged(DateTime value );
+        public IEnumerable<MovimentoEstoqueDTO> GetAllByUserId(int value );
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

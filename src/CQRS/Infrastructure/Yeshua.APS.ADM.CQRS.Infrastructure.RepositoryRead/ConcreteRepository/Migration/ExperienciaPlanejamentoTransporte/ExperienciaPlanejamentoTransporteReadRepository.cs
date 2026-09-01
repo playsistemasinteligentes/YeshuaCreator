@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetExperienciaPlanejamentoTransporteCustom(Command.Read.ExperienciaPlanejamentoTransporteReadCommand command, ref DataPagination<ExperienciaPlanejamentoTransporteDTO> result, ref bool handled);
+
         public DataPagination<ExperienciaPlanejamentoTransporteDTO> getExperienciaPlanejamentoTransporte(ICommandRead command )
          {
             if (command is Command.Read.ExperienciaPlanejamentoTransporteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ExperienciaPlanejamentoTransporteDTO> getExperienciaPlanejamentoTransporte(Command.Read.ExperienciaPlanejamentoTransporteReadCommand command )
         {
+            DataPagination<ExperienciaPlanejamentoTransporteDTO> customResult = null;
+            var customHandled = false;
+            TryGetExperienciaPlanejamentoTransporteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ExperienciaPlanejamentoTransporteQuery(command );
 
                 var itens = _unitOfWork.Query<ExperienciaPlanejamentoTransporteDTO>(query.Query,query.Parameters);

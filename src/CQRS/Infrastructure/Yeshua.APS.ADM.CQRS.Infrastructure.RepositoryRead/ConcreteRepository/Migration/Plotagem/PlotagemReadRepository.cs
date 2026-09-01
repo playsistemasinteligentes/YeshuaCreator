@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPlotagemCustom(Command.Read.PlotagemReadCommand command, ref DataPagination<PlotagemDTO> result, ref bool handled);
+
         public DataPagination<PlotagemDTO> getPlotagem(ICommandRead command )
          {
             if (command is Command.Read.PlotagemReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PlotagemDTO> getPlotagem(Command.Read.PlotagemReadCommand command )
         {
+            DataPagination<PlotagemDTO> customResult = null;
+            var customHandled = false;
+            TryGetPlotagemCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PlotagemQuery(command );
 
                 var itens = _unitOfWork.Query<PlotagemDTO>(query.Query,query.Parameters);

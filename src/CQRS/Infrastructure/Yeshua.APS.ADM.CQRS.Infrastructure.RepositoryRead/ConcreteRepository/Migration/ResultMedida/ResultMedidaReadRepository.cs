@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetResultMedidaCustom(Command.Read.ResultMedidaReadCommand command, ref DataPagination<ResultMedidaDTO> result, ref bool handled);
+
         public DataPagination<ResultMedidaDTO> getResultMedida(ICommandRead command )
          {
             if (command is Command.Read.ResultMedidaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ResultMedidaDTO> getResultMedida(Command.Read.ResultMedidaReadCommand command )
         {
+            DataPagination<ResultMedidaDTO> customResult = null;
+            var customHandled = false;
+            TryGetResultMedidaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ResultMedidaQuery(command );
 
                 var itens = _unitOfWork.Query<ResultMedidaDTO>(query.Query,query.Parameters);

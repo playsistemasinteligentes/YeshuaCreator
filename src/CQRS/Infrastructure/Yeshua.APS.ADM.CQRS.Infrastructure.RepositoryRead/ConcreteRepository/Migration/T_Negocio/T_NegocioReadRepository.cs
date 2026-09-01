@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_NegocioCustom(Command.Read.T_NegocioReadCommand command, ref DataPagination<T_NegocioDTO> result, ref bool handled);
+
         public DataPagination<T_NegocioDTO> getT_Negocio(ICommandRead command )
          {
             if (command is Command.Read.T_NegocioReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_NegocioDTO> getT_Negocio(Command.Read.T_NegocioReadCommand command )
         {
+            DataPagination<T_NegocioDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_NegocioCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_NegocioQuery(command );
 
                 var itens = _unitOfWork.Query<T_NegocioDTO>(query.Query,query.Parameters);

@@ -1,4 +1,14 @@
-﻿
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
                 using System;
                 using Dominio.TiposPrimitivos;
                 using System.Collections.Generic;
@@ -8,15 +18,51 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class MDFeEncerramentoDecorator : IMDFeEncerramentoEntity
+                    public static class MDFeEncerramentoTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong MDFeId = 1UL << 1;
+            public const ulong ChaveAcesso = 1UL << 2;
+            public const ulong UfCarregamento = 1UL << 3;
+            public const ulong UfDescarregamento = 1UL << 4;
+            public const ulong PlacaVeiculo = 1UL << 5;
+            public const ulong SolicitadoEm = 1UL << 6;
+            public const ulong AutorizadoEm = 1UL << 7;
+            public const ulong Protocolo = 1UL << 8;
+            public const ulong CodigoRetorno = 1UL << 9;
+            public const ulong MensagemRetorno = 1UL << 10;
+            public const ulong TenantID = 1UL << 11;
+            public const ulong Deleted = 1UL << 12;
+            public const ulong Changed = 1UL << 13;
+            public const ulong UserId = 1UL << 14;
+        }
+
+        public partial class MDFeEncerramentoDecorator : IMDFeEncerramentoEntity
 {
 
                         private readonly IMDFeEncerramentoEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public MDFeEncerramentoDecorator(IMDFeEncerramentoEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public MDFeEncerramentoDecorator(
+                            IMDFeEncerramentoEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public int? Id
                                     {
@@ -25,8 +71,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -38,8 +85,9 @@
                                         {
                                             if (_inner.MDFeId != value)
                                             {
-                                                _logger.Info($"Propriedade MDFeId: antes={_inner.MDFeId}, depois={value}");
                                                 _inner.MDFeId = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.MDFeId) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "MDFeId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -51,8 +99,9 @@
                                         {
                                             if (_inner.ChaveAcesso != value)
                                             {
-                                                _logger.Info($"Propriedade ChaveAcesso: antes={_inner.ChaveAcesso}, depois={value}");
                                                 _inner.ChaveAcesso = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.ChaveAcesso) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "ChaveAcesso", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -64,8 +113,9 @@
                                         {
                                             if (_inner.UfCarregamento != value)
                                             {
-                                                _logger.Info($"Propriedade UfCarregamento: antes={_inner.UfCarregamento}, depois={value}");
                                                 _inner.UfCarregamento = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.UfCarregamento) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "UfCarregamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -77,8 +127,9 @@
                                         {
                                             if (_inner.UfDescarregamento != value)
                                             {
-                                                _logger.Info($"Propriedade UfDescarregamento: antes={_inner.UfDescarregamento}, depois={value}");
                                                 _inner.UfDescarregamento = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.UfDescarregamento) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "UfDescarregamento", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -90,8 +141,9 @@
                                         {
                                             if (_inner.PlacaVeiculo != value)
                                             {
-                                                _logger.Info($"Propriedade PlacaVeiculo: antes={_inner.PlacaVeiculo}, depois={value}");
                                                 _inner.PlacaVeiculo = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.PlacaVeiculo) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "PlacaVeiculo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -103,8 +155,9 @@
                                         {
                                             if (_inner.SolicitadoEm != value)
                                             {
-                                                _logger.Info($"Propriedade SolicitadoEm: antes={_inner.SolicitadoEm}, depois={value}");
                                                 _inner.SolicitadoEm = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.SolicitadoEm) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "SolicitadoEm", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -116,8 +169,9 @@
                                         {
                                             if (_inner.AutorizadoEm != value)
                                             {
-                                                _logger.Info($"Propriedade AutorizadoEm: antes={_inner.AutorizadoEm}, depois={value}");
                                                 _inner.AutorizadoEm = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.AutorizadoEm) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "AutorizadoEm", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -129,8 +183,9 @@
                                         {
                                             if (_inner.Protocolo != value)
                                             {
-                                                _logger.Info($"Propriedade Protocolo: antes={_inner.Protocolo}, depois={value}");
                                                 _inner.Protocolo = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.Protocolo) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "Protocolo", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -142,8 +197,9 @@
                                         {
                                             if (_inner.CodigoRetorno != value)
                                             {
-                                                _logger.Info($"Propriedade CodigoRetorno: antes={_inner.CodigoRetorno}, depois={value}");
                                                 _inner.CodigoRetorno = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.CodigoRetorno) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "CodigoRetorno", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -155,8 +211,9 @@
                                         {
                                             if (_inner.MensagemRetorno != value)
                                             {
-                                                _logger.Info($"Propriedade MensagemRetorno: antes={_inner.MensagemRetorno}, depois={value}");
                                                 _inner.MensagemRetorno = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.MensagemRetorno) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "MensagemRetorno", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -168,8 +225,9 @@
                                         {
                                             if (_inner.TenantID != value)
                                             {
-                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
                                                 _inner.TenantID = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -181,8 +239,9 @@
                                         {
                                             if (_inner.Deleted != value)
                                             {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
                                                 _inner.Deleted = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -194,8 +253,9 @@
                                         {
                                             if (_inner.Changed != value)
                                             {
-                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
                                                 _inner.Changed = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -207,8 +267,9 @@
                                         {
                                             if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
                                                 _inner.UserId = value;
+                                                if ((_trackingMask & MDFeEncerramentoTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("MDFeEncerramento", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

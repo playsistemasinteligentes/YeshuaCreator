@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyConfigArctetureCustom(Command.Read.yConfigArctetureReadCommand command, ref DataPagination<yConfigArctetureDTO> result, ref bool handled);
+
         public DataPagination<yConfigArctetureDTO> getyConfigArcteture(ICommandRead command )
          {
             if (command is Command.Read.yConfigArctetureReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yConfigArctetureDTO> getyConfigArcteture(Command.Read.yConfigArctetureReadCommand command )
         {
+            DataPagination<yConfigArctetureDTO> customResult = null;
+            var customHandled = false;
+            TryGetyConfigArctetureCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yConfigArctetureQuery(command );
 
                 var itens = _unitOfWork.Query<yConfigArctetureDTO>(query.Query,query.Parameters);

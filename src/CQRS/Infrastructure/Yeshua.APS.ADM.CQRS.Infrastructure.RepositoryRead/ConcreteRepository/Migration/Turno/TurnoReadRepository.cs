@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTurnoCustom(Command.Read.TurnoReadCommand command, ref DataPagination<TurnoDTO> result, ref bool handled);
+
         public DataPagination<TurnoDTO> getTurno(ICommandRead command )
          {
             if (command is Command.Read.TurnoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TurnoDTO> getTurno(Command.Read.TurnoReadCommand command )
         {
+            DataPagination<TurnoDTO> customResult = null;
+            var customHandled = false;
+            TryGetTurnoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TurnoQuery(command );
 
                 var itens = _unitOfWork.Query<TurnoDTO>(query.Query,query.Parameters);

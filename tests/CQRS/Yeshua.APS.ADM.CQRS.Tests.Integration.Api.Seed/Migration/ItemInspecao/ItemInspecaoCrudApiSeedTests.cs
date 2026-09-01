@@ -53,6 +53,7 @@ public partial class ItemInspecaoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["ITI_ID"] = 1,
             ["ITI_DESC"] = ApiTestData.Text("ItemInspecao ITI_DESC", 80),
         };
     }
@@ -70,6 +71,7 @@ public partial class ItemInspecaoCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["ITI_ID"] = 2;
         payload["ITI_DESC"] = ApiTestData.Text("ItemInspecao ITI_DESC Update", 80);
         return payload;
     }

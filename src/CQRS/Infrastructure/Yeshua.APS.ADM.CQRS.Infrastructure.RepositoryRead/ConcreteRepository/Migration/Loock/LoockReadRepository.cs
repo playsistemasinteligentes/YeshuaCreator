@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetLoockCustom(Command.Read.LoockReadCommand command, ref DataPagination<LoockDTO> result, ref bool handled);
+
         public DataPagination<LoockDTO> getLoock(ICommandRead command )
          {
             if (command is Command.Read.LoockReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<LoockDTO> getLoock(Command.Read.LoockReadCommand command )
         {
+            DataPagination<LoockDTO> customResult = null;
+            var customHandled = false;
+            TryGetLoockCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.LoockQuery(command );
 
                 var itens = _unitOfWork.Query<LoockDTO>(query.Query,query.Parameters);

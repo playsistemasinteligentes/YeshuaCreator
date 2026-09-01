@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCargaPrevistaCustom(Command.Read.CargaPrevistaReadCommand command, ref DataPagination<CargaPrevistaDTO> result, ref bool handled);
+
         public DataPagination<CargaPrevistaDTO> getCargaPrevista(ICommandRead command )
          {
             if (command is Command.Read.CargaPrevistaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CargaPrevistaDTO> getCargaPrevista(Command.Read.CargaPrevistaReadCommand command )
         {
+            DataPagination<CargaPrevistaDTO> customResult = null;
+            var customHandled = false;
+            TryGetCargaPrevistaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CargaPrevistaQuery(command );
 
                 var itens = _unitOfWork.Query<CargaPrevistaDTO>(query.Query,query.Parameters);

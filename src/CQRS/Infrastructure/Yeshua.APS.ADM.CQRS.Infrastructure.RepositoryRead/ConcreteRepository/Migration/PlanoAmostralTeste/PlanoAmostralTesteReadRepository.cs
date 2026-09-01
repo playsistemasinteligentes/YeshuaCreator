@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPlanoAmostralTesteCustom(Command.Read.PlanoAmostralTesteReadCommand command, ref DataPagination<PlanoAmostralTesteDTO> result, ref bool handled);
+
         public DataPagination<PlanoAmostralTesteDTO> getPlanoAmostralTeste(ICommandRead command )
          {
             if (command is Command.Read.PlanoAmostralTesteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PlanoAmostralTesteDTO> getPlanoAmostralTeste(Command.Read.PlanoAmostralTesteReadCommand command )
         {
+            DataPagination<PlanoAmostralTesteDTO> customResult = null;
+            var customHandled = false;
+            TryGetPlanoAmostralTesteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PlanoAmostralTesteQuery(command );
 
                 var itens = _unitOfWork.Query<PlanoAmostralTesteDTO>(query.Query,query.Parameters);

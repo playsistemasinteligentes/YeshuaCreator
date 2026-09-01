@@ -53,6 +53,7 @@ public partial class RespInspVisualCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["RIV_ID"] = 1,
             ["IPV_ID"] = 1,
             ["ITI_ID"] = 1,
             ["RIV_STATUS"] = ApiTestData.Text("RespInspVisual RIV_STATUS", 15),
@@ -72,6 +73,7 @@ public partial class RespInspVisualCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["RIV_ID"] = 2;
         payload["IPV_ID"] = 2;
         payload["ITI_ID"] = 2;
         payload["RIV_STATUS"] = ApiTestData.Text("RespInspVisual RIV_STATUS Update", 15);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetSemaforoCustom(Command.Read.SemaforoReadCommand command, ref DataPagination<SemaforoDTO> result, ref bool handled);
+
         public DataPagination<SemaforoDTO> getSemaforo(ICommandRead command )
          {
             if (command is Command.Read.SemaforoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<SemaforoDTO> getSemaforo(Command.Read.SemaforoReadCommand command )
         {
+            DataPagination<SemaforoDTO> customResult = null;
+            var customHandled = false;
+            TryGetSemaforoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.SemaforoQuery(command );
 
                 var itens = _unitOfWork.Query<SemaforoDTO>(query.Query,query.Parameters);

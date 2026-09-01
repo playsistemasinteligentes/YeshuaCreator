@@ -1,4 +1,14 @@
-﻿
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
                 using System;
                 using Dominio.TiposPrimitivos;
                 using System.Collections.Generic;
@@ -8,15 +18,58 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class yOutboxDecorator : IyOutboxEntity
+                    public static class yOutboxTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong MessageId = 1UL << 1;
+            public const ulong Type = 1UL << 2;
+            public const ulong EntityType = 1UL << 3;
+            public const ulong EntityId = 1UL << 4;
+            public const ulong CorrelationId = 1UL << 5;
+            public const ulong Payload = 1UL << 6;
+            public const ulong Status = 1UL << 7;
+            public const ulong TransportType = 1UL << 8;
+            public const ulong TransportData = 1UL << 9;
+            public const ulong CreatedAt = 1UL << 10;
+            public const ulong SentAt = 1UL << 11;
+            public const ulong RetryCount = 1UL << 12;
+            public const ulong LastError = 1UL << 13;
+            public const ulong ProcessingAt = 1UL << 14;
+            public const ulong NextAttemptAt = 1UL << 15;
+            public const ulong SagaId = 1UL << 16;
+            public const ulong SagaStepId = 1UL << 17;
+            public const ulong TenantID = 1UL << 18;
+            public const ulong Deleted = 1UL << 19;
+            public const ulong Changed = 1UL << 20;
+            public const ulong UserId = 1UL << 21;
+        }
+
+        public partial class yOutboxDecorator : IyOutboxEntity
 {
 
                         private readonly IyOutboxEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public yOutboxDecorator(IyOutboxEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public yOutboxDecorator(
+                            IyOutboxEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public int? Id
                                     {
@@ -25,8 +78,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -38,8 +92,9 @@
                                         {
                                             if (_inner.MessageId != value)
                                             {
-                                                _logger.Info($"Propriedade MessageId: antes={_inner.MessageId}, depois={value}");
                                                 _inner.MessageId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.MessageId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "MessageId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -51,8 +106,9 @@
                                         {
                                             if (_inner.Type != value)
                                             {
-                                                _logger.Info($"Propriedade Type: antes={_inner.Type}, depois={value}");
                                                 _inner.Type = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.Type) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "Type", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -64,8 +120,9 @@
                                         {
                                             if (_inner.EntityType != value)
                                             {
-                                                _logger.Info($"Propriedade EntityType: antes={_inner.EntityType}, depois={value}");
                                                 _inner.EntityType = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.EntityType) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "EntityType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -77,8 +134,9 @@
                                         {
                                             if (_inner.EntityId != value)
                                             {
-                                                _logger.Info($"Propriedade EntityId: antes={_inner.EntityId}, depois={value}");
                                                 _inner.EntityId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.EntityId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "EntityId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -90,8 +148,9 @@
                                         {
                                             if (_inner.CorrelationId != value)
                                             {
-                                                _logger.Info($"Propriedade CorrelationId: antes={_inner.CorrelationId}, depois={value}");
                                                 _inner.CorrelationId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.CorrelationId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "CorrelationId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -103,8 +162,9 @@
                                         {
                                             if (_inner.Payload != value)
                                             {
-                                                _logger.Info($"Propriedade Payload: antes={_inner.Payload}, depois={value}");
                                                 _inner.Payload = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.Payload) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "Payload", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -116,8 +176,9 @@
                                         {
                                             if (_inner.Status != value)
                                             {
-                                                _logger.Info($"Propriedade Status: antes={_inner.Status}, depois={value}");
                                                 _inner.Status = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.Status) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "Status", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -129,8 +190,9 @@
                                         {
                                             if (_inner.TransportType != value)
                                             {
-                                                _logger.Info($"Propriedade TransportType: antes={_inner.TransportType}, depois={value}");
                                                 _inner.TransportType = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.TransportType) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "TransportType", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -142,8 +204,9 @@
                                         {
                                             if (_inner.TransportData != value)
                                             {
-                                                _logger.Info($"Propriedade TransportData: antes={_inner.TransportData}, depois={value}");
                                                 _inner.TransportData = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.TransportData) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "TransportData", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -155,8 +218,9 @@
                                         {
                                             if (_inner.CreatedAt != value)
                                             {
-                                                _logger.Info($"Propriedade CreatedAt: antes={_inner.CreatedAt}, depois={value}");
                                                 _inner.CreatedAt = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.CreatedAt) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "CreatedAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -168,8 +232,9 @@
                                         {
                                             if (_inner.SentAt != value)
                                             {
-                                                _logger.Info($"Propriedade SentAt: antes={_inner.SentAt}, depois={value}");
                                                 _inner.SentAt = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.SentAt) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "SentAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -181,8 +246,9 @@
                                         {
                                             if (_inner.RetryCount != value)
                                             {
-                                                _logger.Info($"Propriedade RetryCount: antes={_inner.RetryCount}, depois={value}");
                                                 _inner.RetryCount = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.RetryCount) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "RetryCount", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -194,8 +260,9 @@
                                         {
                                             if (_inner.LastError != value)
                                             {
-                                                _logger.Info($"Propriedade LastError: antes={_inner.LastError}, depois={value}");
                                                 _inner.LastError = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.LastError) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "LastError", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -207,8 +274,9 @@
                                         {
                                             if (_inner.ProcessingAt != value)
                                             {
-                                                _logger.Info($"Propriedade ProcessingAt: antes={_inner.ProcessingAt}, depois={value}");
                                                 _inner.ProcessingAt = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.ProcessingAt) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "ProcessingAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -220,8 +288,9 @@
                                         {
                                             if (_inner.NextAttemptAt != value)
                                             {
-                                                _logger.Info($"Propriedade NextAttemptAt: antes={_inner.NextAttemptAt}, depois={value}");
                                                 _inner.NextAttemptAt = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.NextAttemptAt) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "NextAttemptAt", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -233,8 +302,9 @@
                                         {
                                             if (_inner.SagaId != value)
                                             {
-                                                _logger.Info($"Propriedade SagaId: antes={_inner.SagaId}, depois={value}");
                                                 _inner.SagaId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.SagaId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "SagaId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -246,8 +316,9 @@
                                         {
                                             if (_inner.SagaStepId != value)
                                             {
-                                                _logger.Info($"Propriedade SagaStepId: antes={_inner.SagaStepId}, depois={value}");
                                                 _inner.SagaStepId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.SagaStepId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "SagaStepId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -259,8 +330,9 @@
                                         {
                                             if (_inner.TenantID != value)
                                             {
-                                                _logger.Info($"Propriedade TenantID: antes={_inner.TenantID}, depois={value}");
                                                 _inner.TenantID = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.TenantID) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "TenantID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -272,8 +344,9 @@
                                         {
                                             if (_inner.Deleted != value)
                                             {
-                                                _logger.Info($"Propriedade Deleted: antes={_inner.Deleted}, depois={value}");
                                                 _inner.Deleted = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.Deleted) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "Deleted", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -285,8 +358,9 @@
                                         {
                                             if (_inner.Changed != value)
                                             {
-                                                _logger.Info($"Propriedade Changed: antes={_inner.Changed}, depois={value}");
                                                 _inner.Changed = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.Changed) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "Changed", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -298,8 +372,9 @@
                                         {
                                             if (_inner.UserId != value)
                                             {
-                                                _logger.Info($"Propriedade UserId: antes={_inner.UserId}, depois={value}");
                                                 _inner.UserId = value;
+                                                if ((_trackingMask & yOutboxTrackingFields.UserId) != 0UL)
+                                                    _logger.DomainValueChanged("yOutbox", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

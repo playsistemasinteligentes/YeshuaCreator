@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirResultMedidaQuery(IResultMedidaEntity ResultMedida)
         {
-            this.Query = $@" INSERT INTO ResultMedida (RL_ID, MDT_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RL_ID, @MDT_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO ResultMedida (RSM_ID, RL_ID, MDT_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RSM_ID, @RL_ID, @MDT_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                RSM_ID = ResultMedida.RSM_ID,
                 RL_ID = ResultMedida.RL_ID,
                 MDT_ID = ResultMedida.MDT_ID,
                 TenantID = _executionContext.TenantID,

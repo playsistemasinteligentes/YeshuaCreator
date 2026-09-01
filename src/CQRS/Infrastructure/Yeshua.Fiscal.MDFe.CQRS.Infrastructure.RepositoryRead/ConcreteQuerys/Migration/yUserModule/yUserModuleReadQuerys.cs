@@ -1,4 +1,14 @@
-﻿using Shered.DB;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
+// </yeshua>
+
+using Shered.DB;
 using System.Data.SqlTypes;
 using Command.Read;
 using IQuery.Read;
@@ -267,7 +277,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -285,7 +295,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -303,7 +313,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -321,7 +331,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -339,7 +349,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -357,7 +367,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;
@@ -375,7 +385,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yUserModule ";
+            this.Query = $"SELECT Id, ModuleId, UserId, ValidUntil, TenantID, Deleted, Changed FROM yUserModule ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"TenantID = @TenantID");
  dict["Deleted"] = 0;

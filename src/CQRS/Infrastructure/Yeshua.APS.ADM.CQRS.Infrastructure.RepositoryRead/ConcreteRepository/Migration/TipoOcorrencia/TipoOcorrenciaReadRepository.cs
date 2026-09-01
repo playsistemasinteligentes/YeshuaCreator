@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoOcorrenciaCustom(Command.Read.TipoOcorrenciaReadCommand command, ref DataPagination<TipoOcorrenciaDTO> result, ref bool handled);
+
         public DataPagination<TipoOcorrenciaDTO> getTipoOcorrencia(ICommandRead command )
          {
             if (command is Command.Read.TipoOcorrenciaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoOcorrenciaDTO> getTipoOcorrencia(Command.Read.TipoOcorrenciaReadCommand command )
         {
+            DataPagination<TipoOcorrenciaDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoOcorrenciaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoOcorrenciaQuery(command );
 
                 var itens = _unitOfWork.Query<TipoOcorrenciaDTO>(query.Query,query.Parameters);

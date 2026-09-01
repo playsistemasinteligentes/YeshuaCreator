@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMovimentoEstoqueCustom(Command.Read.MovimentoEstoqueReadCommand command, ref DataPagination<MovimentoEstoqueDTO> result, ref bool handled);
+
         public DataPagination<MovimentoEstoqueDTO> getMovimentoEstoque(ICommandRead command )
          {
             if (command is Command.Read.MovimentoEstoqueReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MovimentoEstoqueDTO> getMovimentoEstoque(Command.Read.MovimentoEstoqueReadCommand command )
         {
+            DataPagination<MovimentoEstoqueDTO> customResult = null;
+            var customHandled = false;
+            TryGetMovimentoEstoqueCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MovimentoEstoqueQuery(command );
 
                 var itens = _unitOfWork.Query<MovimentoEstoqueDTO>(query.Query,query.Parameters);

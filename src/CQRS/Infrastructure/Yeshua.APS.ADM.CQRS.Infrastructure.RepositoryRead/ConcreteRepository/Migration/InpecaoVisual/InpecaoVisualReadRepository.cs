@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetInpecaoVisualCustom(Command.Read.InpecaoVisualReadCommand command, ref DataPagination<InpecaoVisualDTO> result, ref bool handled);
+
         public DataPagination<InpecaoVisualDTO> getInpecaoVisual(ICommandRead command )
          {
             if (command is Command.Read.InpecaoVisualReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<InpecaoVisualDTO> getInpecaoVisual(Command.Read.InpecaoVisualReadCommand command )
         {
+            DataPagination<InpecaoVisualDTO> customResult = null;
+            var customHandled = false;
+            TryGetInpecaoVisualCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.InpecaoVisualQuery(command );
 
                 var itens = _unitOfWork.Query<InpecaoVisualDTO>(query.Query,query.Parameters);

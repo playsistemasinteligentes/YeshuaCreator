@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCenarioPlanejamentoTransporteCustom(Command.Read.CenarioPlanejamentoTransporteReadCommand command, ref DataPagination<CenarioPlanejamentoTransporteDTO> result, ref bool handled);
+
         public DataPagination<CenarioPlanejamentoTransporteDTO> getCenarioPlanejamentoTransporte(ICommandRead command )
          {
             if (command is Command.Read.CenarioPlanejamentoTransporteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CenarioPlanejamentoTransporteDTO> getCenarioPlanejamentoTransporte(Command.Read.CenarioPlanejamentoTransporteReadCommand command )
         {
+            DataPagination<CenarioPlanejamentoTransporteDTO> customResult = null;
+            var customHandled = false;
+            TryGetCenarioPlanejamentoTransporteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CenarioPlanejamentoTransporteQuery(command );
 
                 var itens = _unitOfWork.Query<CenarioPlanejamentoTransporteDTO>(query.Query,query.Parameters);

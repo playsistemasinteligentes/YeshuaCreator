@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetClienteCustom(Command.Read.ClienteReadCommand command, ref DataPagination<ClienteDTO> result, ref bool handled);
+
         public DataPagination<ClienteDTO> getCliente(ICommandRead command )
          {
             if (command is Command.Read.ClienteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ClienteDTO> getCliente(Command.Read.ClienteReadCommand command )
         {
+            DataPagination<ClienteDTO> customResult = null;
+            var customHandled = false;
+            TryGetClienteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ClienteQuery(command );
 
                 var itens = _unitOfWork.Query<ClienteDTO>(query.Query,query.Parameters);

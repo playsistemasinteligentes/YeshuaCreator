@@ -75,6 +75,7 @@ public partial class T_PREFERENCIASCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["PRE_ID"] = 1,
             ["PRE_DESCRICAO"] = ApiTestData.Text("T_PREFERENCIAS PRE_DESCRICAO", 80),
             ["PRE_NAMESPACE"] = ApiTestData.Text("T_PREFERENCIAS PRE_NAMESPACE", 80),
             ["PRE_TIPO"] = ApiTestData.Text("T_PREFERENCIAS PRE_TIPO", 50),
@@ -97,6 +98,7 @@ public partial class T_PREFERENCIASCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["PRE_ID"] = 2;
         payload["PRE_DESCRICAO"] = ApiTestData.Text("T_PREFERENCIAS PRE_DESCRICAO Update", 80);
         payload["PRE_NAMESPACE"] = ApiTestData.Text("T_PREFERENCIAS PRE_NAMESPACE Update", 80);
         payload["PRE_TIPO"] = ApiTestData.Text("T_PREFERENCIAS PRE_TIPO Update", 50);

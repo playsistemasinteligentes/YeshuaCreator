@@ -75,6 +75,7 @@ public partial class ResultMedidaCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["RSM_ID"] = 1,
             ["RL_ID"] = 1,
             ["MDT_ID"] = 1,
         };
@@ -93,6 +94,7 @@ public partial class ResultMedidaCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["RSM_ID"] = 2;
         payload["RL_ID"] = 2;
         payload["MDT_ID"] = 2;
         return payload;

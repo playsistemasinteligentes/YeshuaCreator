@@ -75,6 +75,7 @@ public partial class LaudoTesteFisicoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["LTF_ID"] = 1,
             ["LTF_EMISSAO"] = DateTime.UtcNow,
             ["LTF_VALOR"] = 10.5m,
             ["LTF_OBS"] = ApiTestData.Text("LaudoTesteFisico LTF_OBS", 80),
@@ -99,6 +100,7 @@ public partial class LaudoTesteFisicoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["LTF_ID"] = 2;
         payload["LTF_EMISSAO"] = DateTime.UtcNow.AddMinutes(1);
         payload["LTF_VALOR"] = 20.5m;
         payload["LTF_OBS"] = ApiTestData.Text("LaudoTesteFisico LTF_OBS Update", 80);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_AGENDA_SCHEDULECustom(Command.Read.T_AGENDA_SCHEDULEReadCommand command, ref DataPagination<T_AGENDA_SCHEDULEDTO> result, ref bool handled);
+
         public DataPagination<T_AGENDA_SCHEDULEDTO> getT_AGENDA_SCHEDULE(ICommandRead command )
          {
             if (command is Command.Read.T_AGENDA_SCHEDULEReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_AGENDA_SCHEDULEDTO> getT_AGENDA_SCHEDULE(Command.Read.T_AGENDA_SCHEDULEReadCommand command )
         {
+            DataPagination<T_AGENDA_SCHEDULEDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_AGENDA_SCHEDULECustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_AGENDA_SCHEDULEQuery(command );
 
                 var itens = _unitOfWork.Query<T_AGENDA_SCHEDULEDTO>(query.Query,query.Parameters);

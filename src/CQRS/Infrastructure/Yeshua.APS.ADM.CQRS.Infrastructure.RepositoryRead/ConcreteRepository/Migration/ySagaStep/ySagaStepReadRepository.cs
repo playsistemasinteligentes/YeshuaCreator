@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetySagaStepCustom(Command.Read.ySagaStepReadCommand command, ref DataPagination<ySagaStepDTO> result, ref bool handled);
+
         public DataPagination<ySagaStepDTO> getySagaStep(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.ySagaStepReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ySagaStepDTO> getySagaStep(Command.Read.ySagaStepReadCommand command , bool TakeOffTenantID = false)
         {
+            DataPagination<ySagaStepDTO> customResult = null;
+            var customHandled = false;
+            TryGetySagaStepCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ySagaStepQuery(command , TakeOffTenantID);
 
                 var itens = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters);

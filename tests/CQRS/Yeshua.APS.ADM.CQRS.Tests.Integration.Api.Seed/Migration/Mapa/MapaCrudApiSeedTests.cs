@@ -53,6 +53,7 @@ public partial class MapaCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["MAP_ID"] = 1,
             ["PON_ID"] = ApiSeedTestContext.GetRequiredCreatedId("PontosMapa", "PON_ID"),
             ["PON_ID_VIZINHO"] = ApiTestData.Text("Mapa PON_ID_VIZINHO", 80),
             ["MAP_DISTANCIA"] = 10.5m,
@@ -75,6 +76,7 @@ public partial class MapaCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["MAP_ID"] = 2;
         payload["PON_ID"] = ApiSeedTestContext.GetRequiredCreatedId("PontosMapa", "PON_ID");
         payload["PON_ID_VIZINHO"] = ApiTestData.Text("Mapa PON_ID_VIZINHO Update", 80);
         payload["MAP_DISTANCIA"] = 20.5m;

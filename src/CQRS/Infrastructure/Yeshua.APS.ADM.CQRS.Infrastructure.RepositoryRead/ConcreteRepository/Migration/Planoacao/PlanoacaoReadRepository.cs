@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPlanoacaoCustom(Command.Read.PlanoacaoReadCommand command, ref DataPagination<PlanoacaoDTO> result, ref bool handled);
+
         public DataPagination<PlanoacaoDTO> getPlanoacao(ICommandRead command )
          {
             if (command is Command.Read.PlanoacaoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PlanoacaoDTO> getPlanoacao(Command.Read.PlanoacaoReadCommand command )
         {
+            DataPagination<PlanoacaoDTO> customResult = null;
+            var customHandled = false;
+            TryGetPlanoacaoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PlanoacaoQuery(command );
 
                 var itens = _unitOfWork.Query<PlanoacaoDTO>(query.Query,query.Parameters);

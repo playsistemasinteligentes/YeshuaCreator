@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirCotasQuery(ICotasEntity Cotas)
         {
-            this.Query = $@" INSERT INTO Cotas (COT_DATA_DE, COT_DATA_ATE, COT_VALOR, COT_OCUPADO, REP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@COT_DATA_DE, @COT_DATA_ATE, @COT_VALOR, @COT_OCUPADO, @REP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO Cotas (COT_ID, COT_DATA_DE, COT_DATA_ATE, COT_VALOR, COT_OCUPADO, REP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@COT_ID, @COT_DATA_DE, @COT_DATA_ATE, @COT_VALOR, @COT_OCUPADO, @REP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                COT_ID = Cotas.COT_ID,
                 COT_DATA_DE = Cotas.COT_DATA_DE,
                 COT_DATA_ATE = Cotas.COT_DATA_ATE,
                 COT_VALOR = Cotas.COT_VALOR,

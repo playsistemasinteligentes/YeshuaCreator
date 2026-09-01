@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_FavoritosCustom(Command.Read.T_FavoritosReadCommand command, ref DataPagination<T_FavoritosDTO> result, ref bool handled);
+
         public DataPagination<T_FavoritosDTO> getT_Favoritos(ICommandRead command )
          {
             if (command is Command.Read.T_FavoritosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_FavoritosDTO> getT_Favoritos(Command.Read.T_FavoritosReadCommand command )
         {
+            DataPagination<T_FavoritosDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_FavoritosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_FavoritosQuery(command );
 
                 var itens = _unitOfWork.Query<T_FavoritosDTO>(query.Query,query.Parameters);

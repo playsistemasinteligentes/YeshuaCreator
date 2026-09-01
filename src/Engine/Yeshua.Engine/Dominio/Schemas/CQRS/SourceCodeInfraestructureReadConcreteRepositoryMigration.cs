@@ -220,6 +220,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            _query = query;");
             sb.AppendLine("        }");
             sb.AppendLine();
+            sb.AppendLine($"        partial void TryGet{_entity.EntityName}Custom({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command command, ref DataPagination<{_entity.EntityName}DTO> result, ref bool handled);");
+            sb.AppendLine();
             sb.AppendLine($"        public DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}(ICommandRead command {takeOff})");
             sb.AppendLine("         {");
             sb.AppendLine($"            if (command is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command c)");
@@ -229,6 +231,12 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine($"        private DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command command {takeOff})");
             sb.AppendLine("        {");
+            sb.AppendLine($"            DataPagination<{_entity.EntityName}DTO> customResult = null;");
+            sb.AppendLine("            var customHandled = false;");
+            sb.AppendLine($"            TryGet{_entity.EntityName}Custom(command, ref customResult, ref customHandled);");
+            sb.AppendLine("            if (customHandled)");
+            sb.AppendLine("                return customResult;");
+            sb.AppendLine();
             sb.AppendLine($"            var query = _query.{_entity.EntityName}Query(command {VariavaltakeOff});");
             sb.AppendLine();
             sb.AppendLine($"                var itens = _unitOfWork.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters);");

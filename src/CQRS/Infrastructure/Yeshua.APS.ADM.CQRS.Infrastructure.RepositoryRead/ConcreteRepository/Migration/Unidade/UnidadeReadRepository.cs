@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetUnidadeCustom(Command.Read.UnidadeReadCommand command, ref DataPagination<UnidadeDTO> result, ref bool handled);
+
         public DataPagination<UnidadeDTO> getUnidade(ICommandRead command )
          {
             if (command is Command.Read.UnidadeReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<UnidadeDTO> getUnidade(Command.Read.UnidadeReadCommand command )
         {
+            DataPagination<UnidadeDTO> customResult = null;
+            var customHandled = false;
+            TryGetUnidadeCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.UnidadeQuery(command );
 
                 var itens = _unitOfWork.Query<UnidadeDTO>(query.Query,query.Parameters);

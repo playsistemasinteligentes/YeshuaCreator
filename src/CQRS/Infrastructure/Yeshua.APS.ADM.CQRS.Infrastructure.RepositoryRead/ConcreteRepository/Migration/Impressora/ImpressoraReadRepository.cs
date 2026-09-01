@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetImpressoraCustom(Command.Read.ImpressoraReadCommand command, ref DataPagination<ImpressoraDTO> result, ref bool handled);
+
         public DataPagination<ImpressoraDTO> getImpressora(ICommandRead command )
          {
             if (command is Command.Read.ImpressoraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ImpressoraDTO> getImpressora(Command.Read.ImpressoraReadCommand command )
         {
+            DataPagination<ImpressoraDTO> customResult = null;
+            var customHandled = false;
+            TryGetImpressoraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ImpressoraQuery(command );
 
                 var itens = _unitOfWork.Query<ImpressoraDTO>(query.Query,query.Parameters);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetGrupoRecursoCustom(Command.Read.GrupoRecursoReadCommand command, ref DataPagination<GrupoRecursoDTO> result, ref bool handled);
+
         public DataPagination<GrupoRecursoDTO> getGrupoRecurso(ICommandRead command )
          {
             if (command is Command.Read.GrupoRecursoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<GrupoRecursoDTO> getGrupoRecurso(Command.Read.GrupoRecursoReadCommand command )
         {
+            DataPagination<GrupoRecursoDTO> customResult = null;
+            var customHandled = false;
+            TryGetGrupoRecursoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.GrupoRecursoQuery(command );
 
                 var itens = _unitOfWork.Query<GrupoRecursoDTO>(query.Query,query.Parameters);

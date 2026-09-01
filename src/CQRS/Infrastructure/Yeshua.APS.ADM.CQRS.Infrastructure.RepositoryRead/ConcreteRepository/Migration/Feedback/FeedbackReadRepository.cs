@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetFeedbackCustom(Command.Read.FeedbackReadCommand command, ref DataPagination<FeedbackDTO> result, ref bool handled);
+
         public DataPagination<FeedbackDTO> getFeedback(ICommandRead command )
          {
             if (command is Command.Read.FeedbackReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<FeedbackDTO> getFeedback(Command.Read.FeedbackReadCommand command )
         {
+            DataPagination<FeedbackDTO> customResult = null;
+            var customHandled = false;
+            TryGetFeedbackCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.FeedbackQuery(command );
 
                 var itens = _unitOfWork.Query<FeedbackDTO>(query.Query,query.Parameters);

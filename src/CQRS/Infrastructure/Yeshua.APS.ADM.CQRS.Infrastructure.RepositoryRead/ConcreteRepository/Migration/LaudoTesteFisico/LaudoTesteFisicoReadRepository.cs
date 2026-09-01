@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetLaudoTesteFisicoCustom(Command.Read.LaudoTesteFisicoReadCommand command, ref DataPagination<LaudoTesteFisicoDTO> result, ref bool handled);
+
         public DataPagination<LaudoTesteFisicoDTO> getLaudoTesteFisico(ICommandRead command )
          {
             if (command is Command.Read.LaudoTesteFisicoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<LaudoTesteFisicoDTO> getLaudoTesteFisico(Command.Read.LaudoTesteFisicoReadCommand command )
         {
+            DataPagination<LaudoTesteFisicoDTO> customResult = null;
+            var customHandled = false;
+            TryGetLaudoTesteFisicoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.LaudoTesteFisicoQuery(command );
 
                 var itens = _unitOfWork.Query<LaudoTesteFisicoDTO>(query.Query,query.Parameters);

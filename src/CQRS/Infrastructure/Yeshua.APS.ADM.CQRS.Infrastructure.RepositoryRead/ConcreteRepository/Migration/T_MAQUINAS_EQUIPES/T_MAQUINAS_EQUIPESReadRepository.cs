@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_MAQUINAS_EQUIPESCustom(Command.Read.T_MAQUINAS_EQUIPESReadCommand command, ref DataPagination<T_MAQUINAS_EQUIPESDTO> result, ref bool handled);
+
         public DataPagination<T_MAQUINAS_EQUIPESDTO> getT_MAQUINAS_EQUIPES(ICommandRead command )
          {
             if (command is Command.Read.T_MAQUINAS_EQUIPESReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_MAQUINAS_EQUIPESDTO> getT_MAQUINAS_EQUIPES(Command.Read.T_MAQUINAS_EQUIPESReadCommand command )
         {
+            DataPagination<T_MAQUINAS_EQUIPESDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_MAQUINAS_EQUIPESCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_MAQUINAS_EQUIPESQuery(command );
 
                 var itens = _unitOfWork.Query<T_MAQUINAS_EQUIPESDTO>(query.Query,query.Parameters);

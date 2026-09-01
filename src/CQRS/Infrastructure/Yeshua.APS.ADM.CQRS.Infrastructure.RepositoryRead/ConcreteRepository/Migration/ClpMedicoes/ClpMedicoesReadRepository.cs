@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetClpMedicoesCustom(Command.Read.ClpMedicoesReadCommand command, ref DataPagination<ClpMedicoesDTO> result, ref bool handled);
+
         public DataPagination<ClpMedicoesDTO> getClpMedicoes(ICommandRead command )
          {
             if (command is Command.Read.ClpMedicoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ClpMedicoesDTO> getClpMedicoes(Command.Read.ClpMedicoesReadCommand command )
         {
+            DataPagination<ClpMedicoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetClpMedicoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ClpMedicoesQuery(command );
 
                 var itens = _unitOfWork.Query<ClpMedicoesDTO>(query.Query,query.Parameters);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoDispositivoCustom(Command.Read.TipoDispositivoReadCommand command, ref DataPagination<TipoDispositivoDTO> result, ref bool handled);
+
         public DataPagination<TipoDispositivoDTO> getTipoDispositivo(ICommandRead command )
          {
             if (command is Command.Read.TipoDispositivoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoDispositivoDTO> getTipoDispositivo(Command.Read.TipoDispositivoReadCommand command )
         {
+            DataPagination<TipoDispositivoDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoDispositivoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoDispositivoQuery(command );
 
                 var itens = _unitOfWork.Query<TipoDispositivoDTO>(query.Query,query.Parameters);

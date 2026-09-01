@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCargaPlanejavelCustom(Command.Read.CargaPlanejavelReadCommand command, ref DataPagination<CargaPlanejavelDTO> result, ref bool handled);
+
         public DataPagination<CargaPlanejavelDTO> getCargaPlanejavel(ICommandRead command )
          {
             if (command is Command.Read.CargaPlanejavelReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CargaPlanejavelDTO> getCargaPlanejavel(Command.Read.CargaPlanejavelReadCommand command )
         {
+            DataPagination<CargaPlanejavelDTO> customResult = null;
+            var customHandled = false;
+            TryGetCargaPlanejavelCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CargaPlanejavelQuery(command );
 
                 var itens = _unitOfWork.Query<CargaPlanejavelDTO>(query.Query,query.Parameters);

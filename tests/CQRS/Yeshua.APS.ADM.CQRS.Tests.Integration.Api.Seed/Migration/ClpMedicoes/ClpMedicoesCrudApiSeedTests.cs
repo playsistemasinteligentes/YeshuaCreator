@@ -53,6 +53,7 @@ public partial class ClpMedicoesCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["Id2"] = 1,
             ["MaquinaId"] = ApiTestData.Text("ClpMedicoes MaquinaId", 30),
             ["DataInicio"] = DateTime.UtcNow,
             ["DataFim"] = DateTime.UtcNow,
@@ -86,6 +87,7 @@ public partial class ClpMedicoesCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["Id2"] = 2;
         payload["MaquinaId"] = ApiTestData.Text("ClpMedicoes MaquinaId Update", 30);
         payload["DataInicio"] = DateTime.UtcNow.AddMinutes(1);
         payload["DataFim"] = DateTime.UtcNow.AddMinutes(1);

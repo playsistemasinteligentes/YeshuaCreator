@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPerfilCustom(Command.Read.PerfilReadCommand command, ref DataPagination<PerfilDTO> result, ref bool handled);
+
         public DataPagination<PerfilDTO> getPerfil(ICommandRead command )
          {
             if (command is Command.Read.PerfilReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PerfilDTO> getPerfil(Command.Read.PerfilReadCommand command )
         {
+            DataPagination<PerfilDTO> customResult = null;
+            var customHandled = false;
+            TryGetPerfilCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PerfilQuery(command );
 
                 var itens = _unitOfWork.Query<PerfilDTO>(query.Query,query.Parameters);

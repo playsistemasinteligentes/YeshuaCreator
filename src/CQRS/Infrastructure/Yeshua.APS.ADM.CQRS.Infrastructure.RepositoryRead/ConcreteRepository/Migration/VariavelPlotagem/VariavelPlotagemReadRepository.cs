@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetVariavelPlotagemCustom(Command.Read.VariavelPlotagemReadCommand command, ref DataPagination<VariavelPlotagemDTO> result, ref bool handled);
+
         public DataPagination<VariavelPlotagemDTO> getVariavelPlotagem(ICommandRead command )
          {
             if (command is Command.Read.VariavelPlotagemReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<VariavelPlotagemDTO> getVariavelPlotagem(Command.Read.VariavelPlotagemReadCommand command )
         {
+            DataPagination<VariavelPlotagemDTO> customResult = null;
+            var customHandled = false;
+            TryGetVariavelPlotagemCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.VariavelPlotagemQuery(command );
 
                 var itens = _unitOfWork.Query<VariavelPlotagemDTO>(query.Query,query.Parameters);

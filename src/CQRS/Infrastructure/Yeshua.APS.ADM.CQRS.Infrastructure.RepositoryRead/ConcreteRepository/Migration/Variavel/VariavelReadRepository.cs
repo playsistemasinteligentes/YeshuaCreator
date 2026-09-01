@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetVariavelCustom(Command.Read.VariavelReadCommand command, ref DataPagination<VariavelDTO> result, ref bool handled);
+
         public DataPagination<VariavelDTO> getVariavel(ICommandRead command )
          {
             if (command is Command.Read.VariavelReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<VariavelDTO> getVariavel(Command.Read.VariavelReadCommand command )
         {
+            DataPagination<VariavelDTO> customResult = null;
+            var customHandled = false;
+            TryGetVariavelCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.VariavelQuery(command );
 
                 var itens = _unitOfWork.Query<VariavelDTO>(query.Query,query.Parameters);

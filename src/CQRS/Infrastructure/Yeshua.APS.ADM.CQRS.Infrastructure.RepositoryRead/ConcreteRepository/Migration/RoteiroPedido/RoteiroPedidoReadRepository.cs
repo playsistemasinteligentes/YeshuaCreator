@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRoteiroPedidoCustom(Command.Read.RoteiroPedidoReadCommand command, ref DataPagination<RoteiroPedidoDTO> result, ref bool handled);
+
         public DataPagination<RoteiroPedidoDTO> getRoteiroPedido(ICommandRead command )
          {
             if (command is Command.Read.RoteiroPedidoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RoteiroPedidoDTO> getRoteiroPedido(Command.Read.RoteiroPedidoReadCommand command )
         {
+            DataPagination<RoteiroPedidoDTO> customResult = null;
+            var customHandled = false;
+            TryGetRoteiroPedidoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RoteiroPedidoQuery(command );
 
                 var itens = _unitOfWork.Query<RoteiroPedidoDTO>(query.Query,query.Parameters);

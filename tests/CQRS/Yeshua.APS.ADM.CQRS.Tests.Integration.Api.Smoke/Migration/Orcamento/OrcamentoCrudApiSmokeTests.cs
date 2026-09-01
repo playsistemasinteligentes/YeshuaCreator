@@ -75,6 +75,7 @@ public partial class OrcamentoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["ORC_ID"] = 1,
             ["REP_ID"] = ApiTestData.Text("Orcamento REP_ID", 30),
             ["CON_ID"] = ApiTestData.Text("Orcamento CON_ID", 30),
             ["ORC_TIPO_FRETE"] = ApiTestData.Text("Orcamento ORC_TIPO_FRETE", 3),
@@ -97,6 +98,7 @@ public partial class OrcamentoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["ORC_ID"] = 2;
         payload["REP_ID"] = ApiTestData.Text("Orcamento REP_ID Update", 30);
         payload["CON_ID"] = ApiTestData.Text("Orcamento CON_ID Update", 30);
         payload["ORC_TIPO_FRETE"] = ApiTestData.Text("Orcamento ORC_TIPO_FRETE Update", 3);

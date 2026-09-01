@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRegistrosOnduladeiraCustom(Command.Read.RegistrosOnduladeiraReadCommand command, ref DataPagination<RegistrosOnduladeiraDTO> result, ref bool handled);
+
         public DataPagination<RegistrosOnduladeiraDTO> getRegistrosOnduladeira(ICommandRead command )
          {
             if (command is Command.Read.RegistrosOnduladeiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RegistrosOnduladeiraDTO> getRegistrosOnduladeira(Command.Read.RegistrosOnduladeiraReadCommand command )
         {
+            DataPagination<RegistrosOnduladeiraDTO> customResult = null;
+            var customHandled = false;
+            TryGetRegistrosOnduladeiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RegistrosOnduladeiraQuery(command );
 
                 var itens = _unitOfWork.Query<RegistrosOnduladeiraDTO>(query.Query,query.Parameters);

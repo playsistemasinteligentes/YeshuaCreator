@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetGrupoProdutoAbstratoCustom(Command.Read.GrupoProdutoAbstratoReadCommand command, ref DataPagination<GrupoProdutoAbstratoDTO> result, ref bool handled);
+
         public DataPagination<GrupoProdutoAbstratoDTO> getGrupoProdutoAbstrato(ICommandRead command )
          {
             if (command is Command.Read.GrupoProdutoAbstratoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<GrupoProdutoAbstratoDTO> getGrupoProdutoAbstrato(Command.Read.GrupoProdutoAbstratoReadCommand command )
         {
+            DataPagination<GrupoProdutoAbstratoDTO> customResult = null;
+            var customHandled = false;
+            TryGetGrupoProdutoAbstratoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.GrupoProdutoAbstratoQuery(command );
 
                 var itens = _unitOfWork.Query<GrupoProdutoAbstratoDTO>(query.Query,query.Parameters);

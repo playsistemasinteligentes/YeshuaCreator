@@ -53,6 +53,7 @@ public partial class PeriodicidadeTesteCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["PER_ID"] = 1,
             ["PER_QTD"] = ApiTestData.Text("PeriodicidadeTeste PER_QTD", 10),
             ["UNI_ID"] = ApiTestData.Text("PeriodicidadeTeste UNI_ID", 30),
             ["GRP_ID"] = ApiTestData.Text("PeriodicidadeTeste GRP_ID", 30),
@@ -72,6 +73,7 @@ public partial class PeriodicidadeTesteCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["PER_ID"] = 2;
         payload["PER_QTD"] = ApiTestData.Text("PeriodicidadeTeste PER_QTD Update", 10);
         payload["UNI_ID"] = ApiTestData.Text("PeriodicidadeTeste UNI_ID Update", 30);
         payload["GRP_ID"] = ApiTestData.Text("PeriodicidadeTeste GRP_ID Update", 30);

@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirRegistrosOnduladeiraQuery(IRegistrosOnduladeiraEntity RegistrosOnduladeira)
         {
-            this.Query = $@" INSERT INTO RegistrosOnduladeira (REG_RESPOSTA, REG_STATUS, REG_DATA_INICIO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@REG_RESPOSTA, @REG_STATUS, @REG_DATA_INICIO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO RegistrosOnduladeira (REG_ID, REG_RESPOSTA, REG_STATUS, REG_DATA_INICIO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@REG_ID, @REG_RESPOSTA, @REG_STATUS, @REG_DATA_INICIO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                REG_ID = RegistrosOnduladeira.REG_ID,
                 REG_RESPOSTA = RegistrosOnduladeira.REG_RESPOSTA,
                 REG_STATUS = RegistrosOnduladeira.REG_STATUS,
                 REG_DATA_INICIO = RegistrosOnduladeira.REG_DATA_INICIO,

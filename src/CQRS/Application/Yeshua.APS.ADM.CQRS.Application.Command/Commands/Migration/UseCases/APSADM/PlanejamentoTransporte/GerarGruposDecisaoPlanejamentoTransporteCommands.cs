@@ -21,27 +21,9 @@ public partial record GerarGruposDecisaoPlanejamentoTransporteInputCommand : ICo
     public List<PedidoPlanejamentoRef> Pedidos { get; set; }
 }
 
-public partial record PedidoPlanejamentoRef : ICommand
-{
-    public string PedidoId { get; set; }
-    public string VersaoPlanejamento { get; set; }
-}
-
 public partial record GerarGruposDecisaoPlanejamentoTransporteOutputCommand : ICommand
 {
     public List<OpcaoPlanejamentoEnvelope> Opcoes { get; set; }
-}
-
-public partial record OpcaoPlanejamentoEnvelope : ICommand
-{
-    public string OpcaoId { get; set; }
-    public string GrupoDecisaoId { get; set; }
-    public decimal Peso { get; set; }
-    public decimal Volume { get; set; }
-    public decimal CustoEstimado { get; set; }
-    public decimal AderenciaCubagem { get; set; }
-    public string RiscoResumo { get; set; }
-    public string PedidosResumo { get; set; }
 }
 
 }

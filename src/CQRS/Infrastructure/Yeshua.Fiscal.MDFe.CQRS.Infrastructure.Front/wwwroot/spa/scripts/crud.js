@@ -4,6 +4,7 @@ import { showAlert } from './alerts.js';
 import { showConfirm } from './menssagensConfirm.js';
 import { showFkModal, hideFkModal } from './components/fk-modal.js';
 import { apiFetch } from './ServicesGlobal/apiFetch.js';
+import { runCrudExtension } from './extensions.js';
 import { setupCrudActions } from "./components/crudActions.js";
 
 export function buildCrud() {
@@ -40,6 +41,73 @@ export function buildCrud() {
         crudState.pagination.PageWhithCount = e.target.checked;
     });
 
+}
+function exposeCrudApi() {
+    window.yeshuaFront = window.yeshuaFront || {};
+    window.yeshuaFront.crud = {
+        loadDataCrud,
+        openCrudEntity,
+        search: crudSearch,
+        renderFormCrud,
+        getFormValues,
+        state: crudState
+    };
+}
+function createExtensionPayload(extra = {}) {
+    return {
+        metadata: crudState.metadata,
+        crudState,
+        loadDataCrud,
+        openCrudEntity,
+        search: crudSearch,
+        renderFormCrud,
+        getFormValues,
+        ...extra
+    };
+}
+function canCapability(action) {
+    return crudState.metadata?.capabilities?.[action] !== false;
+}
+
+function applyCrudCapabilities(metadata = crudState.metadata) {
+    const canCreate = metadata?.capabilities?.create !== false;
+    const canUpdate = metadata?.capabilities?.update !== false;
+
+    const btnNew = document.getElementById('btn-new');
+    if (btnNew) btnNew.style.display = canCreate ? '' : 'none';
+
+    const btnSave = document.getElementById('btn-save');
+    if (btnSave) btnSave.style.display = (canCreate || canUpdate) ? '' : 'none';
+}
+
+async function openCrudEntity(entityName, filters = {}) {
+    await loadDataCrud(`${environments.urlApi}/getMetaData${entityName}`, 'crud');
+    setSearchValues(filters);
+
+    if (Object.keys(filters).length > 0) {
+        await crudSearch(crudState.metadata);
+    }
+}
+function setSearchValues(filters = {}) {
+    Object.entries(filters).forEach(([fieldId, value]) => {
+        const input = document.getElementById(`search-${fieldId.toLowerCase()}`);
+        if (!input || value === undefined || value === null || value === '') return;
+
+        input.value = value;
+        if (input.dataset) input.dataset.id = value;
+    });
+}
+function getFormValues() {
+    const values = {};
+
+    (crudState.metadata?.formFields || []).forEach(field => {
+        const input = document.getElementById(`insert-${field.id}`);
+        if (!input) return;
+
+        values[field.id] = field.isFk && input.dataset.id ? input.dataset.id : input.value;
+    });
+
+    return values;
 }
 function togglePaginationControls(metadata = crudState.metadata, modoFk = false) {
     const container = modoFk
@@ -84,6 +152,7 @@ function togglePaginationControls(metadata = crudState.metadata, modoFk = false)
     container.appendChild(btnNext);
 }
 export async function loadDataCrud(fullUrl, type) {
+    exposeCrudApi();
 
     document.getElementById('table-container').innerHTML = '';
     const crudContainer = document.getElementById('crud-container');
@@ -99,10 +168,13 @@ export async function loadDataCrud(fullUrl, type) {
         if (response.ok) {
             crudState.metadata = await response.json();
             crudState.fullUrl = fullUrl;
+            crudState.currentRecord = null;
+            applyCrudCapabilities(crudState.metadata);
             renderSearch(crudState.metadata);
             renderFormCrud();
 
             setupCrudActions(crudState.metadata, getCurrentFormData);
+            runCrudExtension('afterLoadCrud', createExtensionPayload({ fullUrl, type }));
 
         } else {
             trataErroResponse('loadDataCrud', response);
@@ -112,7 +184,10 @@ export async function loadDataCrud(fullUrl, type) {
     }
 }
 function setStateCreate() {
+    if (!canCapability('create')) return;
+
     crudState.currentAction = Actions.CREATE;
+    crudState.currentRecord = null;
     renderFormCrud();
 }
 async function crudSearch(metadata = crudState.metadata, modoFk = false) {
@@ -222,6 +297,11 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
 
             renderTableSearch(items, modoFk, metadata);
             togglePaginationControls(metadata, modoFk);
+            runCrudExtension('afterRenderTable', createExtensionPayload({
+                data: items,
+                modoFk,
+                container: modoFk ? document.getElementById('modal-tabela-fk') : document.getElementById('table-container')
+            }));
 
         } else {
             trataErroResponse('fetchSearchResults', response);
@@ -463,7 +543,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                                    1.5-4.5 12.362-12.326z" />
                         </svg>`;
                 editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
-                editBtn.title = "Editar";
+                editBtn.title = canCapability('update') ? "Editar" : "Detalhar";
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
@@ -478,7 +558,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                 deleteBtn.onclick = () => deleteRecord(item);
 
                 actionsWrapper.appendChild(editBtn);
-                actionsWrapper.appendChild(deleteBtn);
+                if (canCapability('delete')) actionsWrapper.appendChild(deleteBtn);
             }
 
             actionsCell.appendChild(actionsWrapper);
@@ -554,7 +634,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                                    1.5-4.5 12.362-12.326z" />
                         </svg>`;
                 editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
-                editBtn.title = "Editar";
+                editBtn.title = canCapability('update') ? "Editar" : "Detalhar";
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
@@ -569,7 +649,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                 deleteBtn.onclick = () => deleteRecord(item);
 
                 actions.appendChild(editBtn);
-                actions.appendChild(deleteBtn);
+                if (canCapability('delete')) actions.appendChild(deleteBtn);
             }
 
             card.appendChild(actions);
@@ -796,6 +876,162 @@ export function renderFormCrud() {
         }
     });
     atualizarFormName();
+    renderEntityTabs(formGroup);
+    runCrudExtension('afterRenderForm', createExtensionPayload({
+        formGroup,
+        layout,
+        tabsMap,
+        currentAction: crudState.currentAction
+    }));
+}
+
+function renderEntityTabs(formGroup) {
+    const relationTabs = crudState.metadata?.relationTabs || [];
+    const customTabs = crudState.metadata?.customTabs || [];
+    const tabs = [
+        ...relationTabs.map(tab => ({ ...tab, kind: 'relation' })),
+        ...customTabs.map(tab => ({ ...tab, kind: 'custom' }))
+    ];
+
+    if (tabs.length === 0) return;
+
+    const container = document.createElement('div');
+    container.className = 'mt-6 border-t pt-4';
+
+    const buttons = document.createElement('div');
+    buttons.className = 'flex flex-wrap gap-2 mb-4';
+
+    const content = document.createElement('div');
+    content.className = 'w-full';
+
+    tabs.forEach((tab, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = tab.title || tab.id;
+        button.className = 'px-4 py-2 border rounded text-left md:text-center';
+
+        const pane = document.createElement('div');
+        pane.className = 'entity-tab-pane w-full';
+        pane.style.display = index === 0 ? 'block' : 'none';
+
+        button.addEventListener('click', async () => {
+            content.querySelectorAll('.entity-tab-pane').forEach(item => item.style.display = 'none');
+            buttons.querySelectorAll('button').forEach(item => item.classList.remove('bg-blue-500', 'text-white'));
+            button.classList.add('bg-blue-500', 'text-white');
+            pane.style.display = 'block';
+
+            if (tab.kind === 'relation') {
+                await loadRelationTab(tab, pane);
+            } else {
+                renderCustomTab(tab, pane);
+            }
+        });
+
+        if (index === 0) button.classList.add('bg-blue-500', 'text-white');
+
+        buttons.appendChild(button);
+        content.appendChild(pane);
+    });
+
+    container.appendChild(buttons);
+    container.appendChild(content);
+    formGroup.appendChild(container);
+    buttons.querySelector('button')?.click();
+}
+
+async function loadRelationTab(tab, pane) {
+    const record = crudState.currentRecord;
+    pane.innerHTML = '';
+
+    if (!record) {
+        pane.textContent = 'Selecione um registro.';
+        return;
+    }
+
+    const parentValue = record[tab.parentField];
+    if (parentValue === undefined || parentValue === null || parentValue === '') {
+        pane.textContent = 'Registro sem chave para esta relação.';
+        return;
+    }
+
+    const token = localStorage.getItem('token');
+    const payload = {
+        paginacao: {
+            page: 1,
+            pageSize: 20,
+            pageWhithCount: false
+        },
+        [tab.childField]: parentValue
+    };
+
+    try {
+        beforeRequest();
+        const response = await fetch(`${environments.urlApi}${tab.endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            trataErroResponse('loadRelationTab', response);
+            return;
+        }
+
+        const responseJson = await response.json();
+        const items = responseJson.data?.items || responseJson.results || [];
+        renderRelationTabTable(tab, pane, items);
+    } catch (error) {
+        erroRequestResponse(error);
+    }
+}
+
+function renderRelationTabTable(tab, pane, items) {
+    if (!items.length) {
+        pane.textContent = 'Nenhum registro encontrado.';
+        return;
+    }
+
+    const table = document.createElement('table');
+    table.className = 'min-w-full border-collapse border text-sm';
+
+    const fields = Object.keys(items[0]);
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    fields.forEach(field => {
+        const th = document.createElement('th');
+        th.className = 'px-3 py-2 border text-left font-semibold';
+        th.textContent = field;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+
+    const tbody = document.createElement('tbody');
+    items.forEach(item => {
+        const row = document.createElement('tr');
+        fields.forEach(field => {
+            const td = document.createElement('td');
+            td.className = 'px-3 py-2 border';
+            td.textContent = item[field] ?? '';
+            row.appendChild(td);
+        });
+        tbody.appendChild(row);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    pane.appendChild(table);
+}
+
+function renderCustomTab(tab, pane) {
+    pane.innerHTML = '';
+    runCrudExtension('renderCustomTab', createExtensionPayload({
+        tab,
+        container: pane,
+        record: crudState.currentRecord
+    }));
 }
 async function buildSearchFK(tipo, campoId, valor) {
     // tipo = "search" ou "insert"
@@ -838,12 +1074,15 @@ function openSearchFK(metadataFk, campoDestino) {
 }
 async function crudCreateOrUpdate() {
     if (crudState.currentAction == Actions.UPDATE) {
+        if (!canCapability('update')) return;
         crudUpdate();
     } else {
+        if (!canCapability('create')) return;
         crudCreate();
     }
 }
 async function crudCreate() {
+    if (!canCapability('create')) return;
 
     const token = localStorage.getItem('token');
     const newRecord = {};
@@ -884,6 +1123,7 @@ async function crudCreate() {
     }
 }
 async function crudUpdate() {
+    if (!canCapability('update')) return;
 
     const token = localStorage.getItem('token');
     const updatedRecord = {};
@@ -966,6 +1206,8 @@ async function editRecord(item) {
             return;
         }
 
+        crudState.currentRecord = fullRecord;
+
         // Preenche o formulário
         crudState.metadata.formFields.forEach(field => {
             const input = document.getElementById(`insert-${field.id}`);
@@ -977,6 +1219,7 @@ async function editRecord(item) {
             input.value = fullRecord[field.id] ?? '';
         });
 
+        runCrudExtension('afterFillForm', createExtensionPayload({ record: fullRecord }));
         scrollToCadastro();
 
     } catch (error) {
@@ -991,6 +1234,8 @@ function scrollToCadastro() {
     crudContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 async function deleteRecord(item) {
+    if (!canCapability('delete')) return;
+
     startProcess({ async: true, withProgress: false });
     showConfirm(`Tem certeza que deseja excluir o registro com ID ${item.id}?`, async () => {
         const token = localStorage.getItem('token');

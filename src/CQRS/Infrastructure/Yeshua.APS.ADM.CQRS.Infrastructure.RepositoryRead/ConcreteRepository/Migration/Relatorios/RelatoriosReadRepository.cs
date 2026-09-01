@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRelatoriosCustom(Command.Read.RelatoriosReadCommand command, ref DataPagination<RelatoriosDTO> result, ref bool handled);
+
         public DataPagination<RelatoriosDTO> getRelatorios(ICommandRead command )
          {
             if (command is Command.Read.RelatoriosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RelatoriosDTO> getRelatorios(Command.Read.RelatoriosReadCommand command )
         {
+            DataPagination<RelatoriosDTO> customResult = null;
+            var customHandled = false;
+            TryGetRelatoriosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RelatoriosQuery(command );
 
                 var itens = _unitOfWork.Query<RelatoriosDTO>(query.Query,query.Parameters);

@@ -75,6 +75,7 @@ public partial class RestricoesDeRodagemCrudApiSmokeTests : ApiIntegrationTestBa
     {
         return new JsonObject
         {
+            ["RES_ID"] = 1,
             ["RES_TIPO"] = ApiTestData.Text("RestricoesDeRodagem RES_TIPO", 1),
             ["RES_HORA_INI"] = ApiTestData.Text("RestricoesDeRodagem RES_HORA_INI", 5),
             ["RES_HORA_FIM"] = ApiTestData.Text("RestricoesDeRodagem RES_HORA_FIM", 10),
@@ -97,6 +98,7 @@ public partial class RestricoesDeRodagemCrudApiSmokeTests : ApiIntegrationTestBa
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["RES_ID"] = 2;
         payload["RES_TIPO"] = ApiTestData.Text("RestricoesDeRodagem RES_TIPO Update", 1);
         payload["RES_HORA_INI"] = ApiTestData.Text("RestricoesDeRodagem RES_HORA_INI Update", 5);
         payload["RES_HORA_FIM"] = ApiTestData.Text("RestricoesDeRodagem RES_HORA_FIM Update", 10);

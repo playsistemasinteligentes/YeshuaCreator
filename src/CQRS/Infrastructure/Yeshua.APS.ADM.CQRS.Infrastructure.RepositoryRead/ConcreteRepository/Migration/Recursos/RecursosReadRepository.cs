@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRecursosCustom(Command.Read.RecursosReadCommand command, ref DataPagination<RecursosDTO> result, ref bool handled);
+
         public DataPagination<RecursosDTO> getRecursos(ICommandRead command )
          {
             if (command is Command.Read.RecursosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RecursosDTO> getRecursos(Command.Read.RecursosReadCommand command )
         {
+            DataPagination<RecursosDTO> customResult = null;
+            var customHandled = false;
+            TryGetRecursosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RecursosQuery(command );
 
                 var itens = _unitOfWork.Query<RecursosDTO>(query.Query,query.Parameters);

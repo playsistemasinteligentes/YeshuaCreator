@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyUserCustom(Command.Read.yUserReadCommand command, ref DataPagination<yUserDTO> result, ref bool handled);
+
         public DataPagination<yUserDTO> getyUser(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.yUserReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yUserDTO> getyUser(Command.Read.yUserReadCommand command , bool TakeOffTenantID = false)
         {
+            DataPagination<yUserDTO> customResult = null;
+            var customHandled = false;
+            TryGetyUserCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yUserQuery(command , TakeOffTenantID);
 
                 var itens = _unitOfWork.Query<yUserDTO>(query.Query,query.Parameters);

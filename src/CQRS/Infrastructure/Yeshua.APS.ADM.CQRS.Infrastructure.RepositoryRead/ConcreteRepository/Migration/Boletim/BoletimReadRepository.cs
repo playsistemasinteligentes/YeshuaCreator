@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetBoletimCustom(Command.Read.BoletimReadCommand command, ref DataPagination<BoletimDTO> result, ref bool handled);
+
         public DataPagination<BoletimDTO> getBoletim(ICommandRead command )
          {
             if (command is Command.Read.BoletimReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<BoletimDTO> getBoletim(Command.Read.BoletimReadCommand command )
         {
+            DataPagination<BoletimDTO> customResult = null;
+            var customHandled = false;
+            TryGetBoletimCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.BoletimQuery(command );
 
                 var itens = _unitOfWork.Query<BoletimDTO>(query.Query,query.Parameters);

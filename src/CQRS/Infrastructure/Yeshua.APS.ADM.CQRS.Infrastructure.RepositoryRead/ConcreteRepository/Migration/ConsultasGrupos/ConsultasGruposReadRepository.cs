@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetConsultasGruposCustom(Command.Read.ConsultasGruposReadCommand command, ref DataPagination<ConsultasGruposDTO> result, ref bool handled);
+
         public DataPagination<ConsultasGruposDTO> getConsultasGrupos(ICommandRead command )
          {
             if (command is Command.Read.ConsultasGruposReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ConsultasGruposDTO> getConsultasGrupos(Command.Read.ConsultasGruposReadCommand command )
         {
+            DataPagination<ConsultasGruposDTO> customResult = null;
+            var customHandled = false;
+            TryGetConsultasGruposCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ConsultasGruposQuery(command );
 
                 var itens = _unitOfWork.Query<ConsultasGruposDTO>(query.Query,query.Parameters);

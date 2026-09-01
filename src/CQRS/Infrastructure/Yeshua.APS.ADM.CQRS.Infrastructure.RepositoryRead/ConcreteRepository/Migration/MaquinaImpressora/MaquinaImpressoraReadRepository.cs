@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMaquinaImpressoraCustom(Command.Read.MaquinaImpressoraReadCommand command, ref DataPagination<MaquinaImpressoraDTO> result, ref bool handled);
+
         public DataPagination<MaquinaImpressoraDTO> getMaquinaImpressora(ICommandRead command )
          {
             if (command is Command.Read.MaquinaImpressoraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MaquinaImpressoraDTO> getMaquinaImpressora(Command.Read.MaquinaImpressoraReadCommand command )
         {
+            DataPagination<MaquinaImpressoraDTO> customResult = null;
+            var customHandled = false;
+            TryGetMaquinaImpressoraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MaquinaImpressoraQuery(command );
 
                 var itens = _unitOfWork.Query<MaquinaImpressoraDTO>(query.Query,query.Parameters);

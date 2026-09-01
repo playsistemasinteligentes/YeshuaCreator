@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRodoviasCustom(Command.Read.RodoviasReadCommand command, ref DataPagination<RodoviasDTO> result, ref bool handled);
+
         public DataPagination<RodoviasDTO> getRodovias(ICommandRead command )
          {
             if (command is Command.Read.RodoviasReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RodoviasDTO> getRodovias(Command.Read.RodoviasReadCommand command )
         {
+            DataPagination<RodoviasDTO> customResult = null;
+            var customHandled = false;
+            TryGetRodoviasCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RodoviasQuery(command );
 
                 var itens = _unitOfWork.Query<RodoviasDTO>(query.Query,query.Parameters);

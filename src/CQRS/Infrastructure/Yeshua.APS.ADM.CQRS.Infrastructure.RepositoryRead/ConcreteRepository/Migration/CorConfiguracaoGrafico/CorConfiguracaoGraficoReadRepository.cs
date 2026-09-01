@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCorConfiguracaoGraficoCustom(Command.Read.CorConfiguracaoGraficoReadCommand command, ref DataPagination<CorConfiguracaoGraficoDTO> result, ref bool handled);
+
         public DataPagination<CorConfiguracaoGraficoDTO> getCorConfiguracaoGrafico(ICommandRead command )
          {
             if (command is Command.Read.CorConfiguracaoGraficoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CorConfiguracaoGraficoDTO> getCorConfiguracaoGrafico(Command.Read.CorConfiguracaoGraficoReadCommand command )
         {
+            DataPagination<CorConfiguracaoGraficoDTO> customResult = null;
+            var customHandled = false;
+            TryGetCorConfiguracaoGraficoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CorConfiguracaoGraficoQuery(command );
 
                 var itens = _unitOfWork.Query<CorConfiguracaoGraficoDTO>(query.Query,query.Parameters);

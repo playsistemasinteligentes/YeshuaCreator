@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetEnderecosCustom(Command.Read.EnderecosReadCommand command, ref DataPagination<EnderecosDTO> result, ref bool handled);
+
         public DataPagination<EnderecosDTO> getEnderecos(ICommandRead command )
          {
             if (command is Command.Read.EnderecosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<EnderecosDTO> getEnderecos(Command.Read.EnderecosReadCommand command )
         {
+            DataPagination<EnderecosDTO> customResult = null;
+            var customHandled = false;
+            TryGetEnderecosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.EnderecosQuery(command );
 
                 var itens = _unitOfWork.Query<EnderecosDTO>(query.Query,query.Parameters);

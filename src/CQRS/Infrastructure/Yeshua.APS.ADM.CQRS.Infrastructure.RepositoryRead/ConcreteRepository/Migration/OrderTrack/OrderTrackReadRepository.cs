@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetOrderTrackCustom(Command.Read.OrderTrackReadCommand command, ref DataPagination<OrderTrackDTO> result, ref bool handled);
+
         public DataPagination<OrderTrackDTO> getOrderTrack(ICommandRead command )
          {
             if (command is Command.Read.OrderTrackReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<OrderTrackDTO> getOrderTrack(Command.Read.OrderTrackReadCommand command )
         {
+            DataPagination<OrderTrackDTO> customResult = null;
+            var customHandled = false;
+            TryGetOrderTrackCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.OrderTrackQuery(command );
 
                 var itens = _unitOfWork.Query<OrderTrackDTO>(query.Query,query.Parameters);

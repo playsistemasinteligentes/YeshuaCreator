@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPedidoPlanejavelCustom(Command.Read.PedidoPlanejavelReadCommand command, ref DataPagination<PedidoPlanejavelDTO> result, ref bool handled);
+
         public DataPagination<PedidoPlanejavelDTO> getPedidoPlanejavel(ICommandRead command )
          {
             if (command is Command.Read.PedidoPlanejavelReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PedidoPlanejavelDTO> getPedidoPlanejavel(Command.Read.PedidoPlanejavelReadCommand command )
         {
+            DataPagination<PedidoPlanejavelDTO> customResult = null;
+            var customHandled = false;
+            TryGetPedidoPlanejavelCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PedidoPlanejavelQuery(command );
 
                 var itens = _unitOfWork.Query<PedidoPlanejavelDTO>(query.Query,query.Parameters);

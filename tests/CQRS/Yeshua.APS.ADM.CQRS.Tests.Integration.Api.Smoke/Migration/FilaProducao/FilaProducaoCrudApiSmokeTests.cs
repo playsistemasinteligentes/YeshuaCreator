@@ -107,6 +107,7 @@ public partial class FilaProducaoCrudApiSmokeTests : ApiIntegrationTestBase
             ["FPR_TRUNCADO"] = ApiTestData.Text("FilaProducao FPR_TRUNCADO", 1),
             ["FPR_DATA_TRUNC_INI"] = DateTime.UtcNow,
             ["FPR_DATA_TRUNC_FIM"] = DateTime.UtcNow,
+            ["FPR_ID"] = 1,
             ["FPR_COR_FILA"] = ApiTestData.Text("FilaProducao FPR_COR_FILA", 30),
             ["MAQ_ID_MANUAL"] = ApiTestData.Text("FilaProducao MAQ_ID_MANUAL", 30),
             ["MAQ_ID_RESTRINGIDA"] = ApiTestData.Text("FilaProducao MAQ_ID_RESTRINGIDA", 80),
@@ -184,6 +185,7 @@ public partial class FilaProducaoCrudApiSmokeTests : ApiIntegrationTestBase
         payload["FPR_TRUNCADO"] = ApiTestData.Text("FilaProducao FPR_TRUNCADO Update", 1);
         payload["FPR_DATA_TRUNC_INI"] = DateTime.UtcNow.AddMinutes(1);
         payload["FPR_DATA_TRUNC_FIM"] = DateTime.UtcNow.AddMinutes(1);
+        payload["FPR_ID"] = 2;
         payload["FPR_COR_FILA"] = ApiTestData.Text("FilaProducao FPR_COR_FILA Update", 30);
         payload["MAQ_ID_MANUAL"] = ApiTestData.Text("FilaProducao MAQ_ID_MANUAL Update", 30);
         payload["MAQ_ID_RESTRINGIDA"] = ApiTestData.Text("FilaProducao MAQ_ID_RESTRINGIDA Update", 80);

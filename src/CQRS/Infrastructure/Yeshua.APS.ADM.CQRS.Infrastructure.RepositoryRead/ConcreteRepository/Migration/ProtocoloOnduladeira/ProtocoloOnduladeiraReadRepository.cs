@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetProtocoloOnduladeiraCustom(Command.Read.ProtocoloOnduladeiraReadCommand command, ref DataPagination<ProtocoloOnduladeiraDTO> result, ref bool handled);
+
         public DataPagination<ProtocoloOnduladeiraDTO> getProtocoloOnduladeira(ICommandRead command )
          {
             if (command is Command.Read.ProtocoloOnduladeiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ProtocoloOnduladeiraDTO> getProtocoloOnduladeira(Command.Read.ProtocoloOnduladeiraReadCommand command )
         {
+            DataPagination<ProtocoloOnduladeiraDTO> customResult = null;
+            var customHandled = false;
+            TryGetProtocoloOnduladeiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ProtocoloOnduladeiraQuery(command );
 
                 var itens = _unitOfWork.Query<ProtocoloOnduladeiraDTO>(query.Query,query.Parameters);

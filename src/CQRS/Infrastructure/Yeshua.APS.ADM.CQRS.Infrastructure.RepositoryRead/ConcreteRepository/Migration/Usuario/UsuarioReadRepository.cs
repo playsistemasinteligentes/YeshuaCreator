@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetUsuarioCustom(Command.Read.UsuarioReadCommand command, ref DataPagination<UsuarioDTO> result, ref bool handled);
+
         public DataPagination<UsuarioDTO> getUsuario(ICommandRead command )
          {
             if (command is Command.Read.UsuarioReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<UsuarioDTO> getUsuario(Command.Read.UsuarioReadCommand command )
         {
+            DataPagination<UsuarioDTO> customResult = null;
+            var customHandled = false;
+            TryGetUsuarioCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.UsuarioQuery(command );
 
                 var itens = _unitOfWork.Query<UsuarioDTO>(query.Query,query.Parameters);

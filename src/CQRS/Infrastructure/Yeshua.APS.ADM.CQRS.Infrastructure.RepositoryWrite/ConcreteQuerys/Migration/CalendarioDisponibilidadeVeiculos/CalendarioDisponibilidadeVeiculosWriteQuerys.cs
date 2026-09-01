@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirCalendarioDisponibilidadeVeiculosQuery(ICalendarioDisponibilidadeVeiculosEntity CalendarioDisponibilidadeVeiculos)
         {
-            this.Query = $@" INSERT INTO CalendarioDisponibilidadeVeiculos (CDV_DATA_DE, CDV_DATA_ATE, CDV_SEGUNDA, CDV_TERCA, CDV_QUARTA, CDV_QUINTA, CDV_SEXTA, CDV_SABADO, CDV_DOMINGO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CDV_DATA_DE, @CDV_DATA_ATE, @CDV_SEGUNDA, @CDV_TERCA, @CDV_QUARTA, @CDV_QUINTA, @CDV_SEXTA, @CDV_SABADO, @CDV_DOMINGO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO CalendarioDisponibilidadeVeiculos (CDV_ID, CDV_DATA_DE, CDV_DATA_ATE, CDV_SEGUNDA, CDV_TERCA, CDV_QUARTA, CDV_QUINTA, CDV_SEXTA, CDV_SABADO, CDV_DOMINGO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CDV_ID, @CDV_DATA_DE, @CDV_DATA_ATE, @CDV_SEGUNDA, @CDV_TERCA, @CDV_QUARTA, @CDV_QUINTA, @CDV_SEXTA, @CDV_SABADO, @CDV_DOMINGO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                CDV_ID = CalendarioDisponibilidadeVeiculos.CDV_ID,
                 CDV_DATA_DE = CalendarioDisponibilidadeVeiculos.CDV_DATA_DE,
                 CDV_DATA_ATE = CalendarioDisponibilidadeVeiculos.CDV_DATA_ATE,
                 CDV_SEGUNDA = CalendarioDisponibilidadeVeiculos.CDV_SEGUNDA,

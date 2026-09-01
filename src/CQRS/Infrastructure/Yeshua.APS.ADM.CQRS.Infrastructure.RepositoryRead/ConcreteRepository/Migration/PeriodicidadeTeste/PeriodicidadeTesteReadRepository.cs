@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPeriodicidadeTesteCustom(Command.Read.PeriodicidadeTesteReadCommand command, ref DataPagination<PeriodicidadeTesteDTO> result, ref bool handled);
+
         public DataPagination<PeriodicidadeTesteDTO> getPeriodicidadeTeste(ICommandRead command )
          {
             if (command is Command.Read.PeriodicidadeTesteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PeriodicidadeTesteDTO> getPeriodicidadeTeste(Command.Read.PeriodicidadeTesteReadCommand command )
         {
+            DataPagination<PeriodicidadeTesteDTO> customResult = null;
+            var customHandled = false;
+            TryGetPeriodicidadeTesteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PeriodicidadeTesteQuery(command );
 
                 var itens = _unitOfWork.Query<PeriodicidadeTesteDTO>(query.Query,query.Parameters);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetParamCustom(Command.Read.ParamReadCommand command, ref DataPagination<ParamDTO> result, ref bool handled);
+
         public DataPagination<ParamDTO> getParam(ICommandRead command )
          {
             if (command is Command.Read.ParamReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ParamDTO> getParam(Command.Read.ParamReadCommand command )
         {
+            DataPagination<ParamDTO> customResult = null;
+            var customHandled = false;
+            TryGetParamCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ParamQuery(command );
 
                 var itens = _unitOfWork.Query<ParamDTO>(query.Query,query.Parameters);

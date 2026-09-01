@@ -75,6 +75,7 @@ public partial class T_MedicoesCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["MED_ID"] = 1,
             ["IND_ID"] = 1,
             ["MET_ID"] = 1,
             ["UNI_ID"] = 1,
@@ -111,6 +112,7 @@ public partial class T_MedicoesCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["MED_ID"] = 2;
         payload["IND_ID"] = 2;
         payload["MET_ID"] = 2;
         payload["UNI_ID"] = 2;

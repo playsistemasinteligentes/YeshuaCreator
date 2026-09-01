@@ -4,6 +4,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <YeshuaCommitSha Condition="'$(YeshuaCommitSha)' == ''">$(SourceRevisionId)</YeshuaCommitSha>
+    <YeshuaBuildTimestampUtc Condition="'$(YeshuaBuildTimestampUtc)' == ''">UNSET</YeshuaBuildTimestampUtc>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\Yeshua.Fiscal.MDFe.CQRS.Domain\Yeshua.Fiscal.MDFe.CQRS.Domain.csproj" />
@@ -12,5 +14,11 @@
     <ProjectReference Include="..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead.csproj" />
     <ProjectReference Include="..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite.csproj" />
     <ProjectReference Include="..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="Yeshua.Application" Value="Fiscal.MDFe" />
+    <RuntimeHostConfigurationOption Include="Yeshua.Version" Value="$(Version)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.CommitSha" Value="$(YeshuaCommitSha)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.BuildTimestampUtc" Value="$(YeshuaBuildTimestampUtc)" />
   </ItemGroup>
 </Project>

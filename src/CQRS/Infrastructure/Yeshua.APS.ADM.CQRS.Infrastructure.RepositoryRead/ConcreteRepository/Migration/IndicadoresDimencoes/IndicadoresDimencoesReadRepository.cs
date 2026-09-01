@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetIndicadoresDimencoesCustom(Command.Read.IndicadoresDimencoesReadCommand command, ref DataPagination<IndicadoresDimencoesDTO> result, ref bool handled);
+
         public DataPagination<IndicadoresDimencoesDTO> getIndicadoresDimencoes(ICommandRead command )
          {
             if (command is Command.Read.IndicadoresDimencoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<IndicadoresDimencoesDTO> getIndicadoresDimencoes(Command.Read.IndicadoresDimencoesReadCommand command )
         {
+            DataPagination<IndicadoresDimencoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetIndicadoresDimencoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.IndicadoresDimencoesQuery(command );
 
                 var itens = _unitOfWork.Query<IndicadoresDimencoesDTO>(query.Query,query.Parameters);

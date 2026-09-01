@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirLaudoTesteFisicoQuery(ILaudoTesteFisicoEntity LaudoTesteFisico)
         {
-            this.Query = $@" INSERT INTO LaudoTesteFisico (LTF_EMISSAO, LTF_VALOR, LTF_OBS, LTF_STATUS, ORD_ID, ROT_PRO_ID, FPR_SEQ_REPETICAO, USE_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@LTF_EMISSAO, @LTF_VALOR, @LTF_OBS, @LTF_STATUS, @ORD_ID, @ROT_PRO_ID, @FPR_SEQ_REPETICAO, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO LaudoTesteFisico (LTF_ID, LTF_EMISSAO, LTF_VALOR, LTF_OBS, LTF_STATUS, ORD_ID, ROT_PRO_ID, FPR_SEQ_REPETICAO, USE_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@LTF_ID, @LTF_EMISSAO, @LTF_VALOR, @LTF_OBS, @LTF_STATUS, @ORD_ID, @ROT_PRO_ID, @FPR_SEQ_REPETICAO, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                LTF_ID = LaudoTesteFisico.LTF_ID,
                 LTF_EMISSAO = LaudoTesteFisico.LTF_EMISSAO,
                 LTF_VALOR = LaudoTesteFisico.LTF_VALOR,
                 LTF_OBS = LaudoTesteFisico.LTF_OBS,

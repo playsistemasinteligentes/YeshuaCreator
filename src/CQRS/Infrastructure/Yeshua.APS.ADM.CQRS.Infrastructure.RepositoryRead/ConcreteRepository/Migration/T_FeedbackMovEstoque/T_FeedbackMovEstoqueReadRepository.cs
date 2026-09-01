@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_FeedbackMovEstoqueCustom(Command.Read.T_FeedbackMovEstoqueReadCommand command, ref DataPagination<T_FeedbackMovEstoqueDTO> result, ref bool handled);
+
         public DataPagination<T_FeedbackMovEstoqueDTO> getT_FeedbackMovEstoque(ICommandRead command )
          {
             if (command is Command.Read.T_FeedbackMovEstoqueReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_FeedbackMovEstoqueDTO> getT_FeedbackMovEstoque(Command.Read.T_FeedbackMovEstoqueReadCommand command )
         {
+            DataPagination<T_FeedbackMovEstoqueDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_FeedbackMovEstoqueCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_FeedbackMovEstoqueQuery(command );
 
                 var itens = _unitOfWork.Query<T_FeedbackMovEstoqueDTO>(query.Query,query.Parameters);

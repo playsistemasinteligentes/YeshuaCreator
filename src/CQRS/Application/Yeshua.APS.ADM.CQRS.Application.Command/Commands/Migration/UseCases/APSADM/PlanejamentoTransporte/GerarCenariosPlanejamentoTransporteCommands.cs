@@ -25,16 +25,5 @@ public partial record GerarCenariosPlanejamentoTransporteOutputCommand : IComman
     public List<CenarioPlanejamentoEnvelope> Cenarios { get; set; }
 }
 
-public partial record CenarioPlanejamentoEnvelope : ICommand
-{
-    public string CenarioId { get; set; }
-    public string Descricao { get; set; }
-    public string Objetivo { get; set; }
-    public int QuantidadeCargas { get; set; }
-    public int QuantidadePedidosNaoAtendidos { get; set; }
-    public decimal CustoTotal { get; set; }
-    public string AlertasResumo { get; set; }
-}
-
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

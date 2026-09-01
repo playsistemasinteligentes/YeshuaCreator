@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoAvaliacaoCustom(Command.Read.TipoAvaliacaoReadCommand command, ref DataPagination<TipoAvaliacaoDTO> result, ref bool handled);
+
         public DataPagination<TipoAvaliacaoDTO> getTipoAvaliacao(ICommandRead command )
          {
             if (command is Command.Read.TipoAvaliacaoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoAvaliacaoDTO> getTipoAvaliacao(Command.Read.TipoAvaliacaoReadCommand command )
         {
+            DataPagination<TipoAvaliacaoDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoAvaliacaoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoAvaliacaoQuery(command );
 
                 var itens = _unitOfWork.Query<TipoAvaliacaoDTO>(query.Query,query.Parameters);

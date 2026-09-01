@@ -89,7 +89,7 @@ namespace Dominio.Schemas.CQRS
             AppendExternalConnectorEndpoints(sb);
 
             #region Insert 
-            foreach (var entity in _migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -106,7 +106,7 @@ namespace Dominio.Schemas.CQRS
             #endregion
 
             // update 
-            foreach (var entity in _migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapPut(\"{getPrefixo()}/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -122,7 +122,7 @@ namespace Dominio.Schemas.CQRS
             }
 
             // Delete
-            foreach (var entity in _migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in _migration.Entitys)
             {
                 sb.AppendLine($"app.MapDelete(\"{getPrefixo()}/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");

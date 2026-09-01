@@ -1,0 +1,74 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+// </yeshua>
+
+using Command.Patterns.Command;
+using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
+using Dominio.Entitys;
+using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
+using IRepository.Write;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Command.Receivers.Write
+{
+    public class DeleteCargaPlanejavelReceiver : ReciverBase<ICommand, ICargaPlanejavelEntity>
+    {
+        private readonly ICargaPlanejavelWriteRepository _repository;
+        private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+
+        public DeleteCargaPlanejavelReceiver(
+            ICargaPlanejavelWriteRepository repository,
+            Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
+            Aplication.Interfaces.Services.IExecutionContext context)
+            : base(logger, context)
+        {
+            _repository = repository;
+            _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
+            _executionContext = context;
+        }
+
+        protected override async Task<State<ICargaPlanejavelEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        {
+             if(comand is Command.Write.CargaPlanejavelCrudCommand c) 
+             {    
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteCargaPlanejavel", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteCargaPlanejavelReceiver), commandName: "Command.Write.CargaPlanejavelCrudCommand");
+                 var cargaplanejavel = new CargaPlanejavelFactory(_logger, _domainTrackingPolicy).Create(context, c.CargaId, c.Status, c.TransportadoraId, c.VeiculoId, c.TipoVeiculoId, c.PesoTeorico, c.VolumeTeorico, c.InicioJanelaEmbarque, c.FimJanelaEmbarque, c.EmbarqueAlvo, c.QuantidadePedidos, c.AlertasResumo);
+                 var domainResult = CargaPlanejavelDomainBehavior.Apply(cargaplanejavel, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
+
+                 try
+                 {
+                     _repository.Delete(cargaplanejavel);
+                     return Success("OK", cargaplanejavel);
+                 }
+                 catch (Exception e)
+                 {
+                    return Error(e, cargaplanejavel);
+                 }
+            }
+            else 
+            {
+                 return Error("ErroConversao", default);
+            }
+        }
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration

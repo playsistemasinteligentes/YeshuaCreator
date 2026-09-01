@@ -1,9 +1,19 @@
-﻿using System.Net.Http.Json;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeIntegrationApiSmokeCrudTestMigration
+// </yeshua>
+
+using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.MDFe.CQRS.Tests.Integration.Api.Smoke.Migration.yModule;
 
-[SmokeTestOrder(12)]
+[SmokeTestOrder(13)]
 public partial class yModuleCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yModule/PostyModule";

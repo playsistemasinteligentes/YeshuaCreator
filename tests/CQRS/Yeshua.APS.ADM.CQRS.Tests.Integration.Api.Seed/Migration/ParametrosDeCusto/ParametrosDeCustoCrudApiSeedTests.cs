@@ -53,6 +53,7 @@ public partial class ParametrosDeCustoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["PAR_ID"] = 1,
             ["PRO_ID"] = ApiTestData.Text("ParametrosDeCusto PRO_ID", 30),
             ["CUS_ID"] = ApiTestData.Text("ParametrosDeCusto CUS_ID", 50),
             ["PAR_VALOR"] = ApiTestData.Text("ParametrosDeCusto PAR_VALOR", 80),
@@ -72,6 +73,7 @@ public partial class ParametrosDeCustoCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["PAR_ID"] = 2;
         payload["PRO_ID"] = ApiTestData.Text("ParametrosDeCusto PRO_ID Update", 30);
         payload["CUS_ID"] = ApiTestData.Text("ParametrosDeCusto CUS_ID Update", 50);
         payload["PAR_VALOR"] = ApiTestData.Text("ParametrosDeCusto PAR_VALOR Update", 80);

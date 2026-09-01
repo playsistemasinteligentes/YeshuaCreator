@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTemplatesGrupoMaquinaCustom(Command.Read.TemplatesGrupoMaquinaReadCommand command, ref DataPagination<TemplatesGrupoMaquinaDTO> result, ref bool handled);
+
         public DataPagination<TemplatesGrupoMaquinaDTO> getTemplatesGrupoMaquina(ICommandRead command )
          {
             if (command is Command.Read.TemplatesGrupoMaquinaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TemplatesGrupoMaquinaDTO> getTemplatesGrupoMaquina(Command.Read.TemplatesGrupoMaquinaReadCommand command )
         {
+            DataPagination<TemplatesGrupoMaquinaDTO> customResult = null;
+            var customHandled = false;
+            TryGetTemplatesGrupoMaquinaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TemplatesGrupoMaquinaQuery(command );
 
                 var itens = _unitOfWork.Query<TemplatesGrupoMaquinaDTO>(query.Query,query.Parameters);

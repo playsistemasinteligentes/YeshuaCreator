@@ -53,6 +53,7 @@ public partial class PoliticaOnduladeiraCrudApiSeedTests : ApiIntegrationTestBas
     {
         return new JsonObject
         {
+            ["POL_ID"] = 1,
             ["POL_NIVEL"] = 1,
             ["POL_PROMOCAO"] = 1,
             ["POL_DIAS_ANTECIPACAO"] = 1,
@@ -73,6 +74,7 @@ public partial class PoliticaOnduladeiraCrudApiSeedTests : ApiIntegrationTestBas
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["POL_ID"] = 2;
         payload["POL_NIVEL"] = 2;
         payload["POL_PROMOCAO"] = 2;
         payload["POL_DIAS_ANTECIPACAO"] = 2;

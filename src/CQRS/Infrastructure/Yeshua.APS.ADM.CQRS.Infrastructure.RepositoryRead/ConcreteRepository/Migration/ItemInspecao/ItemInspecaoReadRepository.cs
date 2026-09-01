@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetItemInspecaoCustom(Command.Read.ItemInspecaoReadCommand command, ref DataPagination<ItemInspecaoDTO> result, ref bool handled);
+
         public DataPagination<ItemInspecaoDTO> getItemInspecao(ICommandRead command )
          {
             if (command is Command.Read.ItemInspecaoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ItemInspecaoDTO> getItemInspecao(Command.Read.ItemInspecaoReadCommand command )
         {
+            DataPagination<ItemInspecaoDTO> customResult = null;
+            var customHandled = false;
+            TryGetItemInspecaoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ItemInspecaoQuery(command );
 
                 var itens = _unitOfWork.Query<ItemInspecaoDTO>(query.Query,query.Parameters);

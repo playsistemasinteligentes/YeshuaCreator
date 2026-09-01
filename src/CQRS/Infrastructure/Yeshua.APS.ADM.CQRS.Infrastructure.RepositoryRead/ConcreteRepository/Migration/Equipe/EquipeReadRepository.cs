@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetEquipeCustom(Command.Read.EquipeReadCommand command, ref DataPagination<EquipeDTO> result, ref bool handled);
+
         public DataPagination<EquipeDTO> getEquipe(ICommandRead command )
          {
             if (command is Command.Read.EquipeReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<EquipeDTO> getEquipe(Command.Read.EquipeReadCommand command )
         {
+            DataPagination<EquipeDTO> customResult = null;
+            var customHandled = false;
+            TryGetEquipeCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.EquipeQuery(command );
 
                 var itens = _unitOfWork.Query<EquipeDTO>(query.Query,query.Parameters);

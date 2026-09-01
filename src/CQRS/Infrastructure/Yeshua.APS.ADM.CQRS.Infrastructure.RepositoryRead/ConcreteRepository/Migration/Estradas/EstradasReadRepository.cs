@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetEstradasCustom(Command.Read.EstradasReadCommand command, ref DataPagination<EstradasDTO> result, ref bool handled);
+
         public DataPagination<EstradasDTO> getEstradas(ICommandRead command )
          {
             if (command is Command.Read.EstradasReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<EstradasDTO> getEstradas(Command.Read.EstradasReadCommand command )
         {
+            DataPagination<EstradasDTO> customResult = null;
+            var customHandled = false;
+            TryGetEstradasCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.EstradasQuery(command );
 
                 var itens = _unitOfWork.Query<EstradasDTO>(query.Query,query.Parameters);

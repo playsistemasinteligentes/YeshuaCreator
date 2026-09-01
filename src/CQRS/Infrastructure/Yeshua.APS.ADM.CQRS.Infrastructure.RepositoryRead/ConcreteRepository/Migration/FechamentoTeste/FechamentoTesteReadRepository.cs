@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetFechamentoTesteCustom(Command.Read.FechamentoTesteReadCommand command, ref DataPagination<FechamentoTesteDTO> result, ref bool handled);
+
         public DataPagination<FechamentoTesteDTO> getFechamentoTeste(ICommandRead command )
          {
             if (command is Command.Read.FechamentoTesteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<FechamentoTesteDTO> getFechamentoTeste(Command.Read.FechamentoTesteReadCommand command )
         {
+            DataPagination<FechamentoTesteDTO> customResult = null;
+            var customHandled = false;
+            TryGetFechamentoTesteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.FechamentoTesteQuery(command );
 
                 var itens = _unitOfWork.Query<FechamentoTesteDTO>(query.Query,query.Parameters);

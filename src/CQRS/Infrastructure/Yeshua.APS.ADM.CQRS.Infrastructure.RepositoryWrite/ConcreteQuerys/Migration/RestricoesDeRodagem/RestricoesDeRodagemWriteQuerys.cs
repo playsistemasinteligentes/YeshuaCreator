@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirRestricoesDeRodagemQuery(IRestricoesDeRodagemEntity RestricoesDeRodagem)
         {
-            this.Query = $@" INSERT INTO RestricoesDeRodagem (RES_TIPO, RES_HORA_INI, RES_HORA_FIM, RES_VELOCIDADE_HORA_RUSH, TVE_ID, MAP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RES_TIPO, @RES_HORA_INI, @RES_HORA_FIM, @RES_VELOCIDADE_HORA_RUSH, @TVE_ID, @MAP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO RestricoesDeRodagem (RES_ID, RES_TIPO, RES_HORA_INI, RES_HORA_FIM, RES_VELOCIDADE_HORA_RUSH, TVE_ID, MAP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RES_ID, @RES_TIPO, @RES_HORA_INI, @RES_HORA_FIM, @RES_VELOCIDADE_HORA_RUSH, @TVE_ID, @MAP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                RES_ID = RestricoesDeRodagem.RES_ID,
                 RES_TIPO = RestricoesDeRodagem.RES_TIPO,
                 RES_HORA_INI = RestricoesDeRodagem.RES_HORA_INI,
                 RES_HORA_FIM = RestricoesDeRodagem.RES_HORA_FIM,

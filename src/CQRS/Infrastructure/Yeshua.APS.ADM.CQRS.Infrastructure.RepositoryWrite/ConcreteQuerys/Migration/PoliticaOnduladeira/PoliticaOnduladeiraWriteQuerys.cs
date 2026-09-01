@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirPoliticaOnduladeiraQuery(IPoliticaOnduladeiraEntity PoliticaOnduladeira)
         {
-            this.Query = $@" INSERT INTO PoliticaOnduladeira (POL_NIVEL, POL_PROMOCAO, POL_DIAS_ANTECIPACAO, POL_METROS_LINEARES, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@POL_NIVEL, @POL_PROMOCAO, @POL_DIAS_ANTECIPACAO, @POL_METROS_LINEARES, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO PoliticaOnduladeira (POL_ID, POL_NIVEL, POL_PROMOCAO, POL_DIAS_ANTECIPACAO, POL_METROS_LINEARES, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@POL_ID, @POL_NIVEL, @POL_PROMOCAO, @POL_DIAS_ANTECIPACAO, @POL_METROS_LINEARES, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                POL_ID = PoliticaOnduladeira.POL_ID,
                 POL_NIVEL = PoliticaOnduladeira.POL_NIVEL,
                 POL_PROMOCAO = PoliticaOnduladeira.POL_PROMOCAO,
                 POL_DIAS_ANTECIPACAO = PoliticaOnduladeira.POL_DIAS_ANTECIPACAO,

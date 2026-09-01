@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetItensCalendarioCustom(Command.Read.ItensCalendarioReadCommand command, ref DataPagination<ItensCalendarioDTO> result, ref bool handled);
+
         public DataPagination<ItensCalendarioDTO> getItensCalendario(ICommandRead command )
          {
             if (command is Command.Read.ItensCalendarioReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ItensCalendarioDTO> getItensCalendario(Command.Read.ItensCalendarioReadCommand command )
         {
+            DataPagination<ItensCalendarioDTO> customResult = null;
+            var customHandled = false;
+            TryGetItensCalendarioCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ItensCalendarioQuery(command );
 
                 var itens = _unitOfWork.Query<ItensCalendarioDTO>(query.Query,query.Parameters);

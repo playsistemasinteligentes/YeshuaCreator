@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetConsultaPedidoCustom(Command.Read.ConsultaPedidoReadCommand command, ref DataPagination<ConsultaPedidoDTO> result, ref bool handled);
+
         public DataPagination<ConsultaPedidoDTO> getConsultaPedido(ICommandRead command )
          {
             if (command is Command.Read.ConsultaPedidoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ConsultaPedidoDTO> getConsultaPedido(Command.Read.ConsultaPedidoReadCommand command )
         {
+            DataPagination<ConsultaPedidoDTO> customResult = null;
+            var customHandled = false;
+            TryGetConsultaPedidoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ConsultaPedidoQuery(command );
 
                 var itens = _unitOfWork.Query<ConsultaPedidoDTO>(query.Query,query.Parameters);

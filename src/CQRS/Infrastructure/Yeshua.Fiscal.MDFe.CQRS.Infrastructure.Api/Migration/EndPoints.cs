@@ -1,14 +1,62 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureAPIEndpointsMigration
+// </yeshua>
+
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Modules;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
+using System.IO;
+using System.Xml.Linq;
+using System.Text.RegularExpressions;
+using Shared.Operational;
 namespace API.Migrations
 {
 public static class Endpoints
 {
 public static void MapEndpoints(this WebApplication app)
 {
+app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(identityProvider.Current))
+    .AllowAnonymous();
+
+app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILogger logger) =>
+    Results.Ok(logger.Snapshot()))
+    .AllowAnonymous();
+
+app.MapGet("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.OperationalControl.IOperationalLoggingPolicyAccessor policyAccessor) =>
+    Results.Ok(policyAccessor.Current))
+    .AllowAnonymous();
+
+app.MapGet("/yapi/health/live", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        Status = "Healthy",
+        Check = "Liveness",
+        Identity = identityProvider.Current,
+        ObservedAtUtc = DateTimeOffset.UtcNow
+    }))
+    .AllowAnonymous();
+
+app.MapGet("/yapi/health/ready", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
+    Results.Ok(new
+    {
+        Status = "Ready",
+        Check = "Readiness",
+        Dependencies = "NotEvaluated",
+        Identity = identityProvider.Current,
+        ObservedAtUtc = DateTimeOffset.UtcNow
+    }))
+    .AllowAnonymous();
+
 app.MapPost("/yapi/MDFe/PostMDFe", async ([FromServices] Command.Receivers.Write.InsertMDFeReceiver receiver, [FromBody] Command.Write.MDFeCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -68,6 +116,15 @@ app.MapPost("/yapi/yInbox/PostyInbox", async ([FromServices] Command.Receivers.W
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/PostyToken", async ([FromServices] Command.Receivers.Write.InsertyTokenReceiver receiver, [FromBody] Command.Write.yTokenCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -234,6 +291,15 @@ app.MapPut("/yapi/yInbox/PutyInbox", async ([FromServices] Command.Receivers.Wri
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/yToken/PutyToken", async ([FromServices] Command.Receivers.Write.UpdateyTokenReceiver receiver, [FromBody] Command.Write.yTokenCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yTenant/PutyTenant", async ([FromServices] Command.Receivers.Write.UpdateyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -392,6 +458,15 @@ app.MapDelete("/yapi/yInbox/DeleteyInbox", async ([FromServices] Command.Receive
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/yToken/DeleteyToken", async ([FromServices] Command.Receivers.Write.DeleteyTokenReceiver receiver, [FromBody] Command.Write.yTokenCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -581,6 +656,15 @@ app.MapPost("/yapi/yInbox/ReadyInbox", async ([FromServices] Command.Receivers.R
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/ReadyToken", async ([FromServices] Command.Receivers.Read.yTokenReadReceiver receiver, [FromBody] Command.Read.yTokenReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1033,6 +1117,40 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/yToken/yTokenReadFKTenantID", async ([FromServices] Command.Receivers.Read.yTokenReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/yTokenReadFKUserId", async ([FromServices] Command.Receivers.Read.yTokenReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/yUser/yUserReadFKTenantID", async ([FromServices] Command.Receivers.Read.yUserReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -1431,7 +1549,19 @@ app.MapGet("/yapi/getMetaDataMDFe", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "MDFe",
         entityDescription = "MDFe",
+        source = new
+        {
+            kind = "table",
+            name = "MDFe"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1491,6 +1621,9 @@ app.MapGet("/yapi/getMetaDataMDFe", (HttpContext context) =>
             new { id = "canceladoem", label = "Cancelado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "situacao", label = "Situacao do MDF-e", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/MDFe/PostMDFe",
@@ -1508,7 +1641,19 @@ app.MapGet("/yapi/getMetaDataMDFeEncerramento", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "MDFeEncerramento",
         entityDescription = "MDFeEncerramento",
+        source = new
+        {
+            kind = "table",
+            name = "MDFeEncerramento"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1563,6 +1708,9 @@ app.MapGet("/yapi/getMetaDataMDFeEncerramento", (HttpContext context) =>
             new { id = "codigoretorno", label = "Codigo de Retorno", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  mdfeid = "/MDFeEncerramento/MDFeEncerramentoReadFKMDFeId",
@@ -1581,7 +1729,19 @@ app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yFileUpload",
         entityDescription = "yFileUpload",
+        source = new
+        {
+            kind = "table",
+            name = "yFileUpload"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1629,6 +1789,9 @@ app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
             new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yFileUpload/PostyFileUpload",
@@ -1646,7 +1809,19 @@ app.MapGet("/yapi/getMetaDataySaga", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "ySaga",
         entityDescription = "ySaga",
+        source = new
+        {
+            kind = "table",
+            name = "ySaga"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1703,6 +1878,9 @@ app.MapGet("/yapi/getMetaDataySaga", (HttpContext context) =>
             new { id = "lockedat", label = "LockedAt", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "lockedby", label = "LockedBy", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/ySaga/PostySaga",
@@ -1720,7 +1898,19 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "ySagaStep",
         entityDescription = "ySagaStep",
+        source = new
+        {
+            kind = "table",
+            name = "ySagaStep"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1778,6 +1968,9 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
             new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  sagaid = "/ySagaStep/ySagaStepReadFKSagaId",
@@ -1796,7 +1989,19 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yOutbox",
         entityDescription = "yOutbox",
+        source = new
+        {
+            kind = "table",
+            name = "yOutbox"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1841,6 +2046,9 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
             new { id = "sagaid", label = "SagaId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  sagaid = "/yOutbox/yOutboxReadFKSagaId",
@@ -1860,7 +2068,19 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yInbox",
         entityDescription = "yInbox",
+        source = new
+        {
+            kind = "table",
+            name = "yInbox"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1928,6 +2148,9 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
             new { id = "sagaid", label = "SagaId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  sagaid = "/yInbox/yInboxReadFKSagaId",
@@ -1940,6 +2163,83 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
+app.MapGet("/yapi/getMetaDatayToken", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "yToken",
+        entityDescription = "yToken",
+        source = new
+        {
+            kind = "table",
+            name = "yToken"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/yToken/ReadyToken",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tokenhash", label = "Hash do Token", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descricao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "connectorkey", label = "Conector", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "active", label = "Ativo", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "createdat", label = "Criado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tokenhash", label = "Hash do Token", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descricao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "connectorkey", label = "Conector", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "active", label = "Ativo", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "createdat", label = "Criado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tokenhash", label = "Hash do Token", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descricao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "connectorkey", label = "Conector", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "active", label = "Ativo", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "/yToken/PostyToken",
+            read = "/yToken/ReadyToken",
+            update = "/yToken/PutyToken",
+            delete = "/yToken/DeleteyToken"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -1947,7 +2247,19 @@ app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yTenant",
         entityDescription = "yTenant",
+        source = new
+        {
+            kind = "table",
+            name = "yTenant"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -1980,6 +2292,9 @@ app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
             new { id = "nome", label = "Nome", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "userid", label = "User ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yTenant/PostyTenant",
@@ -1997,7 +2312,19 @@ app.MapGet("/yapi/getMetaDatayUser", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yUser",
         entityDescription = "yUser",
+        source = new
+        {
+            kind = "table",
+            name = "yUser"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2030,6 +2357,9 @@ app.MapGet("/yapi/getMetaDatayUser", (HttpContext context) =>
             new { id = "email", label = "Email", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "senha", label = "Senha", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yUser/PostyUser",
@@ -2047,7 +2377,19 @@ app.MapGet("/yapi/getMetaDatayConfigArcteture", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yConfigArcteture",
         entityDescription = "yConfigArcteture",
+        source = new
+        {
+            kind = "table",
+            name = "yConfigArcteture"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2077,6 +2419,9 @@ app.MapGet("/yapi/getMetaDatayConfigArcteture", (HttpContext context) =>
             new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yConfigArcteture/PostyConfigArcteture",
@@ -2094,7 +2439,19 @@ app.MapGet("/yapi/getMetaDatayConfigNotification", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yConfigNotification",
         entityDescription = "yConfigNotification",
+        source = new
+        {
+            kind = "table",
+            name = "yConfigNotification"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2134,6 +2491,9 @@ app.MapGet("/yapi/getMetaDatayConfigNotification", (HttpContext context) =>
             new { id = "emailusername", label = "EmailUserName", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "emailpassword", label = "EmailPassword", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  tenantid = "/yConfigNotification/yConfigNotificationReadFKTenantID",
@@ -2152,7 +2512,19 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yPerfil",
         entityDescription = "yPerfil",
+        source = new
+        {
+            kind = "table",
+            name = "yPerfil"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2179,6 +2551,9 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
             new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yPerfil/PostyPerfil",
@@ -2196,7 +2571,19 @@ app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yModule",
         entityDescription = "yModule",
+        source = new
+        {
+            kind = "table",
+            name = "yModule"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2223,6 +2610,9 @@ app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
             new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yModule/PostyModule",
@@ -2240,7 +2630,19 @@ app.MapGet("/yapi/getMetaDatayTenantModule", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yTenantModule",
         entityDescription = "yTenantModule",
+        source = new
+        {
+            kind = "table",
+            name = "yTenantModule"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2275,6 +2677,9 @@ app.MapGet("/yapi/getMetaDatayTenantModule", (HttpContext context) =>
             new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  moduleid = "/yTenantModule/yTenantModuleReadFKModuleId",
@@ -2294,7 +2699,19 @@ app.MapGet("/yapi/getMetaDatayUserModule", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yUserModule",
         entityDescription = "yUserModule",
+        source = new
+        {
+            kind = "table",
+            name = "yUserModule"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2329,6 +2746,9 @@ app.MapGet("/yapi/getMetaDatayUserModule", (HttpContext context) =>
             new { id = "userid", label = "User ID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  moduleid = "/yUserModule/yUserModuleReadFKModuleId",
@@ -2348,7 +2768,19 @@ app.MapGet("/yapi/getMetaDatayGrant", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yGrant",
         entityDescription = "yGrant",
+        source = new
+        {
+            kind = "table",
+            name = "yGrant"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2375,6 +2807,9 @@ app.MapGet("/yapi/getMetaDatayGrant", (HttpContext context) =>
             new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
             create = "/yGrant/PostyGrant",
@@ -2392,7 +2827,19 @@ app.MapGet("/yapi/getMetaDatayPerfilGrant", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yPerfilGrant",
         entityDescription = "yPerfilGrant",
+        source = new
+        {
+            kind = "table",
+            name = "yPerfilGrant"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2442,6 +2889,9 @@ app.MapGet("/yapi/getMetaDatayPerfilGrant", (HttpContext context) =>
             new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  perfilid = "/yPerfilGrant/yPerfilGrantReadFKPerfilId",
@@ -2461,7 +2911,19 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
         return Results.Unauthorized();
     var metadatacrud = new
     {
+        entityName = "yUserGrant",
         entityDescription = "yUserGrant",
+        source = new
+        {
+            kind = "table",
+            name = "yUserGrant"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
         search = new[]{
             new {
                 id = "Standard",
@@ -2511,6 +2973,9 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
             new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
         endpoints = new
         {
                  perfilid = "/yUserGrant/yUserGrantReadFKPerfilId",

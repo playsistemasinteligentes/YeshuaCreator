@@ -75,6 +75,7 @@ public partial class OrderTrackCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["OTK_ID"] = 1,
             ["OTK_SEQUENCIA"] = 10.5m,
             ["OTK_VERSSAO"] = 1,
             ["ORD_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Order", "ORD_ID"),
@@ -100,6 +101,7 @@ public partial class OrderTrackCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["OTK_ID"] = 2;
         payload["OTK_SEQUENCIA"] = 20.5m;
         payload["OTK_VERSSAO"] = 2;
         payload["ORD_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Order", "ORD_ID");

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCabvisaoCustom(Command.Read.CabvisaoReadCommand command, ref DataPagination<CabvisaoDTO> result, ref bool handled);
+
         public DataPagination<CabvisaoDTO> getCabvisao(ICommandRead command )
          {
             if (command is Command.Read.CabvisaoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CabvisaoDTO> getCabvisao(Command.Read.CabvisaoReadCommand command )
         {
+            DataPagination<CabvisaoDTO> customResult = null;
+            var customHandled = false;
+            TryGetCabvisaoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CabvisaoQuery(command );
 
                 var itens = _unitOfWork.Query<CabvisaoDTO>(query.Query,query.Parameters);

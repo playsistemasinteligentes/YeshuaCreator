@@ -1,5 +1,32 @@
-﻿namespace Yeshua.Fiscal.MDFe.CQRS.Tests.Integration.Api.Smoke.Migration;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.CSharpCQRS.WriteIntegrationApiSmokeSuiteFile
+// </yeshua>
 
+// <operational-spec>
+// standard: OPERATIONAL_SUPPORT_ADOPTION_STANDARD
+// gates: G7
+// depths: D0
+// severities: notApplicable
+// modes: Live
+// dataClassification: OperationalData
+// identities: Application,Environment,Version
+// technicalOutcomes: Success,Failure
+// businessOutcomes: notApplicable
+// evidence: TechnicalSmoke
+// </operational-spec>
+
+namespace Yeshua.Fiscal.MDFe.CQRS.Tests.Integration.Api.Smoke.Migration;
+
+[Trait("TestPurpose", "TechnicalSmoke")]
+[Trait("SpecificationGate", "G7")]
+[Trait("DiagnosticDepth", "D0")]
+[Trait("ExecutionMode", "Live")]
 public sealed class ApiSmokeCrudSuiteTests
 {
     [IntegrationFact]
@@ -41,45 +68,49 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step7.DeleteAsync);
             await step7.ExecuteAsync();
 
-            var step8 = new yUser.yUserCrudApiSmokeTests();
+            var step8 = new yToken.yTokenCrudApiSmokeTests();
             deleteSteps.Push(step8.DeleteAsync);
             await step8.ExecuteAsync();
 
-            var step9 = new yConfigArcteture.yConfigArctetureCrudApiSmokeTests();
+            var step9 = new yUser.yUserCrudApiSmokeTests();
             deleteSteps.Push(step9.DeleteAsync);
             await step9.ExecuteAsync();
 
-            var step10 = new yConfigNotification.yConfigNotificationCrudApiSmokeTests();
+            var step10 = new yConfigArcteture.yConfigArctetureCrudApiSmokeTests();
             deleteSteps.Push(step10.DeleteAsync);
             await step10.ExecuteAsync();
 
-            var step11 = new yPerfil.yPerfilCrudApiSmokeTests();
+            var step11 = new yConfigNotification.yConfigNotificationCrudApiSmokeTests();
             deleteSteps.Push(step11.DeleteAsync);
             await step11.ExecuteAsync();
 
-            var step12 = new yModule.yModuleCrudApiSmokeTests();
+            var step12 = new yPerfil.yPerfilCrudApiSmokeTests();
             deleteSteps.Push(step12.DeleteAsync);
             await step12.ExecuteAsync();
 
-            var step13 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
+            var step13 = new yModule.yModuleCrudApiSmokeTests();
             deleteSteps.Push(step13.DeleteAsync);
             await step13.ExecuteAsync();
 
-            var step14 = new yUserModule.yUserModuleCrudApiSmokeTests();
+            var step14 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
             deleteSteps.Push(step14.DeleteAsync);
             await step14.ExecuteAsync();
 
-            var step15 = new yGrant.yGrantCrudApiSmokeTests();
+            var step15 = new yUserModule.yUserModuleCrudApiSmokeTests();
             deleteSteps.Push(step15.DeleteAsync);
             await step15.ExecuteAsync();
 
-            var step16 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
+            var step16 = new yGrant.yGrantCrudApiSmokeTests();
             deleteSteps.Push(step16.DeleteAsync);
             await step16.ExecuteAsync();
 
-            var step17 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            var step17 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
             deleteSteps.Push(step17.DeleteAsync);
             await step17.ExecuteAsync();
+
+            var step18 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            deleteSteps.Push(step18.DeleteAsync);
+            await step18.ExecuteAsync();
 
         }
         catch (Exception ex)

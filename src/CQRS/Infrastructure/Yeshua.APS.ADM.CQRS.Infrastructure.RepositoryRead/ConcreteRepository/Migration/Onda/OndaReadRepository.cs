@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetOndaCustom(Command.Read.OndaReadCommand command, ref DataPagination<OndaDTO> result, ref bool handled);
+
         public DataPagination<OndaDTO> getOnda(ICommandRead command )
          {
             if (command is Command.Read.OndaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<OndaDTO> getOnda(Command.Read.OndaReadCommand command )
         {
+            DataPagination<OndaDTO> customResult = null;
+            var customHandled = false;
+            TryGetOndaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.OndaQuery(command );
 
                 var itens = _unitOfWork.Query<OndaDTO>(query.Query,query.Parameters);

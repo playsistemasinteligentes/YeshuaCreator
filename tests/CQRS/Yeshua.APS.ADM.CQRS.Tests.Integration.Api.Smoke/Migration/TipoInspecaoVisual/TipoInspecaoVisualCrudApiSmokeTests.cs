@@ -75,6 +75,7 @@ public partial class TipoInspecaoVisualCrudApiSmokeTests : ApiIntegrationTestBas
     {
         return new JsonObject
         {
+            ["TIV_ID"] = 1,
             ["TIV_NOME"] = ApiTestData.Text("TipoInspecaoVisual TIV_NOME", 60),
             ["TIV_DESCRICAO"] = ApiTestData.Text("TipoInspecaoVisual TIV_DESCRICAO", 80),
             ["TIV_FECHAMENTO"] = ApiTestData.Text("TipoInspecaoVisual TIV_FECHAMENTO", 1),
@@ -100,6 +101,7 @@ public partial class TipoInspecaoVisualCrudApiSmokeTests : ApiIntegrationTestBas
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["TIV_ID"] = 2;
         payload["TIV_NOME"] = ApiTestData.Text("TipoInspecaoVisual TIV_NOME Update", 60);
         payload["TIV_DESCRICAO"] = ApiTestData.Text("TipoInspecaoVisual TIV_DESCRICAO Update", 80);
         payload["TIV_FECHAMENTO"] = ApiTestData.Text("TipoInspecaoVisual TIV_FECHAMENTO Update", 1);

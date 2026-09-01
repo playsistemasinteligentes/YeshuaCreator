@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetLogsDatabaseCustom(Command.Read.LogsDatabaseReadCommand command, ref DataPagination<LogsDatabaseDTO> result, ref bool handled);
+
         public DataPagination<LogsDatabaseDTO> getLogsDatabase(ICommandRead command )
          {
             if (command is Command.Read.LogsDatabaseReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<LogsDatabaseDTO> getLogsDatabase(Command.Read.LogsDatabaseReadCommand command )
         {
+            DataPagination<LogsDatabaseDTO> customResult = null;
+            var customHandled = false;
+            TryGetLogsDatabaseCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.LogsDatabaseQuery(command );
 
                 var itens = _unitOfWork.Query<LogsDatabaseDTO>(query.Query,query.Parameters);

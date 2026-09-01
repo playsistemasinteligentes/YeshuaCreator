@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirClpMedicoesQuery(IClpMedicoesEntity ClpMedicoes)
         {
-            this.Query = $@" INSERT INTO ClpMedicoes (MaquinaId, DataInicio, DataFim, Emissao, Quantidade, Grupo, Status, TurnoId, TurmaId, IdLoteClp, OcorrenciaId, Fase, ClpOrigem, CLP_LOTE, COMPACTA, BOL_ID, COR_SEQUENCIA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MaquinaId, @DataInicio, @DataFim, @Emissao, @Quantidade, @Grupo, @Status, @TurnoId, @TurmaId, @IdLoteClp, @OcorrenciaId, @Fase, @ClpOrigem, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO ClpMedicoes (Id2, MaquinaId, DataInicio, DataFim, Emissao, Quantidade, Grupo, Status, TurnoId, TurmaId, IdLoteClp, OcorrenciaId, Fase, ClpOrigem, CLP_LOTE, COMPACTA, BOL_ID, COR_SEQUENCIA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Id2, @MaquinaId, @DataInicio, @DataFim, @Emissao, @Quantidade, @Grupo, @Status, @TurnoId, @TurmaId, @IdLoteClp, @OcorrenciaId, @Fase, @ClpOrigem, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                Id2 = ClpMedicoes.Id2,
                 MaquinaId = ClpMedicoes.MaquinaId,
                 DataInicio = ClpMedicoes.DataInicio,
                 DataFim = ClpMedicoes.DataFim,

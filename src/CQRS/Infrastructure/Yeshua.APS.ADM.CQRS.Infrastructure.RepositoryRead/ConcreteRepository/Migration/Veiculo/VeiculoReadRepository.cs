@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetVeiculoCustom(Command.Read.VeiculoReadCommand command, ref DataPagination<VeiculoDTO> result, ref bool handled);
+
         public DataPagination<VeiculoDTO> getVeiculo(ICommandRead command )
          {
             if (command is Command.Read.VeiculoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<VeiculoDTO> getVeiculo(Command.Read.VeiculoReadCommand command )
         {
+            DataPagination<VeiculoDTO> customResult = null;
+            var customHandled = false;
+            TryGetVeiculoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.VeiculoQuery(command );
 
                 var itens = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters);

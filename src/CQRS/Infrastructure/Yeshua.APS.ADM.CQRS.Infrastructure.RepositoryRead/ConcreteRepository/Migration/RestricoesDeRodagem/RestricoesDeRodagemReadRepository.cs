@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRestricoesDeRodagemCustom(Command.Read.RestricoesDeRodagemReadCommand command, ref DataPagination<RestricoesDeRodagemDTO> result, ref bool handled);
+
         public DataPagination<RestricoesDeRodagemDTO> getRestricoesDeRodagem(ICommandRead command )
          {
             if (command is Command.Read.RestricoesDeRodagemReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RestricoesDeRodagemDTO> getRestricoesDeRodagem(Command.Read.RestricoesDeRodagemReadCommand command )
         {
+            DataPagination<RestricoesDeRodagemDTO> customResult = null;
+            var customHandled = false;
+            TryGetRestricoesDeRodagemCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RestricoesDeRodagemQuery(command );
 
                 var itens = _unitOfWork.Query<RestricoesDeRodagemDTO>(query.Query,query.Parameters);

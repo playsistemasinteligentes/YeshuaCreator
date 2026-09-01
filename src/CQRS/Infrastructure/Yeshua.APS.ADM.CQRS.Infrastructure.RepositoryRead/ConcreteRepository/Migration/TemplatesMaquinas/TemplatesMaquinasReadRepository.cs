@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTemplatesMaquinasCustom(Command.Read.TemplatesMaquinasReadCommand command, ref DataPagination<TemplatesMaquinasDTO> result, ref bool handled);
+
         public DataPagination<TemplatesMaquinasDTO> getTemplatesMaquinas(ICommandRead command )
          {
             if (command is Command.Read.TemplatesMaquinasReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TemplatesMaquinasDTO> getTemplatesMaquinas(Command.Read.TemplatesMaquinasReadCommand command )
         {
+            DataPagination<TemplatesMaquinasDTO> customResult = null;
+            var customHandled = false;
+            TryGetTemplatesMaquinasCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TemplatesMaquinasQuery(command );
 
                 var itens = _unitOfWork.Query<TemplatesMaquinasDTO>(query.Query,query.Parameters);

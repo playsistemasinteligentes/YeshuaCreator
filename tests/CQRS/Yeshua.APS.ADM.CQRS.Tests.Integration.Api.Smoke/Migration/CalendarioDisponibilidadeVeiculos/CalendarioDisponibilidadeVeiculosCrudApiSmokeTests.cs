@@ -75,6 +75,7 @@ public partial class CalendarioDisponibilidadeVeiculosCrudApiSmokeTests : ApiInt
     {
         return new JsonObject
         {
+            ["CDV_ID"] = 1,
             ["CDV_DATA_DE"] = DateTime.UtcNow,
             ["CDV_DATA_ATE"] = DateTime.UtcNow,
             ["CDV_SEGUNDA"] = 1,
@@ -100,6 +101,7 @@ public partial class CalendarioDisponibilidadeVeiculosCrudApiSmokeTests : ApiInt
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["CDV_ID"] = 2;
         payload["CDV_DATA_DE"] = DateTime.UtcNow.AddMinutes(1);
         payload["CDV_DATA_ATE"] = DateTime.UtcNow.AddMinutes(1);
         payload["CDV_SEGUNDA"] = 2;

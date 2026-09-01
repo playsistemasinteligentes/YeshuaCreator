@@ -75,6 +75,7 @@ public partial class T_AGENDA_SCHEDULECrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["AGE_ID"] = 1,
             ["AGE_DATA_ESPECIFICA"] = DateTime.UtcNow,
             ["AGE_HORARIO_INICIO"] = ApiTestData.Text("T_AGENDA_SCHEDULE AGE_HORARIO_INICIO", 16),
             ["AGE_HORARIO_FIM"] = ApiTestData.Text("T_AGENDA_SCHEDULE AGE_HORARIO_FIM", 16),
@@ -106,6 +107,7 @@ public partial class T_AGENDA_SCHEDULECrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["AGE_ID"] = 2;
         payload["AGE_DATA_ESPECIFICA"] = DateTime.UtcNow.AddMinutes(1);
         payload["AGE_HORARIO_INICIO"] = ApiTestData.Text("T_AGENDA_SCHEDULE AGE_HORARIO_INICIO Update", 16);
         payload["AGE_HORARIO_FIM"] = ApiTestData.Text("T_AGENDA_SCHEDULE AGE_HORARIO_FIM Update", 16);

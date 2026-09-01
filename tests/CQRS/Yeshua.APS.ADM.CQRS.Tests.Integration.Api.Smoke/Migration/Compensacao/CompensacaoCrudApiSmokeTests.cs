@@ -75,6 +75,7 @@ public partial class CompensacaoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["COM_ID"] = 1,
             ["GRP_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("GrupoProdutoAbstrato", "GRP_ID"),
             ["OND_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Onda", "OND_ID"),
             ["COM_VINCO1_OND"] = 1,
@@ -113,6 +114,7 @@ public partial class CompensacaoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["COM_ID"] = 2;
         payload["GRP_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("GrupoProdutoAbstrato", "GRP_ID");
         payload["OND_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Onda", "OND_ID");
         payload["COM_VINCO1_OND"] = 2;

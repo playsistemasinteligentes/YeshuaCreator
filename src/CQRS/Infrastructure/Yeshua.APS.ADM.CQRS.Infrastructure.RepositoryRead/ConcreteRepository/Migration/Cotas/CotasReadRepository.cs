@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCotasCustom(Command.Read.CotasReadCommand command, ref DataPagination<CotasDTO> result, ref bool handled);
+
         public DataPagination<CotasDTO> getCotas(ICommandRead command )
          {
             if (command is Command.Read.CotasReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CotasDTO> getCotas(Command.Read.CotasReadCommand command )
         {
+            DataPagination<CotasDTO> customResult = null;
+            var customHandled = false;
+            TryGetCotasCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CotasQuery(command );
 
                 var itens = _unitOfWork.Query<CotasDTO>(query.Query,query.Parameters);

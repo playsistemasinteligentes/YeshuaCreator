@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPendenciasInterfaceCustom(Command.Read.PendenciasInterfaceReadCommand command, ref DataPagination<PendenciasInterfaceDTO> result, ref bool handled);
+
         public DataPagination<PendenciasInterfaceDTO> getPendenciasInterface(ICommandRead command )
          {
             if (command is Command.Read.PendenciasInterfaceReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PendenciasInterfaceDTO> getPendenciasInterface(Command.Read.PendenciasInterfaceReadCommand command )
         {
+            DataPagination<PendenciasInterfaceDTO> customResult = null;
+            var customHandled = false;
+            TryGetPendenciasInterfaceCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PendenciasInterfaceQuery(command );
 
                 var itens = _unitOfWork.Query<PendenciasInterfaceDTO>(query.Query,query.Parameters);

@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirOrderTrackQuery(IOrderTrackEntity OrderTrack)
         {
-            this.Query = $@" INSERT INTO OrderTrack (OTK_SEQUENCIA, OTK_VERSSAO, ORD_ID, OTK_EVENTO, OTK_DATA_NECESSIDADE_DE, OTK_DATA_NECESSIDADE_ATE, OTK_DATA_PREVISTA, OTK_DATA_REALIZADA, FPR_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@OTK_SEQUENCIA, @OTK_VERSSAO, @ORD_ID, @OTK_EVENTO, @OTK_DATA_NECESSIDADE_DE, @OTK_DATA_NECESSIDADE_ATE, @OTK_DATA_PREVISTA, @OTK_DATA_REALIZADA, @FPR_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO OrderTrack (OTK_ID, OTK_SEQUENCIA, OTK_VERSSAO, ORD_ID, OTK_EVENTO, OTK_DATA_NECESSIDADE_DE, OTK_DATA_NECESSIDADE_ATE, OTK_DATA_PREVISTA, OTK_DATA_REALIZADA, FPR_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@OTK_ID, @OTK_SEQUENCIA, @OTK_VERSSAO, @ORD_ID, @OTK_EVENTO, @OTK_DATA_NECESSIDADE_DE, @OTK_DATA_NECESSIDADE_ATE, @OTK_DATA_PREVISTA, @OTK_DATA_REALIZADA, @FPR_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                OTK_ID = OrderTrack.OTK_ID,
                 OTK_SEQUENCIA = OrderTrack.OTK_SEQUENCIA,
                 OTK_VERSSAO = OrderTrack.OTK_VERSSAO,
                 ORD_ID = OrderTrack.ORD_ID,

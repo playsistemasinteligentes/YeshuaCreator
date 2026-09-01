@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyPerfilGrantCustom(Command.Read.yPerfilGrantReadCommand command, ref DataPagination<yPerfilGrantDTO> result, ref bool handled);
+
         public DataPagination<yPerfilGrantDTO> getyPerfilGrant(ICommandRead command )
          {
             if (command is Command.Read.yPerfilGrantReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yPerfilGrantDTO> getyPerfilGrant(Command.Read.yPerfilGrantReadCommand command )
         {
+            DataPagination<yPerfilGrantDTO> customResult = null;
+            var customHandled = false;
+            TryGetyPerfilGrantCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yPerfilGrantQuery(command );
 
                 var itens = _unitOfWork.Query<yPerfilGrantDTO>(query.Query,query.Parameters);

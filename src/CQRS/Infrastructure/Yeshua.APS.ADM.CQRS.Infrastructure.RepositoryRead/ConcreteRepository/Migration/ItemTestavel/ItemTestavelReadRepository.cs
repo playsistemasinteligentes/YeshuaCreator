@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetItemTestavelCustom(Command.Read.ItemTestavelReadCommand command, ref DataPagination<ItemTestavelDTO> result, ref bool handled);
+
         public DataPagination<ItemTestavelDTO> getItemTestavel(ICommandRead command )
          {
             if (command is Command.Read.ItemTestavelReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ItemTestavelDTO> getItemTestavel(Command.Read.ItemTestavelReadCommand command )
         {
+            DataPagination<ItemTestavelDTO> customResult = null;
+            var customHandled = false;
+            TryGetItemTestavelCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ItemTestavelQuery(command );
 
                 var itens = _unitOfWork.Query<ItemTestavelDTO>(query.Query,query.Parameters);

@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirParametrosDeCustoQuery(IParametrosDeCustoEntity ParametrosDeCusto)
         {
-            this.Query = $@" INSERT INTO ParametrosDeCusto (PRO_ID, CUS_ID, PAR_VALOR, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PRO_ID, @CUS_ID, @PAR_VALOR, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO ParametrosDeCusto (PAR_ID, PRO_ID, CUS_ID, PAR_VALOR, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PAR_ID, @PRO_ID, @CUS_ID, @PAR_VALOR, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                PAR_ID = ParametrosDeCusto.PAR_ID,
                 PRO_ID = ParametrosDeCusto.PRO_ID,
                 CUS_ID = ParametrosDeCusto.CUS_ID,
                 PAR_VALOR = ParametrosDeCusto.PAR_VALOR,

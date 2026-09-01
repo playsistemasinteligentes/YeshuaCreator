@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMovimentosCustom(Command.Read.MovimentosReadCommand command, ref DataPagination<MovimentosDTO> result, ref bool handled);
+
         public DataPagination<MovimentosDTO> getMovimentos(ICommandRead command )
          {
             if (command is Command.Read.MovimentosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MovimentosDTO> getMovimentos(Command.Read.MovimentosReadCommand command )
         {
+            DataPagination<MovimentosDTO> customResult = null;
+            var customHandled = false;
+            TryGetMovimentosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MovimentosQuery(command );
 
                 var itens = _unitOfWork.Query<MovimentosDTO>(query.Query,query.Parameters);

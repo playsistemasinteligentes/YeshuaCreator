@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetUniuserCustom(Command.Read.UniuserReadCommand command, ref DataPagination<UniuserDTO> result, ref bool handled);
+
         public DataPagination<UniuserDTO> getUniuser(ICommandRead command )
          {
             if (command is Command.Read.UniuserReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<UniuserDTO> getUniuser(Command.Read.UniuserReadCommand command )
         {
+            DataPagination<UniuserDTO> customResult = null;
+            var customHandled = false;
+            TryGetUniuserCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.UniuserQuery(command );
 
                 var itens = _unitOfWork.Query<UniuserDTO>(query.Query,query.Parameters);

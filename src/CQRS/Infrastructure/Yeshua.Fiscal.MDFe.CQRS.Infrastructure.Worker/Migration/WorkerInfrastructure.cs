@@ -1,7 +1,6 @@
 ﻿using Aplication.Interfaces.Services;
 using Command.Interfaces.Patterns.FileStore;
 using Command.Interfaces.Patterns.Queue;
-using Command.Patterns.OutBox;
 using Microsoft.Extensions.Logging;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
@@ -32,14 +31,10 @@ public static class WorkerInfrastructure
 
         builder.Services.AddScoped<ISqlFactory>(_ =>
             new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        builder.Services.AddScoped<yOutBoxWorkerHandler>();
-        builder.Services.AddHostedService(serviceProvider =>
-            new PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>(
-                serviceProvider,
-                serviceProvider.GetRequiredService<ILogger<
-                    PollingWorker<yOutBoxWorkerHandler, yOutboxInputCommand, yOutboxOutputCommand>>>(),
-                TimeSpan.FromSeconds(5)));
+        // pendencia: registrar workers de polling, fila, saga, inbox ou outbox
+        // somente quando a DSL do aplicativo declarar essas politicas.
+        // observacao: handlers que implementam IWorkerCycleResult alimentam
+        // a telemetria do Command pelo ReciverBase.
     }
 }

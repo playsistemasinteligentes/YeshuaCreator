@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTurmaCustom(Command.Read.TurmaReadCommand command, ref DataPagination<TurmaDTO> result, ref bool handled);
+
         public DataPagination<TurmaDTO> getTurma(ICommandRead command )
          {
             if (command is Command.Read.TurmaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TurmaDTO> getTurma(Command.Read.TurmaReadCommand command )
         {
+            DataPagination<TurmaDTO> customResult = null;
+            var customHandled = false;
+            TryGetTurmaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TurmaQuery(command );
 
                 var itens = _unitOfWork.Query<TurmaDTO>(query.Query,query.Parameters);

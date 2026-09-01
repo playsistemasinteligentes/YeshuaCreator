@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetOrderCustom(Command.Read.OrderReadCommand command, ref DataPagination<OrderDTO> result, ref bool handled);
+
         public DataPagination<OrderDTO> getOrder(ICommandRead command )
          {
             if (command is Command.Read.OrderReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<OrderDTO> getOrder(Command.Read.OrderReadCommand command )
         {
+            DataPagination<OrderDTO> customResult = null;
+            var customHandled = false;
+            TryGetOrderCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.OrderQuery(command );
 
                 var itens = _unitOfWork.Query<OrderDTO>(query.Query,query.Parameters);

@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual)
         {
-            this.Query = $@" INSERT INTO TipoInspecaoVisual (TenantID, Deleted, Changed, UserId, TIV_NOME, TIV_DESCRICAO, TIV_FECHAMENTO, TIV_AMOSTRA_ALEATORIA, TIV_N_AMOSTRAS, TIV_MEDIDA, TIV_ESPECIFICACAO, TIV_TOL_MAIS, TIV_TOL_MENOS) OUTPUT INSERTED.Id VALUES(@TenantID, @Deleted, @Changed, @UserId, @TIV_NOME, @TIV_DESCRICAO, @TIV_FECHAMENTO, @TIV_AMOSTRA_ALEATORIA, @TIV_N_AMOSTRAS, @TIV_MEDIDA, @TIV_ESPECIFICACAO, @TIV_TOL_MAIS, @TIV_TOL_MENOS) ";
+            this.Query = $@" INSERT INTO TipoInspecaoVisual (TIV_ID, TenantID, Deleted, Changed, UserId, TIV_NOME, TIV_DESCRICAO, TIV_FECHAMENTO, TIV_AMOSTRA_ALEATORIA, TIV_N_AMOSTRAS, TIV_MEDIDA, TIV_ESPECIFICACAO, TIV_TOL_MAIS, TIV_TOL_MENOS) OUTPUT INSERTED.Id VALUES(@TIV_ID, @TenantID, @Deleted, @Changed, @UserId, @TIV_NOME, @TIV_DESCRICAO, @TIV_FECHAMENTO, @TIV_AMOSTRA_ALEATORIA, @TIV_N_AMOSTRAS, @TIV_MEDIDA, @TIV_ESPECIFICACAO, @TIV_TOL_MAIS, @TIV_TOL_MENOS) ";
             this.Parameters = new
             {
+                TIV_ID = TipoInspecaoVisual.TIV_ID,
                 TenantID = _executionContext.TenantID,
                 Deleted = 0,
                 Changed = DateTime.Now,

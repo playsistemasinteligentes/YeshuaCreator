@@ -75,6 +75,7 @@ public partial class CotasCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["COT_ID"] = 1,
             ["COT_DATA_DE"] = DateTime.UtcNow,
             ["COT_DATA_ATE"] = DateTime.UtcNow,
             ["COT_VALOR"] = 10.5m,
@@ -96,6 +97,7 @@ public partial class CotasCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["COT_ID"] = 2;
         payload["COT_DATA_DE"] = DateTime.UtcNow.AddMinutes(1);
         payload["COT_DATA_ATE"] = DateTime.UtcNow.AddMinutes(1);
         payload["COT_VALOR"] = 20.5m;

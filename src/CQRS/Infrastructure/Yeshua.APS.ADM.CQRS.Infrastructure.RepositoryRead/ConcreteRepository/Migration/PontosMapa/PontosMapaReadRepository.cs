@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPontosMapaCustom(Command.Read.PontosMapaReadCommand command, ref DataPagination<PontosMapaDTO> result, ref bool handled);
+
         public DataPagination<PontosMapaDTO> getPontosMapa(ICommandRead command )
          {
             if (command is Command.Read.PontosMapaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PontosMapaDTO> getPontosMapa(Command.Read.PontosMapaReadCommand command )
         {
+            DataPagination<PontosMapaDTO> customResult = null;
+            var customHandled = false;
+            TryGetPontosMapaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PontosMapaQuery(command );
 
                 var itens = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters);

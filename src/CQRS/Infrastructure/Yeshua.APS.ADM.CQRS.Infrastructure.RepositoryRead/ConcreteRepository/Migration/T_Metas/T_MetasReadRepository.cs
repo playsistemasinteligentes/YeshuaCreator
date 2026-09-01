@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_MetasCustom(Command.Read.T_MetasReadCommand command, ref DataPagination<T_MetasDTO> result, ref bool handled);
+
         public DataPagination<T_MetasDTO> getT_Metas(ICommandRead command )
          {
             if (command is Command.Read.T_MetasReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_MetasDTO> getT_Metas(Command.Read.T_MetasReadCommand command )
         {
+            DataPagination<T_MetasDTO> customResult = null;
+            var customHandled = false;
+            TryGetT_MetasCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_MetasQuery(command );
 
                 var itens = _unitOfWork.Query<T_MetasDTO>(query.Query,query.Parameters);

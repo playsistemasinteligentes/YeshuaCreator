@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetOpcaoPlanejamentoTransporteCustom(Command.Read.OpcaoPlanejamentoTransporteReadCommand command, ref DataPagination<OpcaoPlanejamentoTransporteDTO> result, ref bool handled);
+
         public DataPagination<OpcaoPlanejamentoTransporteDTO> getOpcaoPlanejamentoTransporte(ICommandRead command )
          {
             if (command is Command.Read.OpcaoPlanejamentoTransporteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<OpcaoPlanejamentoTransporteDTO> getOpcaoPlanejamentoTransporte(Command.Read.OpcaoPlanejamentoTransporteReadCommand command )
         {
+            DataPagination<OpcaoPlanejamentoTransporteDTO> customResult = null;
+            var customHandled = false;
+            TryGetOpcaoPlanejamentoTransporteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.OpcaoPlanejamentoTransporteQuery(command );
 
                 var itens = _unitOfWork.Query<OpcaoPlanejamentoTransporteDTO>(query.Query,query.Parameters);

@@ -1,13 +1,25 @@
-using System.Threading;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversMigration
+// </yeshua>
+
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
+using Dominio.Behaviors;
 using Dominio.Entitys;
 using Dominio.Interfaces;
+using Dominio.Patterns.Domain;
 using IRepository.Write;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -16,16 +28,19 @@ namespace Command.Receivers.Write
     {
         private readonly IyModuleWriteRepository _repository;
         private readonly ILogger _logger;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public DeleteyModuleReceiver(
             IyModuleWriteRepository repository,
             Dominio.Interfaces.ILogger logger,
+            Dominio.Interfaces.IDomainTrackingPolicy domainTrackingPolicy,
             Aplication.Interfaces.Services.IExecutionContext context)
             : base(logger, context)
         {
             _repository = repository;
             _logger = logger;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _executionContext = context;
         }
 
@@ -33,9 +48,11 @@ namespace Command.Receivers.Write
         {
              if(comand is Command.Write.yModuleCrudCommand c) 
              {    
-                 var ymodule = new yModuleFactory(_logger).Create(c.Id, c.Description);
-                 if (!ymodule.isValidDelete())
-                     return ValidationError(ymodule.getErroMensagens(), null);
+                 var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteyModule", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteyModuleReceiver), commandName: "Command.Write.yModuleCrudCommand");
+                 var ymodule = new yModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Description);
+                 var domainResult = yModuleDomainBehavior.Apply(ymodule, context);
+                 if (!domainResult.IsValid)
+                     return ValidationError(domainResult.Errors, null);
 
                  try
                  {

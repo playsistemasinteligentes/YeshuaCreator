@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyTokenCustom(Command.Read.yTokenReadCommand command, ref DataPagination<yTokenDTO> result, ref bool handled);
+
         public DataPagination<yTokenDTO> getyToken(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.yTokenReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yTokenDTO> getyToken(Command.Read.yTokenReadCommand command , bool TakeOffTenantID = false)
         {
+            DataPagination<yTokenDTO> customResult = null;
+            var customHandled = false;
+            TryGetyTokenCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yTokenQuery(command , TakeOffTenantID);
 
                 var itens = _unitOfWork.Query<yTokenDTO>(query.Query,query.Parameters);

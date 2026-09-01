@@ -75,6 +75,7 @@ public partial class RegistrosOnduladeiraCrudApiSmokeTests : ApiIntegrationTestB
     {
         return new JsonObject
         {
+            ["REG_ID"] = 1,
             ["REG_RESPOSTA"] = ApiTestData.Text("RegistrosOnduladeira REG_RESPOSTA", 80),
             ["REG_STATUS"] = ApiTestData.Text("RegistrosOnduladeira REG_STATUS", 50),
             ["REG_DATA_INICIO"] = DateTime.UtcNow,
@@ -94,6 +95,7 @@ public partial class RegistrosOnduladeiraCrudApiSmokeTests : ApiIntegrationTestB
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["REG_ID"] = 2;
         payload["REG_RESPOSTA"] = ApiTestData.Text("RegistrosOnduladeira REG_RESPOSTA Update", 80);
         payload["REG_STATUS"] = ApiTestData.Text("RegistrosOnduladeira REG_STATUS Update", 50);
         payload["REG_DATA_INICIO"] = DateTime.UtcNow.AddMinutes(1);

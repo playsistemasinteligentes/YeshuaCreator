@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCondicaoPagamentoCustom(Command.Read.CondicaoPagamentoReadCommand command, ref DataPagination<CondicaoPagamentoDTO> result, ref bool handled);
+
         public DataPagination<CondicaoPagamentoDTO> getCondicaoPagamento(ICommandRead command )
          {
             if (command is Command.Read.CondicaoPagamentoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CondicaoPagamentoDTO> getCondicaoPagamento(Command.Read.CondicaoPagamentoReadCommand command )
         {
+            DataPagination<CondicaoPagamentoDTO> customResult = null;
+            var customHandled = false;
+            TryGetCondicaoPagamentoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CondicaoPagamentoQuery(command );
 
                 var itens = _unitOfWork.Query<CondicaoPagamentoDTO>(query.Query,query.Parameters);

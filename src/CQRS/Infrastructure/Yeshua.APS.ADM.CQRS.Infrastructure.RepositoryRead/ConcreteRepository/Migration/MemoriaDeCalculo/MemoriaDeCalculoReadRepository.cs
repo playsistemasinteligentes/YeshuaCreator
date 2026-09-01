@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMemoriaDeCalculoCustom(Command.Read.MemoriaDeCalculoReadCommand command, ref DataPagination<MemoriaDeCalculoDTO> result, ref bool handled);
+
         public DataPagination<MemoriaDeCalculoDTO> getMemoriaDeCalculo(ICommandRead command )
          {
             if (command is Command.Read.MemoriaDeCalculoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MemoriaDeCalculoDTO> getMemoriaDeCalculo(Command.Read.MemoriaDeCalculoReadCommand command )
         {
+            DataPagination<MemoriaDeCalculoDTO> customResult = null;
+            var customHandled = false;
+            TryGetMemoriaDeCalculoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MemoriaDeCalculoQuery(command );
 
                 var itens = _unitOfWork.Query<MemoriaDeCalculoDTO>(query.Query,query.Parameters);

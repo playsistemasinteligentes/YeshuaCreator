@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTemposLogisticosCustom(Command.Read.TemposLogisticosReadCommand command, ref DataPagination<TemposLogisticosDTO> result, ref bool handled);
+
         public DataPagination<TemposLogisticosDTO> getTemposLogisticos(ICommandRead command )
          {
             if (command is Command.Read.TemposLogisticosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TemposLogisticosDTO> getTemposLogisticos(Command.Read.TemposLogisticosReadCommand command )
         {
+            DataPagination<TemposLogisticosDTO> customResult = null;
+            var customHandled = false;
+            TryGetTemposLogisticosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TemposLogisticosQuery(command );
 
                 var itens = _unitOfWork.Query<TemposLogisticosDTO>(query.Query,query.Parameters);

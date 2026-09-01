@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyConfigNotificationCustom(Command.Read.yConfigNotificationReadCommand command, ref DataPagination<yConfigNotificationDTO> result, ref bool handled);
+
         public DataPagination<yConfigNotificationDTO> getyConfigNotification(ICommandRead command )
          {
             if (command is Command.Read.yConfigNotificationReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yConfigNotificationDTO> getyConfigNotification(Command.Read.yConfigNotificationReadCommand command )
         {
+            DataPagination<yConfigNotificationDTO> customResult = null;
+            var customHandled = false;
+            TryGetyConfigNotificationCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yConfigNotificationQuery(command );
 
                 var itens = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters);

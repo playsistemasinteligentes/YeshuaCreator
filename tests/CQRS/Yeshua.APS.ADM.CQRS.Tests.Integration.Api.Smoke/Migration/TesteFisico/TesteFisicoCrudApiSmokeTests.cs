@@ -75,6 +75,7 @@ public partial class TesteFisicoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["TES_ID"] = 1,
             ["ITE_ID"] = 1,
             ["USR_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Usuario", "USR_ID"),
             ["TES_NOME_TECNICO"] = ApiTestData.Text("TesteFisico TES_NOME_TECNICO", 80),
@@ -105,6 +106,7 @@ public partial class TesteFisicoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["TES_ID"] = 2;
         payload["ITE_ID"] = 2;
         payload["USR_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Usuario", "USR_ID");
         payload["TES_NOME_TECNICO"] = ApiTestData.Text("TesteFisico TES_NOME_TECNICO Update", 80);

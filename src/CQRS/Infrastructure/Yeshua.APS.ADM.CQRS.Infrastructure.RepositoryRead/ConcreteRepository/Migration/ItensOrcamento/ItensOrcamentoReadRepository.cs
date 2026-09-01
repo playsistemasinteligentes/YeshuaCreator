@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetItensOrcamentoCustom(Command.Read.ItensOrcamentoReadCommand command, ref DataPagination<ItensOrcamentoDTO> result, ref bool handled);
+
         public DataPagination<ItensOrcamentoDTO> getItensOrcamento(ICommandRead command )
          {
             if (command is Command.Read.ItensOrcamentoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ItensOrcamentoDTO> getItensOrcamento(Command.Read.ItensOrcamentoReadCommand command )
         {
+            DataPagination<ItensOrcamentoDTO> customResult = null;
+            var customHandled = false;
+            TryGetItensOrcamentoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ItensOrcamentoQuery(command );
 
                 var itens = _unitOfWork.Query<ItensOrcamentoDTO>(query.Query,query.Parameters);

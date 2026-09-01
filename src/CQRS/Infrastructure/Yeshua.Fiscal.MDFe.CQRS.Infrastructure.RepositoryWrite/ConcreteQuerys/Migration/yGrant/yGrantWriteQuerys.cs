@@ -1,4 +1,14 @@
-﻿using Dominio.Entitys;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+
+using Dominio.Entitys;
 using Shered.DB;
 using Command.Write;
 using IQuery.Write;
@@ -20,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" INSERT INTO yGrant (Id, Description, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ID VALUES(@Id, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO yGrant (Id, Description, TenantID, Deleted, Changed, UserId) VALUES(@Id, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = yGrant.Id,

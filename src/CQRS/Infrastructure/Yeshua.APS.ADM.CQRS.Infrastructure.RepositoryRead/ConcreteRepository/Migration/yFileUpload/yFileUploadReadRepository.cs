@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyFileUploadCustom(Command.Read.yFileUploadReadCommand command, ref DataPagination<yFileUploadDTO> result, ref bool handled);
+
         public DataPagination<yFileUploadDTO> getyFileUpload(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.yFileUploadReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yFileUploadDTO> getyFileUpload(Command.Read.yFileUploadReadCommand command , bool TakeOffTenantID = false)
         {
+            DataPagination<yFileUploadDTO> customResult = null;
+            var customHandled = false;
+            TryGetyFileUploadCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yFileUploadQuery(command , TakeOffTenantID);
 
                 var itens = _unitOfWork.Query<yFileUploadDTO>(query.Query,query.Parameters);

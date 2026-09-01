@@ -75,6 +75,7 @@ public partial class ItemTestavelCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["ITE_ID"] = 1,
             ["ITE_DESCRICAO"] = ApiTestData.Text("ItemTestavel ITE_DESCRICAO", 80),
             ["ITE_OBS"] = ApiTestData.Text("ItemTestavel ITE_OBS", 10),
             ["ITE_NUMERO_DE_TESTES"] = 1,
@@ -98,6 +99,7 @@ public partial class ItemTestavelCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["ITE_ID"] = 2;
         payload["ITE_DESCRICAO"] = ApiTestData.Text("ItemTestavel ITE_DESCRICAO Update", 80);
         payload["ITE_OBS"] = ApiTestData.Text("ItemTestavel ITE_OBS Update", 10);
         payload["ITE_NUMERO_DE_TESTES"] = 2;

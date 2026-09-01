@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetT_USER_GRUPOCustom(Command.Read.T_USER_GRUPOReadCommand command, ref DataPagination<T_USER_GRUPODTO> result, ref bool handled);
+
         public DataPagination<T_USER_GRUPODTO> getT_USER_GRUPO(ICommandRead command )
          {
             if (command is Command.Read.T_USER_GRUPOReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<T_USER_GRUPODTO> getT_USER_GRUPO(Command.Read.T_USER_GRUPOReadCommand command )
         {
+            DataPagination<T_USER_GRUPODTO> customResult = null;
+            var customHandled = false;
+            TryGetT_USER_GRUPOCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.T_USER_GRUPOQuery(command );
 
                 var itens = _unitOfWork.Query<T_USER_GRUPODTO>(query.Query,query.Parameters);

@@ -24,7 +24,7 @@ namespace Dominio.Schemas.CQRS
         {
             _hub = hub;
             _commandType = CommandType.UseCaseGroup;
-            _nameSpace = CQRSParam.I.NameSpaceCommandWrite;
+            _nameSpace = CQRSParam.I.NameSpaceCommandCommandsUseCases;
         }
         public SourceCodeAplicationCommandCommandsUseCaseGroup(UseCaseCommand method, CommandType commandType) : base()
         {
@@ -63,6 +63,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"    public partial class {_hub.Name.SourceType()}HubCommand : ICommand");
                 sb.AppendLine("    {");
                 sb.AppendLine("    }");
+                sb.AppendLine();
+                GenerateUseCaseGroupSharedTypes(sb);
             }
             else// if (_commandType == CommandType.UseCaseCommandHandler)
             {
@@ -91,14 +93,14 @@ namespace Dominio.Schemas.CQRS
                 {
                     _classe = $"{_method.InputCommandName}";
                     if (param == null) continue;
-                    GenerateClass(param.GetType(), sb, _classe);
+                    GenerateClass(param.GetType(), sb, _classe, false);
                 }
 
                 foreach (var param in _method.Outputs)
                 {
                     _classe = $"{_method.OutputCommandName}";
                     if (param == null) continue;
-                    GenerateClass(param.GetType(), sb, _classe);
+                    GenerateClass(param.GetType(), sb, _classe, false);
                 }
             }
 
@@ -114,7 +116,58 @@ namespace Dominio.Schemas.CQRS
         }
 
 
-        private void GenerateClass(Type type, StringBuilder sb, string className = "")
+        private void GenerateUseCaseGroupSharedTypes(StringBuilder sb)
+        {
+            foreach (var subGroup in _hub.UseCaseSubGroup)
+            {
+                foreach (var method in subGroup.UseCaseCommand)
+                {
+                    foreach (var input in method.Inputs)
+                    {
+                        if (input == null) continue;
+                        GenerateNestedTypes(input.GetType(), sb);
+                    }
+
+                    foreach (var output in method.Outputs)
+                    {
+                        if (output == null) continue;
+                        GenerateNestedTypes(output.GetType(), sb);
+                    }
+                }
+            }
+        }
+
+        private void GenerateNestedTypes(Type rootType, StringBuilder sb)
+        {
+            foreach (PropertyInfo prop in rootType.GetProperties())
+            {
+                GenerateCandidateType(prop.PropertyType, sb);
+            }
+        }
+
+        private void GenerateCandidateType(Type type, StringBuilder sb)
+        {
+            if (type == typeof(string))
+                return;
+
+            if (type.IsGenericType)
+            {
+                foreach (var arg in type.GetGenericArguments())
+                {
+                    GenerateCandidateType(arg, sb);
+                }
+
+                return;
+            }
+
+            if (type.Namespace != null && type.Namespace.StartsWith("System"))
+                return;
+
+            if (type.IsClass || type.IsValueType)
+                GenerateClass(type, sb);
+        }
+
+        private void GenerateClass(Type type, StringBuilder sb, string className = "", bool generateNestedTypes = true)
         {
             if (className == "")
                 className = type.Name;
@@ -142,6 +195,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("}");
             sb.AppendLine();
 
+            if (!generateNestedTypes)
+                return;
+
             // Agora, fora da classe, geramos os tipos complexos das propriedades recursivamente
             foreach (PropertyInfo prop in type.GetProperties())
             {
@@ -150,14 +206,14 @@ namespace Dominio.Schemas.CQRS
                 // Se for um tipo complexo (classe customizada) e não string
                 if (propType.IsClass && propType != typeof(string))
                 {
-                    if (!propType.Namespace.StartsWith("System"))
+                    if (propType.Namespace != null && !propType.Namespace.StartsWith("System"))
                         GenerateClass(propType, sb);
 
                     if (propType.IsGenericType)
                     {
                         foreach (var arg in propType.GetGenericArguments())
                         {
-                            if (!arg.Namespace.StartsWith("System"))
+                            if (arg.Namespace != null && !arg.Namespace.StartsWith("System"))
                                 GenerateClass(arg, sb);
                         }
                     }

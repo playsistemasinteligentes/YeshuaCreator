@@ -30,9 +30,10 @@ namespace Query.Write
         }
         public QueryModel InserirOrcamentoQuery(IOrcamentoEntity Orcamento)
         {
-            this.Query = $@" INSERT INTO Orcamento (REP_ID, CON_ID, ORC_TIPO_FRETE, ORC_EMISSAO, CLI_ID, VER_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@REP_ID, @CON_ID, @ORC_TIPO_FRETE, @ORC_EMISSAO, @CLI_ID, @VER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO Orcamento (ORC_ID, REP_ID, CON_ID, ORC_TIPO_FRETE, ORC_EMISSAO, CLI_ID, VER_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ORC_ID, @REP_ID, @CON_ID, @ORC_TIPO_FRETE, @ORC_EMISSAO, @CLI_ID, @VER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
+                ORC_ID = Orcamento.ORC_ID,
                 REP_ID = Orcamento.REP_ID,
                 CON_ID = Orcamento.CON_ID,
                 ORC_TIPO_FRETE = Orcamento.ORC_TIPO_FRETE,

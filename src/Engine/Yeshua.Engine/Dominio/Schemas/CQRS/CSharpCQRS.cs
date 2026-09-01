@@ -50,7 +50,7 @@ namespace Dominio.Schemas.CQRS
 
             #region Migrations 
             // crud 
-            foreach (var entity in migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in migration.Entitys)
             {
                 var filePath = Path.Combine(GetPathAppAplicationCommandCommandsCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
@@ -152,7 +152,7 @@ namespace Dominio.Schemas.CQRS
                 var filePath = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Migration"), $"{group.Name}\\{group.Name.SourceType()}HubCommands.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsHubAgents("Custon"), $"{group.Name}\\{group.Name.SourceType()}HubCommands.cs");
                 var sourceCodeMigrationHub = new SourceCodeAplicationCommandCommandsUseCaseGroup(group);
-                //sourceCodeMigrationHub.WriteCode(filePath, filePathCuston);
+                sourceCodeMigrationHub.WriteCode(null, filePath, filePathCuston);
 
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
@@ -228,23 +228,20 @@ namespace Dominio.Schemas.CQRS
                 string filePath;
                 string filePathCuston;
 
-                if (!entity.IsFromView)
-                {
-                    filePath = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Insert}Receivers.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Insert}Receivers.cs");
-                    sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Insert, CQRSParam.I.NameSpaceCommandReceiversWrite, string.Empty);
-                    sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+                filePath = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Insert}Receivers.cs");
+                filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Insert}Receivers.cs");
+                sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Insert, CQRSParam.I.NameSpaceCommandReceiversWrite, string.Empty);
+                sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                    filePath = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Update}Receivers.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Update}Receivers.cs");
-                    sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Update, CQRSParam.I.NameSpaceCommandReceiversWrite, string.Empty);
-                    sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
+                filePath = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Update}Receivers.cs");
+                filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Update}Receivers.cs");
+                sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Update, CQRSParam.I.NameSpaceCommandReceiversWrite, string.Empty);
+                sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                    filePath = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Delete}Receivers.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Delete}Receivers.cs");
-                    sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Delete, CQRSParam.I.NameSpaceCommandReceiversWrite, string.Empty);
-                    sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
-                }
+                filePath = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Delete}Receivers.cs");
+                filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Delete}Receivers.cs");
+                sourceCodeMigration = new SourceCodeAplicationCommandReceiversMigration(entity, CommandType.Delete, CQRSParam.I.NameSpaceCommandReceiversWrite, string.Empty);
+                sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
                 filePath = Path.Combine(GetPathAppAplicationCommandReceiversRead("Migration"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Read}Receivers.cs");
                 filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}{CommandType.Read}Receivers.cs");
@@ -501,20 +498,20 @@ namespace Dominio.Schemas.CQRS
         {
             foreach (var entity in migration.Entitys)
             {
-                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\Migration\\{entity.EntityName}\\I{entity.EntityName}RepositoryInterfacesRead.cs");
-                var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\Custon\\{entity.EntityName}\\I{entity.EntityName}RepositoryInterfacesRead.cs");
+                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\Migration\\{entity.EntityName}\\ReadRepository.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\Custon\\{entity.EntityName}\\ReadRepository.cs");
                 var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesReadMigration(entity);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
-                filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{entity.EntityName}{CommandType.Read}DTO.cs");
-                filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\{entity.EntityName}{CommandType.Read}DTO.cs");
+                filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\ReadDTO.cs");
+                filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\ReadDTO.cs");
                 var sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(entity, CommandType.Read, string.Empty);
                 sourceCodeDTOMigration.WriteCode(entity, filePath, filePathCuston);
 
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
-                    filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{entity.EntityName}{column.Name}DTO.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\{entity.EntityName}{column.Name}DTO.cs");
+                    filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{column.Name}DTO.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\{column.Name}DTO.cs");
                     sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(entity, CommandType.ReadFK, column.Name);
                     sourceCodeDTOMigration.WriteCode(entity, filePath, filePathCuston);
                 }
@@ -522,8 +519,8 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var query in entity.Queries.OfType<IQueryWithMeta>())
                 {
-                    filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{entity.EntityName}{query.Meta.QueryName}DTO.cs");
-                    filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\{entity.EntityName}{query.Meta.QueryName}DTO.cs");
+                    filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\{query.Meta.QueryName}DTO.cs");
+                    filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Custon\\{entity.EntityName}\\{query.Meta.QueryName}DTO.cs");
                     sourceCodeDTOMigration = new SourceCodeAplicationRepositoryInterfacesReadDTOsMigration(entity, CommandType.ReadQuery, query);
                     sourceCodeDTOMigration.WriteCode(entity, filePath, filePathCuston);
                 }
@@ -543,10 +540,10 @@ namespace Dominio.Schemas.CQRS
 
         public void AppAplicationGenerateRepositoryInterfacesWrite(Migration.MigrationBase migration)
         {
-            foreach (var entity in migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in migration.Entitys)
             {
-                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Migration\\{entity.EntityName}\\I{entity.EntityName}WriteRepository.cs");
-                var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Custon\\{entity.EntityName}\\I{entity.EntityName}WriteRepository.cs");
+                var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Migration\\{entity.EntityName}\\WriteRepository.cs");
+                var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesWrite(), $"Repository\\Custon\\{entity.EntityName}\\WriteRepository.cs");
                 var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesWriteMigration(entity);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
@@ -1501,7 +1498,7 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateWriteConcreteRepository(Migration.MigrationBase migration)
         {
-            foreach (var entity in migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in migration.Entitys)
             {
                 var filePath = Path.Combine(AppInfraestructureWriteConcreteRepository(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteRepository.cs");
                 var filePathCuston = Path.Combine(AppInfraestructureWriteConcreteRepository(), $"Custon\\{entity.EntityName}\\{entity.EntityName}WriteRepository.cs");
@@ -1522,7 +1519,7 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateWriteConcreteQuerys(Migration.MigrationBase migration)
         {
-            foreach (var entity in migration.Entitys.Where(x => !x.IsFromView))
+            foreach (var entity in migration.Entitys)
             {
                 var filePath = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteQuerys.cs");
                 var filePathCuston = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteQuerys.cs");
@@ -1631,6 +1628,7 @@ namespace Dominio.Schemas.CQRS
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
 
   <ItemGroup>

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMensagemCustom(Command.Read.MensagemReadCommand command, ref DataPagination<MensagemDTO> result, ref bool handled);
+
         public DataPagination<MensagemDTO> getMensagem(ICommandRead command )
          {
             if (command is Command.Read.MensagemReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MensagemDTO> getMensagem(Command.Read.MensagemReadCommand command )
         {
+            DataPagination<MensagemDTO> customResult = null;
+            var customHandled = false;
+            TryGetMensagemCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MensagemQuery(command );
 
                 var itens = _unitOfWork.Query<MensagemDTO>(query.Query,query.Parameters);

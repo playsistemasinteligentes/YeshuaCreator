@@ -1,4 +1,14 @@
-﻿
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
                 using System;
                 using Dominio.TiposPrimitivos;
                 using System.Collections.Generic;
@@ -8,15 +18,38 @@
 
                 namespace Dominio.Entitys
                 {
-                    public partial class yModuleDecorator : IyModuleEntity
+                    public static class yModuleTrackingFields
+        {
+            public const ulong Id = 1UL << 0;
+            public const ulong Description = 1UL << 1;
+        }
+
+        public partial class yModuleDecorator : IyModuleEntity
 {
 
                         private readonly IyModuleEntity _inner;
                         private readonly Dominio.Interfaces.ILogger _logger;
+                        private readonly ulong _trackingMask;
+                        private readonly string _trackingTraceId;
+                        private readonly string? _trackingOperation;
+                        private readonly string? _trackingRecordId;
                         public yModuleDecorator(IyModuleEntity inner, Dominio.Interfaces.ILogger logger)
+                            : this(inner, logger, null, 0UL)
+                        {
+                        }
+
+                        public yModuleDecorator(
+                            IyModuleEntity inner,
+                            Dominio.Interfaces.ILogger logger,
+                            Dominio.Patterns.Domain.DomainOperationContext? context,
+                            ulong trackingMask)
                         {
                             _inner = inner;
                             _logger = logger;
+                            _trackingMask = trackingMask;
+                            _trackingTraceId = context?.TraceId ?? string.Empty;
+                            _trackingOperation = context?.Intent;
+                            _trackingRecordId = context?.RecordId;
                         }
                                     public string Id
                                     {
@@ -25,8 +58,9 @@
                                         {
                                             if (_inner.Id != value)
                                             {
-                                                _logger.Info($"Propriedade Id: antes={_inner.Id}, depois={value}");
                                                 _inner.Id = value;
+                                                if ((_trackingMask & yModuleTrackingFields.Id) != 0UL)
+                                                    _logger.DomainValueChanged("yModule", "Id", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }
@@ -38,8 +72,9 @@
                                         {
                                             if (_inner.Description != value)
                                             {
-                                                _logger.Info($"Propriedade Description: antes={_inner.Description}, depois={value}");
                                                 _inner.Description = value;
+                                                if ((_trackingMask & yModuleTrackingFields.Description) != 0UL)
+                                                    _logger.DomainValueChanged("yModule", "Description", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

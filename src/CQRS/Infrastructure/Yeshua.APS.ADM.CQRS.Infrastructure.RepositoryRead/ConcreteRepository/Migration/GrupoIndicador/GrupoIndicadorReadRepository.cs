@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetGrupoIndicadorCustom(Command.Read.GrupoIndicadorReadCommand command, ref DataPagination<GrupoIndicadorDTO> result, ref bool handled);
+
         public DataPagination<GrupoIndicadorDTO> getGrupoIndicador(ICommandRead command )
          {
             if (command is Command.Read.GrupoIndicadorReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<GrupoIndicadorDTO> getGrupoIndicador(Command.Read.GrupoIndicadorReadCommand command )
         {
+            DataPagination<GrupoIndicadorDTO> customResult = null;
+            var customHandled = false;
+            TryGetGrupoIndicadorCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.GrupoIndicadorQuery(command );
 
                 var itens = _unitOfWork.Query<GrupoIndicadorDTO>(query.Query,query.Parameters);

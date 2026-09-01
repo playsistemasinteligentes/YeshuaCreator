@@ -75,6 +75,7 @@ public partial class RodoviasCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["ROD_ID"] = 1,
             ["ROD_DESCRICAO"] = ApiTestData.Text("Rodovias ROD_DESCRICAO", 80),
         };
     }
@@ -92,6 +93,7 @@ public partial class RodoviasCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["ROD_ID"] = 2;
         payload["ROD_DESCRICAO"] = ApiTestData.Text("Rodovias ROD_DESCRICAO Update", 80);
         return payload;
     }

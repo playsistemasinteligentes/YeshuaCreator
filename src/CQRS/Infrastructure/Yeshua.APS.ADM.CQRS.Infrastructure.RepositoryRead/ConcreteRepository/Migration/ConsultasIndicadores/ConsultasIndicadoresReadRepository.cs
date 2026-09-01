@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetConsultasIndicadoresCustom(Command.Read.ConsultasIndicadoresReadCommand command, ref DataPagination<ConsultasIndicadoresDTO> result, ref bool handled);
+
         public DataPagination<ConsultasIndicadoresDTO> getConsultasIndicadores(ICommandRead command )
          {
             if (command is Command.Read.ConsultasIndicadoresReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ConsultasIndicadoresDTO> getConsultasIndicadores(Command.Read.ConsultasIndicadoresReadCommand command )
         {
+            DataPagination<ConsultasIndicadoresDTO> customResult = null;
+            var customHandled = false;
+            TryGetConsultasIndicadoresCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ConsultasIndicadoresQuery(command );
 
                 var itens = _unitOfWork.Query<ConsultasIndicadoresDTO>(query.Query,query.Parameters);

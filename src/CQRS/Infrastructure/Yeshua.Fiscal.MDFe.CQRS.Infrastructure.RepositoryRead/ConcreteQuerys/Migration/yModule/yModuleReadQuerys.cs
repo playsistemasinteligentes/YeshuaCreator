@@ -1,4 +1,14 @@
-﻿using Shered.DB;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration
+// </yeshua>
+
+using Shered.DB;
 using System.Data.SqlTypes;
 using Command.Read;
 using IQuery.Read;
@@ -75,7 +85,7 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yModule ";
+            this.Query = $"SELECT Id, Description FROM yModule ";
                       dict["Id"] = value; //06
                       whereClauses.Add($" Id = @Id ");//06
             if (whereClauses.Any()) 
@@ -89,7 +99,7 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT * FROM yModule ";
+            this.Query = $"SELECT Id, Description FROM yModule ";
                       dict["Description"] = value; //06
                       whereClauses.Add($" Description = @Description ");//06
             if (whereClauses.Any()) 

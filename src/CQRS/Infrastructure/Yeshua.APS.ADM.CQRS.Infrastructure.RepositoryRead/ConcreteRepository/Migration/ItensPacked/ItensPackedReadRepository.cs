@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetItensPackedCustom(Command.Read.ItensPackedReadCommand command, ref DataPagination<ItensPackedDTO> result, ref bool handled);
+
         public DataPagination<ItensPackedDTO> getItensPacked(ICommandRead command )
          {
             if (command is Command.Read.ItensPackedReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ItensPackedDTO> getItensPacked(Command.Read.ItensPackedReadCommand command )
         {
+            DataPagination<ItensPackedDTO> customResult = null;
+            var customHandled = false;
+            TryGetItensPackedCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ItensPackedQuery(command );
 
                 var itens = _unitOfWork.Query<ItensPackedDTO>(query.Query,query.Parameters);

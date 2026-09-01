@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetAuditoriaCustom(Command.Read.AuditoriaReadCommand command, ref DataPagination<AuditoriaDTO> result, ref bool handled);
+
         public DataPagination<AuditoriaDTO> getAuditoria(ICommandRead command )
          {
             if (command is Command.Read.AuditoriaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<AuditoriaDTO> getAuditoria(Command.Read.AuditoriaReadCommand command )
         {
+            DataPagination<AuditoriaDTO> customResult = null;
+            var customHandled = false;
+            TryGetAuditoriaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.AuditoriaQuery(command );
 
                 var itens = _unitOfWork.Query<AuditoriaDTO>(query.Query,query.Parameters);

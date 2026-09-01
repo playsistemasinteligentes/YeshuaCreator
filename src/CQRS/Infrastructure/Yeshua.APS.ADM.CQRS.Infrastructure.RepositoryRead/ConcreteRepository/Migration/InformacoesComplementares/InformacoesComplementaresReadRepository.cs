@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetInformacoesComplementaresCustom(Command.Read.InformacoesComplementaresReadCommand command, ref DataPagination<InformacoesComplementaresDTO> result, ref bool handled);
+
         public DataPagination<InformacoesComplementaresDTO> getInformacoesComplementares(ICommandRead command )
          {
             if (command is Command.Read.InformacoesComplementaresReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<InformacoesComplementaresDTO> getInformacoesComplementares(Command.Read.InformacoesComplementaresReadCommand command )
         {
+            DataPagination<InformacoesComplementaresDTO> customResult = null;
+            var customHandled = false;
+            TryGetInformacoesComplementaresCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.InformacoesComplementaresQuery(command );
 
                 var itens = _unitOfWork.Query<InformacoesComplementaresDTO>(query.Query,query.Parameters);

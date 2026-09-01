@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetVersaoCustoCustom(Command.Read.VersaoCustoReadCommand command, ref DataPagination<VersaoCustoDTO> result, ref bool handled);
+
         public DataPagination<VersaoCustoDTO> getVersaoCusto(ICommandRead command )
          {
             if (command is Command.Read.VersaoCustoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<VersaoCustoDTO> getVersaoCusto(Command.Read.VersaoCustoReadCommand command )
         {
+            DataPagination<VersaoCustoDTO> customResult = null;
+            var customHandled = false;
+            TryGetVersaoCustoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.VersaoCustoQuery(command );
 
                 var itens = _unitOfWork.Query<VersaoCustoDTO>(query.Query,query.Parameters);

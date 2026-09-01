@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMaquinaCustom(Command.Read.MaquinaReadCommand command, ref DataPagination<MaquinaDTO> result, ref bool handled);
+
         public DataPagination<MaquinaDTO> getMaquina(ICommandRead command )
          {
             if (command is Command.Read.MaquinaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MaquinaDTO> getMaquina(Command.Read.MaquinaReadCommand command )
         {
+            DataPagination<MaquinaDTO> customResult = null;
+            var customHandled = false;
+            TryGetMaquinaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MaquinaQuery(command );
 
                 var itens = _unitOfWork.Query<MaquinaDTO>(query.Query,query.Parameters);

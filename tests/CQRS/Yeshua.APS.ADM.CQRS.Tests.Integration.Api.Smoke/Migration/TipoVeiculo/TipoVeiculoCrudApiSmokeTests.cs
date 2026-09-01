@@ -75,6 +75,7 @@ public partial class TipoVeiculoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["TIP_ID"] = 1,
             ["TIP_DESCRICAO"] = ApiTestData.Text("TipoVeiculo TIP_DESCRICAO", 80),
             ["TIP_QTD_DISPONIVEL"] = 1,
             ["TIP_VALOR_KM"] = 10.5m,
@@ -108,6 +109,7 @@ public partial class TipoVeiculoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["TIP_ID"] = 2;
         payload["TIP_DESCRICAO"] = ApiTestData.Text("TipoVeiculo TIP_DESCRICAO Update", 80);
         payload["TIP_QTD_DISPONIVEL"] = 2;
         payload["TIP_VALOR_KM"] = 20.5m;

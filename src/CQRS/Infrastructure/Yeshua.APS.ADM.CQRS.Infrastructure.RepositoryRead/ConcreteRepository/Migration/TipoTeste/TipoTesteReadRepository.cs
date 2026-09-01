@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoTesteCustom(Command.Read.TipoTesteReadCommand command, ref DataPagination<TipoTesteDTO> result, ref bool handled);
+
         public DataPagination<TipoTesteDTO> getTipoTeste(ICommandRead command )
          {
             if (command is Command.Read.TipoTesteReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoTesteDTO> getTipoTeste(Command.Read.TipoTesteReadCommand command )
         {
+            DataPagination<TipoTesteDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoTesteCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoTesteQuery(command );
 
                 var itens = _unitOfWork.Query<TipoTesteDTO>(query.Query,query.Parameters);

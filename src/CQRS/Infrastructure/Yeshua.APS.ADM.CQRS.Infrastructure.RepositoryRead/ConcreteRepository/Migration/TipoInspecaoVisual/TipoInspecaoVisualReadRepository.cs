@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoInspecaoVisualCustom(Command.Read.TipoInspecaoVisualReadCommand command, ref DataPagination<TipoInspecaoVisualDTO> result, ref bool handled);
+
         public DataPagination<TipoInspecaoVisualDTO> getTipoInspecaoVisual(ICommandRead command )
          {
             if (command is Command.Read.TipoInspecaoVisualReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoInspecaoVisualDTO> getTipoInspecaoVisual(Command.Read.TipoInspecaoVisualReadCommand command )
         {
+            DataPagination<TipoInspecaoVisualDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoInspecaoVisualCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoInspecaoVisualQuery(command );
 
                 var itens = _unitOfWork.Query<TipoInspecaoVisualDTO>(query.Query,query.Parameters);

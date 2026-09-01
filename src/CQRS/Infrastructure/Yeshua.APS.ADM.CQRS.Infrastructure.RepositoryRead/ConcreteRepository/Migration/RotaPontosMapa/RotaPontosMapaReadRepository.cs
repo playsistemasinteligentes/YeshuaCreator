@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRotaPontosMapaCustom(Command.Read.RotaPontosMapaReadCommand command, ref DataPagination<RotaPontosMapaDTO> result, ref bool handled);
+
         public DataPagination<RotaPontosMapaDTO> getRotaPontosMapa(ICommandRead command )
          {
             if (command is Command.Read.RotaPontosMapaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RotaPontosMapaDTO> getRotaPontosMapa(Command.Read.RotaPontosMapaReadCommand command )
         {
+            DataPagination<RotaPontosMapaDTO> customResult = null;
+            var customHandled = false;
+            TryGetRotaPontosMapaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RotaPontosMapaQuery(command );
 
                 var itens = _unitOfWork.Query<RotaPontosMapaDTO>(query.Query,query.Parameters);

@@ -133,8 +133,7 @@ namespace Dominio.Schemas.CQRS
                     //builder.Services.AddSingleton<ICacheService<IEnumerable<Y_Tenant_ConfigurationDTO>>, MemoryCacheService<IEnumerable<Y_Tenant_ConfigurationDTO>>>();
                     //builder.Services.AddSingleton<ICacheService<IEnumerable<Y_Tenant_ConfigurationTenantIDDTO>>, MemoryCacheService<IEnumerable<Y_Tenant_ConfigurationTenantIDDTO>>>();
 
-                    if (!entity.IsFromView)
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                     //sb.AppendLine($"builder.Services.AddTransient<RepositoryInterfaces.Read.Repository.{entity.EntityName}.I{entity.EntityName}ReadRepository, Read.ConcreteRepository.{entity.EntityName}.{entity.EntityName}ReadRepository>();");
 
                     // clase concreta 
@@ -162,12 +161,9 @@ namespace Dominio.Schemas.CQRS
 
                     sb.AppendLine("});");
 
-                    if (!entity.IsFromView)
-                    {
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
-                        sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
-                    }
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
                     sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver>();");
                     foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                     {
@@ -175,19 +171,14 @@ namespace Dominio.Schemas.CQRS
                     }
                 }
 
-                if (!entity.IsFromView)
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryRead}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryRead}.I{entity.EntityName}QueryRead, {CQRSParam.I.NameSpaceQueryRead}.{entity.EntityName}QueryRead>();");
-                if (!entity.IsFromView)
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryWrite}.I{entity.EntityName}QueryWrite, {CQRSParam.I.NameSpaceQueryWrite}.{entity.EntityName}QueryWrite>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIQueryWrite}.I{entity.EntityName}QueryWrite, {CQRSParam.I.NameSpaceQueryWrite}.{entity.EntityName}QueryWrite>();");
 
-                if (!entity.IsFromView)
-                {
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
-                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
-                }
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver>();");
+                sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver>();");
                 sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver>();");
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {

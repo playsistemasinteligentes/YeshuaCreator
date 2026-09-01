@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCalendarioDisponibilidadeVeiculosCustom(Command.Read.CalendarioDisponibilidadeVeiculosReadCommand command, ref DataPagination<CalendarioDisponibilidadeVeiculosDTO> result, ref bool handled);
+
         public DataPagination<CalendarioDisponibilidadeVeiculosDTO> getCalendarioDisponibilidadeVeiculos(ICommandRead command )
          {
             if (command is Command.Read.CalendarioDisponibilidadeVeiculosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CalendarioDisponibilidadeVeiculosDTO> getCalendarioDisponibilidadeVeiculos(Command.Read.CalendarioDisponibilidadeVeiculosReadCommand command )
         {
+            DataPagination<CalendarioDisponibilidadeVeiculosDTO> customResult = null;
+            var customHandled = false;
+            TryGetCalendarioDisponibilidadeVeiculosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CalendarioDisponibilidadeVeiculosQuery(command );
 
                 var itens = _unitOfWork.Query<CalendarioDisponibilidadeVeiculosDTO>(query.Query,query.Parameters);

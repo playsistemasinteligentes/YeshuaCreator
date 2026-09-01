@@ -1,4 +1,14 @@
-﻿using System;
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityInternalMigration
+// </yeshua>
+
+using System;
 
 namespace Yeshua.Studio.Fiscal.MDFe.Domain.Entities
 {
@@ -180,6 +190,26 @@ namespace Yeshua.Studio.Fiscal.MDFe.Domain.Entities
         public yUser yUser { get; set; }
 
         public static MyApp.QueryBuilder.Query<yInbox> Query() => new MyApp.QueryBuilder.Query<yInbox>();
+    }
+
+    public class yToken
+    {
+        public int? Id { get; set; }
+        public string TokenHash { get; set; }
+        public string Description { get; set; }
+        public string ConnectorKey { get; set; }
+        public bool Active { get; set; }
+        public DateTime? ValidUntil { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastUsedAt { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yToken> Query() => new MyApp.QueryBuilder.Query<yToken>();
     }
 
     public class yTenant

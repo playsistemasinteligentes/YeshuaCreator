@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetProdutoCustom(Command.Read.ProdutoReadCommand command, ref DataPagination<ProdutoDTO> result, ref bool handled);
+
         public DataPagination<ProdutoDTO> getProduto(ICommandRead command )
          {
             if (command is Command.Read.ProdutoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ProdutoDTO> getProduto(Command.Read.ProdutoReadCommand command )
         {
+            DataPagination<ProdutoDTO> customResult = null;
+            var customHandled = false;
+            TryGetProdutoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ProdutoQuery(command );
 
                 var itens = _unitOfWork.Query<ProdutoDTO>(query.Query,query.Parameters);

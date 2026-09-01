@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRotaRealizadaCustom(Command.Read.RotaRealizadaReadCommand command, ref DataPagination<RotaRealizadaDTO> result, ref bool handled);
+
         public DataPagination<RotaRealizadaDTO> getRotaRealizada(ICommandRead command )
          {
             if (command is Command.Read.RotaRealizadaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RotaRealizadaDTO> getRotaRealizada(Command.Read.RotaRealizadaReadCommand command )
         {
+            DataPagination<RotaRealizadaDTO> customResult = null;
+            var customHandled = false;
+            TryGetRotaRealizadaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RotaRealizadaQuery(command );
 
                 var itens = _unitOfWork.Query<RotaRealizadaDTO>(query.Query,query.Parameters);

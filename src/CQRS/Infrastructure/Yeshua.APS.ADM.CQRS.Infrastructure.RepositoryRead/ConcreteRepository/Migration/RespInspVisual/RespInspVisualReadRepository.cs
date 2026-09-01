@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetRespInspVisualCustom(Command.Read.RespInspVisualReadCommand command, ref DataPagination<RespInspVisualDTO> result, ref bool handled);
+
         public DataPagination<RespInspVisualDTO> getRespInspVisual(ICommandRead command )
          {
             if (command is Command.Read.RespInspVisualReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<RespInspVisualDTO> getRespInspVisual(Command.Read.RespInspVisualReadCommand command )
         {
+            DataPagination<RespInspVisualDTO> customResult = null;
+            var customHandled = false;
+            TryGetRespInspVisualCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.RespInspVisualQuery(command );
 
                 var itens = _unitOfWork.Query<RespInspVisualDTO>(query.Query,query.Parameters);

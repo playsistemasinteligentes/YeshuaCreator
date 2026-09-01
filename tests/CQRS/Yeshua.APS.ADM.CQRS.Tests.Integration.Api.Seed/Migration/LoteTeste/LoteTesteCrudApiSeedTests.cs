@@ -53,6 +53,7 @@ public partial class LoteTesteCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["LT_ID"] = 1,
             ["TES_ID"] = 1,
             ["RL_ID"] = 1,
         };
@@ -71,6 +72,7 @@ public partial class LoteTesteCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["LT_ID"] = 2;
         payload["TES_ID"] = 2;
         payload["RL_ID"] = 2;
         return payload;

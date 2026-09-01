@@ -24,15 +24,5 @@ public partial record ListarCargasAbertasPlanejamentoTransporteOutputCommand : I
     public List<CargaPlanejamentoEnvelope> Cargas { get; set; }
 }
 
-public partial record CargaPlanejamentoEnvelope : ICommand
-{
-    public string CargaId { get; set; }
-    public string Status { get; set; }
-    public decimal Peso { get; set; }
-    public decimal Volume { get; set; }
-    public int QuantidadePedidos { get; set; }
-    public string AlertasResumo { get; set; }
-}
-
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoABNTCustom(Command.Read.TipoABNTReadCommand command, ref DataPagination<TipoABNTDTO> result, ref bool handled);
+
         public DataPagination<TipoABNTDTO> getTipoABNT(ICommandRead command )
          {
             if (command is Command.Read.TipoABNTReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoABNTDTO> getTipoABNT(Command.Read.TipoABNTReadCommand command )
         {
+            DataPagination<TipoABNTDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoABNTCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoABNTQuery(command );
 
                 var itens = _unitOfWork.Query<TipoABNTDTO>(query.Query,query.Parameters);

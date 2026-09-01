@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyInboxCustom(Command.Read.yInboxReadCommand command, ref DataPagination<yInboxDTO> result, ref bool handled);
+
         public DataPagination<yInboxDTO> getyInbox(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.yInboxReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yInboxDTO> getyInbox(Command.Read.yInboxReadCommand command , bool TakeOffTenantID = false)
         {
+            DataPagination<yInboxDTO> customResult = null;
+            var customHandled = false;
+            TryGetyInboxCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yInboxQuery(command , TakeOffTenantID);
 
                 var itens = _unitOfWork.Query<yInboxDTO>(query.Query,query.Parameters);

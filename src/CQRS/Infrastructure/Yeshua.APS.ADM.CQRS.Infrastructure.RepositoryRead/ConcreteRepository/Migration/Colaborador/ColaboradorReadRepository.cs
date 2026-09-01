@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetColaboradorCustom(Command.Read.ColaboradorReadCommand command, ref DataPagination<ColaboradorDTO> result, ref bool handled);
+
         public DataPagination<ColaboradorDTO> getColaborador(ICommandRead command )
          {
             if (command is Command.Read.ColaboradorReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ColaboradorDTO> getColaborador(Command.Read.ColaboradorReadCommand command )
         {
+            DataPagination<ColaboradorDTO> customResult = null;
+            var customHandled = false;
+            TryGetColaboradorCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ColaboradorQuery(command );
 
                 var itens = _unitOfWork.Query<ColaboradorDTO>(query.Query,query.Parameters);

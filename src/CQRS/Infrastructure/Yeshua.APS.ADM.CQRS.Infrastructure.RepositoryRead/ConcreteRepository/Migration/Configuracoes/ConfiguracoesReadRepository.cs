@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetConfiguracoesCustom(Command.Read.ConfiguracoesReadCommand command, ref DataPagination<ConfiguracoesDTO> result, ref bool handled);
+
         public DataPagination<ConfiguracoesDTO> getConfiguracoes(ICommandRead command )
          {
             if (command is Command.Read.ConfiguracoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ConfiguracoesDTO> getConfiguracoes(Command.Read.ConfiguracoesReadCommand command )
         {
+            DataPagination<ConfiguracoesDTO> customResult = null;
+            var customHandled = false;
+            TryGetConfiguracoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ConfiguracoesQuery(command );
 
                 var itens = _unitOfWork.Query<ConfiguracoesDTO>(query.Query,query.Parameters);

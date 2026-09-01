@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetPerfilObjetoControlavelCustom(Command.Read.PerfilObjetoControlavelReadCommand command, ref DataPagination<PerfilObjetoControlavelDTO> result, ref bool handled);
+
         public DataPagination<PerfilObjetoControlavelDTO> getPerfilObjetoControlavel(ICommandRead command )
          {
             if (command is Command.Read.PerfilObjetoControlavelReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<PerfilObjetoControlavelDTO> getPerfilObjetoControlavel(Command.Read.PerfilObjetoControlavelReadCommand command )
         {
+            DataPagination<PerfilObjetoControlavelDTO> customResult = null;
+            var customHandled = false;
+            TryGetPerfilObjetoControlavelCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.PerfilObjetoControlavelQuery(command );
 
                 var itens = _unitOfWork.Query<PerfilObjetoControlavelDTO>(query.Query,query.Parameters);

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTipoCarroceriaCustom(Command.Read.TipoCarroceriaReadCommand command, ref DataPagination<TipoCarroceriaDTO> result, ref bool handled);
+
         public DataPagination<TipoCarroceriaDTO> getTipoCarroceria(ICommandRead command )
          {
             if (command is Command.Read.TipoCarroceriaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TipoCarroceriaDTO> getTipoCarroceria(Command.Read.TipoCarroceriaReadCommand command )
         {
+            DataPagination<TipoCarroceriaDTO> customResult = null;
+            var customHandled = false;
+            TryGetTipoCarroceriaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TipoCarroceriaQuery(command );
 
                 var itens = _unitOfWork.Query<TipoCarroceriaDTO>(query.Query,query.Parameters);

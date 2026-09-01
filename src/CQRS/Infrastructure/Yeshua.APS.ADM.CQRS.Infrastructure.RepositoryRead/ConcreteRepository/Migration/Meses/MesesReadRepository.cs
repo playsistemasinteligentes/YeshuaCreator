@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMesesCustom(Command.Read.MesesReadCommand command, ref DataPagination<MesesDTO> result, ref bool handled);
+
         public DataPagination<MesesDTO> getMeses(ICommandRead command )
          {
             if (command is Command.Read.MesesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MesesDTO> getMeses(Command.Read.MesesReadCommand command )
         {
+            DataPagination<MesesDTO> customResult = null;
+            var customHandled = false;
+            TryGetMesesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MesesQuery(command );
 
                 var itens = _unitOfWork.Query<MesesDTO>(query.Query,query.Parameters);

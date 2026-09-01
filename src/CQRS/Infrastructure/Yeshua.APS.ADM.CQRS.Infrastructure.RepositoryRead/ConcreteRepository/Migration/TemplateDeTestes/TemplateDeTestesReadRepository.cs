@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTemplateDeTestesCustom(Command.Read.TemplateDeTestesReadCommand command, ref DataPagination<TemplateDeTestesDTO> result, ref bool handled);
+
         public DataPagination<TemplateDeTestesDTO> getTemplateDeTestes(ICommandRead command )
          {
             if (command is Command.Read.TemplateDeTestesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TemplateDeTestesDTO> getTemplateDeTestes(Command.Read.TemplateDeTestesReadCommand command )
         {
+            DataPagination<TemplateDeTestesDTO> customResult = null;
+            var customHandled = false;
+            TryGetTemplateDeTestesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TemplateDeTestesQuery(command );
 
                 var itens = _unitOfWork.Query<TemplateDeTestesDTO>(query.Query,query.Parameters);

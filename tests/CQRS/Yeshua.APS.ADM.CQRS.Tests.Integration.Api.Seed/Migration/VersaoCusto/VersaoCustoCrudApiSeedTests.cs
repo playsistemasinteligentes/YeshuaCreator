@@ -53,6 +53,7 @@ public partial class VersaoCustoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["VER_ID"] = 1,
             ["VER_STATUS"] = ApiTestData.Text("VersaoCusto VER_STATUS", 1),
             ["VER_OBS"] = ApiTestData.Text("VersaoCusto VER_OBS", 80),
         };
@@ -71,6 +72,7 @@ public partial class VersaoCustoCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["VER_ID"] = 2;
         payload["VER_STATUS"] = ApiTestData.Text("VersaoCusto VER_STATUS Update", 1);
         payload["VER_OBS"] = ApiTestData.Text("VersaoCusto VER_OBS Update", 80);
         return payload;

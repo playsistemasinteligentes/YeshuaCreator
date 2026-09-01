@@ -21,12 +21,6 @@ public partial record DividirCargaPlanejamentoTransporteInputCommand : ICommand
     public List<PedidoPlanejamentoRef> PedidosSegundaCarga { get; set; }
 }
 
-public partial record PedidoPlanejamentoRef : ICommand
-{
-    public string PedidoId { get; set; }
-    public string VersaoPlanejamento { get; set; }
-}
-
 public partial record DividirCargaPlanejamentoTransporteOutputCommand : ICommand
 {
     public bool Sucesso { get; set; }

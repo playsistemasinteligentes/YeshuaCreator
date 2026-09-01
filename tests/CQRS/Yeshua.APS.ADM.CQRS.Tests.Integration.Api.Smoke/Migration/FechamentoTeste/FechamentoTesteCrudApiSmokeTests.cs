@@ -75,6 +75,7 @@ public partial class FechamentoTesteCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["FEC_ID"] = 1,
             ["FEC_QTD"] = 1,
             ["GRP_ID"] = ApiTestData.Text("FechamentoTeste GRP_ID", 30),
         };
@@ -93,6 +94,7 @@ public partial class FechamentoTesteCrudApiSmokeTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["FEC_ID"] = 2;
         payload["FEC_QTD"] = 2;
         payload["GRP_ID"] = ApiTestData.Text("FechamentoTeste GRP_ID Update", 30);
         return payload;

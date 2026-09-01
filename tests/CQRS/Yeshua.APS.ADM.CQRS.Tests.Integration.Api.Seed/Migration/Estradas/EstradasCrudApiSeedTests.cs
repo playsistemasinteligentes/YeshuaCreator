@@ -53,6 +53,7 @@ public partial class EstradasCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
+            ["EST_ID"] = 1,
             ["EST_DESCRICAO"] = ApiTestData.Text("Estradas EST_DESCRICAO", 80),
             ["EST_ID_LIGACAO_PONTO_A"] = 1,
             ["EST_ID_LIGACAO_PONTO_B"] = 1,
@@ -72,6 +73,7 @@ public partial class EstradasCrudApiSeedTests : ApiIntegrationTestBase
     {
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
+        payload["EST_ID"] = 2;
         payload["EST_DESCRICAO"] = ApiTestData.Text("Estradas EST_DESCRICAO Update", 80);
         payload["EST_ID_LIGACAO_PONTO_A"] = 2;
         payload["EST_ID_LIGACAO_PONTO_B"] = 2;

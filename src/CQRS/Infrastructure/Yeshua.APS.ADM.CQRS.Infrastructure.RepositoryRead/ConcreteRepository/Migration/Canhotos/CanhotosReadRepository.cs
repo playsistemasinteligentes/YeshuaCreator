@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetCanhotosCustom(Command.Read.CanhotosReadCommand command, ref DataPagination<CanhotosDTO> result, ref bool handled);
+
         public DataPagination<CanhotosDTO> getCanhotos(ICommandRead command )
          {
             if (command is Command.Read.CanhotosReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<CanhotosDTO> getCanhotos(Command.Read.CanhotosReadCommand command )
         {
+            DataPagination<CanhotosDTO> customResult = null;
+            var customHandled = false;
+            TryGetCanhotosCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.CanhotosQuery(command );
 
                 var itens = _unitOfWork.Query<CanhotosDTO>(query.Query,query.Parameters);

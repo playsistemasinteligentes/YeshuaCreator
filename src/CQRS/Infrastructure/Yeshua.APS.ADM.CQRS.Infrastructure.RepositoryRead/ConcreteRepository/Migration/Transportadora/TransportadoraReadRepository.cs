@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetTransportadoraCustom(Command.Read.TransportadoraReadCommand command, ref DataPagination<TransportadoraDTO> result, ref bool handled);
+
         public DataPagination<TransportadoraDTO> getTransportadora(ICommandRead command )
          {
             if (command is Command.Read.TransportadoraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<TransportadoraDTO> getTransportadora(Command.Read.TransportadoraReadCommand command )
         {
+            DataPagination<TransportadoraDTO> customResult = null;
+            var customHandled = false;
+            TryGetTransportadoraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.TransportadoraQuery(command );
 
                 var itens = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters);
