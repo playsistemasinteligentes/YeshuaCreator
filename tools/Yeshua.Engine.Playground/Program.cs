@@ -6,6 +6,19 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
+using System.IO.Compression;
+
+if (args.Contains("--cte-recepcao", StringComparer.OrdinalIgnoreCase))
+{
+    await CteRecepcaoSincPlayground.RunAsync(args);
+    return;
+}
+
+if (args.Contains("--cte-status", StringComparer.OrdinalIgnoreCase))
+{
+    await CteStatusServicoPlayground.RunAsync(args);
+    return;
+}
 
 var options = MdfeSefazPlaygroundOptions.FromArgs(args);
 
@@ -89,6 +102,407 @@ Console.WriteLine($"Status: {(int)response.StatusCode} {response.StatusCode}");
 if (!string.IsNullOrWhiteSpace(responseBody))
 {
     Console.WriteLine(responseBody);
+}
+
+internal sealed record CteStatusServicoParameters(
+    int Ambiente,
+    int CodigoUf,
+    string Endpoint,
+    string SoapAction,
+    string ContentMediaType,
+    string CertificatePath,
+    string CertificatePassword,
+    string CnpjEmitente,
+    string RazaoSocial,
+    string InscricaoEstadual,
+    int TimeoutSeconds)
+{
+    public static CteStatusServicoParameters FixedTransportador { get; } = new(
+        Ambiente: 2,
+        CodigoUf: 35,
+        Endpoint: "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeStatusServicoV4.asmx",
+        SoapAction: "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT",
+        ContentMediaType: "application/soap+xml",
+        CertificatePath: @"C:\Users\AngeloRicardoFontana\Documents\Yeshua\Certificados\05318071000150.pfx",
+        CertificatePassword: "Ca318071",
+        CnpjEmitente: "05318071000150",
+        RazaoSocial: "C.R.M - ABC TRANSPORTES E LOGISTICA LTDA - ME",
+        InscricaoEstadual: "635607900115",
+        TimeoutSeconds: 120);
+
+    public void ValidateForSend()
+    {
+        if (Ambiente is not 1 and not 2)
+            throw new InvalidOperationException("O ambiente do CT-e deve ser 1 (producao) ou 2 (homologacao).");
+
+        if (CodigoUf <= 0)
+            throw new InvalidOperationException("O codigo UF do CT-e deve ser informado.");
+
+        if (string.IsNullOrWhiteSpace(Endpoint))
+            throw new InvalidOperationException("O endpoint CT-e deve ser informado.");
+
+        if (string.IsNullOrWhiteSpace(CertificatePath))
+            throw new InvalidOperationException("O caminho do certificado CT-e deve ser informado.");
+
+        if (!File.Exists(CertificatePath))
+            throw new FileNotFoundException("Certificado CT-e nao encontrado.", CertificatePath);
+
+        if (string.IsNullOrWhiteSpace(CertificatePassword))
+            throw new InvalidOperationException("A senha do certificado CT-e deve ser informada.");
+    }
+}
+
+internal static class CteStatusServicoPlayground
+{
+    public static async Task RunAsync(string[] args)
+    {
+        var parameters = BuildParameters(args);
+
+        Console.WriteLine("Yeshua.Engine.Playground - CT-e StatusServicoV4 isolado");
+        Console.WriteLine($"Endpoint: {parameters.Endpoint}");
+        Console.WriteLine($"Ambiente: {parameters.Ambiente}");
+        Console.WriteLine($"UF: {parameters.CodigoUf}");
+        Console.WriteLine($"Certificado: {parameters.CertificatePath}");
+        Console.WriteLine($"CNPJ: {parameters.CnpjEmitente}");
+        Console.WriteLine($"Emitente: {parameters.RazaoSocial}");
+        Console.WriteLine();
+
+        var statusXml = BuildStatusServicoXml(parameters);
+        var soapEnvelope = WrapStatusInSoapEnvelope(statusXml);
+        MdfeSefazPlaygroundOptions.ValidateXml(soapEnvelope, "envelope SOAP CT-e");
+        MdfeSefazPlaygroundOptions.ValidateNoFormattingWhitespace(soapEnvelope, "envelope SOAP CT-e");
+
+        if (args.Contains("--somente-validar", StringComparer.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("XML de status CT-e e envelope SOAP validados localmente. Nenhuma chamada foi feita ao SEFAZ.");
+            Console.WriteLine(soapEnvelope);
+            return;
+        }
+
+        parameters.ValidateForSend();
+
+        using var certificate = MdfeSefazPlaygroundOptions.LoadCertificate(
+            parameters.CertificatePath,
+            parameters.CertificatePassword);
+
+        using var handler = new HttpClientHandler
+        {
+            ClientCertificateOptions = ClientCertificateOption.Manual,
+            SslProtocols = SslProtocols.Tls12
+        };
+        handler.ClientCertificates.Add(certificate);
+
+        using var httpClient = new HttpClient(handler)
+        {
+            Timeout = TimeSpan.FromSeconds(parameters.TimeoutSeconds)
+        };
+
+        if (args.Contains("--consultar-wsdl", StringComparer.OrdinalIgnoreCase))
+        {
+            var wsdlResponse = await httpClient.GetAsync(parameters.Endpoint + "?wsdl");
+            var wsdl = await wsdlResponse.Content.ReadAsStringAsync();
+            Console.WriteLine($"WSDL: {(int)wsdlResponse.StatusCode} {wsdlResponse.StatusCode}");
+            Console.WriteLine(wsdl);
+            return;
+        }
+
+        Console.WriteLine("Enviando consulta de status CT-e para o SEFAZ (SOAP 1.2)...");
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, parameters.Endpoint)
+        {
+            Version = HttpVersion.Version11,
+            Content = new StringContent(soapEnvelope, Encoding.UTF8, parameters.ContentMediaType)
+        };
+
+        request.Content.Headers.ContentType!.CharSet = "utf-8";
+        request.Content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("action", $"\"{parameters.SoapAction}\""));
+        request.Headers.ExpectContinue = false;
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+        var response = await httpClient.SendAsync(request);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        Console.WriteLine($"Status: {(int)response.StatusCode} {response.StatusCode}");
+        if (!string.IsNullOrWhiteSpace(responseBody))
+        {
+            Console.WriteLine(responseBody);
+        }
+    }
+
+    public static CteStatusServicoParameters BuildParameters(string[] args)
+    {
+        var fixedParameters = CteStatusServicoParameters.FixedTransportador;
+        var ambienteText = GetArg(args, "--cte-ambiente")
+            ?? Environment.GetEnvironmentVariable("YESHUA_CTE_AMBIENTE")
+            ?? fixedParameters.Ambiente.ToString();
+
+        _ = int.TryParse(ambienteText, out var ambiente);
+        if (ambiente <= 0)
+        {
+            ambiente = fixedParameters.Ambiente;
+        }
+
+        var codigoUfText = GetArg(args, "--cte-cuf")
+            ?? Environment.GetEnvironmentVariable("YESHUA_CTE_CUF")
+            ?? fixedParameters.CodigoUf.ToString();
+
+        _ = int.TryParse(codigoUfText, out var codigoUf);
+        if (codigoUf <= 0)
+        {
+            codigoUf = fixedParameters.CodigoUf;
+        }
+
+        return fixedParameters with
+        {
+            Ambiente = ambiente,
+            CodigoUf = codigoUf,
+            Endpoint = GetArg(args, "--cte-endpoint")
+                ?? Environment.GetEnvironmentVariable("YESHUA_CTE_STATUS_ENDPOINT")
+                ?? fixedParameters.Endpoint,
+            CertificatePath = GetArg(args, "--cte-cert")
+                ?? Environment.GetEnvironmentVariable("YESHUA_CTE_CERTIFICATE_PATH")
+                ?? fixedParameters.CertificatePath,
+            CertificatePassword = GetArg(args, "--cte-senha")
+                ?? Environment.GetEnvironmentVariable("YESHUA_CTE_CERTIFICATE_PASSWORD")
+                ?? fixedParameters.CertificatePassword
+        };
+    }
+
+    private static string BuildStatusServicoXml(CteStatusServicoParameters parameters)
+    {
+        const string cteNamespace = "http://www.portalfiscal.inf.br/cte";
+
+        var doc = new XmlDocument { PreserveWhitespace = false };
+        var status = doc.CreateElement("consStatServCTe", cteNamespace);
+        status.SetAttribute("versao", "4.00");
+        doc.AppendChild(status);
+
+        AppendElement(doc, status, "tpAmb", parameters.Ambiente.ToString(), cteNamespace);
+        AppendElement(doc, status, "cUF", parameters.CodigoUf.ToString(), cteNamespace);
+        AppendElement(doc, status, "xServ", "STATUS", cteNamespace);
+
+        return doc.OuterXml;
+    }
+
+    private static string WrapStatusInSoapEnvelope(string innerXml)
+    {
+        const string soapNamespace = "http://www.w3.org/2003/05/soap-envelope";
+        const string serviceNamespace = "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4";
+
+        var status = new XmlDocument { PreserveWhitespace = false };
+        status.LoadXml(innerXml);
+
+        var soap = new XmlDocument { PreserveWhitespace = true };
+        var envelope = soap.CreateElement("soap12", "Envelope", soapNamespace);
+        envelope.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        envelope.SetAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+        soap.AppendChild(envelope);
+
+        var body = soap.CreateElement("soap12", "Body", soapNamespace);
+        envelope.AppendChild(body);
+
+        var dados = soap.CreateElement("cteDadosMsg", serviceNamespace);
+        body.AppendChild(dados);
+        dados.AppendChild(soap.ImportNode(status.DocumentElement!, true));
+
+        return soap.OuterXml;
+    }
+
+    private static void AppendElement(XmlDocument doc, XmlElement parent, string name, string value, string xmlNamespace)
+    {
+        var element = doc.CreateElement(name, xmlNamespace);
+        element.InnerText = value;
+        parent.AppendChild(element);
+    }
+
+    private static string? GetArg(string[] args, string name)
+    {
+        for (var i = 0; i < args.Length - 1; i++)
+        {
+            if (string.Equals(args[i], name, StringComparison.OrdinalIgnoreCase))
+            {
+                return args[i + 1];
+            }
+        }
+
+        return null;
+    }
+}
+
+internal static class CteRecepcaoSincPlayground
+{
+    private const string ServiceNamespace = "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4";
+    private const string RecepcaoEndpoint = "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx";
+    private const string RecepcaoSoapAction = "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao";
+
+    public static async Task RunAsync(string[] args)
+    {
+        var parameters = BuildParameters(args);
+        var cteXml = LoadCteXml(args);
+        var compressedBase64 = CompressToBase64(cteXml);
+        var soapEnvelope = WrapRecepcaoInSoapEnvelope(compressedBase64);
+
+        MdfeSefazPlaygroundOptions.ValidateXml(soapEnvelope, "envelope SOAP CT-e recepcao sincrona");
+        MdfeSefazPlaygroundOptions.ValidateNoFormattingWhitespace(soapEnvelope, "envelope SOAP CT-e recepcao sincrona");
+
+        Console.WriteLine("Yeshua.Engine.Playground - CT-e RecepcaoSincV4 isolado");
+        Console.WriteLine($"Endpoint: {parameters.Endpoint}");
+        Console.WriteLine($"Ambiente: {parameters.Ambiente}");
+        Console.WriteLine($"UF: {parameters.CodigoUf}");
+        Console.WriteLine($"Certificado: {parameters.CertificatePath}");
+        Console.WriteLine($"CNPJ: {parameters.CnpjEmitente}");
+        Console.WriteLine($"XML CT-e bytes: {Encoding.UTF8.GetByteCount(cteXml)}");
+        Console.WriteLine($"XML CT-e GZip/Base64 chars: {compressedBase64.Length}");
+        Console.WriteLine();
+
+        if (args.Contains("--somente-validar", StringComparer.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("Envelope SOAP CT-e recepcao sincrona validado localmente. Nenhuma chamada foi feita ao SEFAZ.");
+            Console.WriteLine(soapEnvelope);
+            return;
+        }
+
+        parameters.ValidateForSend();
+
+        using var certificate = MdfeSefazPlaygroundOptions.LoadCertificate(
+            parameters.CertificatePath,
+            parameters.CertificatePassword);
+
+        using var handler = new HttpClientHandler
+        {
+            ClientCertificateOptions = ClientCertificateOption.Manual,
+            SslProtocols = SslProtocols.Tls12
+        };
+        handler.ClientCertificates.Add(certificate);
+
+        using var httpClient = new HttpClient(handler)
+        {
+            Timeout = TimeSpan.FromSeconds(parameters.TimeoutSeconds)
+        };
+
+        Console.WriteLine("Enviando CT-e para recepcao sincrona SEFAZ (SOAP 1.2)...");
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, parameters.Endpoint)
+        {
+            Version = HttpVersion.Version11,
+            Content = new StringContent(soapEnvelope, Encoding.UTF8, parameters.ContentMediaType)
+        };
+
+        request.Content.Headers.ContentType!.CharSet = "utf-8";
+        request.Content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("action", $"\"{parameters.SoapAction}\""));
+        request.Headers.ExpectContinue = false;
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+        var response = await httpClient.SendAsync(request);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        Console.WriteLine($"Status: {(int)response.StatusCode} {response.StatusCode}");
+        if (!string.IsNullOrWhiteSpace(responseBody))
+        {
+            Console.WriteLine(responseBody);
+        }
+    }
+
+    private static CteStatusServicoParameters BuildParameters(string[] args)
+    {
+        var endpoint = GetArg(args, "--cte-recepcao-endpoint")
+            ?? GetArg(args, "--cte-endpoint")
+            ?? Environment.GetEnvironmentVariable("YESHUA_CTE_RECEPCAO_ENDPOINT")
+            ?? RecepcaoEndpoint;
+
+        var statusParameters = CteStatusServicoPlayground.BuildParameters(args);
+
+        return statusParameters with
+        {
+            Endpoint = endpoint,
+            SoapAction = RecepcaoSoapAction
+        };
+    }
+
+    private static string LoadCteXml(string[] args)
+    {
+        var xmlPath = GetArg(args, "--cte-xml")
+            ?? Environment.GetEnvironmentVariable("YESHUA_CTE_XML_PATH");
+
+        if (!string.IsNullOrWhiteSpace(xmlPath))
+        {
+            if (!File.Exists(xmlPath))
+            {
+                throw new FileNotFoundException("XML CT-e informado nao foi encontrado.", xmlPath);
+            }
+
+            var xml = File.ReadAllText(xmlPath, Encoding.UTF8);
+            MdfeSefazPlaygroundOptions.ValidateXml(xml, "XML CT-e informado");
+            MdfeSefazPlaygroundOptions.ValidateNoFormattingWhitespace(xml, "XML CT-e informado");
+            return xml;
+        }
+
+        return BuildIncompleteCteXml();
+    }
+
+    private static string BuildIncompleteCteXml()
+    {
+        const string cteNamespace = "http://www.portalfiscal.inf.br/cte";
+
+        var doc = new XmlDocument { PreserveWhitespace = false };
+        var cte = doc.CreateElement("CTe", cteNamespace);
+        cte.SetAttribute("versao", "4.00");
+        doc.AppendChild(cte);
+
+        var infCte = doc.CreateElement("infCte", cteNamespace);
+        infCte.SetAttribute("Id", "CTe99999999999999999999999999999999999999999999");
+        infCte.SetAttribute("versao", "4.00");
+        cte.AppendChild(infCte);
+
+        return doc.OuterXml;
+    }
+
+    private static string CompressToBase64(string xml)
+    {
+        var bytes = Encoding.UTF8.GetBytes(xml);
+
+        using var input = new MemoryStream(bytes);
+        using var output = new MemoryStream();
+        using (var gzip = new GZipStream(output, CompressionMode.Compress))
+        {
+            input.CopyTo(gzip);
+        }
+
+        return Convert.ToBase64String(output.ToArray());
+    }
+
+    private static string WrapRecepcaoInSoapEnvelope(string compressedBase64)
+    {
+        const string soapNamespace = "http://www.w3.org/2003/05/soap-envelope";
+
+        var soap = new XmlDocument { PreserveWhitespace = true };
+        var envelope = soap.CreateElement("soap12", "Envelope", soapNamespace);
+        envelope.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        envelope.SetAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+        soap.AppendChild(envelope);
+
+        var body = soap.CreateElement("soap12", "Body", soapNamespace);
+        envelope.AppendChild(body);
+
+        var dados = soap.CreateElement("cteDadosMsg", ServiceNamespace);
+        dados.InnerText = compressedBase64;
+        body.AppendChild(dados);
+
+        return soap.OuterXml;
+    }
+
+    private static string? GetArg(string[] args, string name)
+    {
+        for (var i = 0; i < args.Length - 1; i++)
+        {
+            if (string.Equals(args[i], name, StringComparison.OrdinalIgnoreCase))
+            {
+                return args[i + 1];
+            }
+        }
+
+        return null;
+    }
 }
 
 internal sealed record MdfeEncerramentoParameters(

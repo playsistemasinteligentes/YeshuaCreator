@@ -12,6 +12,45 @@ namespace Command.Receivers
         private const int PendingStatus = 0;
         private const int TransportYeshuaApi = 2;
 
+        public static IyInboxEntity CreateInbox(
+            ILogger logger,
+            SagaBase saga,
+            SagaStepBase step,
+            string type,
+            object data)
+        {
+            var payload = JsonSerializer.Serialize(new
+            {
+                type,
+                entityId = saga.EntityId,
+                sagaId = saga.Id,
+                sagaType = saga.Type,
+                sagaCorrelationId = saga.CorrelationId,
+                stepId = step.Id,
+                stepKey = step.Key,
+                stepCorrelationId = step.CorrelationId,
+                occurredAt = DateTime.UtcNow,
+                data
+            });
+
+            return new yInboxFactory(logger).Create(
+                null,
+                Guid.NewGuid().ToString(),
+                type,
+                EntityType,
+                saga.EntityId,
+                step.CorrelationId,
+                payload,
+                PendingStatus,
+                DateTime.UtcNow,
+                0,
+                null,
+                null,
+                null,
+                saga.Id == 0 ? null : saga.Id,
+                step.Id == 0 ? null : step.Id);
+        }
+
         public static IyOutboxEntity CreateOutbox(
             ILogger logger,
             SagaBase saga,

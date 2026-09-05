@@ -15,5 +15,12 @@ public static class CustonDependenceInjection
                 sp,
                 sp.GetRequiredService<ILogger<PollingWorker<YeshuaModuleHttpOutboxTransportWorker, YeshuaModuleHttpOutboxTransportInputCommand, YeshuaModuleHttpOutboxTransportOutputCommand>>>(),
                 TimeSpan.FromSeconds(2)));
+
+        builder.Services.AddTransient<YeshuaModuleInboxSagaBridgeWorker>();
+        builder.Services.AddHostedService(sp =>
+            new PollingWorker<YeshuaModuleInboxSagaBridgeWorker, YeshuaModuleInboxSagaBridgeInputCommand, YeshuaModuleInboxSagaBridgeOutputCommand>(
+                sp,
+                sp.GetRequiredService<ILogger<PollingWorker<YeshuaModuleInboxSagaBridgeWorker, YeshuaModuleInboxSagaBridgeInputCommand, YeshuaModuleInboxSagaBridgeOutputCommand>>>(),
+                TimeSpan.FromSeconds(2)));
     }
 }

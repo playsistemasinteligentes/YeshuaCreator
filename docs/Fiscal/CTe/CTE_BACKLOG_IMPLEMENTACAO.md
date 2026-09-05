@@ -43,6 +43,17 @@ Pendencias atuais:
 | B04 | CT-P02 | Validacao XSD isolada. | Ponto custom futuro. | Validator com schema versionado. | Erro XSD separado de erro SEFAZ. |
 | B05 | CT-P04 | Autorizacao modelo 57 em homologacao. | Nada ainda. | XML minimo + cliente recepcao. | CT-e autorizado ou rejeicao fiscal interpretada. |
 
+Evidencia atual:
+
+- 2026-09-05: `tools/Yeshua.Engine.Playground` possui `--cte-status` para
+  `CTeStatusServicoV4` em homologacao SVSP. A chamada retornou `cStat=107`
+  (`Servico em Operacao`), provando TLS, certificado, SOAP 1.2 e endpoint.
+- 2026-09-05: `tools/Yeshua.Engine.Playground` possui `--cte-recepcao` para
+  `CTeRecepcaoSincV4`. A chamada com XML CT-e propositalmente incompleto
+  retornou HTTP `200 OK` e `cStat=215`, rejeicao de schema. Isso prova a
+  comunicacao de recepcao, compactacao GZip/Base64 em `cteDadosMsg` e retorno
+  `retCTe`; nao prova autorizacao fiscal completa.
+
 Regra:
 
 - Playground pode ser fora da Engine.

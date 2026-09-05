@@ -26,16 +26,15 @@ public partial class CargaStandardSagaApiSmokeTests
     partial void Configure(SagaSmokeTestOptions options)
     {
         options.Enabled = true;
-        options.Timeout = TimeSpan.FromSeconds(120);
+        options.Timeout = TimeSpan.FromSeconds(240);
         options.PollInterval = TimeSpan.FromSeconds(2);
         options.BuildStartPayload = BuildContextPayload;
         options.StartSagaAsync = StartCargaStandardSagaAsync;
         options.BuildSagaReadPayload = BuildSagaReadPayload;
-        options.IsExpectedOutcome = (_, steps) =>
-            steps.OfType<JsonObject>().Any(step =>
-                string.Equals(GetString(step, "StepKey"), "CriarCarga", StringComparison.OrdinalIgnoreCase)
-                && GetInt(step, "ExecutionCount") > 0);
-        options.AssertOutcome = AssertWorkerTouchedSaga;
+        options.IsExpectedOutcome = (saga, steps) =>
+            GetInt(saga, "Status") == 2
+            && StepHasStatus(steps, "LiberarCargaParaExpedicao", 5);
+        options.AssertOutcome = AssertSagaCompletedEndToEnd;
     }
 
     private static JsonObject BuildContextPayload()
@@ -331,16 +330,22 @@ public partial class CargaStandardSagaApiSmokeTests
         return ApiJson.GetProperty(state, "data") as JsonObject ?? state;
     }
 
-    private static void AssertWorkerTouchedSaga(JsonObject saga, JsonArray steps)
+    private static void AssertSagaCompletedEndToEnd(JsonObject saga, JsonArray steps)
     {
         var status = GetInt(saga, "Status");
-        Assert.True(status == 1 || status == 2, $"Saga CargaStandard ficou em status inesperado: {status}.");
+        Assert.Equal(2, status);
 
-        var firstStep = steps.OfType<JsonObject>().FirstOrDefault(step =>
-            string.Equals(GetString(step, "StepKey"), "CriarCarga", StringComparison.OrdinalIgnoreCase));
+        Assert.True(StepHasStatus(steps, "CriarCarga", 5), "O passo CriarCarga nao foi concluido.");
+        Assert.True(StepHasStatus(steps, "PublicarCargaProntaParaEmissaoFiscal", 5), "O APS nao publicou a carga para o Fiscal.");
+        Assert.True(StepHasStatus(steps, "AguardarResultadoFiscalDaCarga", 5), "O APS nao recebeu o retorno fiscal.");
+        Assert.True(StepHasStatus(steps, "LiberarCargaParaExpedicao", 5), "A carga nao foi liberada para expedicao.");
+    }
 
-        Assert.NotNull(firstStep);
-        Assert.True(GetInt(firstStep!, "ExecutionCount") > 0, "O worker da saga nao executou o primeiro passo CriarCarga.");
+    private static bool StepHasStatus(JsonArray steps, string stepKey, int status)
+    {
+        return steps.OfType<JsonObject>().Any(step =>
+            string.Equals(GetString(step, "StepKey"), stepKey, StringComparison.OrdinalIgnoreCase)
+            && GetInt(step, "Status") == status);
     }
 
     private static string? GetString(JsonNode? node, string propertyName)

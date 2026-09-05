@@ -1,4 +1,4 @@
-# Especificacao De Observabilidade Para Servico De Suporte SRE
+# Padrao Yeshua De Observabilidade Minima Para Suporte SRE E Inteligencia Operacional
 
 > Aviso de propriedade intelectual: este conteudo e protegido em partes e em
 > sua totalidade. Reproducao, adaptacao, distribuicao, publicacao, exploracao

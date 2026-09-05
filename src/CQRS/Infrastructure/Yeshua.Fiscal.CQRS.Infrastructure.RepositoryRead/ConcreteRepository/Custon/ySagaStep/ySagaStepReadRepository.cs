@@ -28,6 +28,14 @@ namespace Read.Repository
 
                 DECLARE @Applied INT = @@ROWCOUNT;
 
+                UPDATE sg
+                   SET sg.[NextExecutionAt] = SYSUTCDATETIME()
+                  FROM [ySaga] sg
+                 INNER JOIN [ySagaStep] s ON s.[SagaId] = sg.[Id]
+                 INNER JOIN [yInbox] i ON i.[CorrelationId] = s.[CorrelationId]
+                 WHERE s.[Status] = 4
+                   AND i.[Status] = 0;
+
                 UPDATE i
                    SET i.[Status] = 1
                   FROM [yInbox] i

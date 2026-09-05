@@ -82,6 +82,16 @@ namespace Dominio.Patterns.Saga
 
         private void NextStep(string payload)
         {
+            if (_steps.All(s => s.Status == SagaStepStatus.Completed))
+            {
+                Status = SagaStatus.Completed;
+                CompletedAt = DateTime.UtcNow;
+                NextExecutionAt = DateTime.UtcNow;
+                MarkDirty();
+                UpdateCurrentStepKey();
+                return;
+            }
+
             var current = GetCurrent();
 
             if (current == null)
@@ -89,9 +99,7 @@ namespace Dominio.Patterns.Saga
 
             current.SetPending();
             current.SetPayload(payload);
-
-            if (_steps.All(s => s.Status == SagaStepStatus.Completed))
-                Status = SagaStatus.Completed;
+            NextExecutionAt = DateTime.UtcNow;
 
             MarkDirty();
             UpdateCurrentStepKey();

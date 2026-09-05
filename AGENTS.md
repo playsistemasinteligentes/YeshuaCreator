@@ -82,6 +82,11 @@ Miolos que IA/dev devem preencher:
   `/yapi/{Modulo}/Inbox/YeshuaModuleEvent`. Essa borda deve gravar o minimo
   necessario em `yInbox` e responder rapido; processamento pesado, SEFAZ,
   normalizacao e continuacao de saga pertencem a worker/receiver posterior.
+- No prototipo APS -> Fiscal por API, o `yInbox` recebido por modulo externo
+  nao deve tentar acordar steps por coincidencia tecnica de `CorrelationId`.
+  Uma ponte explicita de inbox para saga deve consumir apenas contratos
+  conhecidos, iniciar ou acordar a saga local correspondente e preservar o
+  `sagaCorrelationId` de origem quando houver continuidade de negocio.
 - No APS ADM, o fluxo standard de carga deve começar como uma Saga declarada
   na DSL (`CargaStandard`) antes de nascer um novo conceito de Workflow. Cada
   cliente pode escolher uma saga hard coded/protegida para a carga quando o
@@ -455,6 +460,12 @@ os miolos customizados.
   encerramento real de MDF-e. Esse conhecimento deve migrar para miolo
   customizado do modulo MDF-e dentro do aplicativo Fiscal; o playground nao e
   arquitetura final.
+- O playground `tools/Yeshua.Engine.Playground` tambem preserva a prova
+  isolada de comunicacao CT-e em homologacao: `CTeStatusServicoV4` com
+  `cStat=107` e `CTeRecepcaoSincV4` com rejeicao de schema `cStat=215` usando
+  XML incompleto. Isso prova transporte, certificado, SOAP 1.2 e
+  GZip/Base64; autorizacao real ainda depende de XML completo, assinatura,
+  validacao XSD e dados fiscais consistentes no aplicativo Fiscal.
 - MDF-e usa a relacao oficial de servicos do Portal MDF-e/SVRS por ambiente.
   Endpoints, QR Code, timeout, certificado e versao de schema sao configuracoes
   do aplicativo fiscal, nunca constantes escondidas na Engine.

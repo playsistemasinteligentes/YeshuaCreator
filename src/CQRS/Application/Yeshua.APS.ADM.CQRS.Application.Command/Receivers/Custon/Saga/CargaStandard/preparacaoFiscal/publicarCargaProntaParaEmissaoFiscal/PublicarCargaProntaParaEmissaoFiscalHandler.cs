@@ -17,11 +17,16 @@ namespace Command.Receivers
     public partial class PublicarCargaProntaParaEmissaoFiscalHandler
     {
         private readonly IyOutboxWriteRepository _outboxWriteRepository;
+        private readonly IyInboxWriteRepository _inboxWriteRepository;
         private readonly ILogger _logger;
 
-        public PublicarCargaProntaParaEmissaoFiscalHandler(IyOutboxWriteRepository outboxWriteRepository, ILogger logger)
+        public PublicarCargaProntaParaEmissaoFiscalHandler(
+            IyOutboxWriteRepository outboxWriteRepository,
+            IyInboxWriteRepository inboxWriteRepository,
+            ILogger logger)
         {
             _outboxWriteRepository = outboxWriteRepository;
+            _inboxWriteRepository = inboxWriteRepository;
             _logger = logger;
         }
 
@@ -47,6 +52,20 @@ namespace Command.Receivers
                 "YeshuaModules:Fiscal:BaseUrl");
 
             _outboxWriteRepository.Insert(outbox);
+
+            var inbox = CargaStandardSagaPayloads.CreateInbox(
+                _logger,
+                saga,
+                step,
+                "carga.publicacao-fiscal-enfileirada",
+                new
+                {
+                    origem = "APSADM",
+                    modo = "interno-prototipo",
+                    cargaId = saga.EntityId
+                });
+
+            _inboxWriteRepository.Insert(inbox);
         }
 
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)

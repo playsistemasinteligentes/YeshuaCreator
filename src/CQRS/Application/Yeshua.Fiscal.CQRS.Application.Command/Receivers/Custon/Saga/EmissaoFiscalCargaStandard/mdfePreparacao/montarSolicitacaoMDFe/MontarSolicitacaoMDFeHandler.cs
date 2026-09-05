@@ -8,4 +8,38 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
 // </yeshua>
 
+using Dominio.Interfaces;
+using Dominio.Patterns.Saga;
+using IRepository.Write;
+
+namespace Command.Receivers
+{
+    public partial class MontarSolicitacaoMDFeHandler
+    {
+        private readonly IyInboxWriteRepository _inboxWriteRepository;
+        private readonly ILogger _logger;
+
+        public MontarSolicitacaoMDFeHandler(IyInboxWriteRepository inboxWriteRepository, ILogger logger)
+        {
+            _inboxWriteRepository = inboxWriteRepository;
+            _logger = logger;
+        }
+
+        partial void CustomExecute(SagaBase saga, SagaStepBase step)
+        {
+            _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
+                _logger,
+                saga,
+                step,
+                "fiscal.mdfe.solicitacao-montada",
+                new { origem = "Fiscal", modo = "interno-prototipo", entityId = saga.EntityId }));
+        }
+
+        partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
+        {
+            _logger.Info($"Fiscal {saga.EntityId}: solicitacao de MDF-e montada.");
+        }
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
