@@ -42,9 +42,9 @@ namespace Command.Receivers
                     sagaDestino = "CargaStandard",
                     cargaId = saga.EntityId
                 },
-                "yeshua.apsadm",
-                "apsadm.carga.retorno-fiscal.inbox",
-                "DocumentosFiscaisDaCargaConcluidos.v1");
+                "APSADM",
+                "/yapi/APSADM/Inbox/YeshuaModuleEvent",
+                "YeshuaModules:APSADM:BaseUrl");
 
             _outboxWriteRepository.Insert(outbox);
         }

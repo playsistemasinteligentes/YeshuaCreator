@@ -3,11 +3,11 @@
 A infraestrutura e mantida manualmente e em paralelo aos Studios. Executar a
 Engine nao altera Compose, Dockerfiles, nginx ou scripts de deploy.
 
-O servidor atual hospeda N aplicativos por meio de tres projetos Compose:
+O servidor atual hospeda N aplicativos por meio dos projetos Compose ativos:
 
 - `infra/Shared/DockerCompose`: SQL Server, Redis, RabbitMQ, Operational Intelligence API, nginx e rede.
 - `infra/Clinica/DockerCompose`: API, Front, Worker, Migration e IA da Clinica.
-- `infra/Fiscal.MDFe/DockerCompose`: API, Front e Migration do MDF-e.
+- `Fiscal`: aplicativo fiscal unificado; a infraestrutura dedicada sera gerada em recorte proprio.
 
 Os aplicativos possuem nomes Compose diferentes e compartilham apenas a rede
 externa `yeshua-net`. Nenhum deploy de aplicativo executa `docker compose down`.
@@ -21,8 +21,8 @@ sudo apt update && sudo apt install -y curl && \
 sudo curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup.sh | sudo bash
 ```
 
-O setup prepara o servidor, sobe o Shared, executa as migrations, sobe os dois
-aplicativos e inicia o nginx por HTTP. Cada Migration cria seu proprio banco
+O setup prepara o servidor, sobe o Shared, executa as migrations, sobe os
+aplicativos ativos e inicia o nginx por HTTP. Cada Migration cria seu proprio banco
 quando ele ainda nao existe.
 
 ### 2. Certificado
@@ -45,7 +45,6 @@ Deploys isolados:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- mdfe
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- shared
 ```
 
@@ -55,13 +54,13 @@ repositorio uma vez e recarrega o nginx graciosamente ao final.
 ## Rotas
 
 - `/`, `/yapi` e `/yworker`: Clinica.
-- `/mdfe` e `/mdfe/yapi`: MDF-e.
+- `Fiscal`: rotas publicas serao definidas quando a infraestrutura do aplicativo fiscal unificado for ativada.
 
 ## Persistencia
 
 - SQL Server: `/root/YeshuaDB/persistent/sql`.
 - Storage: `/root/YeshuaStorage`.
-- Bancos separados na mesma instancia: `CLINICA` e `MDFE`.
+- Bancos separados na mesma instancia: `CLINICA` e `FISCAL`.
 
 ## Seguranca
 

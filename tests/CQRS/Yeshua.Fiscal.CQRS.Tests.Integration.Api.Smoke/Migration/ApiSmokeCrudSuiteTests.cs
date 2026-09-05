@@ -184,6 +184,12 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step36.DeleteAsync);
             await step36.ExecuteAsync();
 
+            var step37 = new Saga.EmissaoFiscalCargaStandard.EmissaoFiscalCargaStandardSagaApiSmokeTests();
+            await step37.EmissaoFiscalCargaStandard_saga_should_run_with_real_api_and_infrastructure();
+
+            var step38 = new Saga.EncerramentoMDFeStandard.EncerramentoMDFeStandardSagaApiSmokeTests();
+            await step38.EncerramentoMDFeStandard_saga_should_run_with_real_api_and_infrastructure();
+
         }
         catch (Exception ex)
         {

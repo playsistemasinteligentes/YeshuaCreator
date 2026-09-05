@@ -42,9 +42,9 @@ namespace Command.Receivers
                     sagaDestino = "EmissaoFiscalCargaStandard",
                     cargaId = saga.EntityId
                 },
-                "yeshua.fiscal",
-                "fiscal.emissao-carga.inbox",
-                "CargaProntaParaEmissaoFiscal.v1");
+                "Fiscal",
+                "/yapi/Fiscal/Inbox/YeshuaModuleEvent",
+                "YeshuaModules:Fiscal:BaseUrl");
 
             _outboxWriteRepository.Insert(outbox);
         }

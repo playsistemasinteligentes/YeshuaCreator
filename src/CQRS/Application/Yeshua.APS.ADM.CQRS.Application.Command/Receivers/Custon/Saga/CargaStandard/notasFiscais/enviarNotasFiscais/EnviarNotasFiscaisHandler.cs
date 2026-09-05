@@ -38,9 +38,9 @@ namespace Command.Receivers
                     cargaId = saga.EntityId,
                     aguardando = "notas-fiscais"
                 },
-                "apsadm.carga",
-                "carga.notas-fiscais.outbox",
-                "carga.notas-fiscais.enviar");
+                "APSADM",
+                "/yapi/APSADM/Inbox/YeshuaModuleEvent",
+                "YeshuaModules:APSADM:BaseUrl");
 
             _outboxWriteRepository.Insert(outbox);
         }

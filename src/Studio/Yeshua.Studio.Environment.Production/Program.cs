@@ -4,11 +4,11 @@ var solutionDirectory = FindSolutionDirectory();
 
 // pendencia: definir a provisao e a rotacao dos valores referenciados em .env.example.
 // observacao: nenhum valor de senha ou connection string deve entrar nesta declaracao.
-// pendencia: criar os catalogos CLINICA e MDFE de forma idempotente antes da primeira migration.
+// pendencia: criar os catalogos CLINICA e FISCAL de forma idempotente antes da primeira migration.
 // observacao: servidores que ja possuem os catalogos continuam usando os dados persistidos atuais.
 new DeploymentEnvironmentSchema("Production", solutionDirectory)
     .Domain("playsis.com.br")
-    .IncludeApplication("Clinica", "Fiscal.MDFe")
+    .IncludeApplication("Clinica", "Fiscal")
     .ProvideResource("sql01", provider => provider
         .FromImage("mcr.microsoft.com/mssql/server:2022-latest")
         .Configure("ACCEPT_EULA", "Y")

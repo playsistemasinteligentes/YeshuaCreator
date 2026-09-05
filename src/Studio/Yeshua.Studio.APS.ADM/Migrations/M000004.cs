@@ -101,6 +101,7 @@ public class M000004 : MigrationBase
                         "CargaProntaParaEmissaoFiscal",
                         1,
                         "EmissaoFiscalCargaStandard")
+                    .DeliverByYeshuaApi()
             .AddStepGroup("retornoFiscal")
                 .AddStep("aguardarResultadoFiscalDaCarga")
                 .AddStep("liberarCargaParaExpedicao");

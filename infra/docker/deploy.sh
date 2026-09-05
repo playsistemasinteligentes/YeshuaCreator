@@ -4,7 +4,6 @@ set -euo pipefail
 APP_DIR="/root/YeshuaCreator"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
 CLINICA_DIR="$APP_DIR/infra/Clinica/DockerCompose"
-MDFE_DIR="$APP_DIR/infra/Fiscal.MDFe/DockerCompose"
 TARGET="${1:-all}"
 LAYOUT_MARKER="/root/YeshuaDB/persistent/.multi-app-layout-v1"
 
@@ -19,8 +18,7 @@ fi
 
 chmod +x \
   "$SHARED_DIR"/*.sh \
-  "$CLINICA_DIR"/*.sh \
-  "$MDFE_DIR"/*.sh
+  "$CLINICA_DIR"/*.sh
 
 legacy_runtime_present() {
   local name project
@@ -99,8 +97,6 @@ gateway_dependencies_ready() {
 playsis-clinica clinica-front
 playsis-clinica clinica-api
 playsis-clinica clinica-worker
-playsis-fiscal-mdfe fiscal-mdfe-front
-playsis-fiscal-mdfe fiscal-mdfe-api
 EOF
 }
 
@@ -122,15 +118,10 @@ deploy_clinica() {
   YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 bash "$CLINICA_DIR/deploy.sh"
 }
 
-deploy_mdfe() {
-  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 bash "$MDFE_DIR/deploy.sh"
-}
-
 case "${TARGET,,}" in
   all)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_clinica
-    deploy_mdfe
     deploy_gateway
     touch "$LAYOUT_MARKER"
     ;;
@@ -138,16 +129,12 @@ case "${TARGET,,}" in
     deploy_clinica
     deploy_gateway
     ;;
-  mdfe|fiscal.mdfe|fiscal-mdfe)
-    deploy_mdfe
-    deploy_gateway
-    ;;
   shared)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_gateway
     ;;
   *)
-    echo "Destino invalido: $TARGET. Use all, clinica, mdfe ou shared." >&2
+    echo "Destino invalido: $TARGET. Use all, clinica ou shared." >&2
     exit 1
     ;;
 esac

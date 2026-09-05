@@ -10,7 +10,7 @@ namespace Command.Receivers
     {
         private const string EntityType = "Carga";
         private const int PendingStatus = 0;
-        private const int TransportQueue = 1;
+        private const int TransportYeshuaApi = 2;
 
         public static IyInboxEntity CreateInbox(
             ILogger logger,
@@ -45,16 +45,16 @@ namespace Command.Receivers
             SagaStepBase step,
             string type,
             object data,
-            string exchange,
-            string queue,
-            string routingKey)
+            string targetModule,
+            string endpoint,
+            string baseUrlConfigurationKey)
         {
             var payload = BuildPayload(type, saga, step, data);
             var transportData = JsonSerializer.Serialize(new
             {
-                exchange,
-                queue,
-                routingKey
+                targetModule,
+                endpoint,
+                baseUrlConfigurationKey
             });
 
             return new yOutboxFactory(logger).Create(
@@ -66,7 +66,7 @@ namespace Command.Receivers
                 step.CorrelationId,
                 payload,
                 PendingStatus,
-                TransportQueue,
+                TransportYeshuaApi,
                 transportData,
                 DateTime.UtcNow,
                 null,

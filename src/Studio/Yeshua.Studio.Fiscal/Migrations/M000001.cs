@@ -520,7 +520,8 @@ public class M000001 : MigrationBase
                         "APSADM",
                         "DocumentosFiscaisDaCargaConcluidos",
                         1,
-                        "CargaStandard");
+                        "CargaStandard")
+                    .DeliverByYeshuaApi();
 
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("EncerramentoFiscal")
@@ -538,7 +539,8 @@ public class M000001 : MigrationBase
                         "MDFeEncerrado",
                         1,
                         "CargaStandard",
-                        false);
+                        false)
+                    .DeliverByYeshuaApi();
 
         AddMenuGroup("DFE", "Entrada Fiscal",
             "DocumentoFiscal",

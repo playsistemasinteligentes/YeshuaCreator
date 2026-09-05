@@ -330,6 +330,29 @@ Command
             return this;
         }
 
+        public UseCaseGroup DeliverByYeshuaApi(
+            string endpoint = "",
+            string targetBaseUrlConfigurationKey = "")
+        {
+            var saga = this.UseCaseSubGroup.Last().Saga.Last();
+            var step = saga.SagaStepGroup.Last().LastStep;
+            var continuation = step.YeshuaModuleContinuations
+                .LastOrDefault(x => x.Direction == "Publishes");
+
+            if (continuation is null)
+                throw new InvalidOperationException("DeliverByYeshuaApi deve ser chamado apos PublishYeshuaModuleEvent no mesmo step.");
+
+            continuation.TransportKind = "YeshuaApi";
+            continuation.Endpoint = string.IsNullOrWhiteSpace(endpoint)
+                ? $"/yapi/{continuation.TargetModule}/Inbox/YeshuaModuleEvent"
+                : endpoint;
+            continuation.TargetBaseUrlConfigurationKey = string.IsNullOrWhiteSpace(targetBaseUrlConfigurationKey)
+                ? $"YeshuaModules:{continuation.TargetModule}:BaseUrl"
+                : targetBaseUrlConfigurationKey;
+
+            return this;
+        }
+
         public UseCaseGroup StartsFromYeshuaModuleEvent(
             string sourceModule,
             string contract,

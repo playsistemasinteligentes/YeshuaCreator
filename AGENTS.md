@@ -72,6 +72,16 @@ Miolos que IA/dev devem preencher:
   step origem, contrato, versao, modulo destino, saga destino e obrigatoriedade.
   O objetivo inicial e rastreabilidade, consistencia e atencao humana em
   alteracoes cruzadas, sem mecanismo magico ou configuracao cadastravel.
+- Publicacoes operacionais de `YeshuaModuleEvent` devem declarar explicitamente
+  o transporte. `DeliverByYeshuaApi` significa Outbox do modulo origem ->
+  worker transportador HTTP -> API/Inbox do modulo destino. Topologias de fila
+  continuam sendo declaradas pelos metodos de Queue, como
+  `AddOutBoxPollingWorker` e `AddInboxListenerWorker`; RabbitMQ nao deve ser
+  inferido automaticamente de uma saga ou de um evento entre modulos.
+- O endpoint HTTP padrao de entrada entre modulos Yeshua e
+  `/yapi/{Modulo}/Inbox/YeshuaModuleEvent`. Essa borda deve gravar o minimo
+  necessario em `yInbox` e responder rapido; processamento pesado, SEFAZ,
+  normalizacao e continuacao de saga pertencem a worker/receiver posterior.
 - No APS ADM, o fluxo standard de carga deve começar como uma Saga declarada
   na DSL (`CargaStandard`) antes de nascer um novo conceito de Workflow. Cada
   cliente pode escolher uma saga hard coded/protegida para a carga quando o
@@ -82,6 +92,12 @@ Miolos que IA/dev devem preencher:
   retorno fiscal. CT-e, MDF-e e encerramento pertencem ao modulo Fiscal e
   retornam ao APS por contratos de modulo Yeshua, nao por consulta direta entre
   modulos.
+- Na integracao APS -> Fiscal, este projeto deve manter sob responsabilidade
+  do APS a infraestrutura, os dados e os snapshots que nascem da carga. O Fiscal
+  deve receber contrato estavel e suficiente para trabalhar sem consultar
+  tabelas internas do APS. Miolos reais de comunicacao com SEFAZ podem ser
+  preenchidos por agente/dev especializado depois, desde que respeitem as
+  bordas declaradas pela DSL e os contratos versionados.
 - Subdivisoes como calculo fiscal, montagem de XML, assinatura por certificado,
   validacao XSD e interpretacao de retorno SEFAZ comecam como metodos internos
   dos handlers de saga. Elas so viram steps de saga quando precisarem de retry,
@@ -461,6 +477,12 @@ os miolos customizados.
 - CT-e deve receber snapshots/requests de pedido, carga e nota fiscal; nao deve
   acessar diretamente o miolo ou tabelas internas de outros modulos como forma
   normal de integracao.
+- O agente/dev responsavel por CT-e pode evoluir planejamento e implementacao
+  real de SEFAZ dentro do miolo customizado do modulo Fiscal. A orquestracao
+  entre agentes deve preservar: contrato de entrada canonico, nomes de steps da
+  saga, versionamento do evento de modulo Yeshua, e testes E2E que provem o
+  caminho APS -> Fiscal -> retorno APS antes de substituir simulacoes por
+  comunicacao fiscal real.
 - No primeiro recorte do Fiscal.CTe, conectores legados nao ficam dentro do
   modulo fiscal. Eles pertencem aos modulos anteriores de recepcao,
   montagem/execucao de carga ou integracao, que convertem contratos externos

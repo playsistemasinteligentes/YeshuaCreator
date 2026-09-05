@@ -102,8 +102,11 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        public string TargetSaga { get; set; }");
             sb.AppendLine("        public bool Required { get; set; }");
             sb.AppendLine("        public string Direction { get; set; }");
+            sb.AppendLine("        public string TransportKind { get; set; }");
+            sb.AppendLine("        public string Endpoint { get; set; }");
+            sb.AppendLine("        public string TargetBaseUrlConfigurationKey { get; set; }");
             sb.AppendLine("");
-            sb.AppendLine("        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction)");
+            sb.AppendLine("        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction, string transportKind = \"\", string endpoint = \"\", string targetBaseUrlConfigurationKey = \"\")");
             sb.AppendLine("        {");
             sb.AppendLine("            SourceModule = sourceModule;");
             sb.AppendLine("            SourceSaga = sourceSaga;");
@@ -114,6 +117,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("            TargetSaga = targetSaga;");
             sb.AppendLine("            Required = required;");
             sb.AppendLine("            Direction = direction;");
+            sb.AppendLine("            TransportKind = transportKind;");
+            sb.AppendLine("            Endpoint = endpoint;");
+            sb.AppendLine("            TargetBaseUrlConfigurationKey = targetBaseUrlConfigurationKey;");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("");
@@ -128,8 +134,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    {");
 
             sb.AppendLine($"        Modules.Clear();");
-            foreach (var mol in _migration.Modules)
+            for (var moduleIndex = 0; moduleIndex < _migration.Modules.Count; moduleIndex++)
             {
+                var mol = _migration.Modules[moduleIndex];
                 sb.AppendLine($"        Modules.Add(new Module(\"{mol.Key}\", \"{mol.Description}\"));");
 
                 var menuDefinitions = BuildMenuDefinitions(mol);
@@ -145,7 +152,7 @@ namespace Dominio.Schemas.CQRS
                     if (!groupItems.Any())
                         continue;
 
-                    var menuVariable = $"menuGroup{menuGroupIndex}";
+                    var menuVariable = $"menuGroup{moduleIndex}_{menuGroupIndex}";
                     sb.AppendLine($"        var {menuVariable} = new Menu(\"{Escape(menuGroup.Title)}\", \"\", \"menuGroup\");");
 
                     foreach (var menuItem in groupItems)
@@ -176,7 +183,7 @@ namespace Dominio.Schemas.CQRS
 
             foreach (var continuation in BuildModuleContinuations(_migration))
             {
-                sb.AppendLine($"        Continuations.Add(new ModuleContinuation(\"{Escape(continuation.SourceModule)}\", \"{Escape(continuation.SourceSaga)}\", \"{Escape(continuation.SourceStep)}\", \"{Escape(continuation.Contract)}\", {continuation.ContractVersion}, \"{Escape(continuation.TargetModule)}\", \"{Escape(continuation.TargetSaga)}\", {continuation.Required.ToString().ToLowerInvariant()}, \"{Escape(continuation.Direction)}\"));");
+                sb.AppendLine($"        Continuations.Add(new ModuleContinuation(\"{Escape(continuation.SourceModule)}\", \"{Escape(continuation.SourceSaga)}\", \"{Escape(continuation.SourceStep)}\", \"{Escape(continuation.Contract)}\", {continuation.ContractVersion}, \"{Escape(continuation.TargetModule)}\", \"{Escape(continuation.TargetSaga)}\", {continuation.Required.ToString().ToLowerInvariant()}, \"{Escape(continuation.Direction)}\", \"{Escape(continuation.TransportKind)}\", \"{Escape(continuation.Endpoint)}\", \"{Escape(continuation.TargetBaseUrlConfigurationKey)}\"));");
             }
 
             sb.AppendLine("    }");
@@ -240,6 +247,17 @@ namespace Dominio.Schemas.CQRS
                 }
             }
 
+            foreach (var continuation in continuations.Where(x => x.Direction == "Publishes"))
+            {
+                if (string.IsNullOrWhiteSpace(continuation.TransportKind))
+                {
+                    throw new InvalidOperationException(
+                        $"YeshuaModuleEvent '{continuation.Contract}.v{continuation.ContractVersion}' publicado por " +
+                        $"'{continuation.SourceModule}.{continuation.SourceSaga}.{continuation.SourceStep}' precisa declarar transporte. " +
+                        "Use DeliverByYeshuaApi ou declare uma topologia de fila.");
+                }
+            }
+
             return continuations
                 .GroupBy(x => new
                 {
@@ -248,10 +266,13 @@ namespace Dominio.Schemas.CQRS
                     x.SourceStep,
                     x.Contract,
                     x.ContractVersion,
-                    x.TargetModule,
-                    x.TargetSaga,
-                    x.Direction
-                })
+                        x.TargetModule,
+                        x.TargetSaga,
+                        x.Direction,
+                        x.TransportKind,
+                        x.Endpoint,
+                        x.TargetBaseUrlConfigurationKey
+                    })
                 .Select(group => group.First())
                 .ToList();
         }

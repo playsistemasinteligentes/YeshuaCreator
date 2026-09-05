@@ -83,8 +83,11 @@ namespace Modules
         public string TargetSaga { get; set; }
         public bool Required { get; set; }
         public string Direction { get; set; }
+        public string TransportKind { get; set; }
+        public string Endpoint { get; set; }
+        public string TargetBaseUrlConfigurationKey { get; set; }
 
-        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction)
+        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction, string transportKind = "", string endpoint = "", string targetBaseUrlConfigurationKey = "")
         {
             SourceModule = sourceModule;
             SourceSaga = sourceSaga;
@@ -95,6 +98,9 @@ namespace Modules
             TargetSaga = targetSaga;
             Required = required;
             Direction = direction;
+            TransportKind = transportKind;
+            Endpoint = endpoint;
+            TargetBaseUrlConfigurationKey = targetBaseUrlConfigurationKey;
         }
     }
 
@@ -107,27 +113,27 @@ public static class StaticModules
         Modules.Clear();
         Modules.Add(new Module("FIS", "Fiscal"));
         Modules.Add(new Module("DFE", "Documentos  Fiscais  Eletronicos"));
-        var menuGroup0 = new Menu("Entrada Fiscal", "", "menuGroup");
-        menuGroup0.AddSubMenu(new SubMenu("DocumentoFiscal", "/getMetaDataDocumentoFiscal", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("DocumentoFiscalOriginario", "/getMetaDataDocumentoFiscalOriginario", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0);
+        var menuGroup1_0 = new Menu("Entrada Fiscal", "", "menuGroup");
+        menuGroup1_0.AddSubMenu(new SubMenu("DocumentoFiscal", "/getMetaDataDocumentoFiscal", "crud", "", ""));
+        menuGroup1_0.AddSubMenu(new SubMenu("DocumentoFiscalOriginario", "/getMetaDataDocumentoFiscalOriginario", "crud", "", ""));
+        Modules.LastOrDefault().Menus.Add(menuGroup1_0);
         Modules.Add(new Module("CTE", "C T-e"));
-        var menuGroup0 = new Menu("CT-e", "", "menuGroup");
-        menuGroup0.AddSubMenu(new SubMenu("CTeEntradaOficial", "/getMetaDataCTeEntradaOficial", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("CTeRomaneioConsolidado", "/getMetaDataCTeRomaneioConsolidado", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("CTeSolicitacaoFiscal", "/getMetaDataCTeSolicitacaoFiscal", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("CTeTentativaEmissao", "/getMetaDataCTeTentativaEmissao", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("CTeSaidaMDFe", "/getMetaDataCTeSaidaMDFe", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0);
+        var menuGroup2_0 = new Menu("CT-e", "", "menuGroup");
+        menuGroup2_0.AddSubMenu(new SubMenu("CTeEntradaOficial", "/getMetaDataCTeEntradaOficial", "crud", "", ""));
+        menuGroup2_0.AddSubMenu(new SubMenu("CTeRomaneioConsolidado", "/getMetaDataCTeRomaneioConsolidado", "crud", "", ""));
+        menuGroup2_0.AddSubMenu(new SubMenu("CTeSolicitacaoFiscal", "/getMetaDataCTeSolicitacaoFiscal", "crud", "", ""));
+        menuGroup2_0.AddSubMenu(new SubMenu("CTeTentativaEmissao", "/getMetaDataCTeTentativaEmissao", "crud", "", ""));
+        menuGroup2_0.AddSubMenu(new SubMenu("CTeSaidaMDFe", "/getMetaDataCTeSaidaMDFe", "crud", "", ""));
+        Modules.LastOrDefault().Menus.Add(menuGroup2_0);
         Modules.LastOrDefault().Menus.Add(new Menu("CTeDocumentoOriginario", "/getMetaDataCTeDocumentoOriginario", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("CTeParticipanteSnapshot", "/getMetaDataCTeParticipanteSnapshot", "crud", "", ""));
         Modules.Add(new Module("MDFE", "M D F-e"));
-        var menuGroup0 = new Menu("MDF-e", "", "menuGroup");
-        menuGroup0.AddSubMenu(new SubMenu("MDFe", "/getMetaDataMDFe", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("MDFeSolicitacaoFiscal", "/getMetaDataMDFeSolicitacaoFiscal", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("MDFeTentativaEmissao", "/getMetaDataMDFeTentativaEmissao", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("MDFeEncerramento", "/getMetaDataMDFeEncerramento", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0);
+        var menuGroup3_0 = new Menu("MDF-e", "", "menuGroup");
+        menuGroup3_0.AddSubMenu(new SubMenu("MDFe", "/getMetaDataMDFe", "crud", "", ""));
+        menuGroup3_0.AddSubMenu(new SubMenu("MDFeSolicitacaoFiscal", "/getMetaDataMDFeSolicitacaoFiscal", "crud", "", ""));
+        menuGroup3_0.AddSubMenu(new SubMenu("MDFeTentativaEmissao", "/getMetaDataMDFeTentativaEmissao", "crud", "", ""));
+        menuGroup3_0.AddSubMenu(new SubMenu("MDFeEncerramento", "/getMetaDataMDFeEncerramento", "crud", "", ""));
+        Modules.LastOrDefault().Menus.Add(menuGroup3_0);
         Modules.LastOrDefault().Menus.Add(new Menu("MDFeDocumentoOriginario", "/getMetaDataMDFeDocumentoOriginario", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("MDFePercurso", "/getMetaDataMDFePercurso", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("MDFeVeiculo", "/getMetaDataMDFeVeiculo", "crud", "", ""));
@@ -135,10 +141,10 @@ public static class StaticModules
         Modules.Add(new Module("NFE", "N F-e"));
         Modules.LastOrDefault().Menus.Add(new Menu("NFeProdutoSnapshot", "/getMetaDataNFeProdutoSnapshot", "crud", "", ""));
         Modules.Add(new Module("SEFAZ", "S E F A Z"));
-        var menuGroup0 = new Menu("Operacao SEFAZ", "", "menuGroup");
-        menuGroup0.AddSubMenu(new SubMenu("SefazEndpoint", "/getMetaDataSefazEndpoint", "crud", "", ""));
-        menuGroup0.AddSubMenu(new SubMenu("CertificadoDigital", "/getMetaDataCertificadoDigital", "crud", "", ""));
-        Modules.LastOrDefault().Menus.Add(menuGroup0);
+        var menuGroup5_0 = new Menu("Operacao SEFAZ", "", "menuGroup");
+        menuGroup5_0.AddSubMenu(new SubMenu("SefazEndpoint", "/getMetaDataSefazEndpoint", "crud", "", ""));
+        menuGroup5_0.AddSubMenu(new SubMenu("CertificadoDigital", "/getMetaDataCertificadoDigital", "crud", "", ""));
+        Modules.LastOrDefault().Menus.Add(menuGroup5_0);
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));
@@ -165,9 +171,9 @@ public static class StaticYeshuaModuleContinuations
     static StaticYeshuaModuleContinuations()
     {
         Continuations.Clear();
-        Continuations.Add(new ModuleContinuation("APSADM", "CargaStandard", "publicarCargaProntaParaEmissaoFiscal", "CargaProntaParaEmissaoFiscal", 1, "Fiscal", "EmissaoFiscalCargaStandard", true, "StartsFrom"));
-        Continuations.Add(new ModuleContinuation("Fiscal", "EmissaoFiscalCargaStandard", "publicarDocumentosFiscaisDaCargaConcluidos", "DocumentosFiscaisDaCargaConcluidos", 1, "APSADM", "CargaStandard", true, "Publishes"));
-        Continuations.Add(new ModuleContinuation("Fiscal", "EncerramentoMDFeStandard", "publicarMDFeEncerrado", "MDFeEncerrado", 1, "APSADM", "CargaStandard", false, "Publishes"));
+        Continuations.Add(new ModuleContinuation("APSADM", "CargaStandard", "publicarCargaProntaParaEmissaoFiscal", "CargaProntaParaEmissaoFiscal", 1, "Fiscal", "EmissaoFiscalCargaStandard", true, "StartsFrom", "", "", ""));
+        Continuations.Add(new ModuleContinuation("Fiscal", "EmissaoFiscalCargaStandard", "publicarDocumentosFiscaisDaCargaConcluidos", "DocumentosFiscaisDaCargaConcluidos", 1, "APSADM", "CargaStandard", true, "Publishes", "YeshuaApi", "/yapi/APSADM/Inbox/YeshuaModuleEvent", "YeshuaModules:APSADM:BaseUrl"));
+        Continuations.Add(new ModuleContinuation("Fiscal", "EncerramentoMDFeStandard", "publicarMDFeEncerrado", "MDFeEncerrado", 1, "APSADM", "CargaStandard", false, "Publishes", "YeshuaApi", "/yapi/APSADM/Inbox/YeshuaModuleEvent", "YeshuaModules:APSADM:BaseUrl"));
     }
 }
 }

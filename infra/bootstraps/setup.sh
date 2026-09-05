@@ -72,9 +72,8 @@ alias yps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
 alias ylogs='docker logs --tail=100 -f --timestamps yeshua-nginx'
 alias ydeploy='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash'
 alias ydeployclinica='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica'
-alias ydeploymdfe='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- mdfe'
 EOF
 
 echo "=========================================="
-echo "Setup concluido. Clinica e MDF-e estao disponiveis por HTTP."
+echo "Setup concluido. Clinica esta disponivel por HTTP."
 echo "Execute setup-cert.sh para habilitar HTTPS."

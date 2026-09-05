@@ -42,9 +42,9 @@ namespace Command.Receivers
                     sagaDestino = "CargaStandard",
                     mdfeId = saga.EntityId
                 },
-                "yeshua.apsadm",
-                "apsadm.carga.mdfe-encerrado.inbox",
-                "MDFeEncerrado.v1");
+                "APSADM",
+                "/yapi/APSADM/Inbox/YeshuaModuleEvent",
+                "YeshuaModules:APSADM:BaseUrl");
 
             _outboxWriteRepository.Insert(outbox);
         }

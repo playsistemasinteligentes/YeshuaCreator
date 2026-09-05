@@ -22,5 +22,5 @@ tail -f /root/setup-cert.log
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/docker/deploy.sh | bash
 ```
 
-O deploy sem argumento atualiza Shared, Clinica e MDF-e. Os argumentos
-`clinica`, `mdfe` e `shared` atualizam somente a unidade escolhida.
+O deploy sem argumento atualiza Shared e Clinica. Os argumentos
+`clinica` e `shared` atualizam somente a unidade escolhida.

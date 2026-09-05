@@ -38,9 +38,9 @@ namespace Command.Receivers
                     cargaId = saga.EntityId,
                     aguardando = "cte-autorizado"
                 },
-                "fiscal.cte",
-                "cte.emitir.outbox",
-                "cte.emitir.solicitar");
+                "Fiscal",
+                "/yapi/Fiscal/Inbox/YeshuaModuleEvent",
+                "YeshuaModules:Fiscal:BaseUrl");
 
             _outboxWriteRepository.Insert(outbox);
         }

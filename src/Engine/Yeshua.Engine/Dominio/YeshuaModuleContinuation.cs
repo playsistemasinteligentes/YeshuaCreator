@@ -11,5 +11,8 @@ namespace Dominio
         public string TargetSaga { get; set; } = string.Empty;
         public bool Required { get; set; } = true;
         public string Direction { get; set; } = string.Empty;
+        public string TransportKind { get; set; } = string.Empty;
+        public string Endpoint { get; set; } = string.Empty;
+        public string TargetBaseUrlConfigurationKey { get; set; } = string.Empty;
     }
 }
