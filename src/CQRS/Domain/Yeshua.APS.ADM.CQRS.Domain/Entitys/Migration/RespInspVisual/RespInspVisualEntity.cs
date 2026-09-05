@@ -36,12 +36,12 @@
  IPV_ID = ipv_id; 
  ITI_ID = iti_id; 
  RIV_STATUS = riv_status; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (RIV_ID == null)
-   this._erroMensagem.Add("RIV ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

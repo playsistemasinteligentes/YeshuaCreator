@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSegmentoQuery(ISegmentoEntity Segmento)
         {
-            this.Query = $@" INSERT INTO Segmento (SEG_ID, SEG_DESCRICAO, SEG_ID_SEGUIMENTO_PAI, GRS_ID, SEG_INTEGRACAO_ERP, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SEG_ID, @SEG_DESCRICAO, @SEG_ID_SEGUIMENTO_PAI, @GRS_ID, @SEG_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Segmento] ([SEG_ID], [SEG_DESCRICAO], [SEG_ID_SEGUIMENTO_PAI], [GRS_ID], [SEG_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SEG_ID, @SEG_DESCRICAO, @SEG_ID_SEGUIMENTO_PAI, @GRS_ID, @SEG_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SEG_ID = Segmento.SEG_ID,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSegmentoQuery(ISegmentoEntity Segmento)
         {
-            this.Query = $@" UPDATE Segmento SET SEG_ID = @SEG_ID, SEG_DESCRICAO = @SEG_DESCRICAO, SEG_ID_SEGUIMENTO_PAI = @SEG_ID_SEGUIMENTO_PAI, GRS_ID = @GRS_ID, SEG_INTEGRACAO_ERP = @SEG_INTEGRACAO_ERP, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [SEG_ID] = @SEG_ID, [SEG_DESCRICAO] = @SEG_DESCRICAO, [SEG_ID_SEGUIMENTO_PAI] = @SEG_ID_SEGUIMENTO_PAI, [GRS_ID] = @GRS_ID, [SEG_INTEGRACAO_ERP] = @SEG_INTEGRACAO_ERP, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEG_ID = Segmento.SEG_ID,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEG_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Segmento SET SEG_ID = @SEG_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [SEG_ID] = @SEG_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEG_ID = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEG_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE Segmento SET SEG_DESCRICAO = @SEG_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [SEG_DESCRICAO] = @SEG_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEG_DESCRICAO = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEG_ID_SEGUIMENTO_PAI(int id, string value)
         {
-            this.Query = $@" UPDATE Segmento SET SEG_ID_SEGUIMENTO_PAI = @SEG_ID_SEGUIMENTO_PAI WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [SEG_ID_SEGUIMENTO_PAI] = @SEG_ID_SEGUIMENTO_PAI WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEG_ID_SEGUIMENTO_PAI = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRS_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Segmento SET GRS_ID = @GRS_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [GRS_ID] = @GRS_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GRS_ID = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEG_INTEGRACAO_ERP(int id, string value)
         {
-            this.Query = $@" UPDATE Segmento SET SEG_INTEGRACAO_ERP = @SEG_INTEGRACAO_ERP WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [SEG_INTEGRACAO_ERP] = @SEG_INTEGRACAO_ERP WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEG_INTEGRACAO_ERP = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Segmento SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Segmento SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Segmento SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Segmento SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Segmento] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeleteSegmentoQuery(ISegmentoEntity Segmento)
         {
-            this.Query = $@" DELETE FROM Segmento WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Segmento] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Segmento.Id,

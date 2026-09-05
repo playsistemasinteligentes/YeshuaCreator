@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCargaPrevistaQuery(ICargaPrevistaEntity CargaPrevista)
         {
-            this.Query = $@" INSERT INTO CargaPrevista (CAR_ID, ORD_ID, ITC_QTD_PLANEJADA, CAR_PREVISAO_MATERIA_PRIMA, CAR_DATA_INICIO_PREVISTO, CAR_DATA_INICIO_REALIZADO, CAR_DATA_FIM_PREVISTO, CAR_DATA_FIM_REALIZADO, CAR_INICIO_JANELA_EMBARQUE, CAR_FIM_JANELA_EMBARQUE, CAR_EMBARQUE_ALVO, CAR_STATUS, CAR_PESO_TEORICO, CAR_VOLUME_TEORICO, CAR_PESO_REAL, CAR_VOLUME_REAL, CAR_PESO_EMBALAGEM, CAR_PESO_ENTRADA, CAR_PESO_SAIDA, CAR_ID_DOCA, VEI_PLACA, TIP_ID, TRA_ID, CAR_GRUPO_PRODUTIVO, ROT_ID, CAR_OBSERVACAO_DE_TRANSPORTE, CAR_JUSTIFICATIVA_DE_CARREGAMENTO, OCO_ID, CAR_ID_JUNTADA, CAR_OBSERVACAO_OTIMIZADOR, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CAR_ID, @ORD_ID, @ITC_QTD_PLANEJADA, @CAR_PREVISAO_MATERIA_PRIMA, @CAR_DATA_INICIO_PREVISTO, @CAR_DATA_INICIO_REALIZADO, @CAR_DATA_FIM_PREVISTO, @CAR_DATA_FIM_REALIZADO, @CAR_INICIO_JANELA_EMBARQUE, @CAR_FIM_JANELA_EMBARQUE, @CAR_EMBARQUE_ALVO, @CAR_STATUS, @CAR_PESO_TEORICO, @CAR_VOLUME_TEORICO, @CAR_PESO_REAL, @CAR_VOLUME_REAL, @CAR_PESO_EMBALAGEM, @CAR_PESO_ENTRADA, @CAR_PESO_SAIDA, @CAR_ID_DOCA, @VEI_PLACA, @TIP_ID, @TRA_ID, @CAR_GRUPO_PRODUTIVO, @ROT_ID, @CAR_OBSERVACAO_DE_TRANSPORTE, @CAR_JUSTIFICATIVA_DE_CARREGAMENTO, @OCO_ID, @CAR_ID_JUNTADA, @CAR_OBSERVACAO_OTIMIZADOR, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CargaPrevista] ([CAR_ID], [ORD_ID], [ITC_QTD_PLANEJADA], [CAR_PREVISAO_MATERIA_PRIMA], [CAR_DATA_INICIO_PREVISTO], [CAR_DATA_INICIO_REALIZADO], [CAR_DATA_FIM_PREVISTO], [CAR_DATA_FIM_REALIZADO], [CAR_INICIO_JANELA_EMBARQUE], [CAR_FIM_JANELA_EMBARQUE], [CAR_EMBARQUE_ALVO], [CAR_STATUS], [CAR_PESO_TEORICO], [CAR_VOLUME_TEORICO], [CAR_PESO_REAL], [CAR_VOLUME_REAL], [CAR_PESO_EMBALAGEM], [CAR_PESO_ENTRADA], [CAR_PESO_SAIDA], [CAR_ID_DOCA], [VEI_PLACA], [TIP_ID], [TRA_ID], [CAR_GRUPO_PRODUTIVO], [ROT_ID], [CAR_OBSERVACAO_DE_TRANSPORTE], [CAR_JUSTIFICATIVA_DE_CARREGAMENTO], [OCO_ID], [CAR_ID_JUNTADA], [CAR_OBSERVACAO_OTIMIZADOR], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @ITC_QTD_PLANEJADA, @CAR_PREVISAO_MATERIA_PRIMA, @CAR_DATA_INICIO_PREVISTO, @CAR_DATA_INICIO_REALIZADO, @CAR_DATA_FIM_PREVISTO, @CAR_DATA_FIM_REALIZADO, @CAR_INICIO_JANELA_EMBARQUE, @CAR_FIM_JANELA_EMBARQUE, @CAR_EMBARQUE_ALVO, @CAR_STATUS, @CAR_PESO_TEORICO, @CAR_VOLUME_TEORICO, @CAR_PESO_REAL, @CAR_VOLUME_REAL, @CAR_PESO_EMBALAGEM, @CAR_PESO_ENTRADA, @CAR_PESO_SAIDA, @CAR_ID_DOCA, @VEI_PLACA, @TIP_ID, @TRA_ID, @CAR_GRUPO_PRODUTIVO, @ROT_ID, @CAR_OBSERVACAO_DE_TRANSPORTE, @CAR_JUSTIFICATIVA_DE_CARREGAMENTO, @OCO_ID, @CAR_ID_JUNTADA, @CAR_OBSERVACAO_OTIMIZADOR, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = CargaPrevista.CAR_ID,
@@ -72,7 +72,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCargaPrevistaQuery(ICargaPrevistaEntity CargaPrevista)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_ID = @CAR_ID, ORD_ID = @ORD_ID, ITC_QTD_PLANEJADA = @ITC_QTD_PLANEJADA, CAR_PREVISAO_MATERIA_PRIMA = @CAR_PREVISAO_MATERIA_PRIMA, CAR_DATA_INICIO_PREVISTO = @CAR_DATA_INICIO_PREVISTO, CAR_DATA_INICIO_REALIZADO = @CAR_DATA_INICIO_REALIZADO, CAR_DATA_FIM_PREVISTO = @CAR_DATA_FIM_PREVISTO, CAR_DATA_FIM_REALIZADO = @CAR_DATA_FIM_REALIZADO, CAR_INICIO_JANELA_EMBARQUE = @CAR_INICIO_JANELA_EMBARQUE, CAR_FIM_JANELA_EMBARQUE = @CAR_FIM_JANELA_EMBARQUE, CAR_EMBARQUE_ALVO = @CAR_EMBARQUE_ALVO, CAR_STATUS = @CAR_STATUS, CAR_PESO_TEORICO = @CAR_PESO_TEORICO, CAR_VOLUME_TEORICO = @CAR_VOLUME_TEORICO, CAR_PESO_REAL = @CAR_PESO_REAL, CAR_VOLUME_REAL = @CAR_VOLUME_REAL, CAR_PESO_EMBALAGEM = @CAR_PESO_EMBALAGEM, CAR_PESO_ENTRADA = @CAR_PESO_ENTRADA, CAR_PESO_SAIDA = @CAR_PESO_SAIDA, CAR_ID_DOCA = @CAR_ID_DOCA, VEI_PLACA = @VEI_PLACA, TIP_ID = @TIP_ID, TRA_ID = @TRA_ID, CAR_GRUPO_PRODUTIVO = @CAR_GRUPO_PRODUTIVO, ROT_ID = @ROT_ID, CAR_OBSERVACAO_DE_TRANSPORTE = @CAR_OBSERVACAO_DE_TRANSPORTE, CAR_JUSTIFICATIVA_DE_CARREGAMENTO = @CAR_JUSTIFICATIVA_DE_CARREGAMENTO, OCO_ID = @OCO_ID, CAR_ID_JUNTADA = @CAR_ID_JUNTADA, CAR_OBSERVACAO_OTIMIZADOR = @CAR_OBSERVACAO_OTIMIZADOR, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_ID] = @CAR_ID, [ORD_ID] = @ORD_ID, [ITC_QTD_PLANEJADA] = @ITC_QTD_PLANEJADA, [CAR_PREVISAO_MATERIA_PRIMA] = @CAR_PREVISAO_MATERIA_PRIMA, [CAR_DATA_INICIO_PREVISTO] = @CAR_DATA_INICIO_PREVISTO, [CAR_DATA_INICIO_REALIZADO] = @CAR_DATA_INICIO_REALIZADO, [CAR_DATA_FIM_PREVISTO] = @CAR_DATA_FIM_PREVISTO, [CAR_DATA_FIM_REALIZADO] = @CAR_DATA_FIM_REALIZADO, [CAR_INICIO_JANELA_EMBARQUE] = @CAR_INICIO_JANELA_EMBARQUE, [CAR_FIM_JANELA_EMBARQUE] = @CAR_FIM_JANELA_EMBARQUE, [CAR_EMBARQUE_ALVO] = @CAR_EMBARQUE_ALVO, [CAR_STATUS] = @CAR_STATUS, [CAR_PESO_TEORICO] = @CAR_PESO_TEORICO, [CAR_VOLUME_TEORICO] = @CAR_VOLUME_TEORICO, [CAR_PESO_REAL] = @CAR_PESO_REAL, [CAR_VOLUME_REAL] = @CAR_VOLUME_REAL, [CAR_PESO_EMBALAGEM] = @CAR_PESO_EMBALAGEM, [CAR_PESO_ENTRADA] = @CAR_PESO_ENTRADA, [CAR_PESO_SAIDA] = @CAR_PESO_SAIDA, [CAR_ID_DOCA] = @CAR_ID_DOCA, [VEI_PLACA] = @VEI_PLACA, [TIP_ID] = @TIP_ID, [TRA_ID] = @TRA_ID, [CAR_GRUPO_PRODUTIVO] = @CAR_GRUPO_PRODUTIVO, [ROT_ID] = @ROT_ID, [CAR_OBSERVACAO_DE_TRANSPORTE] = @CAR_OBSERVACAO_DE_TRANSPORTE, [CAR_JUSTIFICATIVA_DE_CARREGAMENTO] = @CAR_JUSTIFICATIVA_DE_CARREGAMENTO, [OCO_ID] = @OCO_ID, [CAR_ID_JUNTADA] = @CAR_ID_JUNTADA, [CAR_OBSERVACAO_OTIMIZADOR] = @CAR_OBSERVACAO_OTIMIZADOR, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID = CargaPrevista.CAR_ID,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_ID(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_ID = @CAR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_ID] = @CAR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET ORD_ID = @ORD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [ORD_ID] = @ORD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORD_ID = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITC_QTD_PLANEJADA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET ITC_QTD_PLANEJADA = @ITC_QTD_PLANEJADA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [ITC_QTD_PLANEJADA] = @ITC_QTD_PLANEJADA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITC_QTD_PLANEJADA = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_PREVISAO_MATERIA_PRIMA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_PREVISAO_MATERIA_PRIMA = @CAR_PREVISAO_MATERIA_PRIMA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_PREVISAO_MATERIA_PRIMA] = @CAR_PREVISAO_MATERIA_PRIMA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_PREVISAO_MATERIA_PRIMA = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_DATA_INICIO_PREVISTO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_DATA_INICIO_PREVISTO = @CAR_DATA_INICIO_PREVISTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_DATA_INICIO_PREVISTO] = @CAR_DATA_INICIO_PREVISTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_DATA_INICIO_PREVISTO = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_DATA_INICIO_REALIZADO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_DATA_INICIO_REALIZADO = @CAR_DATA_INICIO_REALIZADO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_DATA_INICIO_REALIZADO] = @CAR_DATA_INICIO_REALIZADO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_DATA_INICIO_REALIZADO = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_DATA_FIM_PREVISTO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_DATA_FIM_PREVISTO = @CAR_DATA_FIM_PREVISTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_DATA_FIM_PREVISTO] = @CAR_DATA_FIM_PREVISTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_DATA_FIM_PREVISTO = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_DATA_FIM_REALIZADO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_DATA_FIM_REALIZADO = @CAR_DATA_FIM_REALIZADO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_DATA_FIM_REALIZADO] = @CAR_DATA_FIM_REALIZADO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_DATA_FIM_REALIZADO = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_INICIO_JANELA_EMBARQUE(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_INICIO_JANELA_EMBARQUE = @CAR_INICIO_JANELA_EMBARQUE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_INICIO_JANELA_EMBARQUE] = @CAR_INICIO_JANELA_EMBARQUE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_INICIO_JANELA_EMBARQUE = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_FIM_JANELA_EMBARQUE(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_FIM_JANELA_EMBARQUE = @CAR_FIM_JANELA_EMBARQUE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_FIM_JANELA_EMBARQUE] = @CAR_FIM_JANELA_EMBARQUE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_FIM_JANELA_EMBARQUE = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_EMBARQUE_ALVO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_EMBARQUE_ALVO = @CAR_EMBARQUE_ALVO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_EMBARQUE_ALVO] = @CAR_EMBARQUE_ALVO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_EMBARQUE_ALVO = value,
@@ -223,7 +223,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_STATUS(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_STATUS = @CAR_STATUS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_STATUS] = @CAR_STATUS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_STATUS = value,
@@ -233,7 +233,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_PESO_TEORICO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_PESO_TEORICO = @CAR_PESO_TEORICO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_PESO_TEORICO] = @CAR_PESO_TEORICO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_PESO_TEORICO = value,
@@ -243,7 +243,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_VOLUME_TEORICO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_VOLUME_TEORICO = @CAR_VOLUME_TEORICO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_VOLUME_TEORICO] = @CAR_VOLUME_TEORICO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_VOLUME_TEORICO = value,
@@ -253,7 +253,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_PESO_REAL(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_PESO_REAL = @CAR_PESO_REAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_PESO_REAL] = @CAR_PESO_REAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_PESO_REAL = value,
@@ -263,7 +263,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_VOLUME_REAL(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_VOLUME_REAL = @CAR_VOLUME_REAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_VOLUME_REAL] = @CAR_VOLUME_REAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_VOLUME_REAL = value,
@@ -273,7 +273,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_PESO_EMBALAGEM(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_PESO_EMBALAGEM = @CAR_PESO_EMBALAGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_PESO_EMBALAGEM] = @CAR_PESO_EMBALAGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_PESO_EMBALAGEM = value,
@@ -283,7 +283,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_PESO_ENTRADA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_PESO_ENTRADA = @CAR_PESO_ENTRADA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_PESO_ENTRADA] = @CAR_PESO_ENTRADA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_PESO_ENTRADA = value,
@@ -293,7 +293,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_PESO_SAIDA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_PESO_SAIDA = @CAR_PESO_SAIDA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_PESO_SAIDA] = @CAR_PESO_SAIDA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_PESO_SAIDA = value,
@@ -303,7 +303,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_ID_DOCA(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_ID_DOCA = @CAR_ID_DOCA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_ID_DOCA] = @CAR_ID_DOCA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID_DOCA = value,
@@ -313,7 +313,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVEI_PLACA(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET VEI_PLACA = @VEI_PLACA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [VEI_PLACA] = @VEI_PLACA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VEI_PLACA = value,
@@ -323,7 +323,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET TIP_ID = @TIP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [TIP_ID] = @TIP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIP_ID = value,
@@ -333,7 +333,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_ID(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET TRA_ID = @TRA_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [TRA_ID] = @TRA_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_ID = value,
@@ -343,7 +343,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_GRUPO_PRODUTIVO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_GRUPO_PRODUTIVO = @CAR_GRUPO_PRODUTIVO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_GRUPO_PRODUTIVO] = @CAR_GRUPO_PRODUTIVO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_GRUPO_PRODUTIVO = value,
@@ -353,7 +353,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_ID(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET ROT_ID = @ROT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [ROT_ID] = @ROT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_ID = value,
@@ -363,7 +363,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_OBSERVACAO_DE_TRANSPORTE(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_OBSERVACAO_DE_TRANSPORTE = @CAR_OBSERVACAO_DE_TRANSPORTE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_OBSERVACAO_DE_TRANSPORTE] = @CAR_OBSERVACAO_DE_TRANSPORTE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_OBSERVACAO_DE_TRANSPORTE = value,
@@ -373,7 +373,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_JUSTIFICATIVA_DE_CARREGAMENTO(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_JUSTIFICATIVA_DE_CARREGAMENTO = @CAR_JUSTIFICATIVA_DE_CARREGAMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_JUSTIFICATIVA_DE_CARREGAMENTO] = @CAR_JUSTIFICATIVA_DE_CARREGAMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_JUSTIFICATIVA_DE_CARREGAMENTO = value,
@@ -383,7 +383,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOCO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET OCO_ID = @OCO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [OCO_ID] = @OCO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OCO_ID = value,
@@ -393,7 +393,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_ID_JUNTADA(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_ID_JUNTADA = @CAR_ID_JUNTADA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_ID_JUNTADA] = @CAR_ID_JUNTADA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID_JUNTADA = value,
@@ -403,7 +403,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_OBSERVACAO_OTIMIZADOR(int id, string value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET CAR_OBSERVACAO_OTIMIZADOR = @CAR_OBSERVACAO_OTIMIZADOR WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [CAR_OBSERVACAO_OTIMIZADOR] = @CAR_OBSERVACAO_OTIMIZADOR WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_OBSERVACAO_OTIMIZADOR = value,
@@ -413,7 +413,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -423,7 +423,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -433,7 +433,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -443,7 +443,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE CargaPrevista SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [CargaPrevista] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -453,7 +453,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCargaPrevistaQuery(ICargaPrevistaEntity CargaPrevista)
         {
-            this.Query = $@" DELETE FROM CargaPrevista WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [CargaPrevista] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = CargaPrevista.Id,

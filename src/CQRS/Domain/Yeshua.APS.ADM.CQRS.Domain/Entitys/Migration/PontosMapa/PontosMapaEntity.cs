@@ -38,6 +38,8 @@
  PON_LATITUDE = pon_latitude; 
  PON_LONGITUDE = pon_longitude; 
  PON_DISTANCIA_KM = pon_distancia_km; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

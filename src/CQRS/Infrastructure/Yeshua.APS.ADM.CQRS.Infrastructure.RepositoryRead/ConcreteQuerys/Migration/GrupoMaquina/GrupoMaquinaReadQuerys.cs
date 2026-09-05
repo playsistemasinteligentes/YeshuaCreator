@@ -35,21 +35,21 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO from GrupoMaquina ";
+            this.Query = $@" select [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] from [GrupoMaquina] ";
 if (!string.IsNullOrEmpty(Command.Id)) dict["Id"] = $"%{Command.Id}%";
-if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"Id like @Id");
+if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"[Id] like @Id");
 if (!string.IsNullOrEmpty(Command.Descricao)) dict["Descricao"] = $"%{Command.Descricao}%";
-if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
+if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"[Descricao] like @Descricao");
 if (!string.IsNullOrEmpty(Command.Status)) dict["Status"] = $"%{Command.Status}%";
-if (!string.IsNullOrEmpty(Command.Status)) whereClauses.Add($"Status like @Status");
+if (!string.IsNullOrEmpty(Command.Status)) whereClauses.Add($"[Status] like @Status");
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
 if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
-if (Command.UserId.HasValue) whereClauses.Add($"UserId = @UserId");
+if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
 if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) dict["GMA_TIPO_PLANEJAMENTO"] = $"%{Command.GMA_TIPO_PLANEJAMENTO}%";
-if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA_TIPO_PLANEJAMENTO like @GMA_TIPO_PLANEJAMENTO");
+if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"[GMA_TIPO_PLANEJAMENTO] like @GMA_TIPO_PLANEJAMENTO");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -57,13 +57,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             int offset = (page - 1) * pageSize;
             dict["Offset"] = offset;
             dict["PageSize"] = pageSize;
-            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            Query += " ORDER BY [Id] OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel GrupoMaquinaTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
-            this.Query = $@" select Id, Nome from yTenant ";
+            this.Query = $@" select [Id], [Nome] from [yTenant] ";
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
@@ -73,20 +73,20 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
                  if (int.TryParse(Command.searchFK, out int numero)) 
                  {
                       dict["Id"] = numero; //01
-                      whereClauses.Add($" Id = @Id");//01 
+                      whereClauses.Add($" [Id] = @Id");//01 
                  }
                  else 
                  {
                       dict["Id"] = $"%{Command.searchFK}%";//02 
-                      whereClauses.Add($" Id like @Id ");//02
+                      whereClauses.Add($" [Id] like @Id ");//02
                       dict["Nome"] = $"%{Command.searchFK}%";//02 
-                      whereClauses.Add($" Nome like @Nome ");//02
+                      whereClauses.Add($" [Nome] like @Nome ");//02
                  }
            }
  dict["Id"] = _executionContext.TenantID;
- whereClauses.Add($"Id = @Id");
+ whereClauses.Add($"[Id] = @Id");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -94,7 +94,7 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
         }
         public QueryModel GrupoMaquinaUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
-            this.Query = $@" select Id, Nome from yUser ";
+            this.Query = $@" select [Id], [Nome] from [yUser] ";
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
@@ -104,20 +104,20 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
                  if (int.TryParse(Command.searchFK, out int numero)) 
                  {
                       dict["Id"] = numero; //01
-                      whereClauses.Add($" Id = @Id");//01 
+                      whereClauses.Add($" [Id] = @Id");//01 
                  }
                  else 
                  {
                       dict["Id"] = $"%{Command.searchFK}%";//02 
-                      whereClauses.Add($" Id like @Id ");//02
+                      whereClauses.Add($" [Id] like @Id ");//02
                       dict["Nome"] = $"%{Command.searchFK}%";//02 
-                      whereClauses.Add($" Nome like @Nome ");//02
+                      whereClauses.Add($" [Nome] like @Nome ");//02
                  }
            }
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -129,13 +129,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Id"] = value; //04
-                      whereClauses.Add($" Id = @Id ");//04
+                      whereClauses.Add($" [Id] = @Id ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -147,13 +147,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Descricao"] = value; //04
-                      whereClauses.Add($" Descricao = @Descricao ");//04
+                      whereClauses.Add($" [Descricao] = @Descricao ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -165,13 +165,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Status"] = value; //04
-                      whereClauses.Add($" Status = @Status ");//04
+                      whereClauses.Add($" [Status] = @Status ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -183,13 +183,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TenantID"] = value; //04
-                      whereClauses.Add($" TenantID = @TenantID ");//04
+                      whereClauses.Add($" [TenantID] = @TenantID ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -201,13 +201,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Deleted"] = value; //04
-                      whereClauses.Add($" Deleted = @Deleted ");//04
+                      whereClauses.Add($" [Deleted] = @Deleted ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -219,13 +219,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Changed"] = value; //04
-                      whereClauses.Add($" Changed = @Changed ");//04
+                      whereClauses.Add($" [Changed] = @Changed ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -237,13 +237,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //04
-                      whereClauses.Add($" UserId = @UserId ");//04
+                      whereClauses.Add($" [UserId] = @UserId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -255,13 +255,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM GrupoMaquina ";
+            this.Query = $"SELECT 1 FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["GMA_TIPO_PLANEJAMENTO"] = value; //04
-                      whereClauses.Add($" GMA_TIPO_PLANEJAMENTO = @GMA_TIPO_PLANEJAMENTO ");//04
+                      whereClauses.Add($" [GMA_TIPO_PLANEJAMENTO] = @GMA_TIPO_PLANEJAMENTO ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -273,13 +273,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Id"] = value; //06
-                      whereClauses.Add($" Id = @Id ");//06
+                      whereClauses.Add($" [Id] = @Id ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -291,13 +291,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Descricao"] = value; //06
-                      whereClauses.Add($" Descricao = @Descricao ");//06
+                      whereClauses.Add($" [Descricao] = @Descricao ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -309,13 +309,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Status"] = value; //06
-                      whereClauses.Add($" Status = @Status ");//06
+                      whereClauses.Add($" [Status] = @Status ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -327,13 +327,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TenantID"] = value; //06
-                      whereClauses.Add($" TenantID = @TenantID ");//06
+                      whereClauses.Add($" [TenantID] = @TenantID ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -345,13 +345,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Deleted"] = value; //06
-                      whereClauses.Add($" Deleted = @Deleted ");//06
+                      whereClauses.Add($" [Deleted] = @Deleted ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -363,13 +363,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Changed"] = value; //06
-                      whereClauses.Add($" Changed = @Changed ");//06
+                      whereClauses.Add($" [Changed] = @Changed ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -381,13 +381,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
-                      whereClauses.Add($" UserId = @UserId ");//06
+                      whereClauses.Add($" [UserId] = @UserId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -399,13 +399,13 @@ if (!string.IsNullOrEmpty(Command.GMA_TIPO_PLANEJAMENTO)) whereClauses.Add($"GMA
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO FROM GrupoMaquina ";
+            this.Query = $"SELECT [Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO] FROM [GrupoMaquina] ";
  dict["TenantID"] = _executionContext.TenantID;
- whereClauses.Add($"TenantID = @TenantID");
+ whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
- whereClauses.Add($"Deleted = @Deleted");
+ whereClauses.Add($"[Deleted] = @Deleted");
                       dict["GMA_TIPO_PLANEJAMENTO"] = value; //06
-                      whereClauses.Add($" GMA_TIPO_PLANEJAMENTO = @GMA_TIPO_PLANEJAMENTO ");//06
+                      whereClauses.Add($" [GMA_TIPO_PLANEJAMENTO] = @GMA_TIPO_PLANEJAMENTO ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

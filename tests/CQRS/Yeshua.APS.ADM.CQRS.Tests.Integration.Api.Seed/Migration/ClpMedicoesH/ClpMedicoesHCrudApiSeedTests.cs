@@ -39,7 +39,7 @@ public partial class ClpMedicoesHCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class ClpMedicoesHCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["ID"] = 1,
+            ["ID"] = ApiTestData.IntKey(),
             ["MAQUINA_ID"] = ApiTestData.Text("ClpMedicoesH MAQUINA_ID", 10),
             ["DATA_INI"] = DateTime.UtcNow,
             ["DATA_FIM"] = DateTime.UtcNow,

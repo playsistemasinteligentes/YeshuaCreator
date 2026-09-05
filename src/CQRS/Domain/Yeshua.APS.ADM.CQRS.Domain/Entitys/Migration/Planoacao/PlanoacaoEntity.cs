@@ -48,16 +48,14 @@
  PLA_VLRACUMULADO = pla_vlracumulado; 
  PLA_REFERENCIA = pla_referencia; 
  USE_ID = use_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PLA_ID == null)
-   this._erroMensagem.Add("PLA ID deve ser informado.");
    if(string.IsNullOrEmpty(PLA_DESCRICAO))
    this._erroMensagem.Add("PLA DESCRICAO deve ser informado.");
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

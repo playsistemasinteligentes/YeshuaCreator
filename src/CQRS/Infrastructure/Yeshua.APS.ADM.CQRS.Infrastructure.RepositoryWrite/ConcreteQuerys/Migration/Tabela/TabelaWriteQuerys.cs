@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTabelaQuery(ITabelaEntity Tabela)
         {
-            this.Query = $@" INSERT INTO Tabela (CODIGO, NOME, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ID_TABELA VALUES(@CODIGO, @NOME, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Tabela] ([CODIGO], [NOME], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ID_TABELA] VALUES(@CODIGO, @NOME, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CODIGO = Tabela.CODIGO,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTabelaQuery(ITabelaEntity Tabela)
         {
-            this.Query = $@" UPDATE Tabela SET CODIGO = @CODIGO, NOME = @NOME, Changed = @Changed, UserId = @UserId WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [CODIGO] = @CODIGO, [NOME] = @NOME, [Changed] = @Changed, [UserId] = @UserId WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 CODIGO = Tabela.CODIGO,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCODIGO(int id_tabela, string value)
         {
-            this.Query = $@" UPDATE Tabela SET CODIGO = @CODIGO WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [CODIGO] = @CODIGO WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 CODIGO = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNOME(int id_tabela, string value)
         {
-            this.Query = $@" UPDATE Tabela SET NOME = @NOME WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [NOME] = @NOME WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 NOME = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id_tabela, int value)
         {
-            this.Query = $@" UPDATE Tabela SET TenantID = @TenantID WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [TenantID] = @TenantID WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id_tabela, bool value)
         {
-            this.Query = $@" UPDATE Tabela SET Deleted = @Deleted WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [Deleted] = @Deleted WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id_tabela, DateTime value)
         {
-            this.Query = $@" UPDATE Tabela SET Changed = @Changed WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [Changed] = @Changed WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id_tabela, int value)
         {
-            this.Query = $@" UPDATE Tabela SET UserId = @UserId WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" UPDATE [Tabela] SET [UserId] = @UserId WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTabelaQuery(ITabelaEntity Tabela)
         {
-            this.Query = $@" DELETE FROM Tabela WHERE ID_TABELA = @ID_TABELA ";
+            this.Query = $@" DELETE FROM [Tabela] WHERE [ID_TABELA] = @ID_TABELA ";
             this.Parameters = new
             {
                 ID_TABELA = Tabela.ID_TABELA,

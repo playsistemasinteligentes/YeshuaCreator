@@ -60,12 +60,12 @@
  AGE_PARAMETROS = age_parametros; 
  AGE_EXCECAO = age_excecao; 
  AGE_DESCRICAO = age_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (AGE_ID == null)
-   this._erroMensagem.Add("AGE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

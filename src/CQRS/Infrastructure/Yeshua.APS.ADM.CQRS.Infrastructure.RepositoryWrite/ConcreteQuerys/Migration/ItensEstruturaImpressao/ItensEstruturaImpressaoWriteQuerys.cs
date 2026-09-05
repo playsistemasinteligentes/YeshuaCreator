@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItensEstruturaImpressaoQuery(IItensEstruturaImpressaoEntity ItensEstruturaImpressao)
         {
-            this.Query = $@" INSERT INTO ItensEstruturaImpressao (IES_CUSTOM_FONT_SIZE, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IES_CUSTOM_FONT_SIZE, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItensEstruturaImpressao] ([IES_CUSTOM_FONT_SIZE], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IES_CUSTOM_FONT_SIZE, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IES_CUSTOM_FONT_SIZE = ItensEstruturaImpressao.IES_CUSTOM_FONT_SIZE,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateItensEstruturaImpressaoQuery(IItensEstruturaImpressaoEntity ItensEstruturaImpressao)
         {
-            this.Query = $@" UPDATE ItensEstruturaImpressao SET IES_CUSTOM_FONT_SIZE = @IES_CUSTOM_FONT_SIZE, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensEstruturaImpressao] SET [IES_CUSTOM_FONT_SIZE] = @IES_CUSTOM_FONT_SIZE, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IES_CUSTOM_FONT_SIZE = ItensEstruturaImpressao.IES_CUSTOM_FONT_SIZE,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIES_CUSTOM_FONT_SIZE(int id, int value)
         {
-            this.Query = $@" UPDATE ItensEstruturaImpressao SET IES_CUSTOM_FONT_SIZE = @IES_CUSTOM_FONT_SIZE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensEstruturaImpressao] SET [IES_CUSTOM_FONT_SIZE] = @IES_CUSTOM_FONT_SIZE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IES_CUSTOM_FONT_SIZE = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ItensEstruturaImpressao SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensEstruturaImpressao] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ItensEstruturaImpressao SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensEstruturaImpressao] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ItensEstruturaImpressao SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensEstruturaImpressao] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ItensEstruturaImpressao SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensEstruturaImpressao] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteItensEstruturaImpressaoQuery(IItensEstruturaImpressaoEntity ItensEstruturaImpressao)
         {
-            this.Query = $@" DELETE FROM ItensEstruturaImpressao WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ItensEstruturaImpressao] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ItensEstruturaImpressao.Id,

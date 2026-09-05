@@ -30,12 +30,12 @@
  internal Unidade_UnidadeEntity(int uni_id, string uni_descricao ){
  UNI_ID = uni_id; 
  UNI_DESCRICAO = uni_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (UNI_ID == null)
-   this._erroMensagem.Add("UNI ID deve ser informado.");
    if(string.IsNullOrEmpty(UNI_DESCRICAO))
    this._erroMensagem.Add("UNI DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

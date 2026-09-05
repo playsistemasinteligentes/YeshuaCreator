@@ -758,6 +758,7 @@ namespace Dominio.Schemas.CQRS
                 .Where(ShouldGenerateApiSmokeCrud)
                 .ToList();
             var orderedEntities = OrderEntitiesForApiSmoke(smokeEntities).ToList();
+            var sagas = GetSagas(migration).ToList();
             for (var index = 0; index < orderedEntities.Count; index++)
             {
                 var entity = orderedEntities[index];
@@ -782,9 +783,29 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
 
+            for (var index = 0; index < sagas.Count; index++)
+            {
+                var saga = sagas[index];
+                var order = orderedEntities.Count + index + 1;
+                var filePath = Path.Combine(GetPathTestsIntegrationApiSmoke(), $"Migration\\Saga\\{saga.Name.SourceType()}\\{saga.Name.SourceType()}SagaApiSmokeTests.cs");
+                var filePathCuston = Path.Combine(GetPathTestsIntegrationApiSmoke(), $"Custon\\Saga\\{saga.Name.SourceType()}\\{saga.Name.SourceType()}SagaApiSmokeTests.cs");
+                var sourceCodeMigration = new SourceCodeIntegrationApiSmokeSagaTestMigration(
+                    saga,
+                    order,
+                    GetApplicationIntegrationApiSmokeProjectName());
+                sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
+            }
+
             WriteIntegrationApiSmokeSuiteFile(orderedEntities);
             WriteIntegrationApiSeedSuiteFile(orderedEntities);
             WritePostBuildManifest();
+        }
+
+        private static IEnumerable<Dominio.Saga.Migration.Saga> GetSagas(Migration.MigrationBase migration)
+        {
+            return migration.UseCaseGroup
+                .SelectMany(group => group.UseCaseSubGroup)
+                .SelectMany(subGroup => subGroup.Saga);
         }
 
         private void WritePostBuildManifest()
@@ -2576,6 +2597,7 @@ public sealed class QueueListenerWorker<TReceiver, TCommand, TResponse> : Backgr
             WriteTextIfMissing(
                 Path.Combine(projectDirectory, "Migration", "WorkerExecutionContext.cs"),
                 @"using Aplication.Interfaces.Services;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 namespace Worker.Custon;
@@ -2586,6 +2608,12 @@ public sealed class WorkerExecutionContext : IExecutionContext
     private int _userId;
     private string _traceId = Guid.NewGuid().ToString(""N"");
     private ExecutionOrigin _origin = ExecutionOrigin.Worker;
+
+    public WorkerExecutionContext(IConfiguration configuration)
+    {
+        _tenantId = configuration.GetValue(""WorkerExecutionContext:TenantID"", 1);
+        _userId = configuration.GetValue(""WorkerExecutionContext:UserId"", 1);
+    }
 
     public int UserId => _userId;
     public int TenantID => _tenantId;

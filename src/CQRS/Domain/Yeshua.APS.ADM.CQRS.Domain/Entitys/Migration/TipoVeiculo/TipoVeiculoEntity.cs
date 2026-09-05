@@ -64,12 +64,12 @@
  TIP_CAPACIDADE_COMPRIMENTO_PESCOCO_D = tip_capacidade_comprimento_pescoco_d; 
  TIP_CAPACIDADE_LARGURA_PESCOCO_D = tip_capacidade_largura_pescoco_d; 
  TIP_CAPACIDADE_M3 = tip_capacidade_m3; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TIP_ID == null)
-   this._erroMensagem.Add("TIP ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

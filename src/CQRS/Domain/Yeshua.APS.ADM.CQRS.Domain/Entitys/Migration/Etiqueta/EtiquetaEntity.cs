@@ -72,12 +72,12 @@
  ETI_IMPRIMIR_ATE = eti_imprimir_ate; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ETI_ID == null)
-   this._erroMensagem.Add("ETI ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

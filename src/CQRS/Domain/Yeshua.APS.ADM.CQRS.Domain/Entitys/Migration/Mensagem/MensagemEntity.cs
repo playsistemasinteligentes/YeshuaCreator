@@ -42,6 +42,8 @@
  MEN_TYPE = men_type; 
  MEN_QTD_TRY_SEND = men_qtd_try_send; 
  MEN_DATE_TRY_SEND = (men_date_try_send < (new DateTime(1800, 1, 1))) ? DateTime.Now : men_date_try_send; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

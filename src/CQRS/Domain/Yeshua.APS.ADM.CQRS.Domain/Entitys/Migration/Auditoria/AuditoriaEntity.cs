@@ -38,16 +38,14 @@
  ROTINA = rotina; 
  HISTORICO = historico; 
  CHAVE = chave; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ID == null)
-   this._erroMensagem.Add("ID deve ser informado.");
-   if (DATA == null || DATA < (new DateTime(1800, 1, 1)))
+   if(DATA == null || DATA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DATA deve ser informado.");
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
    if(string.IsNullOrEmpty(ROTINA))
    this._erroMensagem.Add("ROTINA deve ser informado.");
 return _erroMensagem.Count() <= 0;

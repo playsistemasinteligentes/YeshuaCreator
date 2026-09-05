@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRecursosQuery(IRecursosEntity Recursos)
         {
-            this.Query = $@" INSERT INTO Recursos (REC_ID, REC_DESCRICAO, CAL_ID, REC_CONTROL_IP, GRE_ID, TenantID, Deleted, Changed, UserId) VALUES(@REC_ID, @REC_DESCRICAO, @CAL_ID, @REC_CONTROL_IP, @GRE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Recursos] ([REC_ID], [REC_DESCRICAO], [CAL_ID], [REC_CONTROL_IP], [GRE_ID], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@REC_ID, @REC_DESCRICAO, @CAL_ID, @REC_CONTROL_IP, @GRE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 REC_ID = Recursos.REC_ID,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRecursosQuery(IRecursosEntity Recursos)
         {
-            this.Query = $@" UPDATE Recursos SET REC_DESCRICAO = @REC_DESCRICAO, CAL_ID = @CAL_ID, REC_CONTROL_IP = @REC_CONTROL_IP, GRE_ID = @GRE_ID, Changed = @Changed, UserId = @UserId WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [REC_DESCRICAO] = @REC_DESCRICAO, [CAL_ID] = @CAL_ID, [REC_CONTROL_IP] = @REC_CONTROL_IP, [GRE_ID] = @GRE_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 REC_DESCRICAO = Recursos.REC_DESCRICAO,
@@ -62,7 +62,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREC_DESCRICAO(string rec_id, string value)
         {
-            this.Query = $@" UPDATE Recursos SET REC_DESCRICAO = @REC_DESCRICAO WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [REC_DESCRICAO] = @REC_DESCRICAO WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 REC_DESCRICAO = value,
@@ -72,7 +72,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAL_ID(string rec_id, int value)
         {
-            this.Query = $@" UPDATE Recursos SET CAL_ID = @CAL_ID WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [CAL_ID] = @CAL_ID WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 CAL_ID = value,
@@ -82,7 +82,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREC_CONTROL_IP(string rec_id, string value)
         {
-            this.Query = $@" UPDATE Recursos SET REC_CONTROL_IP = @REC_CONTROL_IP WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [REC_CONTROL_IP] = @REC_CONTROL_IP WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 REC_CONTROL_IP = value,
@@ -92,7 +92,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRE_ID(string rec_id, string value)
         {
-            this.Query = $@" UPDATE Recursos SET GRE_ID = @GRE_ID WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [GRE_ID] = @GRE_ID WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 GRE_ID = value,
@@ -102,7 +102,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string rec_id, int value)
         {
-            this.Query = $@" UPDATE Recursos SET TenantID = @TenantID WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [TenantID] = @TenantID WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -112,7 +112,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string rec_id, bool value)
         {
-            this.Query = $@" UPDATE Recursos SET Deleted = @Deleted WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [Deleted] = @Deleted WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -122,7 +122,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string rec_id, DateTime value)
         {
-            this.Query = $@" UPDATE Recursos SET Changed = @Changed WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [Changed] = @Changed WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -132,7 +132,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string rec_id, int value)
         {
-            this.Query = $@" UPDATE Recursos SET UserId = @UserId WHERE REC_ID = @REC_ID ";
+            this.Query = $@" UPDATE [Recursos] SET [UserId] = @UserId WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -142,7 +142,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRecursosQuery(IRecursosEntity Recursos)
         {
-            this.Query = $@" DELETE FROM Recursos WHERE REC_ID = @REC_ID ";
+            this.Query = $@" DELETE FROM [Recursos] WHERE [REC_ID] = @REC_ID ";
             this.Parameters = new
             {
                 REC_ID = Recursos.REC_ID,

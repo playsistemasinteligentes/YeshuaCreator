@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTemplateTipoInspecaoVisualQuery(ITemplateTipoInspecaoVisualEntity TemplateTipoInspecaoVisual)
         {
-            this.Query = $@" INSERT INTO TemplateTipoInspecaoVisual (TIV_ID, TEM_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.TTI_ID VALUES(@TIV_ID, @TEM_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TemplateTipoInspecaoVisual] ([TIV_ID], [TEM_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TTI_ID] VALUES(@TIV_ID, @TEM_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TIV_ID = TemplateTipoInspecaoVisual.TIV_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTemplateTipoInspecaoVisualQuery(ITemplateTipoInspecaoVisualEntity TemplateTipoInspecaoVisual)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET TIV_ID = @TIV_ID, TEM_ID = @TEM_ID, Changed = @Changed, UserId = @UserId WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [TIV_ID] = @TIV_ID, [TEM_ID] = @TEM_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 TIV_ID = TemplateTipoInspecaoVisual.TIV_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_ID(int tti_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET TIV_ID = @TIV_ID WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [TIV_ID] = @TIV_ID WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 TIV_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTEM_ID(int tti_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET TEM_ID = @TEM_ID WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [TEM_ID] = @TEM_ID WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 TEM_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int tti_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET TenantID = @TenantID WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [TenantID] = @TenantID WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int tti_id, bool value)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET Deleted = @Deleted WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [Deleted] = @Deleted WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int tti_id, DateTime value)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET Changed = @Changed WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [Changed] = @Changed WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int tti_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoInspecaoVisual SET UserId = @UserId WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" UPDATE [TemplateTipoInspecaoVisual] SET [UserId] = @UserId WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTemplateTipoInspecaoVisualQuery(ITemplateTipoInspecaoVisualEntity TemplateTipoInspecaoVisual)
         {
-            this.Query = $@" DELETE FROM TemplateTipoInspecaoVisual WHERE TTI_ID = @TTI_ID ";
+            this.Query = $@" DELETE FROM [TemplateTipoInspecaoVisual] WHERE [TTI_ID] = @TTI_ID ";
             this.Parameters = new
             {
                 TTI_ID = TemplateTipoInspecaoVisual.TTI_ID,

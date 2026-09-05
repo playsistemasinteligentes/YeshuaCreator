@@ -39,7 +39,7 @@ public partial class MesesCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "mes");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class MesesCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["MES"] = ApiTestData.Text("Meses MES", 2),
+            ["MES"] = ApiTestData.KeyText(2),
             ["fator"] = 1,
         };
     }

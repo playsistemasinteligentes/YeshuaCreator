@@ -56,20 +56,18 @@
  TT_N_AMOSTRAS_P_TESTE = tt_n_amostras_p_teste; 
  TT_MAX_DEF_CRITICO = tt_max_def_critico; 
  TT_MAX_DEF_GRAVE = tt_max_def_grave; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TT_ID == null)
-   this._erroMensagem.Add("TT ID deve ser informado.");
    if(string.IsNullOrEmpty(TT_NOME))
    this._erroMensagem.Add("TT NOME deve ser informado.");
    if(string.IsNullOrEmpty(TT_DESC))
    this._erroMensagem.Add("TT DESC deve ser informado.");
    if(string.IsNullOrEmpty(TT_INICIO_PROCESSO))
    this._erroMensagem.Add("TT INICIO PROCESSO deve ser informado.");
-   if (TA_ID == null)
-   this._erroMensagem.Add("TA ID deve ser informado.");
    if(string.IsNullOrEmpty(UNI_ID))
    this._erroMensagem.Add("UNI ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

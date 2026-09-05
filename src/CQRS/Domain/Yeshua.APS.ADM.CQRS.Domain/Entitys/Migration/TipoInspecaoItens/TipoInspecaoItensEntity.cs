@@ -34,12 +34,12 @@
  TII_ID = tii_id; 
  TIV_ID = tiv_id; 
  ITI_ID = iti_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TII_ID == null)
-   this._erroMensagem.Add("TII ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

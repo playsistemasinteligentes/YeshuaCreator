@@ -32,6 +32,8 @@
  Id = id; 
  CON_CASAS_DECIMAIS = con_casas_decimais; 
  CON_CONEXAO = con_conexao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTiposVincoProdutosQuery(ITiposVincoProdutosEntity TiposVincoProdutos)
         {
-            this.Query = $@" INSERT INTO TiposVincoProdutos (Id2, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Id2, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TiposVincoProdutos] ([Id2], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Id2, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id2 = TiposVincoProdutos.Id2,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTiposVincoProdutosQuery(ITiposVincoProdutosEntity TiposVincoProdutos)
         {
-            this.Query = $@" UPDATE TiposVincoProdutos SET Id2 = @Id2, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TiposVincoProdutos] SET [Id2] = @Id2, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id2 = TiposVincoProdutos.Id2,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateId2(int id, int value)
         {
-            this.Query = $@" UPDATE TiposVincoProdutos SET Id2 = @Id2 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TiposVincoProdutos] SET [Id2] = @Id2 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id2 = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TiposVincoProdutos SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TiposVincoProdutos] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TiposVincoProdutos SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TiposVincoProdutos] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TiposVincoProdutos SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TiposVincoProdutos] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TiposVincoProdutos SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TiposVincoProdutos] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTiposVincoProdutosQuery(ITiposVincoProdutosEntity TiposVincoProdutos)
         {
-            this.Query = $@" DELETE FROM TiposVincoProdutos WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TiposVincoProdutos] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TiposVincoProdutos.Id,

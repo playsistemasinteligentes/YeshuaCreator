@@ -34,12 +34,12 @@
  LT_ID = lt_id; 
  TES_ID = tes_id; 
  RL_ID = rl_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (LT_ID == null)
-   this._erroMensagem.Add("LT ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

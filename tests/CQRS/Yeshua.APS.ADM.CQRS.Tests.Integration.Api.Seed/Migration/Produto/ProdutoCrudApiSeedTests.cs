@@ -39,7 +39,7 @@ public partial class ProdutoCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class ProdutoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = ApiTestData.Text("Produto Id", 30),
+            ["Id"] = ApiTestData.KeyText(12),
             ["Descricao"] = ApiTestData.Text("Produto Descricao", 80),
             ["Status"] = ApiTestData.Text("Produto Status", 2),
             ["PRO_ESTOQUE_ATUAL"] = 10.5m,

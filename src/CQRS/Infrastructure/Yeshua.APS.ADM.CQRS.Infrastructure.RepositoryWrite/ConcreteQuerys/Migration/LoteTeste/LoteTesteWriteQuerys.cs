@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirLoteTesteQuery(ILoteTesteEntity LoteTeste)
         {
-            this.Query = $@" INSERT INTO LoteTeste (LT_ID, TES_ID, RL_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@LT_ID, @TES_ID, @RL_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [LoteTeste] ([LT_ID], [TES_ID], [RL_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@LT_ID, @TES_ID, @RL_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 LT_ID = LoteTeste.LT_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLoteTesteQuery(ILoteTesteEntity LoteTeste)
         {
-            this.Query = $@" UPDATE LoteTeste SET LT_ID = @LT_ID, TES_ID = @TES_ID, RL_ID = @RL_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [LT_ID] = @LT_ID, [TES_ID] = @TES_ID, [RL_ID] = @RL_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LT_ID = LoteTeste.LT_ID,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLT_ID(int id, int value)
         {
-            this.Query = $@" UPDATE LoteTeste SET LT_ID = @LT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [LT_ID] = @LT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LT_ID = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_ID(int id, int value)
         {
-            this.Query = $@" UPDATE LoteTeste SET TES_ID = @TES_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [TES_ID] = @TES_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRL_ID(int id, int value)
         {
-            this.Query = $@" UPDATE LoteTeste SET RL_ID = @RL_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [RL_ID] = @RL_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RL_ID = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE LoteTeste SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE LoteTeste SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE LoteTeste SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE LoteTeste SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [LoteTeste] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteLoteTesteQuery(ILoteTesteEntity LoteTeste)
         {
-            this.Query = $@" DELETE FROM LoteTeste WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [LoteTeste] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = LoteTeste.Id,

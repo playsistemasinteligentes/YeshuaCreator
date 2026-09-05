@@ -82,14 +82,15 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        public QueryModel Inserir{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
                 sb.AppendLine("        {");
 
-                var columnsString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(x => x.Name));
+                var tableName = SqlIdentifier(_entity.EntityName);
+                var columnsString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(x => SqlIdentifier(x.Name)));
                 var parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.AutoIncremento).Select(c => $"@{c.Name}"));
 
                 var incremento = _entity.AddColumns.Where(x => x.AutoIncremento).FirstOrDefault();
                 if (incremento != null)
-                    sb.AppendLine($"            this.Query = $@\" INSERT INTO {_entity.EntityName} ({columnsString}) OUTPUT INSERTED.{incremento.Name} VALUES({parametersString}) \";");
+                    sb.AppendLine($"            this.Query = $@\" INSERT INTO {tableName} ({columnsString}) OUTPUT INSERTED.{SqlIdentifier(incremento.Name)} VALUES({parametersString}) \";");
                 else
-                    sb.AppendLine($"            this.Query = $@\" INSERT INTO {_entity.EntityName} ({columnsString}) VALUES({parametersString}) \";");
+                    sb.AppendLine($"            this.Query = $@\" INSERT INTO {tableName} ({columnsString}) VALUES({parametersString}) \";");
 
                 // Adiciona parâmetros
                 sb.AppendLine("            this.Parameters = new");
@@ -114,9 +115,9 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
 
 
-                parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID").Select(c => $"{c.Name} = @{c.Name}"));
-                var parametersWhere = string.Join(" AND ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
-                sb.AppendLine($"            this.Query = $@\" UPDATE {_entity.EntityName} SET {parametersString} WHERE {parametersWhere} \";");
+                parametersString = string.Join(", ", _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField && x.Name != "Deleted" && x.Name != "TenantID").Select(c => $"{SqlIdentifier(c.Name)} = @{c.Name}"));
+                var parametersWhere = string.Join(" AND ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{SqlIdentifier(c.Name)} = @{c.Name}"));
+                sb.AppendLine($"            this.Query = $@\" UPDATE {tableName} SET {parametersString} WHERE {parametersWhere} \";");
 
                 sb.AppendLine("            this.Parameters = new");
                 sb.AppendLine("            {");
@@ -138,7 +139,7 @@ namespace Dominio.Schemas.CQRS
 
                 var keys = _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).ToList();
                 var methodParamsKeys = string.Join(", ", keys.Select(k => $"{k.getCsharpType()} {k.Name.ToLower()}"));
-                var whereClause = string.Join(" AND ", keys.Select(k => $"{k.Name} = @{k.Name}"));
+                var whereClause = string.Join(" AND ", keys.Select(k => $"{SqlIdentifier(k.Name)} = @{k.Name}"));
 
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsKey && !x.IsBackEndField))
                 {
@@ -148,7 +149,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("        {");
                     //parametersWhere = string.Join(", ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
                     parametersWhere = whereClause;
-                    sb.AppendLine($"            this.Query = $@\" UPDATE {_entity.EntityName} SET {column.Name} = @{column.Name} WHERE {parametersWhere} \";");
+                    sb.AppendLine($"            this.Query = $@\" UPDATE {tableName} SET {SqlIdentifier(column.Name)} = @{column.Name} WHERE {parametersWhere} \";");
 
                     sb.AppendLine("            this.Parameters = new");
                     sb.AppendLine("            {");
@@ -172,8 +173,8 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"        public QueryModel Delete{_entity.EntityName}Query(I{_entity.EntityName}Entity {_entity.EntityName})");
                 sb.AppendLine("        {");
 
-                parametersString = string.Join(" AND ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{c.Name} = @{c.Name}"));
-                sb.AppendLine($"            this.Query = $@\" DELETE FROM {_entity.EntityName} WHERE {parametersString} \";");
+                parametersString = string.Join(" AND ", _entity.AddColumns.Where(x => x.IsKey && !x.IsBackEndField).Select(c => $"{SqlIdentifier(c.Name)} = @{c.Name}"));
+                sb.AppendLine($"            this.Query = $@\" DELETE FROM {tableName} WHERE {parametersString} \";");
                 // debito incluir isbackendfield where 
                 sb.AppendLine("            this.Parameters = new");
                 sb.AppendLine("            {");
@@ -209,6 +210,11 @@ namespace Dominio.Schemas.CQRS
             // Fecha a classe
             sb.AppendLine("}");
             return sb;
+        }
+
+        private static string SqlIdentifier(string name)
+        {
+            return string.Join(".", name.Split('.').Select(part => $"[{part.Replace("]", "]]")}]"));
         }
     }
 }

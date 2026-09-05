@@ -34,6 +34,8 @@
  GRS_ID = grs_id; 
  PRO_ID = pro_id; 
  SEG_ID = seg_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

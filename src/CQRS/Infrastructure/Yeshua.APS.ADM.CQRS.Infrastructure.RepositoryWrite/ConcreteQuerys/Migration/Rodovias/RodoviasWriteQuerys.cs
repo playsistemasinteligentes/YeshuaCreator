@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRodoviasQuery(IRodoviasEntity Rodovias)
         {
-            this.Query = $@" INSERT INTO Rodovias (ROD_ID, ROD_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ROD_ID, @ROD_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Rodovias] ([ROD_ID], [ROD_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ROD_ID, @ROD_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ROD_ID = Rodovias.ROD_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRodoviasQuery(IRodoviasEntity Rodovias)
         {
-            this.Query = $@" UPDATE Rodovias SET ROD_ID = @ROD_ID, ROD_DESCRICAO = @ROD_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [ROD_ID] = @ROD_ID, [ROD_DESCRICAO] = @ROD_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROD_ID = Rodovias.ROD_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROD_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Rodovias SET ROD_ID = @ROD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [ROD_ID] = @ROD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROD_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROD_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE Rodovias SET ROD_DESCRICAO = @ROD_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [ROD_DESCRICAO] = @ROD_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROD_DESCRICAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Rodovias SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Rodovias SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Rodovias SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Rodovias SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Rodovias] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRodoviasQuery(IRodoviasEntity Rodovias)
         {
-            this.Query = $@" DELETE FROM Rodovias WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Rodovias] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Rodovias.Id,

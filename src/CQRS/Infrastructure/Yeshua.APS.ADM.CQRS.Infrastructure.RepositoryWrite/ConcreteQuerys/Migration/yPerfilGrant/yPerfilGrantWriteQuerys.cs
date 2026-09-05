@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant)
         {
-            this.Query = $@" INSERT INTO yPerfilGrant (PerfilId, GrantId, CanGrant, CanCreate, CanRead, CanUpdate, CanDelete, ValidUntil, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yPerfilGrant] ([PerfilId], [GrantId], [CanGrant], [CanCreate], [CanRead], [CanUpdate], [CanDelete], [ValidUntil], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PerfilId, @GrantId, @CanGrant, @CanCreate, @CanRead, @CanUpdate, @CanDelete, @ValidUntil, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PerfilId = yPerfilGrant.PerfilId,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET PerfilId = @PerfilId, GrantId = @GrantId, CanGrant = @CanGrant, CanCreate = @CanCreate, CanRead = @CanRead, CanUpdate = @CanUpdate, CanDelete = @CanDelete, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [PerfilId] = @PerfilId, [GrantId] = @GrantId, [CanGrant] = @CanGrant, [CanCreate] = @CanCreate, [CanRead] = @CanRead, [CanUpdate] = @CanUpdate, [CanDelete] = @CanDelete, [ValidUntil] = @ValidUntil, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PerfilId = yPerfilGrant.PerfilId,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePerfilId(int id, int value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET PerfilId = @PerfilId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [PerfilId] = @PerfilId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PerfilId = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrantId(int id, string value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET GrantId = @GrantId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [GrantId] = @GrantId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GrantId = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCanGrant(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET CanGrant = @CanGrant WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [CanGrant] = @CanGrant WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CanGrant = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCanCreate(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET CanCreate = @CanCreate WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [CanCreate] = @CanCreate WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CanCreate = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCanRead(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET CanRead = @CanRead WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [CanRead] = @CanRead WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CanRead = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCanUpdate(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET CanUpdate = @CanUpdate WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [CanUpdate] = @CanUpdate WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CanUpdate = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCanDelete(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET CanDelete = @CanDelete WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [CanDelete] = @CanDelete WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CanDelete = value,
@@ -139,7 +139,7 @@ namespace Query.Write
         }
         public QueryModel UpdateValidUntil(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET ValidUntil = @ValidUntil WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [ValidUntil] = @ValidUntil WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ValidUntil = value,
@@ -149,7 +149,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -159,7 +159,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -169,7 +169,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -179,7 +179,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yPerfilGrant SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfilGrant] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -189,7 +189,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyPerfilGrantQuery(IyPerfilGrantEntity yPerfilGrant)
         {
-            this.Query = $@" DELETE FROM yPerfilGrant WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yPerfilGrant] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yPerfilGrant.Id,

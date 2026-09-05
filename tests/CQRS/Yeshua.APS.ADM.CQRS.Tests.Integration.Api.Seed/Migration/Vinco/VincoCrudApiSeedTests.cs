@@ -39,7 +39,7 @@ public partial class VincoCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "vin_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class VincoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["VIN_ID"] = 1,
+            ["VIN_ID"] = ApiTestData.IntKey(),
             ["VIN_DESCRICAO"] = ApiTestData.Text("Vinco VIN_DESCRICAO", 80),
             ["VIN_ID_DESLOCAMENTO"] = ApiTestData.Text("Vinco VIN_ID_DESLOCAMENTO", 80),
         };

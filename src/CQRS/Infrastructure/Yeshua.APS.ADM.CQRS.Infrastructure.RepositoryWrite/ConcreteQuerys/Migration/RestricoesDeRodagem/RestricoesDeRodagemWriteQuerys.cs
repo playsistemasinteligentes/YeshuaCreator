@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRestricoesDeRodagemQuery(IRestricoesDeRodagemEntity RestricoesDeRodagem)
         {
-            this.Query = $@" INSERT INTO RestricoesDeRodagem (RES_ID, RES_TIPO, RES_HORA_INI, RES_HORA_FIM, RES_VELOCIDADE_HORA_RUSH, TVE_ID, MAP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RES_ID, @RES_TIPO, @RES_HORA_INI, @RES_HORA_FIM, @RES_VELOCIDADE_HORA_RUSH, @TVE_ID, @MAP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RestricoesDeRodagem] ([RES_ID], [RES_TIPO], [RES_HORA_INI], [RES_HORA_FIM], [RES_VELOCIDADE_HORA_RUSH], [TVE_ID], [MAP_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RES_ID, @RES_TIPO, @RES_HORA_INI, @RES_HORA_FIM, @RES_VELOCIDADE_HORA_RUSH, @TVE_ID, @MAP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 RES_ID = RestricoesDeRodagem.RES_ID,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRestricoesDeRodagemQuery(IRestricoesDeRodagemEntity RestricoesDeRodagem)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET RES_ID = @RES_ID, RES_TIPO = @RES_TIPO, RES_HORA_INI = @RES_HORA_INI, RES_HORA_FIM = @RES_HORA_FIM, RES_VELOCIDADE_HORA_RUSH = @RES_VELOCIDADE_HORA_RUSH, TVE_ID = @TVE_ID, MAP_ID = @MAP_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [RES_ID] = @RES_ID, [RES_TIPO] = @RES_TIPO, [RES_HORA_INI] = @RES_HORA_INI, [RES_HORA_FIM] = @RES_HORA_FIM, [RES_VELOCIDADE_HORA_RUSH] = @RES_VELOCIDADE_HORA_RUSH, [TVE_ID] = @TVE_ID, [MAP_ID] = @MAP_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RES_ID = RestricoesDeRodagem.RES_ID,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRES_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET RES_ID = @RES_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [RES_ID] = @RES_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RES_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRES_TIPO(int id, string value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET RES_TIPO = @RES_TIPO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [RES_TIPO] = @RES_TIPO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RES_TIPO = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRES_HORA_INI(int id, string value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET RES_HORA_INI = @RES_HORA_INI WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [RES_HORA_INI] = @RES_HORA_INI WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RES_HORA_INI = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRES_HORA_FIM(int id, string value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET RES_HORA_FIM = @RES_HORA_FIM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [RES_HORA_FIM] = @RES_HORA_FIM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RES_HORA_FIM = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRES_VELOCIDADE_HORA_RUSH(int id, Decimal value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET RES_VELOCIDADE_HORA_RUSH = @RES_VELOCIDADE_HORA_RUSH WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [RES_VELOCIDADE_HORA_RUSH] = @RES_VELOCIDADE_HORA_RUSH WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RES_VELOCIDADE_HORA_RUSH = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTVE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET TVE_ID = @TVE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [TVE_ID] = @TVE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TVE_ID = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET MAP_ID = @MAP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [MAP_ID] = @MAP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAP_ID = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE RestricoesDeRodagem SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RestricoesDeRodagem] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRestricoesDeRodagemQuery(IRestricoesDeRodagemEntity RestricoesDeRodagem)
         {
-            this.Query = $@" DELETE FROM RestricoesDeRodagem WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [RestricoesDeRodagem] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = RestricoesDeRodagem.Id,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_GrupoQuery(IT_GrupoEntity T_Grupo)
         {
-            this.Query = $@" INSERT INTO T_Grupo (NOME, EXIBELISTA, GRU_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.GRU_ID VALUES(@NOME, @EXIBELISTA, @GRU_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Grupo] ([NOME], [EXIBELISTA], [GRU_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[GRU_ID] VALUES(@NOME, @EXIBELISTA, @GRU_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 NOME = T_Grupo.NOME,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_GrupoQuery(IT_GrupoEntity T_Grupo)
         {
-            this.Query = $@" UPDATE T_Grupo SET NOME = @NOME, EXIBELISTA = @EXIBELISTA, GRU_DESCRICAO = @GRU_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [NOME] = @NOME, [EXIBELISTA] = @EXIBELISTA, [GRU_DESCRICAO] = @GRU_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 NOME = T_Grupo.NOME,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNOME(int gru_id, string value)
         {
-            this.Query = $@" UPDATE T_Grupo SET NOME = @NOME WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [NOME] = @NOME WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 NOME = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEXIBELISTA(int gru_id, int value)
         {
-            this.Query = $@" UPDATE T_Grupo SET EXIBELISTA = @EXIBELISTA WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [EXIBELISTA] = @EXIBELISTA WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 EXIBELISTA = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRU_DESCRICAO(int gru_id, string value)
         {
-            this.Query = $@" UPDATE T_Grupo SET GRU_DESCRICAO = @GRU_DESCRICAO WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [GRU_DESCRICAO] = @GRU_DESCRICAO WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 GRU_DESCRICAO = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int gru_id, int value)
         {
-            this.Query = $@" UPDATE T_Grupo SET TenantID = @TenantID WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [TenantID] = @TenantID WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int gru_id, bool value)
         {
-            this.Query = $@" UPDATE T_Grupo SET Deleted = @Deleted WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [Deleted] = @Deleted WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int gru_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Grupo SET Changed = @Changed WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [Changed] = @Changed WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int gru_id, int value)
         {
-            this.Query = $@" UPDATE T_Grupo SET UserId = @UserId WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" UPDATE [T_Grupo] SET [UserId] = @UserId WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_GrupoQuery(IT_GrupoEntity T_Grupo)
         {
-            this.Query = $@" DELETE FROM T_Grupo WHERE GRU_ID = @GRU_ID ";
+            this.Query = $@" DELETE FROM [T_Grupo] WHERE [GRU_ID] = @GRU_ID ";
             this.Parameters = new
             {
                 GRU_ID = T_Grupo.GRU_ID,

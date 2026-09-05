@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCotasQuery(ICotasEntity Cotas)
         {
-            this.Query = $@" INSERT INTO Cotas (COT_ID, COT_DATA_DE, COT_DATA_ATE, COT_VALOR, COT_OCUPADO, REP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@COT_ID, @COT_DATA_DE, @COT_DATA_ATE, @COT_VALOR, @COT_OCUPADO, @REP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Cotas] ([COT_ID], [COT_DATA_DE], [COT_DATA_ATE], [COT_VALOR], [COT_OCUPADO], [REP_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@COT_ID, @COT_DATA_DE, @COT_DATA_ATE, @COT_VALOR, @COT_OCUPADO, @REP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 COT_ID = Cotas.COT_ID,
@@ -48,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCotasQuery(ICotasEntity Cotas)
         {
-            this.Query = $@" UPDATE Cotas SET COT_ID = @COT_ID, COT_DATA_DE = @COT_DATA_DE, COT_DATA_ATE = @COT_DATA_ATE, COT_VALOR = @COT_VALOR, COT_OCUPADO = @COT_OCUPADO, REP_ID = @REP_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [COT_ID] = @COT_ID, [COT_DATA_DE] = @COT_DATA_DE, [COT_DATA_ATE] = @COT_DATA_ATE, [COT_VALOR] = @COT_VALOR, [COT_OCUPADO] = @COT_OCUPADO, [REP_ID] = @REP_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COT_ID = Cotas.COT_ID,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOT_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Cotas SET COT_ID = @COT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [COT_ID] = @COT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COT_ID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOT_DATA_DE(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Cotas SET COT_DATA_DE = @COT_DATA_DE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [COT_DATA_DE] = @COT_DATA_DE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COT_DATA_DE = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOT_DATA_ATE(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Cotas SET COT_DATA_ATE = @COT_DATA_ATE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [COT_DATA_ATE] = @COT_DATA_ATE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COT_DATA_ATE = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOT_VALOR(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Cotas SET COT_VALOR = @COT_VALOR WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [COT_VALOR] = @COT_VALOR WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COT_VALOR = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOT_OCUPADO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Cotas SET COT_OCUPADO = @COT_OCUPADO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [COT_OCUPADO] = @COT_OCUPADO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COT_OCUPADO = value,
@@ -115,7 +115,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Cotas SET REP_ID = @REP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [REP_ID] = @REP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REP_ID = value,
@@ -125,7 +125,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Cotas SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -135,7 +135,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Cotas SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -145,7 +145,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Cotas SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -155,7 +155,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Cotas SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cotas] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -165,7 +165,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCotasQuery(ICotasEntity Cotas)
         {
-            this.Query = $@" DELETE FROM Cotas WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Cotas] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Cotas.Id,

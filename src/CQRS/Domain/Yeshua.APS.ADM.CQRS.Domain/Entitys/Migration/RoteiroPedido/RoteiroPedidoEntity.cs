@@ -78,20 +78,14 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Maquina deve ser informado.");
    if(string.IsNullOrEmpty(ProdutoId))
    this._erroMensagem.Add("Produto deve ser informado.");
-   if (SequenciaTransformacao == null)
-   this._erroMensagem.Add("Sequencia de Transformacao deve ser informado.");
    if(string.IsNullOrEmpty(StatusCadastro))
    this._erroMensagem.Add("Status do Cadastro deve ser informado.");
-   if (CalendarioId == null)
-   this._erroMensagem.Add("Calendario deve ser informado.");
    if(string.IsNullOrEmpty(Operacoes))
    this._erroMensagem.Add("Operacoes deve ser informado.");
    if(string.IsNullOrEmpty(ExcecaoOperacoes))
    this._erroMensagem.Add("Excecao Operacoes deve ser informado.");
    if(string.IsNullOrEmpty(LinhaDireta))
    this._erroMensagem.Add("Linha Direta deve ser informado.");
-   if (GrupoPerformanceMetroLinear == null)
-   this._erroMensagem.Add("Performance Metro Linear deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

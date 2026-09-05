@@ -30,12 +30,12 @@
  internal TiposVincoProdutosEntity(int? id, int id2 ){
  Id = id; 
  Id2 = id2; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Id2 == null)
-   this._erroMensagem.Add("Id2 deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

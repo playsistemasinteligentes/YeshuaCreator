@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItensOrcamentoQuery(IItensOrcamentoEntity ItensOrcamento)
         {
-            this.Query = $@" INSERT INTO ItensOrcamento (ITO_ID, ORC_ID, TIP_ID, PRO_ID, ITO_OBS, ITO_QUANTIDADE, ITO_CUSTO, ITO_MARGEM, ITO_VALOR_UNITARIO, ITO_VERSSAO_CUSTO, ITO_STATUS, ITO_ERP_CUSTOS_FIXOS, ITO_ERP_CUSTOS_VARIAVEIS, ITO_ERP_DESPESAS_VAR_VENDA, ITO_ERP_IMPOSTOS, GRP_ID_COMPOSICAO, ITO_LARGURA, ITO_COMPRIMENTO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ITO_ID, @ORC_ID, @TIP_ID, @PRO_ID, @ITO_OBS, @ITO_QUANTIDADE, @ITO_CUSTO, @ITO_MARGEM, @ITO_VALOR_UNITARIO, @ITO_VERSSAO_CUSTO, @ITO_STATUS, @ITO_ERP_CUSTOS_FIXOS, @ITO_ERP_CUSTOS_VARIAVEIS, @ITO_ERP_DESPESAS_VAR_VENDA, @ITO_ERP_IMPOSTOS, @GRP_ID_COMPOSICAO, @ITO_LARGURA, @ITO_COMPRIMENTO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItensOrcamento] ([ITO_ID], [ORC_ID], [TIP_ID], [PRO_ID], [ITO_OBS], [ITO_QUANTIDADE], [ITO_CUSTO], [ITO_MARGEM], [ITO_VALOR_UNITARIO], [ITO_VERSSAO_CUSTO], [ITO_STATUS], [ITO_ERP_CUSTOS_FIXOS], [ITO_ERP_CUSTOS_VARIAVEIS], [ITO_ERP_DESPESAS_VAR_VENDA], [ITO_ERP_IMPOSTOS], [GRP_ID_COMPOSICAO], [ITO_LARGURA], [ITO_COMPRIMENTO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ITO_ID, @ORC_ID, @TIP_ID, @PRO_ID, @ITO_OBS, @ITO_QUANTIDADE, @ITO_CUSTO, @ITO_MARGEM, @ITO_VALOR_UNITARIO, @ITO_VERSSAO_CUSTO, @ITO_STATUS, @ITO_ERP_CUSTOS_FIXOS, @ITO_ERP_CUSTOS_VARIAVEIS, @ITO_ERP_DESPESAS_VAR_VENDA, @ITO_ERP_IMPOSTOS, @GRP_ID_COMPOSICAO, @ITO_LARGURA, @ITO_COMPRIMENTO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ITO_ID = ItensOrcamento.ITO_ID,
@@ -60,7 +60,7 @@ namespace Query.Write
         }
         public QueryModel UpdateItensOrcamentoQuery(IItensOrcamentoEntity ItensOrcamento)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_ID = @ITO_ID, ORC_ID = @ORC_ID, TIP_ID = @TIP_ID, PRO_ID = @PRO_ID, ITO_OBS = @ITO_OBS, ITO_QUANTIDADE = @ITO_QUANTIDADE, ITO_CUSTO = @ITO_CUSTO, ITO_MARGEM = @ITO_MARGEM, ITO_VALOR_UNITARIO = @ITO_VALOR_UNITARIO, ITO_VERSSAO_CUSTO = @ITO_VERSSAO_CUSTO, ITO_STATUS = @ITO_STATUS, ITO_ERP_CUSTOS_FIXOS = @ITO_ERP_CUSTOS_FIXOS, ITO_ERP_CUSTOS_VARIAVEIS = @ITO_ERP_CUSTOS_VARIAVEIS, ITO_ERP_DESPESAS_VAR_VENDA = @ITO_ERP_DESPESAS_VAR_VENDA, ITO_ERP_IMPOSTOS = @ITO_ERP_IMPOSTOS, GRP_ID_COMPOSICAO = @GRP_ID_COMPOSICAO, ITO_LARGURA = @ITO_LARGURA, ITO_COMPRIMENTO = @ITO_COMPRIMENTO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_ID] = @ITO_ID, [ORC_ID] = @ORC_ID, [TIP_ID] = @TIP_ID, [PRO_ID] = @PRO_ID, [ITO_OBS] = @ITO_OBS, [ITO_QUANTIDADE] = @ITO_QUANTIDADE, [ITO_CUSTO] = @ITO_CUSTO, [ITO_MARGEM] = @ITO_MARGEM, [ITO_VALOR_UNITARIO] = @ITO_VALOR_UNITARIO, [ITO_VERSSAO_CUSTO] = @ITO_VERSSAO_CUSTO, [ITO_STATUS] = @ITO_STATUS, [ITO_ERP_CUSTOS_FIXOS] = @ITO_ERP_CUSTOS_FIXOS, [ITO_ERP_CUSTOS_VARIAVEIS] = @ITO_ERP_CUSTOS_VARIAVEIS, [ITO_ERP_DESPESAS_VAR_VENDA] = @ITO_ERP_DESPESAS_VAR_VENDA, [ITO_ERP_IMPOSTOS] = @ITO_ERP_IMPOSTOS, [GRP_ID_COMPOSICAO] = @GRP_ID_COMPOSICAO, [ITO_LARGURA] = @ITO_LARGURA, [ITO_COMPRIMENTO] = @ITO_COMPRIMENTO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_ID = ItensOrcamento.ITO_ID,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_ID = @ITO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_ID] = @ITO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_ID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORC_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ORC_ID = @ORC_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ORC_ID] = @ORC_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORC_ID = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET TIP_ID = @TIP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [TIP_ID] = @TIP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIP_ID = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET PRO_ID = @PRO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [PRO_ID] = @PRO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_OBS(int id, string value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_OBS = @ITO_OBS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_OBS] = @ITO_OBS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_OBS = value,
@@ -139,7 +139,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_QUANTIDADE(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_QUANTIDADE = @ITO_QUANTIDADE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_QUANTIDADE] = @ITO_QUANTIDADE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_QUANTIDADE = value,
@@ -149,7 +149,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_CUSTO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_CUSTO = @ITO_CUSTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_CUSTO] = @ITO_CUSTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_CUSTO = value,
@@ -159,7 +159,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_MARGEM(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_MARGEM = @ITO_MARGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_MARGEM] = @ITO_MARGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_MARGEM = value,
@@ -169,7 +169,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_VALOR_UNITARIO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_VALOR_UNITARIO = @ITO_VALOR_UNITARIO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_VALOR_UNITARIO] = @ITO_VALOR_UNITARIO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_VALOR_UNITARIO = value,
@@ -179,7 +179,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_VERSSAO_CUSTO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_VERSSAO_CUSTO = @ITO_VERSSAO_CUSTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_VERSSAO_CUSTO] = @ITO_VERSSAO_CUSTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_VERSSAO_CUSTO = value,
@@ -189,7 +189,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_STATUS(int id, string value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_STATUS = @ITO_STATUS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_STATUS] = @ITO_STATUS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_STATUS = value,
@@ -199,7 +199,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_ERP_CUSTOS_FIXOS(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_ERP_CUSTOS_FIXOS = @ITO_ERP_CUSTOS_FIXOS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_ERP_CUSTOS_FIXOS] = @ITO_ERP_CUSTOS_FIXOS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_ERP_CUSTOS_FIXOS = value,
@@ -209,7 +209,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_ERP_CUSTOS_VARIAVEIS(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_ERP_CUSTOS_VARIAVEIS = @ITO_ERP_CUSTOS_VARIAVEIS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_ERP_CUSTOS_VARIAVEIS] = @ITO_ERP_CUSTOS_VARIAVEIS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_ERP_CUSTOS_VARIAVEIS = value,
@@ -219,7 +219,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_ERP_DESPESAS_VAR_VENDA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_ERP_DESPESAS_VAR_VENDA = @ITO_ERP_DESPESAS_VAR_VENDA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_ERP_DESPESAS_VAR_VENDA] = @ITO_ERP_DESPESAS_VAR_VENDA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_ERP_DESPESAS_VAR_VENDA = value,
@@ -229,7 +229,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_ERP_IMPOSTOS(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_ERP_IMPOSTOS = @ITO_ERP_IMPOSTOS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_ERP_IMPOSTOS] = @ITO_ERP_IMPOSTOS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_ERP_IMPOSTOS = value,
@@ -239,7 +239,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRP_ID_COMPOSICAO(int id, string value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET GRP_ID_COMPOSICAO = @GRP_ID_COMPOSICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [GRP_ID_COMPOSICAO] = @GRP_ID_COMPOSICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GRP_ID_COMPOSICAO = value,
@@ -249,7 +249,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_LARGURA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_LARGURA = @ITO_LARGURA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_LARGURA] = @ITO_LARGURA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_LARGURA = value,
@@ -259,7 +259,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_COMPRIMENTO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET ITO_COMPRIMENTO = @ITO_COMPRIMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [ITO_COMPRIMENTO] = @ITO_COMPRIMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITO_COMPRIMENTO = value,
@@ -269,7 +269,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -279,7 +279,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -289,7 +289,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -299,7 +299,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ItensOrcamento SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItensOrcamento] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -309,7 +309,7 @@ namespace Query.Write
         }
         public QueryModel DeleteItensOrcamentoQuery(IItensOrcamentoEntity ItensOrcamento)
         {
-            this.Query = $@" DELETE FROM ItensOrcamento WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ItensOrcamento] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ItensOrcamento.Id,

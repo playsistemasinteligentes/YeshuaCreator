@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItensCalendarioQuery(IItensCalendarioEntity ItensCalendario)
         {
-            this.Query = $@" INSERT INTO ItensCalendario (ICA_DATA_DE, ICA_DATA_ATE, ICA_OBSERVACAO, ICA_TIPO, URM_ID, URN_ID, CAL_ID, MAQ_ID, PRO_ID, ICA_LIMPESA_MAQUINA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ICA_ID VALUES(@ICA_DATA_DE, @ICA_DATA_ATE, @ICA_OBSERVACAO, @ICA_TIPO, @URM_ID, @URN_ID, @CAL_ID, @MAQ_ID, @PRO_ID, @ICA_LIMPESA_MAQUINA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItensCalendario] ([ICA_DATA_DE], [ICA_DATA_ATE], [ICA_OBSERVACAO], [ICA_TIPO], [URM_ID], [URN_ID], [CAL_ID], [MAQ_ID], [PRO_ID], [ICA_LIMPESA_MAQUINA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ICA_ID] VALUES(@ICA_DATA_DE, @ICA_DATA_ATE, @ICA_OBSERVACAO, @ICA_TIPO, @URM_ID, @URN_ID, @CAL_ID, @MAQ_ID, @PRO_ID, @ICA_LIMPESA_MAQUINA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ICA_DATA_DE = ItensCalendario.ICA_DATA_DE,
@@ -52,7 +52,7 @@ namespace Query.Write
         }
         public QueryModel UpdateItensCalendarioQuery(IItensCalendarioEntity ItensCalendario)
         {
-            this.Query = $@" UPDATE ItensCalendario SET ICA_DATA_DE = @ICA_DATA_DE, ICA_DATA_ATE = @ICA_DATA_ATE, ICA_OBSERVACAO = @ICA_OBSERVACAO, ICA_TIPO = @ICA_TIPO, URM_ID = @URM_ID, URN_ID = @URN_ID, CAL_ID = @CAL_ID, MAQ_ID = @MAQ_ID, PRO_ID = @PRO_ID, ICA_LIMPESA_MAQUINA = @ICA_LIMPESA_MAQUINA, Changed = @Changed, UserId = @UserId WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [ICA_DATA_DE] = @ICA_DATA_DE, [ICA_DATA_ATE] = @ICA_DATA_ATE, [ICA_OBSERVACAO] = @ICA_OBSERVACAO, [ICA_TIPO] = @ICA_TIPO, [URM_ID] = @URM_ID, [URN_ID] = @URN_ID, [CAL_ID] = @CAL_ID, [MAQ_ID] = @MAQ_ID, [PRO_ID] = @PRO_ID, [ICA_LIMPESA_MAQUINA] = @ICA_LIMPESA_MAQUINA, [Changed] = @Changed, [UserId] = @UserId WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_DATA_DE = ItensCalendario.ICA_DATA_DE,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateICA_DATA_DE(int ica_id, DateTime value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET ICA_DATA_DE = @ICA_DATA_DE WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [ICA_DATA_DE] = @ICA_DATA_DE WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_DATA_DE = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateICA_DATA_ATE(int ica_id, DateTime value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET ICA_DATA_ATE = @ICA_DATA_ATE WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [ICA_DATA_ATE] = @ICA_DATA_ATE WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_DATA_ATE = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateICA_OBSERVACAO(int ica_id, string value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET ICA_OBSERVACAO = @ICA_OBSERVACAO WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [ICA_OBSERVACAO] = @ICA_OBSERVACAO WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_OBSERVACAO = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateICA_TIPO(int ica_id, int value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET ICA_TIPO = @ICA_TIPO WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [ICA_TIPO] = @ICA_TIPO WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_TIPO = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateURM_ID(int ica_id, string value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET URM_ID = @URM_ID WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [URM_ID] = @URM_ID WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 URM_ID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateURN_ID(int ica_id, string value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET URN_ID = @URN_ID WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [URN_ID] = @URN_ID WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 URN_ID = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAL_ID(int ica_id, int value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET CAL_ID = @CAL_ID WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [CAL_ID] = @CAL_ID WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 CAL_ID = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(int ica_id, string value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET MAQ_ID = @MAQ_ID WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [MAQ_ID] = @MAQ_ID WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(int ica_id, string value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET PRO_ID = @PRO_ID WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [PRO_ID] = @PRO_ID WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateICA_LIMPESA_MAQUINA(int ica_id, int value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET ICA_LIMPESA_MAQUINA = @ICA_LIMPESA_MAQUINA WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [ICA_LIMPESA_MAQUINA] = @ICA_LIMPESA_MAQUINA WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_LIMPESA_MAQUINA = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int ica_id, int value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET TenantID = @TenantID WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [TenantID] = @TenantID WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int ica_id, bool value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET Deleted = @Deleted WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [Deleted] = @Deleted WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int ica_id, DateTime value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET Changed = @Changed WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [Changed] = @Changed WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int ica_id, int value)
         {
-            this.Query = $@" UPDATE ItensCalendario SET UserId = @UserId WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" UPDATE [ItensCalendario] SET [UserId] = @UserId WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel DeleteItensCalendarioQuery(IItensCalendarioEntity ItensCalendario)
         {
-            this.Query = $@" DELETE FROM ItensCalendario WHERE ICA_ID = @ICA_ID ";
+            this.Query = $@" DELETE FROM [ItensCalendario] WHERE [ICA_ID] = @ICA_ID ";
             this.Parameters = new
             {
                 ICA_ID = ItensCalendario.ICA_ID,

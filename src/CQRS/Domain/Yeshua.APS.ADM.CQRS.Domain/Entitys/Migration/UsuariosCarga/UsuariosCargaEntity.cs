@@ -34,12 +34,12 @@
  USE_ID = use_id; 
  CAR_ID = car_id; 
  RGO_ID = rgo_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
    if(string.IsNullOrEmpty(CAR_ID))
    this._erroMensagem.Add("CAR ID deve ser informado.");
    if(string.IsNullOrEmpty(RGO_ID))

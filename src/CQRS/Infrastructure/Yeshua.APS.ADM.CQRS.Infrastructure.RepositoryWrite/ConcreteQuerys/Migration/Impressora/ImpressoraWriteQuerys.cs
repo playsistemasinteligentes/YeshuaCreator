@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirImpressoraQuery(IImpressoraEntity Impressora)
         {
-            this.Query = $@" INSERT INTO Impressora (IMP_IP, IMP_NOME, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.IMP_ID VALUES(@IMP_IP, @IMP_NOME, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Impressora] ([IMP_IP], [IMP_NOME], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IMP_ID] VALUES(@IMP_IP, @IMP_NOME, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IMP_IP = Impressora.IMP_IP,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateImpressoraQuery(IImpressoraEntity Impressora)
         {
-            this.Query = $@" UPDATE Impressora SET IMP_IP = @IMP_IP, IMP_NOME = @IMP_NOME, Changed = @Changed, UserId = @UserId WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [IMP_IP] = @IMP_IP, [IMP_NOME] = @IMP_NOME, [Changed] = @Changed, [UserId] = @UserId WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 IMP_IP = Impressora.IMP_IP,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIMP_IP(int imp_id, string value)
         {
-            this.Query = $@" UPDATE Impressora SET IMP_IP = @IMP_IP WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [IMP_IP] = @IMP_IP WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 IMP_IP = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIMP_NOME(int imp_id, string value)
         {
-            this.Query = $@" UPDATE Impressora SET IMP_NOME = @IMP_NOME WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [IMP_NOME] = @IMP_NOME WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 IMP_NOME = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int imp_id, int value)
         {
-            this.Query = $@" UPDATE Impressora SET TenantID = @TenantID WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [TenantID] = @TenantID WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int imp_id, bool value)
         {
-            this.Query = $@" UPDATE Impressora SET Deleted = @Deleted WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [Deleted] = @Deleted WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int imp_id, DateTime value)
         {
-            this.Query = $@" UPDATE Impressora SET Changed = @Changed WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [Changed] = @Changed WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int imp_id, int value)
         {
-            this.Query = $@" UPDATE Impressora SET UserId = @UserId WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" UPDATE [Impressora] SET [UserId] = @UserId WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteImpressoraQuery(IImpressoraEntity Impressora)
         {
-            this.Query = $@" DELETE FROM Impressora WHERE IMP_ID = @IMP_ID ";
+            this.Query = $@" DELETE FROM [Impressora] WHERE [IMP_ID] = @IMP_ID ";
             this.Parameters = new
             {
                 IMP_ID = Impressora.IMP_ID,

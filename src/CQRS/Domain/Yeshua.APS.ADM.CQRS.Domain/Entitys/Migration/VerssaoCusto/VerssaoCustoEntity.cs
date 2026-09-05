@@ -36,12 +36,12 @@
  VER_STATUS = ver_status; 
  VER_DATA_VERSSAO_CUSTO = (ver_data_verssao_custo < (new DateTime(1800, 1, 1))) ? DateTime.Now : ver_data_verssao_custo; 
  VER_OBS = ver_obs; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (VER_ID == null)
-   this._erroMensagem.Add("VER ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

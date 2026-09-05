@@ -36,20 +36,18 @@
  HRE_HORA_FINAL = (hre_hora_final < (new DateTime(1800, 1, 1))) ? DateTime.Now : hre_hora_final; 
  CLI_ID = cli_id; 
  HRE_ID = hre_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (HRE_DIA_DA_SEMANA == null)
-   this._erroMensagem.Add("HRE DIA DA SEMANA deve ser informado.");
-   if (HRE_HORA_INICIAL == null || HRE_HORA_INICIAL < (new DateTime(1800, 1, 1)))
+   if(HRE_HORA_INICIAL == null || HRE_HORA_INICIAL < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("HRE HORA INICIAL deve ser informado.");
-   if (HRE_HORA_FINAL == null || HRE_HORA_FINAL < (new DateTime(1800, 1, 1)))
+   if(HRE_HORA_FINAL == null || HRE_HORA_FINAL < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("HRE HORA FINAL deve ser informado.");
    if(string.IsNullOrEmpty(CLI_ID))
    this._erroMensagem.Add("CLI ID deve ser informado.");
-   if (HRE_ID == null)
-   this._erroMensagem.Add("HRE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

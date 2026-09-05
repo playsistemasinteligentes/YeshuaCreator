@@ -44,7 +44,7 @@ public partial class RecursosCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "rec_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class RecursosCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["REC_ID"] = ApiTestData.Text("Recursos REC_ID", 30),
+            ["REC_ID"] = ApiTestData.KeyText(12),
             ["REC_DESCRICAO"] = ApiTestData.Text("Recursos REC_DESCRICAO", 80),
             ["CAL_ID"] = ApiSmokeTestContext.GetRequiredCreatedId("Calendario", "CAL_ID"),
             ["REC_CONTROL_IP"] = ApiTestData.Text("Recursos REC_CONTROL_IP", 30),

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirConsultaPedidoQuery(IConsultaPedidoEntity ConsultaPedido)
         {
-            this.Query = $@" INSERT INTO ConsultaPedido (PedidoId, ClienteId, ClienteNome, RazaoSocial, ProdutoId, ProdutoDescricao, Status, Estagio, DataEntregaDe, DataEntregaAte, EmbarqueAlvo, Quantidade, SaldoAProduzir, SaldoAExpedir, CorFila, PedidoCliente) VALUES(@PedidoId, @ClienteId, @ClienteNome, @RazaoSocial, @ProdutoId, @ProdutoDescricao, @Status, @Estagio, @DataEntregaDe, @DataEntregaAte, @EmbarqueAlvo, @Quantidade, @SaldoAProduzir, @SaldoAExpedir, @CorFila, @PedidoCliente) ";
+            this.Query = $@" INSERT INTO [ConsultaPedido] ([PedidoId], [ClienteId], [ClienteNome], [RazaoSocial], [ProdutoId], [ProdutoDescricao], [Status], [Estagio], [DataEntregaDe], [DataEntregaAte], [EmbarqueAlvo], [Quantidade], [SaldoAProduzir], [SaldoAExpedir], [CorFila], [PedidoCliente]) VALUES(@PedidoId, @ClienteId, @ClienteNome, @RazaoSocial, @ProdutoId, @ProdutoDescricao, @Status, @Estagio, @DataEntregaDe, @DataEntregaAte, @EmbarqueAlvo, @Quantidade, @SaldoAProduzir, @SaldoAExpedir, @CorFila, @PedidoCliente) ";
             this.Parameters = new
             {
                 PedidoId = ConsultaPedido.PedidoId,
@@ -54,7 +54,7 @@ namespace Query.Write
         }
         public QueryModel UpdateConsultaPedidoQuery(IConsultaPedidoEntity ConsultaPedido)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET ClienteId = @ClienteId, ClienteNome = @ClienteNome, RazaoSocial = @RazaoSocial, ProdutoId = @ProdutoId, ProdutoDescricao = @ProdutoDescricao, Status = @Status, Estagio = @Estagio, DataEntregaDe = @DataEntregaDe, DataEntregaAte = @DataEntregaAte, EmbarqueAlvo = @EmbarqueAlvo, Quantidade = @Quantidade, SaldoAProduzir = @SaldoAProduzir, SaldoAExpedir = @SaldoAExpedir, CorFila = @CorFila, PedidoCliente = @PedidoCliente WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [ClienteId] = @ClienteId, [ClienteNome] = @ClienteNome, [RazaoSocial] = @RazaoSocial, [ProdutoId] = @ProdutoId, [ProdutoDescricao] = @ProdutoDescricao, [Status] = @Status, [Estagio] = @Estagio, [DataEntregaDe] = @DataEntregaDe, [DataEntregaAte] = @DataEntregaAte, [EmbarqueAlvo] = @EmbarqueAlvo, [Quantidade] = @Quantidade, [SaldoAProduzir] = @SaldoAProduzir, [SaldoAExpedir] = @SaldoAExpedir, [CorFila] = @CorFila, [PedidoCliente] = @PedidoCliente WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ClienteId = ConsultaPedido.ClienteId,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClienteId(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET ClienteId = @ClienteId WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [ClienteId] = @ClienteId WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ClienteId = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClienteNome(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET ClienteNome = @ClienteNome WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [ClienteNome] = @ClienteNome WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ClienteNome = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRazaoSocial(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET RazaoSocial = @RazaoSocial WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [RazaoSocial] = @RazaoSocial WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 RazaoSocial = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProdutoId(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET ProdutoId = @ProdutoId WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [ProdutoId] = @ProdutoId WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ProdutoId = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProdutoDescricao(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET ProdutoDescricao = @ProdutoDescricao WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [ProdutoDescricao] = @ProdutoDescricao WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ProdutoDescricao = value,
@@ -128,7 +128,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET Status = @Status WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [Status] = @Status WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Status = value,
@@ -138,7 +138,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEstagio(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET Estagio = @Estagio WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [Estagio] = @Estagio WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Estagio = value,
@@ -148,7 +148,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataEntregaDe(string pedidoid, DateTime value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET DataEntregaDe = @DataEntregaDe WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [DataEntregaDe] = @DataEntregaDe WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 DataEntregaDe = value,
@@ -158,7 +158,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataEntregaAte(string pedidoid, DateTime value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET DataEntregaAte = @DataEntregaAte WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [DataEntregaAte] = @DataEntregaAte WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 DataEntregaAte = value,
@@ -168,7 +168,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmbarqueAlvo(string pedidoid, DateTime value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET EmbarqueAlvo = @EmbarqueAlvo WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [EmbarqueAlvo] = @EmbarqueAlvo WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 EmbarqueAlvo = value,
@@ -178,7 +178,7 @@ namespace Query.Write
         }
         public QueryModel UpdateQuantidade(string pedidoid, Decimal value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET Quantidade = @Quantidade WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [Quantidade] = @Quantidade WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Quantidade = value,
@@ -188,7 +188,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSaldoAProduzir(string pedidoid, Decimal value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET SaldoAProduzir = @SaldoAProduzir WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [SaldoAProduzir] = @SaldoAProduzir WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 SaldoAProduzir = value,
@@ -198,7 +198,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSaldoAExpedir(string pedidoid, Decimal value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET SaldoAExpedir = @SaldoAExpedir WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [SaldoAExpedir] = @SaldoAExpedir WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 SaldoAExpedir = value,
@@ -208,7 +208,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCorFila(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET CorFila = @CorFila WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [CorFila] = @CorFila WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 CorFila = value,
@@ -218,7 +218,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePedidoCliente(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE ConsultaPedido SET PedidoCliente = @PedidoCliente WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [ConsultaPedido] SET [PedidoCliente] = @PedidoCliente WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 PedidoCliente = value,
@@ -228,7 +228,7 @@ namespace Query.Write
         }
         public QueryModel DeleteConsultaPedidoQuery(IConsultaPedidoEntity ConsultaPedido)
         {
-            this.Query = $@" DELETE FROM ConsultaPedido WHERE PedidoId = @PedidoId ";
+            this.Query = $@" DELETE FROM [ConsultaPedido] WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 PedidoId = ConsultaPedido.PedidoId,

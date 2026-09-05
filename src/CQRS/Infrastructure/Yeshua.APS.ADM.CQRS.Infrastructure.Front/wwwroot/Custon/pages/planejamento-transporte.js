@@ -2,28 +2,23 @@ const cssId = 'aps-planejamento-transporte-css';
 const hostId = 'custom-page-container';
 
 const endpoints = {
-    buscarContexto: '/yapi/APSADM/PlanejamentoTransporteBuscarContextoPlanejamentoTransporteUseCase',
-    listarLentes: '/yapi/APSADM/PlanejamentoTransporteListarLentesPlanejamentoTransporteUseCase',
-    abrirNoLente: '/yapi/APSADM/PlanejamentoTransporteAbrirNoLentePlanejamentoTransporteUseCase',
-    revalidarSelecao: '/yapi/APSADM/PlanejamentoTransporteRevalidarSelecaoPlanejamentoTransporteUseCase',
-    criarCarga: '/yapi/APSADM/PlanejamentoTransporteCriarCargaDaSelecaoPlanejamentoTransporteUseCase',
-    gerarOpcoes: '/yapi/APSADM/PlanejamentoTransporteGerarGruposDecisaoPlanejamentoTransporteUseCase',
-    gerarCenarios: '/yapi/APSADM/PlanejamentoTransporteGerarCenariosPlanejamentoTransporteUseCase'
-};
-
-const lensDefinitions = {
-    'estado-municipio': ['estado', 'municipio'],
-    'estado-municipio-regiao-bairro': ['estado', 'municipio', 'regiao', 'bairro'],
-    'rota-municipio': ['rotaId', 'municipio']
+    buscarContexto: '/APSADM/PlanejamentoTransporteBuscarContextoPlanejamentoTransporteUseCase',
+    listarLentes: '/APSADM/PlanejamentoTransporteListarLentesPlanejamentoTransporteUseCase',
+    abrirNoLente: '/APSADM/PlanejamentoTransporteAbrirNoLentePlanejamentoTransporteUseCase',
+    revalidarSelecao: '/APSADM/PlanejamentoTransporteRevalidarSelecaoPlanejamentoTransporteUseCase',
+    criarCarga: '/APSADM/PlanejamentoTransporteCriarCargaDaSelecaoPlanejamentoTransporteUseCase',
+    gerarOpcoes: '/APSADM/PlanejamentoTransporteGerarGruposDecisaoPlanejamentoTransporteUseCase',
+    gerarCenarios: '/APSADM/PlanejamentoTransporteGerarCenariosPlanejamentoTransporteUseCase'
 };
 
 const state = {
     contextoId: '',
     lenses: [],
-    pedidos: [],
+    roots: [],
     selected: new Map(),
+    loadedNodes: new Map(),
     activeLensId: 'estado-municipio',
-    dataMode: 'simulacao'
+    dataMode: 'api'
 };
 
 export async function renderPlanejamentoTransporte() {
@@ -71,9 +66,11 @@ function bindEvents() {
     document.getElementById('aps-generate-options')?.addEventListener('click', generateOptions);
     document.getElementById('aps-generate-scenarios')?.addEventListener('click', generateScenarios);
 
-    document.getElementById('aps-lens-select')?.addEventListener('change', event => {
+    document.getElementById('aps-lens-select')?.addEventListener('change', async event => {
         state.activeLensId = event.target.value;
-        renderTree();
+        state.roots = [];
+        state.loadedNodes.clear();
+        await loadLensRoot();
     });
 }
 
@@ -94,18 +91,31 @@ async function loadContext() {
         limitePedidos: Number(getValue('aps-limit') || 500)
     };
 
-    const result = await postUseCase(endpoints.buscarContexto, payload, mockContext);
-    const lenses = await postUseCase(endpoints.listarLentes, { contextoId: result.contextoId || '' }, mockLenses);
+    setTreeLoading('Carregando contexto...');
+    feedback('');
 
-    state.contextoId = result.contextoId || `local-${Date.now()}`;
-    state.lenses = normalizeArray(lenses.lentes || result.lentes || mockLenses().lentes);
-    state.pedidos = normalizeArray(result.pedidos || mockPedidos());
+    try {
+        const result = await postUseCase(endpoints.buscarContexto, payload);
+        state.contextoId = readField(result, 'contextoId', 'ContextoId') || '';
+        state.lenses = normalizeArray(readField(result, 'lentes', 'Lentes'));
+        state.roots = [];
+        state.loadedNodes.clear();
+        state.selected.clear();
 
-    renderLenses();
-    renderTree();
-    renderSelection();
-    setText('aps-context-status', `${state.pedidos.length} pedidos`);
-    setText('aps-data-mode', state.dataMode);
+        renderLenses();
+        await loadLensRoot();
+        renderSelection();
+
+        const quantidadePedidos = Number(readField(result, 'quantidadePedidos', 'QuantidadePedidos') || 0);
+        const quantidadeCargas = Number(readField(result, 'quantidadeCargas', 'QuantidadeCargas') || 0);
+        setText('aps-context-status', `${quantidadePedidos} pedidos | ${quantidadeCargas} cargas`);
+        setText('aps-data-mode', state.dataMode);
+    } catch (error) {
+        state.roots = [];
+        renderTree();
+        setText('aps-context-status', 'erro');
+        feedback(error.message || 'Nao foi possivel carregar o contexto.');
+    }
 }
 
 function renderLenses() {
@@ -115,54 +125,53 @@ function renderLenses() {
     select.innerHTML = '';
     for (const lens of state.lenses) {
         const option = document.createElement('option');
-        option.value = lens.lenteId;
-        option.textContent = lens.descricao;
+        option.value = readField(lens, 'lenteId', 'LenteId') || '';
+        option.textContent = readField(lens, 'descricao', 'Descricao') || option.value;
         select.appendChild(option);
     }
 
-    if (!state.lenses.some(l => l.lenteId === state.activeLensId)) {
-        state.activeLensId = state.lenses[0]?.lenteId || 'estado-municipio';
+    if (!state.lenses.some(lens => readField(lens, 'lenteId', 'LenteId') === state.activeLensId)) {
+        state.activeLensId = readField(state.lenses[0] || {}, 'lenteId', 'LenteId') || 'estado-municipio';
     }
 
     select.value = state.activeLensId;
+}
+
+async function loadLensRoot() {
+    if (!state.contextoId) return;
+
+    setTreeLoading('Carregando agrupamentos...');
+    const result = await openLens('', 0);
+    state.roots = normalizeArray(readField(result, 'nos', 'Nos')).map(normalizeNode);
+    renderTree();
+}
+
+async function openLens(noId, nivel) {
+    return postUseCase(endpoints.abrirNoLente, {
+        contextoId: state.contextoId,
+        lenteId: state.activeLensId,
+        noId,
+        nivel
+    });
 }
 
 function renderTree() {
     const tree = document.getElementById('aps-lens-tree');
     if (!tree) return;
 
-    const levels = lensDefinitions[state.activeLensId] || lensDefinitions['estado-municipio'];
-    const nodes = buildNodes(state.pedidos, levels, 0, '');
     tree.innerHTML = '';
-    nodes.forEach(node => tree.appendChild(renderGroupNode(node)));
+
+    if (state.roots.length === 0) {
+        tree.innerHTML = '<p class="aps-feedback">Nenhum agrupamento encontrado para o contexto.</p>';
+        return;
+    }
+
+    state.roots.forEach(node => tree.appendChild(renderGroupNode(node)));
 }
 
-function buildNodes(pedidos, levels, level, parentKey) {
-    if (level >= levels.length) {
-        return pedidos.map(order => ({ type: 'order', key: order.pedidoId, order }));
-    }
-
-    const field = levels[level];
-    const groups = new Map();
-
-    for (const order of pedidos) {
-        const value = order[field] || 'Sem classificacao';
-        if (!groups.has(value)) groups.set(value, []);
-        groups.get(value).push(order);
-    }
-
-    return Array.from(groups.entries())
-        .sort(([a], [b]) => String(a).localeCompare(String(b)))
-        .map(([value, groupPedidos]) => ({
-            type: 'group',
-            key: `${parentKey}/${field}:${value}`,
-            label: value,
-            level,
-            count: groupPedidos.length,
-            weight: sum(groupPedidos, 'peso'),
-            volume: sum(groupPedidos, 'volume'),
-            children: buildNodes(groupPedidos, levels, level + 1, `${parentKey}/${field}:${value}`)
-        }));
+function setTreeLoading(message) {
+    const tree = document.getElementById('aps-lens-tree');
+    if (tree) tree.innerHTML = `<p class="aps-feedback">${escapeHtml(message)}</p>`;
 }
 
 function renderGroupNode(node) {
@@ -173,24 +182,63 @@ function renderGroupNode(node) {
     row.type = 'button';
     row.className = 'aps-tree-row';
     row.innerHTML = `
-        <span>${node.children?.length ? '+' : '-'}</span>
+        <span class="aps-node-icon">${node.loaded ? '-' : '+'}</span>
         <span>
-            <strong>${escapeHtml(node.label)}</strong>
-            <small>${node.count} pedidos | ${formatNumber(node.weight)} kg | ${formatNumber(node.volume)} m3</small>
+            <strong>${escapeHtml(node.descricao)}</strong>
+            <small>${node.quantidadePedidos} pedidos | ${formatNumber(node.peso)} kg | ${formatNumber(node.volume)} m3</small>
         </span>
-        <small>N${node.level + 1}</small>
+        <small>N${node.nivel + 1}</small>
     `;
 
     const children = document.createElement('div');
     children.className = 'aps-tree-children';
-    node.children.forEach(child => {
-        children.appendChild(child.type === 'group' ? renderGroupNode(child) : renderOrderRow(child.order));
+
+    if (node.loaded) {
+        node.children.forEach(child => children.appendChild(renderGroupNode(child)));
+        node.orders.forEach(order => children.appendChild(renderOrderRow(order)));
+    }
+
+    row.addEventListener('click', async () => {
+        wrapper.classList.toggle('open');
+
+        if (!node.loaded) {
+            await loadNode(node, children, row);
+        }
     });
 
-    row.addEventListener('click', () => wrapper.classList.toggle('open'));
     wrapper.appendChild(row);
     wrapper.appendChild(children);
     return wrapper;
+}
+
+async function loadNode(node, children, row) {
+    const icon = row.querySelector('.aps-node-icon');
+    if (icon) icon.textContent = '...';
+    children.innerHTML = '<p class="aps-feedback">Carregando...</p>';
+
+    try {
+        const result = await openLens(node.noId, node.nivel + 1);
+        const childNodes = normalizeArray(readField(result, 'nos', 'Nos')).map(normalizeNode);
+        const pedidos = normalizeArray(readField(result, 'pedidos', 'Pedidos')).map(normalizeOrder);
+
+        node.loaded = true;
+        node.children = childNodes;
+        node.orders = pedidos;
+        state.loadedNodes.set(node.noId, node);
+
+        children.innerHTML = '';
+        childNodes.forEach(child => children.appendChild(renderGroupNode(child)));
+        pedidos.forEach(order => children.appendChild(renderOrderRow(order)));
+
+        if (childNodes.length === 0 && pedidos.length === 0) {
+            children.innerHTML = '<p class="aps-feedback">Sem pedidos neste agrupamento.</p>';
+        }
+
+        if (icon) icon.textContent = '-';
+    } catch (error) {
+        children.innerHTML = `<p class="aps-feedback">${escapeHtml(error.message || 'Falha ao abrir agrupamento.')}</p>`;
+        if (icon) icon.textContent = '+';
+    }
 }
 
 function renderOrderRow(order) {
@@ -235,7 +283,7 @@ function renderSelection() {
     container.innerHTML = '';
 
     if (orders.length === 0) {
-        container.innerHTML = '<p class="aps-feedback">Selecione grupos e pedidos pela lente ativa.</p>';
+        container.innerHTML = '<p class="aps-feedback">Abra uma lente e selecione pedidos para montar a carga.</p>';
     } else {
         orders.forEach(order => container.appendChild(renderSelectedOrder(order)));
     }
@@ -281,24 +329,60 @@ async function createLoadFromSelection() {
         return;
     }
 
-    const validation = await postUseCase(endpoints.revalidarSelecao, { contextoId: state.contextoId, pedidos }, () => ({ valida: true, mensagem: 'Selecao validada em simulacao.' }));
-    if (validation.valida === false) {
-        feedback(validation.mensagem || 'Selecao invalida.');
-        return;
-    }
+    try {
+        feedback('Validando selecao...');
+        const validation = await postUseCase(endpoints.revalidarSelecao, { contextoId: state.contextoId, pedidos });
+        if (readField(validation, 'valida', 'Valida') === false) {
+            const invalidOrders = normalizeArray(readField(validation, 'pedidosInvalidos', 'PedidosInvalidos', 'conflitos', 'Conflitos'));
+            const firstReason = invalidOrders.length > 0 ? readField(invalidOrders[0], 'alertasResumo', 'AlertasResumo', 'mensagem', 'Mensagem') : '';
+            const message = readField(validation, 'mensagem', 'Mensagem') || 'Selecao invalida.';
+            feedback(firstReason ? `${message} ${firstReason}` : message);
+            return;
+        }
 
-    const result = await postUseCase(endpoints.criarCarga, { contextoId: state.contextoId, pedidos, tipoVeiculoId: '', observacao: '' }, () => ({ criada: true, cargaId: 'SIM-0001', mensagem: 'Carga simulada criada.' }));
-    feedback(result.mensagem || `Carga ${result.cargaId || ''} criada.`);
+        feedback('Criando carga...');
+        const result = await postUseCase(endpoints.criarCarga, {
+            contextoId: state.contextoId,
+            pedidos,
+            tipoVeiculoId: '',
+            observacao: 'Criada pela tela de planejamento de transporte.'
+        });
+
+        const criada = readField(result, 'criada', 'Criada');
+        feedback(readField(result, 'mensagem', 'Mensagem') || (criada ? 'Carga criada.' : 'Carga nao criada.'));
+
+        if (criada !== false) {
+            state.selected.clear();
+            await loadContext();
+        }
+    } catch (error) {
+        feedback(error.message || 'Nao foi possivel criar a carga.');
+    }
 }
 
 async function generateOptions() {
-    const result = await postUseCase(endpoints.gerarOpcoes, { contextoId: state.contextoId, objetivo: 'equilibrar-custo-cubagem', pedidos: selectedRefs() }, () => ({ opcoes: mockOptions() }));
-    feedback(`${normalizeArray(result.opcoes).length} opcoes de decisao disponiveis.`);
+    try {
+        const result = await postUseCase(endpoints.gerarOpcoes, {
+            contextoId: state.contextoId,
+            objetivo: 'equilibrar-custo-cubagem',
+            pedidos: selectedRefs()
+        });
+        feedback(`${normalizeArray(readField(result, 'opcoes', 'Opcoes')).length} opcoes de decisao disponiveis.`);
+    } catch (error) {
+        feedback(error.message || 'Ainda nao foi possivel gerar grupos de decisao.');
+    }
 }
 
 async function generateScenarios() {
-    const result = await postUseCase(endpoints.gerarCenarios, { contextoId: state.contextoId, objetivo: 'menor-custo-com-entrega' }, () => ({ cenarios: mockScenarios() }));
-    feedback(`${normalizeArray(result.cenarios).length} cenarios completos disponiveis.`);
+    try {
+        const result = await postUseCase(endpoints.gerarCenarios, {
+            contextoId: state.contextoId,
+            objetivo: 'menor-custo-com-entrega'
+        });
+        feedback(`${normalizeArray(readField(result, 'cenarios', 'Cenarios')).length} cenarios completos disponiveis.`);
+    } catch (error) {
+        feedback(error.message || 'Ainda nao foi possivel gerar cenarios prontos.');
+    }
 }
 
 function clearSelection() {
@@ -315,92 +399,82 @@ function selectedRefs() {
     }));
 }
 
-async function postUseCase(endpoint, body, fallbackFactory) {
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${environments.urlApi}${endpoint}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify(body)
-        });
+async function postUseCase(endpoint, body) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(buildApiUrl(endpoint), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+    });
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const raw = await response.json();
-        state.dataMode = 'api';
-        return raw.data || raw.Data || raw;
-    } catch (error) {
-        state.dataMode = 'simulacao';
-        return fallbackFactory();
+    const text = await response.text();
+    if (!response.ok) {
+        throw new Error(text || `HTTP ${response.status}`);
     }
+
+    const raw = text ? JSON.parse(text) : {};
+    state.dataMode = 'api';
+    setText('aps-data-mode', state.dataMode);
+    return raw.data || raw.Data || raw;
 }
 
-function mockContext() {
+function buildApiUrl(endpoint) {
+    const apiBase = String(environments.urlApi || '').replace(/\/$/, '');
+    const path = String(endpoint || '').startsWith('/') ? String(endpoint || '') : `/${endpoint || ''}`;
+
+    if (apiBase && path.toLowerCase().startsWith(`${apiBase.toLowerCase()}/`)) {
+        return path;
+    }
+
+    return `${apiBase}${path}`;
+}
+
+function normalizeNode(node) {
     return {
-        contextoId: 'ctx-simulado',
-        geradoEm: new Date().toISOString(),
-        quantidadePedidos: mockPedidos().length,
-        quantidadeCargas: 2,
-        lentes: mockLenses().lentes,
-        pedidos: mockPedidos()
+        noId: readField(node, 'noId', 'NoId') || '',
+        parentNoId: readField(node, 'parentNoId', 'ParentNoId') || '',
+        descricao: readField(node, 'descricao', 'Descricao') || 'Sem classificacao',
+        nivel: Number(readField(node, 'nivel', 'Nivel') || 0),
+        quantidadePedidos: Number(readField(node, 'quantidadePedidos', 'QuantidadePedidos') || 0),
+        peso: Number(readField(node, 'peso', 'Peso') || 0),
+        volume: Number(readField(node, 'volume', 'Volume') || 0),
+        temFilhos: readField(node, 'temFilhos', 'TemFilhos') === true,
+        loaded: false,
+        children: [],
+        orders: []
     };
 }
 
-function mockLenses() {
+function normalizeOrder(order) {
     return {
-        lentes: [
-            { lenteId: 'estado-municipio', descricao: 'Estado > municipio > pedido', niveis: 'estado,municipio,pedido', expansaoRemota: false },
-            { lenteId: 'estado-municipio-regiao-bairro', descricao: 'Estado > municipio > regiao > bairro > pedido', niveis: 'estado,municipio,regiao,bairro,pedido', expansaoRemota: false },
-            { lenteId: 'rota-municipio', descricao: 'Rota > municipio > pedido', niveis: 'rota,municipio,pedido', expansaoRemota: false }
-        ]
+        pedidoId: readField(order, 'pedidoId', 'PedidoId', 'pedidoid') || '',
+        clienteNome: readField(order, 'clienteNome', 'ClienteNome', 'clientenome') || '',
+        estado: readField(order, 'estado', 'Estado') || '',
+        municipio: readField(order, 'municipio', 'Municipio') || '',
+        regiao: readField(order, 'regiao', 'Regiao') || '',
+        bairro: readField(order, 'bairro', 'Bairro') || '',
+        rotaId: readField(order, 'rotaId', 'RotaId', 'rotaid') || '',
+        peso: Number(readField(order, 'peso', 'Peso') || 0),
+        volume: Number(readField(order, 'volume', 'Volume') || 0),
+        embarqueAlvo: readField(order, 'embarqueAlvo', 'EmbarqueAlvo') || '',
+        versaoPlanejamento: readField(order, 'versaoPlanejamento', 'VersaoPlanejamento', 'versaoplanejamento') || '',
+        alertasResumo: readField(order, 'alertasResumo', 'AlertasResumo', 'alertasresumo') || ''
     };
 }
 
-function mockPedidos() {
-    return [
-        pedido('ORD-1001', 'Papel Minas', 'MG', 'Contagem', 'Metropolitana', 'Industrial', 'Rota MG Central', 4200, 18.4, 'OK'),
-        pedido('ORD-1002', 'Caixas Betim', 'MG', 'Betim', 'Metropolitana', 'Centro', 'Rota MG Central', 2700, 11.2, 'OK'),
-        pedido('ORD-1003', 'Embalagens Vale', 'MG', 'Ipatinga', 'Vale do Aco', 'Distrito', 'Rota Vale do Aco', 3100, 12.9, 'Janela curta'),
-        pedido('ORD-1004', 'Atacado Campinas', 'SP', 'Campinas', 'Interior', 'Jardim Londres', 'Rota SP Interior', 5200, 23.1, 'OK'),
-        pedido('ORD-1005', 'Distribuidora Osasco', 'SP', 'Osasco', 'Grande SP', 'Presidente Altino', 'Rota SP Capital', 2400, 9.8, 'Cliente sensivel'),
-        pedido('ORD-1006', 'Nordeste Food', 'BA', 'Feira de Santana', 'Centro Norte', 'Tomba', 'Rota Nordeste 1', 6100, 26.5, 'OK'),
-        pedido('ORD-1007', 'Salvador Pack', 'BA', 'Salvador', 'Metropolitana', 'Piraja', 'Rota Nordeste 1', 3300, 13.6, 'OK'),
-        pedido('ORD-1008', 'Recife Farma', 'PE', 'Recife', 'Metropolitana', 'Boa Viagem', 'Rota Nordeste 2', 1900, 7.4, 'Financeiro')
-    ];
-}
+function readField(object, ...names) {
+    if (!object) return undefined;
 
-function pedido(pedidoId, clienteNome, estado, municipio, regiao, bairro, rotaId, peso, volume, alertasResumo) {
-    return {
-        pedidoId,
-        clienteNome,
-        estado,
-        municipio,
-        regiao,
-        bairro,
-        rotaId,
-        peso,
-        volume,
-        embarqueAlvo: new Date().toISOString(),
-        versaoPlanejamento: `${pedidoId}-v1`,
-        alertasResumo
-    };
-}
+    for (const name of names) {
+        if (Object.prototype.hasOwnProperty.call(object, name)) {
+            return object[name];
+        }
+    }
 
-function mockOptions() {
-    return [
-        { opcaoId: 'OP-1', grupoDecisaoId: 'GD-1', peso: 6900, volume: 29.6, custoEstimado: 4300, aderenciaCubagem: 88, riscoResumo: 'baixo', pedidosResumo: 'ORD-1001, ORD-1002' },
-        { opcaoId: 'OP-2', grupoDecisaoId: 'GD-1', peso: 7300, volume: 31.3, custoEstimado: 4100, aderenciaCubagem: 91, riscoResumo: 'medio', pedidosResumo: 'ORD-1002, ORD-1003' }
-    ];
-}
-
-function mockScenarios() {
-    return [
-        { cenarioId: 'CE-1', descricao: 'Menor custo', objetivo: 'custo', quantidadeCargas: 4, quantidadePedidosNaoAtendidos: 1, custoTotal: 12800, alertasResumo: '1 pedido em risco' },
-        { cenarioId: 'CE-2', descricao: 'Maior aderencia de entrega', objetivo: 'entrega', quantidadeCargas: 5, quantidadePedidosNaoAtendidos: 0, custoTotal: 13900, alertasResumo: 'custo maior' }
-    ];
+    return undefined;
 }
 
 function sum(items, field) {

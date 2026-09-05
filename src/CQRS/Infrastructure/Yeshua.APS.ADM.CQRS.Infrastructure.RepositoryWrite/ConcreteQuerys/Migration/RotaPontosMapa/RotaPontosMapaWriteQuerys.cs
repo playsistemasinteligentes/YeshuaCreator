@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRotaPontosMapaQuery(IRotaPontosMapaEntity RotaPontosMapa)
         {
-            this.Query = $@" INSERT INTO RotaPontosMapa (ROT_ID, PON_ID_DESTINO, PON_ID_ORIGEM, ROT_CUSTO_TOTAL, PON_ID_ROTEIRO, ROT_ORDEM_ROTEIRO, ROT_TIPO, ROT_DISTANCIA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ROT_ID, @PON_ID_DESTINO, @PON_ID_ORIGEM, @ROT_CUSTO_TOTAL, @PON_ID_ROTEIRO, @ROT_ORDEM_ROTEIRO, @ROT_TIPO, @ROT_DISTANCIA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RotaPontosMapa] ([ROT_ID], [PON_ID_DESTINO], [PON_ID_ORIGEM], [ROT_CUSTO_TOTAL], [PON_ID_ROTEIRO], [ROT_ORDEM_ROTEIRO], [ROT_TIPO], [ROT_DISTANCIA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ROT_ID, @PON_ID_DESTINO, @PON_ID_ORIGEM, @ROT_CUSTO_TOTAL, @PON_ID_ROTEIRO, @ROT_ORDEM_ROTEIRO, @ROT_TIPO, @ROT_DISTANCIA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ROT_ID = RotaPontosMapa.ROT_ID,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRotaPontosMapaQuery(IRotaPontosMapaEntity RotaPontosMapa)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET ROT_ID = @ROT_ID, PON_ID_DESTINO = @PON_ID_DESTINO, PON_ID_ORIGEM = @PON_ID_ORIGEM, ROT_CUSTO_TOTAL = @ROT_CUSTO_TOTAL, PON_ID_ROTEIRO = @PON_ID_ROTEIRO, ROT_ORDEM_ROTEIRO = @ROT_ORDEM_ROTEIRO, ROT_TIPO = @ROT_TIPO, ROT_DISTANCIA = @ROT_DISTANCIA, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [ROT_ID] = @ROT_ID, [PON_ID_DESTINO] = @PON_ID_DESTINO, [PON_ID_ORIGEM] = @PON_ID_ORIGEM, [ROT_CUSTO_TOTAL] = @ROT_CUSTO_TOTAL, [PON_ID_ROTEIRO] = @PON_ID_ROTEIRO, [ROT_ORDEM_ROTEIRO] = @ROT_ORDEM_ROTEIRO, [ROT_TIPO] = @ROT_TIPO, [ROT_DISTANCIA] = @ROT_DISTANCIA, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_ID = RotaPontosMapa.ROT_ID,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_ID(int id, string value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET ROT_ID = @ROT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [ROT_ID] = @ROT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_ID_DESTINO(int id, string value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET PON_ID_DESTINO = @PON_ID_DESTINO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [PON_ID_DESTINO] = @PON_ID_DESTINO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PON_ID_DESTINO = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_ID_ORIGEM(int id, string value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET PON_ID_ORIGEM = @PON_ID_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [PON_ID_ORIGEM] = @PON_ID_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PON_ID_ORIGEM = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_CUSTO_TOTAL(int id, Decimal value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET ROT_CUSTO_TOTAL = @ROT_CUSTO_TOTAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [ROT_CUSTO_TOTAL] = @ROT_CUSTO_TOTAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_CUSTO_TOTAL = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_ID_ROTEIRO(int id, string value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET PON_ID_ROTEIRO = @PON_ID_ROTEIRO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [PON_ID_ROTEIRO] = @PON_ID_ROTEIRO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PON_ID_ROTEIRO = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_ORDEM_ROTEIRO(int id, int value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET ROT_ORDEM_ROTEIRO = @ROT_ORDEM_ROTEIRO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [ROT_ORDEM_ROTEIRO] = @ROT_ORDEM_ROTEIRO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_ORDEM_ROTEIRO = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_TIPO(int id, string value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET ROT_TIPO = @ROT_TIPO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [ROT_TIPO] = @ROT_TIPO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_TIPO = value,
@@ -139,7 +139,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_DISTANCIA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET ROT_DISTANCIA = @ROT_DISTANCIA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [ROT_DISTANCIA] = @ROT_DISTANCIA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_DISTANCIA = value,
@@ -149,7 +149,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -159,7 +159,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -169,7 +169,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -179,7 +179,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE RotaPontosMapa SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RotaPontosMapa] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -189,7 +189,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRotaPontosMapaQuery(IRotaPontosMapaEntity RotaPontosMapa)
         {
-            this.Query = $@" DELETE FROM RotaPontosMapa WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [RotaPontosMapa] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = RotaPontosMapa.Id,

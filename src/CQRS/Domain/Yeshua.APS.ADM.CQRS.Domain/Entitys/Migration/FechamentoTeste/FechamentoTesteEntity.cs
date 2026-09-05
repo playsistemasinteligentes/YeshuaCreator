@@ -34,12 +34,12 @@
  FEC_ID = fec_id; 
  FEC_QTD = fec_qtd; 
  GRP_ID = grp_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (FEC_ID == null)
-   this._erroMensagem.Add("FEC ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

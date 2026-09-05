@@ -36,18 +36,14 @@
  INF_VALOR = inf_valor; 
  MET_ID = met_id; 
  INF_DATA = inf_data; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (INF_ID == null)
-   this._erroMensagem.Add("INF ID deve ser informado.");
    if(string.IsNullOrEmpty(INF_DESCRICAO))
    this._erroMensagem.Add("INF DESCRICAO deve ser informado.");
-   if (INF_VALOR == null)
-   this._erroMensagem.Add("INF VALOR deve ser informado.");
-   if (MET_ID == null)
-   this._erroMensagem.Add("MET ID deve ser informado.");
    if(string.IsNullOrEmpty(INF_DATA))
    this._erroMensagem.Add("INF DATA deve ser informado.");
 return _erroMensagem.Count() <= 0;

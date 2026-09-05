@@ -48,12 +48,12 @@
  CDV_SEXTA = cdv_sexta; 
  CDV_SABADO = cdv_sabado; 
  CDV_DOMINGO = cdv_domingo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (CDV_ID == null)
-   this._erroMensagem.Add("CDV ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

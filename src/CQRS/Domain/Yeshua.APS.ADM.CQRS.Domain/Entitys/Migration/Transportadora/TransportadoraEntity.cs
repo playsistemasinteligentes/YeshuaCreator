@@ -42,6 +42,8 @@
  TRA_FONE = tra_fone; 
  TRA_ID_INTEGRACAO = tra_id_integracao; 
  TRA_ID_INTEGRACAO_ERP = tra_id_integracao_erp; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -36,12 +36,12 @@
  ORC_ID = orc_id; 
  MEM_VALOR = mem_valor; 
  MEM_DESCRICAO = mem_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MEM_ID == null)
-   this._erroMensagem.Add("MEM ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

@@ -36,16 +36,14 @@
  IND_ID = ind_id; 
  DIM_ID = dim_id; 
  PER_DESCRICAO = per_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(PER_ID))
    this._erroMensagem.Add("PER ID deve ser informado.");
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
-   if (DIM_ID == null)
-   this._erroMensagem.Add("DIM ID deve ser informado.");
    if(string.IsNullOrEmpty(PER_DESCRICAO))
    this._erroMensagem.Add("PER DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

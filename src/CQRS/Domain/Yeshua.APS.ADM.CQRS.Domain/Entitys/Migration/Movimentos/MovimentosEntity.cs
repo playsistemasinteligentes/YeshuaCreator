@@ -38,20 +38,14 @@
  MOV_PLAID = mov_plaid; 
  MOV_UNID = mov_unid; 
  Tr_Unidade_UNI_ID = tr_unidade_uni_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MOV_ID == null)
-   this._erroMensagem.Add("MOV ID deve ser informado.");
    if(string.IsNullOrEmpty(MOV_DATA))
    this._erroMensagem.Add("MOV DATA deve ser informado.");
-   if (MOV_VALOR == null)
-   this._erroMensagem.Add("MOV VALOR deve ser informado.");
-   if (MOV_PLAID == null)
-   this._erroMensagem.Add("MOV PLAID deve ser informado.");
-   if (MOV_UNID == null)
-   this._erroMensagem.Add("MOV UNID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

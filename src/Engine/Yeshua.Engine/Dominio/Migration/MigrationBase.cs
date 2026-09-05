@@ -139,6 +139,85 @@ namespace Dominio.Migration
             modulo.Entities.Add(_entity);
             return _entity.AddModule(modulo);
         }
+        public MigrationBase AddCustomPage(string moduleKey, string title, string page, string scope = "", string menuGroup = "")
+        {
+            Module modulo = GetOrCreateModule(moduleKey);
+
+            var customPage = modulo.CustomPages.FirstOrDefault(x => x.Page.Equals(page, StringComparison.OrdinalIgnoreCase));
+            if (customPage == null)
+            {
+                modulo.CustomPages.Add(new ModuleCustomPage(title, page, scope, menuGroup));
+            }
+            else
+            {
+                customPage.Title = title;
+                customPage.Scope = scope;
+                customPage.MenuGroup = menuGroup;
+            }
+
+            if (!string.IsNullOrWhiteSpace(menuGroup))
+                AddMenuGroup(moduleKey, menuGroup, title);
+
+            return this;
+        }
+
+        public MigrationBase AddMenuGroup(string moduleKey, string title, params string[] items)
+        {
+            var group = GetOrCreateMenuGroup(moduleKey, title);
+
+            foreach (var item in items)
+                group.AddItem(item);
+
+            return this;
+        }
+
+        public MigrationBase AddMenuItemToGroup(string moduleKey, string groupTitle, string item)
+        {
+            return AddMenuGroup(moduleKey, groupTitle, item);
+        }
+
+        public MigrationBase AddMenuGroupByPrefix(string moduleKey, string title, params string[] prefixes)
+        {
+            var group = GetOrCreateMenuGroup(moduleKey, title);
+
+            foreach (var prefix in prefixes)
+                group.AddPrefix(prefix);
+
+            return this;
+        }
+
+        public MigrationBase AddRemainingMenuGroup(string moduleKey, string title)
+        {
+            var group = GetOrCreateMenuGroup(moduleKey, title);
+            group.IncludeRemaining = true;
+
+            return this;
+        }
+
+        private Module GetOrCreateModule(string moduleKey)
+        {
+            Module modulo = Modules.Where(x => x.Key == moduleKey).FirstOrDefault();
+            if (modulo == null)
+            {
+                modulo = new Module(moduleKey);
+                Modules.Add(modulo);
+            }
+
+            return modulo;
+        }
+
+        private ModuleMenuGroup GetOrCreateMenuGroup(string moduleKey, string title)
+        {
+            Module modulo = GetOrCreateModule(moduleKey);
+            var group = modulo.MenuGroups.FirstOrDefault(x => x.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+            if (group == null)
+            {
+                group = new ModuleMenuGroup(title);
+                modulo.MenuGroups.Add(group);
+            }
+
+            return group;
+        }
         public Entity AddIndex()
         {
             return _entity.AddIndex();

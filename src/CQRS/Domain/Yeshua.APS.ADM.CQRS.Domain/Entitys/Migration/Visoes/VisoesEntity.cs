@@ -34,16 +34,12 @@
  VIS_PLANID = vis_planid; 
  VIS_FORMULA = vis_formula; 
  CAB_ID = cab_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (VIS_ID == null)
-   this._erroMensagem.Add("VIS ID deve ser informado.");
-   if (VIS_PLANID == null)
-   this._erroMensagem.Add("VIS PLANID deve ser informado.");
-   if (CAB_ID == null)
-   this._erroMensagem.Add("CAB ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

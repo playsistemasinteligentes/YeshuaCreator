@@ -50,12 +50,12 @@
  IPA_DIML = ipa_diml; 
  IPA_DIMA = ipa_dima; 
  IPA_QTD_POR_PALETE = ipa_qtd_por_palete; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IPA_ID == null)
-   this._erroMensagem.Add("IPA ID deve ser informado.");
    if(string.IsNullOrEmpty(CAR_ID))
    this._erroMensagem.Add("CAR ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

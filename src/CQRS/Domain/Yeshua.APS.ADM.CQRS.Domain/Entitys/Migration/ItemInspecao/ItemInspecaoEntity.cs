@@ -32,12 +32,12 @@
  Id = id; 
  ITI_ID = iti_id; 
  ITI_DESC = iti_desc; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ITI_ID == null)
-   this._erroMensagem.Add("ITI ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

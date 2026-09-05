@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirIndicadoresDepartamentosQuery(IIndicadoresDepartamentosEntity IndicadoresDepartamentos)
         {
-            this.Query = $@" INSERT INTO IndicadoresDepartamentos (DEP_ID, IND_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.INDDEP_ID VALUES(@DEP_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [IndicadoresDepartamentos] ([DEP_ID], [IND_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[INDDEP_ID] VALUES(@DEP_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 DEP_ID = IndicadoresDepartamentos.DEP_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIndicadoresDepartamentosQuery(IIndicadoresDepartamentosEntity IndicadoresDepartamentos)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET DEP_ID = @DEP_ID, IND_ID = @IND_ID, Changed = @Changed, UserId = @UserId WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [DEP_ID] = @DEP_ID, [IND_ID] = @IND_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 DEP_ID = IndicadoresDepartamentos.DEP_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDEP_ID(int inddep_id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET DEP_ID = @DEP_ID WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [DEP_ID] = @DEP_ID WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 DEP_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_ID(int inddep_id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET IND_ID = @IND_ID WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [IND_ID] = @IND_ID WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 IND_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int inddep_id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET TenantID = @TenantID WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [TenantID] = @TenantID WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int inddep_id, bool value)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET Deleted = @Deleted WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [Deleted] = @Deleted WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int inddep_id, DateTime value)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET Changed = @Changed WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [Changed] = @Changed WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int inddep_id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresDepartamentos SET UserId = @UserId WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" UPDATE [IndicadoresDepartamentos] SET [UserId] = @UserId WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteIndicadoresDepartamentosQuery(IIndicadoresDepartamentosEntity IndicadoresDepartamentos)
         {
-            this.Query = $@" DELETE FROM IndicadoresDepartamentos WHERE INDDEP_ID = @INDDEP_ID ";
+            this.Query = $@" DELETE FROM [IndicadoresDepartamentos] WHERE [INDDEP_ID] = @INDDEP_ID ";
             this.Parameters = new
             {
                 INDDEP_ID = IndicadoresDepartamentos.INDDEP_ID,

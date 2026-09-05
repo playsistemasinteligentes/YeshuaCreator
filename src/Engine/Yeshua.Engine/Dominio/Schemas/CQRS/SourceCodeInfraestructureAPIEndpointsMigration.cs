@@ -159,8 +159,18 @@ namespace Dominio.Schemas.CQRS
                             children = m.Menus.Select(menu => new
                             {
                                 description = menu.Title,
-                                endpoint = $""/getMetaData{menu.Title}"",
-                                type = ""crud""
+                                endpoint = string.IsNullOrWhiteSpace(menu.Endpoint) ? $""/getMetaData{menu.Title}"" : menu.Endpoint,
+                                type = string.IsNullOrWhiteSpace(menu.Type) ? ""crud"" : menu.Type,
+                                page = menu.Page,
+                                scope = menu.Scope,
+                                children = menu.SubMenus.Select(subMenu => new
+                                {
+                                    description = subMenu.Title,
+                                    endpoint = string.IsNullOrWhiteSpace(subMenu.Endpoint) ? $""/getMetaData{subMenu.Title}"" : subMenu.Endpoint,
+                                    type = string.IsNullOrWhiteSpace(subMenu.Type) ? ""crud"" : subMenu.Type,
+                                    page = subMenu.Page,
+                                    scope = subMenu.Scope
+                                }).ToList()
                             }).ToList()
                         }).ToList();
 

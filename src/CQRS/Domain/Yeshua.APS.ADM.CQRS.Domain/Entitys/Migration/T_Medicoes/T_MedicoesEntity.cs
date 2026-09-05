@@ -70,13 +70,13 @@
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
  MED_VALOR_DISPER = med_valor_disper; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MED_ID == null)
-   this._erroMensagem.Add("MED ID deve ser informado.");
-   if (MED_DATA == null || MED_DATA < (new DateTime(1800, 1, 1)))
+   if(MED_DATA == null || MED_DATA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("MED DATA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

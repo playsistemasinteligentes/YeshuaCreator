@@ -39,7 +39,7 @@ public partial class yModuleCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class yModuleCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = ApiTestData.Text("yModule Id", 80),
+            ["Id"] = ApiTestData.KeyText(12),
             ["Description"] = ApiTestData.Text("yModule Description", 80),
         };
     }

@@ -296,6 +296,8 @@
  PRO_QUEBRA_VINCO_MAIOR = pro_quebra_vinco_maior; 
  PRO_QUEBRA_VINCO_MENOR = pro_quebra_vinco_menor; 
  CLI_ID = cli_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -304,8 +306,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("UNI ID deve ser informado.");
    if(string.IsNullOrEmpty(GRP_ID))
    this._erroMensagem.Add("GRP ID deve ser informado.");
-   if (VIN_ID == null)
-   this._erroMensagem.Add("VIN ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

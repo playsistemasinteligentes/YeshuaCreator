@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture)
         {
-            this.Query = $@" INSERT INTO yConfigArcteture (Id, AuditTrackerActived, AuditCRUDActived, TenantID, Deleted, Changed, UserId) VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yConfigArcteture] ([Id], [AuditTrackerActived], [AuditCRUDActived], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @AuditTrackerActived, @AuditCRUDActived, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = yConfigArcteture.Id,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET AuditTrackerActived = @AuditTrackerActived, AuditCRUDActived = @AuditCRUDActived, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [AuditTrackerActived] = @AuditTrackerActived, [AuditCRUDActived] = @AuditCRUDActived, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AuditTrackerActived = yConfigArcteture.AuditTrackerActived,
@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAuditTrackerActived(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET AuditTrackerActived = @AuditTrackerActived WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [AuditTrackerActived] = @AuditTrackerActived WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AuditTrackerActived = value,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAuditCRUDActived(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET AuditCRUDActived = @AuditCRUDActived WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [AuditCRUDActived] = @AuditCRUDActived WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AuditCRUDActived = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigArcteture SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigArcteture] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyConfigArctetureQuery(IyConfigArctetureEntity yConfigArcteture)
         {
-            this.Query = $@" DELETE FROM yConfigArcteture WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yConfigArcteture] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yConfigArcteture.Id,

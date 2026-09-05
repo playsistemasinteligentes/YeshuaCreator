@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOperacoesQuery(IOperacoesEntity Operacoes)
         {
-            this.Query = $@" INSERT INTO Operacoes (OPE_TIPO_REGISTRO, OPE_ID, GMA_ID, MAQ_ID, PRO_ID, OPE_EXCECAO, ROT_SEQ_TRANFORMACAO, ORD_ID, FPR_SEQ_REPETICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@OPE_TIPO_REGISTRO, @OPE_ID, @GMA_ID, @MAQ_ID, @PRO_ID, @OPE_EXCECAO, @ROT_SEQ_TRANFORMACAO, @ORD_ID, @FPR_SEQ_REPETICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Operacoes] ([OPE_TIPO_REGISTRO], [OPE_ID], [GMA_ID], [MAQ_ID], [PRO_ID], [OPE_EXCECAO], [ROT_SEQ_TRANFORMACAO], [ORD_ID], [FPR_SEQ_REPETICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OPE_TIPO_REGISTRO, @OPE_ID, @GMA_ID, @MAQ_ID, @PRO_ID, @OPE_EXCECAO, @ROT_SEQ_TRANFORMACAO, @ORD_ID, @FPR_SEQ_REPETICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OPE_TIPO_REGISTRO = Operacoes.OPE_TIPO_REGISTRO,
@@ -51,7 +51,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOperacoesQuery(IOperacoesEntity Operacoes)
         {
-            this.Query = $@" UPDATE Operacoes SET OPE_TIPO_REGISTRO = @OPE_TIPO_REGISTRO, OPE_ID = @OPE_ID, GMA_ID = @GMA_ID, MAQ_ID = @MAQ_ID, PRO_ID = @PRO_ID, OPE_EXCECAO = @OPE_EXCECAO, ROT_SEQ_TRANFORMACAO = @ROT_SEQ_TRANFORMACAO, ORD_ID = @ORD_ID, FPR_SEQ_REPETICAO = @FPR_SEQ_REPETICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [OPE_TIPO_REGISTRO] = @OPE_TIPO_REGISTRO, [OPE_ID] = @OPE_ID, [GMA_ID] = @GMA_ID, [MAQ_ID] = @MAQ_ID, [PRO_ID] = @PRO_ID, [OPE_EXCECAO] = @OPE_EXCECAO, [ROT_SEQ_TRANFORMACAO] = @ROT_SEQ_TRANFORMACAO, [ORD_ID] = @ORD_ID, [FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OPE_TIPO_REGISTRO = Operacoes.OPE_TIPO_REGISTRO,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOPE_TIPO_REGISTRO(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET OPE_TIPO_REGISTRO = @OPE_TIPO_REGISTRO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [OPE_TIPO_REGISTRO] = @OPE_TIPO_REGISTRO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OPE_TIPO_REGISTRO = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOPE_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET OPE_ID = @OPE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [OPE_ID] = @OPE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OPE_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGMA_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET GMA_ID = @GMA_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [GMA_ID] = @GMA_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GMA_ID = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET MAQ_ID = @MAQ_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [MAQ_ID] = @MAQ_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET PRO_ID = @PRO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [PRO_ID] = @PRO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOPE_EXCECAO(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET OPE_EXCECAO = @OPE_EXCECAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [OPE_EXCECAO] = @OPE_EXCECAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OPE_EXCECAO = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_SEQ_TRANFORMACAO(int id, int value)
         {
-            this.Query = $@" UPDATE Operacoes SET ROT_SEQ_TRANFORMACAO = @ROT_SEQ_TRANFORMACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [ROT_SEQ_TRANFORMACAO] = @ROT_SEQ_TRANFORMACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROT_SEQ_TRANFORMACAO = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Operacoes SET ORD_ID = @ORD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [ORD_ID] = @ORD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORD_ID = value,
@@ -151,7 +151,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFPR_SEQ_REPETICAO(int id, int value)
         {
-            this.Query = $@" UPDATE Operacoes SET FPR_SEQ_REPETICAO = @FPR_SEQ_REPETICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FPR_SEQ_REPETICAO = value,
@@ -161,7 +161,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Operacoes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -171,7 +171,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Operacoes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -181,7 +181,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Operacoes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -191,7 +191,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Operacoes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Operacoes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -201,7 +201,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOperacoesQuery(IOperacoesEntity Operacoes)
         {
-            this.Query = $@" DELETE FROM Operacoes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Operacoes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Operacoes.Id,

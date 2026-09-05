@@ -42,18 +42,16 @@
  MAP_CUSTO_PEDAGIO_POR_EIXO = map_custo_pedagio_por_eixo; 
  ROD_ID = rod_id; 
  MAP_ALTURA_ROD = map_altura_rod; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MAP_ID == null)
-   this._erroMensagem.Add("MAP ID deve ser informado.");
    if(string.IsNullOrEmpty(PON_ID))
    this._erroMensagem.Add("PON ID deve ser informado.");
    if(string.IsNullOrEmpty(PON_ID_VIZINHO))
    this._erroMensagem.Add("PON ID VIZINHO deve ser informado.");
-   if (MAP_DISTANCIA == null)
-   this._erroMensagem.Add("MAP DISTANCIA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

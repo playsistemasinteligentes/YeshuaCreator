@@ -32,6 +32,8 @@
  Id = id; 
  EQU_ID = equ_id; 
  EQU_HIERARQUIA_SEQ_TRANSFORMACAO = equ_hierarquia_seq_transformacao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

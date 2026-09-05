@@ -34,6 +34,8 @@
  CDV_ID = cdv_id; 
  TIP_ID = tip_id; 
  IDV_QTD = idv_qtd; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

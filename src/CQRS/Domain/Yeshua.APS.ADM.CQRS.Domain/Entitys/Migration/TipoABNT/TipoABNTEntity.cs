@@ -32,6 +32,8 @@
  Id = id; 
  ABN_ID = abn_id; 
  ABN_DESCRICAO = abn_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

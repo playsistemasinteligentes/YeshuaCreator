@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirLotesQuery(ILotesEntity Lotes)
         {
-            this.Query = $@" INSERT INTO Lotes (MOV_LOTE, MOV_SUB_LOTE, LOT_LARGURA, LOT_COMPRIMENTO, LOT_DIAMETRO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MOV_LOTE, @MOV_SUB_LOTE, @LOT_LARGURA, @LOT_COMPRIMENTO, @LOT_DIAMETRO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Lotes] ([MOV_LOTE], [MOV_SUB_LOTE], [LOT_LARGURA], [LOT_COMPRIMENTO], [LOT_DIAMETRO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MOV_LOTE, @MOV_SUB_LOTE, @LOT_LARGURA, @LOT_COMPRIMENTO, @LOT_DIAMETRO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MOV_LOTE = Lotes.MOV_LOTE,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLotesQuery(ILotesEntity Lotes)
         {
-            this.Query = $@" UPDATE Lotes SET MOV_LOTE = @MOV_LOTE, MOV_SUB_LOTE = @MOV_SUB_LOTE, LOT_LARGURA = @LOT_LARGURA, LOT_COMPRIMENTO = @LOT_COMPRIMENTO, LOT_DIAMETRO = @LOT_DIAMETRO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [MOV_LOTE] = @MOV_LOTE, [MOV_SUB_LOTE] = @MOV_SUB_LOTE, [LOT_LARGURA] = @LOT_LARGURA, [LOT_COMPRIMENTO] = @LOT_COMPRIMENTO, [LOT_DIAMETRO] = @LOT_DIAMETRO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_LOTE = Lotes.MOV_LOTE,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_LOTE(int id, string value)
         {
-            this.Query = $@" UPDATE Lotes SET MOV_LOTE = @MOV_LOTE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [MOV_LOTE] = @MOV_LOTE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_LOTE = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_SUB_LOTE(int id, string value)
         {
-            this.Query = $@" UPDATE Lotes SET MOV_SUB_LOTE = @MOV_SUB_LOTE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [MOV_SUB_LOTE] = @MOV_SUB_LOTE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_SUB_LOTE = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOT_LARGURA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Lotes SET LOT_LARGURA = @LOT_LARGURA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [LOT_LARGURA] = @LOT_LARGURA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOT_LARGURA = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOT_COMPRIMENTO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Lotes SET LOT_COMPRIMENTO = @LOT_COMPRIMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [LOT_COMPRIMENTO] = @LOT_COMPRIMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOT_COMPRIMENTO = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOT_DIAMETRO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Lotes SET LOT_DIAMETRO = @LOT_DIAMETRO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [LOT_DIAMETRO] = @LOT_DIAMETRO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOT_DIAMETRO = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Lotes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Lotes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Lotes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Lotes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Lotes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeleteLotesQuery(ILotesEntity Lotes)
         {
-            this.Query = $@" DELETE FROM Lotes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Lotes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Lotes.Id,

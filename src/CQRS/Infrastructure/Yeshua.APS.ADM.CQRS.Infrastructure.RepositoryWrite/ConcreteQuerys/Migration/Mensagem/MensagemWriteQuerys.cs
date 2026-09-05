@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMensagemQuery(IMensagemEntity Mensagem)
         {
-            this.Query = $@" INSERT INTO Mensagem (MEN_ID, MEN_SEND, MEN_EMISSION, MEN_STATUS, MEN_RECEIVE, MEN_TYPE, MEN_QTD_TRY_SEND, MEN_DATE_TRY_SEND, TenantID, Deleted, Changed, UserId) VALUES(@MEN_ID, @MEN_SEND, @MEN_EMISSION, @MEN_STATUS, @MEN_RECEIVE, @MEN_TYPE, @MEN_QTD_TRY_SEND, @MEN_DATE_TRY_SEND, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Mensagem] ([MEN_ID], [MEN_SEND], [MEN_EMISSION], [MEN_STATUS], [MEN_RECEIVE], [MEN_TYPE], [MEN_QTD_TRY_SEND], [MEN_DATE_TRY_SEND], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MEN_ID, @MEN_SEND, @MEN_EMISSION, @MEN_STATUS, @MEN_RECEIVE, @MEN_TYPE, @MEN_QTD_TRY_SEND, @MEN_DATE_TRY_SEND, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MEN_ID = Mensagem.MEN_ID,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMensagemQuery(IMensagemEntity Mensagem)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_SEND = @MEN_SEND, MEN_EMISSION = @MEN_EMISSION, MEN_STATUS = @MEN_STATUS, MEN_RECEIVE = @MEN_RECEIVE, MEN_TYPE = @MEN_TYPE, MEN_QTD_TRY_SEND = @MEN_QTD_TRY_SEND, MEN_DATE_TRY_SEND = @MEN_DATE_TRY_SEND, Changed = @Changed, UserId = @UserId WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_SEND] = @MEN_SEND, [MEN_EMISSION] = @MEN_EMISSION, [MEN_STATUS] = @MEN_STATUS, [MEN_RECEIVE] = @MEN_RECEIVE, [MEN_TYPE] = @MEN_TYPE, [MEN_QTD_TRY_SEND] = @MEN_QTD_TRY_SEND, [MEN_DATE_TRY_SEND] = @MEN_DATE_TRY_SEND, [Changed] = @Changed, [UserId] = @UserId WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_SEND = Mensagem.MEN_SEND,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_SEND(string men_id, string value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_SEND = @MEN_SEND WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_SEND] = @MEN_SEND WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_SEND = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_EMISSION(string men_id, DateTime value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_EMISSION = @MEN_EMISSION WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_EMISSION] = @MEN_EMISSION WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_EMISSION = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_STATUS(string men_id, string value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_STATUS = @MEN_STATUS WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_STATUS] = @MEN_STATUS WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_STATUS = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_RECEIVE(string men_id, string value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_RECEIVE = @MEN_RECEIVE WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_RECEIVE] = @MEN_RECEIVE WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_RECEIVE = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_TYPE(string men_id, string value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_TYPE = @MEN_TYPE WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_TYPE] = @MEN_TYPE WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_TYPE = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_QTD_TRY_SEND(string men_id, Decimal value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_QTD_TRY_SEND = @MEN_QTD_TRY_SEND WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_QTD_TRY_SEND] = @MEN_QTD_TRY_SEND WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_QTD_TRY_SEND = value,
@@ -128,7 +128,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEN_DATE_TRY_SEND(string men_id, DateTime value)
         {
-            this.Query = $@" UPDATE Mensagem SET MEN_DATE_TRY_SEND = @MEN_DATE_TRY_SEND WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [MEN_DATE_TRY_SEND] = @MEN_DATE_TRY_SEND WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_DATE_TRY_SEND = value,
@@ -138,7 +138,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string men_id, int value)
         {
-            this.Query = $@" UPDATE Mensagem SET TenantID = @TenantID WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [TenantID] = @TenantID WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -148,7 +148,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string men_id, bool value)
         {
-            this.Query = $@" UPDATE Mensagem SET Deleted = @Deleted WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [Deleted] = @Deleted WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -158,7 +158,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string men_id, DateTime value)
         {
-            this.Query = $@" UPDATE Mensagem SET Changed = @Changed WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [Changed] = @Changed WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -168,7 +168,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string men_id, int value)
         {
-            this.Query = $@" UPDATE Mensagem SET UserId = @UserId WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" UPDATE [Mensagem] SET [UserId] = @UserId WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -178,7 +178,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMensagemQuery(IMensagemEntity Mensagem)
         {
-            this.Query = $@" DELETE FROM Mensagem WHERE MEN_ID = @MEN_ID ";
+            this.Query = $@" DELETE FROM [Mensagem] WHERE [MEN_ID] = @MEN_ID ";
             this.Parameters = new
             {
                 MEN_ID = Mensagem.MEN_ID,

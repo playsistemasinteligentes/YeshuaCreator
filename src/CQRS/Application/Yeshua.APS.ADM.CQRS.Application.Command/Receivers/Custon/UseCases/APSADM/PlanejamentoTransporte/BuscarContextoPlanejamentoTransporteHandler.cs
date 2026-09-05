@@ -16,6 +16,9 @@ using RepositoryInterfaces.Patterns.UnitOfWork;
 using IRepository.Read;
 using IRepository.Write;
 using Command.UseCase;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
 {
@@ -41,7 +44,28 @@ namespace Command.Receivers.UseCase
         }
 protected partial async Task<State<BuscarContextoPlanejamentoTransporteOutputCommand>> CustomActionHookAsync(State<BuscarContextoPlanejamentoTransporteOutputCommand> state, BuscarContextoPlanejamentoTransporteInputCommand comand, CancellationToken cancellationToken)
 {
-    return state;
+    await Task.CompletedTask;
+
+    var embarqueDe = comand.EmbarqueDe.Date;
+    var embarqueAte = comand.EmbarqueAte.Date;
+
+    if (embarqueDe.Year < 2000)
+        embarqueDe = DateTime.Today;
+
+    if (embarqueAte.Year < 2000 || embarqueAte < embarqueDe)
+        embarqueAte = embarqueDe.AddDays(1);
+
+    var limite = PlanejamentoTransporteLensCatalog.NormalizeLimit(comand.LimitePedidos);
+    var metrics = _repReadPedidoPlanejavel.GetPlanejamentoContext(embarqueDe, embarqueAte, limite);
+
+    return Success("OK", new BuscarContextoPlanejamentoTransporteOutputCommand
+    {
+        ContextoId = PlanejamentoTransporteLensCatalog.CreateContextId(embarqueDe, embarqueAte, limite, comand.PlantaId),
+        GeradoEm = DateTime.UtcNow,
+        QuantidadePedidos = metrics.quantidadepedidos,
+        QuantidadeCargas = metrics.quantidadecargas,
+        Lentes = PlanejamentoTransporteLensCatalog.List()
+    });
 }
     }
 }

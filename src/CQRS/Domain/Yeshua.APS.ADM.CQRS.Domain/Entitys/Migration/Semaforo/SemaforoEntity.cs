@@ -38,6 +38,8 @@
  SEM_ORIGEM = sem_origem; 
  SEM_EMISSAO = (sem_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : sem_emissao; 
  SEM_ID_CONEXAO = sem_id_conexao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOptAlteracaoDimencoesQuery(IOptAlteracaoDimencoesEntity OptAlteracaoDimencoes)
         {
-            this.Query = $@" INSERT INTO OptAlteracaoDimencoes (OAD_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@OAD_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [OptAlteracaoDimencoes] ([OAD_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OAD_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OAD_ID = OptAlteracaoDimencoes.OAD_ID,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOptAlteracaoDimencoesQuery(IOptAlteracaoDimencoesEntity OptAlteracaoDimencoes)
         {
-            this.Query = $@" UPDATE OptAlteracaoDimencoes SET OAD_ID = @OAD_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OptAlteracaoDimencoes] SET [OAD_ID] = @OAD_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OAD_ID = OptAlteracaoDimencoes.OAD_ID,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOAD_ID(int id, int value)
         {
-            this.Query = $@" UPDATE OptAlteracaoDimencoes SET OAD_ID = @OAD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OptAlteracaoDimencoes] SET [OAD_ID] = @OAD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OAD_ID = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE OptAlteracaoDimencoes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OptAlteracaoDimencoes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE OptAlteracaoDimencoes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OptAlteracaoDimencoes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE OptAlteracaoDimencoes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OptAlteracaoDimencoes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE OptAlteracaoDimencoes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OptAlteracaoDimencoes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOptAlteracaoDimencoesQuery(IOptAlteracaoDimencoesEntity OptAlteracaoDimencoes)
         {
-            this.Query = $@" DELETE FROM OptAlteracaoDimencoes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [OptAlteracaoDimencoes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = OptAlteracaoDimencoes.Id,

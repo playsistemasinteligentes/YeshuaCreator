@@ -32,16 +32,12 @@
  TTT_ID = ttt_id; 
  TT_ID = tt_id; 
  TEM_ID = tem_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TTT_ID == null)
-   this._erroMensagem.Add("TTT ID deve ser informado.");
-   if (TT_ID == null)
-   this._erroMensagem.Add("TT ID deve ser informado.");
-   if (TEM_ID == null)
-   this._erroMensagem.Add("TEM ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

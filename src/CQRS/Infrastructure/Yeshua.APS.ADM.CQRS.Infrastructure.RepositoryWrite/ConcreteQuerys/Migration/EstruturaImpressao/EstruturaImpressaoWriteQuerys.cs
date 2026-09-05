@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEstruturaImpressaoQuery(IEstruturaImpressaoEntity EstruturaImpressao)
         {
-            this.Query = $@" INSERT INTO EstruturaImpressao (HTML_ESTRUTURA, CLI_ID, EST_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.EST_ID VALUES(@HTML_ESTRUTURA, @CLI_ID, @EST_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [EstruturaImpressao] ([HTML_ESTRUTURA], [CLI_ID], [EST_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[EST_ID] VALUES(@HTML_ESTRUTURA, @CLI_ID, @EST_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 HTML_ESTRUTURA = EstruturaImpressao.HTML_ESTRUTURA,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEstruturaImpressaoQuery(IEstruturaImpressaoEntity EstruturaImpressao)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET HTML_ESTRUTURA = @HTML_ESTRUTURA, CLI_ID = @CLI_ID, EST_DESCRICAO = @EST_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [HTML_ESTRUTURA] = @HTML_ESTRUTURA, [CLI_ID] = @CLI_ID, [EST_DESCRICAO] = @EST_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 HTML_ESTRUTURA = EstruturaImpressao.HTML_ESTRUTURA,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHTML_ESTRUTURA(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET HTML_ESTRUTURA = @HTML_ESTRUTURA WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [HTML_ESTRUTURA] = @HTML_ESTRUTURA WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 HTML_ESTRUTURA = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET CLI_ID = @CLI_ID WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [CLI_ID] = @CLI_ID WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_DESCRICAO(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET EST_DESCRICAO = @EST_DESCRICAO WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [EST_DESCRICAO] = @EST_DESCRICAO WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_DESCRICAO = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET TenantID = @TenantID WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [TenantID] = @TenantID WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int est_id, bool value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET Deleted = @Deleted WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [Deleted] = @Deleted WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int est_id, DateTime value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET Changed = @Changed WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [Changed] = @Changed WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaImpressao SET UserId = @UserId WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaImpressao] SET [UserId] = @UserId WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteEstruturaImpressaoQuery(IEstruturaImpressaoEntity EstruturaImpressao)
         {
-            this.Query = $@" DELETE FROM EstruturaImpressao WHERE EST_ID = @EST_ID ";
+            this.Query = $@" DELETE FROM [EstruturaImpressao] WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_ID = EstruturaImpressao.EST_ID,

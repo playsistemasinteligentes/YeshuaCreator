@@ -46,6 +46,8 @@
  MUN_CODIGO_SIAFI = mun_codigo_siafi; 
  MUN_CODIGO_CNPJ = mun_codigo_cnpj; 
  MUN_DISTANCIA_KM = mun_distancia_km; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

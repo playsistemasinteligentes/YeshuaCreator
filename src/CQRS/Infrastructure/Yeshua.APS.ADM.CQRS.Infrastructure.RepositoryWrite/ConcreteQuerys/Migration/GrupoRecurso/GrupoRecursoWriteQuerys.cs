@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirGrupoRecursoQuery(IGrupoRecursoEntity GrupoRecurso)
         {
-            this.Query = $@" INSERT INTO GrupoRecurso (GRE_ID, GRE_DESCRICAO, TenantID, Deleted, Changed, UserId) VALUES(@GRE_ID, @GRE_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [GrupoRecurso] ([GRE_ID], [GRE_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@GRE_ID, @GRE_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 GRE_ID = GrupoRecurso.GRE_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoRecursoQuery(IGrupoRecursoEntity GrupoRecurso)
         {
-            this.Query = $@" UPDATE GrupoRecurso SET GRE_DESCRICAO = @GRE_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" UPDATE [GrupoRecurso] SET [GRE_DESCRICAO] = @GRE_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 GRE_DESCRICAO = GrupoRecurso.GRE_DESCRICAO,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRE_DESCRICAO(string gre_id, string value)
         {
-            this.Query = $@" UPDATE GrupoRecurso SET GRE_DESCRICAO = @GRE_DESCRICAO WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" UPDATE [GrupoRecurso] SET [GRE_DESCRICAO] = @GRE_DESCRICAO WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 GRE_DESCRICAO = value,
@@ -66,7 +66,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string gre_id, int value)
         {
-            this.Query = $@" UPDATE GrupoRecurso SET TenantID = @TenantID WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" UPDATE [GrupoRecurso] SET [TenantID] = @TenantID WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -76,7 +76,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string gre_id, bool value)
         {
-            this.Query = $@" UPDATE GrupoRecurso SET Deleted = @Deleted WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" UPDATE [GrupoRecurso] SET [Deleted] = @Deleted WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -86,7 +86,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string gre_id, DateTime value)
         {
-            this.Query = $@" UPDATE GrupoRecurso SET Changed = @Changed WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" UPDATE [GrupoRecurso] SET [Changed] = @Changed WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -96,7 +96,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string gre_id, int value)
         {
-            this.Query = $@" UPDATE GrupoRecurso SET UserId = @UserId WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" UPDATE [GrupoRecurso] SET [UserId] = @UserId WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel DeleteGrupoRecursoQuery(IGrupoRecursoEntity GrupoRecurso)
         {
-            this.Query = $@" DELETE FROM GrupoRecurso WHERE GRE_ID = @GRE_ID ";
+            this.Query = $@" DELETE FROM [GrupoRecurso] WHERE [GRE_ID] = @GRE_ID ";
             this.Parameters = new
             {
                 GRE_ID = GrupoRecurso.GRE_ID,

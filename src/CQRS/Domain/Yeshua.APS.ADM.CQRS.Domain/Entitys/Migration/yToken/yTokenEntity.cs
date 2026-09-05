@@ -40,6 +40,10 @@
  ConnectorKey = connectorkey; 
  ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
  LastUsedAt = (lastusedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lastusedat; 
+ Active = true; 
+ CreatedAt = DateTime.Now; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -48,9 +52,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Hash do Token deve ser informado.");
    if(string.IsNullOrEmpty(ConnectorKey))
    this._erroMensagem.Add("Conector deve ser informado.");
-   this._erroMensagem.Add("Ativo deve ser informado.");
-   if (CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
-   this._erroMensagem.Add("Criado em deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

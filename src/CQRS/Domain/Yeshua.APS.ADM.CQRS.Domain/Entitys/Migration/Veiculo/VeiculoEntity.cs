@@ -56,14 +56,14 @@
  VEI_EMISSAO = (vei_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : vei_emissao; 
  VEI_VENCIMENTO = (vei_vencimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : vei_vencimento; 
  VEI_STATUS = vei_status; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(VEI_PLACA))
    this._erroMensagem.Add("VEI PLACA deve ser informado.");
-   if (TIP_ID == null)
-   this._erroMensagem.Add("TIP ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

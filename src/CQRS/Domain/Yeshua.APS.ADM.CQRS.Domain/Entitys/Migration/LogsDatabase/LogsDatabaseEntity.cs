@@ -54,12 +54,12 @@
  LOGS_DATE = (logs_date < (new DateTime(1800, 1, 1))) ? DateTime.Now : logs_date; 
  USE_ID = use_id; 
  LOGS_ORIGEM = logs_origem; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (LOGS_ID == null)
-   this._erroMensagem.Add("LOGS ID deve ser informado.");
    if(string.IsNullOrEmpty(LOGS_TABLE))
    this._erroMensagem.Add("LOGS TABLE deve ser informado.");
    if(string.IsNullOrEmpty(LOGS_KEY))
@@ -68,10 +68,8 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("LOGS KEY1 deve ser informado.");
    if(string.IsNullOrEmpty(LOGS_ACTION))
    this._erroMensagem.Add("LOGS ACTION deve ser informado.");
-   if (LOGS_DATE == null || LOGS_DATE < (new DateTime(1800, 1, 1)))
+   if(LOGS_DATE == null || LOGS_DATE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("LOGS DATE deve ser informado.");
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

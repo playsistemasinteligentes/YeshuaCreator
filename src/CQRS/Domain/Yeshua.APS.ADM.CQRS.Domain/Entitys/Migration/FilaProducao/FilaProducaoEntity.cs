@@ -152,6 +152,8 @@
  FPR_TOLERANCIA_MENOS = fpr_tolerancia_menos; 
  FPR_TOLERANCIA_MAIS = fpr_tolerancia_mais; 
  FPR_DATA_ENCERRAMENTO = (fpr_data_encerramento < (new DateTime(1800, 1, 1))) ? DateTime.Now : fpr_data_encerramento; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -160,23 +162,15 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("ORD ID deve ser informado.");
    if(string.IsNullOrEmpty(ROT_PRO_ID))
    this._erroMensagem.Add("ROT PRO ID deve ser informado.");
-   if (FPR_QUANTIDADE_PREVISTA == null)
-   this._erroMensagem.Add("FPR QUANTIDADE PREVISTA deve ser informado.");
    if(string.IsNullOrEmpty(ROT_MAQ_ID))
    this._erroMensagem.Add("ROT MAQ ID deve ser informado.");
-   if (FPR_DATA_INICIO_PREVISTA == null || FPR_DATA_INICIO_PREVISTA < (new DateTime(1800, 1, 1)))
+   if(FPR_DATA_INICIO_PREVISTA == null || FPR_DATA_INICIO_PREVISTA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("FPR DATA INICIO PREVISTA deve ser informado.");
-   if (FPR_DATA_FIM_PREVISTA == null || FPR_DATA_FIM_PREVISTA < (new DateTime(1800, 1, 1)))
+   if(FPR_DATA_FIM_PREVISTA == null || FPR_DATA_FIM_PREVISTA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("FPR DATA FIM PREVISTA deve ser informado.");
-   if (FPR_DATA_FIM_MAXIMA == null || FPR_DATA_FIM_MAXIMA < (new DateTime(1800, 1, 1)))
+   if(FPR_DATA_FIM_MAXIMA == null || FPR_DATA_FIM_MAXIMA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("FPR DATA FIM MAXIMA deve ser informado.");
-   if (ROT_SEQ_TRANFORMACAO == null)
-   this._erroMensagem.Add("ROT SEQ TRANFORMACAO deve ser informado.");
-   if (FPR_SEQ_REPETICAO == null)
-   this._erroMensagem.Add("FPR SEQ REPETICAO deve ser informado.");
-   if (FPR_ID == null)
-   this._erroMensagem.Add("FPR ID deve ser informado.");
-   if (FPR_PREVISAO_MATERIA_PRIMA == null || FPR_PREVISAO_MATERIA_PRIMA < (new DateTime(1800, 1, 1)))
+   if(FPR_PREVISAO_MATERIA_PRIMA == null || FPR_PREVISAO_MATERIA_PRIMA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("FPR PREVISAO MATERIA PRIMA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

@@ -32,14 +32,12 @@
  Id = id; 
  GRU_ID = gru_id; 
  ID_USUARIO = id_usuario; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (GRU_ID == null)
-   this._erroMensagem.Add("GRU ID deve ser informado.");
-   if (ID_USUARIO == null)
-   this._erroMensagem.Add("ID USUARIO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

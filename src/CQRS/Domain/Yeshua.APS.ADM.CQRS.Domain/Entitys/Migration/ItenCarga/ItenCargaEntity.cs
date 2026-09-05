@@ -48,6 +48,8 @@
  ORD_HASH_KEY = ord_hash_key; 
  NOT_ID = not_id; 
  NOT_EMISSAO = (not_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : not_emissao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -56,16 +58,10 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("CAR ID deve ser informado.");
    if(string.IsNullOrEmpty(ORD_ID))
    this._erroMensagem.Add("ORD ID deve ser informado.");
-   if (ITC_ENTREGA_PLANEJADA == null || ITC_ENTREGA_PLANEJADA < (new DateTime(1800, 1, 1)))
+   if(ITC_ENTREGA_PLANEJADA == null || ITC_ENTREGA_PLANEJADA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ITC ENTREGA PLANEJADA deve ser informado.");
-   if (ITC_ENTREGA_REALIZADA == null || ITC_ENTREGA_REALIZADA < (new DateTime(1800, 1, 1)))
+   if(ITC_ENTREGA_REALIZADA == null || ITC_ENTREGA_REALIZADA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ITC ENTREGA REALIZADA deve ser informado.");
-   if (ITC_ORDEM_ENTREGA == null)
-   this._erroMensagem.Add("ITC ORDEM ENTREGA deve ser informado.");
-   if (ITC_QTD_PLANEJADA == null)
-   this._erroMensagem.Add("ITC QTD PLANEJADA deve ser informado.");
-   if (ITC_QTD_REALIZADA == null)
-   this._erroMensagem.Add("ITC QTD REALIZADA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

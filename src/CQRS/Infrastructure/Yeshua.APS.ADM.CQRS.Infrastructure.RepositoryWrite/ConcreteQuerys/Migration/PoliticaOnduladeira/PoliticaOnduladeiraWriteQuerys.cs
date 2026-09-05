@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPoliticaOnduladeiraQuery(IPoliticaOnduladeiraEntity PoliticaOnduladeira)
         {
-            this.Query = $@" INSERT INTO PoliticaOnduladeira (POL_ID, POL_NIVEL, POL_PROMOCAO, POL_DIAS_ANTECIPACAO, POL_METROS_LINEARES, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@POL_ID, @POL_NIVEL, @POL_PROMOCAO, @POL_DIAS_ANTECIPACAO, @POL_METROS_LINEARES, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PoliticaOnduladeira] ([POL_ID], [POL_NIVEL], [POL_PROMOCAO], [POL_DIAS_ANTECIPACAO], [POL_METROS_LINEARES], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@POL_ID, @POL_NIVEL, @POL_PROMOCAO, @POL_DIAS_ANTECIPACAO, @POL_METROS_LINEARES, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 POL_ID = PoliticaOnduladeira.POL_ID,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePoliticaOnduladeiraQuery(IPoliticaOnduladeiraEntity PoliticaOnduladeira)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET POL_ID = @POL_ID, POL_NIVEL = @POL_NIVEL, POL_PROMOCAO = @POL_PROMOCAO, POL_DIAS_ANTECIPACAO = @POL_DIAS_ANTECIPACAO, POL_METROS_LINEARES = @POL_METROS_LINEARES, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [POL_ID] = @POL_ID, [POL_NIVEL] = @POL_NIVEL, [POL_PROMOCAO] = @POL_PROMOCAO, [POL_DIAS_ANTECIPACAO] = @POL_DIAS_ANTECIPACAO, [POL_METROS_LINEARES] = @POL_METROS_LINEARES, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 POL_ID = PoliticaOnduladeira.POL_ID,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePOL_ID(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET POL_ID = @POL_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [POL_ID] = @POL_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 POL_ID = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePOL_NIVEL(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET POL_NIVEL = @POL_NIVEL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [POL_NIVEL] = @POL_NIVEL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 POL_NIVEL = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePOL_PROMOCAO(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET POL_PROMOCAO = @POL_PROMOCAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [POL_PROMOCAO] = @POL_PROMOCAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 POL_PROMOCAO = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePOL_DIAS_ANTECIPACAO(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET POL_DIAS_ANTECIPACAO = @POL_DIAS_ANTECIPACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [POL_DIAS_ANTECIPACAO] = @POL_DIAS_ANTECIPACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 POL_DIAS_ANTECIPACAO = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePOL_METROS_LINEARES(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET POL_METROS_LINEARES = @POL_METROS_LINEARES WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [POL_METROS_LINEARES] = @POL_METROS_LINEARES WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 POL_METROS_LINEARES = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE PoliticaOnduladeira SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PoliticaOnduladeira] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeletePoliticaOnduladeiraQuery(IPoliticaOnduladeiraEntity PoliticaOnduladeira)
         {
-            this.Query = $@" DELETE FROM PoliticaOnduladeira WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [PoliticaOnduladeira] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = PoliticaOnduladeira.Id,

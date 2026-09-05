@@ -38,12 +38,12 @@
  TEM_RESINA_DE = tem_resina_de; 
  TEM_RESINA_PARA = tem_resina_para; 
  TEM_TEMPO = tem_tempo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TEM_ID == null)
-   this._erroMensagem.Add("TEM ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

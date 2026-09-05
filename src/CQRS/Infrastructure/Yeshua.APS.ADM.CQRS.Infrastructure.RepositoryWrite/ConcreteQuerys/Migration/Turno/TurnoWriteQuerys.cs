@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTurnoQuery(ITurnoEntity Turno)
         {
-            this.Query = $@" INSERT INTO Turno (Id, Descricao, TURN_PRIORIDADE, TURN_HORA_INI_DIA1, TURN_HORA_FIM_DIA1, TURN_HORA_INI_DIA2, TURN_HORA_FIM_DIA2, TURN_HORA_INI_DIA3, TURN_HORA_FIM_DIA3, TURN_HORA_INI_DIA4, TURN_HORA_FIM_DIA4, TURN_HORA_INI_DIA5, TURN_HORA_FIM_DIA5, TURN_HORA_INI_DIA6, TURN_HORA_FIM_DIA6, TURN_HORA_INI_DIA7, TURN_HORA_FIM_DIA7, TenantID, Deleted, Changed, UserId) VALUES(@Id, @Descricao, @TURN_PRIORIDADE, @TURN_HORA_INI_DIA1, @TURN_HORA_FIM_DIA1, @TURN_HORA_INI_DIA2, @TURN_HORA_FIM_DIA2, @TURN_HORA_INI_DIA3, @TURN_HORA_FIM_DIA3, @TURN_HORA_INI_DIA4, @TURN_HORA_FIM_DIA4, @TURN_HORA_INI_DIA5, @TURN_HORA_FIM_DIA5, @TURN_HORA_INI_DIA6, @TURN_HORA_FIM_DIA6, @TURN_HORA_INI_DIA7, @TURN_HORA_FIM_DIA7, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Turno] ([Id], [Descricao], [TURN_PRIORIDADE], [TURN_HORA_INI_DIA1], [TURN_HORA_FIM_DIA1], [TURN_HORA_INI_DIA2], [TURN_HORA_FIM_DIA2], [TURN_HORA_INI_DIA3], [TURN_HORA_FIM_DIA3], [TURN_HORA_INI_DIA4], [TURN_HORA_FIM_DIA4], [TURN_HORA_INI_DIA5], [TURN_HORA_FIM_DIA5], [TURN_HORA_INI_DIA6], [TURN_HORA_FIM_DIA6], [TURN_HORA_INI_DIA7], [TURN_HORA_FIM_DIA7], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Descricao, @TURN_PRIORIDADE, @TURN_HORA_INI_DIA1, @TURN_HORA_FIM_DIA1, @TURN_HORA_INI_DIA2, @TURN_HORA_FIM_DIA2, @TURN_HORA_INI_DIA3, @TURN_HORA_FIM_DIA3, @TURN_HORA_INI_DIA4, @TURN_HORA_FIM_DIA4, @TURN_HORA_INI_DIA5, @TURN_HORA_FIM_DIA5, @TURN_HORA_INI_DIA6, @TURN_HORA_FIM_DIA6, @TURN_HORA_INI_DIA7, @TURN_HORA_FIM_DIA7, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = Turno.Id,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTurnoQuery(ITurnoEntity Turno)
         {
-            this.Query = $@" UPDATE Turno SET Descricao = @Descricao, TURN_PRIORIDADE = @TURN_PRIORIDADE, TURN_HORA_INI_DIA1 = @TURN_HORA_INI_DIA1, TURN_HORA_FIM_DIA1 = @TURN_HORA_FIM_DIA1, TURN_HORA_INI_DIA2 = @TURN_HORA_INI_DIA2, TURN_HORA_FIM_DIA2 = @TURN_HORA_FIM_DIA2, TURN_HORA_INI_DIA3 = @TURN_HORA_INI_DIA3, TURN_HORA_FIM_DIA3 = @TURN_HORA_FIM_DIA3, TURN_HORA_INI_DIA4 = @TURN_HORA_INI_DIA4, TURN_HORA_FIM_DIA4 = @TURN_HORA_FIM_DIA4, TURN_HORA_INI_DIA5 = @TURN_HORA_INI_DIA5, TURN_HORA_FIM_DIA5 = @TURN_HORA_FIM_DIA5, TURN_HORA_INI_DIA6 = @TURN_HORA_INI_DIA6, TURN_HORA_FIM_DIA6 = @TURN_HORA_FIM_DIA6, TURN_HORA_INI_DIA7 = @TURN_HORA_INI_DIA7, TURN_HORA_FIM_DIA7 = @TURN_HORA_FIM_DIA7, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [Descricao] = @Descricao, [TURN_PRIORIDADE] = @TURN_PRIORIDADE, [TURN_HORA_INI_DIA1] = @TURN_HORA_INI_DIA1, [TURN_HORA_FIM_DIA1] = @TURN_HORA_FIM_DIA1, [TURN_HORA_INI_DIA2] = @TURN_HORA_INI_DIA2, [TURN_HORA_FIM_DIA2] = @TURN_HORA_FIM_DIA2, [TURN_HORA_INI_DIA3] = @TURN_HORA_INI_DIA3, [TURN_HORA_FIM_DIA3] = @TURN_HORA_FIM_DIA3, [TURN_HORA_INI_DIA4] = @TURN_HORA_INI_DIA4, [TURN_HORA_FIM_DIA4] = @TURN_HORA_FIM_DIA4, [TURN_HORA_INI_DIA5] = @TURN_HORA_INI_DIA5, [TURN_HORA_FIM_DIA5] = @TURN_HORA_FIM_DIA5, [TURN_HORA_INI_DIA6] = @TURN_HORA_INI_DIA6, [TURN_HORA_FIM_DIA6] = @TURN_HORA_FIM_DIA6, [TURN_HORA_INI_DIA7] = @TURN_HORA_INI_DIA7, [TURN_HORA_FIM_DIA7] = @TURN_HORA_FIM_DIA7, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = Turno.Descricao,
@@ -86,7 +86,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescricao(string id, string value)
         {
-            this.Query = $@" UPDATE Turno SET Descricao = @Descricao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [Descricao] = @Descricao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = value,
@@ -96,7 +96,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_PRIORIDADE(string id, int value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_PRIORIDADE = @TURN_PRIORIDADE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_PRIORIDADE] = @TURN_PRIORIDADE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_PRIORIDADE = value,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA1(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA1 = @TURN_HORA_INI_DIA1 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA1] = @TURN_HORA_INI_DIA1 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA1 = value,
@@ -116,7 +116,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA1(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA1 = @TURN_HORA_FIM_DIA1 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA1] = @TURN_HORA_FIM_DIA1 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA1 = value,
@@ -126,7 +126,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA2(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA2 = @TURN_HORA_INI_DIA2 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA2] = @TURN_HORA_INI_DIA2 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA2 = value,
@@ -136,7 +136,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA2(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA2 = @TURN_HORA_FIM_DIA2 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA2] = @TURN_HORA_FIM_DIA2 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA2 = value,
@@ -146,7 +146,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA3(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA3 = @TURN_HORA_INI_DIA3 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA3] = @TURN_HORA_INI_DIA3 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA3 = value,
@@ -156,7 +156,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA3(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA3 = @TURN_HORA_FIM_DIA3 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA3] = @TURN_HORA_FIM_DIA3 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA3 = value,
@@ -166,7 +166,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA4(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA4 = @TURN_HORA_INI_DIA4 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA4] = @TURN_HORA_INI_DIA4 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA4 = value,
@@ -176,7 +176,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA4(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA4 = @TURN_HORA_FIM_DIA4 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA4] = @TURN_HORA_FIM_DIA4 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA4 = value,
@@ -186,7 +186,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA5(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA5 = @TURN_HORA_INI_DIA5 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA5] = @TURN_HORA_INI_DIA5 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA5 = value,
@@ -196,7 +196,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA5(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA5 = @TURN_HORA_FIM_DIA5 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA5] = @TURN_HORA_FIM_DIA5 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA5 = value,
@@ -206,7 +206,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA6(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA6 = @TURN_HORA_INI_DIA6 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA6] = @TURN_HORA_INI_DIA6 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA6 = value,
@@ -216,7 +216,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA6(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA6 = @TURN_HORA_FIM_DIA6 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA6] = @TURN_HORA_FIM_DIA6 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA6 = value,
@@ -226,7 +226,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_INI_DIA7(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_INI_DIA7 = @TURN_HORA_INI_DIA7 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_INI_DIA7] = @TURN_HORA_INI_DIA7 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_INI_DIA7 = value,
@@ -236,7 +236,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURN_HORA_FIM_DIA7(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET TURN_HORA_FIM_DIA7 = @TURN_HORA_FIM_DIA7 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TURN_HORA_FIM_DIA7] = @TURN_HORA_FIM_DIA7 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TURN_HORA_FIM_DIA7 = value,
@@ -246,7 +246,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string id, int value)
         {
-            this.Query = $@" UPDATE Turno SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -256,7 +256,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string id, bool value)
         {
-            this.Query = $@" UPDATE Turno SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -266,7 +266,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string id, DateTime value)
         {
-            this.Query = $@" UPDATE Turno SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -276,7 +276,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string id, int value)
         {
-            this.Query = $@" UPDATE Turno SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Turno] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -286,7 +286,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTurnoQuery(ITurnoEntity Turno)
         {
-            this.Query = $@" DELETE FROM Turno WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Turno] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Turno.Id,

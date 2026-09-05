@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirUsuarioObjetoControlavelQuery(IUsuarioObjetoControlavelEntity UsuarioObjetoControlavel)
         {
-            this.Query = $@" INSERT INTO UsuarioObjetoControlavel (USE_ID, OBJ_ID, USU_OBJETO_ACAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@USE_ID, @OBJ_ID, @USU_OBJETO_ACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [UsuarioObjetoControlavel] ([USE_ID], [OBJ_ID], [USU_OBJETO_ACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@USE_ID, @OBJ_ID, @USU_OBJETO_ACAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 USE_ID = UsuarioObjetoControlavel.USE_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUsuarioObjetoControlavelQuery(IUsuarioObjetoControlavelEntity UsuarioObjetoControlavel)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET USE_ID = @USE_ID, OBJ_ID = @OBJ_ID, USU_OBJETO_ACAO = @USU_OBJETO_ACAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [USE_ID] = @USE_ID, [OBJ_ID] = @OBJ_ID, [USU_OBJETO_ACAO] = @USU_OBJETO_ACAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 USE_ID = UsuarioObjetoControlavel.USE_ID,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET USE_ID = @USE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [USE_ID] = @USE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOBJ_ID(int id, string value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET OBJ_ID = @OBJ_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [OBJ_ID] = @OBJ_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OBJ_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSU_OBJETO_ACAO(int id, string value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET USU_OBJETO_ACAO = @USU_OBJETO_ACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [USU_OBJETO_ACAO] = @USU_OBJETO_ACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 USU_OBJETO_ACAO = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE UsuarioObjetoControlavel SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [UsuarioObjetoControlavel] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteUsuarioObjetoControlavelQuery(IUsuarioObjetoControlavelEntity UsuarioObjetoControlavel)
         {
-            this.Query = $@" DELETE FROM UsuarioObjetoControlavel WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [UsuarioObjetoControlavel] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = UsuarioObjetoControlavel.Id,

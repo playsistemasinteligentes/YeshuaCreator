@@ -39,7 +39,7 @@ public partial class CalendarioCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "cal_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class CalendarioCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["CAL_ID"] = 1,
+            ["CAL_ID"] = ApiTestData.IntKey(),
             ["CAL_DESCRICAO"] = ApiTestData.Text("Calendario CAL_DESCRICAO", 80),
             ["CAL_DIVIDE_DIA_EM"] = 1,
         };

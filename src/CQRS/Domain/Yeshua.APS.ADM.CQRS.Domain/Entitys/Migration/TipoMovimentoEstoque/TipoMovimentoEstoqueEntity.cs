@@ -34,6 +34,8 @@
  TIP_DESCRICAO = tip_descricao; 
  TIP_TYPE = tip_type; 
  SPR = spr; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -42,10 +44,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("TIP ID deve ser informado.");
    if(string.IsNullOrEmpty(TIP_DESCRICAO))
    this._erroMensagem.Add("TIP DESCRICAO deve ser informado.");
-   if (TIP_TYPE == null)
-   this._erroMensagem.Add("TIP TYPE deve ser informado.");
-   if (SPR == null)
-   this._erroMensagem.Add("SPR deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

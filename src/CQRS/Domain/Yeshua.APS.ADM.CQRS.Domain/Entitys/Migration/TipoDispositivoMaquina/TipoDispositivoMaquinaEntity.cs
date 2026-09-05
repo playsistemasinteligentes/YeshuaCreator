@@ -32,6 +32,8 @@
  Id = id; 
  TDI_ID = tdi_id; 
  MAQ_ID = maq_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

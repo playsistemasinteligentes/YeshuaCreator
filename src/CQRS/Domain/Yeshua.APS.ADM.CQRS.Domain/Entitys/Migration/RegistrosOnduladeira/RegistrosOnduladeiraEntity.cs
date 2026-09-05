@@ -36,17 +36,17 @@
  REG_RESPOSTA = reg_resposta; 
  REG_STATUS = reg_status; 
  REG_DATA_INICIO = (reg_data_inicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : reg_data_inicio; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (REG_ID == null)
-   this._erroMensagem.Add("REG ID deve ser informado.");
    if(string.IsNullOrEmpty(REG_RESPOSTA))
    this._erroMensagem.Add("REG RESPOSTA deve ser informado.");
    if(string.IsNullOrEmpty(REG_STATUS))
    this._erroMensagem.Add("REG STATUS deve ser informado.");
-   if (REG_DATA_INICIO == null || REG_DATA_INICIO < (new DateTime(1800, 1, 1)))
+   if(REG_DATA_INICIO == null || REG_DATA_INICIO < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("REG DATA INICIO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

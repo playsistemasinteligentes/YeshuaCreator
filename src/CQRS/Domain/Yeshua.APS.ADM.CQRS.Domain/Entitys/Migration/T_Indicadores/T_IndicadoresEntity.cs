@@ -56,18 +56,14 @@
  DIM_ID = dim_id; 
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
    if(string.IsNullOrEmpty(IND_DESCRICAO))
    this._erroMensagem.Add("IND DESCRICAO deve ser informado.");
-   if (NEG_ID == null)
-   this._erroMensagem.Add("NEG ID deve ser informado.");
-   if (IND_TIPOCOMPARADOR == null)
-   this._erroMensagem.Add("IND TIPOCOMPARADOR deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

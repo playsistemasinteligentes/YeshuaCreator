@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirVariavelQuery(IVariavelEntity Variavel)
         {
-            this.Query = $@" INSERT INTO Variavel (VAR_ID, VAR_DESCRICAO, CON_ID, VAR_MODO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@VAR_ID, @VAR_DESCRICAO, @CON_ID, @VAR_MODO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Variavel] ([VAR_ID], [VAR_DESCRICAO], [CON_ID], [VAR_MODO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VAR_ID, @VAR_DESCRICAO, @CON_ID, @VAR_MODO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VAR_ID = Variavel.VAR_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVariavelQuery(IVariavelEntity Variavel)
         {
-            this.Query = $@" UPDATE Variavel SET VAR_ID = @VAR_ID, VAR_DESCRICAO = @VAR_DESCRICAO, CON_ID = @CON_ID, VAR_MODO = @VAR_MODO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [VAR_ID] = @VAR_ID, [VAR_DESCRICAO] = @VAR_DESCRICAO, [CON_ID] = @CON_ID, [VAR_MODO] = @VAR_MODO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VAR_ID = Variavel.VAR_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVAR_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Variavel SET VAR_ID = @VAR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [VAR_ID] = @VAR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VAR_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVAR_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE Variavel SET VAR_DESCRICAO = @VAR_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [VAR_DESCRICAO] = @VAR_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VAR_DESCRICAO = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCON_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Variavel SET CON_ID = @CON_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [CON_ID] = @CON_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVAR_MODO(int id, int value)
         {
-            this.Query = $@" UPDATE Variavel SET VAR_MODO = @VAR_MODO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [VAR_MODO] = @VAR_MODO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VAR_MODO = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Variavel SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Variavel SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Variavel SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Variavel SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Variavel] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteVariavelQuery(IVariavelEntity Variavel)
         {
-            this.Query = $@" DELETE FROM Variavel WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Variavel] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Variavel.Id,

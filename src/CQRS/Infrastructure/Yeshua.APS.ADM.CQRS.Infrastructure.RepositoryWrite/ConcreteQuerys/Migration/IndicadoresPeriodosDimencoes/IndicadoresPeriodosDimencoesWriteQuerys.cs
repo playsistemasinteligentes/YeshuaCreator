@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirIndicadoresPeriodosDimencoesQuery(IIndicadoresPeriodosDimencoesEntity IndicadoresPeriodosDimencoes)
         {
-            this.Query = $@" INSERT INTO IndicadoresPeriodosDimencoes (PER_ID, IND_ID, DIM_ID, PER_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PER_ID, @IND_ID, @DIM_ID, @PER_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [IndicadoresPeriodosDimencoes] ([PER_ID], [IND_ID], [DIM_ID], [PER_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PER_ID, @IND_ID, @DIM_ID, @PER_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PER_ID = IndicadoresPeriodosDimencoes.PER_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIndicadoresPeriodosDimencoesQuery(IIndicadoresPeriodosDimencoesEntity IndicadoresPeriodosDimencoes)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET PER_ID = @PER_ID, IND_ID = @IND_ID, DIM_ID = @DIM_ID, PER_DESCRICAO = @PER_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [PER_ID] = @PER_ID, [IND_ID] = @IND_ID, [DIM_ID] = @DIM_ID, [PER_DESCRICAO] = @PER_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_ID = IndicadoresPeriodosDimencoes.PER_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_ID(int id, string value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET PER_ID = @PER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [PER_ID] = @PER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_ID(int id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET IND_ID = @IND_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [IND_ID] = @IND_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IND_ID = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_ID(int id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET DIM_ID = @DIM_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [DIM_ID] = @DIM_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DIM_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET PER_DESCRICAO = @PER_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [PER_DESCRICAO] = @PER_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_DESCRICAO = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE IndicadoresPeriodosDimencoes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [IndicadoresPeriodosDimencoes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteIndicadoresPeriodosDimencoesQuery(IIndicadoresPeriodosDimencoesEntity IndicadoresPeriodosDimencoes)
         {
-            this.Query = $@" DELETE FROM IndicadoresPeriodosDimencoes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [IndicadoresPeriodosDimencoes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = IndicadoresPeriodosDimencoes.Id,

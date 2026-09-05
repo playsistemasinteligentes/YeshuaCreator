@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirColaboradorQuery(IColaboradorEntity Colaborador)
         {
-            this.Query = $@" INSERT INTO Colaborador (COL_CPF, COL_NOME, COL_NASCIMENTO, COL_EMAIL, COL_MATRICULA, TURM_id, TenantID, Deleted, Changed, UserId) VALUES(@COL_CPF, @COL_NOME, @COL_NASCIMENTO, @COL_EMAIL, @COL_MATRICULA, @TURM_id, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Colaborador] ([COL_CPF], [COL_NOME], [COL_NASCIMENTO], [COL_EMAIL], [COL_MATRICULA], [TURM_id], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@COL_CPF, @COL_NOME, @COL_NASCIMENTO, @COL_EMAIL, @COL_MATRICULA, @TURM_id, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 COL_CPF = Colaborador.COL_CPF,
@@ -48,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdateColaboradorQuery(IColaboradorEntity Colaborador)
         {
-            this.Query = $@" UPDATE Colaborador SET COL_NOME = @COL_NOME, COL_NASCIMENTO = @COL_NASCIMENTO, COL_EMAIL = @COL_EMAIL, COL_MATRICULA = @COL_MATRICULA, TURM_id = @TURM_id, Changed = @Changed, UserId = @UserId WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [COL_NOME] = @COL_NOME, [COL_NASCIMENTO] = @COL_NASCIMENTO, [COL_EMAIL] = @COL_EMAIL, [COL_MATRICULA] = @COL_MATRICULA, [TURM_id] = @TURM_id, [Changed] = @Changed, [UserId] = @UserId WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 COL_NOME = Colaborador.COL_NOME,
@@ -64,7 +64,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOL_NOME(string col_cpf, string value)
         {
-            this.Query = $@" UPDATE Colaborador SET COL_NOME = @COL_NOME WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [COL_NOME] = @COL_NOME WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 COL_NOME = value,
@@ -74,7 +74,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOL_NASCIMENTO(string col_cpf, DateTime value)
         {
-            this.Query = $@" UPDATE Colaborador SET COL_NASCIMENTO = @COL_NASCIMENTO WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [COL_NASCIMENTO] = @COL_NASCIMENTO WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 COL_NASCIMENTO = value,
@@ -84,7 +84,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOL_EMAIL(string col_cpf, string value)
         {
-            this.Query = $@" UPDATE Colaborador SET COL_EMAIL = @COL_EMAIL WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [COL_EMAIL] = @COL_EMAIL WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 COL_EMAIL = value,
@@ -94,7 +94,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOL_MATRICULA(string col_cpf, string value)
         {
-            this.Query = $@" UPDATE Colaborador SET COL_MATRICULA = @COL_MATRICULA WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [COL_MATRICULA] = @COL_MATRICULA WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 COL_MATRICULA = value,
@@ -104,7 +104,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURM_id(string col_cpf, string value)
         {
-            this.Query = $@" UPDATE Colaborador SET TURM_id = @TURM_id WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [TURM_id] = @TURM_id WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 TURM_id = value,
@@ -114,7 +114,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string col_cpf, int value)
         {
-            this.Query = $@" UPDATE Colaborador SET TenantID = @TenantID WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [TenantID] = @TenantID WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -124,7 +124,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string col_cpf, bool value)
         {
-            this.Query = $@" UPDATE Colaborador SET Deleted = @Deleted WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [Deleted] = @Deleted WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -134,7 +134,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string col_cpf, DateTime value)
         {
-            this.Query = $@" UPDATE Colaborador SET Changed = @Changed WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [Changed] = @Changed WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 Changed = value,
@@ -144,7 +144,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string col_cpf, int value)
         {
-            this.Query = $@" UPDATE Colaborador SET UserId = @UserId WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" UPDATE [Colaborador] SET [UserId] = @UserId WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 UserId = value,
@@ -154,7 +154,7 @@ namespace Query.Write
         }
         public QueryModel DeleteColaboradorQuery(IColaboradorEntity Colaborador)
         {
-            this.Query = $@" DELETE FROM Colaborador WHERE COL_CPF = @COL_CPF ";
+            this.Query = $@" DELETE FROM [Colaborador] WHERE [COL_CPF] = @COL_CPF ";
             this.Parameters = new
             {
                 COL_CPF = Colaborador.COL_CPF,

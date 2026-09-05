@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTesteFisicoQuery(ITesteFisicoEntity TesteFisico)
         {
-            this.Query = $@" INSERT INTO TesteFisico (TES_ID, ITE_ID, USR_ID, TES_NOME_TECNICO, TES_AMOSTRA, TES_OP, TES_VALOR_NUMERICO, TES_VALOR_DATA, TES_VALOR_TEXTO, TES_EMISSAO, ORD_ID, PRO_ID, MAQ_ID, FPR_SEQ_REPETICAO, FPR_SEQ_TRANFORMACAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TES_ID, @ITE_ID, @USR_ID, @TES_NOME_TECNICO, @TES_AMOSTRA, @TES_OP, @TES_VALOR_NUMERICO, @TES_VALOR_DATA, @TES_VALOR_TEXTO, @TES_EMISSAO, @ORD_ID, @PRO_ID, @MAQ_ID, @FPR_SEQ_REPETICAO, @FPR_SEQ_TRANFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TesteFisico] ([TES_ID], [ITE_ID], [USR_ID], [TES_NOME_TECNICO], [TES_AMOSTRA], [TES_OP], [TES_VALOR_NUMERICO], [TES_VALOR_DATA], [TES_VALOR_TEXTO], [TES_EMISSAO], [ORD_ID], [PRO_ID], [MAQ_ID], [FPR_SEQ_REPETICAO], [FPR_SEQ_TRANFORMACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TES_ID, @ITE_ID, @USR_ID, @TES_NOME_TECNICO, @TES_AMOSTRA, @TES_OP, @TES_VALOR_NUMERICO, @TES_VALOR_DATA, @TES_VALOR_TEXTO, @TES_EMISSAO, @ORD_ID, @PRO_ID, @MAQ_ID, @FPR_SEQ_REPETICAO, @FPR_SEQ_TRANFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TES_ID = TesteFisico.TES_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTesteFisicoQuery(ITesteFisicoEntity TesteFisico)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_ID = @TES_ID, ITE_ID = @ITE_ID, USR_ID = @USR_ID, TES_NOME_TECNICO = @TES_NOME_TECNICO, TES_AMOSTRA = @TES_AMOSTRA, TES_OP = @TES_OP, TES_VALOR_NUMERICO = @TES_VALOR_NUMERICO, TES_VALOR_DATA = @TES_VALOR_DATA, TES_VALOR_TEXTO = @TES_VALOR_TEXTO, TES_EMISSAO = @TES_EMISSAO, ORD_ID = @ORD_ID, PRO_ID = @PRO_ID, MAQ_ID = @MAQ_ID, FPR_SEQ_REPETICAO = @FPR_SEQ_REPETICAO, FPR_SEQ_TRANFORMACAO = @FPR_SEQ_TRANFORMACAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_ID] = @TES_ID, [ITE_ID] = @ITE_ID, [USR_ID] = @USR_ID, [TES_NOME_TECNICO] = @TES_NOME_TECNICO, [TES_AMOSTRA] = @TES_AMOSTRA, [TES_OP] = @TES_OP, [TES_VALOR_NUMERICO] = @TES_VALOR_NUMERICO, [TES_VALOR_DATA] = @TES_VALOR_DATA, [TES_VALOR_TEXTO] = @TES_VALOR_TEXTO, [TES_EMISSAO] = @TES_EMISSAO, [ORD_ID] = @ORD_ID, [PRO_ID] = @PRO_ID, [MAQ_ID] = @MAQ_ID, [FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO, [FPR_SEQ_TRANFORMACAO] = @FPR_SEQ_TRANFORMACAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_ID = TesteFisico.TES_ID,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_ID(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_ID = @TES_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_ID] = @TES_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_ID = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET ITE_ID = @ITE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [ITE_ID] = @ITE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_ID = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSR_ID(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET USR_ID = @USR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [USR_ID] = @USR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 USR_ID = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_NOME_TECNICO(int id, string value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_NOME_TECNICO = @TES_NOME_TECNICO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_NOME_TECNICO] = @TES_NOME_TECNICO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_NOME_TECNICO = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_AMOSTRA(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_AMOSTRA = @TES_AMOSTRA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_AMOSTRA] = @TES_AMOSTRA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_AMOSTRA = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_OP(int id, string value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_OP = @TES_OP WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_OP] = @TES_OP WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_OP = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_VALOR_NUMERICO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_VALOR_NUMERICO = @TES_VALOR_NUMERICO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_VALOR_NUMERICO] = @TES_VALOR_NUMERICO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_VALOR_NUMERICO = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_VALOR_DATA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_VALOR_DATA = @TES_VALOR_DATA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_VALOR_DATA] = @TES_VALOR_DATA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_VALOR_DATA = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_VALOR_TEXTO(int id, string value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_VALOR_TEXTO = @TES_VALOR_TEXTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_VALOR_TEXTO] = @TES_VALOR_TEXTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_VALOR_TEXTO = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTES_EMISSAO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TES_EMISSAO = @TES_EMISSAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TES_EMISSAO] = @TES_EMISSAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TES_EMISSAO = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TesteFisico SET ORD_ID = @ORD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [ORD_ID] = @ORD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORD_ID = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TesteFisico SET PRO_ID = @PRO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [PRO_ID] = @PRO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TesteFisico SET MAQ_ID = @MAQ_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [MAQ_ID] = @MAQ_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFPR_SEQ_REPETICAO(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET FPR_SEQ_REPETICAO = @FPR_SEQ_REPETICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FPR_SEQ_REPETICAO = value,
@@ -223,7 +223,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFPR_SEQ_TRANFORMACAO(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET FPR_SEQ_TRANFORMACAO = @FPR_SEQ_TRANFORMACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [FPR_SEQ_TRANFORMACAO] = @FPR_SEQ_TRANFORMACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FPR_SEQ_TRANFORMACAO = value,
@@ -233,7 +233,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -243,7 +243,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TesteFisico SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -253,7 +253,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TesteFisico SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -263,7 +263,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TesteFisico SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TesteFisico] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -273,7 +273,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTesteFisicoQuery(ITesteFisicoEntity TesteFisico)
         {
-            this.Query = $@" DELETE FROM TesteFisico WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TesteFisico] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TesteFisico.Id,

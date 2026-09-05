@@ -64,22 +64,18 @@
  COMPACTA = compacta; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Id2 == null)
-   this._erroMensagem.Add("Id2 deve ser informado.");
    if(string.IsNullOrEmpty(MaquinaId))
    this._erroMensagem.Add("MaquinaId deve ser informado.");
-   if (DataInicio == null || DataInicio < (new DateTime(1800, 1, 1)))
+   if(DataInicio == null || DataInicio < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataInicio deve ser informado.");
-   if (DataFim == null || DataFim < (new DateTime(1800, 1, 1)))
+   if(DataFim == null || DataFim < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataFim deve ser informado.");
-   if (Quantidade == null)
-   this._erroMensagem.Add("Quantidade deve ser informado.");
-   if (IdLoteClp == null)
-   this._erroMensagem.Add("IdLoteClp deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

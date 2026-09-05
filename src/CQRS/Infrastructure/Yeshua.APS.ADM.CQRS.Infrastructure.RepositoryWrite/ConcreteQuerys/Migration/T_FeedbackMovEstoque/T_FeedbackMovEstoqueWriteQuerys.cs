@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_FeedbackMovEstoqueQuery(IT_FeedbackMovEstoqueEntity T_FeedbackMovEstoque)
         {
-            this.Query = $@" INSERT INTO T_FeedbackMovEstoque (FeedbackId, MovimentoEstoqueId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@FeedbackId, @MovimentoEstoqueId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_FeedbackMovEstoque] ([FeedbackId], [MovimentoEstoqueId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@FeedbackId, @MovimentoEstoqueId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 FeedbackId = T_FeedbackMovEstoque.FeedbackId,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_FeedbackMovEstoqueQuery(IT_FeedbackMovEstoqueEntity T_FeedbackMovEstoque)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET FeedbackId = @FeedbackId, MovimentoEstoqueId = @MovimentoEstoqueId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [FeedbackId] = @FeedbackId, [MovimentoEstoqueId] = @MovimentoEstoqueId, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FeedbackId = T_FeedbackMovEstoque.FeedbackId,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFeedbackId(int id, int value)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET FeedbackId = @FeedbackId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [FeedbackId] = @FeedbackId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FeedbackId = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMovimentoEstoqueId(int id, int value)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET MovimentoEstoqueId = @MovimentoEstoqueId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [MovimentoEstoqueId] = @MovimentoEstoqueId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MovimentoEstoqueId = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE T_FeedbackMovEstoque SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_FeedbackMovEstoque] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_FeedbackMovEstoqueQuery(IT_FeedbackMovEstoqueEntity T_FeedbackMovEstoque)
         {
-            this.Query = $@" DELETE FROM T_FeedbackMovEstoque WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [T_FeedbackMovEstoque] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = T_FeedbackMovEstoque.Id,

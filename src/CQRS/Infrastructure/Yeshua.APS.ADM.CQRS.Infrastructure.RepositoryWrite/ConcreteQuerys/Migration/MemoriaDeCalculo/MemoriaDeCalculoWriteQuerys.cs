@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMemoriaDeCalculoQuery(IMemoriaDeCalculoEntity MemoriaDeCalculo)
         {
-            this.Query = $@" INSERT INTO MemoriaDeCalculo (MEM_ID, ORC_ID, MEM_VALOR, MEM_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MEM_ID, @ORC_ID, @MEM_VALOR, @MEM_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MemoriaDeCalculo] ([MEM_ID], [ORC_ID], [MEM_VALOR], [MEM_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MEM_ID, @ORC_ID, @MEM_VALOR, @MEM_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MEM_ID = MemoriaDeCalculo.MEM_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMemoriaDeCalculoQuery(IMemoriaDeCalculoEntity MemoriaDeCalculo)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET MEM_ID = @MEM_ID, ORC_ID = @ORC_ID, MEM_VALOR = @MEM_VALOR, MEM_DESCRICAO = @MEM_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [MEM_ID] = @MEM_ID, [ORC_ID] = @ORC_ID, [MEM_VALOR] = @MEM_VALOR, [MEM_DESCRICAO] = @MEM_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MEM_ID = MemoriaDeCalculo.MEM_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEM_ID(int id, int value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET MEM_ID = @MEM_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [MEM_ID] = @MEM_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MEM_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORC_ID(int id, int value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET ORC_ID = @ORC_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [ORC_ID] = @ORC_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORC_ID = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEM_VALOR(int id, Decimal value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET MEM_VALOR = @MEM_VALOR WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [MEM_VALOR] = @MEM_VALOR WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MEM_VALOR = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMEM_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET MEM_DESCRICAO = @MEM_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [MEM_DESCRICAO] = @MEM_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MEM_DESCRICAO = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE MemoriaDeCalculo SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MemoriaDeCalculo] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMemoriaDeCalculoQuery(IMemoriaDeCalculoEntity MemoriaDeCalculo)
         {
-            this.Query = $@" DELETE FROM MemoriaDeCalculo WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [MemoriaDeCalculo] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = MemoriaDeCalculo.Id,

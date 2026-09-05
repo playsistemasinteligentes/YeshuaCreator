@@ -32,12 +32,12 @@
  UNI_ID = uni_id; 
  DEESCRICAO = deescricao; 
  UN = un; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (UNI_ID == null)
-   this._erroMensagem.Add("UNI ID deve ser informado.");
    if(string.IsNullOrEmpty(DEESCRICAO))
    this._erroMensagem.Add("DEESCRICAO deve ser informado.");
    if(string.IsNullOrEmpty(UN))

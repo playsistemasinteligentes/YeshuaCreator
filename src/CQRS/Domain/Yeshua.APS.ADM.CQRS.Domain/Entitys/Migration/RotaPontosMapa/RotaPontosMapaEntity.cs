@@ -44,6 +44,8 @@
  ROT_ORDEM_ROTEIRO = rot_ordem_roteiro; 
  ROT_TIPO = rot_tipo; 
  ROT_DISTANCIA = rot_distancia; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

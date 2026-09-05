@@ -58,12 +58,12 @@
  EST_BASE_PRODUCAO = est_base_producao; 
  EST_NIVEL = est_nivel; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (EST_ID == null)
-   this._erroMensagem.Add("EST ID deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID))
    this._erroMensagem.Add("PRO ID deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID_PRODUTO))
@@ -74,18 +74,10 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("PRO TIPO CUSTO deve ser informado.");
    if(string.IsNullOrEmpty(PRO_GRUPO_CONTABIL))
    this._erroMensagem.Add("PRO GRUPO CONTABIL deve ser informado.");
-   if (EST_ORDEM == null)
-   this._erroMensagem.Add("EST ORDEM deve ser informado.");
    if(string.IsNullOrEmpty(EST_GRUPO))
    this._erroMensagem.Add("EST GRUPO deve ser informado.");
-   if (EST_QUANT == null)
-   this._erroMensagem.Add("EST QUANT deve ser informado.");
-   if (EST_VALOR_TOTAL == null)
-   this._erroMensagem.Add("EST VALOR TOTAL deve ser informado.");
    if(string.IsNullOrEmpty(EST_DATA_BASE))
    this._erroMensagem.Add("EST DATA BASE deve ser informado.");
-   if (EST_BASE_PRODUCAO == null)
-   this._erroMensagem.Add("EST BASE PRODUCAO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

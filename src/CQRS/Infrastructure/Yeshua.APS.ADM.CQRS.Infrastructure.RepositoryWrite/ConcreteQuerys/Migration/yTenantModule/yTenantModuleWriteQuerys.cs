@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryTenantModuleQuery(IyTenantModuleEntity yTenantModule)
         {
-            this.Query = $@" INSERT INTO yTenantModule (ModuleId, TenantID, ValidUntil, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ModuleId, @TenantID, @ValidUntil, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yTenantModule] ([ModuleId], [TenantID], [ValidUntil], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ModuleId, @TenantID, @ValidUntil, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ModuleId = yTenantModule.ModuleId,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyTenantModuleQuery(IyTenantModuleEntity yTenantModule)
         {
-            this.Query = $@" UPDATE yTenantModule SET ModuleId = @ModuleId, ValidUntil = @ValidUntil, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [ModuleId] = @ModuleId, [ValidUntil] = @ValidUntil, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ModuleId = yTenantModule.ModuleId,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateModuleId(int id, string value)
         {
-            this.Query = $@" UPDATE yTenantModule SET ModuleId = @ModuleId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [ModuleId] = @ModuleId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ModuleId = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yTenantModule SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateValidUntil(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yTenantModule SET ValidUntil = @ValidUntil WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [ValidUntil] = @ValidUntil WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ValidUntil = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yTenantModule SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yTenantModule SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yTenantModule SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yTenantModule] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyTenantModuleQuery(IyTenantModuleEntity yTenantModule)
         {
-            this.Query = $@" DELETE FROM yTenantModule WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yTenantModule] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yTenantModule.Id,

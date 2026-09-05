@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" INSERT INTO yGrant (Id, Description, TenantID, Deleted, Changed, UserId) VALUES(@Id, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yGrant] ([Id], [Description], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Description, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = yGrant.Id,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" UPDATE yGrant SET Description = @Description, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yGrant] SET [Description] = @Description, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = yGrant.Description,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescription(string id, string value)
         {
-            this.Query = $@" UPDATE yGrant SET Description = @Description WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yGrant] SET [Description] = @Description WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = value,
@@ -66,7 +66,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string id, int value)
         {
-            this.Query = $@" UPDATE yGrant SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yGrant] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -76,7 +76,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string id, bool value)
         {
-            this.Query = $@" UPDATE yGrant SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yGrant] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -86,7 +86,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string id, DateTime value)
         {
-            this.Query = $@" UPDATE yGrant SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yGrant] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -96,7 +96,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string id, int value)
         {
-            this.Query = $@" UPDATE yGrant SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yGrant] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyGrantQuery(IyGrantEntity yGrant)
         {
-            this.Query = $@" DELETE FROM yGrant WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yGrant] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yGrant.Id,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItenCalendarioDisponibilidadeVeiculosQuery(IItenCalendarioDisponibilidadeVeiculosEntity ItenCalendarioDisponibilidadeVeiculos)
         {
-            this.Query = $@" INSERT INTO ItenCalendarioDisponibilidadeVeiculos (CDV_ID, TIP_ID, IDV_QTD, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CDV_ID, @TIP_ID, @IDV_QTD, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItenCalendarioDisponibilidadeVeiculos] ([CDV_ID], [TIP_ID], [IDV_QTD], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CDV_ID, @TIP_ID, @IDV_QTD, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CDV_ID = ItenCalendarioDisponibilidadeVeiculos.CDV_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateItenCalendarioDisponibilidadeVeiculosQuery(IItenCalendarioDisponibilidadeVeiculosEntity ItenCalendarioDisponibilidadeVeiculos)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET CDV_ID = @CDV_ID, TIP_ID = @TIP_ID, IDV_QTD = @IDV_QTD, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [CDV_ID] = @CDV_ID, [TIP_ID] = @TIP_ID, [IDV_QTD] = @IDV_QTD, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CDV_ID = ItenCalendarioDisponibilidadeVeiculos.CDV_ID,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCDV_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET CDV_ID = @CDV_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [CDV_ID] = @CDV_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CDV_ID = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET TIP_ID = @TIP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [TIP_ID] = @TIP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIP_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIDV_QTD(int id, int value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET IDV_QTD = @IDV_QTD WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [IDV_QTD] = @IDV_QTD WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IDV_QTD = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ItenCalendarioDisponibilidadeVeiculos SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItenCalendarioDisponibilidadeVeiculos] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteItenCalendarioDisponibilidadeVeiculosQuery(IItenCalendarioDisponibilidadeVeiculosEntity ItenCalendarioDisponibilidadeVeiculos)
         {
-            this.Query = $@" DELETE FROM ItenCalendarioDisponibilidadeVeiculos WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ItenCalendarioDisponibilidadeVeiculos] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ItenCalendarioDisponibilidadeVeiculos.Id,

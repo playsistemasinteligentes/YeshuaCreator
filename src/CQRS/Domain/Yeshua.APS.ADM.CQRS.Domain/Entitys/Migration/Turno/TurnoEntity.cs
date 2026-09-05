@@ -60,6 +60,8 @@
  TURN_HORA_FIM_DIA6 = (turn_hora_fim_dia6 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia6; 
  TURN_HORA_INI_DIA7 = (turn_hora_ini_dia7 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_ini_dia7; 
  TURN_HORA_FIM_DIA7 = (turn_hora_fim_dia7 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turn_hora_fim_dia7; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -68,8 +70,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Id deve ser informado.");
    if(string.IsNullOrEmpty(Descricao))
    this._erroMensagem.Add("Descricao deve ser informado.");
-   if (TURN_PRIORIDADE == null)
-   this._erroMensagem.Add("TURN PRIORIDADE deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

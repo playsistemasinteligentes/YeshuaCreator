@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPedidoPlanejavelQuery(IPedidoPlanejavelEntity PedidoPlanejavel)
         {
-            this.Query = $@" INSERT INTO PedidoPlanejavel (PedidoId, ClienteId, ClienteNome, Estado, Municipio, Regiao, Bairro, RotaId, EmbarqueAlvo, DataEntregaDe, DataEntregaAte, Peso, Volume, SaldoAExpedir, Status, CargaAtualId, VersaoPlanejamento, AlertasResumo) VALUES(@PedidoId, @ClienteId, @ClienteNome, @Estado, @Municipio, @Regiao, @Bairro, @RotaId, @EmbarqueAlvo, @DataEntregaDe, @DataEntregaAte, @Peso, @Volume, @SaldoAExpedir, @Status, @CargaAtualId, @VersaoPlanejamento, @AlertasResumo) ";
+            this.Query = $@" INSERT INTO [PedidoPlanejavel] ([PedidoId], [ClienteId], [ClienteNome], [Estado], [Municipio], [Regiao], [Bairro], [RotaId], [EmbarqueAlvo], [DataEntregaDe], [DataEntregaAte], [Peso], [Volume], [SaldoAExpedir], [Status], [CargaAtualId], [VersaoPlanejamento], [AlertasResumo]) VALUES(@PedidoId, @ClienteId, @ClienteNome, @Estado, @Municipio, @Regiao, @Bairro, @RotaId, @EmbarqueAlvo, @DataEntregaDe, @DataEntregaAte, @Peso, @Volume, @SaldoAExpedir, @Status, @CargaAtualId, @VersaoPlanejamento, @AlertasResumo) ";
             this.Parameters = new
             {
                 PedidoId = PedidoPlanejavel.PedidoId,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePedidoPlanejavelQuery(IPedidoPlanejavelEntity PedidoPlanejavel)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET ClienteId = @ClienteId, ClienteNome = @ClienteNome, Estado = @Estado, Municipio = @Municipio, Regiao = @Regiao, Bairro = @Bairro, RotaId = @RotaId, EmbarqueAlvo = @EmbarqueAlvo, DataEntregaDe = @DataEntregaDe, DataEntregaAte = @DataEntregaAte, Peso = @Peso, Volume = @Volume, SaldoAExpedir = @SaldoAExpedir, Status = @Status, CargaAtualId = @CargaAtualId, VersaoPlanejamento = @VersaoPlanejamento, AlertasResumo = @AlertasResumo WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [ClienteId] = @ClienteId, [ClienteNome] = @ClienteNome, [Estado] = @Estado, [Municipio] = @Municipio, [Regiao] = @Regiao, [Bairro] = @Bairro, [RotaId] = @RotaId, [EmbarqueAlvo] = @EmbarqueAlvo, [DataEntregaDe] = @DataEntregaDe, [DataEntregaAte] = @DataEntregaAte, [Peso] = @Peso, [Volume] = @Volume, [SaldoAExpedir] = @SaldoAExpedir, [Status] = @Status, [CargaAtualId] = @CargaAtualId, [VersaoPlanejamento] = @VersaoPlanejamento, [AlertasResumo] = @AlertasResumo WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ClienteId = PedidoPlanejavel.ClienteId,
@@ -82,7 +82,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClienteId(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET ClienteId = @ClienteId WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [ClienteId] = @ClienteId WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ClienteId = value,
@@ -92,7 +92,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClienteNome(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET ClienteNome = @ClienteNome WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [ClienteNome] = @ClienteNome WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 ClienteNome = value,
@@ -102,7 +102,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEstado(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Estado = @Estado WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Estado] = @Estado WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Estado = value,
@@ -112,7 +112,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMunicipio(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Municipio = @Municipio WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Municipio] = @Municipio WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Municipio = value,
@@ -122,7 +122,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRegiao(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Regiao = @Regiao WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Regiao] = @Regiao WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Regiao = value,
@@ -132,7 +132,7 @@ namespace Query.Write
         }
         public QueryModel UpdateBairro(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Bairro = @Bairro WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Bairro] = @Bairro WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Bairro = value,
@@ -142,7 +142,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRotaId(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET RotaId = @RotaId WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [RotaId] = @RotaId WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 RotaId = value,
@@ -152,7 +152,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmbarqueAlvo(string pedidoid, DateTime value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET EmbarqueAlvo = @EmbarqueAlvo WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [EmbarqueAlvo] = @EmbarqueAlvo WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 EmbarqueAlvo = value,
@@ -162,7 +162,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataEntregaDe(string pedidoid, DateTime value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET DataEntregaDe = @DataEntregaDe WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [DataEntregaDe] = @DataEntregaDe WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 DataEntregaDe = value,
@@ -172,7 +172,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataEntregaAte(string pedidoid, DateTime value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET DataEntregaAte = @DataEntregaAte WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [DataEntregaAte] = @DataEntregaAte WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 DataEntregaAte = value,
@@ -182,7 +182,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePeso(string pedidoid, Decimal value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Peso = @Peso WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Peso] = @Peso WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Peso = value,
@@ -192,7 +192,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVolume(string pedidoid, Decimal value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Volume = @Volume WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Volume] = @Volume WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Volume = value,
@@ -202,7 +202,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSaldoAExpedir(string pedidoid, Decimal value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET SaldoAExpedir = @SaldoAExpedir WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [SaldoAExpedir] = @SaldoAExpedir WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 SaldoAExpedir = value,
@@ -212,7 +212,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET Status = @Status WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [Status] = @Status WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 Status = value,
@@ -222,7 +222,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCargaAtualId(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET CargaAtualId = @CargaAtualId WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [CargaAtualId] = @CargaAtualId WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 CargaAtualId = value,
@@ -232,7 +232,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVersaoPlanejamento(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET VersaoPlanejamento = @VersaoPlanejamento WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [VersaoPlanejamento] = @VersaoPlanejamento WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 VersaoPlanejamento = value,
@@ -242,7 +242,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAlertasResumo(string pedidoid, string value)
         {
-            this.Query = $@" UPDATE PedidoPlanejavel SET AlertasResumo = @AlertasResumo WHERE PedidoId = @PedidoId ";
+            this.Query = $@" UPDATE [PedidoPlanejavel] SET [AlertasResumo] = @AlertasResumo WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 AlertasResumo = value,
@@ -252,7 +252,7 @@ namespace Query.Write
         }
         public QueryModel DeletePedidoPlanejavelQuery(IPedidoPlanejavelEntity PedidoPlanejavel)
         {
-            this.Query = $@" DELETE FROM PedidoPlanejavel WHERE PedidoId = @PedidoId ";
+            this.Query = $@" DELETE FROM [PedidoPlanejavel] WHERE [PedidoId] = @PedidoId ";
             this.Parameters = new
             {
                 PedidoId = PedidoPlanejavel.PedidoId,

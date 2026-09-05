@@ -46,12 +46,12 @@
  ROT_PRO_ID = rot_pro_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  USE_ID = use_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (LTF_ID == null)
-   this._erroMensagem.Add("LTF ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

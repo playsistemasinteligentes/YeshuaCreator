@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_FavoritosQuery(IT_FavoritosEntity T_Favoritos)
         {
-            this.Query = $@" INSERT INTO T_Favoritos (USE_ID, ID_INDICADOR, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.IDFAVORITO VALUES(@USE_ID, @ID_INDICADOR, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Favoritos] ([USE_ID], [ID_INDICADOR], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IDFAVORITO] VALUES(@USE_ID, @ID_INDICADOR, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 USE_ID = T_Favoritos.USE_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_FavoritosQuery(IT_FavoritosEntity T_Favoritos)
         {
-            this.Query = $@" UPDATE T_Favoritos SET USE_ID = @USE_ID, ID_INDICADOR = @ID_INDICADOR, Changed = @Changed, UserId = @UserId WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [USE_ID] = @USE_ID, [ID_INDICADOR] = @ID_INDICADOR, [Changed] = @Changed, [UserId] = @UserId WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 USE_ID = T_Favoritos.USE_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int idfavorito, int value)
         {
-            this.Query = $@" UPDATE T_Favoritos SET USE_ID = @USE_ID WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [USE_ID] = @USE_ID WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateID_INDICADOR(int idfavorito, int value)
         {
-            this.Query = $@" UPDATE T_Favoritos SET ID_INDICADOR = @ID_INDICADOR WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [ID_INDICADOR] = @ID_INDICADOR WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 ID_INDICADOR = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int idfavorito, int value)
         {
-            this.Query = $@" UPDATE T_Favoritos SET TenantID = @TenantID WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [TenantID] = @TenantID WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int idfavorito, bool value)
         {
-            this.Query = $@" UPDATE T_Favoritos SET Deleted = @Deleted WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [Deleted] = @Deleted WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int idfavorito, DateTime value)
         {
-            this.Query = $@" UPDATE T_Favoritos SET Changed = @Changed WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [Changed] = @Changed WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int idfavorito, int value)
         {
-            this.Query = $@" UPDATE T_Favoritos SET UserId = @UserId WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" UPDATE [T_Favoritos] SET [UserId] = @UserId WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_FavoritosQuery(IT_FavoritosEntity T_Favoritos)
         {
-            this.Query = $@" DELETE FROM T_Favoritos WHERE IDFAVORITO = @IDFAVORITO ";
+            this.Query = $@" DELETE FROM [T_Favoritos] WHERE [IDFAVORITO] = @IDFAVORITO ";
             this.Parameters = new
             {
                 IDFAVORITO = T_Favoritos.IDFAVORITO,

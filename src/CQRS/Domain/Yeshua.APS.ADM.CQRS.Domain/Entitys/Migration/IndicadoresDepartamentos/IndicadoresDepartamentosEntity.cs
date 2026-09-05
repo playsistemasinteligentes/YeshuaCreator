@@ -32,16 +32,12 @@
  INDDEP_ID = inddep_id; 
  DEP_ID = dep_id; 
  IND_ID = ind_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (INDDEP_ID == null)
-   this._erroMensagem.Add("INDDEP ID deve ser informado.");
-   if (DEP_ID == null)
-   this._erroMensagem.Add("DEP ID deve ser informado.");
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

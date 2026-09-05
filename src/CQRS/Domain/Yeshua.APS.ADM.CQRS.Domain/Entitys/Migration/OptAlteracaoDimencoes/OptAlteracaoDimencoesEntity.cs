@@ -30,12 +30,12 @@
  internal OptAlteracaoDimencoesEntity(int? id, int oad_id ){
  Id = id; 
  OAD_ID = oad_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (OAD_ID == null)
-   this._erroMensagem.Add("OAD ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

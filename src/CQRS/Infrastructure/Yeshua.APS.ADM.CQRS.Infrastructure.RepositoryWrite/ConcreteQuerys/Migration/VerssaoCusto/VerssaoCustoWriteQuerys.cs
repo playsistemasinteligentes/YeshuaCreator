@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirVerssaoCustoQuery(IVerssaoCustoEntity VerssaoCusto)
         {
-            this.Query = $@" INSERT INTO VerssaoCusto (VER_ID, VER_STATUS, VER_DATA_VERSSAO_CUSTO, VER_OBS, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@VER_ID, @VER_STATUS, @VER_DATA_VERSSAO_CUSTO, @VER_OBS, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [VerssaoCusto] ([VER_ID], [VER_STATUS], [VER_DATA_VERSSAO_CUSTO], [VER_OBS], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VER_ID, @VER_STATUS, @VER_DATA_VERSSAO_CUSTO, @VER_OBS, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VER_ID = VerssaoCusto.VER_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVerssaoCustoQuery(IVerssaoCustoEntity VerssaoCusto)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET VER_ID = @VER_ID, VER_STATUS = @VER_STATUS, VER_DATA_VERSSAO_CUSTO = @VER_DATA_VERSSAO_CUSTO, VER_OBS = @VER_OBS, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [VER_ID] = @VER_ID, [VER_STATUS] = @VER_STATUS, [VER_DATA_VERSSAO_CUSTO] = @VER_DATA_VERSSAO_CUSTO, [VER_OBS] = @VER_OBS, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_ID = VerssaoCusto.VER_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVER_ID(int id, int value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET VER_ID = @VER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [VER_ID] = @VER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVER_STATUS(int id, string value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET VER_STATUS = @VER_STATUS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [VER_STATUS] = @VER_STATUS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_STATUS = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVER_DATA_VERSSAO_CUSTO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET VER_DATA_VERSSAO_CUSTO = @VER_DATA_VERSSAO_CUSTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [VER_DATA_VERSSAO_CUSTO] = @VER_DATA_VERSSAO_CUSTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_DATA_VERSSAO_CUSTO = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVER_OBS(int id, string value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET VER_OBS = @VER_OBS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [VER_OBS] = @VER_OBS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_OBS = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE VerssaoCusto SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VerssaoCusto] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteVerssaoCustoQuery(IVerssaoCustoEntity VerssaoCusto)
         {
-            this.Query = $@" DELETE FROM VerssaoCusto WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [VerssaoCusto] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = VerssaoCusto.Id,

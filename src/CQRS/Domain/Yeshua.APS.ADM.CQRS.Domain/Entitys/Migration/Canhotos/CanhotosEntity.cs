@@ -42,6 +42,8 @@
  CAN_IMG = can_img; 
  CAN_LAT_ENTREGA = can_lat_entrega; 
  CAN_LONG_ENTREGA = can_long_entrega; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

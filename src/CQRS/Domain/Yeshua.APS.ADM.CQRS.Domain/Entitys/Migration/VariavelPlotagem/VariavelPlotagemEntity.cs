@@ -32,14 +32,12 @@
  Id = id; 
  VAR_ID = var_id; 
  PLO_ID = plo_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (VAR_ID == null)
-   this._erroMensagem.Add("VAR ID deve ser informado.");
-   if (PLO_ID == null)
-   this._erroMensagem.Add("PLO ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

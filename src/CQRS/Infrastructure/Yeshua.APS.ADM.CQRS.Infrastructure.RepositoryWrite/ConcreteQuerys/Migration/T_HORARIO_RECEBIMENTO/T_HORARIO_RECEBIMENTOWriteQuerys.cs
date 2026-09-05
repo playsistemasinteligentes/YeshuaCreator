@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_HORARIO_RECEBIMENTOQuery(IT_HORARIO_RECEBIMENTOEntity T_HORARIO_RECEBIMENTO)
         {
-            this.Query = $@" INSERT INTO T_HORARIO_RECEBIMENTO (HRE_DIA_DA_SEMANA, HRE_HORA_INICIAL, HRE_HORA_FINAL, CLI_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.HRE_ID VALUES(@HRE_DIA_DA_SEMANA, @HRE_HORA_INICIAL, @HRE_HORA_FINAL, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_HORARIO_RECEBIMENTO] ([HRE_DIA_DA_SEMANA], [HRE_HORA_INICIAL], [HRE_HORA_FINAL], [CLI_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[HRE_ID] VALUES(@HRE_DIA_DA_SEMANA, @HRE_HORA_INICIAL, @HRE_HORA_FINAL, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 HRE_DIA_DA_SEMANA = T_HORARIO_RECEBIMENTO.HRE_DIA_DA_SEMANA,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_HORARIO_RECEBIMENTOQuery(IT_HORARIO_RECEBIMENTOEntity T_HORARIO_RECEBIMENTO)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET HRE_DIA_DA_SEMANA = @HRE_DIA_DA_SEMANA, HRE_HORA_INICIAL = @HRE_HORA_INICIAL, HRE_HORA_FINAL = @HRE_HORA_FINAL, CLI_ID = @CLI_ID, Changed = @Changed, UserId = @UserId WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [HRE_DIA_DA_SEMANA] = @HRE_DIA_DA_SEMANA, [HRE_HORA_INICIAL] = @HRE_HORA_INICIAL, [HRE_HORA_FINAL] = @HRE_HORA_FINAL, [CLI_ID] = @CLI_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 HRE_DIA_DA_SEMANA = T_HORARIO_RECEBIMENTO.HRE_DIA_DA_SEMANA,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHRE_DIA_DA_SEMANA(int hre_id, int value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET HRE_DIA_DA_SEMANA = @HRE_DIA_DA_SEMANA WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [HRE_DIA_DA_SEMANA] = @HRE_DIA_DA_SEMANA WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 HRE_DIA_DA_SEMANA = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHRE_HORA_INICIAL(int hre_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET HRE_HORA_INICIAL = @HRE_HORA_INICIAL WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [HRE_HORA_INICIAL] = @HRE_HORA_INICIAL WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 HRE_HORA_INICIAL = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHRE_HORA_FINAL(int hre_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET HRE_HORA_FINAL = @HRE_HORA_FINAL WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [HRE_HORA_FINAL] = @HRE_HORA_FINAL WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 HRE_HORA_FINAL = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(int hre_id, string value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET CLI_ID = @CLI_ID WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [CLI_ID] = @CLI_ID WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int hre_id, int value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET TenantID = @TenantID WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [TenantID] = @TenantID WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int hre_id, bool value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET Deleted = @Deleted WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [Deleted] = @Deleted WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int hre_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET Changed = @Changed WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [Changed] = @Changed WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int hre_id, int value)
         {
-            this.Query = $@" UPDATE T_HORARIO_RECEBIMENTO SET UserId = @UserId WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" UPDATE [T_HORARIO_RECEBIMENTO] SET [UserId] = @UserId WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_HORARIO_RECEBIMENTOQuery(IT_HORARIO_RECEBIMENTOEntity T_HORARIO_RECEBIMENTO)
         {
-            this.Query = $@" DELETE FROM T_HORARIO_RECEBIMENTO WHERE HRE_ID = @HRE_ID ";
+            this.Query = $@" DELETE FROM [T_HORARIO_RECEBIMENTO] WHERE [HRE_ID] = @HRE_ID ";
             this.Parameters = new
             {
                 HRE_ID = T_HORARIO_RECEBIMENTO.HRE_ID,

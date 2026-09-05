@@ -44,7 +44,7 @@ public partial class GrupoRecursoCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "gre_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class GrupoRecursoCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["GRE_ID"] = ApiTestData.Text("GrupoRecurso GRE_ID", 30),
+            ["GRE_ID"] = ApiTestData.KeyText(12),
             ["GRE_DESCRICAO"] = ApiTestData.Text("GrupoRecurso GRE_DESCRICAO", 80),
         };
     }

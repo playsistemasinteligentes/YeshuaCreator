@@ -42,18 +42,16 @@
  OND_PROFUNDIDADE_VINCO = ond_profundidade_vinco; 
  OND_ID_INTEGRACAO = ond_id_integracao; 
  VIN_ID = vin_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(OND_ID))
    this._erroMensagem.Add("OND ID deve ser informado.");
-   if (OND_ESPESSURA == null)
-   this._erroMensagem.Add("OND ESPESSURA deve ser informado.");
    if(string.IsNullOrEmpty(OND_ID_INTEGRACAO))
    this._erroMensagem.Add("OND ID INTEGRACAO deve ser informado.");
-   if (VIN_ID == null)
-   this._erroMensagem.Add("VIN ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

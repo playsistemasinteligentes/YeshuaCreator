@@ -88,6 +88,8 @@
  OCO_ID = oco_id; 
  CAR_ID_JUNTADA = car_id_juntada; 
  CAR_OBSERVACAO_OTIMIZADOR = car_observacao_otimizador; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -96,8 +98,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("CAR ID deve ser informado.");
    if(string.IsNullOrEmpty(ORD_ID))
    this._erroMensagem.Add("ORD ID deve ser informado.");
-   if (ITC_QTD_PLANEJADA == null)
-   this._erroMensagem.Add("ITC QTD PLANEJADA deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

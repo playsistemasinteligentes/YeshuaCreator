@@ -34,6 +34,8 @@
  Descricao = descricao; 
  Status = status; 
  GMA_TIPO_PLANEJAMENTO = gma_tipo_planejamento; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

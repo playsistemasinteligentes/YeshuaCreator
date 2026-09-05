@@ -140,24 +140,18 @@
  TAR_DATA_FINAL = (tar_data_final < (new DateTime(1800, 1, 1))) ? DateTime.Now : tar_data_final; 
  TAR_APROVADO = tar_aprovado; 
  TAR_TEMPO_PRODUZINDO = tar_tempo_produzindo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TAR_ID == null)
-   this._erroMensagem.Add("TAR ID deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID))
    this._erroMensagem.Add("PRO ID deve ser informado.");
    if(string.IsNullOrEmpty(MAQ_ID))
    this._erroMensagem.Add("MAQ ID deve ser informado.");
    if(string.IsNullOrEmpty(TAR_DIA_TURMA))
    this._erroMensagem.Add("TAR DIA TURMA deve ser informado.");
-   if (TAR_META_PERFORMANCE == null)
-   this._erroMensagem.Add("TAR META PERFORMANCE deve ser informado.");
-   if (TAR_META_TEMPO_SETUP == null)
-   this._erroMensagem.Add("TAR META TEMPO SETUP deve ser informado.");
-   if (TAR_META_TEMPO_SETUP_AJUSTE == null)
-   this._erroMensagem.Add("TAR META TEMPO SETUP AJUSTE deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

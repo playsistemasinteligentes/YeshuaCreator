@@ -36,6 +36,8 @@
  EmailPort = emailport; 
  EmailUserName = emailusername; 
  EmailPassword = emailpassword; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

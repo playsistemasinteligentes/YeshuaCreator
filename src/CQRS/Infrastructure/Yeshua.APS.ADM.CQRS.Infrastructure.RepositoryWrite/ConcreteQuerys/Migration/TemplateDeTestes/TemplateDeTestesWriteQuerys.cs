@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes)
         {
-            this.Query = $@" INSERT INTO TemplateDeTestes (Descricao, TenantID, Deleted, Changed, UserId, Observacao) OUTPUT INSERTED.Id VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId, @Observacao) ";
+            this.Query = $@" INSERT INTO [TemplateDeTestes] ([Descricao], [TenantID], [Deleted], [Changed], [UserId], [Observacao]) OUTPUT INSERTED.[Id] VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId, @Observacao) ";
             this.Parameters = new
             {
                 Descricao = TemplateDeTestes.Descricao,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET Descricao = @Descricao, Changed = @Changed, UserId = @UserId, Observacao = @Observacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [Descricao] = @Descricao, [Changed] = @Changed, [UserId] = @UserId, [Observacao] = @Observacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = TemplateDeTestes.Descricao,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescricao(int id, string value)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET Descricao = @Descricao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [Descricao] = @Descricao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateObservacao(int id, string value)
         {
-            this.Query = $@" UPDATE TemplateDeTestes SET Observacao = @Observacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplateDeTestes] SET [Observacao] = @Observacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Observacao = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTemplateDeTestesQuery(ITemplateDeTestesEntity TemplateDeTestes)
         {
-            this.Query = $@" DELETE FROM TemplateDeTestes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TemplateDeTestes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TemplateDeTestes.Id,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirGrupoIndicadorQuery(IGrupoIndicadorEntity GrupoIndicador)
         {
-            this.Query = $@" INSERT INTO GrupoIndicador (GRU_ID, IND_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.GRU_IND_ID VALUES(@GRU_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [GrupoIndicador] ([GRU_ID], [IND_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[GRU_IND_ID] VALUES(@GRU_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 GRU_ID = GrupoIndicador.GRU_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoIndicadorQuery(IGrupoIndicadorEntity GrupoIndicador)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET GRU_ID = @GRU_ID, IND_ID = @IND_ID, Changed = @Changed, UserId = @UserId WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [GRU_ID] = @GRU_ID, [IND_ID] = @IND_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 GRU_ID = GrupoIndicador.GRU_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRU_ID(int gru_ind_id, int value)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET GRU_ID = @GRU_ID WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [GRU_ID] = @GRU_ID WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 GRU_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_ID(int gru_ind_id, int value)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET IND_ID = @IND_ID WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [IND_ID] = @IND_ID WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 IND_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int gru_ind_id, int value)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET TenantID = @TenantID WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [TenantID] = @TenantID WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int gru_ind_id, bool value)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET Deleted = @Deleted WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [Deleted] = @Deleted WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int gru_ind_id, DateTime value)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET Changed = @Changed WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [Changed] = @Changed WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int gru_ind_id, int value)
         {
-            this.Query = $@" UPDATE GrupoIndicador SET UserId = @UserId WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" UPDATE [GrupoIndicador] SET [UserId] = @UserId WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteGrupoIndicadorQuery(IGrupoIndicadorEntity GrupoIndicador)
         {
-            this.Query = $@" DELETE FROM GrupoIndicador WHERE GRU_IND_ID = @GRU_IND_ID ";
+            this.Query = $@" DELETE FROM [GrupoIndicador] WHERE [GRU_IND_ID] = @GRU_IND_ID ";
             this.Parameters = new
             {
                 GRU_IND_ID = GrupoIndicador.GRU_IND_ID,

@@ -197,6 +197,10 @@ namespace Dominio.Schemas.CQRS
                         sb.AppendLine($" {column.Name} = ({column.getParameterConstructor()} < (new DateTime(1800, 1, 1))) ? DateTime.Now : {column.getParameterConstructor()}; ");
                     else
                         sb.AppendLine($" {column.Name} = {column.getParameterConstructor()}; ");
+
+                foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && x.IsValueDefault && !IsExecutionContextDefault(x)))
+                    sb.AppendLine($" {column.Name} = {BuildDefaultValueExpression(column)}; ");
+
                 sb.AppendLine("}");
 
 
@@ -204,16 +208,20 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("{");
                 sb.AppendLine("_erroMensagem = new List<string>();");
 
-                foreach (var column in _entity.AddColumns.Where(x => x.IsNotNull && !x.IsBackEndField))
+                foreach (var column in _entity.AddColumns.Where(x => x.IsNotNull && !x.IsBackEndField && !x.IsValueDefault))
                 {
-                    if (column.getCsharpType() == "string")
-                        sb.AppendLine($"   if(string.IsNullOrEmpty({column.Name}))");
-                    if (column.getCsharpType() == "DateTime")
-                        sb.AppendLine($"   if ({column.Name} == null || {column.Name} < (new DateTime(1800, 1, 1)))");
+                    var validationCondition = column.getCsharpType() switch
+                    {
+                        "string" => $"string.IsNullOrEmpty({column.Name})",
+                        "DateTime" => $"{column.Name} == null || {column.Name} < (new DateTime(1800, 1, 1))",
+                        "int" or "Float" or "Decimal" or "long" when column.getCsharpType(true).EndsWith("?") => $"{column.Name} == null",
+                        _ => null
+                    };
 
-                    if (column.getCsharpType() == "int" || column.getCsharpType() == "Float" || column.getCsharpType() == "Decimal")
-                        sb.AppendLine($"   if ({column.Name} == null)");
+                    if (validationCondition is null)
+                        continue;
 
+                    sb.AppendLine($"   if({validationCondition})");
                     sb.AppendLine($"   this._erroMensagem.Add(\"{column.Description} deve ser informado.\");");
                 }
 
@@ -262,6 +270,31 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
             return sb.ToString();
         }
+
+        private static bool IsExecutionContextDefault(Column column)
+        {
+            return column.ValueDefault?.Contains("_executionContext", StringComparison.Ordinal) == true;
+        }
+
+        private static string BuildDefaultValueExpression(Column column)
+        {
+            var value = column.ValueDefault ?? string.Empty;
+            if (value.StartsWith("#", StringComparison.Ordinal))
+                return value[1..];
+
+            return column.GetSqlType() switch
+            {
+                "bool" when value == "1" => "true",
+                "bool" when value == "0" => "false",
+                "bool" => value.ToLowerInvariant(),
+                "varchar" when value == "''" => "\"\"",
+                "varchar" when value.Length >= 2 && value.StartsWith("'", StringComparison.Ordinal) && value.EndsWith("'", StringComparison.Ordinal) => $"\"{Escape(value[1..^1])}\"",
+                "varchar" => $"\"{Escape(value)}\"",
+                _ => value
+            };
+        }
+
+        private static string Escape(string value) => value.Replace("\\", "\\\\").Replace("\"", "\\\"");
 
         protected override StringBuilder GenerateCustonCode()
         {

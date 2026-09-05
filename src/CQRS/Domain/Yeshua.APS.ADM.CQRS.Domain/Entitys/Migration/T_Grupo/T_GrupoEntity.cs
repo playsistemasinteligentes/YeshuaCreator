@@ -34,16 +34,14 @@
  NOME = nome; 
  EXIBELISTA = exibelista; 
  GRU_DESCRICAO = gru_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (GRU_ID == null)
-   this._erroMensagem.Add("GRU ID deve ser informado.");
    if(string.IsNullOrEmpty(NOME))
    this._erroMensagem.Add("NOME deve ser informado.");
-   if (EXIBELISTA == null)
-   this._erroMensagem.Add("EXIBELISTA deve ser informado.");
    if(string.IsNullOrEmpty(GRU_DESCRICAO))
    this._erroMensagem.Add("GRU DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

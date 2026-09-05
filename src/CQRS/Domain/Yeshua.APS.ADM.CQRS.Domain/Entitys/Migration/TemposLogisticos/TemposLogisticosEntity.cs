@@ -36,6 +36,8 @@
  TMP_TIPO_CARGA = tmp_tipo_carga; 
  TMP_TEMPO_MEDIO_UNITARIO = tmp_tempo_medio_unitario; 
  CLI_ID = cli_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -44,8 +46,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("TMP TIPO TEMPO deve ser informado.");
    if(string.IsNullOrEmpty(TMP_TIPO_CARGA))
    this._erroMensagem.Add("TMP TIPO CARGA deve ser informado.");
-   if (TMP_TEMPO_MEDIO_UNITARIO == null)
-   this._erroMensagem.Add("TMP TEMPO MEDIO UNITARIO deve ser informado.");
    if(string.IsNullOrEmpty(CLI_ID))
    this._erroMensagem.Add("CLI ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

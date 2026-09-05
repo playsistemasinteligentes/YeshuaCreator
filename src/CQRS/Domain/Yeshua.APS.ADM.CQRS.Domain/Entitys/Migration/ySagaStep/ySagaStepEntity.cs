@@ -50,24 +50,16 @@
  ErrorMessage = errormessage; 
  Payload = payload; 
  RetryCount = retrycount; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (SagaId == null)
-   this._erroMensagem.Add("Saga deve ser informado.");
    if(string.IsNullOrEmpty(StepKey))
    this._erroMensagem.Add("Step Key deve ser informado.");
-   if (IndexOrder == null)
-   this._erroMensagem.Add("Index Order deve ser informado.");
    if(string.IsNullOrEmpty(CorrelationId))
    this._erroMensagem.Add("CorrelationId deve ser informado.");
-   if (Status == null)
-   this._erroMensagem.Add("Status deve ser informado.");
-   if (ExecutionCount == null)
-   this._erroMensagem.Add("Execuções deve ser informado.");
-   if (RetryCount == null)
-   this._erroMensagem.Add("Tentativas deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

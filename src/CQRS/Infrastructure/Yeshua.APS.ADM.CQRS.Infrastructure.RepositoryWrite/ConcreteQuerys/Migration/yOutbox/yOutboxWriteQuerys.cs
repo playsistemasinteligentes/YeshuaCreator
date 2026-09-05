@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" INSERT INTO yOutbox (MessageId, Type, EntityType, EntityId, CorrelationId, Payload, Status, TransportType, TransportData, CreatedAt, SentAt, RetryCount, LastError, ProcessingAt, NextAttemptAt, SagaId, SagaStepId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yOutbox] ([MessageId], [Type], [EntityType], [EntityId], [CorrelationId], [Payload], [Status], [TransportType], [TransportData], [CreatedAt], [SentAt], [RetryCount], [LastError], [ProcessingAt], [NextAttemptAt], [SagaId], [SagaStepId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MessageId, @Type, @EntityType, @EntityId, @CorrelationId, @Payload, @Status, @TransportType, @TransportData, @CreatedAt, @SentAt, @RetryCount, @LastError, @ProcessingAt, @NextAttemptAt, @SagaId, @SagaStepId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MessageId = yOutbox.MessageId,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" UPDATE yOutbox SET MessageId = @MessageId, Type = @Type, EntityType = @EntityType, EntityId = @EntityId, CorrelationId = @CorrelationId, Payload = @Payload, Status = @Status, TransportType = @TransportType, TransportData = @TransportData, CreatedAt = @CreatedAt, SentAt = @SentAt, RetryCount = @RetryCount, LastError = @LastError, ProcessingAt = @ProcessingAt, NextAttemptAt = @NextAttemptAt, SagaId = @SagaId, SagaStepId = @SagaStepId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [MessageId] = @MessageId, [Type] = @Type, [EntityType] = @EntityType, [EntityId] = @EntityId, [CorrelationId] = @CorrelationId, [Payload] = @Payload, [Status] = @Status, [TransportType] = @TransportType, [TransportData] = @TransportData, [CreatedAt] = @CreatedAt, [SentAt] = @SentAt, [RetryCount] = @RetryCount, [LastError] = @LastError, [ProcessingAt] = @ProcessingAt, [NextAttemptAt] = @NextAttemptAt, [SagaId] = @SagaId, [SagaStepId] = @SagaStepId, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MessageId = yOutbox.MessageId,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMessageId(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET MessageId = @MessageId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [MessageId] = @MessageId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MessageId = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateType(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET Type = @Type WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [Type] = @Type WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Type = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEntityType(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET EntityType = @EntityType WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [EntityType] = @EntityType WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EntityType = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEntityId(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET EntityId = @EntityId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [EntityId] = @EntityId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EntityId = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCorrelationId(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET CorrelationId = @CorrelationId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [CorrelationId] = @CorrelationId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CorrelationId = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePayload(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET Payload = @Payload WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [Payload] = @Payload WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Payload = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET Status = @Status WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [Status] = @Status WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Status = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTransportType(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET TransportType = @TransportType WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [TransportType] = @TransportType WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TransportType = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTransportData(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET TransportData = @TransportData WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [TransportData] = @TransportData WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TransportData = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCreatedAt(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yOutbox SET CreatedAt = @CreatedAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [CreatedAt] = @CreatedAt WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CreatedAt = value,
@@ -187,7 +187,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSentAt(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yOutbox SET SentAt = @SentAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [SentAt] = @SentAt WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SentAt = value,
@@ -197,7 +197,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRetryCount(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET RetryCount = @RetryCount WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [RetryCount] = @RetryCount WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RetryCount = value,
@@ -207,7 +207,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLastError(int id, string value)
         {
-            this.Query = $@" UPDATE yOutbox SET LastError = @LastError WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [LastError] = @LastError WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LastError = value,
@@ -217,7 +217,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProcessingAt(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yOutbox SET ProcessingAt = @ProcessingAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [ProcessingAt] = @ProcessingAt WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProcessingAt = value,
@@ -227,7 +227,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNextAttemptAt(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yOutbox SET NextAttemptAt = @NextAttemptAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [NextAttemptAt] = @NextAttemptAt WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 NextAttemptAt = value,
@@ -237,7 +237,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSagaId(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET SagaId = @SagaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [SagaId] = @SagaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SagaId = value,
@@ -247,7 +247,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSagaStepId(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET SagaStepId = @SagaStepId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [SagaStepId] = @SagaStepId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SagaStepId = value,
@@ -257,7 +257,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -267,7 +267,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yOutbox SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -277,7 +277,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yOutbox SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -287,7 +287,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yOutbox SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yOutbox] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -297,7 +297,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyOutboxQuery(IyOutboxEntity yOutbox)
         {
-            this.Query = $@" DELETE FROM yOutbox WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yOutbox] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yOutbox.Id,

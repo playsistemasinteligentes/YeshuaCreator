@@ -174,6 +174,8 @@
  ORD_DATA_ESTATISTICA = (ord_data_estatistica < (new DateTime(1800, 1, 1))) ? DateTime.Now : ord_data_estatistica; 
  OCO_ID_MOTIVO_ATRASO = oco_id_motivo_atraso; 
  OTK_VERSSAO = otk_verssao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -188,11 +190,9 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("PRO ID CONJUNTO deve ser informado.");
    if(string.IsNullOrEmpty(CLI_ID))
    this._erroMensagem.Add("CLI ID deve ser informado.");
-   if (ORD_QUANTIDADE == null)
-   this._erroMensagem.Add("ORD QUANTIDADE deve ser informado.");
-   if (ORD_DATA_ENTREGA_DE == null || ORD_DATA_ENTREGA_DE < (new DateTime(1800, 1, 1)))
+   if(ORD_DATA_ENTREGA_DE == null || ORD_DATA_ENTREGA_DE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ORD DATA ENTREGA DE deve ser informado.");
-   if (ORD_DATA_ENTREGA_ATE == null || ORD_DATA_ENTREGA_ATE < (new DateTime(1800, 1, 1)))
+   if(ORD_DATA_ENTREGA_ATE == null || ORD_DATA_ENTREGA_ATE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ORD DATA ENTREGA ATE deve ser informado.");
    if(string.IsNullOrEmpty(ORD_TIPO_FRETE))
    this._erroMensagem.Add("ORD TIPO FRETE deve ser informado.");

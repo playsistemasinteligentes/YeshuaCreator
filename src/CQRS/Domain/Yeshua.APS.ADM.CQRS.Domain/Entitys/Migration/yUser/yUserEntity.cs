@@ -33,6 +33,8 @@
  Nome = nome; 
  Email = email; 
  Senha = senha; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

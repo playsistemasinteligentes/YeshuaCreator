@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRegistrosOnduladeiraQuery(IRegistrosOnduladeiraEntity RegistrosOnduladeira)
         {
-            this.Query = $@" INSERT INTO RegistrosOnduladeira (REG_ID, REG_RESPOSTA, REG_STATUS, REG_DATA_INICIO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@REG_ID, @REG_RESPOSTA, @REG_STATUS, @REG_DATA_INICIO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RegistrosOnduladeira] ([REG_ID], [REG_RESPOSTA], [REG_STATUS], [REG_DATA_INICIO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@REG_ID, @REG_RESPOSTA, @REG_STATUS, @REG_DATA_INICIO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 REG_ID = RegistrosOnduladeira.REG_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRegistrosOnduladeiraQuery(IRegistrosOnduladeiraEntity RegistrosOnduladeira)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET REG_ID = @REG_ID, REG_RESPOSTA = @REG_RESPOSTA, REG_STATUS = @REG_STATUS, REG_DATA_INICIO = @REG_DATA_INICIO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [REG_ID] = @REG_ID, [REG_RESPOSTA] = @REG_RESPOSTA, [REG_STATUS] = @REG_STATUS, [REG_DATA_INICIO] = @REG_DATA_INICIO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REG_ID = RegistrosOnduladeira.REG_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREG_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET REG_ID = @REG_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [REG_ID] = @REG_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REG_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREG_RESPOSTA(int id, string value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET REG_RESPOSTA = @REG_RESPOSTA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [REG_RESPOSTA] = @REG_RESPOSTA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REG_RESPOSTA = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREG_STATUS(int id, string value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET REG_STATUS = @REG_STATUS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [REG_STATUS] = @REG_STATUS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REG_STATUS = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREG_DATA_INICIO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET REG_DATA_INICIO = @REG_DATA_INICIO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [REG_DATA_INICIO] = @REG_DATA_INICIO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REG_DATA_INICIO = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE RegistrosOnduladeira SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RegistrosOnduladeira] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRegistrosOnduladeiraQuery(IRegistrosOnduladeiraEntity RegistrosOnduladeira)
         {
-            this.Query = $@" DELETE FROM RegistrosOnduladeira WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [RegistrosOnduladeira] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = RegistrosOnduladeira.Id,

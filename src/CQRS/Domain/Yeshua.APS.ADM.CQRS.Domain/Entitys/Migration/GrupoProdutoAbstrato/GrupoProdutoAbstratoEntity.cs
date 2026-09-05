@@ -118,6 +118,8 @@
  GRP_PERCENTUAL_PERDA_MEDIA = grp_percentual_perda_media; 
  GRP_FILTRA_SEQ_TRANS = grp_filtra_seq_trans; 
  GRP_IMG_CAIXA = grp_img_caixa; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -126,8 +128,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("GRP ID deve ser informado.");
    if(string.IsNullOrEmpty(GRP_DESCRICAO))
    this._erroMensagem.Add("GRP DESCRICAO deve ser informado.");
-   if (VIN_ID == null)
-   this._erroMensagem.Add("VIN ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

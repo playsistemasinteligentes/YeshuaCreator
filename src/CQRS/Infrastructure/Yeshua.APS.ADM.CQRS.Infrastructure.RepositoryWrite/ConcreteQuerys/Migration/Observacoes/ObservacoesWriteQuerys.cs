@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirObservacoesQuery(IObservacoesEntity Observacoes)
         {
-            this.Query = $@" INSERT INTO Observacoes (OBS_TIPO, OBS_DESCRICAO, CLI_ID, MAQ_ID, PRO_ID, ROT_SEQ_TRANFORMACAO, OBS_INTEGRACAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.OBS_ID VALUES(@OBS_TIPO, @OBS_DESCRICAO, @CLI_ID, @MAQ_ID, @PRO_ID, @ROT_SEQ_TRANFORMACAO, @OBS_INTEGRACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Observacoes] ([OBS_TIPO], [OBS_DESCRICAO], [CLI_ID], [MAQ_ID], [PRO_ID], [ROT_SEQ_TRANFORMACAO], [OBS_INTEGRACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[OBS_ID] VALUES(@OBS_TIPO, @OBS_DESCRICAO, @CLI_ID, @MAQ_ID, @PRO_ID, @ROT_SEQ_TRANFORMACAO, @OBS_INTEGRACAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OBS_TIPO = Observacoes.OBS_TIPO,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateObservacoesQuery(IObservacoesEntity Observacoes)
         {
-            this.Query = $@" UPDATE Observacoes SET OBS_TIPO = @OBS_TIPO, OBS_DESCRICAO = @OBS_DESCRICAO, CLI_ID = @CLI_ID, MAQ_ID = @MAQ_ID, PRO_ID = @PRO_ID, ROT_SEQ_TRANFORMACAO = @ROT_SEQ_TRANFORMACAO, OBS_INTEGRACAO = @OBS_INTEGRACAO, Changed = @Changed, UserId = @UserId WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [OBS_TIPO] = @OBS_TIPO, [OBS_DESCRICAO] = @OBS_DESCRICAO, [CLI_ID] = @CLI_ID, [MAQ_ID] = @MAQ_ID, [PRO_ID] = @PRO_ID, [ROT_SEQ_TRANFORMACAO] = @ROT_SEQ_TRANFORMACAO, [OBS_INTEGRACAO] = @OBS_INTEGRACAO, [Changed] = @Changed, [UserId] = @UserId WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 OBS_TIPO = Observacoes.OBS_TIPO,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOBS_TIPO(int obs_id, string value)
         {
-            this.Query = $@" UPDATE Observacoes SET OBS_TIPO = @OBS_TIPO WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [OBS_TIPO] = @OBS_TIPO WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 OBS_TIPO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOBS_DESCRICAO(int obs_id, string value)
         {
-            this.Query = $@" UPDATE Observacoes SET OBS_DESCRICAO = @OBS_DESCRICAO WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [OBS_DESCRICAO] = @OBS_DESCRICAO WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 OBS_DESCRICAO = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(int obs_id, string value)
         {
-            this.Query = $@" UPDATE Observacoes SET CLI_ID = @CLI_ID WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [CLI_ID] = @CLI_ID WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(int obs_id, string value)
         {
-            this.Query = $@" UPDATE Observacoes SET MAQ_ID = @MAQ_ID WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [MAQ_ID] = @MAQ_ID WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(int obs_id, string value)
         {
-            this.Query = $@" UPDATE Observacoes SET PRO_ID = @PRO_ID WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [PRO_ID] = @PRO_ID WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_SEQ_TRANFORMACAO(int obs_id, int value)
         {
-            this.Query = $@" UPDATE Observacoes SET ROT_SEQ_TRANFORMACAO = @ROT_SEQ_TRANFORMACAO WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [ROT_SEQ_TRANFORMACAO] = @ROT_SEQ_TRANFORMACAO WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 ROT_SEQ_TRANFORMACAO = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOBS_INTEGRACAO(int obs_id, string value)
         {
-            this.Query = $@" UPDATE Observacoes SET OBS_INTEGRACAO = @OBS_INTEGRACAO WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [OBS_INTEGRACAO] = @OBS_INTEGRACAO WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 OBS_INTEGRACAO = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int obs_id, int value)
         {
-            this.Query = $@" UPDATE Observacoes SET TenantID = @TenantID WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [TenantID] = @TenantID WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int obs_id, bool value)
         {
-            this.Query = $@" UPDATE Observacoes SET Deleted = @Deleted WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [Deleted] = @Deleted WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int obs_id, DateTime value)
         {
-            this.Query = $@" UPDATE Observacoes SET Changed = @Changed WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [Changed] = @Changed WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int obs_id, int value)
         {
-            this.Query = $@" UPDATE Observacoes SET UserId = @UserId WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" UPDATE [Observacoes] SET [UserId] = @UserId WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteObservacoesQuery(IObservacoesEntity Observacoes)
         {
-            this.Query = $@" DELETE FROM Observacoes WHERE OBS_ID = @OBS_ID ";
+            this.Query = $@" DELETE FROM [Observacoes] WHERE [OBS_ID] = @OBS_ID ";
             this.Parameters = new
             {
                 OBS_ID = Observacoes.OBS_ID,

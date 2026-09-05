@@ -458,21 +458,30 @@ namespace Dominio.Schemas.CQRS
         }
         private string GetReadSourceName(Entity entity)
         {
-            return entity.IsFromView ? entity.ViewSourceName : entity.EntityName;
+            var sourceName = entity.IsFromView ? entity.ViewSourceName : entity.EntityName;
+            return SqlIdentifier(sourceName);
         }
 
         private string GetReadSqlColumn(Entity entity, Column column)
         {
-            return entity.IsFromView && column.HasLegacyColumn ? column.LegacyColumnName : column.Name;
+            var columnName = entity.IsFromView && column.HasLegacyColumn ? column.LegacyColumnName : column.Name;
+            return SqlIdentifier(columnName);
         }
 
         private string BuildReadSelectColumns(Entity entity, IEnumerable<Column> columns)
         {
             return string.Join(", ", columns.Select(column =>
             {
-                var sqlColumn = GetReadSqlColumn(entity, column);
-                return sqlColumn == column.Name ? column.Name : $"{sqlColumn} AS {column.Name}";
+                var sqlColumnName = entity.IsFromView && column.HasLegacyColumn ? column.LegacyColumnName : column.Name;
+                var sqlColumn = SqlIdentifier(sqlColumnName);
+                var columnAlias = SqlIdentifier(column.Name);
+                return sqlColumnName == column.Name ? columnAlias : $"{sqlColumn} AS {columnAlias}";
             }));
+        }
+
+        private static string SqlIdentifier(string name)
+        {
+            return string.Join(".", name.Split('.').Select(part => $"[{part.Replace("]", "]]")}]"));
         }
 
         private void Parameters(StringBuilder sb, Column colunm, bool suarchFK = false, Entity sourceEntity = null)

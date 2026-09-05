@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOrcamentoQuery(IOrcamentoEntity Orcamento)
         {
-            this.Query = $@" INSERT INTO Orcamento (ORC_ID, REP_ID, CON_ID, ORC_TIPO_FRETE, ORC_EMISSAO, CLI_ID, VER_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ORC_ID, @REP_ID, @CON_ID, @ORC_TIPO_FRETE, @ORC_EMISSAO, @CLI_ID, @VER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Orcamento] ([ORC_ID], [REP_ID], [CON_ID], [ORC_TIPO_FRETE], [ORC_EMISSAO], [CLI_ID], [VER_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ORC_ID, @REP_ID, @CON_ID, @ORC_TIPO_FRETE, @ORC_EMISSAO, @CLI_ID, @VER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ORC_ID = Orcamento.ORC_ID,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOrcamentoQuery(IOrcamentoEntity Orcamento)
         {
-            this.Query = $@" UPDATE Orcamento SET ORC_ID = @ORC_ID, REP_ID = @REP_ID, CON_ID = @CON_ID, ORC_TIPO_FRETE = @ORC_TIPO_FRETE, ORC_EMISSAO = @ORC_EMISSAO, CLI_ID = @CLI_ID, VER_ID = @VER_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [ORC_ID] = @ORC_ID, [REP_ID] = @REP_ID, [CON_ID] = @CON_ID, [ORC_TIPO_FRETE] = @ORC_TIPO_FRETE, [ORC_EMISSAO] = @ORC_EMISSAO, [CLI_ID] = @CLI_ID, [VER_ID] = @VER_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORC_ID = Orcamento.ORC_ID,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORC_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Orcamento SET ORC_ID = @ORC_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [ORC_ID] = @ORC_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORC_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREP_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Orcamento SET REP_ID = @REP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [REP_ID] = @REP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REP_ID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCON_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Orcamento SET CON_ID = @CON_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [CON_ID] = @CON_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_ID = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORC_TIPO_FRETE(int id, string value)
         {
-            this.Query = $@" UPDATE Orcamento SET ORC_TIPO_FRETE = @ORC_TIPO_FRETE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [ORC_TIPO_FRETE] = @ORC_TIPO_FRETE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORC_TIPO_FRETE = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORC_EMISSAO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Orcamento SET ORC_EMISSAO = @ORC_EMISSAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [ORC_EMISSAO] = @ORC_EMISSAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORC_EMISSAO = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Orcamento SET CLI_ID = @CLI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [CLI_ID] = @CLI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVER_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Orcamento SET VER_ID = @VER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [VER_ID] = @VER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_ID = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Orcamento SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Orcamento SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Orcamento SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Orcamento SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Orcamento] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOrcamentoQuery(IOrcamentoEntity Orcamento)
         {
-            this.Query = $@" DELETE FROM Orcamento WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Orcamento] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Orcamento.Id,

@@ -39,7 +39,7 @@ public partial class OcorrenciaCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "oco_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class OcorrenciaCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["OCO_ID"] = ApiTestData.Text("Ocorrencia OCO_ID", 30),
+            ["OCO_ID"] = ApiTestData.KeyText(12),
             ["OCO_DESCRICAO"] = ApiTestData.Text("Ocorrencia OCO_DESCRICAO", 80),
             ["TIP_ID"] = ApiSeedTestContext.GetRequiredCreatedId("TipoOcorrencia", "TIP_ID"),
             ["GMA_ID"] = ApiTestData.Text("Ocorrencia GMA_ID", 30),

@@ -136,6 +136,44 @@ namespace Dominio.Migration
                         }
                     }
 
+                    foreach (var customPage in mol.CustomPages)
+                    {
+                        var existingCustomPage = sanitizedModule.CustomPages
+                            .FirstOrDefault(x => x.Page.Equals(customPage.Page, StringComparison.OrdinalIgnoreCase));
+
+                        if (existingCustomPage == null)
+                        {
+                            sanitizedModule.CustomPages.Add(customPage);
+                        }
+                        else
+                        {
+                            existingCustomPage.Title = customPage.Title;
+                            existingCustomPage.Scope = customPage.Scope;
+                            existingCustomPage.MenuGroup = customPage.MenuGroup;
+                        }
+                    }
+
+                    foreach (var menuGroup in mol.MenuGroups)
+                    {
+                        var existingMenuGroup = sanitizedModule.MenuGroups
+                            .FirstOrDefault(x => x.Title.Equals(menuGroup.Title, StringComparison.OrdinalIgnoreCase));
+
+                        if (existingMenuGroup == null)
+                        {
+                            sanitizedModule.MenuGroups.Add(menuGroup);
+                        }
+                        else
+                        {
+                            foreach (var item in menuGroup.Items)
+                                existingMenuGroup.AddItem(item);
+
+                            foreach (var prefix in menuGroup.Prefixes)
+                                existingMenuGroup.AddPrefix(prefix);
+
+                            existingMenuGroup.IncludeRemaining = existingMenuGroup.IncludeRemaining || menuGroup.IncludeRemaining;
+                        }
+                    }
+
                 }
             }
 

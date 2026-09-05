@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoDispositivoMaquinaQuery(ITipoDispositivoMaquinaEntity TipoDispositivoMaquina)
         {
-            this.Query = $@" INSERT INTO TipoDispositivoMaquina (TDI_ID, MAQ_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TDI_ID, @MAQ_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoDispositivoMaquina] ([TDI_ID], [MAQ_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TDI_ID, @MAQ_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TDI_ID = TipoDispositivoMaquina.TDI_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoDispositivoMaquinaQuery(ITipoDispositivoMaquinaEntity TipoDispositivoMaquina)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET TDI_ID = @TDI_ID, MAQ_ID = @MAQ_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [TDI_ID] = @TDI_ID, [MAQ_ID] = @MAQ_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TDI_ID = TipoDispositivoMaquina.TDI_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTDI_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET TDI_ID = @TDI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [TDI_ID] = @TDI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TDI_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET MAQ_ID = @MAQ_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [MAQ_ID] = @MAQ_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TipoDispositivoMaquina SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivoMaquina] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoDispositivoMaquinaQuery(ITipoDispositivoMaquinaEntity TipoDispositivoMaquina)
         {
-            this.Query = $@" DELETE FROM TipoDispositivoMaquina WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TipoDispositivoMaquina] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TipoDispositivoMaquina.Id,

@@ -38,6 +38,8 @@
  CON_PARCELAS = con_parcelas; 
  CON_VALOR_ACRECIMO = con_valor_acrecimo; 
  CON_INTEGRACAO_ERP = con_integracao_erp; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

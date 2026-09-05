@@ -38,6 +38,8 @@
  COL_EMAIL = col_email; 
  COL_MATRICULA = col_matricula; 
  TURM_id = turm_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -46,7 +48,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("COL CPF deve ser informado.");
    if(string.IsNullOrEmpty(COL_NOME))
    this._erroMensagem.Add("COL NOME deve ser informado.");
-   if (COL_NASCIMENTO == null || COL_NASCIMENTO < (new DateTime(1800, 1, 1)))
+   if(COL_NASCIMENTO == null || COL_NASCIMENTO < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("COL NASCIMENTO deve ser informado.");
    if(string.IsNullOrEmpty(COL_EMAIL))
    this._erroMensagem.Add("COL EMAIL deve ser informado.");

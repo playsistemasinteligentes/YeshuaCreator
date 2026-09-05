@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCalendarioQuery(ICalendarioEntity Calendario)
         {
-            this.Query = $@" INSERT INTO Calendario (CAL_ID, CAL_DESCRICAO, CAL_DIVIDE_DIA_EM, TenantID, Deleted, Changed, UserId) VALUES(@CAL_ID, @CAL_DESCRICAO, @CAL_DIVIDE_DIA_EM, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Calendario] ([CAL_ID], [CAL_DESCRICAO], [CAL_DIVIDE_DIA_EM], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@CAL_ID, @CAL_DESCRICAO, @CAL_DIVIDE_DIA_EM, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAL_ID = Calendario.CAL_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCalendarioQuery(ICalendarioEntity Calendario)
         {
-            this.Query = $@" UPDATE Calendario SET CAL_DESCRICAO = @CAL_DESCRICAO, CAL_DIVIDE_DIA_EM = @CAL_DIVIDE_DIA_EM, Changed = @Changed, UserId = @UserId WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [CAL_DESCRICAO] = @CAL_DESCRICAO, [CAL_DIVIDE_DIA_EM] = @CAL_DIVIDE_DIA_EM, [Changed] = @Changed, [UserId] = @UserId WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 CAL_DESCRICAO = Calendario.CAL_DESCRICAO,
@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAL_DESCRICAO(int cal_id, string value)
         {
-            this.Query = $@" UPDATE Calendario SET CAL_DESCRICAO = @CAL_DESCRICAO WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [CAL_DESCRICAO] = @CAL_DESCRICAO WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 CAL_DESCRICAO = value,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAL_DIVIDE_DIA_EM(int cal_id, int value)
         {
-            this.Query = $@" UPDATE Calendario SET CAL_DIVIDE_DIA_EM = @CAL_DIVIDE_DIA_EM WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [CAL_DIVIDE_DIA_EM] = @CAL_DIVIDE_DIA_EM WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 CAL_DIVIDE_DIA_EM = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int cal_id, int value)
         {
-            this.Query = $@" UPDATE Calendario SET TenantID = @TenantID WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [TenantID] = @TenantID WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int cal_id, bool value)
         {
-            this.Query = $@" UPDATE Calendario SET Deleted = @Deleted WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [Deleted] = @Deleted WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int cal_id, DateTime value)
         {
-            this.Query = $@" UPDATE Calendario SET Changed = @Changed WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [Changed] = @Changed WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int cal_id, int value)
         {
-            this.Query = $@" UPDATE Calendario SET UserId = @UserId WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" UPDATE [Calendario] SET [UserId] = @UserId WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCalendarioQuery(ICalendarioEntity Calendario)
         {
-            this.Query = $@" DELETE FROM Calendario WHERE CAL_ID = @CAL_ID ";
+            this.Query = $@" DELETE FROM [Calendario] WHERE [CAL_ID] = @CAL_ID ";
             this.Parameters = new
             {
                 CAL_ID = Calendario.CAL_ID,

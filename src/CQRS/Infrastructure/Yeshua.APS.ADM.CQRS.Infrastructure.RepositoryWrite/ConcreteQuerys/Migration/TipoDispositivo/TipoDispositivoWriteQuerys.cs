@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoDispositivoQuery(ITipoDispositivoEntity TipoDispositivo)
         {
-            this.Query = $@" INSERT INTO TipoDispositivo (TDI_ID, TDI_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TDI_ID, @TDI_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoDispositivo] ([TDI_ID], [TDI_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TDI_ID, @TDI_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TDI_ID = TipoDispositivo.TDI_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoDispositivoQuery(ITipoDispositivoEntity TipoDispositivo)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET TDI_ID = @TDI_ID, TDI_DESCRICAO = @TDI_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [TDI_ID] = @TDI_ID, [TDI_DESCRICAO] = @TDI_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TDI_ID = TipoDispositivo.TDI_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTDI_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET TDI_ID = @TDI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [TDI_ID] = @TDI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TDI_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTDI_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET TDI_DESCRICAO = @TDI_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [TDI_DESCRICAO] = @TDI_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TDI_DESCRICAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TipoDispositivo SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoDispositivo] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoDispositivoQuery(ITipoDispositivoEntity TipoDispositivo)
         {
-            this.Query = $@" DELETE FROM TipoDispositivo WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TipoDispositivo] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TipoDispositivo.Id,

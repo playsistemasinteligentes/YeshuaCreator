@@ -36,6 +36,8 @@
  CAL_ID = cal_id; 
  REC_CONTROL_IP = rec_control_ip; 
  GRE_ID = gre_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

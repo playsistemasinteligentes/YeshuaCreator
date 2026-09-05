@@ -50,6 +50,8 @@
  NextExecutionAt = (nextexecutionat < (new DateTime(1800, 1, 1))) ? DateTime.Now : nextexecutionat; 
  LockedAt = (lockedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lockedat; 
  LockedBy = lockedby; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -58,9 +60,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("CorrelationId deve ser informado.");
    if(string.IsNullOrEmpty(Type))
    this._erroMensagem.Add("Type deve ser informado.");
-   if (Status == null)
-   this._erroMensagem.Add("Status deve ser informado.");
-   if (CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
+   if(CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado em deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

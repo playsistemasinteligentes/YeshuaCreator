@@ -162,6 +162,8 @@
  MAQ_TOTAL_PECAS_REFILANDO = maq_total_pecas_refilando; 
  MAQ_TOTAL_PECAS_NAO_REFILANDO = maq_total_pecas_nao_refilando; 
  MAQ_TOTAL_VINCOS = maq_total_vincos; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCargaPlanejavelQuery(ICargaPlanejavelEntity CargaPlanejavel)
         {
-            this.Query = $@" INSERT INTO CargaPlanejavel (CargaId, Status, TransportadoraId, VeiculoId, TipoVeiculoId, PesoTeorico, VolumeTeorico, InicioJanelaEmbarque, FimJanelaEmbarque, EmbarqueAlvo, QuantidadePedidos, AlertasResumo) VALUES(@CargaId, @Status, @TransportadoraId, @VeiculoId, @TipoVeiculoId, @PesoTeorico, @VolumeTeorico, @InicioJanelaEmbarque, @FimJanelaEmbarque, @EmbarqueAlvo, @QuantidadePedidos, @AlertasResumo) ";
+            this.Query = $@" INSERT INTO [CargaPlanejavel] ([CargaId], [Status], [TransportadoraId], [VeiculoId], [TipoVeiculoId], [PesoTeorico], [VolumeTeorico], [InicioJanelaEmbarque], [FimJanelaEmbarque], [EmbarqueAlvo], [QuantidadePedidos], [AlertasResumo]) VALUES(@CargaId, @Status, @TransportadoraId, @VeiculoId, @TipoVeiculoId, @PesoTeorico, @VolumeTeorico, @InicioJanelaEmbarque, @FimJanelaEmbarque, @EmbarqueAlvo, @QuantidadePedidos, @AlertasResumo) ";
             this.Parameters = new
             {
                 CargaId = CargaPlanejavel.CargaId,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCargaPlanejavelQuery(ICargaPlanejavelEntity CargaPlanejavel)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET Status = @Status, TransportadoraId = @TransportadoraId, VeiculoId = @VeiculoId, TipoVeiculoId = @TipoVeiculoId, PesoTeorico = @PesoTeorico, VolumeTeorico = @VolumeTeorico, InicioJanelaEmbarque = @InicioJanelaEmbarque, FimJanelaEmbarque = @FimJanelaEmbarque, EmbarqueAlvo = @EmbarqueAlvo, QuantidadePedidos = @QuantidadePedidos, AlertasResumo = @AlertasResumo WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [Status] = @Status, [TransportadoraId] = @TransportadoraId, [VeiculoId] = @VeiculoId, [TipoVeiculoId] = @TipoVeiculoId, [PesoTeorico] = @PesoTeorico, [VolumeTeorico] = @VolumeTeorico, [InicioJanelaEmbarque] = @InicioJanelaEmbarque, [FimJanelaEmbarque] = @FimJanelaEmbarque, [EmbarqueAlvo] = @EmbarqueAlvo, [QuantidadePedidos] = @QuantidadePedidos, [AlertasResumo] = @AlertasResumo WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 Status = CargaPlanejavel.Status,
@@ -70,7 +70,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(string cargaid, string value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET Status = @Status WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [Status] = @Status WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 Status = value,
@@ -80,7 +80,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTransportadoraId(string cargaid, string value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET TransportadoraId = @TransportadoraId WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [TransportadoraId] = @TransportadoraId WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 TransportadoraId = value,
@@ -90,7 +90,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVeiculoId(string cargaid, string value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET VeiculoId = @VeiculoId WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [VeiculoId] = @VeiculoId WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 VeiculoId = value,
@@ -100,7 +100,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoVeiculoId(string cargaid, int value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET TipoVeiculoId = @TipoVeiculoId WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [TipoVeiculoId] = @TipoVeiculoId WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 TipoVeiculoId = value,
@@ -110,7 +110,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePesoTeorico(string cargaid, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET PesoTeorico = @PesoTeorico WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [PesoTeorico] = @PesoTeorico WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 PesoTeorico = value,
@@ -120,7 +120,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVolumeTeorico(string cargaid, Decimal value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET VolumeTeorico = @VolumeTeorico WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [VolumeTeorico] = @VolumeTeorico WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 VolumeTeorico = value,
@@ -130,7 +130,7 @@ namespace Query.Write
         }
         public QueryModel UpdateInicioJanelaEmbarque(string cargaid, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET InicioJanelaEmbarque = @InicioJanelaEmbarque WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [InicioJanelaEmbarque] = @InicioJanelaEmbarque WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 InicioJanelaEmbarque = value,
@@ -140,7 +140,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFimJanelaEmbarque(string cargaid, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET FimJanelaEmbarque = @FimJanelaEmbarque WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [FimJanelaEmbarque] = @FimJanelaEmbarque WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 FimJanelaEmbarque = value,
@@ -150,7 +150,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmbarqueAlvo(string cargaid, DateTime value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET EmbarqueAlvo = @EmbarqueAlvo WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [EmbarqueAlvo] = @EmbarqueAlvo WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 EmbarqueAlvo = value,
@@ -160,7 +160,7 @@ namespace Query.Write
         }
         public QueryModel UpdateQuantidadePedidos(string cargaid, int value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET QuantidadePedidos = @QuantidadePedidos WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [QuantidadePedidos] = @QuantidadePedidos WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 QuantidadePedidos = value,
@@ -170,7 +170,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAlertasResumo(string cargaid, string value)
         {
-            this.Query = $@" UPDATE CargaPlanejavel SET AlertasResumo = @AlertasResumo WHERE CargaId = @CargaId ";
+            this.Query = $@" UPDATE [CargaPlanejavel] SET [AlertasResumo] = @AlertasResumo WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 AlertasResumo = value,
@@ -180,7 +180,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCargaPlanejavelQuery(ICargaPlanejavelEntity CargaPlanejavel)
         {
-            this.Query = $@" DELETE FROM CargaPlanejavel WHERE CargaId = @CargaId ";
+            this.Query = $@" DELETE FROM [CargaPlanejavel] WHERE [CargaId] = @CargaId ";
             this.Parameters = new
             {
                 CargaId = CargaPlanejavel.CargaId,

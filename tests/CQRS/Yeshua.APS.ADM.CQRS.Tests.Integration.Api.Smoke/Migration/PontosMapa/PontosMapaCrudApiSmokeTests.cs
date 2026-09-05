@@ -44,7 +44,7 @@ public partial class PontosMapaCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "pon_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class PontosMapaCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["PON_ID"] = ApiTestData.Text("PontosMapa PON_ID", 80),
+            ["PON_ID"] = ApiTestData.KeyText(12),
             ["PON_DESCRICAO"] = ApiTestData.Text("PontosMapa PON_DESCRICAO", 80),
             ["PON_TIPO"] = ApiTestData.Text("PontosMapa PON_TIPO", 3),
             ["PON_LATITUDE"] = 10.5m,

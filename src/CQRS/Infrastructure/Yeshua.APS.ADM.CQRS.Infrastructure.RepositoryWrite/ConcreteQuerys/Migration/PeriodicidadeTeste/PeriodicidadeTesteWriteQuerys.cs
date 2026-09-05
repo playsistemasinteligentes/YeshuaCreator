@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPeriodicidadeTesteQuery(IPeriodicidadeTesteEntity PeriodicidadeTeste)
         {
-            this.Query = $@" INSERT INTO PeriodicidadeTeste (PER_ID, PER_QTD, UNI_ID, GRP_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PER_ID, @PER_QTD, @UNI_ID, @GRP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PeriodicidadeTeste] ([PER_ID], [PER_QTD], [UNI_ID], [GRP_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PER_ID, @PER_QTD, @UNI_ID, @GRP_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PER_ID = PeriodicidadeTeste.PER_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePeriodicidadeTesteQuery(IPeriodicidadeTesteEntity PeriodicidadeTeste)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET PER_ID = @PER_ID, PER_QTD = @PER_QTD, UNI_ID = @UNI_ID, GRP_ID = @GRP_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [PER_ID] = @PER_ID, [PER_QTD] = @PER_QTD, [UNI_ID] = @UNI_ID, [GRP_ID] = @GRP_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_ID = PeriodicidadeTeste.PER_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_ID(int id, int value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET PER_ID = @PER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [PER_ID] = @PER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_QTD(int id, string value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET PER_QTD = @PER_QTD WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [PER_QTD] = @PER_QTD WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_QTD = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUNI_ID(int id, string value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET UNI_ID = @UNI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [UNI_ID] = @UNI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UNI_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRP_ID(int id, string value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET GRP_ID = @GRP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [GRP_ID] = @GRP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GRP_ID = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE PeriodicidadeTeste SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PeriodicidadeTeste] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeletePeriodicidadeTesteQuery(IPeriodicidadeTesteEntity PeriodicidadeTeste)
         {
-            this.Query = $@" DELETE FROM PeriodicidadeTeste WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [PeriodicidadeTeste] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = PeriodicidadeTeste.Id,

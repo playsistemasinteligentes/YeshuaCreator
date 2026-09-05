@@ -44,12 +44,12 @@
  PLO_Z = plo_z; 
  PLO_GRAFICO = plo_grafico; 
  CON_ID = con_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PLO_ID == null)
-   this._erroMensagem.Add("PLO ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

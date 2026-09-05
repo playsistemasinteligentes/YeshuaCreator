@@ -42,12 +42,12 @@
  PRE_VALOR = pre_valor; 
  USE_ID = use_id; 
  PER_ID = per_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PRE_ID == null)
-   this._erroMensagem.Add("PRE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

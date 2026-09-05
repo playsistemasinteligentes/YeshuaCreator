@@ -36,6 +36,8 @@
  PTO_CHAVE = pto_chave; 
  MAQ_ID = maq_id; 
  PTO_COMANDO = pto_comando; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

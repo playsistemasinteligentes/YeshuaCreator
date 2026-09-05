@@ -80,6 +80,8 @@
  CLI_INTEGRACAO_ERP = cli_integracao_erp; 
  CLI_LATITUDE_ENTREGA = cli_latitude_entrega; 
  CLI_LONGITUDE_ENTREGA = cli_longitude_entrega; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

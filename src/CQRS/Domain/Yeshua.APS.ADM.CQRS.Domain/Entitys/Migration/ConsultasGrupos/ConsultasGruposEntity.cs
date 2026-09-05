@@ -32,6 +32,8 @@
  Id = id; 
  CON_ID = con_id; 
  GRU_ID = gru_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

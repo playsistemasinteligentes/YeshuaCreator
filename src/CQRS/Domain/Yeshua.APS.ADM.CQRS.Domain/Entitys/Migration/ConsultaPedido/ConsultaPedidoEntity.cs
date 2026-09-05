@@ -70,14 +70,10 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Descricao do Produto deve ser informado.");
    if(string.IsNullOrEmpty(Estagio))
    this._erroMensagem.Add("Estagio deve ser informado.");
-   if (DataEntregaDe == null || DataEntregaDe < (new DateTime(1800, 1, 1)))
+   if(DataEntregaDe == null || DataEntregaDe < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Entrega de deve ser informado.");
-   if (DataEntregaAte == null || DataEntregaAte < (new DateTime(1800, 1, 1)))
+   if(DataEntregaAte == null || DataEntregaAte < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Entrega ate deve ser informado.");
-   if (Quantidade == null)
-   this._erroMensagem.Add("Quantidade deve ser informado.");
-   if (SaldoAProduzir == null)
-   this._erroMensagem.Add("Saldo a Produzir deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

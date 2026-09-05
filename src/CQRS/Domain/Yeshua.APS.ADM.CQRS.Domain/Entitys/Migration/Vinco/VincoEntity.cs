@@ -32,12 +32,12 @@
  VIN_ID = vin_id; 
  VIN_DESCRICAO = vin_descricao; 
  VIN_ID_DESLOCAMENTO = vin_id_deslocamento; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (VIN_ID == null)
-   this._erroMensagem.Add("VIN ID deve ser informado.");
    if(string.IsNullOrEmpty(VIN_DESCRICAO))
    this._erroMensagem.Add("VIN DESCRICAO deve ser informado.");
    if(string.IsNullOrEmpty(VIN_ID_DESLOCAMENTO))

@@ -34,18 +34,14 @@
  MAQ_ID = maq_id; 
  IMP_ID = imp_id; 
  MAI_FACAO = mai_facao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MAQ_IMP_ID == null)
-   this._erroMensagem.Add("MAQ IMP ID deve ser informado.");
    if(string.IsNullOrEmpty(MAQ_ID))
    this._erroMensagem.Add("MAQ ID deve ser informado.");
-   if (IMP_ID == null)
-   this._erroMensagem.Add("IMP ID deve ser informado.");
-   if (MAI_FACAO == null)
-   this._erroMensagem.Add("MAI FACAO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

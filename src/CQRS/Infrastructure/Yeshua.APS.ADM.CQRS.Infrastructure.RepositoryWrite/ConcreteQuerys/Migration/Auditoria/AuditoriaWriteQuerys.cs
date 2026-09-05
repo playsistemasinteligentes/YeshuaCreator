@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirAuditoriaQuery(IAuditoriaEntity Auditoria)
         {
-            this.Query = $@" INSERT INTO Auditoria (DATA, USE_ID, ROTINA, HISTORICO, CHAVE, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ID VALUES(@DATA, @USE_ID, @ROTINA, @HISTORICO, @CHAVE, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Auditoria] ([DATA], [USE_ID], [ROTINA], [HISTORICO], [CHAVE], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ID] VALUES(@DATA, @USE_ID, @ROTINA, @HISTORICO, @CHAVE, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 DATA = Auditoria.DATA,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAuditoriaQuery(IAuditoriaEntity Auditoria)
         {
-            this.Query = $@" UPDATE Auditoria SET DATA = @DATA, USE_ID = @USE_ID, ROTINA = @ROTINA, HISTORICO = @HISTORICO, CHAVE = @CHAVE, Changed = @Changed, UserId = @UserId WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [DATA] = @DATA, [USE_ID] = @USE_ID, [ROTINA] = @ROTINA, [HISTORICO] = @HISTORICO, [CHAVE] = @CHAVE, [Changed] = @Changed, [UserId] = @UserId WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 DATA = Auditoria.DATA,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDATA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Auditoria SET DATA = @DATA WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [DATA] = @DATA WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 DATA = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Auditoria SET USE_ID = @USE_ID WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [USE_ID] = @USE_ID WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROTINA(int id, string value)
         {
-            this.Query = $@" UPDATE Auditoria SET ROTINA = @ROTINA WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [ROTINA] = @ROTINA WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 ROTINA = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHISTORICO(int id, string value)
         {
-            this.Query = $@" UPDATE Auditoria SET HISTORICO = @HISTORICO WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [HISTORICO] = @HISTORICO WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 HISTORICO = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCHAVE(int id, string value)
         {
-            this.Query = $@" UPDATE Auditoria SET CHAVE = @CHAVE WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [CHAVE] = @CHAVE WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 CHAVE = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Auditoria SET TenantID = @TenantID WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [TenantID] = @TenantID WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Auditoria SET Deleted = @Deleted WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [Deleted] = @Deleted WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Auditoria SET Changed = @Changed WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [Changed] = @Changed WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Auditoria SET UserId = @UserId WHERE ID = @ID ";
+            this.Query = $@" UPDATE [Auditoria] SET [UserId] = @UserId WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeleteAuditoriaQuery(IAuditoriaEntity Auditoria)
         {
-            this.Query = $@" DELETE FROM Auditoria WHERE ID = @ID ";
+            this.Query = $@" DELETE FROM [Auditoria] WHERE [ID] = @ID ";
             this.Parameters = new
             {
                 ID = Auditoria.ID,

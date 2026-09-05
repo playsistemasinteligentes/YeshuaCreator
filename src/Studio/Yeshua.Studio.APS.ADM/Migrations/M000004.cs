@@ -88,6 +88,41 @@ public class M000004 : MigrationBase
             .AddUseCaseSubGrup("PlanejamentoTransporte");
 
         planejamento
+            .AddSaga("CargaStandard")
+            .AddStepGroup("dadosTransporte")
+                .AddStep("definirDadosTransporte")
+            .AddStepGroup("notasFiscais")
+                .AddStep("enviarNotasFiscais")
+            .AddStepGroup("cte")
+                .AddStep("gerarCTe")
+            .AddStepGroup("mdfe")
+                .AddStep("gerarMDFe");
+
+        AddCustomPage(
+            "APSADM",
+            "Planejamento Transporte",
+            "planejamento-transporte",
+            "apsadm.planejamento-transporte.tela",
+            "Planejamento");
+
+        AddMenuGroup("APSADM", "Planejamento",
+            "Carga",
+            "CargaPlanejavel",
+            "CargaPrevista",
+            "CenarioPlanejamentoTransporte",
+            "ConsultaPedido",
+            "ExperienciaPlanejamentoTransporte",
+            "OpcaoPlanejamentoTransporte",
+            "PedidoPlanejavel",
+            "Planejamento Transporte",
+            "Roteiro",
+            "RoteiroPedido");
+
+        AddMenuGroupByPrefix("APSADM", "Tabelas Legado", "T_");
+        AddMenuGroupByPrefix("APSADM", "Sistema", "y");
+        AddRemainingMenuGroup("APSADM", "Cadastros APS");
+
+        planejamento
             .AddCommand("BuscarContextoPlanejamentoTransporte",
                 new BuscarContextoPlanejamentoTransporteInput(DateTime.Today, DateTime.Today, string.Empty, 500),
                 new BuscarContextoPlanejamentoTransporteOutput(string.Empty, DateTime.MinValue, 0, 0, new List<PlanejamentoLenteResumo>()))

@@ -39,7 +39,7 @@ public partial class CorConfiguracaoGraficoCrudApiSeedTests : ApiIntegrationTest
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "cor_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class CorConfiguracaoGraficoCrudApiSeedTests : ApiIntegrationTest
     {
         return new JsonObject
         {
-            ["COR_ID"] = ApiTestData.Text("CorConfiguracaoGrafico COR_ID", 2),
+            ["COR_ID"] = ApiTestData.KeyText(2),
             ["COR_PERCENTUAL_INI"] = 10.5m,
             ["COR_PERCENTUAL_FIM"] = 10.5m,
             ["COR_DESCRICAO"] = ApiTestData.Text("CorConfiguracaoGrafico COR_DESCRICAO", 30),

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEstruturaCustoQuery(IEstruturaCustoEntity EstruturaCusto)
         {
-            this.Query = $@" INSERT INTO EstruturaCusto (ITO_ID, ORD_ID, PRO_ID, PRO_ID_PRODUTO, PRO_ID_COMPONENTE, PRO_TIPO_CUSTO, PRO_GRUPO_CONTABIL, EST_ORDEM, EST_GRUPO, EST_QUANT, EST_VALOR_TOTAL, EST_DATA_BASE, EST_BASE_PRODUCAO, EST_NIVEL, FPR_SEQ_REPETICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.EST_ID VALUES(@ITO_ID, @ORD_ID, @PRO_ID, @PRO_ID_PRODUTO, @PRO_ID_COMPONENTE, @PRO_TIPO_CUSTO, @PRO_GRUPO_CONTABIL, @EST_ORDEM, @EST_GRUPO, @EST_QUANT, @EST_VALOR_TOTAL, @EST_DATA_BASE, @EST_BASE_PRODUCAO, @EST_NIVEL, @FPR_SEQ_REPETICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [EstruturaCusto] ([ITO_ID], [ORD_ID], [PRO_ID], [PRO_ID_PRODUTO], [PRO_ID_COMPONENTE], [PRO_TIPO_CUSTO], [PRO_GRUPO_CONTABIL], [EST_ORDEM], [EST_GRUPO], [EST_QUANT], [EST_VALOR_TOTAL], [EST_DATA_BASE], [EST_BASE_PRODUCAO], [EST_NIVEL], [FPR_SEQ_REPETICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[EST_ID] VALUES(@ITO_ID, @ORD_ID, @PRO_ID, @PRO_ID_PRODUTO, @PRO_ID_COMPONENTE, @PRO_TIPO_CUSTO, @PRO_GRUPO_CONTABIL, @EST_ORDEM, @EST_GRUPO, @EST_QUANT, @EST_VALOR_TOTAL, @EST_DATA_BASE, @EST_BASE_PRODUCAO, @EST_NIVEL, @FPR_SEQ_REPETICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ITO_ID = EstruturaCusto.ITO_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEstruturaCustoQuery(IEstruturaCustoEntity EstruturaCusto)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET ITO_ID = @ITO_ID, ORD_ID = @ORD_ID, PRO_ID = @PRO_ID, PRO_ID_PRODUTO = @PRO_ID_PRODUTO, PRO_ID_COMPONENTE = @PRO_ID_COMPONENTE, PRO_TIPO_CUSTO = @PRO_TIPO_CUSTO, PRO_GRUPO_CONTABIL = @PRO_GRUPO_CONTABIL, EST_ORDEM = @EST_ORDEM, EST_GRUPO = @EST_GRUPO, EST_QUANT = @EST_QUANT, EST_VALOR_TOTAL = @EST_VALOR_TOTAL, EST_DATA_BASE = @EST_DATA_BASE, EST_BASE_PRODUCAO = @EST_BASE_PRODUCAO, EST_NIVEL = @EST_NIVEL, FPR_SEQ_REPETICAO = @FPR_SEQ_REPETICAO, Changed = @Changed, UserId = @UserId WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [ITO_ID] = @ITO_ID, [ORD_ID] = @ORD_ID, [PRO_ID] = @PRO_ID, [PRO_ID_PRODUTO] = @PRO_ID_PRODUTO, [PRO_ID_COMPONENTE] = @PRO_ID_COMPONENTE, [PRO_TIPO_CUSTO] = @PRO_TIPO_CUSTO, [PRO_GRUPO_CONTABIL] = @PRO_GRUPO_CONTABIL, [EST_ORDEM] = @EST_ORDEM, [EST_GRUPO] = @EST_GRUPO, [EST_QUANT] = @EST_QUANT, [EST_VALOR_TOTAL] = @EST_VALOR_TOTAL, [EST_DATA_BASE] = @EST_DATA_BASE, [EST_BASE_PRODUCAO] = @EST_BASE_PRODUCAO, [EST_NIVEL] = @EST_NIVEL, [FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 ITO_ID = EstruturaCusto.ITO_ID,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITO_ID(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET ITO_ID = @ITO_ID WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [ITO_ID] = @ITO_ID WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 ITO_ID = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET ORD_ID = @ORD_ID WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [ORD_ID] = @ORD_ID WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 ORD_ID = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET PRO_ID = @PRO_ID WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [PRO_ID] = @PRO_ID WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_PRODUTO(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET PRO_ID_PRODUTO = @PRO_ID_PRODUTO WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [PRO_ID_PRODUTO] = @PRO_ID_PRODUTO WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 PRO_ID_PRODUTO = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_COMPONENTE(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET PRO_ID_COMPONENTE = @PRO_ID_COMPONENTE WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [PRO_ID_COMPONENTE] = @PRO_ID_COMPONENTE WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 PRO_ID_COMPONENTE = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_TIPO_CUSTO(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET PRO_TIPO_CUSTO = @PRO_TIPO_CUSTO WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [PRO_TIPO_CUSTO] = @PRO_TIPO_CUSTO WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 PRO_TIPO_CUSTO = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_GRUPO_CONTABIL(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET PRO_GRUPO_CONTABIL = @PRO_GRUPO_CONTABIL WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [PRO_GRUPO_CONTABIL] = @PRO_GRUPO_CONTABIL WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 PRO_GRUPO_CONTABIL = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_ORDEM(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_ORDEM = @EST_ORDEM WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_ORDEM] = @EST_ORDEM WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_ORDEM = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_GRUPO(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_GRUPO = @EST_GRUPO WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_GRUPO] = @EST_GRUPO WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_GRUPO = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_QUANT(int est_id, Decimal value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_QUANT = @EST_QUANT WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_QUANT] = @EST_QUANT WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_QUANT = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_VALOR_TOTAL(int est_id, Decimal value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_VALOR_TOTAL = @EST_VALOR_TOTAL WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_VALOR_TOTAL] = @EST_VALOR_TOTAL WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_VALOR_TOTAL = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_DATA_BASE(int est_id, string value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_DATA_BASE = @EST_DATA_BASE WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_DATA_BASE] = @EST_DATA_BASE WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_DATA_BASE = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_BASE_PRODUCAO(int est_id, Decimal value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_BASE_PRODUCAO = @EST_BASE_PRODUCAO WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_BASE_PRODUCAO] = @EST_BASE_PRODUCAO WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_BASE_PRODUCAO = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEST_NIVEL(int est_id, Decimal value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET EST_NIVEL = @EST_NIVEL WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [EST_NIVEL] = @EST_NIVEL WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_NIVEL = value,
@@ -223,7 +223,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFPR_SEQ_REPETICAO(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET FPR_SEQ_REPETICAO = @FPR_SEQ_REPETICAO WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [FPR_SEQ_REPETICAO] = @FPR_SEQ_REPETICAO WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 FPR_SEQ_REPETICAO = value,
@@ -233,7 +233,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET TenantID = @TenantID WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [TenantID] = @TenantID WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -243,7 +243,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int est_id, bool value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET Deleted = @Deleted WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [Deleted] = @Deleted WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -253,7 +253,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int est_id, DateTime value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET Changed = @Changed WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [Changed] = @Changed WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -263,7 +263,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int est_id, int value)
         {
-            this.Query = $@" UPDATE EstruturaCusto SET UserId = @UserId WHERE EST_ID = @EST_ID ";
+            this.Query = $@" UPDATE [EstruturaCusto] SET [UserId] = @UserId WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -273,7 +273,7 @@ namespace Query.Write
         }
         public QueryModel DeleteEstruturaCustoQuery(IEstruturaCustoEntity EstruturaCusto)
         {
-            this.Query = $@" DELETE FROM EstruturaCusto WHERE EST_ID = @EST_ID ";
+            this.Query = $@" DELETE FROM [EstruturaCusto] WHERE [EST_ID] = @EST_ID ";
             this.Parameters = new
             {
                 EST_ID = EstruturaCusto.EST_ID,

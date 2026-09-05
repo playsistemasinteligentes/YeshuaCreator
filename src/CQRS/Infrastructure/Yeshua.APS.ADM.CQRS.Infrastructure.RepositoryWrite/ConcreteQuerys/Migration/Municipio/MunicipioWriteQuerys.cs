@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMunicipioQuery(IMunicipioEntity Municipio)
         {
-            this.Query = $@" INSERT INTO Municipio (MUN_ID, MUN_NOME, UF_COD, MUN_CODIGO_IBGE, MUN_LATITUDE, MUN_LONGITUDE, MUN_ID_INTEGRACAO_ERP, MUN_CODIGO_SIAFI, MUN_CODIGO_CNPJ, MUN_DISTANCIA_KM, TenantID, Deleted, Changed, UserId) VALUES(@MUN_ID, @MUN_NOME, @UF_COD, @MUN_CODIGO_IBGE, @MUN_LATITUDE, @MUN_LONGITUDE, @MUN_ID_INTEGRACAO_ERP, @MUN_CODIGO_SIAFI, @MUN_CODIGO_CNPJ, @MUN_DISTANCIA_KM, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Municipio] ([MUN_ID], [MUN_NOME], [UF_COD], [MUN_CODIGO_IBGE], [MUN_LATITUDE], [MUN_LONGITUDE], [MUN_ID_INTEGRACAO_ERP], [MUN_CODIGO_SIAFI], [MUN_CODIGO_CNPJ], [MUN_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MUN_ID, @MUN_NOME, @UF_COD, @MUN_CODIGO_IBGE, @MUN_LATITUDE, @MUN_LONGITUDE, @MUN_ID_INTEGRACAO_ERP, @MUN_CODIGO_SIAFI, @MUN_CODIGO_CNPJ, @MUN_DISTANCIA_KM, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MUN_ID = Municipio.MUN_ID,
@@ -52,7 +52,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMunicipioQuery(IMunicipioEntity Municipio)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_NOME = @MUN_NOME, UF_COD = @UF_COD, MUN_CODIGO_IBGE = @MUN_CODIGO_IBGE, MUN_LATITUDE = @MUN_LATITUDE, MUN_LONGITUDE = @MUN_LONGITUDE, MUN_ID_INTEGRACAO_ERP = @MUN_ID_INTEGRACAO_ERP, MUN_CODIGO_SIAFI = @MUN_CODIGO_SIAFI, MUN_CODIGO_CNPJ = @MUN_CODIGO_CNPJ, MUN_DISTANCIA_KM = @MUN_DISTANCIA_KM, Changed = @Changed, UserId = @UserId WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_NOME] = @MUN_NOME, [UF_COD] = @UF_COD, [MUN_CODIGO_IBGE] = @MUN_CODIGO_IBGE, [MUN_LATITUDE] = @MUN_LATITUDE, [MUN_LONGITUDE] = @MUN_LONGITUDE, [MUN_ID_INTEGRACAO_ERP] = @MUN_ID_INTEGRACAO_ERP, [MUN_CODIGO_SIAFI] = @MUN_CODIGO_SIAFI, [MUN_CODIGO_CNPJ] = @MUN_CODIGO_CNPJ, [MUN_DISTANCIA_KM] = @MUN_DISTANCIA_KM, [Changed] = @Changed, [UserId] = @UserId WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_NOME = Municipio.MUN_NOME,
@@ -72,7 +72,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_NOME(string mun_id, string value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_NOME = @MUN_NOME WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_NOME] = @MUN_NOME WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_NOME = value,
@@ -82,7 +82,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUF_COD(string mun_id, string value)
         {
-            this.Query = $@" UPDATE Municipio SET UF_COD = @UF_COD WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [UF_COD] = @UF_COD WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 UF_COD = value,
@@ -92,7 +92,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_CODIGO_IBGE(string mun_id, string value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_CODIGO_IBGE = @MUN_CODIGO_IBGE WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_CODIGO_IBGE] = @MUN_CODIGO_IBGE WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_CODIGO_IBGE = value,
@@ -102,7 +102,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_LATITUDE(string mun_id, Decimal value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_LATITUDE = @MUN_LATITUDE WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_LATITUDE] = @MUN_LATITUDE WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_LATITUDE = value,
@@ -112,7 +112,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_LONGITUDE(string mun_id, Decimal value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_LONGITUDE = @MUN_LONGITUDE WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_LONGITUDE] = @MUN_LONGITUDE WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_LONGITUDE = value,
@@ -122,7 +122,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_ID_INTEGRACAO_ERP(string mun_id, string value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_ID_INTEGRACAO_ERP = @MUN_ID_INTEGRACAO_ERP WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_ID_INTEGRACAO_ERP] = @MUN_ID_INTEGRACAO_ERP WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_ID_INTEGRACAO_ERP = value,
@@ -132,7 +132,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_CODIGO_SIAFI(string mun_id, string value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_CODIGO_SIAFI = @MUN_CODIGO_SIAFI WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_CODIGO_SIAFI] = @MUN_CODIGO_SIAFI WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_CODIGO_SIAFI = value,
@@ -142,7 +142,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_CODIGO_CNPJ(string mun_id, string value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_CODIGO_CNPJ = @MUN_CODIGO_CNPJ WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_CODIGO_CNPJ] = @MUN_CODIGO_CNPJ WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_CODIGO_CNPJ = value,
@@ -152,7 +152,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_DISTANCIA_KM(string mun_id, Decimal value)
         {
-            this.Query = $@" UPDATE Municipio SET MUN_DISTANCIA_KM = @MUN_DISTANCIA_KM WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [MUN_DISTANCIA_KM] = @MUN_DISTANCIA_KM WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_DISTANCIA_KM = value,
@@ -162,7 +162,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string mun_id, int value)
         {
-            this.Query = $@" UPDATE Municipio SET TenantID = @TenantID WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [TenantID] = @TenantID WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -172,7 +172,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string mun_id, bool value)
         {
-            this.Query = $@" UPDATE Municipio SET Deleted = @Deleted WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [Deleted] = @Deleted WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -182,7 +182,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string mun_id, DateTime value)
         {
-            this.Query = $@" UPDATE Municipio SET Changed = @Changed WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [Changed] = @Changed WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -192,7 +192,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string mun_id, int value)
         {
-            this.Query = $@" UPDATE Municipio SET UserId = @UserId WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" UPDATE [Municipio] SET [UserId] = @UserId WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -202,7 +202,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMunicipioQuery(IMunicipioEntity Municipio)
         {
-            this.Query = $@" DELETE FROM Municipio WHERE MUN_ID = @MUN_ID ";
+            this.Query = $@" DELETE FROM [Municipio] WHERE [MUN_ID] = @MUN_ID ";
             this.Parameters = new
             {
                 MUN_ID = Municipio.MUN_ID,

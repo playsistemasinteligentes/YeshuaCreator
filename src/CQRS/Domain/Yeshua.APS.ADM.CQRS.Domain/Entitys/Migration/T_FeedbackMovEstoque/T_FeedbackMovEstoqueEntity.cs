@@ -32,14 +32,12 @@
  Id = id; 
  FeedbackId = feedbackid; 
  MovimentoEstoqueId = movimentoestoqueid; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (FeedbackId == null)
-   this._erroMensagem.Add("FeedbackId deve ser informado.");
-   if (MovimentoEstoqueId == null)
-   this._erroMensagem.Add("MovimentoEstoqueId deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

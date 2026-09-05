@@ -48,20 +48,16 @@
  MAQ_ID = maq_id; 
  PRO_ID = pro_id; 
  ICA_LIMPESA_MAQUINA = ica_limpesa_maquina; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ICA_ID == null)
-   this._erroMensagem.Add("ICA ID deve ser informado.");
-   if (ICA_DATA_DE == null || ICA_DATA_DE < (new DateTime(1800, 1, 1)))
+   if(ICA_DATA_DE == null || ICA_DATA_DE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ICA DATA DE deve ser informado.");
-   if (ICA_DATA_ATE == null || ICA_DATA_ATE < (new DateTime(1800, 1, 1)))
+   if(ICA_DATA_ATE == null || ICA_DATA_ATE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("ICA DATA ATE deve ser informado.");
-   if (ICA_TIPO == null)
-   this._erroMensagem.Add("ICA TIPO deve ser informado.");
-   if (CAL_ID == null)
-   this._erroMensagem.Add("CAL ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

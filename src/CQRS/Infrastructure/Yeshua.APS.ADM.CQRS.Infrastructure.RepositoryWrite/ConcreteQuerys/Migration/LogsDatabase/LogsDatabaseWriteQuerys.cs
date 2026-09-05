@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirLogsDatabaseQuery(ILogsDatabaseEntity LogsDatabase)
         {
-            this.Query = $@" INSERT INTO LogsDatabase (LOGS_TABLE, LOGS_KEY, LOGS_KEY1, LOGS_KEY2, LOGS_KEY3, LOGS_KEY4, LOGS_COLUMN, LOGS_BEFORE, LOGS_AFTER, LOGS_ACTION, LOGS_DATE, USE_ID, LOGS_ORIGEM, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.LOGS_ID VALUES(@LOGS_TABLE, @LOGS_KEY, @LOGS_KEY1, @LOGS_KEY2, @LOGS_KEY3, @LOGS_KEY4, @LOGS_COLUMN, @LOGS_BEFORE, @LOGS_AFTER, @LOGS_ACTION, @LOGS_DATE, @USE_ID, @LOGS_ORIGEM, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [LogsDatabase] ([LOGS_TABLE], [LOGS_KEY], [LOGS_KEY1], [LOGS_KEY2], [LOGS_KEY3], [LOGS_KEY4], [LOGS_COLUMN], [LOGS_BEFORE], [LOGS_AFTER], [LOGS_ACTION], [LOGS_DATE], [USE_ID], [LOGS_ORIGEM], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[LOGS_ID] VALUES(@LOGS_TABLE, @LOGS_KEY, @LOGS_KEY1, @LOGS_KEY2, @LOGS_KEY3, @LOGS_KEY4, @LOGS_COLUMN, @LOGS_BEFORE, @LOGS_AFTER, @LOGS_ACTION, @LOGS_DATE, @USE_ID, @LOGS_ORIGEM, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 LOGS_TABLE = LogsDatabase.LOGS_TABLE,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLogsDatabaseQuery(ILogsDatabaseEntity LogsDatabase)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_TABLE = @LOGS_TABLE, LOGS_KEY = @LOGS_KEY, LOGS_KEY1 = @LOGS_KEY1, LOGS_KEY2 = @LOGS_KEY2, LOGS_KEY3 = @LOGS_KEY3, LOGS_KEY4 = @LOGS_KEY4, LOGS_COLUMN = @LOGS_COLUMN, LOGS_BEFORE = @LOGS_BEFORE, LOGS_AFTER = @LOGS_AFTER, LOGS_ACTION = @LOGS_ACTION, LOGS_DATE = @LOGS_DATE, USE_ID = @USE_ID, LOGS_ORIGEM = @LOGS_ORIGEM, Changed = @Changed, UserId = @UserId WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_TABLE] = @LOGS_TABLE, [LOGS_KEY] = @LOGS_KEY, [LOGS_KEY1] = @LOGS_KEY1, [LOGS_KEY2] = @LOGS_KEY2, [LOGS_KEY3] = @LOGS_KEY3, [LOGS_KEY4] = @LOGS_KEY4, [LOGS_COLUMN] = @LOGS_COLUMN, [LOGS_BEFORE] = @LOGS_BEFORE, [LOGS_AFTER] = @LOGS_AFTER, [LOGS_ACTION] = @LOGS_ACTION, [LOGS_DATE] = @LOGS_DATE, [USE_ID] = @USE_ID, [LOGS_ORIGEM] = @LOGS_ORIGEM, [Changed] = @Changed, [UserId] = @UserId WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_TABLE = LogsDatabase.LOGS_TABLE,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_TABLE(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_TABLE = @LOGS_TABLE WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_TABLE] = @LOGS_TABLE WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_TABLE = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_KEY(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_KEY = @LOGS_KEY WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_KEY] = @LOGS_KEY WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_KEY = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_KEY1(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_KEY1 = @LOGS_KEY1 WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_KEY1] = @LOGS_KEY1 WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_KEY1 = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_KEY2(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_KEY2 = @LOGS_KEY2 WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_KEY2] = @LOGS_KEY2 WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_KEY2 = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_KEY3(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_KEY3 = @LOGS_KEY3 WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_KEY3] = @LOGS_KEY3 WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_KEY3 = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_KEY4(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_KEY4 = @LOGS_KEY4 WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_KEY4] = @LOGS_KEY4 WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_KEY4 = value,
@@ -139,7 +139,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_COLUMN(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_COLUMN = @LOGS_COLUMN WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_COLUMN] = @LOGS_COLUMN WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_COLUMN = value,
@@ -149,7 +149,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_BEFORE(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_BEFORE = @LOGS_BEFORE WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_BEFORE] = @LOGS_BEFORE WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_BEFORE = value,
@@ -159,7 +159,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_AFTER(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_AFTER = @LOGS_AFTER WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_AFTER] = @LOGS_AFTER WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_AFTER = value,
@@ -169,7 +169,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_ACTION(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_ACTION = @LOGS_ACTION WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_ACTION] = @LOGS_ACTION WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_ACTION = value,
@@ -179,7 +179,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_DATE(int logs_id, DateTime value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_DATE = @LOGS_DATE WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_DATE] = @LOGS_DATE WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_DATE = value,
@@ -189,7 +189,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int logs_id, int value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET USE_ID = @USE_ID WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [USE_ID] = @USE_ID WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -199,7 +199,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOGS_ORIGEM(int logs_id, string value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET LOGS_ORIGEM = @LOGS_ORIGEM WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [LOGS_ORIGEM] = @LOGS_ORIGEM WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_ORIGEM = value,
@@ -209,7 +209,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int logs_id, int value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET TenantID = @TenantID WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [TenantID] = @TenantID WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -219,7 +219,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int logs_id, bool value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET Deleted = @Deleted WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [Deleted] = @Deleted WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -229,7 +229,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int logs_id, DateTime value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET Changed = @Changed WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [Changed] = @Changed WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -239,7 +239,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int logs_id, int value)
         {
-            this.Query = $@" UPDATE LogsDatabase SET UserId = @UserId WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" UPDATE [LogsDatabase] SET [UserId] = @UserId WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -249,7 +249,7 @@ namespace Query.Write
         }
         public QueryModel DeleteLogsDatabaseQuery(ILogsDatabaseEntity LogsDatabase)
         {
-            this.Query = $@" DELETE FROM LogsDatabase WHERE LOGS_ID = @LOGS_ID ";
+            this.Query = $@" DELETE FROM [LogsDatabase] WHERE [LOGS_ID] = @LOGS_ID ";
             this.Parameters = new
             {
                 LOGS_ID = LogsDatabase.LOGS_ID,

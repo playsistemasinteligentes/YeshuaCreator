@@ -42,12 +42,12 @@
  RES_VELOCIDADE_HORA_RUSH = res_velocidade_hora_rush; 
  TVE_ID = tve_id; 
  MAP_ID = map_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (RES_ID == null)
-   this._erroMensagem.Add("RES ID deve ser informado.");
    if(string.IsNullOrEmpty(RES_TIPO))
    this._erroMensagem.Add("RES TIPO deve ser informado.");
 return _erroMensagem.Count() <= 0;

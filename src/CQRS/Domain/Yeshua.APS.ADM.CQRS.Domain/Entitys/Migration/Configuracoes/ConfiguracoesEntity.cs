@@ -28,12 +28,12 @@
     private List<string> _erroMensagem = null;
  internal ConfiguracoesEntity(int con_id ){
  CON_ID = con_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (CON_ID == null)
-   this._erroMensagem.Add("CON ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

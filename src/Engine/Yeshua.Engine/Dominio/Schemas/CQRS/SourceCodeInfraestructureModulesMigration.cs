@@ -51,11 +51,19 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    public class Menu");
             sb.AppendLine("    {");
             sb.AppendLine("        public string Title { get; set; }");
+            sb.AppendLine("        public string Endpoint { get; set; }");
+            sb.AppendLine("        public string Type { get; set; }");
+            sb.AppendLine("        public string Page { get; set; }");
+            sb.AppendLine("        public string Scope { get; set; }");
             sb.AppendLine("        public List<SubMenu> SubMenus { get; set; } = new();");
             sb.AppendLine("");
-            sb.AppendLine("        public Menu(string title)");
+            sb.AppendLine("        public Menu(string title, string endpoint = \"\", string type = \"crud\", string page = \"\", string scope = \"\")");
             sb.AppendLine("        {");
             sb.AppendLine("            Title = title;");
+            sb.AppendLine("            Endpoint = endpoint;");
+            sb.AppendLine("            Type = type;");
+            sb.AppendLine("            Page = page;");
+            sb.AppendLine("            Scope = scope;");
             sb.AppendLine("        }");
             sb.AppendLine("");
             sb.AppendLine("        public Menu AddSubMenu(SubMenu submenu)");
@@ -68,12 +76,18 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    public class SubMenu");
             sb.AppendLine("    {");
             sb.AppendLine("        public string Title { get; set; }");
-            sb.AppendLine("        public string Route { get; set; }");
+            sb.AppendLine("        public string Endpoint { get; set; }");
+            sb.AppendLine("        public string Type { get; set; }");
+            sb.AppendLine("        public string Page { get; set; }");
+            sb.AppendLine("        public string Scope { get; set; }");
             sb.AppendLine("");
-            sb.AppendLine("        public SubMenu(string title, string route)");
+            sb.AppendLine("        public SubMenu(string title, string endpoint = \"\", string type = \"crud\", string page = \"\", string scope = \"\")");
             sb.AppendLine("        {");
             sb.AppendLine("            Title = title;");
-            sb.AppendLine("            Route = route;");
+            sb.AppendLine("            Endpoint = endpoint;");
+            sb.AppendLine("            Type = type;");
+            sb.AppendLine("            Page = page;");
+            sb.AppendLine("            Scope = scope;");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("");
@@ -92,11 +106,34 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine($"        Modules.Add(new Module(\"{mol.Key}\", \"{mol.Description}\"));");
 
-                foreach (var menu in mol.Entities)
+                var menuDefinitions = BuildMenuDefinitions(mol);
+                var groupedMenuDefinitions = new HashSet<GeneratedMenuDefinition>();
+
+                for (var menuGroupIndex = 0; menuGroupIndex < mol.MenuGroups.Count; menuGroupIndex++)
                 {
-                    sb.AppendLine($"        Modules.LastOrDefault().Menus.Add(new Menu(\"{menu.EntityName}\"));");
-                    //foreach (var sub in menu.SubMenus)
-                    //sb.AppendLine($"        menu.SubMenus.Add(new SubMenu(\"{sub.Title}\", \"{sub.Route}\"));");
+                    var menuGroup = mol.MenuGroups[menuGroupIndex];
+                    var groupItems = menuDefinitions
+                        .Where(definition => !groupedMenuDefinitions.Contains(definition) && GroupMatches(menuGroup, definition))
+                        .ToList();
+
+                    if (!groupItems.Any())
+                        continue;
+
+                    var menuVariable = $"menuGroup{menuGroupIndex}";
+                    sb.AppendLine($"        var {menuVariable} = new Menu(\"{Escape(menuGroup.Title)}\", \"\", \"menuGroup\");");
+
+                    foreach (var menuItem in groupItems)
+                    {
+                        sb.AppendLine($"        {menuVariable}.AddSubMenu(new SubMenu(\"{Escape(menuItem.Title)}\", \"{Escape(menuItem.Endpoint)}\", \"{Escape(menuItem.Type)}\", \"{Escape(menuItem.Page)}\", \"{Escape(menuItem.Scope)}\"));");
+                        groupedMenuDefinitions.Add(menuItem);
+                    }
+
+                    sb.AppendLine($"        Modules.LastOrDefault().Menus.Add({menuVariable});");
+                }
+
+                foreach (var menuItem in menuDefinitions.Where(x => !groupedMenuDefinitions.Contains(x)))
+                {
+                    sb.AppendLine($"        Modules.LastOrDefault().Menus.Add(new Menu(\"{Escape(menuItem.Title)}\", \"{Escape(menuItem.Endpoint)}\", \"{Escape(menuItem.Type)}\", \"{Escape(menuItem.Page)}\", \"{Escape(menuItem.Scope)}\"));");
                 }
             }
 
@@ -112,6 +149,77 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCustonCode()
         {
             return new StringBuilder();
+        }
+
+        private static List<GeneratedMenuDefinition> BuildMenuDefinitions(Module mol)
+        {
+            var menuDefinitions = new List<GeneratedMenuDefinition>();
+
+            foreach (var customPage in mol.CustomPages)
+            {
+                menuDefinitions.Add(new GeneratedMenuDefinition(
+                    customPage.Title,
+                    $"#{customPage.Page}",
+                    "customPage",
+                    customPage.Page,
+                    customPage.Scope));
+            }
+
+            foreach (var entity in mol.Entities)
+            {
+                menuDefinitions.Add(new GeneratedMenuDefinition(
+                    entity.EntityName,
+                    $"/getMetaData{entity.EntityName}",
+                    "crud",
+                    "",
+                    ""));
+            }
+
+            return menuDefinitions;
+        }
+
+        private static string Escape(string value)
+        {
+            return (value ?? string.Empty).Replace("\\", "\\\\").Replace("\"", "\\\"");
+        }
+
+        private sealed class GeneratedMenuDefinition
+        {
+            public GeneratedMenuDefinition(string title, string endpoint, string type, string page, string scope)
+            {
+                Title = title ?? string.Empty;
+                Endpoint = endpoint ?? string.Empty;
+                Type = type ?? string.Empty;
+                Page = page ?? string.Empty;
+                Scope = scope ?? string.Empty;
+            }
+
+            public string Title { get; }
+            public string Endpoint { get; }
+            public string Type { get; }
+            public string Page { get; }
+            public string Scope { get; }
+
+            public bool Matches(string item)
+            {
+                if (string.IsNullOrWhiteSpace(item))
+                    return false;
+
+                var normalizedItem = item.Trim().TrimStart('#');
+                return Title.Equals(normalizedItem, StringComparison.OrdinalIgnoreCase)
+                    || Page.Equals(normalizedItem, StringComparison.OrdinalIgnoreCase)
+                    || Endpoint.Equals(item.Trim(), StringComparison.OrdinalIgnoreCase)
+                    || Endpoint.TrimStart('#').Equals(normalizedItem, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        private static bool GroupMatches(ModuleMenuGroup group, GeneratedMenuDefinition definition)
+        {
+            if (group.IncludeRemaining)
+                return true;
+
+            return group.Items.Any(definition.Matches)
+                || group.Prefixes.Any(prefix => definition.Title.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
         }
         private void setResultHttp(StringBuilder sb, string result)
         {

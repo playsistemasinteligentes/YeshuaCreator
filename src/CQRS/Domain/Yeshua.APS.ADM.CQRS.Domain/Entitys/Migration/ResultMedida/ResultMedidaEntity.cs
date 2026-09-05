@@ -34,12 +34,12 @@
  RSM_ID = rsm_id; 
  RL_ID = rl_id; 
  MDT_ID = mdt_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (RSM_ID == null)
-   this._erroMensagem.Add("RSM ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

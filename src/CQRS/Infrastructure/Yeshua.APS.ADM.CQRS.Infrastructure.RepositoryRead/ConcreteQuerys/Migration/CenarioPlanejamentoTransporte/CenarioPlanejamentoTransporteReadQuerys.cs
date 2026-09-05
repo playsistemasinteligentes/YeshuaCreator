@@ -35,19 +35,19 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo from CenarioPlanejamentoTransporte ";
+            this.Query = $@" select [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] from [CenarioPlanejamentoTransporte] ";
 if (!string.IsNullOrEmpty(Command.CenarioId)) dict["CenarioId"] = $"%{Command.CenarioId}%";
-if (!string.IsNullOrEmpty(Command.CenarioId)) whereClauses.Add($"CenarioId like @CenarioId");
+if (!string.IsNullOrEmpty(Command.CenarioId)) whereClauses.Add($"[CenarioId] like @CenarioId");
 if (!string.IsNullOrEmpty(Command.Descricao)) dict["Descricao"] = $"%{Command.Descricao}%";
-if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"Descricao like @Descricao");
+if (!string.IsNullOrEmpty(Command.Descricao)) whereClauses.Add($"[Descricao] like @Descricao");
 if (!string.IsNullOrEmpty(Command.Objetivo)) dict["Objetivo"] = $"%{Command.Objetivo}%";
-if (!string.IsNullOrEmpty(Command.Objetivo)) whereClauses.Add($"Objetivo like @Objetivo");
+if (!string.IsNullOrEmpty(Command.Objetivo)) whereClauses.Add($"[Objetivo] like @Objetivo");
 if (Command.QuantidadeCargas.HasValue) dict["QuantidadeCargas"] = Command.QuantidadeCargas.Value;
-if (Command.QuantidadeCargas.HasValue) whereClauses.Add($"QuantidadeCargas = @QuantidadeCargas");
+if (Command.QuantidadeCargas.HasValue) whereClauses.Add($"[QuantidadeCargas] = @QuantidadeCargas");
 if (Command.QuantidadePedidosNaoAtendidos.HasValue) dict["QuantidadePedidosNaoAtendidos"] = Command.QuantidadePedidosNaoAtendidos.Value;
-if (Command.QuantidadePedidosNaoAtendidos.HasValue) whereClauses.Add($"QuantidadePedidosNaoAtendidos = @QuantidadePedidosNaoAtendidos");
+if (Command.QuantidadePedidosNaoAtendidos.HasValue) whereClauses.Add($"[QuantidadePedidosNaoAtendidos] = @QuantidadePedidosNaoAtendidos");
 if (!string.IsNullOrEmpty(Command.AlertasResumo)) dict["AlertasResumo"] = $"%{Command.AlertasResumo}%";
-if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResumo like @AlertasResumo");
+if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"[AlertasResumo] like @AlertasResumo");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -55,7 +55,7 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             int offset = (page - 1) * pageSize;
             dict["Offset"] = offset;
             dict["PageSize"] = pageSize;
-            Query += " ORDER BY CenarioId OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            Query += " ORDER BY [CenarioId] OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -65,9 +65,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["CenarioId"] = value; //04
-                      whereClauses.Add($" CenarioId = @CenarioId ");//04
+                      whereClauses.Add($" [CenarioId] = @CenarioId ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -79,9 +79,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["Descricao"] = value; //04
-                      whereClauses.Add($" Descricao = @Descricao ");//04
+                      whereClauses.Add($" [Descricao] = @Descricao ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -93,9 +93,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["Objetivo"] = value; //04
-                      whereClauses.Add($" Objetivo = @Objetivo ");//04
+                      whereClauses.Add($" [Objetivo] = @Objetivo ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -107,9 +107,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["QuantidadeCargas"] = value; //04
-                      whereClauses.Add($" QuantidadeCargas = @QuantidadeCargas ");//04
+                      whereClauses.Add($" [QuantidadeCargas] = @QuantidadeCargas ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -121,9 +121,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["QuantidadePedidosNaoAtendidos"] = value; //04
-                      whereClauses.Add($" QuantidadePedidosNaoAtendidos = @QuantidadePedidosNaoAtendidos ");//04
+                      whereClauses.Add($" [QuantidadePedidosNaoAtendidos] = @QuantidadePedidosNaoAtendidos ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -135,9 +135,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["CustoTotal"] = value; //04
-                      whereClauses.Add($" CustoTotal = @CustoTotal ");//04
+                      whereClauses.Add($" [CustoTotal] = @CustoTotal ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -149,9 +149,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["AderenciaCubagem"] = value; //04
-                      whereClauses.Add($" AderenciaCubagem = @AderenciaCubagem ");//04
+                      whereClauses.Add($" [AderenciaCubagem] = @AderenciaCubagem ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -163,9 +163,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["AtrasoPrevisto"] = value; //04
-                      whereClauses.Add($" AtrasoPrevisto = @AtrasoPrevisto ");//04
+                      whereClauses.Add($" [AtrasoPrevisto] = @AtrasoPrevisto ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -177,9 +177,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT 1 FROM [CenarioPlanejamentoTransporte] ";
                       dict["AlertasResumo"] = value; //04
-                      whereClauses.Add($" AlertasResumo = @AlertasResumo ");//04
+                      whereClauses.Add($" [AlertasResumo] = @AlertasResumo ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -191,9 +191,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["CenarioId"] = value; //06
-                      whereClauses.Add($" CenarioId = @CenarioId ");//06
+                      whereClauses.Add($" [CenarioId] = @CenarioId ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -205,9 +205,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["Descricao"] = value; //06
-                      whereClauses.Add($" Descricao = @Descricao ");//06
+                      whereClauses.Add($" [Descricao] = @Descricao ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -219,9 +219,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["Objetivo"] = value; //06
-                      whereClauses.Add($" Objetivo = @Objetivo ");//06
+                      whereClauses.Add($" [Objetivo] = @Objetivo ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -233,9 +233,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["QuantidadeCargas"] = value; //06
-                      whereClauses.Add($" QuantidadeCargas = @QuantidadeCargas ");//06
+                      whereClauses.Add($" [QuantidadeCargas] = @QuantidadeCargas ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -247,9 +247,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["QuantidadePedidosNaoAtendidos"] = value; //06
-                      whereClauses.Add($" QuantidadePedidosNaoAtendidos = @QuantidadePedidosNaoAtendidos ");//06
+                      whereClauses.Add($" [QuantidadePedidosNaoAtendidos] = @QuantidadePedidosNaoAtendidos ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -261,9 +261,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["CustoTotal"] = value; //06
-                      whereClauses.Add($" CustoTotal = @CustoTotal ");//06
+                      whereClauses.Add($" [CustoTotal] = @CustoTotal ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -275,9 +275,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["AderenciaCubagem"] = value; //06
-                      whereClauses.Add($" AderenciaCubagem = @AderenciaCubagem ");//06
+                      whereClauses.Add($" [AderenciaCubagem] = @AderenciaCubagem ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -289,9 +289,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["AtrasoPrevisto"] = value; //06
-                      whereClauses.Add($" AtrasoPrevisto = @AtrasoPrevisto ");//06
+                      whereClauses.Add($" [AtrasoPrevisto] = @AtrasoPrevisto ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -303,9 +303,9 @@ if (!string.IsNullOrEmpty(Command.AlertasResumo)) whereClauses.Add($"AlertasResu
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo FROM CenarioPlanejamentoTransporte ";
+            this.Query = $"SELECT [CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo] FROM [CenarioPlanejamentoTransporte] ";
                       dict["AlertasResumo"] = value; //06
-                      whereClauses.Add($" AlertasResumo = @AlertasResumo ");//06
+                      whereClauses.Add($" [AlertasResumo] = @AlertasResumo ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

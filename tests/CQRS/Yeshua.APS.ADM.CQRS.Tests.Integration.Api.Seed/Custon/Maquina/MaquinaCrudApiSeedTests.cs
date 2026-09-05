@@ -16,6 +16,7 @@ public partial class MaquinaCrudApiSeedTests
 {
     partial void CustomizeCreatePayload(JsonObject payload)
     {
+        payload["MAQ_ACOMPANHA_LOTE_PILOTO"] = "08:00|17:00";
     }
 
     partial void CustomizeReadPayload(JsonObject payload)
@@ -24,6 +25,7 @@ public partial class MaquinaCrudApiSeedTests
 
     partial void CustomizeUpdatePayload(JsonObject payload)
     {
+        payload["MAQ_ACOMPANHA_LOTE_PILOTO"] = "09:00|18:00";
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration

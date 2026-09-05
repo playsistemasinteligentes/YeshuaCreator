@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryTokenQuery(IyTokenEntity yToken)
         {
-            this.Query = $@" INSERT INTO yToken (TokenHash, Description, ConnectorKey, Active, ValidUntil, CreatedAt, LastUsedAt, TenantID, UserId, Deleted, Changed) OUTPUT INSERTED.Id VALUES(@TokenHash, @Description, @ConnectorKey, @Active, @ValidUntil, @CreatedAt, @LastUsedAt, @TenantID, @UserId, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO [yToken] ([TokenHash], [Description], [ConnectorKey], [Active], [ValidUntil], [CreatedAt], [LastUsedAt], [TenantID], [UserId], [Deleted], [Changed]) OUTPUT INSERTED.[Id] VALUES(@TokenHash, @Description, @ConnectorKey, @Active, @ValidUntil, @CreatedAt, @LastUsedAt, @TenantID, @UserId, @Deleted, @Changed) ";
             this.Parameters = new
             {
                 TokenHash = yToken.TokenHash,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyTokenQuery(IyTokenEntity yToken)
         {
-            this.Query = $@" UPDATE yToken SET TokenHash = @TokenHash, Description = @Description, ConnectorKey = @ConnectorKey, Active = @Active, ValidUntil = @ValidUntil, CreatedAt = @CreatedAt, LastUsedAt = @LastUsedAt, UserId = @UserId, Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [TokenHash] = @TokenHash, [Description] = @Description, [ConnectorKey] = @ConnectorKey, [Active] = @Active, [ValidUntil] = @ValidUntil, [CreatedAt] = @CreatedAt, [LastUsedAt] = @LastUsedAt, [UserId] = @UserId, [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TokenHash = yToken.TokenHash,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTokenHash(int id, string value)
         {
-            this.Query = $@" UPDATE yToken SET TokenHash = @TokenHash WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [TokenHash] = @TokenHash WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TokenHash = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescription(int id, string value)
         {
-            this.Query = $@" UPDATE yToken SET Description = @Description WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [Description] = @Description WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateConnectorKey(int id, string value)
         {
-            this.Query = $@" UPDATE yToken SET ConnectorKey = @ConnectorKey WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [ConnectorKey] = @ConnectorKey WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ConnectorKey = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateActive(int id, bool value)
         {
-            this.Query = $@" UPDATE yToken SET Active = @Active WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [Active] = @Active WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Active = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateValidUntil(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yToken SET ValidUntil = @ValidUntil WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [ValidUntil] = @ValidUntil WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ValidUntil = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCreatedAt(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yToken SET CreatedAt = @CreatedAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [CreatedAt] = @CreatedAt WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CreatedAt = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLastUsedAt(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yToken SET LastUsedAt = @LastUsedAt WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [LastUsedAt] = @LastUsedAt WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LastUsedAt = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yToken SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yToken SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yToken SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yToken SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yToken] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyTokenQuery(IyTokenEntity yToken)
         {
-            this.Query = $@" DELETE FROM yToken WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yToken] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yToken.Id,

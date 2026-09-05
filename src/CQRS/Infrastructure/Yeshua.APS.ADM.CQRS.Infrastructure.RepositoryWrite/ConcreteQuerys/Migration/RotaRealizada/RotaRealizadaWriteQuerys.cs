@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRotaRealizadaQuery(IRotaRealizadaEntity RotaRealizada)
         {
-            this.Query = $@" INSERT INTO RotaRealizada (CAR_ID, ROT_DATA_HORA, ROT_LAT, ROT_LONG, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.ROT_ID VALUES(@CAR_ID, @ROT_DATA_HORA, @ROT_LAT, @ROT_LONG, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RotaRealizada] ([CAR_ID], [ROT_DATA_HORA], [ROT_LAT], [ROT_LONG], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[ROT_ID] VALUES(@CAR_ID, @ROT_DATA_HORA, @ROT_LAT, @ROT_LONG, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = RotaRealizada.CAR_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRotaRealizadaQuery(IRotaRealizadaEntity RotaRealizada)
         {
-            this.Query = $@" UPDATE RotaRealizada SET CAR_ID = @CAR_ID, ROT_DATA_HORA = @ROT_DATA_HORA, ROT_LAT = @ROT_LAT, ROT_LONG = @ROT_LONG, Changed = @Changed, UserId = @UserId WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [CAR_ID] = @CAR_ID, [ROT_DATA_HORA] = @ROT_DATA_HORA, [ROT_LAT] = @ROT_LAT, [ROT_LONG] = @ROT_LONG, [Changed] = @Changed, [UserId] = @UserId WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 CAR_ID = RotaRealizada.CAR_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_ID(int rot_id, string value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET CAR_ID = @CAR_ID WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [CAR_ID] = @CAR_ID WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 CAR_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_DATA_HORA(int rot_id, DateTime value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET ROT_DATA_HORA = @ROT_DATA_HORA WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [ROT_DATA_HORA] = @ROT_DATA_HORA WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 ROT_DATA_HORA = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_LAT(int rot_id, Decimal value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET ROT_LAT = @ROT_LAT WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [ROT_LAT] = @ROT_LAT WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 ROT_LAT = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROT_LONG(int rot_id, Decimal value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET ROT_LONG = @ROT_LONG WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [ROT_LONG] = @ROT_LONG WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 ROT_LONG = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int rot_id, int value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET TenantID = @TenantID WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [TenantID] = @TenantID WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int rot_id, bool value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET Deleted = @Deleted WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [Deleted] = @Deleted WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int rot_id, DateTime value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET Changed = @Changed WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [Changed] = @Changed WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int rot_id, int value)
         {
-            this.Query = $@" UPDATE RotaRealizada SET UserId = @UserId WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" UPDATE [RotaRealizada] SET [UserId] = @UserId WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRotaRealizadaQuery(IRotaRealizadaEntity RotaRealizada)
         {
-            this.Query = $@" DELETE FROM RotaRealizada WHERE ROT_ID = @ROT_ID ";
+            this.Query = $@" DELETE FROM [RotaRealizada] WHERE [ROT_ID] = @ROT_ID ";
             this.Parameters = new
             {
                 ROT_ID = RotaRealizada.ROT_ID,

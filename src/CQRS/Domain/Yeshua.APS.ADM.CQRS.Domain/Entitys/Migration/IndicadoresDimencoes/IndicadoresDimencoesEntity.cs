@@ -38,14 +38,12 @@
  DIM_DESCRICAO = dim_descricao; 
  DIM_SQL = dim_sql; 
  DIM_CONEXAO = dim_conexao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (DIM_ID == null)
-   this._erroMensagem.Add("DIM ID deve ser informado.");
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
    if(string.IsNullOrEmpty(DIM_DESCRICAO))
    this._erroMensagem.Add("DIM DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

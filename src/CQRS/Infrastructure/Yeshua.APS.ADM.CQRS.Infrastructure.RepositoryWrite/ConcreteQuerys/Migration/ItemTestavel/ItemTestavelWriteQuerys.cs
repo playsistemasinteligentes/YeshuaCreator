@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItemTestavelQuery(IItemTestavelEntity ItemTestavel)
         {
-            this.Query = $@" INSERT INTO ItemTestavel (ITE_ID, ITE_DESCRICAO, ITE_OBS, ITE_NUMERO_DE_TESTES, ITE_CONDICIONAL_DE_AVALIACAO, ITE_VALOR_DA_CONDICIONAL, ITE_VALOR_CALCULADO_DA_CONDICIONAL, ITE_TIPO_AVALIACAO_FINAL, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ITE_ID, @ITE_DESCRICAO, @ITE_OBS, @ITE_NUMERO_DE_TESTES, @ITE_CONDICIONAL_DE_AVALIACAO, @ITE_VALOR_DA_CONDICIONAL, @ITE_VALOR_CALCULADO_DA_CONDICIONAL, @ITE_TIPO_AVALIACAO_FINAL, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItemTestavel] ([ITE_ID], [ITE_DESCRICAO], [ITE_OBS], [ITE_NUMERO_DE_TESTES], [ITE_CONDICIONAL_DE_AVALIACAO], [ITE_VALOR_DA_CONDICIONAL], [ITE_VALOR_CALCULADO_DA_CONDICIONAL], [ITE_TIPO_AVALIACAO_FINAL], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ITE_ID, @ITE_DESCRICAO, @ITE_OBS, @ITE_NUMERO_DE_TESTES, @ITE_CONDICIONAL_DE_AVALIACAO, @ITE_VALOR_DA_CONDICIONAL, @ITE_VALOR_CALCULADO_DA_CONDICIONAL, @ITE_TIPO_AVALIACAO_FINAL, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ITE_ID = ItemTestavel.ITE_ID,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateItemTestavelQuery(IItemTestavelEntity ItemTestavel)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_ID = @ITE_ID, ITE_DESCRICAO = @ITE_DESCRICAO, ITE_OBS = @ITE_OBS, ITE_NUMERO_DE_TESTES = @ITE_NUMERO_DE_TESTES, ITE_CONDICIONAL_DE_AVALIACAO = @ITE_CONDICIONAL_DE_AVALIACAO, ITE_VALOR_DA_CONDICIONAL = @ITE_VALOR_DA_CONDICIONAL, ITE_VALOR_CALCULADO_DA_CONDICIONAL = @ITE_VALOR_CALCULADO_DA_CONDICIONAL, ITE_TIPO_AVALIACAO_FINAL = @ITE_TIPO_AVALIACAO_FINAL, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_ID] = @ITE_ID, [ITE_DESCRICAO] = @ITE_DESCRICAO, [ITE_OBS] = @ITE_OBS, [ITE_NUMERO_DE_TESTES] = @ITE_NUMERO_DE_TESTES, [ITE_CONDICIONAL_DE_AVALIACAO] = @ITE_CONDICIONAL_DE_AVALIACAO, [ITE_VALOR_DA_CONDICIONAL] = @ITE_VALOR_DA_CONDICIONAL, [ITE_VALOR_CALCULADO_DA_CONDICIONAL] = @ITE_VALOR_CALCULADO_DA_CONDICIONAL, [ITE_TIPO_AVALIACAO_FINAL] = @ITE_TIPO_AVALIACAO_FINAL, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_ID = ItemTestavel.ITE_ID,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_ID = @ITE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_ID] = @ITE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_DESCRICAO = @ITE_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_DESCRICAO] = @ITE_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_DESCRICAO = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_OBS(int id, string value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_OBS = @ITE_OBS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_OBS] = @ITE_OBS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_OBS = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_NUMERO_DE_TESTES(int id, int value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_NUMERO_DE_TESTES = @ITE_NUMERO_DE_TESTES WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_NUMERO_DE_TESTES] = @ITE_NUMERO_DE_TESTES WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_NUMERO_DE_TESTES = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_CONDICIONAL_DE_AVALIACAO(int id, string value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_CONDICIONAL_DE_AVALIACAO = @ITE_CONDICIONAL_DE_AVALIACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_CONDICIONAL_DE_AVALIACAO] = @ITE_CONDICIONAL_DE_AVALIACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_CONDICIONAL_DE_AVALIACAO = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_VALOR_DA_CONDICIONAL(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_VALOR_DA_CONDICIONAL = @ITE_VALOR_DA_CONDICIONAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_VALOR_DA_CONDICIONAL] = @ITE_VALOR_DA_CONDICIONAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_VALOR_DA_CONDICIONAL = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_VALOR_CALCULADO_DA_CONDICIONAL(int id, string value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_VALOR_CALCULADO_DA_CONDICIONAL = @ITE_VALOR_CALCULADO_DA_CONDICIONAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_VALOR_CALCULADO_DA_CONDICIONAL] = @ITE_VALOR_CALCULADO_DA_CONDICIONAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_VALOR_CALCULADO_DA_CONDICIONAL = value,
@@ -139,7 +139,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITE_TIPO_AVALIACAO_FINAL(int id, string value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET ITE_TIPO_AVALIACAO_FINAL = @ITE_TIPO_AVALIACAO_FINAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [ITE_TIPO_AVALIACAO_FINAL] = @ITE_TIPO_AVALIACAO_FINAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITE_TIPO_AVALIACAO_FINAL = value,
@@ -149,7 +149,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -159,7 +159,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -169,7 +169,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -179,7 +179,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ItemTestavel SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemTestavel] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -189,7 +189,7 @@ namespace Query.Write
         }
         public QueryModel DeleteItemTestavelQuery(IItemTestavelEntity ItemTestavel)
         {
-            this.Query = $@" DELETE FROM ItemTestavel WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ItemTestavel] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ItemTestavel.Id,

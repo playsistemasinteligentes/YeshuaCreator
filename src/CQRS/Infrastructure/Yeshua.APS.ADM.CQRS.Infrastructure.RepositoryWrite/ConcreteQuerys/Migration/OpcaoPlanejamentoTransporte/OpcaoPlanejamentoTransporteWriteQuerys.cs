@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOpcaoPlanejamentoTransporteQuery(IOpcaoPlanejamentoTransporteEntity OpcaoPlanejamentoTransporte)
         {
-            this.Query = $@" INSERT INTO OpcaoPlanejamentoTransporte (OpcaoId, GrupoDecisaoId, Peso, Volume, CustoEstimado, AderenciaCubagem, AderenciaJanelaEntrega, RiscoResumo, PedidosResumo, OpcoesConflitantesResumo) VALUES(@OpcaoId, @GrupoDecisaoId, @Peso, @Volume, @CustoEstimado, @AderenciaCubagem, @AderenciaJanelaEntrega, @RiscoResumo, @PedidosResumo, @OpcoesConflitantesResumo) ";
+            this.Query = $@" INSERT INTO [OpcaoPlanejamentoTransporte] ([OpcaoId], [GrupoDecisaoId], [Peso], [Volume], [CustoEstimado], [AderenciaCubagem], [AderenciaJanelaEntrega], [RiscoResumo], [PedidosResumo], [OpcoesConflitantesResumo]) VALUES(@OpcaoId, @GrupoDecisaoId, @Peso, @Volume, @CustoEstimado, @AderenciaCubagem, @AderenciaJanelaEntrega, @RiscoResumo, @PedidosResumo, @OpcoesConflitantesResumo) ";
             this.Parameters = new
             {
                 OpcaoId = OpcaoPlanejamentoTransporte.OpcaoId,
@@ -48,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOpcaoPlanejamentoTransporteQuery(IOpcaoPlanejamentoTransporteEntity OpcaoPlanejamentoTransporte)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET GrupoDecisaoId = @GrupoDecisaoId, Peso = @Peso, Volume = @Volume, CustoEstimado = @CustoEstimado, AderenciaCubagem = @AderenciaCubagem, AderenciaJanelaEntrega = @AderenciaJanelaEntrega, RiscoResumo = @RiscoResumo, PedidosResumo = @PedidosResumo, OpcoesConflitantesResumo = @OpcoesConflitantesResumo WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [GrupoDecisaoId] = @GrupoDecisaoId, [Peso] = @Peso, [Volume] = @Volume, [CustoEstimado] = @CustoEstimado, [AderenciaCubagem] = @AderenciaCubagem, [AderenciaJanelaEntrega] = @AderenciaJanelaEntrega, [RiscoResumo] = @RiscoResumo, [PedidosResumo] = @PedidosResumo, [OpcoesConflitantesResumo] = @OpcoesConflitantesResumo WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 GrupoDecisaoId = OpcaoPlanejamentoTransporte.GrupoDecisaoId,
@@ -66,7 +66,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoDecisaoId(string opcaoid, string value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET GrupoDecisaoId = @GrupoDecisaoId WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [GrupoDecisaoId] = @GrupoDecisaoId WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 GrupoDecisaoId = value,
@@ -76,7 +76,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePeso(string opcaoid, Decimal value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET Peso = @Peso WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [Peso] = @Peso WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 Peso = value,
@@ -86,7 +86,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVolume(string opcaoid, Decimal value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET Volume = @Volume WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [Volume] = @Volume WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 Volume = value,
@@ -96,7 +96,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCustoEstimado(string opcaoid, Decimal value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET CustoEstimado = @CustoEstimado WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [CustoEstimado] = @CustoEstimado WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 CustoEstimado = value,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAderenciaCubagem(string opcaoid, Decimal value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET AderenciaCubagem = @AderenciaCubagem WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [AderenciaCubagem] = @AderenciaCubagem WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 AderenciaCubagem = value,
@@ -116,7 +116,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAderenciaJanelaEntrega(string opcaoid, Decimal value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET AderenciaJanelaEntrega = @AderenciaJanelaEntrega WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [AderenciaJanelaEntrega] = @AderenciaJanelaEntrega WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 AderenciaJanelaEntrega = value,
@@ -126,7 +126,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRiscoResumo(string opcaoid, string value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET RiscoResumo = @RiscoResumo WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [RiscoResumo] = @RiscoResumo WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 RiscoResumo = value,
@@ -136,7 +136,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePedidosResumo(string opcaoid, string value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET PedidosResumo = @PedidosResumo WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [PedidosResumo] = @PedidosResumo WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 PedidosResumo = value,
@@ -146,7 +146,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOpcoesConflitantesResumo(string opcaoid, string value)
         {
-            this.Query = $@" UPDATE OpcaoPlanejamentoTransporte SET OpcoesConflitantesResumo = @OpcoesConflitantesResumo WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" UPDATE [OpcaoPlanejamentoTransporte] SET [OpcoesConflitantesResumo] = @OpcoesConflitantesResumo WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 OpcoesConflitantesResumo = value,
@@ -156,7 +156,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOpcaoPlanejamentoTransporteQuery(IOpcaoPlanejamentoTransporteEntity OpcaoPlanejamentoTransporte)
         {
-            this.Query = $@" DELETE FROM OpcaoPlanejamentoTransporte WHERE OpcaoId = @OpcaoId ";
+            this.Query = $@" DELETE FROM [OpcaoPlanejamentoTransporte] WHERE [OpcaoId] = @OpcaoId ";
             this.Parameters = new
             {
                 OpcaoId = OpcaoPlanejamentoTransporte.OpcaoId,

@@ -66,24 +66,18 @@
  FEE_QTD_TOTAL_PRODUCAO_AJUSTADA = fee_qtd_total_producao_ajustada; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Id == null)
-   this._erroMensagem.Add("Id deve ser informado.");
-   if (DataInicial == null || DataInicial < (new DateTime(1800, 1, 1)))
+   if(DataInicial == null || DataInicial < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataInicial deve ser informado.");
-   if (Datafinal == null || Datafinal < (new DateTime(1800, 1, 1)))
+   if(Datafinal == null || Datafinal < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Datafinal deve ser informado.");
    if(string.IsNullOrEmpty(MaquinaId))
    this._erroMensagem.Add("MaquinaId deve ser informado.");
-   if (UsuarioId == null)
-   this._erroMensagem.Add("UsuarioId deve ser informado.");
-   if (Grupo == null)
-   this._erroMensagem.Add("Grupo deve ser informado.");
-   if (QuantidadePulsos == null)
-   this._erroMensagem.Add("QuantidadePulsos deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

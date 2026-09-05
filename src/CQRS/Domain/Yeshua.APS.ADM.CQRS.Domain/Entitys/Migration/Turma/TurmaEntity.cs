@@ -58,6 +58,8 @@
  TURM_HORA_FIM_DIA6 = (turm_hora_fim_dia6 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turm_hora_fim_dia6; 
  TURM_HORA_INI_DIA7 = (turm_hora_ini_dia7 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turm_hora_ini_dia7; 
  TURM_HORA_FIM_DIA7 = (turm_hora_fim_dia7 < (new DateTime(1800, 1, 1))) ? DateTime.Now : turm_hora_fim_dia7; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

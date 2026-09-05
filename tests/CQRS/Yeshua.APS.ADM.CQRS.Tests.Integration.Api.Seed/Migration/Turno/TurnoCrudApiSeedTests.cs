@@ -39,7 +39,7 @@ public partial class TurnoCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class TurnoCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = ApiTestData.Text("Turno Id", 10),
+            ["Id"] = ApiTestData.KeyText(10),
             ["Descricao"] = ApiTestData.Text("Turno Descricao", 80),
             ["TURN_PRIORIDADE"] = 1,
             ["TURN_HORA_INI_DIA1"] = DateTime.UtcNow,

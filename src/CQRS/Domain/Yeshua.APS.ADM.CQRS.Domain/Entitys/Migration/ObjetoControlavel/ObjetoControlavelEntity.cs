@@ -36,6 +36,8 @@
  OBJ_DESCRICAO = obj_descricao; 
  OBJ_TIPO = obj_tipo; 
  OBJ_GRUPO = obj_grupo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -60,12 +60,12 @@
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  IPV_STATUS_LIBERACAO = ipv_status_liberacao; 
  IPV_VALOR_MEDIDA = ipv_valor_medida; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IPV_ID == null)
-   this._erroMensagem.Add("IPV ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

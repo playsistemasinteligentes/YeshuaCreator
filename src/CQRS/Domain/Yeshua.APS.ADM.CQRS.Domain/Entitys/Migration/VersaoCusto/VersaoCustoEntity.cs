@@ -34,12 +34,12 @@
  VER_ID = ver_id; 
  VER_STATUS = ver_status; 
  VER_OBS = ver_obs; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (VER_ID == null)
-   this._erroMensagem.Add("VER ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

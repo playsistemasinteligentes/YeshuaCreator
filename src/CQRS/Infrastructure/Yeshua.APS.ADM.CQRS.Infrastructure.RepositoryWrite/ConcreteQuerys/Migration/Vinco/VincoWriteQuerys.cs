@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirVincoQuery(IVincoEntity Vinco)
         {
-            this.Query = $@" INSERT INTO Vinco (VIN_ID, VIN_DESCRICAO, VIN_ID_DESLOCAMENTO, TenantID, Deleted, Changed, UserId) VALUES(@VIN_ID, @VIN_DESCRICAO, @VIN_ID_DESLOCAMENTO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Vinco] ([VIN_ID], [VIN_DESCRICAO], [VIN_ID_DESLOCAMENTO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@VIN_ID, @VIN_DESCRICAO, @VIN_ID_DESLOCAMENTO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VIN_ID = Vinco.VIN_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVincoQuery(IVincoEntity Vinco)
         {
-            this.Query = $@" UPDATE Vinco SET VIN_DESCRICAO = @VIN_DESCRICAO, VIN_ID_DESLOCAMENTO = @VIN_ID_DESLOCAMENTO, Changed = @Changed, UserId = @UserId WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [VIN_DESCRICAO] = @VIN_DESCRICAO, [VIN_ID_DESLOCAMENTO] = @VIN_ID_DESLOCAMENTO, [Changed] = @Changed, [UserId] = @UserId WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 VIN_DESCRICAO = Vinco.VIN_DESCRICAO,
@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVIN_DESCRICAO(int vin_id, string value)
         {
-            this.Query = $@" UPDATE Vinco SET VIN_DESCRICAO = @VIN_DESCRICAO WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [VIN_DESCRICAO] = @VIN_DESCRICAO WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 VIN_DESCRICAO = value,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVIN_ID_DESLOCAMENTO(int vin_id, string value)
         {
-            this.Query = $@" UPDATE Vinco SET VIN_ID_DESLOCAMENTO = @VIN_ID_DESLOCAMENTO WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [VIN_ID_DESLOCAMENTO] = @VIN_ID_DESLOCAMENTO WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 VIN_ID_DESLOCAMENTO = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int vin_id, int value)
         {
-            this.Query = $@" UPDATE Vinco SET TenantID = @TenantID WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [TenantID] = @TenantID WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int vin_id, bool value)
         {
-            this.Query = $@" UPDATE Vinco SET Deleted = @Deleted WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [Deleted] = @Deleted WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int vin_id, DateTime value)
         {
-            this.Query = $@" UPDATE Vinco SET Changed = @Changed WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [Changed] = @Changed WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int vin_id, int value)
         {
-            this.Query = $@" UPDATE Vinco SET UserId = @UserId WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" UPDATE [Vinco] SET [UserId] = @UserId WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel DeleteVincoQuery(IVincoEntity Vinco)
         {
-            this.Query = $@" DELETE FROM Vinco WHERE VIN_ID = @VIN_ID ";
+            this.Query = $@" DELETE FROM [Vinco] WHERE [VIN_ID] = @VIN_ID ";
             this.Parameters = new
             {
                 VIN_ID = Vinco.VIN_ID,

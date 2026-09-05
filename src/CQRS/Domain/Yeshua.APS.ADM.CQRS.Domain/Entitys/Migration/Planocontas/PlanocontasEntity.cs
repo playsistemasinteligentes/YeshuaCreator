@@ -36,18 +36,16 @@
  PLA_DESCRICAO = pla_descricao; 
  PLA_TIPO = pla_tipo; 
  PLA_NATUREZA = pla_natureza; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PLA_ID == null)
-   this._erroMensagem.Add("PLA ID deve ser informado.");
    if(string.IsNullOrEmpty(PLA_CODIGO))
    this._erroMensagem.Add("PLA CODIGO deve ser informado.");
    if(string.IsNullOrEmpty(PLA_DESCRICAO))
    this._erroMensagem.Add("PLA DESCRICAO deve ser informado.");
-   if (PLA_TIPO == null)
-   this._erroMensagem.Add("PLA TIPO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

@@ -44,7 +44,7 @@ public partial class MensagemCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "men_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class MensagemCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["MEN_ID"] = ApiTestData.Text("Mensagem MEN_ID", 80),
+            ["MEN_ID"] = ApiTestData.KeyText(12),
             ["MEN_SEND"] = ApiTestData.Text("Mensagem MEN_SEND", 80),
             ["MEN_EMISSION"] = DateTime.UtcNow,
             ["MEN_STATUS"] = ApiTestData.Text("Mensagem MEN_STATUS", 30),

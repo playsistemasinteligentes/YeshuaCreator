@@ -56,7 +56,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        var readAssertionHandled = false;");
             sb.AppendLine("        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);");
             sb.AppendLine("        if (!readAssertionHandled)");
-            sb.AppendLine("            ApiResponseAssertions.AssertReadContainsId(readState, createdId);");
+            sb.AppendLine($"            ApiResponseAssertions.AssertReadContainsId(readState, createdId, \"{keyName.ToLowerInvariant()}\");");
             sb.AppendLine();
             sb.AppendLine("        var updatePayload = BuildUpdatePayload(createPayload, createdId);");
             sb.AppendLine("        CustomizeUpdatePayload(updatePayload);");
@@ -121,6 +121,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    {");
             sb.AppendLine("    }");
             sb.AppendLine();
+            sb.AppendLine("    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled)");
+            sb.AppendLine("    {");
+            sb.AppendLine("    }");
+            sb.AppendLine();
             sb.AppendLine("    partial void CustomizeUpdatePayload(JsonObject payload)");
             sb.AppendLine("    {");
             sb.AppendLine("    }");
@@ -149,13 +153,13 @@ namespace Dominio.Schemas.CQRS
 
             return column.GetSqlType() switch
             {
-                "int" => column.IsKey || column.IsFK ? "1" : update ? "2" : "1",
-                "long" => update ? "2L" : "1L",
+                "int" => column.IsKey ? "ApiTestData.IntKey()" : column.IsFK ? "1" : update ? "2" : "1",
+                "long" => column.IsKey ? "ApiTestData.LongKey()" : update ? "2L" : "1L",
                 "float" => update ? "2.5f" : "1.5f",
                 "decimal" => update ? "20.5m" : "10.5m",
                 "bool" => update ? "true" : "false",
                 "datetime" => update ? "DateTime.UtcNow.AddMinutes(1)" : "DateTime.UtcNow",
-                "varchar" => BuildTextValue(column, update),
+                "varchar" => column.IsKey ? BuildKeyTextValue(column) : BuildTextValue(column, update),
                 _ => "null"
             };
         }
@@ -165,6 +169,12 @@ namespace Dominio.Schemas.CQRS
             var prefix = $"{_entity.EntityName} {column.Name}{(update ? " Update" : string.Empty)}";
             var maxLength = column.Length > 0 ? Math.Min((int)column.Length, 80) : 80;
             return $"ApiTestData.Text(\"{Escape(prefix)}\", {maxLength.ToString(CultureInfo.InvariantCulture)})";
+        }
+
+        private static string BuildKeyTextValue(Column column)
+        {
+            var maxLength = column.Length > 0 ? Math.Min((int)column.Length, 12) : 12;
+            return $"ApiTestData.KeyText({maxLength.ToString(CultureInfo.InvariantCulture)})";
         }
 
         private static string Escape(string value) => value.Replace("\\", "\\\\").Replace("\"", "\\\"");

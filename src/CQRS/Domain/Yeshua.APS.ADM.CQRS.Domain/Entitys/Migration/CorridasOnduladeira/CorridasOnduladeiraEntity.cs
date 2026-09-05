@@ -104,12 +104,12 @@
  COR_QTD_PLANEJADO = cor_qtd_planejado; 
  PRO_QTD_PACAS = pro_qtd_pacas; 
  COR_PECAS_LARGURA = cor_pecas_largura; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (COR_ID == null)
-   this._erroMensagem.Add("COR ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

@@ -36,12 +36,12 @@
  PRO_ID = pro_id; 
  CUS_ID = cus_id; 
  PAR_VALOR = par_valor; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PAR_ID == null)
-   this._erroMensagem.Add("PAR ID deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID))
    this._erroMensagem.Add("PRO ID deve ser informado.");
    if(string.IsNullOrEmpty(CUS_ID))

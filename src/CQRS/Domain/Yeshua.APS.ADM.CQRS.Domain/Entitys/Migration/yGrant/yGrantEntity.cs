@@ -30,6 +30,8 @@
  internal yGrantEntity(string id, string description ){
  Id = id; 
  Description = description; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

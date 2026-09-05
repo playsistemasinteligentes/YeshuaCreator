@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_MedicoesQuery(IT_MedicoesEntity T_Medicoes)
         {
-            this.Query = $@" INSERT INTO T_Medicoes (MED_ID, IND_ID, MET_ID, UNI_ID, MED_DATA, MED_VALOR, MED_AC_ANO, MED_DATAMEDICAO, MED_PONDERACAO, DIM_ID, DIM_DESCRICAO, DIM_SUBDIMENSAO_ID, DIM_SUB_DESCRICAO, PER_ID, PER_DESCRICAO, FAT_ID, FAT_DESCRICAO, MED_SQL, DOM_EMPRESA, DOM_FILIAL, MED_VALOR_DISPER, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MED_ID, @IND_ID, @MET_ID, @UNI_ID, @MED_DATA, @MED_VALOR, @MED_AC_ANO, @MED_DATAMEDICAO, @MED_PONDERACAO, @DIM_ID, @DIM_DESCRICAO, @DIM_SUBDIMENSAO_ID, @DIM_SUB_DESCRICAO, @PER_ID, @PER_DESCRICAO, @FAT_ID, @FAT_DESCRICAO, @MED_SQL, @DOM_EMPRESA, @DOM_FILIAL, @MED_VALOR_DISPER, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Medicoes] ([MED_ID], [IND_ID], [MET_ID], [UNI_ID], [MED_DATA], [MED_VALOR], [MED_AC_ANO], [MED_DATAMEDICAO], [MED_PONDERACAO], [DIM_ID], [DIM_DESCRICAO], [DIM_SUBDIMENSAO_ID], [DIM_SUB_DESCRICAO], [PER_ID], [PER_DESCRICAO], [FAT_ID], [FAT_DESCRICAO], [MED_SQL], [DOM_EMPRESA], [DOM_FILIAL], [MED_VALOR_DISPER], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MED_ID, @IND_ID, @MET_ID, @UNI_ID, @MED_DATA, @MED_VALOR, @MED_AC_ANO, @MED_DATAMEDICAO, @MED_PONDERACAO, @DIM_ID, @DIM_DESCRICAO, @DIM_SUBDIMENSAO_ID, @DIM_SUB_DESCRICAO, @PER_ID, @PER_DESCRICAO, @FAT_ID, @FAT_DESCRICAO, @MED_SQL, @DOM_EMPRESA, @DOM_FILIAL, @MED_VALOR_DISPER, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MED_ID = T_Medicoes.MED_ID,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_MedicoesQuery(IT_MedicoesEntity T_Medicoes)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_ID = @MED_ID, IND_ID = @IND_ID, MET_ID = @MET_ID, UNI_ID = @UNI_ID, MED_DATA = @MED_DATA, MED_VALOR = @MED_VALOR, MED_AC_ANO = @MED_AC_ANO, MED_DATAMEDICAO = @MED_DATAMEDICAO, MED_PONDERACAO = @MED_PONDERACAO, DIM_ID = @DIM_ID, DIM_DESCRICAO = @DIM_DESCRICAO, DIM_SUBDIMENSAO_ID = @DIM_SUBDIMENSAO_ID, DIM_SUB_DESCRICAO = @DIM_SUB_DESCRICAO, PER_ID = @PER_ID, PER_DESCRICAO = @PER_DESCRICAO, FAT_ID = @FAT_ID, FAT_DESCRICAO = @FAT_DESCRICAO, MED_SQL = @MED_SQL, DOM_EMPRESA = @DOM_EMPRESA, DOM_FILIAL = @DOM_FILIAL, MED_VALOR_DISPER = @MED_VALOR_DISPER, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_ID] = @MED_ID, [IND_ID] = @IND_ID, [MET_ID] = @MET_ID, [UNI_ID] = @UNI_ID, [MED_DATA] = @MED_DATA, [MED_VALOR] = @MED_VALOR, [MED_AC_ANO] = @MED_AC_ANO, [MED_DATAMEDICAO] = @MED_DATAMEDICAO, [MED_PONDERACAO] = @MED_PONDERACAO, [DIM_ID] = @DIM_ID, [DIM_DESCRICAO] = @DIM_DESCRICAO, [DIM_SUBDIMENSAO_ID] = @DIM_SUBDIMENSAO_ID, [DIM_SUB_DESCRICAO] = @DIM_SUB_DESCRICAO, [PER_ID] = @PER_ID, [PER_DESCRICAO] = @PER_DESCRICAO, [FAT_ID] = @FAT_ID, [FAT_DESCRICAO] = @FAT_DESCRICAO, [MED_SQL] = @MED_SQL, [DOM_EMPRESA] = @DOM_EMPRESA, [DOM_FILIAL] = @DOM_FILIAL, [MED_VALOR_DISPER] = @MED_VALOR_DISPER, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_ID = T_Medicoes.MED_ID,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_ID = @MED_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_ID] = @MED_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_ID = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET IND_ID = @IND_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [IND_ID] = @IND_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IND_ID = value,
@@ -115,7 +115,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MET_ID = @MET_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MET_ID] = @MET_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MET_ID = value,
@@ -125,7 +125,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUNI_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET UNI_ID = @UNI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [UNI_ID] = @UNI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UNI_ID = value,
@@ -135,7 +135,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_DATA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_DATA = @MED_DATA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_DATA] = @MED_DATA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_DATA = value,
@@ -145,7 +145,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_VALOR(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_VALOR = @MED_VALOR WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_VALOR] = @MED_VALOR WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_VALOR = value,
@@ -155,7 +155,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_AC_ANO(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_AC_ANO = @MED_AC_ANO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_AC_ANO] = @MED_AC_ANO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_AC_ANO = value,
@@ -165,7 +165,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_DATAMEDICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_DATAMEDICAO = @MED_DATAMEDICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_DATAMEDICAO] = @MED_DATAMEDICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_DATAMEDICAO = value,
@@ -175,7 +175,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_PONDERACAO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_PONDERACAO = @MED_PONDERACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_PONDERACAO] = @MED_PONDERACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_PONDERACAO = value,
@@ -185,7 +185,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_ID(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET DIM_ID = @DIM_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [DIM_ID] = @DIM_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DIM_ID = value,
@@ -195,7 +195,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET DIM_DESCRICAO = @DIM_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [DIM_DESCRICAO] = @DIM_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DIM_DESCRICAO = value,
@@ -205,7 +205,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_SUBDIMENSAO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET DIM_SUBDIMENSAO_ID = @DIM_SUBDIMENSAO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [DIM_SUBDIMENSAO_ID] = @DIM_SUBDIMENSAO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DIM_SUBDIMENSAO_ID = value,
@@ -215,7 +215,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_SUB_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET DIM_SUB_DESCRICAO = @DIM_SUB_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [DIM_SUB_DESCRICAO] = @DIM_SUB_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DIM_SUB_DESCRICAO = value,
@@ -225,7 +225,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_ID(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET PER_ID = @PER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [PER_ID] = @PER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_ID = value,
@@ -235,7 +235,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET PER_DESCRICAO = @PER_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [PER_DESCRICAO] = @PER_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_DESCRICAO = value,
@@ -245,7 +245,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFAT_ID(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET FAT_ID = @FAT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [FAT_ID] = @FAT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FAT_ID = value,
@@ -255,7 +255,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFAT_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET FAT_DESCRICAO = @FAT_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [FAT_DESCRICAO] = @FAT_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FAT_DESCRICAO = value,
@@ -265,7 +265,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_SQL(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_SQL = @MED_SQL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_SQL] = @MED_SQL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_SQL = value,
@@ -275,7 +275,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDOM_EMPRESA(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET DOM_EMPRESA = @DOM_EMPRESA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [DOM_EMPRESA] = @DOM_EMPRESA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DOM_EMPRESA = value,
@@ -285,7 +285,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDOM_FILIAL(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET DOM_FILIAL = @DOM_FILIAL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [DOM_FILIAL] = @DOM_FILIAL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DOM_FILIAL = value,
@@ -295,7 +295,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMED_VALOR_DISPER(int id, string value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET MED_VALOR_DISPER = @MED_VALOR_DISPER WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [MED_VALOR_DISPER] = @MED_VALOR_DISPER WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MED_VALOR_DISPER = value,
@@ -305,7 +305,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -315,7 +315,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -325,7 +325,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -335,7 +335,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE T_Medicoes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_Medicoes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -345,7 +345,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_MedicoesQuery(IT_MedicoesEntity T_Medicoes)
         {
-            this.Query = $@" DELETE FROM T_Medicoes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [T_Medicoes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = T_Medicoes.Id,

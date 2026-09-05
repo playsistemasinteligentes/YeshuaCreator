@@ -32,16 +32,12 @@
  IDFAVORITO = idfavorito; 
  USE_ID = use_id; 
  ID_INDICADOR = id_indicador; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IDFAVORITO == null)
-   this._erroMensagem.Add("IDFAVORITO deve ser informado.");
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
-   if (ID_INDICADOR == null)
-   this._erroMensagem.Add("ID INDICADOR deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

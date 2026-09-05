@@ -34,12 +34,12 @@
  USE_ID = use_id; 
  OBJ_ID = obj_id; 
  USU_OBJETO_ACAO = usu_objeto_acao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
    if(string.IsNullOrEmpty(OBJ_ID))
    this._erroMensagem.Add("OBJ ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

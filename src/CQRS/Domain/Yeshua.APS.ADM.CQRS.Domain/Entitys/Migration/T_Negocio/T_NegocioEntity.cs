@@ -30,12 +30,12 @@
  internal T_NegocioEntity(int neg_id, string neg_descricao ){
  NEG_ID = neg_id; 
  NEG_DESCRICAO = neg_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (NEG_ID == null)
-   this._erroMensagem.Add("NEG ID deve ser informado.");
    if(string.IsNullOrEmpty(NEG_DESCRICAO))
    this._erroMensagem.Add("NEG DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

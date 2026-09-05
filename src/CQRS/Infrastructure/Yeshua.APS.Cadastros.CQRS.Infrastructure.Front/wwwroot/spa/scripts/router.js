@@ -1,4 +1,4 @@
-import { loadDataMenu, buildMenu } from './menu.js';
+import { loadDataMenu, buildMenu } from './menu.js?v=20260903-menu4';
 import { buildCrud } from './crud.js';
 import { buildRegister } from './viewsScripts/register.js';
 import { buildForgot } from './viewsScripts/forgot.js';

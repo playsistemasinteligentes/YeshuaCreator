@@ -66,6 +66,8 @@
  PercentualInicioPassoAnterior = percentualiniciopassoanterior; 
  LinhaDireta = linhadireta; 
  TemplateDeTestesId = templatedetestesid; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -74,10 +76,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Codigo da Maquina deve ser informado.");
    if(string.IsNullOrEmpty(ProdutoId))
    this._erroMensagem.Add("Codigo do Produto deve ser informado.");
-   if (SequenciaTransformacao == null)
-   this._erroMensagem.Add("Sequencia de Transformacao deve ser informado.");
-   if (Performance == null)
-   this._erroMensagem.Add("Performance Pulsos por Segundo deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

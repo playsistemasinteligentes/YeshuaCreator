@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirResultMedidaQuery(IResultMedidaEntity ResultMedida)
         {
-            this.Query = $@" INSERT INTO ResultMedida (RSM_ID, RL_ID, MDT_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RSM_ID, @RL_ID, @MDT_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ResultMedida] ([RSM_ID], [RL_ID], [MDT_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RSM_ID, @RL_ID, @MDT_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 RSM_ID = ResultMedida.RSM_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateResultMedidaQuery(IResultMedidaEntity ResultMedida)
         {
-            this.Query = $@" UPDATE ResultMedida SET RSM_ID = @RSM_ID, RL_ID = @RL_ID, MDT_ID = @MDT_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [RSM_ID] = @RSM_ID, [RL_ID] = @RL_ID, [MDT_ID] = @MDT_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RSM_ID = ResultMedida.RSM_ID,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRSM_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ResultMedida SET RSM_ID = @RSM_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [RSM_ID] = @RSM_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RSM_ID = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRL_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ResultMedida SET RL_ID = @RL_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [RL_ID] = @RL_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RL_ID = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMDT_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ResultMedida SET MDT_ID = @MDT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [MDT_ID] = @MDT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MDT_ID = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ResultMedida SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ResultMedida SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ResultMedida SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ResultMedida SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ResultMedida] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteResultMedidaQuery(IResultMedidaEntity ResultMedida)
         {
-            this.Query = $@" DELETE FROM ResultMedida WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ResultMedida] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ResultMedida.Id,

@@ -44,12 +44,12 @@
  ITE_VALOR_DA_CONDICIONAL = ite_valor_da_condicional; 
  ITE_VALOR_CALCULADO_DA_CONDICIONAL = ite_valor_calculado_da_condicional; 
  ITE_TIPO_AVALIACAO_FINAL = ite_tipo_avaliacao_final; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ITE_ID == null)
-   this._erroMensagem.Add("ITE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

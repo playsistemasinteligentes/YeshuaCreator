@@ -32,6 +32,8 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("using Shered.Services;");
             sb.AppendLine("using Command.Interfaces.Patterns.Queue;");
+            sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
+            sb.AppendLine("using Microsoft.Extensions.Logging;");
             sb.AppendLine("using Worker.Custon;");
 
 
@@ -86,6 +88,9 @@ namespace Dominio.Schemas.CQRS
                 }
             }
 
+            if (HasSagas())
+                AppendSagaPollingWorkers(sb);
+
 
             sb.AppendLine("}");
             sb.AppendLine("}");
@@ -96,6 +101,33 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCustonCode()
         {
             return new StringBuilder();
+        }
+
+        private bool HasSagas()
+        {
+            return _migration.UseCaseGroup
+                .SelectMany(group => group.UseCaseSubGroup)
+                .Any(subGroup => subGroup.Saga.Any());
+        }
+
+        private void AppendSagaPollingWorkers(StringBuilder sb)
+        {
+            sb.AppendLine(@"
+builder.Services.AddTransient<Command.Patterns.SagaWorkerCommandHandler>();
+builder.Services.AddTransient<Command.Patterns.SagaInboxWorkerCommandHandler>();
+
+builder.Services.AddHostedService(sp =>
+    new PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>(
+        sp,
+        sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>>>(),
+        TimeSpan.FromSeconds(2)));
+
+builder.Services.AddHostedService(sp =>
+    new PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>(
+        sp,
+        sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>>>(),
+        TimeSpan.FromSeconds(2)));
+");
         }
 
         private void AppendPollingWorker(StringBuilder sb, UseCaseCommand handler)

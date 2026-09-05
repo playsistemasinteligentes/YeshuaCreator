@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_AGENDA_SCHEDULEQuery(IT_AGENDA_SCHEDULEEntity T_AGENDA_SCHEDULE)
         {
-            this.Query = $@" INSERT INTO T_AGENDA_SCHEDULE (AGE_ID, AGE_DATA_ESPECIFICA, AGE_HORARIO_INICIO, AGE_HORARIO_FIM, AGE_SEGUNDA, AGE_TERCA, AGE_QUARTA, AGE_QUINTA, AGE_SEXTA, AGE_SABADO, AGE_DOMINGO, AGE_INTERVALO, AGE_ORDEM_EXECUCAO, AGE_PARAMETROS, AGE_EXCECAO, AGE_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@AGE_ID, @AGE_DATA_ESPECIFICA, @AGE_HORARIO_INICIO, @AGE_HORARIO_FIM, @AGE_SEGUNDA, @AGE_TERCA, @AGE_QUARTA, @AGE_QUINTA, @AGE_SEXTA, @AGE_SABADO, @AGE_DOMINGO, @AGE_INTERVALO, @AGE_ORDEM_EXECUCAO, @AGE_PARAMETROS, @AGE_EXCECAO, @AGE_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_AGENDA_SCHEDULE] ([AGE_ID], [AGE_DATA_ESPECIFICA], [AGE_HORARIO_INICIO], [AGE_HORARIO_FIM], [AGE_SEGUNDA], [AGE_TERCA], [AGE_QUARTA], [AGE_QUINTA], [AGE_SEXTA], [AGE_SABADO], [AGE_DOMINGO], [AGE_INTERVALO], [AGE_ORDEM_EXECUCAO], [AGE_PARAMETROS], [AGE_EXCECAO], [AGE_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@AGE_ID, @AGE_DATA_ESPECIFICA, @AGE_HORARIO_INICIO, @AGE_HORARIO_FIM, @AGE_SEGUNDA, @AGE_TERCA, @AGE_QUARTA, @AGE_QUINTA, @AGE_SEXTA, @AGE_SABADO, @AGE_DOMINGO, @AGE_INTERVALO, @AGE_ORDEM_EXECUCAO, @AGE_PARAMETROS, @AGE_EXCECAO, @AGE_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 AGE_ID = T_AGENDA_SCHEDULE.AGE_ID,
@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_AGENDA_SCHEDULEQuery(IT_AGENDA_SCHEDULEEntity T_AGENDA_SCHEDULE)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_ID = @AGE_ID, AGE_DATA_ESPECIFICA = @AGE_DATA_ESPECIFICA, AGE_HORARIO_INICIO = @AGE_HORARIO_INICIO, AGE_HORARIO_FIM = @AGE_HORARIO_FIM, AGE_SEGUNDA = @AGE_SEGUNDA, AGE_TERCA = @AGE_TERCA, AGE_QUARTA = @AGE_QUARTA, AGE_QUINTA = @AGE_QUINTA, AGE_SEXTA = @AGE_SEXTA, AGE_SABADO = @AGE_SABADO, AGE_DOMINGO = @AGE_DOMINGO, AGE_INTERVALO = @AGE_INTERVALO, AGE_ORDEM_EXECUCAO = @AGE_ORDEM_EXECUCAO, AGE_PARAMETROS = @AGE_PARAMETROS, AGE_EXCECAO = @AGE_EXCECAO, AGE_DESCRICAO = @AGE_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_ID] = @AGE_ID, [AGE_DATA_ESPECIFICA] = @AGE_DATA_ESPECIFICA, [AGE_HORARIO_INICIO] = @AGE_HORARIO_INICIO, [AGE_HORARIO_FIM] = @AGE_HORARIO_FIM, [AGE_SEGUNDA] = @AGE_SEGUNDA, [AGE_TERCA] = @AGE_TERCA, [AGE_QUARTA] = @AGE_QUARTA, [AGE_QUINTA] = @AGE_QUINTA, [AGE_SEXTA] = @AGE_SEXTA, [AGE_SABADO] = @AGE_SABADO, [AGE_DOMINGO] = @AGE_DOMINGO, [AGE_INTERVALO] = @AGE_INTERVALO, [AGE_ORDEM_EXECUCAO] = @AGE_ORDEM_EXECUCAO, [AGE_PARAMETROS] = @AGE_PARAMETROS, [AGE_EXCECAO] = @AGE_EXCECAO, [AGE_DESCRICAO] = @AGE_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_ID = T_AGENDA_SCHEDULE.AGE_ID,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_ID = @AGE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_ID] = @AGE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_ID = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_DATA_ESPECIFICA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_DATA_ESPECIFICA = @AGE_DATA_ESPECIFICA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_DATA_ESPECIFICA] = @AGE_DATA_ESPECIFICA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_DATA_ESPECIFICA = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_HORARIO_INICIO(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_HORARIO_INICIO = @AGE_HORARIO_INICIO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_HORARIO_INICIO] = @AGE_HORARIO_INICIO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_HORARIO_INICIO = value,
@@ -115,7 +115,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_HORARIO_FIM(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_HORARIO_FIM = @AGE_HORARIO_FIM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_HORARIO_FIM] = @AGE_HORARIO_FIM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_HORARIO_FIM = value,
@@ -125,7 +125,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_SEGUNDA(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_SEGUNDA = @AGE_SEGUNDA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_SEGUNDA] = @AGE_SEGUNDA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_SEGUNDA = value,
@@ -135,7 +135,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_TERCA(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_TERCA = @AGE_TERCA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_TERCA] = @AGE_TERCA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_TERCA = value,
@@ -145,7 +145,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_QUARTA(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_QUARTA = @AGE_QUARTA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_QUARTA] = @AGE_QUARTA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_QUARTA = value,
@@ -155,7 +155,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_QUINTA(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_QUINTA = @AGE_QUINTA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_QUINTA] = @AGE_QUINTA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_QUINTA = value,
@@ -165,7 +165,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_SEXTA(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_SEXTA = @AGE_SEXTA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_SEXTA] = @AGE_SEXTA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_SEXTA = value,
@@ -175,7 +175,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_SABADO(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_SABADO = @AGE_SABADO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_SABADO] = @AGE_SABADO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_SABADO = value,
@@ -185,7 +185,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_DOMINGO(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_DOMINGO = @AGE_DOMINGO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_DOMINGO] = @AGE_DOMINGO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_DOMINGO = value,
@@ -195,7 +195,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_INTERVALO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_INTERVALO = @AGE_INTERVALO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_INTERVALO] = @AGE_INTERVALO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_INTERVALO = value,
@@ -205,7 +205,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_ORDEM_EXECUCAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_ORDEM_EXECUCAO = @AGE_ORDEM_EXECUCAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_ORDEM_EXECUCAO] = @AGE_ORDEM_EXECUCAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_ORDEM_EXECUCAO = value,
@@ -215,7 +215,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_PARAMETROS(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_PARAMETROS = @AGE_PARAMETROS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_PARAMETROS] = @AGE_PARAMETROS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_PARAMETROS = value,
@@ -225,7 +225,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_EXCECAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_EXCECAO = @AGE_EXCECAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_EXCECAO] = @AGE_EXCECAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_EXCECAO = value,
@@ -235,7 +235,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAGE_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET AGE_DESCRICAO = @AGE_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [AGE_DESCRICAO] = @AGE_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AGE_DESCRICAO = value,
@@ -245,7 +245,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -255,7 +255,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -265,7 +265,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -275,7 +275,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE T_AGENDA_SCHEDULE SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_AGENDA_SCHEDULE] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -285,7 +285,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_AGENDA_SCHEDULEQuery(IT_AGENDA_SCHEDULEEntity T_AGENDA_SCHEDULE)
         {
-            this.Query = $@" DELETE FROM T_AGENDA_SCHEDULE WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [T_AGENDA_SCHEDULE] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = T_AGENDA_SCHEDULE.Id,

@@ -44,7 +44,7 @@ public partial class GrupoProdutoAbstratoCrudApiSmokeTests : ApiIntegrationTestB
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "grp_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class GrupoProdutoAbstratoCrudApiSmokeTests : ApiIntegrationTestB
     {
         return new JsonObject
         {
-            ["GRP_ID"] = ApiTestData.Text("GrupoProdutoAbstrato GRP_ID", 30),
+            ["GRP_ID"] = ApiTestData.KeyText(12),
             ["GRP_DESCRICAO"] = ApiTestData.Text("GrupoProdutoAbstrato GRP_DESCRICAO", 80),
             ["TEM_ID"] = 1,
             ["GRP_TIPO"] = 10.5m,

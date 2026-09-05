@@ -42,14 +42,14 @@
  PEN_ID_PROTOCOLO_IN = pen_id_protocolo_in; 
  DATA_ENTRADA = (data_entrada < (new DateTime(1800, 1, 1))) ? DateTime.Now : data_entrada; 
  PEN_ID = pen_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (DATA_ENTRADA == null || DATA_ENTRADA < (new DateTime(1800, 1, 1)))
+   if(DATA_ENTRADA == null || DATA_ENTRADA < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DATA ENTRADA deve ser informado.");
-   if (PEN_ID == null)
-   this._erroMensagem.Add("PEN ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

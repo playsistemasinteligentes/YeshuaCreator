@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirConfiguracoesQuery(IConfiguracoesEntity Configuracoes)
         {
-            this.Query = $@" INSERT INTO Configuracoes (TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.CON_ID VALUES(@TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Configuracoes] ([TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[CON_ID] VALUES(@TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TenantID = _executionContext.TenantID,
@@ -42,7 +42,7 @@ namespace Query.Write
         }
         public QueryModel UpdateConfiguracoesQuery(IConfiguracoesEntity Configuracoes)
         {
-            this.Query = $@" UPDATE Configuracoes SET Changed = @Changed, UserId = @UserId WHERE CON_ID = @CON_ID ";
+            this.Query = $@" UPDATE [Configuracoes] SET [Changed] = @Changed, [UserId] = @UserId WHERE [CON_ID] = @CON_ID ";
             this.Parameters = new
             {
                 Changed = Configuracoes.Changed,
@@ -53,7 +53,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int con_id, int value)
         {
-            this.Query = $@" UPDATE Configuracoes SET TenantID = @TenantID WHERE CON_ID = @CON_ID ";
+            this.Query = $@" UPDATE [Configuracoes] SET [TenantID] = @TenantID WHERE [CON_ID] = @CON_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int con_id, bool value)
         {
-            this.Query = $@" UPDATE Configuracoes SET Deleted = @Deleted WHERE CON_ID = @CON_ID ";
+            this.Query = $@" UPDATE [Configuracoes] SET [Deleted] = @Deleted WHERE [CON_ID] = @CON_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int con_id, DateTime value)
         {
-            this.Query = $@" UPDATE Configuracoes SET Changed = @Changed WHERE CON_ID = @CON_ID ";
+            this.Query = $@" UPDATE [Configuracoes] SET [Changed] = @Changed WHERE [CON_ID] = @CON_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int con_id, int value)
         {
-            this.Query = $@" UPDATE Configuracoes SET UserId = @UserId WHERE CON_ID = @CON_ID ";
+            this.Query = $@" UPDATE [Configuracoes] SET [UserId] = @UserId WHERE [CON_ID] = @CON_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel DeleteConfiguracoesQuery(IConfiguracoesEntity Configuracoes)
         {
-            this.Query = $@" DELETE FROM Configuracoes WHERE CON_ID = @CON_ID ";
+            this.Query = $@" DELETE FROM [Configuracoes] WHERE [CON_ID] = @CON_ID ";
             this.Parameters = new
             {
                 CON_ID = Configuracoes.CON_ID,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMesesQuery(IMesesEntity Meses)
         {
-            this.Query = $@" INSERT INTO Meses (MES, fator, TenantID, Deleted, Changed, UserId) VALUES(@MES, @fator, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Meses] ([MES], [fator], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@MES, @fator, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MES = Meses.MES,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMesesQuery(IMesesEntity Meses)
         {
-            this.Query = $@" UPDATE Meses SET fator = @fator, Changed = @Changed, UserId = @UserId WHERE MES = @MES ";
+            this.Query = $@" UPDATE [Meses] SET [fator] = @fator, [Changed] = @Changed, [UserId] = @UserId WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 fator = Meses.fator,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel Updatefator(string mes, int value)
         {
-            this.Query = $@" UPDATE Meses SET fator = @fator WHERE MES = @MES ";
+            this.Query = $@" UPDATE [Meses] SET [fator] = @fator WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 fator = value,
@@ -66,7 +66,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string mes, int value)
         {
-            this.Query = $@" UPDATE Meses SET TenantID = @TenantID WHERE MES = @MES ";
+            this.Query = $@" UPDATE [Meses] SET [TenantID] = @TenantID WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -76,7 +76,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string mes, bool value)
         {
-            this.Query = $@" UPDATE Meses SET Deleted = @Deleted WHERE MES = @MES ";
+            this.Query = $@" UPDATE [Meses] SET [Deleted] = @Deleted WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -86,7 +86,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string mes, DateTime value)
         {
-            this.Query = $@" UPDATE Meses SET Changed = @Changed WHERE MES = @MES ";
+            this.Query = $@" UPDATE [Meses] SET [Changed] = @Changed WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 Changed = value,
@@ -96,7 +96,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string mes, int value)
         {
-            this.Query = $@" UPDATE Meses SET UserId = @UserId WHERE MES = @MES ";
+            this.Query = $@" UPDATE [Meses] SET [UserId] = @UserId WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 UserId = value,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMesesQuery(IMesesEntity Meses)
         {
-            this.Query = $@" DELETE FROM Meses WHERE MES = @MES ";
+            this.Query = $@" DELETE FROM [Meses] WHERE [MES] = @MES ";
             this.Parameters = new
             {
                 MES = Meses.MES,

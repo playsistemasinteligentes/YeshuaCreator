@@ -31,6 +31,8 @@
  CnpjCpf = cnpjcpf; 
  Nome = nome; 
  UserId = userid; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

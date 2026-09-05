@@ -32,6 +32,8 @@
  Id = id; 
  SUB_ID = sub_id; 
  SUB_DESCRICAO = sub_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

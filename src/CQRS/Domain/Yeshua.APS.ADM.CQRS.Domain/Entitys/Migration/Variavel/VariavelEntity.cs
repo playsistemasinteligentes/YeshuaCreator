@@ -36,16 +36,14 @@
  VAR_DESCRICAO = var_descricao; 
  CON_ID = con_id; 
  VAR_MODO = var_modo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (VAR_ID == null)
-   this._erroMensagem.Add("VAR ID deve ser informado.");
    if(string.IsNullOrEmpty(VAR_DESCRICAO))
    this._erroMensagem.Add("VAR DESCRICAO deve ser informado.");
-   if (VAR_MODO == null)
-   this._erroMensagem.Add("VAR MODO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

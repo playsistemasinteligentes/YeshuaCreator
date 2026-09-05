@@ -52,13 +52,13 @@
  Observacao = observacao; 
  CriadoEm = (criadoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : criadoem; 
  CriadoPor = criadopor; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Tipo == null)
-   this._erroMensagem.Add("Tipo deve ser informado.");
-   if (CriadoEm == null || CriadoEm < (new DateTime(1800, 1, 1)))
+   if(CriadoEm == null || CriadoEm < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado Em deve ser informado.");
    if(string.IsNullOrEmpty(CriadoPor))
    this._erroMensagem.Add("Criado Por deve ser informado.");

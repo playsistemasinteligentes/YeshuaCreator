@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoABNTQuery(ITipoABNTEntity TipoABNT)
         {
-            this.Query = $@" INSERT INTO TipoABNT (ABN_ID, ABN_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ABN_ID, @ABN_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoABNT] ([ABN_ID], [ABN_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ABN_ID, @ABN_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ABN_ID = TipoABNT.ABN_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoABNTQuery(ITipoABNTEntity TipoABNT)
         {
-            this.Query = $@" UPDATE TipoABNT SET ABN_ID = @ABN_ID, ABN_DESCRICAO = @ABN_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [ABN_ID] = @ABN_ID, [ABN_DESCRICAO] = @ABN_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ABN_ID = TipoABNT.ABN_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateABN_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TipoABNT SET ABN_ID = @ABN_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [ABN_ID] = @ABN_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ABN_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateABN_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE TipoABNT SET ABN_DESCRICAO = @ABN_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [ABN_DESCRICAO] = @ABN_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ABN_DESCRICAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TipoABNT SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TipoABNT SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoABNT SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TipoABNT SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoABNT] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoABNTQuery(ITipoABNTEntity TipoABNT)
         {
-            this.Query = $@" DELETE FROM TipoABNT WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TipoABNT] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TipoABNT.Id,

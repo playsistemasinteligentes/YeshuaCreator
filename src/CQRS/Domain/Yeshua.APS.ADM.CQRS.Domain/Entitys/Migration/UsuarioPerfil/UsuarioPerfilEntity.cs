@@ -32,14 +32,12 @@
  Id = id; 
  USE_ID = use_id; 
  PER_ID = per_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
-   if (PER_ID == null)
-   this._erroMensagem.Add("PER ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

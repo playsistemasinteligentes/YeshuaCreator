@@ -32,16 +32,12 @@
  GRU_IND_ID = gru_ind_id; 
  GRU_ID = gru_id; 
  IND_ID = ind_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (GRU_IND_ID == null)
-   this._erroMensagem.Add("GRU IND ID deve ser informado.");
-   if (GRU_ID == null)
-   this._erroMensagem.Add("GRU ID deve ser informado.");
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

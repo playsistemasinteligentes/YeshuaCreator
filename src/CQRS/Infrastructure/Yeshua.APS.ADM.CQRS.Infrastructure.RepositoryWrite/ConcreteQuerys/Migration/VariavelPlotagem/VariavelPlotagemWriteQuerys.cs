@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirVariavelPlotagemQuery(IVariavelPlotagemEntity VariavelPlotagem)
         {
-            this.Query = $@" INSERT INTO VariavelPlotagem (VAR_ID, PLO_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@VAR_ID, @PLO_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [VariavelPlotagem] ([VAR_ID], [PLO_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VAR_ID, @PLO_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VAR_ID = VariavelPlotagem.VAR_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVariavelPlotagemQuery(IVariavelPlotagemEntity VariavelPlotagem)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET VAR_ID = @VAR_ID, PLO_ID = @PLO_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [VAR_ID] = @VAR_ID, [PLO_ID] = @PLO_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VAR_ID = VariavelPlotagem.VAR_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVAR_ID(int id, int value)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET VAR_ID = @VAR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [VAR_ID] = @VAR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VAR_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePLO_ID(int id, int value)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET PLO_ID = @PLO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [PLO_ID] = @PLO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PLO_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE VariavelPlotagem SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [VariavelPlotagem] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteVariavelPlotagemQuery(IVariavelPlotagemEntity VariavelPlotagem)
         {
-            this.Query = $@" DELETE FROM VariavelPlotagem WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [VariavelPlotagem] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = VariavelPlotagem.Id,

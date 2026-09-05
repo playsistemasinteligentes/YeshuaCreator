@@ -44,7 +44,7 @@ public partial class GrupoMaquinaCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class GrupoMaquinaCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = ApiTestData.Text("GrupoMaquina Id", 30),
+            ["Id"] = ApiTestData.KeyText(12),
             ["Descricao"] = ApiTestData.Text("GrupoMaquina Descricao", 80),
             ["Status"] = ApiTestData.Text("GrupoMaquina Status", 2),
             ["GMA_TIPO_PLANEJAMENTO"] = ApiTestData.Text("GrupoMaquina GMA_TIPO_PLANEJAMENTO", 30),

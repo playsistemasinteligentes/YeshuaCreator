@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirProtocoloOnduladeiraQuery(IProtocoloOnduladeiraEntity ProtocoloOnduladeira)
         {
-            this.Query = $@" INSERT INTO ProtocoloOnduladeira (PTO_ID, PTO_CHAVE, MAQ_ID, PTO_COMANDO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PTO_ID, @PTO_CHAVE, @MAQ_ID, @PTO_COMANDO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ProtocoloOnduladeira] ([PTO_ID], [PTO_CHAVE], [MAQ_ID], [PTO_COMANDO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PTO_ID, @PTO_CHAVE, @MAQ_ID, @PTO_COMANDO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PTO_ID = ProtocoloOnduladeira.PTO_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProtocoloOnduladeiraQuery(IProtocoloOnduladeiraEntity ProtocoloOnduladeira)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET PTO_ID = @PTO_ID, PTO_CHAVE = @PTO_CHAVE, MAQ_ID = @MAQ_ID, PTO_COMANDO = @PTO_COMANDO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [PTO_ID] = @PTO_ID, [PTO_CHAVE] = @PTO_CHAVE, [MAQ_ID] = @MAQ_ID, [PTO_COMANDO] = @PTO_COMANDO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PTO_ID = ProtocoloOnduladeira.PTO_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePTO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET PTO_ID = @PTO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [PTO_ID] = @PTO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PTO_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePTO_CHAVE(int id, string value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET PTO_CHAVE = @PTO_CHAVE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [PTO_CHAVE] = @PTO_CHAVE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PTO_CHAVE = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(int id, string value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET MAQ_ID = @MAQ_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [MAQ_ID] = @MAQ_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePTO_COMANDO(int id, string value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET PTO_COMANDO = @PTO_COMANDO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [PTO_COMANDO] = @PTO_COMANDO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PTO_COMANDO = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ProtocoloOnduladeira SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ProtocoloOnduladeira] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteProtocoloOnduladeiraQuery(IProtocoloOnduladeiraEntity ProtocoloOnduladeira)
         {
-            this.Query = $@" DELETE FROM ProtocoloOnduladeira WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ProtocoloOnduladeira] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ProtocoloOnduladeira.Id,

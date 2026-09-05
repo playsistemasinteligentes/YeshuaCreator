@@ -33,6 +33,8 @@
  ModuleId = moduleid; 
  UserId = userid; 
  ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

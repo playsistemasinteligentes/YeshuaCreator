@@ -56,6 +56,8 @@
  NextAttemptAt = (nextattemptat < (new DateTime(1800, 1, 1))) ? DateTime.Now : nextattemptat; 
  SagaId = sagaid; 
  SagaStepId = sagastepid; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -64,12 +66,8 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Tipo da Mensagem deve ser informado.");
    if(string.IsNullOrEmpty(Payload))
    this._erroMensagem.Add("Payload deve ser informado.");
-   if (Status == null)
-   this._erroMensagem.Add("Status deve ser informado.");
-   if (CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
+   if(CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado em deve ser informado.");
-   if (RetryCount == null)
-   this._erroMensagem.Add("Tentativas deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

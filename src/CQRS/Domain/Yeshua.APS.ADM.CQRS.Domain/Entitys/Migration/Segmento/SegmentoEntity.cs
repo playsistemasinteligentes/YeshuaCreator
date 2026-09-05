@@ -38,6 +38,8 @@
  SEG_ID_SEGUIMENTO_PAI = seg_id_seguimento_pai; 
  GRS_ID = grs_id; 
  SEG_INTEGRACAO_ERP = seg_integracao_erp; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

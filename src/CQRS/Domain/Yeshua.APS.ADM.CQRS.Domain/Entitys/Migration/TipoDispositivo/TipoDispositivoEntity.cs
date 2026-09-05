@@ -32,6 +32,8 @@
  Id = id; 
  TDI_ID = tdi_id; 
  TDI_DESCRICAO = tdi_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -58,12 +58,12 @@
  MAQ_ID = maq_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
  FPR_SEQ_TRANFORMACAO = fpr_seq_tranformacao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TES_ID == null)
-   this._erroMensagem.Add("TES ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

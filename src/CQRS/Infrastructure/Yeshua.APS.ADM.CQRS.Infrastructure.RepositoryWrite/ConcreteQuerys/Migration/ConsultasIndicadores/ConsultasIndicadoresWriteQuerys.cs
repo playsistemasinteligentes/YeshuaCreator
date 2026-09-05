@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirConsultasIndicadoresQuery(IConsultasIndicadoresEntity ConsultasIndicadores)
         {
-            this.Query = $@" INSERT INTO ConsultasIndicadores (CON_ID, IND_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CON_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ConsultasIndicadores] ([CON_ID], [IND_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CON_ID, @IND_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CON_ID = ConsultasIndicadores.CON_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateConsultasIndicadoresQuery(IConsultasIndicadoresEntity ConsultasIndicadores)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET CON_ID = @CON_ID, IND_ID = @IND_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [CON_ID] = @CON_ID, [IND_ID] = @IND_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_ID = ConsultasIndicadores.CON_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCON_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET CON_ID = @CON_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [CON_ID] = @CON_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET IND_ID = @IND_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [IND_ID] = @IND_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IND_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ConsultasIndicadores SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ConsultasIndicadores] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteConsultasIndicadoresQuery(IConsultasIndicadoresEntity ConsultasIndicadores)
         {
-            this.Query = $@" DELETE FROM ConsultasIndicadores WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ConsultasIndicadores] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ConsultasIndicadores.Id,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoOcorrenciaQuery(ITipoOcorrenciaEntity TipoOcorrencia)
         {
-            this.Query = $@" INSERT INTO TipoOcorrencia (Id, Descricao, Spr, TenantID, Deleted, Changed, UserId) VALUES(@Id, @Descricao, @Spr, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoOcorrencia] ([Id], [Descricao], [Spr], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@Id, @Descricao, @Spr, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = TipoOcorrencia.Id,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoOcorrenciaQuery(ITipoOcorrenciaEntity TipoOcorrencia)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET Descricao = @Descricao, Spr = @Spr, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [Descricao] = @Descricao, [Spr] = @Spr, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = TipoOcorrencia.Descricao,
@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescricao(int id, string value)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET Descricao = @Descricao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [Descricao] = @Descricao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = value,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSpr(int id, int value)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET Spr = @Spr WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [Spr] = @Spr WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Spr = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TipoOcorrencia SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoOcorrencia] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoOcorrenciaQuery(ITipoOcorrenciaEntity TipoOcorrencia)
         {
-            this.Query = $@" DELETE FROM TipoOcorrencia WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TipoOcorrencia] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TipoOcorrencia.Id,

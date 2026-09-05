@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPlanoAmostralTesteQuery(IPlanoAmostralTesteEntity PlanoAmostralTeste)
         {
-            this.Query = $@" INSERT INTO PlanoAmostralTeste (GRP_TIPO, TenantID, Deleted, Changed, UserId, PAT_QTD_CAIXAS_DE, PAT_QTD_CAIXAS_ATE, PAT_N_AMOSTRAGEM, PAT_PERCENT_ESPECIF) OUTPUT INSERTED.PAT_ID VALUES(@GRP_TIPO, @TenantID, @Deleted, @Changed, @UserId, @PAT_QTD_CAIXAS_DE, @PAT_QTD_CAIXAS_ATE, @PAT_N_AMOSTRAGEM, @PAT_PERCENT_ESPECIF) ";
+            this.Query = $@" INSERT INTO [PlanoAmostralTeste] ([GRP_TIPO], [TenantID], [Deleted], [Changed], [UserId], [PAT_QTD_CAIXAS_DE], [PAT_QTD_CAIXAS_ATE], [PAT_N_AMOSTRAGEM], [PAT_PERCENT_ESPECIF]) OUTPUT INSERTED.[PAT_ID] VALUES(@GRP_TIPO, @TenantID, @Deleted, @Changed, @UserId, @PAT_QTD_CAIXAS_DE, @PAT_QTD_CAIXAS_ATE, @PAT_N_AMOSTRAGEM, @PAT_PERCENT_ESPECIF) ";
             this.Parameters = new
             {
                 GRP_TIPO = PlanoAmostralTeste.GRP_TIPO,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePlanoAmostralTesteQuery(IPlanoAmostralTesteEntity PlanoAmostralTeste)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET GRP_TIPO = @GRP_TIPO, Changed = @Changed, UserId = @UserId, PAT_QTD_CAIXAS_DE = @PAT_QTD_CAIXAS_DE, PAT_QTD_CAIXAS_ATE = @PAT_QTD_CAIXAS_ATE, PAT_N_AMOSTRAGEM = @PAT_N_AMOSTRAGEM, PAT_PERCENT_ESPECIF = @PAT_PERCENT_ESPECIF WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [GRP_TIPO] = @GRP_TIPO, [Changed] = @Changed, [UserId] = @UserId, [PAT_QTD_CAIXAS_DE] = @PAT_QTD_CAIXAS_DE, [PAT_QTD_CAIXAS_ATE] = @PAT_QTD_CAIXAS_ATE, [PAT_N_AMOSTRAGEM] = @PAT_N_AMOSTRAGEM, [PAT_PERCENT_ESPECIF] = @PAT_PERCENT_ESPECIF WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 GRP_TIPO = PlanoAmostralTeste.GRP_TIPO,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRP_TIPO(int pat_id, Decimal value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET GRP_TIPO = @GRP_TIPO WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [GRP_TIPO] = @GRP_TIPO WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 GRP_TIPO = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int pat_id, int value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET TenantID = @TenantID WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [TenantID] = @TenantID WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int pat_id, bool value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET Deleted = @Deleted WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [Deleted] = @Deleted WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int pat_id, DateTime value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET Changed = @Changed WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [Changed] = @Changed WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int pat_id, int value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET UserId = @UserId WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [UserId] = @UserId WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAT_QTD_CAIXAS_DE(int pat_id, int value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET PAT_QTD_CAIXAS_DE = @PAT_QTD_CAIXAS_DE WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [PAT_QTD_CAIXAS_DE] = @PAT_QTD_CAIXAS_DE WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 PAT_QTD_CAIXAS_DE = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAT_QTD_CAIXAS_ATE(int pat_id, int value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET PAT_QTD_CAIXAS_ATE = @PAT_QTD_CAIXAS_ATE WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [PAT_QTD_CAIXAS_ATE] = @PAT_QTD_CAIXAS_ATE WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 PAT_QTD_CAIXAS_ATE = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAT_N_AMOSTRAGEM(int pat_id, int value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET PAT_N_AMOSTRAGEM = @PAT_N_AMOSTRAGEM WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [PAT_N_AMOSTRAGEM] = @PAT_N_AMOSTRAGEM WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 PAT_N_AMOSTRAGEM = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAT_PERCENT_ESPECIF(int pat_id, Decimal value)
         {
-            this.Query = $@" UPDATE PlanoAmostralTeste SET PAT_PERCENT_ESPECIF = @PAT_PERCENT_ESPECIF WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" UPDATE [PlanoAmostralTeste] SET [PAT_PERCENT_ESPECIF] = @PAT_PERCENT_ESPECIF WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 PAT_PERCENT_ESPECIF = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeletePlanoAmostralTesteQuery(IPlanoAmostralTesteEntity PlanoAmostralTeste)
         {
-            this.Query = $@" DELETE FROM PlanoAmostralTeste WHERE PAT_ID = @PAT_ID ";
+            this.Query = $@" DELETE FROM [PlanoAmostralTeste] WHERE [PAT_ID] = @PAT_ID ";
             this.Parameters = new
             {
                 PAT_ID = PlanoAmostralTeste.PAT_ID,

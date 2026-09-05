@@ -39,7 +39,7 @@ public partial class MunicipioCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "mun_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class MunicipioCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["MUN_ID"] = ApiTestData.Text("Municipio MUN_ID", 50),
+            ["MUN_ID"] = ApiTestData.KeyText(12),
             ["MUN_NOME"] = ApiTestData.Text("Municipio MUN_NOME", 80),
             ["UF_COD"] = ApiTestData.Text("Municipio UF_COD", 2),
             ["MUN_CODIGO_IBGE"] = ApiTestData.Text("Municipio MUN_CODIGO_IBGE", 50),

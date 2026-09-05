@@ -72,14 +72,14 @@
  BOL_GRAMATURA_RESINA_PROGRAMADOS = bol_gramatura_resina_programados; 
  BOL_CUSTO_RESINA_PROGRAMADOS = bol_custo_resina_programados; 
  BOL_REFILE_OBRIGATORIO = bol_refile_obrigatorio; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(BOL_ID))
    this._erroMensagem.Add("BOL ID deve ser informado.");
-   if (GRP_PAP_GRAMATURA_PROGRAMADO == null)
-   this._erroMensagem.Add("GRP PAP GRAMATURA PROGRAMADO deve ser informado.");
    if(string.IsNullOrEmpty(GRP_ID_PROGRAMADO))
    this._erroMensagem.Add("GRP ID PROGRAMADO deve ser informado.");
 return _erroMensagem.Count() <= 0;

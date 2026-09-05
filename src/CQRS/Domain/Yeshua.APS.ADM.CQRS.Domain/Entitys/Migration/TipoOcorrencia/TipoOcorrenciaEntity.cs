@@ -32,12 +32,12 @@
  Id = id; 
  Descricao = descricao; 
  Spr = spr; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Id == null)
-   this._erroMensagem.Add("Id deve ser informado.");
    if(string.IsNullOrEmpty(Descricao))
    this._erroMensagem.Add("Descricao deve ser informado.");
 return _erroMensagem.Count() <= 0;

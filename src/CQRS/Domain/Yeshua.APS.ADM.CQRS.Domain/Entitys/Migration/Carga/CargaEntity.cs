@@ -108,6 +108,8 @@
  CAR_DATA_AGENCIAMENTO = (car_data_agenciamento < (new DateTime(1800, 1, 1))) ? DateTime.Now : car_data_agenciamento; 
  TURN_ID = turn_id; 
  TURM_ID = turm_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

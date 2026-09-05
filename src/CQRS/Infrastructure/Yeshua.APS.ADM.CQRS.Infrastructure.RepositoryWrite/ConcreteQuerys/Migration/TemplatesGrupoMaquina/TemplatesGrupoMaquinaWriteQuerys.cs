@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTemplatesGrupoMaquinaQuery(ITemplatesGrupoMaquinaEntity TemplatesGrupoMaquina)
         {
-            this.Query = $@" INSERT INTO TemplatesGrupoMaquina (TEM_ID, GMA_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TEM_ID, @GMA_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TemplatesGrupoMaquina] ([TEM_ID], [GMA_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TEM_ID, @GMA_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TEM_ID = TemplatesGrupoMaquina.TEM_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTemplatesGrupoMaquinaQuery(ITemplatesGrupoMaquinaEntity TemplatesGrupoMaquina)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET TEM_ID = @TEM_ID, GMA_ID = @GMA_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [TEM_ID] = @TEM_ID, [GMA_ID] = @GMA_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TEM_ID = TemplatesGrupoMaquina.TEM_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTEM_ID(int id, int value)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET TEM_ID = @TEM_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [TEM_ID] = @TEM_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TEM_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGMA_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET GMA_ID = @GMA_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [GMA_ID] = @GMA_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GMA_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TemplatesGrupoMaquina SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemplatesGrupoMaquina] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTemplatesGrupoMaquinaQuery(ITemplatesGrupoMaquinaEntity TemplatesGrupoMaquina)
         {
-            this.Query = $@" DELETE FROM TemplatesGrupoMaquina WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TemplatesGrupoMaquina] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TemplatesGrupoMaquina.Id,

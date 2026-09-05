@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryPerfilQuery(IyPerfilEntity yPerfil)
         {
-            this.Query = $@" INSERT INTO yPerfil (Description, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Description, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yPerfil] ([Description], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Description, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Description = yPerfil.Description,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyPerfilQuery(IyPerfilEntity yPerfil)
         {
-            this.Query = $@" UPDATE yPerfil SET Description = @Description, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfil] SET [Description] = @Description, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = yPerfil.Description,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescription(int id, string value)
         {
-            this.Query = $@" UPDATE yPerfil SET Description = @Description WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfil] SET [Description] = @Description WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yPerfil SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfil] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yPerfil SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfil] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yPerfil SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfil] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yPerfil SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yPerfil] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyPerfilQuery(IyPerfilEntity yPerfil)
         {
-            this.Query = $@" DELETE FROM yPerfil WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yPerfil] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yPerfil.Id,

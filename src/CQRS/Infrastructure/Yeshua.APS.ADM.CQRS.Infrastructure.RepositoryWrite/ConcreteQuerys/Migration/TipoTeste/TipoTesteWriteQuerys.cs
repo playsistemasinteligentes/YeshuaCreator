@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoTesteQuery(ITipoTesteEntity TipoTeste)
         {
-            this.Query = $@" INSERT INTO TipoTeste (TT_ESPECIFICACAO, TT_ORIGEM_ESPECIFICACAO, TT_IMPRIME_NO_LAUDO, TenantID, Deleted, Changed, UserId, TT_NOME, TT_DESC, TT_TOL_MAIS, TT_TOL_MENOS, TT_NORMA, TT_INICIO_PROCESSO, TA_ID, UNI_ID, TT_N_AMOSTRAS_P_TESTE, TT_MAX_DEF_CRITICO, TT_MAX_DEF_GRAVE) OUTPUT INSERTED.TT_ID VALUES(@TT_ESPECIFICACAO, @TT_ORIGEM_ESPECIFICACAO, @TT_IMPRIME_NO_LAUDO, @TenantID, @Deleted, @Changed, @UserId, @TT_NOME, @TT_DESC, @TT_TOL_MAIS, @TT_TOL_MENOS, @TT_NORMA, @TT_INICIO_PROCESSO, @TA_ID, @UNI_ID, @TT_N_AMOSTRAS_P_TESTE, @TT_MAX_DEF_CRITICO, @TT_MAX_DEF_GRAVE) ";
+            this.Query = $@" INSERT INTO [TipoTeste] ([TT_ESPECIFICACAO], [TT_ORIGEM_ESPECIFICACAO], [TT_IMPRIME_NO_LAUDO], [TenantID], [Deleted], [Changed], [UserId], [TT_NOME], [TT_DESC], [TT_TOL_MAIS], [TT_TOL_MENOS], [TT_NORMA], [TT_INICIO_PROCESSO], [TA_ID], [UNI_ID], [TT_N_AMOSTRAS_P_TESTE], [TT_MAX_DEF_CRITICO], [TT_MAX_DEF_GRAVE]) OUTPUT INSERTED.[TT_ID] VALUES(@TT_ESPECIFICACAO, @TT_ORIGEM_ESPECIFICACAO, @TT_IMPRIME_NO_LAUDO, @TenantID, @Deleted, @Changed, @UserId, @TT_NOME, @TT_DESC, @TT_TOL_MAIS, @TT_TOL_MENOS, @TT_NORMA, @TT_INICIO_PROCESSO, @TA_ID, @UNI_ID, @TT_N_AMOSTRAS_P_TESTE, @TT_MAX_DEF_CRITICO, @TT_MAX_DEF_GRAVE) ";
             this.Parameters = new
             {
                 TT_ESPECIFICACAO = TipoTeste.TT_ESPECIFICACAO,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoTesteQuery(ITipoTesteEntity TipoTeste)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_ESPECIFICACAO = @TT_ESPECIFICACAO, TT_ORIGEM_ESPECIFICACAO = @TT_ORIGEM_ESPECIFICACAO, TT_IMPRIME_NO_LAUDO = @TT_IMPRIME_NO_LAUDO, Changed = @Changed, UserId = @UserId, TT_NOME = @TT_NOME, TT_DESC = @TT_DESC, TT_TOL_MAIS = @TT_TOL_MAIS, TT_TOL_MENOS = @TT_TOL_MENOS, TT_NORMA = @TT_NORMA, TT_INICIO_PROCESSO = @TT_INICIO_PROCESSO, TA_ID = @TA_ID, UNI_ID = @UNI_ID, TT_N_AMOSTRAS_P_TESTE = @TT_N_AMOSTRAS_P_TESTE, TT_MAX_DEF_CRITICO = @TT_MAX_DEF_CRITICO, TT_MAX_DEF_GRAVE = @TT_MAX_DEF_GRAVE WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_ESPECIFICACAO] = @TT_ESPECIFICACAO, [TT_ORIGEM_ESPECIFICACAO] = @TT_ORIGEM_ESPECIFICACAO, [TT_IMPRIME_NO_LAUDO] = @TT_IMPRIME_NO_LAUDO, [Changed] = @Changed, [UserId] = @UserId, [TT_NOME] = @TT_NOME, [TT_DESC] = @TT_DESC, [TT_TOL_MAIS] = @TT_TOL_MAIS, [TT_TOL_MENOS] = @TT_TOL_MENOS, [TT_NORMA] = @TT_NORMA, [TT_INICIO_PROCESSO] = @TT_INICIO_PROCESSO, [TA_ID] = @TA_ID, [UNI_ID] = @UNI_ID, [TT_N_AMOSTRAS_P_TESTE] = @TT_N_AMOSTRAS_P_TESTE, [TT_MAX_DEF_CRITICO] = @TT_MAX_DEF_CRITICO, [TT_MAX_DEF_GRAVE] = @TT_MAX_DEF_GRAVE WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_ESPECIFICACAO = TipoTeste.TT_ESPECIFICACAO,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_ESPECIFICACAO(int tt_id, Decimal value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_ESPECIFICACAO = @TT_ESPECIFICACAO WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_ESPECIFICACAO] = @TT_ESPECIFICACAO WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_ESPECIFICACAO = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_ORIGEM_ESPECIFICACAO(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_ORIGEM_ESPECIFICACAO = @TT_ORIGEM_ESPECIFICACAO WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_ORIGEM_ESPECIFICACAO] = @TT_ORIGEM_ESPECIFICACAO WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_ORIGEM_ESPECIFICACAO = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_IMPRIME_NO_LAUDO(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_IMPRIME_NO_LAUDO = @TT_IMPRIME_NO_LAUDO WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_IMPRIME_NO_LAUDO] = @TT_IMPRIME_NO_LAUDO WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_IMPRIME_NO_LAUDO = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int tt_id, int value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TenantID = @TenantID WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TenantID] = @TenantID WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int tt_id, bool value)
         {
-            this.Query = $@" UPDATE TipoTeste SET Deleted = @Deleted WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [Deleted] = @Deleted WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int tt_id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoTeste SET Changed = @Changed WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [Changed] = @Changed WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int tt_id, int value)
         {
-            this.Query = $@" UPDATE TipoTeste SET UserId = @UserId WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [UserId] = @UserId WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -151,7 +151,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_NOME(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_NOME = @TT_NOME WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_NOME] = @TT_NOME WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_NOME = value,
@@ -161,7 +161,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_DESC(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_DESC = @TT_DESC WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_DESC] = @TT_DESC WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_DESC = value,
@@ -171,7 +171,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_TOL_MAIS(int tt_id, Decimal value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_TOL_MAIS = @TT_TOL_MAIS WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_TOL_MAIS] = @TT_TOL_MAIS WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_TOL_MAIS = value,
@@ -181,7 +181,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_TOL_MENOS(int tt_id, Decimal value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_TOL_MENOS = @TT_TOL_MENOS WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_TOL_MENOS] = @TT_TOL_MENOS WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_TOL_MENOS = value,
@@ -191,7 +191,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_NORMA(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_NORMA = @TT_NORMA WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_NORMA] = @TT_NORMA WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_NORMA = value,
@@ -201,7 +201,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_INICIO_PROCESSO(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_INICIO_PROCESSO = @TT_INICIO_PROCESSO WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_INICIO_PROCESSO] = @TT_INICIO_PROCESSO WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_INICIO_PROCESSO = value,
@@ -211,7 +211,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTA_ID(int tt_id, int value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TA_ID = @TA_ID WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TA_ID] = @TA_ID WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TA_ID = value,
@@ -221,7 +221,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUNI_ID(int tt_id, string value)
         {
-            this.Query = $@" UPDATE TipoTeste SET UNI_ID = @UNI_ID WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [UNI_ID] = @UNI_ID WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 UNI_ID = value,
@@ -231,7 +231,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_N_AMOSTRAS_P_TESTE(int tt_id, int value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_N_AMOSTRAS_P_TESTE = @TT_N_AMOSTRAS_P_TESTE WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_N_AMOSTRAS_P_TESTE] = @TT_N_AMOSTRAS_P_TESTE WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_N_AMOSTRAS_P_TESTE = value,
@@ -241,7 +241,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_MAX_DEF_CRITICO(int tt_id, int value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_MAX_DEF_CRITICO = @TT_MAX_DEF_CRITICO WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_MAX_DEF_CRITICO] = @TT_MAX_DEF_CRITICO WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_MAX_DEF_CRITICO = value,
@@ -251,7 +251,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_MAX_DEF_GRAVE(int tt_id, int value)
         {
-            this.Query = $@" UPDATE TipoTeste SET TT_MAX_DEF_GRAVE = @TT_MAX_DEF_GRAVE WHERE TT_ID = @TT_ID ";
+            this.Query = $@" UPDATE [TipoTeste] SET [TT_MAX_DEF_GRAVE] = @TT_MAX_DEF_GRAVE WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_MAX_DEF_GRAVE = value,
@@ -261,7 +261,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoTesteQuery(ITipoTesteEntity TipoTeste)
         {
-            this.Query = $@" DELETE FROM TipoTeste WHERE TT_ID = @TT_ID ";
+            this.Query = $@" DELETE FROM [TipoTeste] WHERE [TT_ID] = @TT_ID ";
             this.Parameters = new
             {
                 TT_ID = TipoTeste.TT_ID,

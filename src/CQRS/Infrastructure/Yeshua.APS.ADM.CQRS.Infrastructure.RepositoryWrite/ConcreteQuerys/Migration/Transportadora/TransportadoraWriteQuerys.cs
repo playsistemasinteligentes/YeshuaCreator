@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTransportadoraQuery(ITransportadoraEntity Transportadora)
         {
-            this.Query = $@" INSERT INTO Transportadora (TRA_ID, TRA_NOME, TRA_EMAIL, TRA_RESPONSAVEL, TRA_FONE, TRA_ID_INTEGRACAO, TRA_ID_INTEGRACAO_ERP, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TRA_ID, @TRA_NOME, @TRA_EMAIL, @TRA_RESPONSAVEL, @TRA_FONE, @TRA_ID_INTEGRACAO, @TRA_ID_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Transportadora] ([TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TRA_ID, @TRA_NOME, @TRA_EMAIL, @TRA_RESPONSAVEL, @TRA_FONE, @TRA_ID_INTEGRACAO, @TRA_ID_INTEGRACAO_ERP, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TRA_ID = Transportadora.TRA_ID,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTransportadoraQuery(ITransportadoraEntity Transportadora)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_ID = @TRA_ID, TRA_NOME = @TRA_NOME, TRA_EMAIL = @TRA_EMAIL, TRA_RESPONSAVEL = @TRA_RESPONSAVEL, TRA_FONE = @TRA_FONE, TRA_ID_INTEGRACAO = @TRA_ID_INTEGRACAO, TRA_ID_INTEGRACAO_ERP = @TRA_ID_INTEGRACAO_ERP, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_ID] = @TRA_ID, [TRA_NOME] = @TRA_NOME, [TRA_EMAIL] = @TRA_EMAIL, [TRA_RESPONSAVEL] = @TRA_RESPONSAVEL, [TRA_FONE] = @TRA_FONE, [TRA_ID_INTEGRACAO] = @TRA_ID_INTEGRACAO, [TRA_ID_INTEGRACAO_ERP] = @TRA_ID_INTEGRACAO_ERP, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_ID = Transportadora.TRA_ID,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_ID = @TRA_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_ID] = @TRA_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_NOME(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_NOME = @TRA_NOME WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_NOME] = @TRA_NOME WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_NOME = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_EMAIL(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_EMAIL = @TRA_EMAIL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_EMAIL] = @TRA_EMAIL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_EMAIL = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_RESPONSAVEL(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_RESPONSAVEL = @TRA_RESPONSAVEL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_RESPONSAVEL] = @TRA_RESPONSAVEL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_RESPONSAVEL = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_FONE(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_FONE = @TRA_FONE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_FONE] = @TRA_FONE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_FONE = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_ID_INTEGRACAO(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_ID_INTEGRACAO = @TRA_ID_INTEGRACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_ID_INTEGRACAO] = @TRA_ID_INTEGRACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_ID_INTEGRACAO = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTRA_ID_INTEGRACAO_ERP(int id, string value)
         {
-            this.Query = $@" UPDATE Transportadora SET TRA_ID_INTEGRACAO_ERP = @TRA_ID_INTEGRACAO_ERP WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TRA_ID_INTEGRACAO_ERP] = @TRA_ID_INTEGRACAO_ERP WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TRA_ID_INTEGRACAO_ERP = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Transportadora SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Transportadora SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Transportadora SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Transportadora SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Transportadora] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTransportadoraQuery(ITransportadoraEntity Transportadora)
         {
-            this.Query = $@" DELETE FROM Transportadora WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Transportadora] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Transportadora.Id,

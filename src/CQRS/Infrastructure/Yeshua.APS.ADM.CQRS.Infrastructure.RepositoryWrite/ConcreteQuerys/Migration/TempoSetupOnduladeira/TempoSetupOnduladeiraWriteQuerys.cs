@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTempoSetupOnduladeiraQuery(ITempoSetupOnduladeiraEntity TempoSetupOnduladeira)
         {
-            this.Query = $@" INSERT INTO TempoSetupOnduladeira (OND_ID_DE, OND_ID_PARA, TEM_RESINA_DE, TEM_RESINA_PARA, TEM_TEMPO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.TEM_ID VALUES(@OND_ID_DE, @OND_ID_PARA, @TEM_RESINA_DE, @TEM_RESINA_PARA, @TEM_TEMPO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TempoSetupOnduladeira] ([OND_ID_DE], [OND_ID_PARA], [TEM_RESINA_DE], [TEM_RESINA_PARA], [TEM_TEMPO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TEM_ID] VALUES(@OND_ID_DE, @OND_ID_PARA, @TEM_RESINA_DE, @TEM_RESINA_PARA, @TEM_TEMPO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OND_ID_DE = TempoSetupOnduladeira.OND_ID_DE,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTempoSetupOnduladeiraQuery(ITempoSetupOnduladeiraEntity TempoSetupOnduladeira)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET OND_ID_DE = @OND_ID_DE, OND_ID_PARA = @OND_ID_PARA, TEM_RESINA_DE = @TEM_RESINA_DE, TEM_RESINA_PARA = @TEM_RESINA_PARA, TEM_TEMPO = @TEM_TEMPO, Changed = @Changed, UserId = @UserId WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [OND_ID_DE] = @OND_ID_DE, [OND_ID_PARA] = @OND_ID_PARA, [TEM_RESINA_DE] = @TEM_RESINA_DE, [TEM_RESINA_PARA] = @TEM_RESINA_PARA, [TEM_TEMPO] = @TEM_TEMPO, [Changed] = @Changed, [UserId] = @UserId WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 OND_ID_DE = TempoSetupOnduladeira.OND_ID_DE,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOND_ID_DE(int tem_id, string value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET OND_ID_DE = @OND_ID_DE WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [OND_ID_DE] = @OND_ID_DE WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 OND_ID_DE = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOND_ID_PARA(int tem_id, string value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET OND_ID_PARA = @OND_ID_PARA WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [OND_ID_PARA] = @OND_ID_PARA WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 OND_ID_PARA = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTEM_RESINA_DE(int tem_id, string value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET TEM_RESINA_DE = @TEM_RESINA_DE WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [TEM_RESINA_DE] = @TEM_RESINA_DE WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 TEM_RESINA_DE = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTEM_RESINA_PARA(int tem_id, string value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET TEM_RESINA_PARA = @TEM_RESINA_PARA WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [TEM_RESINA_PARA] = @TEM_RESINA_PARA WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 TEM_RESINA_PARA = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTEM_TEMPO(int tem_id, int value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET TEM_TEMPO = @TEM_TEMPO WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [TEM_TEMPO] = @TEM_TEMPO WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 TEM_TEMPO = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int tem_id, int value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET TenantID = @TenantID WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [TenantID] = @TenantID WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int tem_id, bool value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET Deleted = @Deleted WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [Deleted] = @Deleted WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int tem_id, DateTime value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET Changed = @Changed WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [Changed] = @Changed WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int tem_id, int value)
         {
-            this.Query = $@" UPDATE TempoSetupOnduladeira SET UserId = @UserId WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" UPDATE [TempoSetupOnduladeira] SET [UserId] = @UserId WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTempoSetupOnduladeiraQuery(ITempoSetupOnduladeiraEntity TempoSetupOnduladeira)
         {
-            this.Query = $@" DELETE FROM TempoSetupOnduladeira WHERE TEM_ID = @TEM_ID ";
+            this.Query = $@" DELETE FROM [TempoSetupOnduladeira] WHERE [TEM_ID] = @TEM_ID ";
             this.Parameters = new
             {
                 TEM_ID = TempoSetupOnduladeira.TEM_ID,

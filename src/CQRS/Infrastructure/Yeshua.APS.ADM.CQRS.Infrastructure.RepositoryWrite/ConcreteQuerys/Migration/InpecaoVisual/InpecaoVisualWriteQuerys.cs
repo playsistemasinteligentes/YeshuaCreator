@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirInpecaoVisualQuery(IInpecaoVisualEntity InpecaoVisual)
         {
-            this.Query = $@" INSERT INTO InpecaoVisual (IPV_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IPV_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [InpecaoVisual] ([IPV_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IPV_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IPV_ID = InpecaoVisual.IPV_ID,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateInpecaoVisualQuery(IInpecaoVisualEntity InpecaoVisual)
         {
-            this.Query = $@" UPDATE InpecaoVisual SET IPV_ID = @IPV_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [InpecaoVisual] SET [IPV_ID] = @IPV_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IPV_ID = InpecaoVisual.IPV_ID,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIPV_ID(int id, int value)
         {
-            this.Query = $@" UPDATE InpecaoVisual SET IPV_ID = @IPV_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [InpecaoVisual] SET [IPV_ID] = @IPV_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IPV_ID = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE InpecaoVisual SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [InpecaoVisual] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE InpecaoVisual SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [InpecaoVisual] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE InpecaoVisual SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [InpecaoVisual] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE InpecaoVisual SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [InpecaoVisual] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteInpecaoVisualQuery(IInpecaoVisualEntity InpecaoVisual)
         {
-            this.Query = $@" DELETE FROM InpecaoVisual WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [InpecaoVisual] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = InpecaoVisual.Id,

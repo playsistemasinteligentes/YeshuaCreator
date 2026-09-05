@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCorConfiguracaoGraficoQuery(ICorConfiguracaoGraficoEntity CorConfiguracaoGrafico)
         {
-            this.Query = $@" INSERT INTO CorConfiguracaoGrafico (COR_ID, COR_PERCENTUAL_INI, COR_PERCENTUAL_FIM, COR_DESCRICAO, TenantID, Deleted, Changed, UserId) VALUES(@COR_ID, @COR_PERCENTUAL_INI, @COR_PERCENTUAL_FIM, @COR_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [CorConfiguracaoGrafico] ([COR_ID], [COR_PERCENTUAL_INI], [COR_PERCENTUAL_FIM], [COR_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@COR_ID, @COR_PERCENTUAL_INI, @COR_PERCENTUAL_FIM, @COR_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 COR_ID = CorConfiguracaoGrafico.COR_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCorConfiguracaoGraficoQuery(ICorConfiguracaoGraficoEntity CorConfiguracaoGrafico)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET COR_PERCENTUAL_INI = @COR_PERCENTUAL_INI, COR_PERCENTUAL_FIM = @COR_PERCENTUAL_FIM, COR_DESCRICAO = @COR_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [COR_PERCENTUAL_INI] = @COR_PERCENTUAL_INI, [COR_PERCENTUAL_FIM] = @COR_PERCENTUAL_FIM, [COR_DESCRICAO] = @COR_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 COR_PERCENTUAL_INI = CorConfiguracaoGrafico.COR_PERCENTUAL_INI,
@@ -60,7 +60,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOR_PERCENTUAL_INI(string cor_id, Decimal value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET COR_PERCENTUAL_INI = @COR_PERCENTUAL_INI WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [COR_PERCENTUAL_INI] = @COR_PERCENTUAL_INI WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 COR_PERCENTUAL_INI = value,
@@ -70,7 +70,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOR_PERCENTUAL_FIM(string cor_id, Decimal value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET COR_PERCENTUAL_FIM = @COR_PERCENTUAL_FIM WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [COR_PERCENTUAL_FIM] = @COR_PERCENTUAL_FIM WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 COR_PERCENTUAL_FIM = value,
@@ -80,7 +80,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOR_DESCRICAO(string cor_id, string value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET COR_DESCRICAO = @COR_DESCRICAO WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [COR_DESCRICAO] = @COR_DESCRICAO WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 COR_DESCRICAO = value,
@@ -90,7 +90,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string cor_id, int value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET TenantID = @TenantID WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [TenantID] = @TenantID WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -100,7 +100,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string cor_id, bool value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET Deleted = @Deleted WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [Deleted] = @Deleted WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -110,7 +110,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string cor_id, DateTime value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET Changed = @Changed WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [Changed] = @Changed WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -120,7 +120,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string cor_id, int value)
         {
-            this.Query = $@" UPDATE CorConfiguracaoGrafico SET UserId = @UserId WHERE COR_ID = @COR_ID ";
+            this.Query = $@" UPDATE [CorConfiguracaoGrafico] SET [UserId] = @UserId WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -130,7 +130,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCorConfiguracaoGraficoQuery(ICorConfiguracaoGraficoEntity CorConfiguracaoGrafico)
         {
-            this.Query = $@" DELETE FROM CorConfiguracaoGrafico WHERE COR_ID = @COR_ID ";
+            this.Query = $@" DELETE FROM [CorConfiguracaoGrafico] WHERE [COR_ID] = @COR_ID ";
             this.Parameters = new
             {
                 COR_ID = CorConfiguracaoGrafico.COR_ID,

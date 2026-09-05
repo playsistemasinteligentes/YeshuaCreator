@@ -38,12 +38,12 @@
  MDT_VALOR_ESPERADO = mdt_valor_esperado; 
  MDT_ENCONTRADO = mdt_encontrado; 
  UNI_ID = uni_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MDT_ID == null)
-   this._erroMensagem.Add("MDT ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

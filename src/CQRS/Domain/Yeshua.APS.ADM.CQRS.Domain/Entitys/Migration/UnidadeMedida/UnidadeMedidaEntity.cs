@@ -32,6 +32,8 @@
  UNI_ID = uni_id; 
  UNI_DESCRICAO = uni_descricao; 
  UNI_ESCALA_TEMPO = uni_escala_tempo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

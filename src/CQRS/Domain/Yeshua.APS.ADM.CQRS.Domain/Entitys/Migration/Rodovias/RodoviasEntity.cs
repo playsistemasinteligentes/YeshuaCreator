@@ -32,12 +32,12 @@
  Id = id; 
  ROD_ID = rod_id; 
  ROD_DESCRICAO = rod_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ROD_ID == null)
-   this._erroMensagem.Add("ROD ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

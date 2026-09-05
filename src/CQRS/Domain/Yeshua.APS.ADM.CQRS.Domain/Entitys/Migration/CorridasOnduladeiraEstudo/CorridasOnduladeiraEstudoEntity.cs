@@ -68,6 +68,8 @@
  PRO_ID_PALETE = pro_id_palete; 
  COR_STATUS_PALETE = cor_status_palete; 
  COR_GRUPO_PRODUTIVO = cor_grupo_produtivo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

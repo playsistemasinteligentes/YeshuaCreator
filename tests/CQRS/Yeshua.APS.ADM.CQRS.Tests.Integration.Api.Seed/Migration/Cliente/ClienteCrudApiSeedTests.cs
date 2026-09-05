@@ -39,7 +39,7 @@ public partial class ClienteCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "cli_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class ClienteCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["CLI_ID"] = ApiTestData.Text("Cliente CLI_ID", 30),
+            ["CLI_ID"] = ApiTestData.KeyText(12),
             ["CLI_NOME"] = ApiTestData.Text("Cliente CLI_NOME", 80),
             ["CLI_FONE"] = ApiTestData.Text("Cliente CLI_FONE", 68),
             ["CLI_OBS"] = ApiTestData.Text("Cliente CLI_OBS", 80),

@@ -48,16 +48,12 @@
  OTK_DATA_PREVISTA = (otk_data_prevista < (new DateTime(1800, 1, 1))) ? DateTime.Now : otk_data_prevista; 
  OTK_DATA_REALIZADA = (otk_data_realizada < (new DateTime(1800, 1, 1))) ? DateTime.Now : otk_data_realizada; 
  FPR_ID = fpr_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (OTK_ID == null)
-   this._erroMensagem.Add("OTK ID deve ser informado.");
-   if (OTK_SEQUENCIA == null)
-   this._erroMensagem.Add("OTK SEQUENCIA deve ser informado.");
-   if (OTK_VERSSAO == null)
-   this._erroMensagem.Add("OTK VERSSAO deve ser informado.");
    if(string.IsNullOrEmpty(ORD_ID))
    this._erroMensagem.Add("ORD ID deve ser informado.");
    if(string.IsNullOrEmpty(OTK_EVENTO))

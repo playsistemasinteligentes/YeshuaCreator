@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRepresentantesQuery(IRepresentantesEntity Representantes)
         {
-            this.Query = $@" INSERT INTO Representantes (REP_ID, REP_NOME, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@REP_ID, @REP_NOME, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Representantes] ([REP_ID], [REP_NOME], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@REP_ID, @REP_NOME, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 REP_ID = Representantes.REP_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRepresentantesQuery(IRepresentantesEntity Representantes)
         {
-            this.Query = $@" UPDATE Representantes SET REP_ID = @REP_ID, REP_NOME = @REP_NOME, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [REP_ID] = @REP_ID, [REP_NOME] = @REP_NOME, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REP_ID = Representantes.REP_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Representantes SET REP_ID = @REP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [REP_ID] = @REP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REP_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREP_NOME(int id, string value)
         {
-            this.Query = $@" UPDATE Representantes SET REP_NOME = @REP_NOME WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [REP_NOME] = @REP_NOME WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 REP_NOME = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Representantes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Representantes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Representantes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Representantes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Representantes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRepresentantesQuery(IRepresentantesEntity Representantes)
         {
-            this.Query = $@" DELETE FROM Representantes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Representantes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Representantes.Id,

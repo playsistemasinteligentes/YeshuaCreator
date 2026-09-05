@@ -44,7 +44,7 @@ public partial class ColaboradorCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "col_cpf");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class ColaboradorCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["COL_CPF"] = ApiTestData.Text("Colaborador COL_CPF", 14),
+            ["COL_CPF"] = ApiTestData.KeyText(12),
             ["COL_NOME"] = ApiTestData.Text("Colaborador COL_NOME", 80),
             ["COL_NASCIMENTO"] = DateTime.UtcNow,
             ["COL_EMAIL"] = ApiTestData.Text("Colaborador COL_EMAIL", 80),

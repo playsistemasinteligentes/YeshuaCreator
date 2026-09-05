@@ -44,7 +44,7 @@ public partial class ParamCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "par_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class ParamCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["PAR_ID"] = ApiTestData.Text("Param PAR_ID", 80),
+            ["PAR_ID"] = ApiTestData.KeyText(12),
             ["PAR_DESCRICAO"] = ApiTestData.Text("Param PAR_DESCRICAO", 80),
             ["PAR_VALOR_S"] = ApiTestData.Text("Param PAR_VALOR_S", 80),
             ["PAR_VALOR_N"] = 10.5m,

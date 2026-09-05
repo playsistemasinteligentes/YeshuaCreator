@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOrderTrackQuery(IOrderTrackEntity OrderTrack)
         {
-            this.Query = $@" INSERT INTO OrderTrack (OTK_ID, OTK_SEQUENCIA, OTK_VERSSAO, ORD_ID, OTK_EVENTO, OTK_DATA_NECESSIDADE_DE, OTK_DATA_NECESSIDADE_ATE, OTK_DATA_PREVISTA, OTK_DATA_REALIZADA, FPR_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@OTK_ID, @OTK_SEQUENCIA, @OTK_VERSSAO, @ORD_ID, @OTK_EVENTO, @OTK_DATA_NECESSIDADE_DE, @OTK_DATA_NECESSIDADE_ATE, @OTK_DATA_PREVISTA, @OTK_DATA_REALIZADA, @FPR_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [OrderTrack] ([OTK_ID], [OTK_SEQUENCIA], [OTK_VERSSAO], [ORD_ID], [OTK_EVENTO], [OTK_DATA_NECESSIDADE_DE], [OTK_DATA_NECESSIDADE_ATE], [OTK_DATA_PREVISTA], [OTK_DATA_REALIZADA], [FPR_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@OTK_ID, @OTK_SEQUENCIA, @OTK_VERSSAO, @ORD_ID, @OTK_EVENTO, @OTK_DATA_NECESSIDADE_DE, @OTK_DATA_NECESSIDADE_ATE, @OTK_DATA_PREVISTA, @OTK_DATA_REALIZADA, @FPR_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OTK_ID = OrderTrack.OTK_ID,
@@ -52,7 +52,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOrderTrackQuery(IOrderTrackEntity OrderTrack)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_ID = @OTK_ID, OTK_SEQUENCIA = @OTK_SEQUENCIA, OTK_VERSSAO = @OTK_VERSSAO, ORD_ID = @ORD_ID, OTK_EVENTO = @OTK_EVENTO, OTK_DATA_NECESSIDADE_DE = @OTK_DATA_NECESSIDADE_DE, OTK_DATA_NECESSIDADE_ATE = @OTK_DATA_NECESSIDADE_ATE, OTK_DATA_PREVISTA = @OTK_DATA_PREVISTA, OTK_DATA_REALIZADA = @OTK_DATA_REALIZADA, FPR_ID = @FPR_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_ID] = @OTK_ID, [OTK_SEQUENCIA] = @OTK_SEQUENCIA, [OTK_VERSSAO] = @OTK_VERSSAO, [ORD_ID] = @ORD_ID, [OTK_EVENTO] = @OTK_EVENTO, [OTK_DATA_NECESSIDADE_DE] = @OTK_DATA_NECESSIDADE_DE, [OTK_DATA_NECESSIDADE_ATE] = @OTK_DATA_NECESSIDADE_ATE, [OTK_DATA_PREVISTA] = @OTK_DATA_PREVISTA, [OTK_DATA_REALIZADA] = @OTK_DATA_REALIZADA, [FPR_ID] = @FPR_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_ID = OrderTrack.OTK_ID,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_ID(int id, int value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_ID = @OTK_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_ID] = @OTK_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_ID = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_SEQUENCIA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_SEQUENCIA = @OTK_SEQUENCIA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_SEQUENCIA] = @OTK_SEQUENCIA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_SEQUENCIA = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_VERSSAO(int id, int value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_VERSSAO = @OTK_VERSSAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_VERSSAO] = @OTK_VERSSAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_VERSSAO = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID(int id, string value)
         {
-            this.Query = $@" UPDATE OrderTrack SET ORD_ID = @ORD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [ORD_ID] = @ORD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORD_ID = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_EVENTO(int id, string value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_EVENTO = @OTK_EVENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_EVENTO] = @OTK_EVENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_EVENTO = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_DATA_NECESSIDADE_DE(int id, DateTime value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_DATA_NECESSIDADE_DE = @OTK_DATA_NECESSIDADE_DE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_DATA_NECESSIDADE_DE] = @OTK_DATA_NECESSIDADE_DE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_DATA_NECESSIDADE_DE = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_DATA_NECESSIDADE_ATE(int id, DateTime value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_DATA_NECESSIDADE_ATE = @OTK_DATA_NECESSIDADE_ATE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_DATA_NECESSIDADE_ATE] = @OTK_DATA_NECESSIDADE_ATE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_DATA_NECESSIDADE_ATE = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_DATA_PREVISTA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_DATA_PREVISTA = @OTK_DATA_PREVISTA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_DATA_PREVISTA] = @OTK_DATA_PREVISTA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_DATA_PREVISTA = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_DATA_REALIZADA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE OrderTrack SET OTK_DATA_REALIZADA = @OTK_DATA_REALIZADA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [OTK_DATA_REALIZADA] = @OTK_DATA_REALIZADA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OTK_DATA_REALIZADA = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFPR_ID(int id, int value)
         {
-            this.Query = $@" UPDATE OrderTrack SET FPR_ID = @FPR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [FPR_ID] = @FPR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FPR_ID = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE OrderTrack SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE OrderTrack SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE OrderTrack SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE OrderTrack SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [OrderTrack] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOrderTrackQuery(IOrderTrackEntity OrderTrack)
         {
-            this.Query = $@" DELETE FROM OrderTrack WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [OrderTrack] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = OrderTrack.Id,

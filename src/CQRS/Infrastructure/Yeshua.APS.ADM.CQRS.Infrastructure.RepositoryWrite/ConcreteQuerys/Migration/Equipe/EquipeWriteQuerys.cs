@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEquipeQuery(IEquipeEntity Equipe)
         {
-            this.Query = $@" INSERT INTO Equipe (EQU_ID, EQU_HIERARQUIA_SEQ_TRANSFORMACAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@EQU_ID, @EQU_HIERARQUIA_SEQ_TRANSFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Equipe] ([EQU_ID], [EQU_HIERARQUIA_SEQ_TRANSFORMACAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@EQU_ID, @EQU_HIERARQUIA_SEQ_TRANSFORMACAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 EQU_ID = Equipe.EQU_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEquipeQuery(IEquipeEntity Equipe)
         {
-            this.Query = $@" UPDATE Equipe SET EQU_ID = @EQU_ID, EQU_HIERARQUIA_SEQ_TRANSFORMACAO = @EQU_HIERARQUIA_SEQ_TRANSFORMACAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [EQU_ID] = @EQU_ID, [EQU_HIERARQUIA_SEQ_TRANSFORMACAO] = @EQU_HIERARQUIA_SEQ_TRANSFORMACAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EQU_ID = Equipe.EQU_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEQU_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Equipe SET EQU_ID = @EQU_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [EQU_ID] = @EQU_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EQU_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEQU_HIERARQUIA_SEQ_TRANSFORMACAO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Equipe SET EQU_HIERARQUIA_SEQ_TRANSFORMACAO = @EQU_HIERARQUIA_SEQ_TRANSFORMACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [EQU_HIERARQUIA_SEQ_TRANSFORMACAO] = @EQU_HIERARQUIA_SEQ_TRANSFORMACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EQU_HIERARQUIA_SEQ_TRANSFORMACAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Equipe SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Equipe SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Equipe SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Equipe SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Equipe] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteEquipeQuery(IEquipeEntity Equipe)
         {
-            this.Query = $@" DELETE FROM Equipe WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Equipe] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Equipe.Id,

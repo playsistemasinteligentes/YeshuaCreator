@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentoEstoqueQuery(IMovimentoEstoqueEntity MovimentoEstoque)
         {
-            this.Query = $@" INSERT INTO MovimentoEstoque (ProdutoId, OrderId, Tipo, TurnoId, TurmaId, Quantidade, MOV_PESO_UNITARIO, DataHoraCriacao, DataHoraEmissao, DiaTurma, Lote, SubLote, MaquinaId, USE_ID, Observacao, OcorrenciaId, Armazem, Endereco, Estorno, SequenciaTransformacao, SequenciaRepeticao, ObsOpParcial, OcoIdOpParcial, MOV_ID_INTEGRACAO, MOV_ID_INTEGRACAO_ERP, CAR_ID, MOV_ID_DESTINO, PRO_ID_DESTINO, MOV_LOTE_DESTINO, MOV_SUB_LOTE_DESTINO, MOV_ID_ORIGEM, PRO_ID_ORIGEM, MOV_LOTE_ORIGEM, MOV_SUB_LOTE_ORIGEM, MOV_TYPE, MOV_DOC, MOV_APROVEITAMENTO, MOV_RETIDO, MOV_VINCOS_ONDULADEIRA, BOL_ID, ORD_ID_ORIGEM, COR_SEQUENCIA, VER_ID, MOV_TIPO_CUSTO, MOV_GRUPO_CONTABIL, FOR_ID, CLI_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ProdutoId, @OrderId, @Tipo, @TurnoId, @TurmaId, @Quantidade, @MOV_PESO_UNITARIO, @DataHoraCriacao, @DataHoraEmissao, @DiaTurma, @Lote, @SubLote, @MaquinaId, @USE_ID, @Observacao, @OcorrenciaId, @Armazem, @Endereco, @Estorno, @SequenciaTransformacao, @SequenciaRepeticao, @ObsOpParcial, @OcoIdOpParcial, @MOV_ID_INTEGRACAO, @MOV_ID_INTEGRACAO_ERP, @CAR_ID, @MOV_ID_DESTINO, @PRO_ID_DESTINO, @MOV_LOTE_DESTINO, @MOV_SUB_LOTE_DESTINO, @MOV_ID_ORIGEM, @PRO_ID_ORIGEM, @MOV_LOTE_ORIGEM, @MOV_SUB_LOTE_ORIGEM, @MOV_TYPE, @MOV_DOC, @MOV_APROVEITAMENTO, @MOV_RETIDO, @MOV_VINCOS_ONDULADEIRA, @BOL_ID, @ORD_ID_ORIGEM, @COR_SEQUENCIA, @VER_ID, @MOV_TIPO_CUSTO, @MOV_GRUPO_CONTABIL, @FOR_ID, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MovimentoEstoque] ([ProdutoId], [OrderId], [Tipo], [TurnoId], [TurmaId], [Quantidade], [MOV_PESO_UNITARIO], [DataHoraCriacao], [DataHoraEmissao], [DiaTurma], [Lote], [SubLote], [MaquinaId], [USE_ID], [Observacao], [OcorrenciaId], [Armazem], [Endereco], [Estorno], [SequenciaTransformacao], [SequenciaRepeticao], [ObsOpParcial], [OcoIdOpParcial], [MOV_ID_INTEGRACAO], [MOV_ID_INTEGRACAO_ERP], [CAR_ID], [MOV_ID_DESTINO], [PRO_ID_DESTINO], [MOV_LOTE_DESTINO], [MOV_SUB_LOTE_DESTINO], [MOV_ID_ORIGEM], [PRO_ID_ORIGEM], [MOV_LOTE_ORIGEM], [MOV_SUB_LOTE_ORIGEM], [MOV_TYPE], [MOV_DOC], [MOV_APROVEITAMENTO], [MOV_RETIDO], [MOV_VINCOS_ONDULADEIRA], [BOL_ID], [ORD_ID_ORIGEM], [COR_SEQUENCIA], [VER_ID], [MOV_TIPO_CUSTO], [MOV_GRUPO_CONTABIL], [FOR_ID], [CLI_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ProdutoId, @OrderId, @Tipo, @TurnoId, @TurmaId, @Quantidade, @MOV_PESO_UNITARIO, @DataHoraCriacao, @DataHoraEmissao, @DiaTurma, @Lote, @SubLote, @MaquinaId, @USE_ID, @Observacao, @OcorrenciaId, @Armazem, @Endereco, @Estorno, @SequenciaTransformacao, @SequenciaRepeticao, @ObsOpParcial, @OcoIdOpParcial, @MOV_ID_INTEGRACAO, @MOV_ID_INTEGRACAO_ERP, @CAR_ID, @MOV_ID_DESTINO, @PRO_ID_DESTINO, @MOV_LOTE_DESTINO, @MOV_SUB_LOTE_DESTINO, @MOV_ID_ORIGEM, @PRO_ID_ORIGEM, @MOV_LOTE_ORIGEM, @MOV_SUB_LOTE_ORIGEM, @MOV_TYPE, @MOV_DOC, @MOV_APROVEITAMENTO, @MOV_RETIDO, @MOV_VINCOS_ONDULADEIRA, @BOL_ID, @ORD_ID_ORIGEM, @COR_SEQUENCIA, @VER_ID, @MOV_TIPO_CUSTO, @MOV_GRUPO_CONTABIL, @FOR_ID, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ProdutoId = MovimentoEstoque.ProdutoId,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMovimentoEstoqueQuery(IMovimentoEstoqueEntity MovimentoEstoque)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET ProdutoId = @ProdutoId, OrderId = @OrderId, Tipo = @Tipo, TurnoId = @TurnoId, TurmaId = @TurmaId, Quantidade = @Quantidade, MOV_PESO_UNITARIO = @MOV_PESO_UNITARIO, DataHoraCriacao = @DataHoraCriacao, DataHoraEmissao = @DataHoraEmissao, DiaTurma = @DiaTurma, Lote = @Lote, SubLote = @SubLote, MaquinaId = @MaquinaId, USE_ID = @USE_ID, Observacao = @Observacao, OcorrenciaId = @OcorrenciaId, Armazem = @Armazem, Endereco = @Endereco, Estorno = @Estorno, SequenciaTransformacao = @SequenciaTransformacao, SequenciaRepeticao = @SequenciaRepeticao, ObsOpParcial = @ObsOpParcial, OcoIdOpParcial = @OcoIdOpParcial, MOV_ID_INTEGRACAO = @MOV_ID_INTEGRACAO, MOV_ID_INTEGRACAO_ERP = @MOV_ID_INTEGRACAO_ERP, CAR_ID = @CAR_ID, MOV_ID_DESTINO = @MOV_ID_DESTINO, PRO_ID_DESTINO = @PRO_ID_DESTINO, MOV_LOTE_DESTINO = @MOV_LOTE_DESTINO, MOV_SUB_LOTE_DESTINO = @MOV_SUB_LOTE_DESTINO, MOV_ID_ORIGEM = @MOV_ID_ORIGEM, PRO_ID_ORIGEM = @PRO_ID_ORIGEM, MOV_LOTE_ORIGEM = @MOV_LOTE_ORIGEM, MOV_SUB_LOTE_ORIGEM = @MOV_SUB_LOTE_ORIGEM, MOV_TYPE = @MOV_TYPE, MOV_DOC = @MOV_DOC, MOV_APROVEITAMENTO = @MOV_APROVEITAMENTO, MOV_RETIDO = @MOV_RETIDO, MOV_VINCOS_ONDULADEIRA = @MOV_VINCOS_ONDULADEIRA, BOL_ID = @BOL_ID, ORD_ID_ORIGEM = @ORD_ID_ORIGEM, COR_SEQUENCIA = @COR_SEQUENCIA, VER_ID = @VER_ID, MOV_TIPO_CUSTO = @MOV_TIPO_CUSTO, MOV_GRUPO_CONTABIL = @MOV_GRUPO_CONTABIL, FOR_ID = @FOR_ID, CLI_ID = @CLI_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [ProdutoId] = @ProdutoId, [OrderId] = @OrderId, [Tipo] = @Tipo, [TurnoId] = @TurnoId, [TurmaId] = @TurmaId, [Quantidade] = @Quantidade, [MOV_PESO_UNITARIO] = @MOV_PESO_UNITARIO, [DataHoraCriacao] = @DataHoraCriacao, [DataHoraEmissao] = @DataHoraEmissao, [DiaTurma] = @DiaTurma, [Lote] = @Lote, [SubLote] = @SubLote, [MaquinaId] = @MaquinaId, [USE_ID] = @USE_ID, [Observacao] = @Observacao, [OcorrenciaId] = @OcorrenciaId, [Armazem] = @Armazem, [Endereco] = @Endereco, [Estorno] = @Estorno, [SequenciaTransformacao] = @SequenciaTransformacao, [SequenciaRepeticao] = @SequenciaRepeticao, [ObsOpParcial] = @ObsOpParcial, [OcoIdOpParcial] = @OcoIdOpParcial, [MOV_ID_INTEGRACAO] = @MOV_ID_INTEGRACAO, [MOV_ID_INTEGRACAO_ERP] = @MOV_ID_INTEGRACAO_ERP, [CAR_ID] = @CAR_ID, [MOV_ID_DESTINO] = @MOV_ID_DESTINO, [PRO_ID_DESTINO] = @PRO_ID_DESTINO, [MOV_LOTE_DESTINO] = @MOV_LOTE_DESTINO, [MOV_SUB_LOTE_DESTINO] = @MOV_SUB_LOTE_DESTINO, [MOV_ID_ORIGEM] = @MOV_ID_ORIGEM, [PRO_ID_ORIGEM] = @PRO_ID_ORIGEM, [MOV_LOTE_ORIGEM] = @MOV_LOTE_ORIGEM, [MOV_SUB_LOTE_ORIGEM] = @MOV_SUB_LOTE_ORIGEM, [MOV_TYPE] = @MOV_TYPE, [MOV_DOC] = @MOV_DOC, [MOV_APROVEITAMENTO] = @MOV_APROVEITAMENTO, [MOV_RETIDO] = @MOV_RETIDO, [MOV_VINCOS_ONDULADEIRA] = @MOV_VINCOS_ONDULADEIRA, [BOL_ID] = @BOL_ID, [ORD_ID_ORIGEM] = @ORD_ID_ORIGEM, [COR_SEQUENCIA] = @COR_SEQUENCIA, [VER_ID] = @VER_ID, [MOV_TIPO_CUSTO] = @MOV_TIPO_CUSTO, [MOV_GRUPO_CONTABIL] = @MOV_GRUPO_CONTABIL, [FOR_ID] = @FOR_ID, [CLI_ID] = @CLI_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProdutoId = MovimentoEstoque.ProdutoId,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProdutoId(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET ProdutoId = @ProdutoId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [ProdutoId] = @ProdutoId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProdutoId = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOrderId(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET OrderId = @OrderId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [OrderId] = @OrderId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OrderId = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipo(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Tipo = @Tipo WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Tipo] = @Tipo WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Tipo = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTurnoId(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET TurnoId = @TurnoId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [TurnoId] = @TurnoId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TurnoId = value,
@@ -187,7 +187,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTurmaId(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET TurmaId = @TurmaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [TurmaId] = @TurmaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TurmaId = value,
@@ -197,7 +197,7 @@ namespace Query.Write
         }
         public QueryModel UpdateQuantidade(int id, Decimal value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Quantidade = @Quantidade WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Quantidade] = @Quantidade WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Quantidade = value,
@@ -207,7 +207,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_PESO_UNITARIO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_PESO_UNITARIO = @MOV_PESO_UNITARIO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_PESO_UNITARIO] = @MOV_PESO_UNITARIO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_PESO_UNITARIO = value,
@@ -217,7 +217,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataHoraCriacao(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET DataHoraCriacao = @DataHoraCriacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [DataHoraCriacao] = @DataHoraCriacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataHoraCriacao = value,
@@ -227,7 +227,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataHoraEmissao(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET DataHoraEmissao = @DataHoraEmissao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [DataHoraEmissao] = @DataHoraEmissao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataHoraEmissao = value,
@@ -237,7 +237,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDiaTurma(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET DiaTurma = @DiaTurma WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [DiaTurma] = @DiaTurma WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DiaTurma = value,
@@ -247,7 +247,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLote(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Lote = @Lote WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Lote] = @Lote WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Lote = value,
@@ -257,7 +257,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSubLote(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET SubLote = @SubLote WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [SubLote] = @SubLote WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SubLote = value,
@@ -267,7 +267,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMaquinaId(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MaquinaId = @MaquinaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MaquinaId] = @MaquinaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MaquinaId = value,
@@ -277,7 +277,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET USE_ID = @USE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [USE_ID] = @USE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -287,7 +287,7 @@ namespace Query.Write
         }
         public QueryModel UpdateObservacao(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Observacao = @Observacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Observacao] = @Observacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Observacao = value,
@@ -297,7 +297,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOcorrenciaId(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET OcorrenciaId = @OcorrenciaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [OcorrenciaId] = @OcorrenciaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OcorrenciaId = value,
@@ -307,7 +307,7 @@ namespace Query.Write
         }
         public QueryModel UpdateArmazem(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Armazem = @Armazem WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Armazem] = @Armazem WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Armazem = value,
@@ -317,7 +317,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEndereco(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Endereco = @Endereco WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Endereco] = @Endereco WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Endereco = value,
@@ -327,7 +327,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEstorno(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Estorno = @Estorno WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Estorno] = @Estorno WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Estorno = value,
@@ -337,7 +337,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSequenciaTransformacao(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET SequenciaTransformacao = @SequenciaTransformacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [SequenciaTransformacao] = @SequenciaTransformacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SequenciaTransformacao = value,
@@ -347,7 +347,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSequenciaRepeticao(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET SequenciaRepeticao = @SequenciaRepeticao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [SequenciaRepeticao] = @SequenciaRepeticao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SequenciaRepeticao = value,
@@ -357,7 +357,7 @@ namespace Query.Write
         }
         public QueryModel UpdateObsOpParcial(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET ObsOpParcial = @ObsOpParcial WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [ObsOpParcial] = @ObsOpParcial WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ObsOpParcial = value,
@@ -367,7 +367,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOcoIdOpParcial(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET OcoIdOpParcial = @OcoIdOpParcial WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [OcoIdOpParcial] = @OcoIdOpParcial WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OcoIdOpParcial = value,
@@ -377,7 +377,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_ID_INTEGRACAO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_ID_INTEGRACAO = @MOV_ID_INTEGRACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_ID_INTEGRACAO] = @MOV_ID_INTEGRACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_ID_INTEGRACAO = value,
@@ -387,7 +387,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_ID_INTEGRACAO_ERP(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_ID_INTEGRACAO_ERP = @MOV_ID_INTEGRACAO_ERP WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_ID_INTEGRACAO_ERP] = @MOV_ID_INTEGRACAO_ERP WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_ID_INTEGRACAO_ERP = value,
@@ -397,7 +397,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_ID(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET CAR_ID = @CAR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [CAR_ID] = @CAR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID = value,
@@ -407,7 +407,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_ID_DESTINO(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_ID_DESTINO = @MOV_ID_DESTINO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_ID_DESTINO] = @MOV_ID_DESTINO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_ID_DESTINO = value,
@@ -417,7 +417,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_DESTINO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET PRO_ID_DESTINO = @PRO_ID_DESTINO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [PRO_ID_DESTINO] = @PRO_ID_DESTINO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRO_ID_DESTINO = value,
@@ -427,7 +427,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_LOTE_DESTINO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_LOTE_DESTINO = @MOV_LOTE_DESTINO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_LOTE_DESTINO] = @MOV_LOTE_DESTINO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_LOTE_DESTINO = value,
@@ -437,7 +437,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_SUB_LOTE_DESTINO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_SUB_LOTE_DESTINO = @MOV_SUB_LOTE_DESTINO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_SUB_LOTE_DESTINO] = @MOV_SUB_LOTE_DESTINO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_SUB_LOTE_DESTINO = value,
@@ -447,7 +447,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_ID_ORIGEM(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_ID_ORIGEM = @MOV_ID_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_ID_ORIGEM] = @MOV_ID_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_ID_ORIGEM = value,
@@ -457,7 +457,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_ORIGEM(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET PRO_ID_ORIGEM = @PRO_ID_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [PRO_ID_ORIGEM] = @PRO_ID_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRO_ID_ORIGEM = value,
@@ -467,7 +467,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_LOTE_ORIGEM(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_LOTE_ORIGEM = @MOV_LOTE_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_LOTE_ORIGEM] = @MOV_LOTE_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_LOTE_ORIGEM = value,
@@ -477,7 +477,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_SUB_LOTE_ORIGEM(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_SUB_LOTE_ORIGEM = @MOV_SUB_LOTE_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_SUB_LOTE_ORIGEM] = @MOV_SUB_LOTE_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_SUB_LOTE_ORIGEM = value,
@@ -487,7 +487,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_TYPE(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_TYPE = @MOV_TYPE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_TYPE] = @MOV_TYPE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_TYPE = value,
@@ -497,7 +497,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_DOC(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_DOC = @MOV_DOC WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_DOC] = @MOV_DOC WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_DOC = value,
@@ -507,7 +507,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_APROVEITAMENTO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_APROVEITAMENTO = @MOV_APROVEITAMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_APROVEITAMENTO] = @MOV_APROVEITAMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_APROVEITAMENTO = value,
@@ -517,7 +517,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_RETIDO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_RETIDO = @MOV_RETIDO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_RETIDO] = @MOV_RETIDO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_RETIDO = value,
@@ -527,7 +527,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_VINCOS_ONDULADEIRA(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_VINCOS_ONDULADEIRA = @MOV_VINCOS_ONDULADEIRA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_VINCOS_ONDULADEIRA] = @MOV_VINCOS_ONDULADEIRA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_VINCOS_ONDULADEIRA = value,
@@ -537,7 +537,7 @@ namespace Query.Write
         }
         public QueryModel UpdateBOL_ID(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET BOL_ID = @BOL_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [BOL_ID] = @BOL_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 BOL_ID = value,
@@ -547,7 +547,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID_ORIGEM(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET ORD_ID_ORIGEM = @ORD_ID_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [ORD_ID_ORIGEM] = @ORD_ID_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORD_ID_ORIGEM = value,
@@ -557,7 +557,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOR_SEQUENCIA(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET COR_SEQUENCIA = @COR_SEQUENCIA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [COR_SEQUENCIA] = @COR_SEQUENCIA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COR_SEQUENCIA = value,
@@ -567,7 +567,7 @@ namespace Query.Write
         }
         public QueryModel UpdateVER_ID(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET VER_ID = @VER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [VER_ID] = @VER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VER_ID = value,
@@ -577,7 +577,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_TIPO_CUSTO(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_TIPO_CUSTO = @MOV_TIPO_CUSTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_TIPO_CUSTO] = @MOV_TIPO_CUSTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_TIPO_CUSTO = value,
@@ -587,7 +587,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMOV_GRUPO_CONTABIL(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET MOV_GRUPO_CONTABIL = @MOV_GRUPO_CONTABIL WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [MOV_GRUPO_CONTABIL] = @MOV_GRUPO_CONTABIL WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MOV_GRUPO_CONTABIL = value,
@@ -597,7 +597,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFOR_ID(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET FOR_ID = @FOR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [FOR_ID] = @FOR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 FOR_ID = value,
@@ -607,7 +607,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET CLI_ID = @CLI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [CLI_ID] = @CLI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -617,7 +617,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -627,7 +627,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -637,7 +637,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -647,7 +647,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoEstoque SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoEstoque] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -657,7 +657,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMovimentoEstoqueQuery(IMovimentoEstoqueEntity MovimentoEstoque)
         {
-            this.Query = $@" DELETE FROM MovimentoEstoque WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [MovimentoEstoque] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = MovimentoEstoque.Id,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRoteiroPedidoQuery(IRoteiroPedidoEntity RoteiroPedido)
         {
-            this.Query = $@" INSERT INTO RoteiroPedido (PedidoId, MaquinaId, ProdutoId, SequenciaTransformacao, StatusCadastro, TipoPlanejamento, CalendarioId, HierarquiaSequenciaTransformacao, ProximaSequenciaTransformacao, Performance, TempoSetup, TempoSetupAjuste, PecasPorPulso, PrioridadeInformada, Status, Operacoes, ExcecaoOperacoes, LinhaDireta, AvaliaCusto, PercentualInicioPassoAnterior, MaquinaLarguraUtil, GrupoTipo, GrupoPerformanceMetroLinear) VALUES(@PedidoId, @MaquinaId, @ProdutoId, @SequenciaTransformacao, @StatusCadastro, @TipoPlanejamento, @CalendarioId, @HierarquiaSequenciaTransformacao, @ProximaSequenciaTransformacao, @Performance, @TempoSetup, @TempoSetupAjuste, @PecasPorPulso, @PrioridadeInformada, @Status, @Operacoes, @ExcecaoOperacoes, @LinhaDireta, @AvaliaCusto, @PercentualInicioPassoAnterior, @MaquinaLarguraUtil, @GrupoTipo, @GrupoPerformanceMetroLinear) ";
+            this.Query = $@" INSERT INTO [RoteiroPedido] ([PedidoId], [MaquinaId], [ProdutoId], [SequenciaTransformacao], [StatusCadastro], [TipoPlanejamento], [CalendarioId], [HierarquiaSequenciaTransformacao], [ProximaSequenciaTransformacao], [Performance], [TempoSetup], [TempoSetupAjuste], [PecasPorPulso], [PrioridadeInformada], [Status], [Operacoes], [ExcecaoOperacoes], [LinhaDireta], [AvaliaCusto], [PercentualInicioPassoAnterior], [MaquinaLarguraUtil], [GrupoTipo], [GrupoPerformanceMetroLinear]) VALUES(@PedidoId, @MaquinaId, @ProdutoId, @SequenciaTransformacao, @StatusCadastro, @TipoPlanejamento, @CalendarioId, @HierarquiaSequenciaTransformacao, @ProximaSequenciaTransformacao, @Performance, @TempoSetup, @TempoSetupAjuste, @PecasPorPulso, @PrioridadeInformada, @Status, @Operacoes, @ExcecaoOperacoes, @LinhaDireta, @AvaliaCusto, @PercentualInicioPassoAnterior, @MaquinaLarguraUtil, @GrupoTipo, @GrupoPerformanceMetroLinear) ";
             this.Parameters = new
             {
                 PedidoId = RoteiroPedido.PedidoId,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRoteiroPedidoQuery(IRoteiroPedidoEntity RoteiroPedido)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET StatusCadastro = @StatusCadastro, TipoPlanejamento = @TipoPlanejamento, CalendarioId = @CalendarioId, HierarquiaSequenciaTransformacao = @HierarquiaSequenciaTransformacao, ProximaSequenciaTransformacao = @ProximaSequenciaTransformacao, Performance = @Performance, TempoSetup = @TempoSetup, TempoSetupAjuste = @TempoSetupAjuste, PecasPorPulso = @PecasPorPulso, PrioridadeInformada = @PrioridadeInformada, Status = @Status, Operacoes = @Operacoes, ExcecaoOperacoes = @ExcecaoOperacoes, LinhaDireta = @LinhaDireta, AvaliaCusto = @AvaliaCusto, PercentualInicioPassoAnterior = @PercentualInicioPassoAnterior, MaquinaLarguraUtil = @MaquinaLarguraUtil, GrupoTipo = @GrupoTipo, GrupoPerformanceMetroLinear = @GrupoPerformanceMetroLinear WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [StatusCadastro] = @StatusCadastro, [TipoPlanejamento] = @TipoPlanejamento, [CalendarioId] = @CalendarioId, [HierarquiaSequenciaTransformacao] = @HierarquiaSequenciaTransformacao, [ProximaSequenciaTransformacao] = @ProximaSequenciaTransformacao, [Performance] = @Performance, [TempoSetup] = @TempoSetup, [TempoSetupAjuste] = @TempoSetupAjuste, [PecasPorPulso] = @PecasPorPulso, [PrioridadeInformada] = @PrioridadeInformada, [Status] = @Status, [Operacoes] = @Operacoes, [ExcecaoOperacoes] = @ExcecaoOperacoes, [LinhaDireta] = @LinhaDireta, [AvaliaCusto] = @AvaliaCusto, [PercentualInicioPassoAnterior] = @PercentualInicioPassoAnterior, [MaquinaLarguraUtil] = @MaquinaLarguraUtil, [GrupoTipo] = @GrupoTipo, [GrupoPerformanceMetroLinear] = @GrupoPerformanceMetroLinear WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 StatusCadastro = RoteiroPedido.StatusCadastro,
@@ -92,7 +92,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatusCadastro(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET StatusCadastro = @StatusCadastro WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [StatusCadastro] = @StatusCadastro WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 StatusCadastro = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoPlanejamento(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET TipoPlanejamento = @TipoPlanejamento WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [TipoPlanejamento] = @TipoPlanejamento WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 TipoPlanejamento = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCalendarioId(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, int value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET CalendarioId = @CalendarioId WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [CalendarioId] = @CalendarioId WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 CalendarioId = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHierarquiaSequenciaTransformacao(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET HierarquiaSequenciaTransformacao = @HierarquiaSequenciaTransformacao WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [HierarquiaSequenciaTransformacao] = @HierarquiaSequenciaTransformacao WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 HierarquiaSequenciaTransformacao = value,
@@ -144,7 +144,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProximaSequenciaTransformacao(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, int value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET ProximaSequenciaTransformacao = @ProximaSequenciaTransformacao WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [ProximaSequenciaTransformacao] = @ProximaSequenciaTransformacao WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 ProximaSequenciaTransformacao = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePerformance(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET Performance = @Performance WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [Performance] = @Performance WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 Performance = value,
@@ -170,7 +170,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTempoSetup(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET TempoSetup = @TempoSetup WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [TempoSetup] = @TempoSetup WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 TempoSetup = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTempoSetupAjuste(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET TempoSetupAjuste = @TempoSetupAjuste WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [TempoSetupAjuste] = @TempoSetupAjuste WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 TempoSetupAjuste = value,
@@ -196,7 +196,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePecasPorPulso(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET PecasPorPulso = @PecasPorPulso WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [PecasPorPulso] = @PecasPorPulso WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 PecasPorPulso = value,
@@ -209,7 +209,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePrioridadeInformada(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET PrioridadeInformada = @PrioridadeInformada WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [PrioridadeInformada] = @PrioridadeInformada WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 PrioridadeInformada = value,
@@ -222,7 +222,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET Status = @Status WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [Status] = @Status WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 Status = value,
@@ -235,7 +235,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOperacoes(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET Operacoes = @Operacoes WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [Operacoes] = @Operacoes WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 Operacoes = value,
@@ -248,7 +248,7 @@ namespace Query.Write
         }
         public QueryModel UpdateExcecaoOperacoes(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET ExcecaoOperacoes = @ExcecaoOperacoes WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [ExcecaoOperacoes] = @ExcecaoOperacoes WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 ExcecaoOperacoes = value,
@@ -261,7 +261,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLinhaDireta(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, string value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET LinhaDireta = @LinhaDireta WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [LinhaDireta] = @LinhaDireta WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 LinhaDireta = value,
@@ -274,7 +274,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAvaliaCusto(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, int value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET AvaliaCusto = @AvaliaCusto WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [AvaliaCusto] = @AvaliaCusto WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 AvaliaCusto = value,
@@ -287,7 +287,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePercentualInicioPassoAnterior(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET PercentualInicioPassoAnterior = @PercentualInicioPassoAnterior WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [PercentualInicioPassoAnterior] = @PercentualInicioPassoAnterior WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 PercentualInicioPassoAnterior = value,
@@ -300,7 +300,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMaquinaLarguraUtil(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET MaquinaLarguraUtil = @MaquinaLarguraUtil WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [MaquinaLarguraUtil] = @MaquinaLarguraUtil WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 MaquinaLarguraUtil = value,
@@ -313,7 +313,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoTipo(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET GrupoTipo = @GrupoTipo WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [GrupoTipo] = @GrupoTipo WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 GrupoTipo = value,
@@ -326,7 +326,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoPerformanceMetroLinear(string pedidoid, string maquinaid, string produtoid, int sequenciatransformacao, Decimal value)
         {
-            this.Query = $@" UPDATE RoteiroPedido SET GrupoPerformanceMetroLinear = @GrupoPerformanceMetroLinear WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" UPDATE [RoteiroPedido] SET [GrupoPerformanceMetroLinear] = @GrupoPerformanceMetroLinear WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 GrupoPerformanceMetroLinear = value,
@@ -339,7 +339,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRoteiroPedidoQuery(IRoteiroPedidoEntity RoteiroPedido)
         {
-            this.Query = $@" DELETE FROM RoteiroPedido WHERE PedidoId = @PedidoId AND MaquinaId = @MaquinaId AND ProdutoId = @ProdutoId AND SequenciaTransformacao = @SequenciaTransformacao ";
+            this.Query = $@" DELETE FROM [RoteiroPedido] WHERE [PedidoId] = @PedidoId AND [MaquinaId] = @MaquinaId AND [ProdutoId] = @ProdutoId AND [SequenciaTransformacao] = @SequenciaTransformacao ";
             this.Parameters = new
             {
                 PedidoId = RoteiroPedido.PedidoId,

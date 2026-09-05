@@ -36,12 +36,12 @@
  ROT_DATA_HORA = (rot_data_hora < (new DateTime(1800, 1, 1))) ? DateTime.Now : rot_data_hora; 
  ROT_LAT = rot_lat; 
  ROT_LONG = rot_long; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ROT_ID == null)
-   this._erroMensagem.Add("ROT ID deve ser informado.");
    if(string.IsNullOrEmpty(CAR_ID))
    this._erroMensagem.Add("CAR ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

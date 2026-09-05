@@ -30,12 +30,12 @@
  internal ItensEstruturaImpressaoEntity(int? id, int ies_custom_font_size ){
  Id = id; 
  IES_CUSTOM_FONT_SIZE = ies_custom_font_size; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IES_CUSTOM_FONT_SIZE == null)
-   this._erroMensagem.Add("IES CUSTOM FONT SIZE deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

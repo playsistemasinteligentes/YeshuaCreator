@@ -36,12 +36,12 @@
  EST_DESCRICAO = est_descricao; 
  EST_ID_LIGACAO_PONTO_A = est_id_ligacao_ponto_a; 
  EST_ID_LIGACAO_PONTO_B = est_id_ligacao_ponto_b; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (EST_ID == null)
-   this._erroMensagem.Add("EST ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

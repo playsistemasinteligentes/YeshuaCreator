@@ -38,6 +38,8 @@
  LOT_LARGURA = lot_largura; 
  LOT_COMPRIMENTO = lot_comprimento; 
  LOT_DIAMETRO = lot_diametro; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

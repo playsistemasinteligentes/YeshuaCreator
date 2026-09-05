@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTemposLogisticosQuery(ITemposLogisticosEntity TemposLogisticos)
         {
-            this.Query = $@" INSERT INTO TemposLogisticos (TMP_TIPO_TEMPO, TMP_TIPO_CARGA, TMP_TEMPO_MEDIO_UNITARIO, CLI_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@TMP_TIPO_TEMPO, @TMP_TIPO_CARGA, @TMP_TEMPO_MEDIO_UNITARIO, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TemposLogisticos] ([TMP_TIPO_TEMPO], [TMP_TIPO_CARGA], [TMP_TEMPO_MEDIO_UNITARIO], [CLI_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@TMP_TIPO_TEMPO, @TMP_TIPO_CARGA, @TMP_TEMPO_MEDIO_UNITARIO, @CLI_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TMP_TIPO_TEMPO = TemposLogisticos.TMP_TIPO_TEMPO,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTemposLogisticosQuery(ITemposLogisticosEntity TemposLogisticos)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET TMP_TIPO_TEMPO = @TMP_TIPO_TEMPO, TMP_TIPO_CARGA = @TMP_TIPO_CARGA, TMP_TEMPO_MEDIO_UNITARIO = @TMP_TEMPO_MEDIO_UNITARIO, CLI_ID = @CLI_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [TMP_TIPO_TEMPO] = @TMP_TIPO_TEMPO, [TMP_TIPO_CARGA] = @TMP_TIPO_CARGA, [TMP_TEMPO_MEDIO_UNITARIO] = @TMP_TEMPO_MEDIO_UNITARIO, [CLI_ID] = @CLI_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TMP_TIPO_TEMPO = TemposLogisticos.TMP_TIPO_TEMPO,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTMP_TIPO_TEMPO(int id, string value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET TMP_TIPO_TEMPO = @TMP_TIPO_TEMPO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [TMP_TIPO_TEMPO] = @TMP_TIPO_TEMPO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TMP_TIPO_TEMPO = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTMP_TIPO_CARGA(int id, string value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET TMP_TIPO_CARGA = @TMP_TIPO_CARGA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [TMP_TIPO_CARGA] = @TMP_TIPO_CARGA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TMP_TIPO_CARGA = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTMP_TEMPO_MEDIO_UNITARIO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET TMP_TEMPO_MEDIO_UNITARIO = @TMP_TEMPO_MEDIO_UNITARIO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [TMP_TEMPO_MEDIO_UNITARIO] = @TMP_TEMPO_MEDIO_UNITARIO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TMP_TEMPO_MEDIO_UNITARIO = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(int id, string value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET CLI_ID = @CLI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [CLI_ID] = @CLI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TemposLogisticos SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TemposLogisticos] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTemposLogisticosQuery(ITemposLogisticosEntity TemposLogisticos)
         {
-            this.Query = $@" DELETE FROM TemposLogisticos WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TemposLogisticos] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TemposLogisticos.Id,

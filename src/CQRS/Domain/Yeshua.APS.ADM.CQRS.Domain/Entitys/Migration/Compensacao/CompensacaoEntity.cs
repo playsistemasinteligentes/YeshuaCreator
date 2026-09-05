@@ -74,12 +74,12 @@
  COM_VINCO8_CONVERSAO = com_vinco8_conversao; 
  COM_VINCO9_CONVERSAO = com_vinco9_conversao; 
  COM_VINCO10_CONVERSAO = com_vinco10_conversao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (COM_ID == null)
-   this._erroMensagem.Add("COM ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

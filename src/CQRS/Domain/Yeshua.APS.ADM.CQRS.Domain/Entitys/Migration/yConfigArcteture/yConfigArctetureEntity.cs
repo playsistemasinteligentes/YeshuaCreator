@@ -32,6 +32,8 @@
  Id = id; 
  AuditTrackerActived = audittrackeractived; 
  AuditCRUDActived = auditcrudactived; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

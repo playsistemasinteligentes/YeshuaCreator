@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirItemInspecaoQuery(IItemInspecaoEntity ItemInspecao)
         {
-            this.Query = $@" INSERT INTO ItemInspecao (ITI_ID, ITI_DESC, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ITI_ID, @ITI_DESC, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ItemInspecao] ([ITI_ID], [ITI_DESC], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ITI_ID, @ITI_DESC, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ITI_ID = ItemInspecao.ITI_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateItemInspecaoQuery(IItemInspecaoEntity ItemInspecao)
         {
-            this.Query = $@" UPDATE ItemInspecao SET ITI_ID = @ITI_ID, ITI_DESC = @ITI_DESC, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [ITI_ID] = @ITI_ID, [ITI_DESC] = @ITI_DESC, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITI_ID = ItemInspecao.ITI_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITI_ID(int id, int value)
         {
-            this.Query = $@" UPDATE ItemInspecao SET ITI_ID = @ITI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [ITI_ID] = @ITI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITI_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITI_DESC(int id, string value)
         {
-            this.Query = $@" UPDATE ItemInspecao SET ITI_DESC = @ITI_DESC WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [ITI_DESC] = @ITI_DESC WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITI_DESC = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ItemInspecao SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ItemInspecao SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ItemInspecao SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ItemInspecao SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ItemInspecao] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteItemInspecaoQuery(IItemInspecaoEntity ItemInspecao)
         {
-            this.Query = $@" DELETE FROM ItemInspecao WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ItemInspecao] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ItemInspecao.Id,

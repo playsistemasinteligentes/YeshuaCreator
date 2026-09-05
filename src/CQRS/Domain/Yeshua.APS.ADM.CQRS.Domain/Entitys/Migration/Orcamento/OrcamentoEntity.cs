@@ -42,14 +42,12 @@
  ORC_EMISSAO = (orc_emissao < (new DateTime(1800, 1, 1))) ? DateTime.Now : orc_emissao; 
  CLI_ID = cli_id; 
  VER_ID = ver_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ORC_ID == null)
-   this._erroMensagem.Add("ORC ID deve ser informado.");
-   if (VER_ID == null)
-   this._erroMensagem.Add("VER ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

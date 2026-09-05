@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_DepartamentosQuery(IT_DepartamentosEntity T_Departamentos)
         {
-            this.Query = $@" INSERT INTO T_Departamentos (DEP_NOME, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.DEP_ID VALUES(@DEP_NOME, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Departamentos] ([DEP_NOME], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[DEP_ID] VALUES(@DEP_NOME, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 DEP_NOME = T_Departamentos.DEP_NOME,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_DepartamentosQuery(IT_DepartamentosEntity T_Departamentos)
         {
-            this.Query = $@" UPDATE T_Departamentos SET DEP_NOME = @DEP_NOME, Changed = @Changed, UserId = @UserId WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" UPDATE [T_Departamentos] SET [DEP_NOME] = @DEP_NOME, [Changed] = @Changed, [UserId] = @UserId WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 DEP_NOME = T_Departamentos.DEP_NOME,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDEP_NOME(int dep_id, string value)
         {
-            this.Query = $@" UPDATE T_Departamentos SET DEP_NOME = @DEP_NOME WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" UPDATE [T_Departamentos] SET [DEP_NOME] = @DEP_NOME WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 DEP_NOME = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int dep_id, int value)
         {
-            this.Query = $@" UPDATE T_Departamentos SET TenantID = @TenantID WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" UPDATE [T_Departamentos] SET [TenantID] = @TenantID WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int dep_id, bool value)
         {
-            this.Query = $@" UPDATE T_Departamentos SET Deleted = @Deleted WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" UPDATE [T_Departamentos] SET [Deleted] = @Deleted WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int dep_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Departamentos SET Changed = @Changed WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" UPDATE [T_Departamentos] SET [Changed] = @Changed WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int dep_id, int value)
         {
-            this.Query = $@" UPDATE T_Departamentos SET UserId = @UserId WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" UPDATE [T_Departamentos] SET [UserId] = @UserId WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_DepartamentosQuery(IT_DepartamentosEntity T_Departamentos)
         {
-            this.Query = $@" DELETE FROM T_Departamentos WHERE DEP_ID = @DEP_ID ";
+            this.Query = $@" DELETE FROM [T_Departamentos] WHERE [DEP_ID] = @DEP_ID ";
             this.Parameters = new
             {
                 DEP_ID = T_Departamentos.DEP_ID,

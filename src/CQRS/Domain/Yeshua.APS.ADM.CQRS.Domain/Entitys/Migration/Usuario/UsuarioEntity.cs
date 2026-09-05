@@ -40,20 +40,18 @@
  TURM_ID = turm_id; 
  USE_ATIVO = use_ativo; 
  USE_CODERP = use_coderp; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
    if(string.IsNullOrEmpty(USE_NOME))
    this._erroMensagem.Add("USE NOME deve ser informado.");
    if(string.IsNullOrEmpty(USE_EMAIL))
    this._erroMensagem.Add("USE EMAIL deve ser informado.");
    if(string.IsNullOrEmpty(USE_SENHA))
    this._erroMensagem.Add("USE SENHA deve ser informado.");
-   if (USE_ATIVO == null)
-   this._erroMensagem.Add("USE ATIVO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

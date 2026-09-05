@@ -32,16 +32,12 @@
  USERGRU_ID = usergru_id; 
  UNI_ID = uni_id; 
  USE_ID = use_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (USERGRU_ID == null)
-   this._erroMensagem.Add("USERGRU ID deve ser informado.");
-   if (UNI_ID == null)
-   this._erroMensagem.Add("UNI ID deve ser informado.");
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

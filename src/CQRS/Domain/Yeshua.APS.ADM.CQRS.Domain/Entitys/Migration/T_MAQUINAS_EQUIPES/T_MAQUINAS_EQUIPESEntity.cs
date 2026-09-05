@@ -36,6 +36,8 @@
  EQU_ID = equ_id; 
  CAL_ID = cal_id; 
  CLI_ID = cli_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

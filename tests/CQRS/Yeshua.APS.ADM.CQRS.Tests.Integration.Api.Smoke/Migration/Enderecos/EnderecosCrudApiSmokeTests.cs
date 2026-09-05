@@ -44,7 +44,7 @@ public partial class EnderecosCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "end_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class EnderecosCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["END_ID"] = ApiTestData.Text("Enderecos END_ID", 30),
+            ["END_ID"] = ApiTestData.KeyText(12),
             ["END_GRUPO"] = ApiTestData.Text("Enderecos END_GRUPO", 30),
         };
     }

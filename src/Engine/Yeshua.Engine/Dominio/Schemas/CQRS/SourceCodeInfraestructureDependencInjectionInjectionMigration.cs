@@ -110,7 +110,10 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                        sp.GetRequiredService<Shered.Logger.Logger>());");
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");
             if (hasSagas)
+            {
+                sb.AppendLine("                    builder.Services.AddTransient<SagaResolverRegistry>();");
                 sb.AppendLine("                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();");
+            }
             if (hasSagas)
             {
                 // pendencia: OutboxService e seus handlers usam repositorios gerados do aplicativo.

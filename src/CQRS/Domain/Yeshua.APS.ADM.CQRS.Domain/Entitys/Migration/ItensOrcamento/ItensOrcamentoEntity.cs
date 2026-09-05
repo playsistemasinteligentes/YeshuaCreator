@@ -64,12 +64,12 @@
  GRP_ID_COMPOSICAO = grp_id_composicao; 
  ITO_LARGURA = ito_largura; 
  ITO_COMPRIMENTO = ito_comprimento; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ITO_ID == null)
-   this._erroMensagem.Add("ITO ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

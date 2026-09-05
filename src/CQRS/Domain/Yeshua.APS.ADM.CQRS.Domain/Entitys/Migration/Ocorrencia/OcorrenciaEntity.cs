@@ -42,6 +42,8 @@
  SPR = spr; 
  OCO_SUB_TIPO = oco_sub_tipo; 
  SUB_ID = sub_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -50,8 +52,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("OCO ID deve ser informado.");
    if(string.IsNullOrEmpty(OCO_DESCRICAO))
    this._erroMensagem.Add("OCO DESCRICAO deve ser informado.");
-   if (TIP_ID == null)
-   this._erroMensagem.Add("TIP ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina)
         {
-            this.Query = $@" INSERT INTO GrupoMaquina (Id, Descricao, Status, TenantID, Deleted, Changed, UserId, GMA_TIPO_PLANEJAMENTO) VALUES(@Id, @Descricao, @Status, @TenantID, @Deleted, @Changed, @UserId, @GMA_TIPO_PLANEJAMENTO) ";
+            this.Query = $@" INSERT INTO [GrupoMaquina] ([Id], [Descricao], [Status], [TenantID], [Deleted], [Changed], [UserId], [GMA_TIPO_PLANEJAMENTO]) VALUES(@Id, @Descricao, @Status, @TenantID, @Deleted, @Changed, @UserId, @GMA_TIPO_PLANEJAMENTO) ";
             this.Parameters = new
             {
                 Id = GrupoMaquina.Id,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET Descricao = @Descricao, Status = @Status, Changed = @Changed, UserId = @UserId, GMA_TIPO_PLANEJAMENTO = @GMA_TIPO_PLANEJAMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [Descricao] = @Descricao, [Status] = @Status, [Changed] = @Changed, [UserId] = @UserId, [GMA_TIPO_PLANEJAMENTO] = @GMA_TIPO_PLANEJAMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = GrupoMaquina.Descricao,
@@ -60,7 +60,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescricao(string id, string value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET Descricao = @Descricao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [Descricao] = @Descricao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = value,
@@ -70,7 +70,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(string id, string value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET Status = @Status WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [Status] = @Status WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Status = value,
@@ -80,7 +80,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string id, int value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -90,7 +90,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string id, bool value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -100,7 +100,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string id, DateTime value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -110,7 +110,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string id, int value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -120,7 +120,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGMA_TIPO_PLANEJAMENTO(string id, string value)
         {
-            this.Query = $@" UPDATE GrupoMaquina SET GMA_TIPO_PLANEJAMENTO = @GMA_TIPO_PLANEJAMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [GrupoMaquina] SET [GMA_TIPO_PLANEJAMENTO] = @GMA_TIPO_PLANEJAMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GMA_TIPO_PLANEJAMENTO = value,
@@ -130,7 +130,7 @@ namespace Query.Write
         }
         public QueryModel DeleteGrupoMaquinaQuery(IGrupoMaquinaEntity GrupoMaquina)
         {
-            this.Query = $@" DELETE FROM GrupoMaquina WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [GrupoMaquina] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = GrupoMaquina.Id,

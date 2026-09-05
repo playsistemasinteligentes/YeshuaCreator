@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCanhotosQuery(ICanhotosEntity Canhotos)
         {
-            this.Query = $@" INSERT INTO Canhotos (CAR_ID, ORD_ID, NOT_ID, CAN_DATA_ENTREGA, CAN_IMG, CAN_LAT_ENTREGA, CAN_LONG_ENTREGA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CAR_ID, @ORD_ID, @NOT_ID, @CAN_DATA_ENTREGA, @CAN_IMG, @CAN_LAT_ENTREGA, @CAN_LONG_ENTREGA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Canhotos] ([CAR_ID], [ORD_ID], [NOT_ID], [CAN_DATA_ENTREGA], [CAN_IMG], [CAN_LAT_ENTREGA], [CAN_LONG_ENTREGA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CAR_ID, @ORD_ID, @NOT_ID, @CAN_DATA_ENTREGA, @CAN_IMG, @CAN_LAT_ENTREGA, @CAN_LONG_ENTREGA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAR_ID = Canhotos.CAR_ID,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCanhotosQuery(ICanhotosEntity Canhotos)
         {
-            this.Query = $@" UPDATE Canhotos SET CAR_ID = @CAR_ID, ORD_ID = @ORD_ID, NOT_ID = @NOT_ID, CAN_DATA_ENTREGA = @CAN_DATA_ENTREGA, CAN_IMG = @CAN_IMG, CAN_LAT_ENTREGA = @CAN_LAT_ENTREGA, CAN_LONG_ENTREGA = @CAN_LONG_ENTREGA, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [CAR_ID] = @CAR_ID, [ORD_ID] = @ORD_ID, [NOT_ID] = @NOT_ID, [CAN_DATA_ENTREGA] = @CAN_DATA_ENTREGA, [CAN_IMG] = @CAN_IMG, [CAN_LAT_ENTREGA] = @CAN_LAT_ENTREGA, [CAN_LONG_ENTREGA] = @CAN_LONG_ENTREGA, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID = Canhotos.CAR_ID,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Canhotos SET CAR_ID = @CAR_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [CAR_ID] = @CAR_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAR_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Canhotos SET ORD_ID = @ORD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [ORD_ID] = @ORD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ORD_ID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNOT_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Canhotos SET NOT_ID = @NOT_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [NOT_ID] = @NOT_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 NOT_ID = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAN_DATA_ENTREGA(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Canhotos SET CAN_DATA_ENTREGA = @CAN_DATA_ENTREGA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [CAN_DATA_ENTREGA] = @CAN_DATA_ENTREGA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAN_DATA_ENTREGA = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAN_IMG(int id, string value)
         {
-            this.Query = $@" UPDATE Canhotos SET CAN_IMG = @CAN_IMG WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [CAN_IMG] = @CAN_IMG WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAN_IMG = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAN_LAT_ENTREGA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Canhotos SET CAN_LAT_ENTREGA = @CAN_LAT_ENTREGA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [CAN_LAT_ENTREGA] = @CAN_LAT_ENTREGA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAN_LAT_ENTREGA = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAN_LONG_ENTREGA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Canhotos SET CAN_LONG_ENTREGA = @CAN_LONG_ENTREGA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [CAN_LONG_ENTREGA] = @CAN_LONG_ENTREGA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CAN_LONG_ENTREGA = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Canhotos SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Canhotos SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Canhotos SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Canhotos SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Canhotos] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCanhotosQuery(ICanhotosEntity Canhotos)
         {
-            this.Query = $@" DELETE FROM Canhotos WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Canhotos] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Canhotos.Id,

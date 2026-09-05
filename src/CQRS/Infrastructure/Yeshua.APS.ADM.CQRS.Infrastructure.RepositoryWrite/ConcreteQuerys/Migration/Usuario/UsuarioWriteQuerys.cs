@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirUsuarioQuery(IUsuarioEntity Usuario)
         {
-            this.Query = $@" INSERT INTO Usuario (USE_NOME, USE_EMAIL, USE_SENHA, TURM_ID, USE_ATIVO, USE_CODERP, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.USE_ID VALUES(@USE_NOME, @USE_EMAIL, @USE_SENHA, @TURM_ID, @USE_ATIVO, @USE_CODERP, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Usuario] ([USE_NOME], [USE_EMAIL], [USE_SENHA], [TURM_ID], [USE_ATIVO], [USE_CODERP], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[USE_ID] VALUES(@USE_NOME, @USE_EMAIL, @USE_SENHA, @TURM_ID, @USE_ATIVO, @USE_CODERP, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 USE_NOME = Usuario.USE_NOME,
@@ -48,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUsuarioQuery(IUsuarioEntity Usuario)
         {
-            this.Query = $@" UPDATE Usuario SET USE_NOME = @USE_NOME, USE_EMAIL = @USE_EMAIL, USE_SENHA = @USE_SENHA, TURM_ID = @TURM_ID, USE_ATIVO = @USE_ATIVO, USE_CODERP = @USE_CODERP, Changed = @Changed, UserId = @UserId WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [USE_NOME] = @USE_NOME, [USE_EMAIL] = @USE_EMAIL, [USE_SENHA] = @USE_SENHA, [TURM_ID] = @TURM_ID, [USE_ATIVO] = @USE_ATIVO, [USE_CODERP] = @USE_CODERP, [Changed] = @Changed, [UserId] = @UserId WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_NOME = Usuario.USE_NOME,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_NOME(int use_id, string value)
         {
-            this.Query = $@" UPDATE Usuario SET USE_NOME = @USE_NOME WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [USE_NOME] = @USE_NOME WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_NOME = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_EMAIL(int use_id, string value)
         {
-            this.Query = $@" UPDATE Usuario SET USE_EMAIL = @USE_EMAIL WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [USE_EMAIL] = @USE_EMAIL WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_EMAIL = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_SENHA(int use_id, string value)
         {
-            this.Query = $@" UPDATE Usuario SET USE_SENHA = @USE_SENHA WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [USE_SENHA] = @USE_SENHA WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_SENHA = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTURM_ID(int use_id, string value)
         {
-            this.Query = $@" UPDATE Usuario SET TURM_ID = @TURM_ID WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [TURM_ID] = @TURM_ID WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 TURM_ID = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ATIVO(int use_id, int value)
         {
-            this.Query = $@" UPDATE Usuario SET USE_ATIVO = @USE_ATIVO WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [USE_ATIVO] = @USE_ATIVO WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_ATIVO = value,
@@ -115,7 +115,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_CODERP(int use_id, string value)
         {
-            this.Query = $@" UPDATE Usuario SET USE_CODERP = @USE_CODERP WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [USE_CODERP] = @USE_CODERP WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_CODERP = value,
@@ -125,7 +125,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int use_id, int value)
         {
-            this.Query = $@" UPDATE Usuario SET TenantID = @TenantID WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [TenantID] = @TenantID WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -135,7 +135,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int use_id, bool value)
         {
-            this.Query = $@" UPDATE Usuario SET Deleted = @Deleted WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [Deleted] = @Deleted WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -145,7 +145,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int use_id, DateTime value)
         {
-            this.Query = $@" UPDATE Usuario SET Changed = @Changed WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [Changed] = @Changed WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -155,7 +155,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int use_id, int value)
         {
-            this.Query = $@" UPDATE Usuario SET UserId = @UserId WHERE USE_ID = @USE_ID ";
+            this.Query = $@" UPDATE [Usuario] SET [UserId] = @UserId WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -165,7 +165,7 @@ namespace Query.Write
         }
         public QueryModel DeleteUsuarioQuery(IUsuarioEntity Usuario)
         {
-            this.Query = $@" DELETE FROM Usuario WHERE USE_ID = @USE_ID ";
+            this.Query = $@" DELETE FROM [Usuario] WHERE [USE_ID] = @USE_ID ";
             this.Parameters = new
             {
                 USE_ID = Usuario.USE_ID,

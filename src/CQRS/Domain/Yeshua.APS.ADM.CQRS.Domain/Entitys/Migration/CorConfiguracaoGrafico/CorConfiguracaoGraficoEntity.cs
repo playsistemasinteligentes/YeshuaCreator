@@ -34,16 +34,14 @@
  COR_PERCENTUAL_INI = cor_percentual_ini; 
  COR_PERCENTUAL_FIM = cor_percentual_fim; 
  COR_DESCRICAO = cor_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(COR_ID))
    this._erroMensagem.Add("COR ID deve ser informado.");
-   if (COR_PERCENTUAL_INI == null)
-   this._erroMensagem.Add("COR PERCENTUAL INI deve ser informado.");
-   if (COR_PERCENTUAL_FIM == null)
-   this._erroMensagem.Add("COR PERCENTUAL FIM deve ser informado.");
    if(string.IsNullOrEmpty(COR_DESCRICAO))
    this._erroMensagem.Add("COR DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

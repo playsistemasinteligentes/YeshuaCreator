@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoAvaliacaoQuery(ITipoAvaliacaoEntity TipoAvaliacao)
         {
-            this.Query = $@" INSERT INTO TipoAvaliacao (TA_DESC, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.TA_ID VALUES(@TA_DESC, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TipoAvaliacao] ([TA_DESC], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TA_ID] VALUES(@TA_DESC, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TA_DESC = TipoAvaliacao.TA_DESC,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoAvaliacaoQuery(ITipoAvaliacaoEntity TipoAvaliacao)
         {
-            this.Query = $@" UPDATE TipoAvaliacao SET TA_DESC = @TA_DESC, Changed = @Changed, UserId = @UserId WHERE TA_ID = @TA_ID ";
+            this.Query = $@" UPDATE [TipoAvaliacao] SET [TA_DESC] = @TA_DESC, [Changed] = @Changed, [UserId] = @UserId WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 TA_DESC = TipoAvaliacao.TA_DESC,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTA_DESC(int ta_id, string value)
         {
-            this.Query = $@" UPDATE TipoAvaliacao SET TA_DESC = @TA_DESC WHERE TA_ID = @TA_ID ";
+            this.Query = $@" UPDATE [TipoAvaliacao] SET [TA_DESC] = @TA_DESC WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 TA_DESC = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int ta_id, int value)
         {
-            this.Query = $@" UPDATE TipoAvaliacao SET TenantID = @TenantID WHERE TA_ID = @TA_ID ";
+            this.Query = $@" UPDATE [TipoAvaliacao] SET [TenantID] = @TenantID WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int ta_id, bool value)
         {
-            this.Query = $@" UPDATE TipoAvaliacao SET Deleted = @Deleted WHERE TA_ID = @TA_ID ";
+            this.Query = $@" UPDATE [TipoAvaliacao] SET [Deleted] = @Deleted WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int ta_id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoAvaliacao SET Changed = @Changed WHERE TA_ID = @TA_ID ";
+            this.Query = $@" UPDATE [TipoAvaliacao] SET [Changed] = @Changed WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int ta_id, int value)
         {
-            this.Query = $@" UPDATE TipoAvaliacao SET UserId = @UserId WHERE TA_ID = @TA_ID ";
+            this.Query = $@" UPDATE [TipoAvaliacao] SET [UserId] = @UserId WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoAvaliacaoQuery(ITipoAvaliacaoEntity TipoAvaliacao)
         {
-            this.Query = $@" DELETE FROM TipoAvaliacao WHERE TA_ID = @TA_ID ";
+            this.Query = $@" DELETE FROM [TipoAvaliacao] WHERE [TA_ID] = @TA_ID ";
             this.Parameters = new
             {
                 TA_ID = TipoAvaliacao.TA_ID,

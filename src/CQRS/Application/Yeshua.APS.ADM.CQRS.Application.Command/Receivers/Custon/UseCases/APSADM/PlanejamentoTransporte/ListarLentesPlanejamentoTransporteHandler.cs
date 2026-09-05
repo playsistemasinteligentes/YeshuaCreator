@@ -16,6 +16,8 @@ using RepositoryInterfaces.Patterns.UnitOfWork;
 using IRepository.Read;
 using IRepository.Write;
 using Command.UseCase;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
 {
@@ -37,7 +39,12 @@ namespace Command.Receivers.UseCase
         }
 protected partial async Task<State<ListarLentesPlanejamentoTransporteOutputCommand>> CustomActionHookAsync(State<ListarLentesPlanejamentoTransporteOutputCommand> state, ListarLentesPlanejamentoTransporteInputCommand comand, CancellationToken cancellationToken)
 {
-    return state;
+    await Task.CompletedTask;
+
+    return Success("OK", new ListarLentesPlanejamentoTransporteOutputCommand
+    {
+        Lentes = PlanejamentoTransporteLensCatalog.List()
+    });
 }
     }
 }

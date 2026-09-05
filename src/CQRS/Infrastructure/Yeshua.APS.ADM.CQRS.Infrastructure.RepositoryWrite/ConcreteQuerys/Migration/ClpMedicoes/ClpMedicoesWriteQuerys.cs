@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirClpMedicoesQuery(IClpMedicoesEntity ClpMedicoes)
         {
-            this.Query = $@" INSERT INTO ClpMedicoes (Id2, MaquinaId, DataInicio, DataFim, Emissao, Quantidade, Grupo, Status, TurnoId, TurmaId, IdLoteClp, OcorrenciaId, Fase, ClpOrigem, CLP_LOTE, COMPACTA, BOL_ID, COR_SEQUENCIA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Id2, @MaquinaId, @DataInicio, @DataFim, @Emissao, @Quantidade, @Grupo, @Status, @TurnoId, @TurmaId, @IdLoteClp, @OcorrenciaId, @Fase, @ClpOrigem, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [ClpMedicoes] ([Id2], [MaquinaId], [DataInicio], [DataFim], [Emissao], [Quantidade], [Grupo], [Status], [TurnoId], [TurmaId], [IdLoteClp], [OcorrenciaId], [Fase], [ClpOrigem], [CLP_LOTE], [COMPACTA], [BOL_ID], [COR_SEQUENCIA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Id2, @MaquinaId, @DataInicio, @DataFim, @Emissao, @Quantidade, @Grupo, @Status, @TurnoId, @TurmaId, @IdLoteClp, @OcorrenciaId, @Fase, @ClpOrigem, @CLP_LOTE, @COMPACTA, @BOL_ID, @COR_SEQUENCIA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id2 = ClpMedicoes.Id2,
@@ -60,7 +60,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClpMedicoesQuery(IClpMedicoesEntity ClpMedicoes)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Id2 = @Id2, MaquinaId = @MaquinaId, DataInicio = @DataInicio, DataFim = @DataFim, Emissao = @Emissao, Quantidade = @Quantidade, Grupo = @Grupo, Status = @Status, TurnoId = @TurnoId, TurmaId = @TurmaId, IdLoteClp = @IdLoteClp, OcorrenciaId = @OcorrenciaId, Fase = @Fase, ClpOrigem = @ClpOrigem, CLP_LOTE = @CLP_LOTE, COMPACTA = @COMPACTA, BOL_ID = @BOL_ID, COR_SEQUENCIA = @COR_SEQUENCIA, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Id2] = @Id2, [MaquinaId] = @MaquinaId, [DataInicio] = @DataInicio, [DataFim] = @DataFim, [Emissao] = @Emissao, [Quantidade] = @Quantidade, [Grupo] = @Grupo, [Status] = @Status, [TurnoId] = @TurnoId, [TurmaId] = @TurmaId, [IdLoteClp] = @IdLoteClp, [OcorrenciaId] = @OcorrenciaId, [Fase] = @Fase, [ClpOrigem] = @ClpOrigem, [CLP_LOTE] = @CLP_LOTE, [COMPACTA] = @COMPACTA, [BOL_ID] = @BOL_ID, [COR_SEQUENCIA] = @COR_SEQUENCIA, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id2 = ClpMedicoes.Id2,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateId2(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Id2 = @Id2 WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Id2] = @Id2 WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id2 = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMaquinaId(int id, string value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET MaquinaId = @MaquinaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [MaquinaId] = @MaquinaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MaquinaId = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataInicio(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET DataInicio = @DataInicio WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [DataInicio] = @DataInicio WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataInicio = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataFim(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET DataFim = @DataFim WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [DataFim] = @DataFim WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataFim = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmissao(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Emissao = @Emissao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Emissao] = @Emissao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Emissao = value,
@@ -139,7 +139,7 @@ namespace Query.Write
         }
         public QueryModel UpdateQuantidade(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Quantidade = @Quantidade WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Quantidade] = @Quantidade WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Quantidade = value,
@@ -149,7 +149,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupo(int id, Decimal value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Grupo = @Grupo WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Grupo] = @Grupo WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Grupo = value,
@@ -159,7 +159,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Status = @Status WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Status] = @Status WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Status = value,
@@ -169,7 +169,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTurnoId(int id, string value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET TurnoId = @TurnoId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [TurnoId] = @TurnoId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TurnoId = value,
@@ -179,7 +179,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTurmaId(int id, string value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET TurmaId = @TurmaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [TurmaId] = @TurmaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TurmaId = value,
@@ -189,7 +189,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIdLoteClp(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET IdLoteClp = @IdLoteClp WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [IdLoteClp] = @IdLoteClp WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IdLoteClp = value,
@@ -199,7 +199,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOcorrenciaId(int id, string value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET OcorrenciaId = @OcorrenciaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [OcorrenciaId] = @OcorrenciaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 OcorrenciaId = value,
@@ -209,7 +209,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFase(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Fase = @Fase WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Fase] = @Fase WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Fase = value,
@@ -219,7 +219,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClpOrigem(int id, string value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET ClpOrigem = @ClpOrigem WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [ClpOrigem] = @ClpOrigem WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ClpOrigem = value,
@@ -229,7 +229,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLP_LOTE(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET CLP_LOTE = @CLP_LOTE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [CLP_LOTE] = @CLP_LOTE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CLP_LOTE = value,
@@ -239,7 +239,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOMPACTA(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET COMPACTA = @COMPACTA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [COMPACTA] = @COMPACTA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COMPACTA = value,
@@ -249,7 +249,7 @@ namespace Query.Write
         }
         public QueryModel UpdateBOL_ID(int id, string value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET BOL_ID = @BOL_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [BOL_ID] = @BOL_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 BOL_ID = value,
@@ -259,7 +259,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCOR_SEQUENCIA(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET COR_SEQUENCIA = @COR_SEQUENCIA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [COR_SEQUENCIA] = @COR_SEQUENCIA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 COR_SEQUENCIA = value,
@@ -269,7 +269,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -279,7 +279,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -289,7 +289,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -299,7 +299,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE ClpMedicoes SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [ClpMedicoes] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -309,7 +309,7 @@ namespace Query.Write
         }
         public QueryModel DeleteClpMedicoesQuery(IClpMedicoesEntity ClpMedicoes)
         {
-            this.Query = $@" DELETE FROM ClpMedicoes WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [ClpMedicoes] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = ClpMedicoes.Id,

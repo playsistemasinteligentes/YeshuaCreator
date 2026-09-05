@@ -39,7 +39,7 @@ public partial class TurmaCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class TurmaCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = ApiTestData.Text("Turma Id", 10),
+            ["Id"] = ApiTestData.KeyText(10),
             ["Descricao"] = ApiTestData.Text("Turma Descricao", 80),
             ["TURM_HORA_INI_DIA1"] = DateTime.UtcNow,
             ["TURM_HORA_FIM_DIA1"] = DateTime.UtcNow,

@@ -48,12 +48,12 @@
  TIV_ESPECIFICACAO = tiv_especificacao; 
  TIV_TOL_MAIS = tiv_tol_mais; 
  TIV_TOL_MENOS = tiv_tol_menos; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TIV_ID == null)
-   this._erroMensagem.Add("TIV ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

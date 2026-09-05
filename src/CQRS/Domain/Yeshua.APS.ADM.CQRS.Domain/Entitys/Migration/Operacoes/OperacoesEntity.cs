@@ -46,6 +46,8 @@
  ROT_SEQ_TRANFORMACAO = rot_seq_tranformacao; 
  ORD_ID = ord_id; 
  FPR_SEQ_REPETICAO = fpr_seq_repeticao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -58,12 +60,8 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("MAQ ID deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID))
    this._erroMensagem.Add("PRO ID deve ser informado.");
-   if (ROT_SEQ_TRANFORMACAO == null)
-   this._erroMensagem.Add("ROT SEQ TRANFORMACAO deve ser informado.");
    if(string.IsNullOrEmpty(ORD_ID))
    this._erroMensagem.Add("ORD ID deve ser informado.");
-   if (FPR_SEQ_REPETICAO == null)
-   this._erroMensagem.Add("FPR SEQ REPETICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

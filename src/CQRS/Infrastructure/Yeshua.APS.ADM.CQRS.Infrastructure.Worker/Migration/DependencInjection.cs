@@ -13,6 +13,9 @@ using Shered.Services;
 using RepositoryInterfaces.Services;
 using Command.Patterns;
 using Command.Interfaces;
+using RepositoryInterfaces.Patterns.Saga;
+using Command.Receivers.Migration.Saga;
+using Command.Patterns.OutBox;
 using Command.Receivers;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -63,6 +66,9 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
+                    builder.Services.AddTransient<SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddScoped<OutboxService>();
 
 
 builder.Services.AddTransient<IRepository.Write.IProdutoWriteRepository, Input.Repository.Produto.ProdutoWriteRepository>();
@@ -2310,6 +2316,12 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
+builder.Services.AddTransient<Dominio.Saga.CargaStandardSaga>();
+builder.Services.AddTransient<Command.Receivers.CargaStandardSagaHandlerResolver>();
+builder.Services.AddTransient<DefinirDadosTransporteHandler>();
+builder.Services.AddTransient<EnviarNotasFiscaisHandler>();
+builder.Services.AddTransient<GerarCTeHandler>();
+builder.Services.AddTransient<GerarMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler>();
 

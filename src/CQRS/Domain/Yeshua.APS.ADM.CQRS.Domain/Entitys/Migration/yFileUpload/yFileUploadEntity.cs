@@ -44,15 +44,15 @@
  EntityId = entityid; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
  CompletedAt = (completedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : completedat; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(Type))
    this._erroMensagem.Add("Tipo do Arquivo deve ser informado.");
-   if (Status == null)
-   this._erroMensagem.Add("Status do Upload deve ser informado.");
-   if (CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
+   if(CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado em deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

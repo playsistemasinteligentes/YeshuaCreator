@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirUniuserQuery(IUniuserEntity Uniuser)
         {
-            this.Query = $@" INSERT INTO Uniuser (UNI_ID, USE_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.USERGRU_ID VALUES(@UNI_ID, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Uniuser] ([UNI_ID], [USE_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[USERGRU_ID] VALUES(@UNI_ID, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 UNI_ID = Uniuser.UNI_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUniuserQuery(IUniuserEntity Uniuser)
         {
-            this.Query = $@" UPDATE Uniuser SET UNI_ID = @UNI_ID, USE_ID = @USE_ID, Changed = @Changed, UserId = @UserId WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [UNI_ID] = @UNI_ID, [USE_ID] = @USE_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 UNI_ID = Uniuser.UNI_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUNI_ID(int usergru_id, int value)
         {
-            this.Query = $@" UPDATE Uniuser SET UNI_ID = @UNI_ID WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [UNI_ID] = @UNI_ID WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 UNI_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int usergru_id, int value)
         {
-            this.Query = $@" UPDATE Uniuser SET USE_ID = @USE_ID WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [USE_ID] = @USE_ID WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int usergru_id, int value)
         {
-            this.Query = $@" UPDATE Uniuser SET TenantID = @TenantID WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [TenantID] = @TenantID WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int usergru_id, bool value)
         {
-            this.Query = $@" UPDATE Uniuser SET Deleted = @Deleted WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [Deleted] = @Deleted WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int usergru_id, DateTime value)
         {
-            this.Query = $@" UPDATE Uniuser SET Changed = @Changed WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [Changed] = @Changed WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int usergru_id, int value)
         {
-            this.Query = $@" UPDATE Uniuser SET UserId = @UserId WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" UPDATE [Uniuser] SET [UserId] = @UserId WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteUniuserQuery(IUniuserEntity Uniuser)
         {
-            this.Query = $@" DELETE FROM Uniuser WHERE USERGRU_ID = @USERGRU_ID ";
+            this.Query = $@" DELETE FROM [Uniuser] WHERE [USERGRU_ID] = @USERGRU_ID ";
             this.Parameters = new
             {
                 USERGRU_ID = Uniuser.USERGRU_ID,

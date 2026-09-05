@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOrderQuery(IOrderEntity Order)
         {
-            this.Query = $@" INSERT INTO Order (ORD_ID, ORD_ID_RESERVA, ORD_ID_CONJUNTO, PRO_ID, PRO_ID_CONJUNTO, CLI_ID, ORD_PRECO_UNITARIO, ORD_QUANTIDADE, ORD_DATA_ENTREGA_DE, ORD_DATA_ENTREGA_ATE, ORD_TIPO, ORD_TOLERANCIA_MAIS, ORD_TOLERANCIA_MENOS, HASH_KEY, ORD_INICIO_JANELA_EMBARQUE, ORD_FIM_JANELA_EMBARQUE, ORD_EMBARQUE_ALVO, ORD_INICIO_GRUPO_PRODUTIVO, ORD_FIM_GRUPO_PRODUTIVO, ORD_PESO_UNITARIO, ORD_PESO_UNITARIO_BRUTO, ORD_M2_UNITARIO, ORD_MIT, CAR_TIPO_CARREGAMENTO, ORD_STATUS, ORD_TIPO_FRETE, ORD_ENDERECO_ENTREGA, ORD_BAIRRO_ENTREGA, UF_ID_ENTREGA, ORD_CEP_ENTREGA, MUN_ID_ENTREGA, ORD_REGIAO_ENTREGA, ORD_LARGURA, ORD_COMPRIMENTO, ORD_GRAMATURA, GRP_ID, ORD_ID_INTEGRACAO, ORD_OBSERVACAO_OTIMIZADOR, ORD_COR_FILA, ORD_PED_CLI, ORD_OP_INTEGRACAO, ORD_LOTE_PILOTO, ORD_PRIORIDADE, ORD_EMISSAO, REP_ID, ORD_RESINA, ORD_ENDURECEDOR_MIOLO, PRO_ID_INTEGRACAO_ERP, ORD_VINCOS_ONDULADEIRA, ORD_ERP_CUSTOS_FIXOS, ORD_ERP_CUSTOS_VARIAVEIS, ORD_ERP_DESPESAS_VAR_VENDA, ORD_ERP_IMPOSTOS, ORD_STATUS_PLANEJAMENTO, ORD_TOLERANCIA_DIMENSAO_CHAPA_DE, ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE, ORD_PROMOVE_DE, ORD_PROMOVE_ATE, ORD_TRAVA_COMPOSICAO, ORD_TRAVA_RESINA, ORD_PROMOVE_RESINA, ORD_LATITUDE_ENTREGA, ORD_LONGITUDE_ENTREGA, OCO_ID_CANCELAMENTO, TMP_TIPO_CARGA, PRO_ID_PALETE, PRO_ID_TAMPO, ORD_PILHAS_POR_PALETE, ORD_CHAPAS_POR_PILHA, ORD_DATA_CANCELAMENTO, ORD_STATUS_ESTATISTICA, ORD_DATA_ESTATISTICA, OCO_ID_MOTIVO_ATRASO, OTK_VERSSAO, TenantID, Deleted, Changed, UserId) VALUES(@ORD_ID, @ORD_ID_RESERVA, @ORD_ID_CONJUNTO, @PRO_ID, @PRO_ID_CONJUNTO, @CLI_ID, @ORD_PRECO_UNITARIO, @ORD_QUANTIDADE, @ORD_DATA_ENTREGA_DE, @ORD_DATA_ENTREGA_ATE, @ORD_TIPO, @ORD_TOLERANCIA_MAIS, @ORD_TOLERANCIA_MENOS, @HASH_KEY, @ORD_INICIO_JANELA_EMBARQUE, @ORD_FIM_JANELA_EMBARQUE, @ORD_EMBARQUE_ALVO, @ORD_INICIO_GRUPO_PRODUTIVO, @ORD_FIM_GRUPO_PRODUTIVO, @ORD_PESO_UNITARIO, @ORD_PESO_UNITARIO_BRUTO, @ORD_M2_UNITARIO, @ORD_MIT, @CAR_TIPO_CARREGAMENTO, @ORD_STATUS, @ORD_TIPO_FRETE, @ORD_ENDERECO_ENTREGA, @ORD_BAIRRO_ENTREGA, @UF_ID_ENTREGA, @ORD_CEP_ENTREGA, @MUN_ID_ENTREGA, @ORD_REGIAO_ENTREGA, @ORD_LARGURA, @ORD_COMPRIMENTO, @ORD_GRAMATURA, @GRP_ID, @ORD_ID_INTEGRACAO, @ORD_OBSERVACAO_OTIMIZADOR, @ORD_COR_FILA, @ORD_PED_CLI, @ORD_OP_INTEGRACAO, @ORD_LOTE_PILOTO, @ORD_PRIORIDADE, @ORD_EMISSAO, @REP_ID, @ORD_RESINA, @ORD_ENDURECEDOR_MIOLO, @PRO_ID_INTEGRACAO_ERP, @ORD_VINCOS_ONDULADEIRA, @ORD_ERP_CUSTOS_FIXOS, @ORD_ERP_CUSTOS_VARIAVEIS, @ORD_ERP_DESPESAS_VAR_VENDA, @ORD_ERP_IMPOSTOS, @ORD_STATUS_PLANEJAMENTO, @ORD_TOLERANCIA_DIMENSAO_CHAPA_DE, @ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE, @ORD_PROMOVE_DE, @ORD_PROMOVE_ATE, @ORD_TRAVA_COMPOSICAO, @ORD_TRAVA_RESINA, @ORD_PROMOVE_RESINA, @ORD_LATITUDE_ENTREGA, @ORD_LONGITUDE_ENTREGA, @OCO_ID_CANCELAMENTO, @TMP_TIPO_CARGA, @PRO_ID_PALETE, @PRO_ID_TAMPO, @ORD_PILHAS_POR_PALETE, @ORD_CHAPAS_POR_PILHA, @ORD_DATA_CANCELAMENTO, @ORD_STATUS_ESTATISTICA, @ORD_DATA_ESTATISTICA, @OCO_ID_MOTIVO_ATRASO, @OTK_VERSSAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Order] ([ORD_ID], [ORD_ID_RESERVA], [ORD_ID_CONJUNTO], [PRO_ID], [PRO_ID_CONJUNTO], [CLI_ID], [ORD_PRECO_UNITARIO], [ORD_QUANTIDADE], [ORD_DATA_ENTREGA_DE], [ORD_DATA_ENTREGA_ATE], [ORD_TIPO], [ORD_TOLERANCIA_MAIS], [ORD_TOLERANCIA_MENOS], [HASH_KEY], [ORD_INICIO_JANELA_EMBARQUE], [ORD_FIM_JANELA_EMBARQUE], [ORD_EMBARQUE_ALVO], [ORD_INICIO_GRUPO_PRODUTIVO], [ORD_FIM_GRUPO_PRODUTIVO], [ORD_PESO_UNITARIO], [ORD_PESO_UNITARIO_BRUTO], [ORD_M2_UNITARIO], [ORD_MIT], [CAR_TIPO_CARREGAMENTO], [ORD_STATUS], [ORD_TIPO_FRETE], [ORD_ENDERECO_ENTREGA], [ORD_BAIRRO_ENTREGA], [UF_ID_ENTREGA], [ORD_CEP_ENTREGA], [MUN_ID_ENTREGA], [ORD_REGIAO_ENTREGA], [ORD_LARGURA], [ORD_COMPRIMENTO], [ORD_GRAMATURA], [GRP_ID], [ORD_ID_INTEGRACAO], [ORD_OBSERVACAO_OTIMIZADOR], [ORD_COR_FILA], [ORD_PED_CLI], [ORD_OP_INTEGRACAO], [ORD_LOTE_PILOTO], [ORD_PRIORIDADE], [ORD_EMISSAO], [REP_ID], [ORD_RESINA], [ORD_ENDURECEDOR_MIOLO], [PRO_ID_INTEGRACAO_ERP], [ORD_VINCOS_ONDULADEIRA], [ORD_ERP_CUSTOS_FIXOS], [ORD_ERP_CUSTOS_VARIAVEIS], [ORD_ERP_DESPESAS_VAR_VENDA], [ORD_ERP_IMPOSTOS], [ORD_STATUS_PLANEJAMENTO], [ORD_TOLERANCIA_DIMENSAO_CHAPA_DE], [ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE], [ORD_PROMOVE_DE], [ORD_PROMOVE_ATE], [ORD_TRAVA_COMPOSICAO], [ORD_TRAVA_RESINA], [ORD_PROMOVE_RESINA], [ORD_LATITUDE_ENTREGA], [ORD_LONGITUDE_ENTREGA], [OCO_ID_CANCELAMENTO], [TMP_TIPO_CARGA], [PRO_ID_PALETE], [PRO_ID_TAMPO], [ORD_PILHAS_POR_PALETE], [ORD_CHAPAS_POR_PILHA], [ORD_DATA_CANCELAMENTO], [ORD_STATUS_ESTATISTICA], [ORD_DATA_ESTATISTICA], [OCO_ID_MOTIVO_ATRASO], [OTK_VERSSAO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@ORD_ID, @ORD_ID_RESERVA, @ORD_ID_CONJUNTO, @PRO_ID, @PRO_ID_CONJUNTO, @CLI_ID, @ORD_PRECO_UNITARIO, @ORD_QUANTIDADE, @ORD_DATA_ENTREGA_DE, @ORD_DATA_ENTREGA_ATE, @ORD_TIPO, @ORD_TOLERANCIA_MAIS, @ORD_TOLERANCIA_MENOS, @HASH_KEY, @ORD_INICIO_JANELA_EMBARQUE, @ORD_FIM_JANELA_EMBARQUE, @ORD_EMBARQUE_ALVO, @ORD_INICIO_GRUPO_PRODUTIVO, @ORD_FIM_GRUPO_PRODUTIVO, @ORD_PESO_UNITARIO, @ORD_PESO_UNITARIO_BRUTO, @ORD_M2_UNITARIO, @ORD_MIT, @CAR_TIPO_CARREGAMENTO, @ORD_STATUS, @ORD_TIPO_FRETE, @ORD_ENDERECO_ENTREGA, @ORD_BAIRRO_ENTREGA, @UF_ID_ENTREGA, @ORD_CEP_ENTREGA, @MUN_ID_ENTREGA, @ORD_REGIAO_ENTREGA, @ORD_LARGURA, @ORD_COMPRIMENTO, @ORD_GRAMATURA, @GRP_ID, @ORD_ID_INTEGRACAO, @ORD_OBSERVACAO_OTIMIZADOR, @ORD_COR_FILA, @ORD_PED_CLI, @ORD_OP_INTEGRACAO, @ORD_LOTE_PILOTO, @ORD_PRIORIDADE, @ORD_EMISSAO, @REP_ID, @ORD_RESINA, @ORD_ENDURECEDOR_MIOLO, @PRO_ID_INTEGRACAO_ERP, @ORD_VINCOS_ONDULADEIRA, @ORD_ERP_CUSTOS_FIXOS, @ORD_ERP_CUSTOS_VARIAVEIS, @ORD_ERP_DESPESAS_VAR_VENDA, @ORD_ERP_IMPOSTOS, @ORD_STATUS_PLANEJAMENTO, @ORD_TOLERANCIA_DIMENSAO_CHAPA_DE, @ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE, @ORD_PROMOVE_DE, @ORD_PROMOVE_ATE, @ORD_TRAVA_COMPOSICAO, @ORD_TRAVA_RESINA, @ORD_PROMOVE_RESINA, @ORD_LATITUDE_ENTREGA, @ORD_LONGITUDE_ENTREGA, @OCO_ID_CANCELAMENTO, @TMP_TIPO_CARGA, @PRO_ID_PALETE, @PRO_ID_TAMPO, @ORD_PILHAS_POR_PALETE, @ORD_CHAPAS_POR_PILHA, @ORD_DATA_CANCELAMENTO, @ORD_STATUS_ESTATISTICA, @ORD_DATA_ESTATISTICA, @OCO_ID_MOTIVO_ATRASO, @OTK_VERSSAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ORD_ID = Order.ORD_ID,
@@ -116,7 +116,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOrderQuery(IOrderEntity Order)
         {
-            this.Query = $@" UPDATE Order SET ORD_ID_RESERVA = @ORD_ID_RESERVA, ORD_ID_CONJUNTO = @ORD_ID_CONJUNTO, PRO_ID = @PRO_ID, PRO_ID_CONJUNTO = @PRO_ID_CONJUNTO, CLI_ID = @CLI_ID, ORD_PRECO_UNITARIO = @ORD_PRECO_UNITARIO, ORD_QUANTIDADE = @ORD_QUANTIDADE, ORD_DATA_ENTREGA_DE = @ORD_DATA_ENTREGA_DE, ORD_DATA_ENTREGA_ATE = @ORD_DATA_ENTREGA_ATE, ORD_TIPO = @ORD_TIPO, ORD_TOLERANCIA_MAIS = @ORD_TOLERANCIA_MAIS, ORD_TOLERANCIA_MENOS = @ORD_TOLERANCIA_MENOS, HASH_KEY = @HASH_KEY, ORD_INICIO_JANELA_EMBARQUE = @ORD_INICIO_JANELA_EMBARQUE, ORD_FIM_JANELA_EMBARQUE = @ORD_FIM_JANELA_EMBARQUE, ORD_EMBARQUE_ALVO = @ORD_EMBARQUE_ALVO, ORD_INICIO_GRUPO_PRODUTIVO = @ORD_INICIO_GRUPO_PRODUTIVO, ORD_FIM_GRUPO_PRODUTIVO = @ORD_FIM_GRUPO_PRODUTIVO, ORD_PESO_UNITARIO = @ORD_PESO_UNITARIO, ORD_PESO_UNITARIO_BRUTO = @ORD_PESO_UNITARIO_BRUTO, ORD_M2_UNITARIO = @ORD_M2_UNITARIO, ORD_MIT = @ORD_MIT, CAR_TIPO_CARREGAMENTO = @CAR_TIPO_CARREGAMENTO, ORD_STATUS = @ORD_STATUS, ORD_TIPO_FRETE = @ORD_TIPO_FRETE, ORD_ENDERECO_ENTREGA = @ORD_ENDERECO_ENTREGA, ORD_BAIRRO_ENTREGA = @ORD_BAIRRO_ENTREGA, UF_ID_ENTREGA = @UF_ID_ENTREGA, ORD_CEP_ENTREGA = @ORD_CEP_ENTREGA, MUN_ID_ENTREGA = @MUN_ID_ENTREGA, ORD_REGIAO_ENTREGA = @ORD_REGIAO_ENTREGA, ORD_LARGURA = @ORD_LARGURA, ORD_COMPRIMENTO = @ORD_COMPRIMENTO, ORD_GRAMATURA = @ORD_GRAMATURA, GRP_ID = @GRP_ID, ORD_ID_INTEGRACAO = @ORD_ID_INTEGRACAO, ORD_OBSERVACAO_OTIMIZADOR = @ORD_OBSERVACAO_OTIMIZADOR, ORD_COR_FILA = @ORD_COR_FILA, ORD_PED_CLI = @ORD_PED_CLI, ORD_OP_INTEGRACAO = @ORD_OP_INTEGRACAO, ORD_LOTE_PILOTO = @ORD_LOTE_PILOTO, ORD_PRIORIDADE = @ORD_PRIORIDADE, ORD_EMISSAO = @ORD_EMISSAO, REP_ID = @REP_ID, ORD_RESINA = @ORD_RESINA, ORD_ENDURECEDOR_MIOLO = @ORD_ENDURECEDOR_MIOLO, PRO_ID_INTEGRACAO_ERP = @PRO_ID_INTEGRACAO_ERP, ORD_VINCOS_ONDULADEIRA = @ORD_VINCOS_ONDULADEIRA, ORD_ERP_CUSTOS_FIXOS = @ORD_ERP_CUSTOS_FIXOS, ORD_ERP_CUSTOS_VARIAVEIS = @ORD_ERP_CUSTOS_VARIAVEIS, ORD_ERP_DESPESAS_VAR_VENDA = @ORD_ERP_DESPESAS_VAR_VENDA, ORD_ERP_IMPOSTOS = @ORD_ERP_IMPOSTOS, ORD_STATUS_PLANEJAMENTO = @ORD_STATUS_PLANEJAMENTO, ORD_TOLERANCIA_DIMENSAO_CHAPA_DE = @ORD_TOLERANCIA_DIMENSAO_CHAPA_DE, ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE = @ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE, ORD_PROMOVE_DE = @ORD_PROMOVE_DE, ORD_PROMOVE_ATE = @ORD_PROMOVE_ATE, ORD_TRAVA_COMPOSICAO = @ORD_TRAVA_COMPOSICAO, ORD_TRAVA_RESINA = @ORD_TRAVA_RESINA, ORD_PROMOVE_RESINA = @ORD_PROMOVE_RESINA, ORD_LATITUDE_ENTREGA = @ORD_LATITUDE_ENTREGA, ORD_LONGITUDE_ENTREGA = @ORD_LONGITUDE_ENTREGA, OCO_ID_CANCELAMENTO = @OCO_ID_CANCELAMENTO, TMP_TIPO_CARGA = @TMP_TIPO_CARGA, PRO_ID_PALETE = @PRO_ID_PALETE, PRO_ID_TAMPO = @PRO_ID_TAMPO, ORD_PILHAS_POR_PALETE = @ORD_PILHAS_POR_PALETE, ORD_CHAPAS_POR_PILHA = @ORD_CHAPAS_POR_PILHA, ORD_DATA_CANCELAMENTO = @ORD_DATA_CANCELAMENTO, ORD_STATUS_ESTATISTICA = @ORD_STATUS_ESTATISTICA, ORD_DATA_ESTATISTICA = @ORD_DATA_ESTATISTICA, OCO_ID_MOTIVO_ATRASO = @OCO_ID_MOTIVO_ATRASO, OTK_VERSSAO = @OTK_VERSSAO, Changed = @Changed, UserId = @UserId WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ID_RESERVA] = @ORD_ID_RESERVA, [ORD_ID_CONJUNTO] = @ORD_ID_CONJUNTO, [PRO_ID] = @PRO_ID, [PRO_ID_CONJUNTO] = @PRO_ID_CONJUNTO, [CLI_ID] = @CLI_ID, [ORD_PRECO_UNITARIO] = @ORD_PRECO_UNITARIO, [ORD_QUANTIDADE] = @ORD_QUANTIDADE, [ORD_DATA_ENTREGA_DE] = @ORD_DATA_ENTREGA_DE, [ORD_DATA_ENTREGA_ATE] = @ORD_DATA_ENTREGA_ATE, [ORD_TIPO] = @ORD_TIPO, [ORD_TOLERANCIA_MAIS] = @ORD_TOLERANCIA_MAIS, [ORD_TOLERANCIA_MENOS] = @ORD_TOLERANCIA_MENOS, [HASH_KEY] = @HASH_KEY, [ORD_INICIO_JANELA_EMBARQUE] = @ORD_INICIO_JANELA_EMBARQUE, [ORD_FIM_JANELA_EMBARQUE] = @ORD_FIM_JANELA_EMBARQUE, [ORD_EMBARQUE_ALVO] = @ORD_EMBARQUE_ALVO, [ORD_INICIO_GRUPO_PRODUTIVO] = @ORD_INICIO_GRUPO_PRODUTIVO, [ORD_FIM_GRUPO_PRODUTIVO] = @ORD_FIM_GRUPO_PRODUTIVO, [ORD_PESO_UNITARIO] = @ORD_PESO_UNITARIO, [ORD_PESO_UNITARIO_BRUTO] = @ORD_PESO_UNITARIO_BRUTO, [ORD_M2_UNITARIO] = @ORD_M2_UNITARIO, [ORD_MIT] = @ORD_MIT, [CAR_TIPO_CARREGAMENTO] = @CAR_TIPO_CARREGAMENTO, [ORD_STATUS] = @ORD_STATUS, [ORD_TIPO_FRETE] = @ORD_TIPO_FRETE, [ORD_ENDERECO_ENTREGA] = @ORD_ENDERECO_ENTREGA, [ORD_BAIRRO_ENTREGA] = @ORD_BAIRRO_ENTREGA, [UF_ID_ENTREGA] = @UF_ID_ENTREGA, [ORD_CEP_ENTREGA] = @ORD_CEP_ENTREGA, [MUN_ID_ENTREGA] = @MUN_ID_ENTREGA, [ORD_REGIAO_ENTREGA] = @ORD_REGIAO_ENTREGA, [ORD_LARGURA] = @ORD_LARGURA, [ORD_COMPRIMENTO] = @ORD_COMPRIMENTO, [ORD_GRAMATURA] = @ORD_GRAMATURA, [GRP_ID] = @GRP_ID, [ORD_ID_INTEGRACAO] = @ORD_ID_INTEGRACAO, [ORD_OBSERVACAO_OTIMIZADOR] = @ORD_OBSERVACAO_OTIMIZADOR, [ORD_COR_FILA] = @ORD_COR_FILA, [ORD_PED_CLI] = @ORD_PED_CLI, [ORD_OP_INTEGRACAO] = @ORD_OP_INTEGRACAO, [ORD_LOTE_PILOTO] = @ORD_LOTE_PILOTO, [ORD_PRIORIDADE] = @ORD_PRIORIDADE, [ORD_EMISSAO] = @ORD_EMISSAO, [REP_ID] = @REP_ID, [ORD_RESINA] = @ORD_RESINA, [ORD_ENDURECEDOR_MIOLO] = @ORD_ENDURECEDOR_MIOLO, [PRO_ID_INTEGRACAO_ERP] = @PRO_ID_INTEGRACAO_ERP, [ORD_VINCOS_ONDULADEIRA] = @ORD_VINCOS_ONDULADEIRA, [ORD_ERP_CUSTOS_FIXOS] = @ORD_ERP_CUSTOS_FIXOS, [ORD_ERP_CUSTOS_VARIAVEIS] = @ORD_ERP_CUSTOS_VARIAVEIS, [ORD_ERP_DESPESAS_VAR_VENDA] = @ORD_ERP_DESPESAS_VAR_VENDA, [ORD_ERP_IMPOSTOS] = @ORD_ERP_IMPOSTOS, [ORD_STATUS_PLANEJAMENTO] = @ORD_STATUS_PLANEJAMENTO, [ORD_TOLERANCIA_DIMENSAO_CHAPA_DE] = @ORD_TOLERANCIA_DIMENSAO_CHAPA_DE, [ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE] = @ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE, [ORD_PROMOVE_DE] = @ORD_PROMOVE_DE, [ORD_PROMOVE_ATE] = @ORD_PROMOVE_ATE, [ORD_TRAVA_COMPOSICAO] = @ORD_TRAVA_COMPOSICAO, [ORD_TRAVA_RESINA] = @ORD_TRAVA_RESINA, [ORD_PROMOVE_RESINA] = @ORD_PROMOVE_RESINA, [ORD_LATITUDE_ENTREGA] = @ORD_LATITUDE_ENTREGA, [ORD_LONGITUDE_ENTREGA] = @ORD_LONGITUDE_ENTREGA, [OCO_ID_CANCELAMENTO] = @OCO_ID_CANCELAMENTO, [TMP_TIPO_CARGA] = @TMP_TIPO_CARGA, [PRO_ID_PALETE] = @PRO_ID_PALETE, [PRO_ID_TAMPO] = @PRO_ID_TAMPO, [ORD_PILHAS_POR_PALETE] = @ORD_PILHAS_POR_PALETE, [ORD_CHAPAS_POR_PILHA] = @ORD_CHAPAS_POR_PILHA, [ORD_DATA_CANCELAMENTO] = @ORD_DATA_CANCELAMENTO, [ORD_STATUS_ESTATISTICA] = @ORD_STATUS_ESTATISTICA, [ORD_DATA_ESTATISTICA] = @ORD_DATA_ESTATISTICA, [OCO_ID_MOTIVO_ATRASO] = @OCO_ID_MOTIVO_ATRASO, [OTK_VERSSAO] = @OTK_VERSSAO, [Changed] = @Changed, [UserId] = @UserId WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ID_RESERVA = Order.ORD_ID_RESERVA,
@@ -200,7 +200,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID_RESERVA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ID_RESERVA = @ORD_ID_RESERVA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ID_RESERVA] = @ORD_ID_RESERVA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ID_RESERVA = value,
@@ -210,7 +210,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID_CONJUNTO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ID_CONJUNTO = @ORD_ID_CONJUNTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ID_CONJUNTO] = @ORD_ID_CONJUNTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ID_CONJUNTO = value,
@@ -220,7 +220,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET PRO_ID = @PRO_ID WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [PRO_ID] = @PRO_ID WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 PRO_ID = value,
@@ -230,7 +230,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_CONJUNTO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET PRO_ID_CONJUNTO = @PRO_ID_CONJUNTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [PRO_ID_CONJUNTO] = @PRO_ID_CONJUNTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 PRO_ID_CONJUNTO = value,
@@ -240,7 +240,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ID(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET CLI_ID = @CLI_ID WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [CLI_ID] = @CLI_ID WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 CLI_ID = value,
@@ -250,7 +250,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PRECO_UNITARIO(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PRECO_UNITARIO = @ORD_PRECO_UNITARIO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PRECO_UNITARIO] = @ORD_PRECO_UNITARIO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PRECO_UNITARIO = value,
@@ -260,7 +260,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_QUANTIDADE(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_QUANTIDADE = @ORD_QUANTIDADE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_QUANTIDADE] = @ORD_QUANTIDADE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_QUANTIDADE = value,
@@ -270,7 +270,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_DATA_ENTREGA_DE(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_DATA_ENTREGA_DE = @ORD_DATA_ENTREGA_DE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_DATA_ENTREGA_DE] = @ORD_DATA_ENTREGA_DE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_DATA_ENTREGA_DE = value,
@@ -280,7 +280,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_DATA_ENTREGA_ATE(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_DATA_ENTREGA_ATE = @ORD_DATA_ENTREGA_ATE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_DATA_ENTREGA_ATE] = @ORD_DATA_ENTREGA_ATE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_DATA_ENTREGA_ATE = value,
@@ -290,7 +290,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TIPO(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TIPO = @ORD_TIPO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TIPO] = @ORD_TIPO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TIPO = value,
@@ -300,7 +300,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TOLERANCIA_MAIS(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TOLERANCIA_MAIS = @ORD_TOLERANCIA_MAIS WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TOLERANCIA_MAIS] = @ORD_TOLERANCIA_MAIS WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TOLERANCIA_MAIS = value,
@@ -310,7 +310,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TOLERANCIA_MENOS(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TOLERANCIA_MENOS = @ORD_TOLERANCIA_MENOS WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TOLERANCIA_MENOS] = @ORD_TOLERANCIA_MENOS WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TOLERANCIA_MENOS = value,
@@ -320,7 +320,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHASH_KEY(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET HASH_KEY = @HASH_KEY WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [HASH_KEY] = @HASH_KEY WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 HASH_KEY = value,
@@ -330,7 +330,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_INICIO_JANELA_EMBARQUE(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_INICIO_JANELA_EMBARQUE = @ORD_INICIO_JANELA_EMBARQUE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_INICIO_JANELA_EMBARQUE] = @ORD_INICIO_JANELA_EMBARQUE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_INICIO_JANELA_EMBARQUE = value,
@@ -340,7 +340,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_FIM_JANELA_EMBARQUE(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_FIM_JANELA_EMBARQUE = @ORD_FIM_JANELA_EMBARQUE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_FIM_JANELA_EMBARQUE] = @ORD_FIM_JANELA_EMBARQUE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_FIM_JANELA_EMBARQUE = value,
@@ -350,7 +350,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_EMBARQUE_ALVO(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_EMBARQUE_ALVO = @ORD_EMBARQUE_ALVO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_EMBARQUE_ALVO] = @ORD_EMBARQUE_ALVO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_EMBARQUE_ALVO = value,
@@ -360,7 +360,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_INICIO_GRUPO_PRODUTIVO(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_INICIO_GRUPO_PRODUTIVO = @ORD_INICIO_GRUPO_PRODUTIVO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_INICIO_GRUPO_PRODUTIVO] = @ORD_INICIO_GRUPO_PRODUTIVO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_INICIO_GRUPO_PRODUTIVO = value,
@@ -370,7 +370,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_FIM_GRUPO_PRODUTIVO(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_FIM_GRUPO_PRODUTIVO = @ORD_FIM_GRUPO_PRODUTIVO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_FIM_GRUPO_PRODUTIVO] = @ORD_FIM_GRUPO_PRODUTIVO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_FIM_GRUPO_PRODUTIVO = value,
@@ -380,7 +380,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PESO_UNITARIO(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PESO_UNITARIO = @ORD_PESO_UNITARIO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PESO_UNITARIO] = @ORD_PESO_UNITARIO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PESO_UNITARIO = value,
@@ -390,7 +390,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PESO_UNITARIO_BRUTO(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PESO_UNITARIO_BRUTO = @ORD_PESO_UNITARIO_BRUTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PESO_UNITARIO_BRUTO] = @ORD_PESO_UNITARIO_BRUTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PESO_UNITARIO_BRUTO = value,
@@ -400,7 +400,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_M2_UNITARIO(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_M2_UNITARIO = @ORD_M2_UNITARIO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_M2_UNITARIO] = @ORD_M2_UNITARIO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_M2_UNITARIO = value,
@@ -410,7 +410,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_MIT(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_MIT = @ORD_MIT WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_MIT] = @ORD_MIT WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_MIT = value,
@@ -420,7 +420,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAR_TIPO_CARREGAMENTO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET CAR_TIPO_CARREGAMENTO = @CAR_TIPO_CARREGAMENTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [CAR_TIPO_CARREGAMENTO] = @CAR_TIPO_CARREGAMENTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 CAR_TIPO_CARREGAMENTO = value,
@@ -430,7 +430,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_STATUS(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_STATUS = @ORD_STATUS WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_STATUS] = @ORD_STATUS WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_STATUS = value,
@@ -440,7 +440,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TIPO_FRETE(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TIPO_FRETE = @ORD_TIPO_FRETE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TIPO_FRETE] = @ORD_TIPO_FRETE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TIPO_FRETE = value,
@@ -450,7 +450,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ENDERECO_ENTREGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ENDERECO_ENTREGA = @ORD_ENDERECO_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ENDERECO_ENTREGA] = @ORD_ENDERECO_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ENDERECO_ENTREGA = value,
@@ -460,7 +460,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_BAIRRO_ENTREGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_BAIRRO_ENTREGA = @ORD_BAIRRO_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_BAIRRO_ENTREGA] = @ORD_BAIRRO_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_BAIRRO_ENTREGA = value,
@@ -470,7 +470,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUF_ID_ENTREGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET UF_ID_ENTREGA = @UF_ID_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [UF_ID_ENTREGA] = @UF_ID_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 UF_ID_ENTREGA = value,
@@ -480,7 +480,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_CEP_ENTREGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_CEP_ENTREGA = @ORD_CEP_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_CEP_ENTREGA] = @ORD_CEP_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_CEP_ENTREGA = value,
@@ -490,7 +490,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_ID_ENTREGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET MUN_ID_ENTREGA = @MUN_ID_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [MUN_ID_ENTREGA] = @MUN_ID_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 MUN_ID_ENTREGA = value,
@@ -500,7 +500,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_REGIAO_ENTREGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_REGIAO_ENTREGA = @ORD_REGIAO_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_REGIAO_ENTREGA] = @ORD_REGIAO_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_REGIAO_ENTREGA = value,
@@ -510,7 +510,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_LARGURA(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_LARGURA = @ORD_LARGURA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_LARGURA] = @ORD_LARGURA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_LARGURA = value,
@@ -520,7 +520,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_COMPRIMENTO(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_COMPRIMENTO = @ORD_COMPRIMENTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_COMPRIMENTO] = @ORD_COMPRIMENTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_COMPRIMENTO = value,
@@ -530,7 +530,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_GRAMATURA(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_GRAMATURA = @ORD_GRAMATURA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_GRAMATURA] = @ORD_GRAMATURA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_GRAMATURA = value,
@@ -540,7 +540,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGRP_ID(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET GRP_ID = @GRP_ID WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [GRP_ID] = @GRP_ID WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 GRP_ID = value,
@@ -550,7 +550,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ID_INTEGRACAO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ID_INTEGRACAO = @ORD_ID_INTEGRACAO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ID_INTEGRACAO] = @ORD_ID_INTEGRACAO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ID_INTEGRACAO = value,
@@ -560,7 +560,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_OBSERVACAO_OTIMIZADOR(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_OBSERVACAO_OTIMIZADOR = @ORD_OBSERVACAO_OTIMIZADOR WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_OBSERVACAO_OTIMIZADOR] = @ORD_OBSERVACAO_OTIMIZADOR WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_OBSERVACAO_OTIMIZADOR = value,
@@ -570,7 +570,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_COR_FILA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_COR_FILA = @ORD_COR_FILA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_COR_FILA] = @ORD_COR_FILA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_COR_FILA = value,
@@ -580,7 +580,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PED_CLI(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PED_CLI = @ORD_PED_CLI WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PED_CLI] = @ORD_PED_CLI WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PED_CLI = value,
@@ -590,7 +590,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_OP_INTEGRACAO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_OP_INTEGRACAO = @ORD_OP_INTEGRACAO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_OP_INTEGRACAO] = @ORD_OP_INTEGRACAO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_OP_INTEGRACAO = value,
@@ -600,7 +600,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_LOTE_PILOTO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_LOTE_PILOTO = @ORD_LOTE_PILOTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_LOTE_PILOTO] = @ORD_LOTE_PILOTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_LOTE_PILOTO = value,
@@ -610,7 +610,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PRIORIDADE(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PRIORIDADE = @ORD_PRIORIDADE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PRIORIDADE] = @ORD_PRIORIDADE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PRIORIDADE = value,
@@ -620,7 +620,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_EMISSAO(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_EMISSAO = @ORD_EMISSAO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_EMISSAO] = @ORD_EMISSAO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_EMISSAO = value,
@@ -630,7 +630,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREP_ID(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET REP_ID = @REP_ID WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [REP_ID] = @REP_ID WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 REP_ID = value,
@@ -640,7 +640,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_RESINA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_RESINA = @ORD_RESINA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_RESINA] = @ORD_RESINA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_RESINA = value,
@@ -650,7 +650,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ENDURECEDOR_MIOLO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ENDURECEDOR_MIOLO = @ORD_ENDURECEDOR_MIOLO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ENDURECEDOR_MIOLO] = @ORD_ENDURECEDOR_MIOLO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ENDURECEDOR_MIOLO = value,
@@ -660,7 +660,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_INTEGRACAO_ERP(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET PRO_ID_INTEGRACAO_ERP = @PRO_ID_INTEGRACAO_ERP WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [PRO_ID_INTEGRACAO_ERP] = @PRO_ID_INTEGRACAO_ERP WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 PRO_ID_INTEGRACAO_ERP = value,
@@ -670,7 +670,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_VINCOS_ONDULADEIRA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_VINCOS_ONDULADEIRA = @ORD_VINCOS_ONDULADEIRA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_VINCOS_ONDULADEIRA] = @ORD_VINCOS_ONDULADEIRA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_VINCOS_ONDULADEIRA = value,
@@ -680,7 +680,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ERP_CUSTOS_FIXOS(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ERP_CUSTOS_FIXOS = @ORD_ERP_CUSTOS_FIXOS WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ERP_CUSTOS_FIXOS] = @ORD_ERP_CUSTOS_FIXOS WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ERP_CUSTOS_FIXOS = value,
@@ -690,7 +690,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ERP_CUSTOS_VARIAVEIS(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ERP_CUSTOS_VARIAVEIS = @ORD_ERP_CUSTOS_VARIAVEIS WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ERP_CUSTOS_VARIAVEIS] = @ORD_ERP_CUSTOS_VARIAVEIS WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ERP_CUSTOS_VARIAVEIS = value,
@@ -700,7 +700,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ERP_DESPESAS_VAR_VENDA(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ERP_DESPESAS_VAR_VENDA = @ORD_ERP_DESPESAS_VAR_VENDA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ERP_DESPESAS_VAR_VENDA] = @ORD_ERP_DESPESAS_VAR_VENDA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ERP_DESPESAS_VAR_VENDA = value,
@@ -710,7 +710,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_ERP_IMPOSTOS(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_ERP_IMPOSTOS = @ORD_ERP_IMPOSTOS WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_ERP_IMPOSTOS] = @ORD_ERP_IMPOSTOS WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ERP_IMPOSTOS = value,
@@ -720,7 +720,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_STATUS_PLANEJAMENTO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_STATUS_PLANEJAMENTO = @ORD_STATUS_PLANEJAMENTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_STATUS_PLANEJAMENTO] = @ORD_STATUS_PLANEJAMENTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_STATUS_PLANEJAMENTO = value,
@@ -730,7 +730,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TOLERANCIA_DIMENSAO_CHAPA_DE(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TOLERANCIA_DIMENSAO_CHAPA_DE = @ORD_TOLERANCIA_DIMENSAO_CHAPA_DE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TOLERANCIA_DIMENSAO_CHAPA_DE] = @ORD_TOLERANCIA_DIMENSAO_CHAPA_DE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TOLERANCIA_DIMENSAO_CHAPA_DE = value,
@@ -740,7 +740,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TOLERANCIA_DIMENSAO_CHAPA_ATE(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE = @ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE] = @ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TOLERANCIA_DIMENSAO_CHAPA_ATE = value,
@@ -750,7 +750,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PROMOVE_DE(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PROMOVE_DE = @ORD_PROMOVE_DE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PROMOVE_DE] = @ORD_PROMOVE_DE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PROMOVE_DE = value,
@@ -760,7 +760,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PROMOVE_ATE(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PROMOVE_ATE = @ORD_PROMOVE_ATE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PROMOVE_ATE] = @ORD_PROMOVE_ATE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PROMOVE_ATE = value,
@@ -770,7 +770,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TRAVA_COMPOSICAO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TRAVA_COMPOSICAO = @ORD_TRAVA_COMPOSICAO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TRAVA_COMPOSICAO] = @ORD_TRAVA_COMPOSICAO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TRAVA_COMPOSICAO = value,
@@ -780,7 +780,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_TRAVA_RESINA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_TRAVA_RESINA = @ORD_TRAVA_RESINA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_TRAVA_RESINA] = @ORD_TRAVA_RESINA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_TRAVA_RESINA = value,
@@ -790,7 +790,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PROMOVE_RESINA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PROMOVE_RESINA = @ORD_PROMOVE_RESINA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PROMOVE_RESINA] = @ORD_PROMOVE_RESINA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PROMOVE_RESINA = value,
@@ -800,7 +800,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_LATITUDE_ENTREGA(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_LATITUDE_ENTREGA = @ORD_LATITUDE_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_LATITUDE_ENTREGA] = @ORD_LATITUDE_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_LATITUDE_ENTREGA = value,
@@ -810,7 +810,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_LONGITUDE_ENTREGA(string ord_id, Decimal value)
         {
-            this.Query = $@" UPDATE Order SET ORD_LONGITUDE_ENTREGA = @ORD_LONGITUDE_ENTREGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_LONGITUDE_ENTREGA] = @ORD_LONGITUDE_ENTREGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_LONGITUDE_ENTREGA = value,
@@ -820,7 +820,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOCO_ID_CANCELAMENTO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET OCO_ID_CANCELAMENTO = @OCO_ID_CANCELAMENTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [OCO_ID_CANCELAMENTO] = @OCO_ID_CANCELAMENTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 OCO_ID_CANCELAMENTO = value,
@@ -830,7 +830,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTMP_TIPO_CARGA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET TMP_TIPO_CARGA = @TMP_TIPO_CARGA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [TMP_TIPO_CARGA] = @TMP_TIPO_CARGA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 TMP_TIPO_CARGA = value,
@@ -840,7 +840,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_PALETE(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET PRO_ID_PALETE = @PRO_ID_PALETE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [PRO_ID_PALETE] = @PRO_ID_PALETE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 PRO_ID_PALETE = value,
@@ -850,7 +850,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRO_ID_TAMPO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET PRO_ID_TAMPO = @PRO_ID_TAMPO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [PRO_ID_TAMPO] = @PRO_ID_TAMPO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 PRO_ID_TAMPO = value,
@@ -860,7 +860,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_PILHAS_POR_PALETE(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET ORD_PILHAS_POR_PALETE = @ORD_PILHAS_POR_PALETE WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_PILHAS_POR_PALETE] = @ORD_PILHAS_POR_PALETE WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_PILHAS_POR_PALETE = value,
@@ -870,7 +870,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_CHAPAS_POR_PILHA(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET ORD_CHAPAS_POR_PILHA = @ORD_CHAPAS_POR_PILHA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_CHAPAS_POR_PILHA] = @ORD_CHAPAS_POR_PILHA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_CHAPAS_POR_PILHA = value,
@@ -880,7 +880,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_DATA_CANCELAMENTO(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_DATA_CANCELAMENTO = @ORD_DATA_CANCELAMENTO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_DATA_CANCELAMENTO] = @ORD_DATA_CANCELAMENTO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_DATA_CANCELAMENTO = value,
@@ -890,7 +890,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_STATUS_ESTATISTICA(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET ORD_STATUS_ESTATISTICA = @ORD_STATUS_ESTATISTICA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_STATUS_ESTATISTICA] = @ORD_STATUS_ESTATISTICA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_STATUS_ESTATISTICA = value,
@@ -900,7 +900,7 @@ namespace Query.Write
         }
         public QueryModel UpdateORD_DATA_ESTATISTICA(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET ORD_DATA_ESTATISTICA = @ORD_DATA_ESTATISTICA WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [ORD_DATA_ESTATISTICA] = @ORD_DATA_ESTATISTICA WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_DATA_ESTATISTICA = value,
@@ -910,7 +910,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOCO_ID_MOTIVO_ATRASO(string ord_id, string value)
         {
-            this.Query = $@" UPDATE Order SET OCO_ID_MOTIVO_ATRASO = @OCO_ID_MOTIVO_ATRASO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [OCO_ID_MOTIVO_ATRASO] = @OCO_ID_MOTIVO_ATRASO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 OCO_ID_MOTIVO_ATRASO = value,
@@ -920,7 +920,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOTK_VERSSAO(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET OTK_VERSSAO = @OTK_VERSSAO WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [OTK_VERSSAO] = @OTK_VERSSAO WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 OTK_VERSSAO = value,
@@ -930,7 +930,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET TenantID = @TenantID WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [TenantID] = @TenantID WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -940,7 +940,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string ord_id, bool value)
         {
-            this.Query = $@" UPDATE Order SET Deleted = @Deleted WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [Deleted] = @Deleted WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -950,7 +950,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string ord_id, DateTime value)
         {
-            this.Query = $@" UPDATE Order SET Changed = @Changed WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [Changed] = @Changed WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -960,7 +960,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string ord_id, int value)
         {
-            this.Query = $@" UPDATE Order SET UserId = @UserId WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" UPDATE [Order] SET [UserId] = @UserId WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -970,7 +970,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOrderQuery(IOrderEntity Order)
         {
-            this.Query = $@" DELETE FROM Order WHERE ORD_ID = @ORD_ID ";
+            this.Query = $@" DELETE FROM [Order] WHERE [ORD_ID] = @ORD_ID ";
             this.Parameters = new
             {
                 ORD_ID = Order.ORD_ID,

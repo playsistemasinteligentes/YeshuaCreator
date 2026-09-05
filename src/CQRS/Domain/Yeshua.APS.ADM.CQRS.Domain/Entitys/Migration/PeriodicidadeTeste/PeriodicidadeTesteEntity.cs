@@ -36,12 +36,12 @@
  PER_QTD = per_qtd; 
  UNI_ID = uni_id; 
  GRP_ID = grp_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PER_ID == null)
-   this._erroMensagem.Add("PER ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

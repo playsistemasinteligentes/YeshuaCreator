@@ -30,6 +30,8 @@
  internal EnderecosEntity(string end_id, string end_grupo ){
  END_ID = end_id; 
  END_GRUPO = end_grupo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

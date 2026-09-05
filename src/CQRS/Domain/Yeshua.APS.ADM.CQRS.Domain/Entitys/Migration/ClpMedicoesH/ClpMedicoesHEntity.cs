@@ -62,22 +62,18 @@
  COMPACTA = compacta; 
  BOL_ID = bol_id; 
  COR_SEQUENCIA = cor_sequencia; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ID == null)
-   this._erroMensagem.Add("ID deve ser informado.");
    if(string.IsNullOrEmpty(MAQUINA_ID))
    this._erroMensagem.Add("MAQUINA ID deve ser informado.");
-   if (DATA_INI == null || DATA_INI < (new DateTime(1800, 1, 1)))
+   if(DATA_INI == null || DATA_INI < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DATA INI deve ser informado.");
-   if (DATA_FIM == null || DATA_FIM < (new DateTime(1800, 1, 1)))
+   if(DATA_FIM == null || DATA_FIM < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DATA FIM deve ser informado.");
-   if (QTD == null)
-   this._erroMensagem.Add("QTD deve ser informado.");
-   if (ID_LOTE_CLP == null)
-   this._erroMensagem.Add("ID LOTE CLP deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

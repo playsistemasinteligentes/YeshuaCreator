@@ -44,7 +44,7 @@ public partial class UnidadeMedidaCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "uni_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class UnidadeMedidaCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["UNI_ID"] = ApiTestData.Text("UnidadeMedida UNI_ID", 30),
+            ["UNI_ID"] = ApiTestData.KeyText(12),
             ["UNI_DESCRICAO"] = ApiTestData.Text("UnidadeMedida UNI_DESCRICAO", 80),
             ["UNI_ESCALA_TEMPO"] = ApiTestData.Text("UnidadeMedida UNI_ESCALA_TEMPO", 1),
         };

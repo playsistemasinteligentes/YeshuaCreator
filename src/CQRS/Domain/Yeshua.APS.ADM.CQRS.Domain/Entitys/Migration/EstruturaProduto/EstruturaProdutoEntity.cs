@@ -44,22 +44,20 @@
  EST_BASE_PRODUCAO = est_base_producao; 
  EST_TIPO_REQUISICAO = est_tipo_requisicao; 
  EST_CODIGO_DE_EXCECAO = est_codigo_de_excecao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (EST_DATA_VALIDADE == null || EST_DATA_VALIDADE < (new DateTime(1800, 1, 1)))
+   if(EST_DATA_VALIDADE == null || EST_DATA_VALIDADE < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("EST DATA VALIDADE deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID_PRODUTO))
    this._erroMensagem.Add("PRO ID PRODUTO deve ser informado.");
    if(string.IsNullOrEmpty(PRO_ID_COMPONENTE))
    this._erroMensagem.Add("PRO ID COMPONENTE deve ser informado.");
-   if (EST_QUANT == null)
-   this._erroMensagem.Add("EST QUANT deve ser informado.");
-   if (EST_DATA_INCLUSAO == null || EST_DATA_INCLUSAO < (new DateTime(1800, 1, 1)))
+   if(EST_DATA_INCLUSAO == null || EST_DATA_INCLUSAO < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("EST DATA INCLUSAO deve ser informado.");
-   if (EST_BASE_PRODUCAO == null)
-   this._erroMensagem.Add("EST BASE PRODUCAO deve ser informado.");
    if(string.IsNullOrEmpty(EST_TIPO_REQUISICAO))
    this._erroMensagem.Add("EST TIPO REQUISICAO deve ser informado.");
    if(string.IsNullOrEmpty(EST_CODIGO_DE_EXCECAO))

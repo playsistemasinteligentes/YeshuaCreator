@@ -39,7 +39,7 @@ public partial class MaquinaCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class MaquinaCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = ApiTestData.Text("Maquina Id", 30),
+            ["Id"] = ApiTestData.KeyText(12),
             ["Descricao"] = ApiTestData.Text("Maquina Descricao", 80),
             ["Status"] = ApiTestData.Text("Maquina Status", 2),
             ["CAL_ID"] = ApiSeedTestContext.GetRequiredCreatedId("Calendario", "CAL_ID"),

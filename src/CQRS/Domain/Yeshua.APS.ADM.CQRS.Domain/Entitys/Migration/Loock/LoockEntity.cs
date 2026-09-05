@@ -34,6 +34,8 @@
  LOO_ID = loo_id; 
  LOO_DESCRICAO = loo_descricao; 
  LOO_CONTEUDO = loo_conteudo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

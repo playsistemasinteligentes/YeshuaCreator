@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryUserQuery(IyUserEntity yUser)
         {
-            this.Query = $@" INSERT INTO yUser (Nome, Email, Senha, TenantID, Deleted, Changed) OUTPUT INSERTED.Id VALUES(@Nome, @Email, @Senha, @TenantID, @Deleted, @Changed) ";
+            this.Query = $@" INSERT INTO [yUser] ([Nome], [Email], [Senha], [TenantID], [Deleted], [Changed]) OUTPUT INSERTED.[Id] VALUES(@Nome, @Email, @Senha, @TenantID, @Deleted, @Changed) ";
             this.Parameters = new
             {
                 Nome = yUser.Nome,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyUserQuery(IyUserEntity yUser)
         {
-            this.Query = $@" UPDATE yUser SET Nome = @Nome, Email = @Email, Senha = @Senha, Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [Nome] = @Nome, [Email] = @Email, [Senha] = @Senha, [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Nome = yUser.Nome,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNome(int id, string value)
         {
-            this.Query = $@" UPDATE yUser SET Nome = @Nome WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [Nome] = @Nome WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Nome = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmail(int id, string value)
         {
-            this.Query = $@" UPDATE yUser SET Email = @Email WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [Email] = @Email WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Email = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSenha(int id, string value)
         {
-            this.Query = $@" UPDATE yUser SET Senha = @Senha WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [Senha] = @Senha WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Senha = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yUser SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yUser SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yUser SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yUser] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyUserQuery(IyUserEntity yUser)
         {
-            this.Query = $@" DELETE FROM yUser WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yUser] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yUser.Id,

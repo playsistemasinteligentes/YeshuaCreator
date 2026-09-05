@@ -39,7 +39,7 @@ public partial class OrderCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "ord_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class OrderCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["ORD_ID"] = ApiTestData.Text("Order ORD_ID", 60),
+            ["ORD_ID"] = ApiTestData.KeyText(12),
             ["ORD_ID_RESERVA"] = ApiTestData.Text("Order ORD_ID_RESERVA", 60),
             ["ORD_ID_CONJUNTO"] = ApiTestData.Text("Order ORD_ID_CONJUNTO", 30),
             ["PRO_ID"] = ApiTestData.Text("Order PRO_ID", 30),

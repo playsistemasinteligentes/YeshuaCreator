@@ -32,12 +32,12 @@
  CAL_ID = cal_id; 
  CAL_DESCRICAO = cal_descricao; 
  CAL_DIVIDE_DIA_EM = cal_divide_dia_em; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (CAL_ID == null)
-   this._erroMensagem.Add("CAL ID deve ser informado.");
    if(string.IsNullOrEmpty(CAL_DESCRICAO))
    this._erroMensagem.Add("CAL DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

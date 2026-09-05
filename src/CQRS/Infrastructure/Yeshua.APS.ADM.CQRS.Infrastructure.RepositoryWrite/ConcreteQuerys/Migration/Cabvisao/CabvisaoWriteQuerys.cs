@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCabvisaoQuery(ICabvisaoEntity Cabvisao)
         {
-            this.Query = $@" INSERT INTO Cabvisao (CAB_DESC, CAB_STATUS, USE_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.CAB_ID VALUES(@CAB_DESC, @CAB_STATUS, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Cabvisao] ([CAB_DESC], [CAB_STATUS], [USE_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[CAB_ID] VALUES(@CAB_DESC, @CAB_STATUS, @USE_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CAB_DESC = Cabvisao.CAB_DESC,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCabvisaoQuery(ICabvisaoEntity Cabvisao)
         {
-            this.Query = $@" UPDATE Cabvisao SET CAB_DESC = @CAB_DESC, CAB_STATUS = @CAB_STATUS, USE_ID = @USE_ID, Changed = @Changed, UserId = @UserId WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [CAB_DESC] = @CAB_DESC, [CAB_STATUS] = @CAB_STATUS, [USE_ID] = @USE_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 CAB_DESC = Cabvisao.CAB_DESC,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAB_DESC(int cab_id, string value)
         {
-            this.Query = $@" UPDATE Cabvisao SET CAB_DESC = @CAB_DESC WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [CAB_DESC] = @CAB_DESC WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 CAB_DESC = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCAB_STATUS(int cab_id, int value)
         {
-            this.Query = $@" UPDATE Cabvisao SET CAB_STATUS = @CAB_STATUS WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [CAB_STATUS] = @CAB_STATUS WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 CAB_STATUS = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int cab_id, int value)
         {
-            this.Query = $@" UPDATE Cabvisao SET USE_ID = @USE_ID WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [USE_ID] = @USE_ID WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int cab_id, int value)
         {
-            this.Query = $@" UPDATE Cabvisao SET TenantID = @TenantID WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [TenantID] = @TenantID WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int cab_id, bool value)
         {
-            this.Query = $@" UPDATE Cabvisao SET Deleted = @Deleted WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [Deleted] = @Deleted WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int cab_id, DateTime value)
         {
-            this.Query = $@" UPDATE Cabvisao SET Changed = @Changed WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [Changed] = @Changed WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int cab_id, int value)
         {
-            this.Query = $@" UPDATE Cabvisao SET UserId = @UserId WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" UPDATE [Cabvisao] SET [UserId] = @UserId WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCabvisaoQuery(ICabvisaoEntity Cabvisao)
         {
-            this.Query = $@" DELETE FROM Cabvisao WHERE CAB_ID = @CAB_ID ";
+            this.Query = $@" DELETE FROM [Cabvisao] WHERE [CAB_ID] = @CAB_ID ";
             this.Parameters = new
             {
                 CAB_ID = Cabvisao.CAB_ID,

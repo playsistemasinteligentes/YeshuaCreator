@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRoteiroQuery(IRoteiroEntity Roteiro)
         {
-            this.Query = $@" INSERT INTO Roteiro (MaquinaId, ProdutoId, SequenciaTransformacao, GrupoMaquinaId, PecasPorPulso, PrioridadeInformada, Acao, Performance, TempoSetup, TempoSetupAjuste, ProximaSequenciaTransformacao, Status, HierarquiaSequenciaTransformacao, AvaliaCusto, Operacoes, ExcecaoOperacoes, PercentualInicioPassoAnterior, LinhaDireta, TemplateDeTestesId, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MaquinaId, @ProdutoId, @SequenciaTransformacao, @GrupoMaquinaId, @PecasPorPulso, @PrioridadeInformada, @Acao, @Performance, @TempoSetup, @TempoSetupAjuste, @ProximaSequenciaTransformacao, @Status, @HierarquiaSequenciaTransformacao, @AvaliaCusto, @Operacoes, @ExcecaoOperacoes, @PercentualInicioPassoAnterior, @LinhaDireta, @TemplateDeTestesId, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Roteiro] ([MaquinaId], [ProdutoId], [SequenciaTransformacao], [GrupoMaquinaId], [PecasPorPulso], [PrioridadeInformada], [Acao], [Performance], [TempoSetup], [TempoSetupAjuste], [ProximaSequenciaTransformacao], [Status], [HierarquiaSequenciaTransformacao], [AvaliaCusto], [Operacoes], [ExcecaoOperacoes], [PercentualInicioPassoAnterior], [LinhaDireta], [TemplateDeTestesId], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MaquinaId, @ProdutoId, @SequenciaTransformacao, @GrupoMaquinaId, @PecasPorPulso, @PrioridadeInformada, @Acao, @Performance, @TempoSetup, @TempoSetupAjuste, @ProximaSequenciaTransformacao, @Status, @HierarquiaSequenciaTransformacao, @AvaliaCusto, @Operacoes, @ExcecaoOperacoes, @PercentualInicioPassoAnterior, @LinhaDireta, @TemplateDeTestesId, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MaquinaId = Roteiro.MaquinaId,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRoteiroQuery(IRoteiroEntity Roteiro)
         {
-            this.Query = $@" UPDATE Roteiro SET MaquinaId = @MaquinaId, ProdutoId = @ProdutoId, SequenciaTransformacao = @SequenciaTransformacao, GrupoMaquinaId = @GrupoMaquinaId, PecasPorPulso = @PecasPorPulso, PrioridadeInformada = @PrioridadeInformada, Acao = @Acao, Performance = @Performance, TempoSetup = @TempoSetup, TempoSetupAjuste = @TempoSetupAjuste, ProximaSequenciaTransformacao = @ProximaSequenciaTransformacao, Status = @Status, HierarquiaSequenciaTransformacao = @HierarquiaSequenciaTransformacao, AvaliaCusto = @AvaliaCusto, Operacoes = @Operacoes, ExcecaoOperacoes = @ExcecaoOperacoes, PercentualInicioPassoAnterior = @PercentualInicioPassoAnterior, LinhaDireta = @LinhaDireta, TemplateDeTestesId = @TemplateDeTestesId, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [MaquinaId] = @MaquinaId, [ProdutoId] = @ProdutoId, [SequenciaTransformacao] = @SequenciaTransformacao, [GrupoMaquinaId] = @GrupoMaquinaId, [PecasPorPulso] = @PecasPorPulso, [PrioridadeInformada] = @PrioridadeInformada, [Acao] = @Acao, [Performance] = @Performance, [TempoSetup] = @TempoSetup, [TempoSetupAjuste] = @TempoSetupAjuste, [ProximaSequenciaTransformacao] = @ProximaSequenciaTransformacao, [Status] = @Status, [HierarquiaSequenciaTransformacao] = @HierarquiaSequenciaTransformacao, [AvaliaCusto] = @AvaliaCusto, [Operacoes] = @Operacoes, [ExcecaoOperacoes] = @ExcecaoOperacoes, [PercentualInicioPassoAnterior] = @PercentualInicioPassoAnterior, [LinhaDireta] = @LinhaDireta, [TemplateDeTestesId] = @TemplateDeTestesId, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MaquinaId = Roteiro.MaquinaId,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMaquinaId(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET MaquinaId = @MaquinaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [MaquinaId] = @MaquinaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MaquinaId = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProdutoId(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET ProdutoId = @ProdutoId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [ProdutoId] = @ProdutoId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProdutoId = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSequenciaTransformacao(int id, int value)
         {
-            this.Query = $@" UPDATE Roteiro SET SequenciaTransformacao = @SequenciaTransformacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [SequenciaTransformacao] = @SequenciaTransformacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SequenciaTransformacao = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGrupoMaquinaId(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET GrupoMaquinaId = @GrupoMaquinaId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [GrupoMaquinaId] = @GrupoMaquinaId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 GrupoMaquinaId = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePecasPorPulso(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET PecasPorPulso = @PecasPorPulso WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [PecasPorPulso] = @PecasPorPulso WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PecasPorPulso = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePrioridadeInformada(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET PrioridadeInformada = @PrioridadeInformada WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [PrioridadeInformada] = @PrioridadeInformada WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PrioridadeInformada = value,
@@ -151,7 +151,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAcao(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET Acao = @Acao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [Acao] = @Acao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Acao = value,
@@ -161,7 +161,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePerformance(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET Performance = @Performance WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [Performance] = @Performance WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Performance = value,
@@ -171,7 +171,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTempoSetup(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET TempoSetup = @TempoSetup WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [TempoSetup] = @TempoSetup WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TempoSetup = value,
@@ -181,7 +181,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTempoSetupAjuste(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET TempoSetupAjuste = @TempoSetupAjuste WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [TempoSetupAjuste] = @TempoSetupAjuste WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TempoSetupAjuste = value,
@@ -191,7 +191,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProximaSequenciaTransformacao(int id, int value)
         {
-            this.Query = $@" UPDATE Roteiro SET ProximaSequenciaTransformacao = @ProximaSequenciaTransformacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [ProximaSequenciaTransformacao] = @ProximaSequenciaTransformacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProximaSequenciaTransformacao = value,
@@ -201,7 +201,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET Status = @Status WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [Status] = @Status WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Status = value,
@@ -211,7 +211,7 @@ namespace Query.Write
         }
         public QueryModel UpdateHierarquiaSequenciaTransformacao(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET HierarquiaSequenciaTransformacao = @HierarquiaSequenciaTransformacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [HierarquiaSequenciaTransformacao] = @HierarquiaSequenciaTransformacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 HierarquiaSequenciaTransformacao = value,
@@ -221,7 +221,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAvaliaCusto(int id, int value)
         {
-            this.Query = $@" UPDATE Roteiro SET AvaliaCusto = @AvaliaCusto WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [AvaliaCusto] = @AvaliaCusto WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 AvaliaCusto = value,
@@ -231,7 +231,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOperacoes(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET Operacoes = @Operacoes WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [Operacoes] = @Operacoes WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Operacoes = value,
@@ -241,7 +241,7 @@ namespace Query.Write
         }
         public QueryModel UpdateExcecaoOperacoes(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET ExcecaoOperacoes = @ExcecaoOperacoes WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [ExcecaoOperacoes] = @ExcecaoOperacoes WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ExcecaoOperacoes = value,
@@ -251,7 +251,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePercentualInicioPassoAnterior(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Roteiro SET PercentualInicioPassoAnterior = @PercentualInicioPassoAnterior WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [PercentualInicioPassoAnterior] = @PercentualInicioPassoAnterior WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PercentualInicioPassoAnterior = value,
@@ -261,7 +261,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLinhaDireta(int id, string value)
         {
-            this.Query = $@" UPDATE Roteiro SET LinhaDireta = @LinhaDireta WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [LinhaDireta] = @LinhaDireta WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LinhaDireta = value,
@@ -271,7 +271,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTemplateDeTestesId(int id, int value)
         {
-            this.Query = $@" UPDATE Roteiro SET TemplateDeTestesId = @TemplateDeTestesId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [TemplateDeTestesId] = @TemplateDeTestesId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TemplateDeTestesId = value,
@@ -281,7 +281,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Roteiro SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -291,7 +291,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Roteiro SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -301,7 +301,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Roteiro SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -311,7 +311,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Roteiro SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Roteiro] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -321,7 +321,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRoteiroQuery(IRoteiroEntity Roteiro)
         {
-            this.Query = $@" DELETE FROM Roteiro WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Roteiro] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Roteiro.Id,

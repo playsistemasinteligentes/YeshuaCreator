@@ -30,12 +30,12 @@
  internal PerfilEntity(int per_id, string per_nome ){
  PER_ID = per_id; 
  PER_NOME = per_nome; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PER_ID == null)
-   this._erroMensagem.Add("PER ID deve ser informado.");
    if(string.IsNullOrEmpty(PER_NOME))
    this._erroMensagem.Add("PER NOME deve ser informado.");
 return _erroMensagem.Count() <= 0;

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual)
         {
-            this.Query = $@" INSERT INTO TipoInspecaoVisual (TIV_ID, TenantID, Deleted, Changed, UserId, TIV_NOME, TIV_DESCRICAO, TIV_FECHAMENTO, TIV_AMOSTRA_ALEATORIA, TIV_N_AMOSTRAS, TIV_MEDIDA, TIV_ESPECIFICACAO, TIV_TOL_MAIS, TIV_TOL_MENOS) OUTPUT INSERTED.Id VALUES(@TIV_ID, @TenantID, @Deleted, @Changed, @UserId, @TIV_NOME, @TIV_DESCRICAO, @TIV_FECHAMENTO, @TIV_AMOSTRA_ALEATORIA, @TIV_N_AMOSTRAS, @TIV_MEDIDA, @TIV_ESPECIFICACAO, @TIV_TOL_MAIS, @TIV_TOL_MENOS) ";
+            this.Query = $@" INSERT INTO [TipoInspecaoVisual] ([TIV_ID], [TenantID], [Deleted], [Changed], [UserId], [TIV_NOME], [TIV_DESCRICAO], [TIV_FECHAMENTO], [TIV_AMOSTRA_ALEATORIA], [TIV_N_AMOSTRAS], [TIV_MEDIDA], [TIV_ESPECIFICACAO], [TIV_TOL_MAIS], [TIV_TOL_MENOS]) OUTPUT INSERTED.[Id] VALUES(@TIV_ID, @TenantID, @Deleted, @Changed, @UserId, @TIV_NOME, @TIV_DESCRICAO, @TIV_FECHAMENTO, @TIV_AMOSTRA_ALEATORIA, @TIV_N_AMOSTRAS, @TIV_MEDIDA, @TIV_ESPECIFICACAO, @TIV_TOL_MAIS, @TIV_TOL_MENOS) ";
             this.Parameters = new
             {
                 TIV_ID = TipoInspecaoVisual.TIV_ID,
@@ -52,7 +52,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_ID = @TIV_ID, Changed = @Changed, UserId = @UserId, TIV_NOME = @TIV_NOME, TIV_DESCRICAO = @TIV_DESCRICAO, TIV_FECHAMENTO = @TIV_FECHAMENTO, TIV_AMOSTRA_ALEATORIA = @TIV_AMOSTRA_ALEATORIA, TIV_N_AMOSTRAS = @TIV_N_AMOSTRAS, TIV_MEDIDA = @TIV_MEDIDA, TIV_ESPECIFICACAO = @TIV_ESPECIFICACAO, TIV_TOL_MAIS = @TIV_TOL_MAIS, TIV_TOL_MENOS = @TIV_TOL_MENOS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_ID] = @TIV_ID, [Changed] = @Changed, [UserId] = @UserId, [TIV_NOME] = @TIV_NOME, [TIV_DESCRICAO] = @TIV_DESCRICAO, [TIV_FECHAMENTO] = @TIV_FECHAMENTO, [TIV_AMOSTRA_ALEATORIA] = @TIV_AMOSTRA_ALEATORIA, [TIV_N_AMOSTRAS] = @TIV_N_AMOSTRAS, [TIV_MEDIDA] = @TIV_MEDIDA, [TIV_ESPECIFICACAO] = @TIV_ESPECIFICACAO, [TIV_TOL_MAIS] = @TIV_TOL_MAIS, [TIV_TOL_MENOS] = @TIV_TOL_MENOS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_ID = TipoInspecaoVisual.TIV_ID,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_ID(int id, int value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_ID = @TIV_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_ID] = @TIV_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_ID = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_NOME(int id, string value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_NOME = @TIV_NOME WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_NOME] = @TIV_NOME WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_NOME = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_DESCRICAO = @TIV_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_DESCRICAO] = @TIV_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_DESCRICAO = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_FECHAMENTO(int id, string value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_FECHAMENTO = @TIV_FECHAMENTO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_FECHAMENTO] = @TIV_FECHAMENTO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_FECHAMENTO = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_AMOSTRA_ALEATORIA(int id, string value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_AMOSTRA_ALEATORIA = @TIV_AMOSTRA_ALEATORIA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_AMOSTRA_ALEATORIA] = @TIV_AMOSTRA_ALEATORIA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_AMOSTRA_ALEATORIA = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_N_AMOSTRAS(int id, int value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_N_AMOSTRAS = @TIV_N_AMOSTRAS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_N_AMOSTRAS] = @TIV_N_AMOSTRAS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_N_AMOSTRAS = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_MEDIDA(int id, string value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_MEDIDA = @TIV_MEDIDA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_MEDIDA] = @TIV_MEDIDA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_MEDIDA = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_ESPECIFICACAO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_ESPECIFICACAO = @TIV_ESPECIFICACAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_ESPECIFICACAO] = @TIV_ESPECIFICACAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_ESPECIFICACAO = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_TOL_MAIS(int id, Decimal value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_TOL_MAIS = @TIV_TOL_MAIS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_TOL_MAIS] = @TIV_TOL_MAIS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_TOL_MAIS = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIV_TOL_MENOS(int id, Decimal value)
         {
-            this.Query = $@" UPDATE TipoInspecaoVisual SET TIV_TOL_MENOS = @TIV_TOL_MENOS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [TipoInspecaoVisual] SET [TIV_TOL_MENOS] = @TIV_TOL_MENOS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TIV_TOL_MENOS = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTipoInspecaoVisualQuery(ITipoInspecaoVisualEntity TipoInspecaoVisual)
         {
-            this.Query = $@" DELETE FROM TipoInspecaoVisual WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [TipoInspecaoVisual] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = TipoInspecaoVisual.Id,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSubOcorrenciaQuery(ISubOcorrenciaEntity SubOcorrencia)
         {
-            this.Query = $@" INSERT INTO SubOcorrencia (SUB_ID, SUB_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SUB_ID, @SUB_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [SubOcorrencia] ([SUB_ID], [SUB_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SUB_ID, @SUB_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SUB_ID = SubOcorrencia.SUB_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSubOcorrenciaQuery(ISubOcorrenciaEntity SubOcorrencia)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET SUB_ID = @SUB_ID, SUB_DESCRICAO = @SUB_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [SUB_ID] = @SUB_ID, [SUB_DESCRICAO] = @SUB_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SUB_ID = SubOcorrencia.SUB_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSUB_ID(int id, string value)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET SUB_ID = @SUB_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [SUB_ID] = @SUB_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SUB_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSUB_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET SUB_DESCRICAO = @SUB_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [SUB_DESCRICAO] = @SUB_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SUB_DESCRICAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE SubOcorrencia SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [SubOcorrencia] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteSubOcorrenciaQuery(ISubOcorrenciaEntity SubOcorrencia)
         {
-            this.Query = $@" DELETE FROM SubOcorrencia WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [SubOcorrencia] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = SubOcorrencia.Id,

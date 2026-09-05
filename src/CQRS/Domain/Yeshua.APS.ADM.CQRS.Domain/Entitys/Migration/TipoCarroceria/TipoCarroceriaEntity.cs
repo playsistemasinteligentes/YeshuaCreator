@@ -32,6 +32,8 @@
  Id = id; 
  TCA_ID = tca_id; 
  TCA_DESCRICAO = tca_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

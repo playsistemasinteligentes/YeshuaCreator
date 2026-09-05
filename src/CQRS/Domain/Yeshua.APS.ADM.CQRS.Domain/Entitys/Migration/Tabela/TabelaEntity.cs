@@ -32,12 +32,12 @@
  ID_TABELA = id_tabela; 
  CODIGO = codigo; 
  NOME = nome; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (ID_TABELA == null)
-   this._erroMensagem.Add("ID TABELA deve ser informado.");
    if(string.IsNullOrEmpty(CODIGO))
    this._erroMensagem.Add("CODIGO deve ser informado.");
    if(string.IsNullOrEmpty(NOME))

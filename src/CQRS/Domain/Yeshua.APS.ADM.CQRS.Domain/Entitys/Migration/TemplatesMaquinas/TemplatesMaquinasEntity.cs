@@ -32,12 +32,12 @@
  Id = id; 
  TEM_ID = tem_id; 
  MAQ_ID = maq_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TEM_ID == null)
-   this._erroMensagem.Add("TEM ID deve ser informado.");
    if(string.IsNullOrEmpty(MAQ_ID))
    this._erroMensagem.Add("MAQ ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

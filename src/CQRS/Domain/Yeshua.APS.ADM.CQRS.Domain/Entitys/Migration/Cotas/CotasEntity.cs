@@ -40,14 +40,12 @@
  COT_VALOR = cot_valor; 
  COT_OCUPADO = cot_ocupado; 
  REP_ID = rep_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (COT_ID == null)
-   this._erroMensagem.Add("COT ID deve ser informado.");
-   if (REP_ID == null)
-   this._erroMensagem.Add("REP ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

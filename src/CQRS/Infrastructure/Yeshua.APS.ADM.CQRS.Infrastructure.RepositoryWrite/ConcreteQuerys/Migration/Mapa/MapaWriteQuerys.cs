@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMapaQuery(IMapaEntity Mapa)
         {
-            this.Query = $@" INSERT INTO Mapa (MAP_ID, PON_ID, PON_ID_VIZINHO, MAP_DISTANCIA, MAP_CUSTO_PEDAGIO_POR_EIXO, ROD_ID, MAP_ALTURA_ROD, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@MAP_ID, @PON_ID, @PON_ID_VIZINHO, @MAP_DISTANCIA, @MAP_CUSTO_PEDAGIO_POR_EIXO, @ROD_ID, @MAP_ALTURA_ROD, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Mapa] ([MAP_ID], [PON_ID], [PON_ID_VIZINHO], [MAP_DISTANCIA], [MAP_CUSTO_PEDAGIO_POR_EIXO], [ROD_ID], [MAP_ALTURA_ROD], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@MAP_ID, @PON_ID, @PON_ID_VIZINHO, @MAP_DISTANCIA, @MAP_CUSTO_PEDAGIO_POR_EIXO, @ROD_ID, @MAP_ALTURA_ROD, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MAP_ID = Mapa.MAP_ID,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMapaQuery(IMapaEntity Mapa)
         {
-            this.Query = $@" UPDATE Mapa SET MAP_ID = @MAP_ID, PON_ID = @PON_ID, PON_ID_VIZINHO = @PON_ID_VIZINHO, MAP_DISTANCIA = @MAP_DISTANCIA, MAP_CUSTO_PEDAGIO_POR_EIXO = @MAP_CUSTO_PEDAGIO_POR_EIXO, ROD_ID = @ROD_ID, MAP_ALTURA_ROD = @MAP_ALTURA_ROD, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [MAP_ID] = @MAP_ID, [PON_ID] = @PON_ID, [PON_ID_VIZINHO] = @PON_ID_VIZINHO, [MAP_DISTANCIA] = @MAP_DISTANCIA, [MAP_CUSTO_PEDAGIO_POR_EIXO] = @MAP_CUSTO_PEDAGIO_POR_EIXO, [ROD_ID] = @ROD_ID, [MAP_ALTURA_ROD] = @MAP_ALTURA_ROD, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAP_ID = Mapa.MAP_ID,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAP_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Mapa SET MAP_ID = @MAP_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [MAP_ID] = @MAP_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAP_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Mapa SET PON_ID = @PON_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [PON_ID] = @PON_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PON_ID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_ID_VIZINHO(int id, string value)
         {
-            this.Query = $@" UPDATE Mapa SET PON_ID_VIZINHO = @PON_ID_VIZINHO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [PON_ID_VIZINHO] = @PON_ID_VIZINHO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PON_ID_VIZINHO = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAP_DISTANCIA(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Mapa SET MAP_DISTANCIA = @MAP_DISTANCIA WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [MAP_DISTANCIA] = @MAP_DISTANCIA WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAP_DISTANCIA = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAP_CUSTO_PEDAGIO_POR_EIXO(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Mapa SET MAP_CUSTO_PEDAGIO_POR_EIXO = @MAP_CUSTO_PEDAGIO_POR_EIXO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [MAP_CUSTO_PEDAGIO_POR_EIXO] = @MAP_CUSTO_PEDAGIO_POR_EIXO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAP_CUSTO_PEDAGIO_POR_EIXO = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateROD_ID(int id, int value)
         {
-            this.Query = $@" UPDATE Mapa SET ROD_ID = @ROD_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [ROD_ID] = @ROD_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ROD_ID = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAP_ALTURA_ROD(int id, Decimal value)
         {
-            this.Query = $@" UPDATE Mapa SET MAP_ALTURA_ROD = @MAP_ALTURA_ROD WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [MAP_ALTURA_ROD] = @MAP_ALTURA_ROD WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 MAP_ALTURA_ROD = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Mapa SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Mapa SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Mapa SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Mapa SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Mapa] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMapaQuery(IMapaEntity Mapa)
         {
-            this.Query = $@" DELETE FROM Mapa WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Mapa] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Mapa.Id,

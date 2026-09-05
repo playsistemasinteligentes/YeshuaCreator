@@ -40,12 +40,12 @@
  REL_POS_X = rel_pos_x; 
  REL_POS_Y = rel_pos_y; 
  REL_TAMANHO_FONTE = rel_tamanho_fonte; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (REL_ID == null)
-   this._erroMensagem.Add("REL ID deve ser informado.");
    if(string.IsNullOrEmpty(REL_NOME_CAMPO))
    this._erroMensagem.Add("REL NOME CAMPO deve ser informado.");
    if(string.IsNullOrEmpty(REL_TIPO_CAMPO))

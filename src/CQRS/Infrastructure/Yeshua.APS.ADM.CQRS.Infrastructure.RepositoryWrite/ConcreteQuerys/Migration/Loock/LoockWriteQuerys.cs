@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirLoockQuery(ILoockEntity Loock)
         {
-            this.Query = $@" INSERT INTO Loock (LOO_ID, LOO_DESCRICAO, LOO_CONTEUDO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@LOO_ID, @LOO_DESCRICAO, @LOO_CONTEUDO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Loock] ([LOO_ID], [LOO_DESCRICAO], [LOO_CONTEUDO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@LOO_ID, @LOO_DESCRICAO, @LOO_CONTEUDO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 LOO_ID = Loock.LOO_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLoockQuery(ILoockEntity Loock)
         {
-            this.Query = $@" UPDATE Loock SET LOO_ID = @LOO_ID, LOO_DESCRICAO = @LOO_DESCRICAO, LOO_CONTEUDO = @LOO_CONTEUDO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [LOO_ID] = @LOO_ID, [LOO_DESCRICAO] = @LOO_DESCRICAO, [LOO_CONTEUDO] = @LOO_CONTEUDO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOO_ID = Loock.LOO_ID,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Loock SET LOO_ID = @LOO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [LOO_ID] = @LOO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOO_ID = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOO_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE Loock SET LOO_DESCRICAO = @LOO_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [LOO_DESCRICAO] = @LOO_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOO_DESCRICAO = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateLOO_CONTEUDO(int id, string value)
         {
-            this.Query = $@" UPDATE Loock SET LOO_CONTEUDO = @LOO_CONTEUDO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [LOO_CONTEUDO] = @LOO_CONTEUDO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 LOO_CONTEUDO = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Loock SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Loock SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Loock SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Loock SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Loock] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeleteLoockQuery(ILoockEntity Loock)
         {
-            this.Query = $@" DELETE FROM Loock WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Loock] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Loock.Id,

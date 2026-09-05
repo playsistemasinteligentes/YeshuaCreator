@@ -30,12 +30,12 @@
  internal InpecaoVisualEntity(int? id, int ipv_id ){
  Id = id; 
  IPV_ID = ipv_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IPV_ID == null)
-   this._erroMensagem.Add("IPV ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

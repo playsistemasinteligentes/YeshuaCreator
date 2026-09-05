@@ -13,6 +13,9 @@ using Shered.Services;
 using RepositoryInterfaces.Services;
 using Command.Patterns;
 using Command.Interfaces;
+using RepositoryInterfaces.Patterns.Saga;
+using Command.Receivers.Migration.Saga;
+using Command.Patterns.OutBox;
 using Command.Receivers;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -59,6 +62,8 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
+                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddScoped<OutboxService>();
 
 
 builder.Services.AddTransient<IRepository.Write.IProdutoWriteRepository, Input.Repository.Produto.ProdutoWriteRepository>();
@@ -2306,6 +2311,12 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
+builder.Services.AddTransient<Dominio.Saga.CargaStandardSaga>();
+builder.Services.AddTransient<Command.Receivers.CargaStandardSagaHandlerResolver>();
+builder.Services.AddTransient<DefinirDadosTransporteHandler>();
+builder.Services.AddTransient<EnviarNotasFiscaisHandler>();
+builder.Services.AddTransient<GerarCTeHandler>();
+builder.Services.AddTransient<GerarMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler>();
 
@@ -2360,6 +2371,60 @@ return new Command.Interfaces.Patterns.Queue.QueueTopology
 {
     Exchanges = new List<Command.Interfaces.Patterns.Queue.ExchangeDefinition>
     {
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "apsadm.carga",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "carga.notas-fiscais.outbox",
+                    RoutingKey = "carga.notas-fiscais.enviar"
+                },
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "carga.notas-fiscais.inbox",
+                    RoutingKey = "carga.notas-fiscais.enviadas"
+                },
+            }
+        },
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "fiscal.cte",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "cte.emitir.outbox",
+                    RoutingKey = "cte.emitir.solicitar"
+                },
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "cte.emitir.inbox",
+                    RoutingKey = "cte.emitir.autorizado"
+                },
+            }
+        },
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "fiscal.mdfe",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "mdfe.emitir.outbox",
+                    RoutingKey = "mdfe.emitir.solicitar"
+                },
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "mdfe.emitir.inbox",
+                    RoutingKey = "mdfe.emitir.autorizado"
+                },
+            }
+        },
     }
 };
 }

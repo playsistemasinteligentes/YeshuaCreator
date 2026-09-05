@@ -30,12 +30,12 @@
  internal T_DepartamentosEntity(int dep_id, string dep_nome ){
  DEP_ID = dep_id; 
  DEP_NOME = dep_nome; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (DEP_ID == null)
-   this._erroMensagem.Add("DEP ID deve ser informado.");
    if(string.IsNullOrEmpty(DEP_NOME))
    this._erroMensagem.Add("DEP NOME deve ser informado.");
 return _erroMensagem.Count() <= 0;

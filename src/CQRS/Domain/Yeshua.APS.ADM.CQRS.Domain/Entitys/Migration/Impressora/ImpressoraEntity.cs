@@ -32,12 +32,12 @@
  IMP_ID = imp_id; 
  IMP_IP = imp_ip; 
  IMP_NOME = imp_nome; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (IMP_ID == null)
-   this._erroMensagem.Add("IMP ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

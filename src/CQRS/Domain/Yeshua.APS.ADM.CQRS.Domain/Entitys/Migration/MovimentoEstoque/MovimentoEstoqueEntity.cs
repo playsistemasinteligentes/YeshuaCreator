@@ -122,21 +122,17 @@
  MOV_GRUPO_CONTABIL = mov_grupo_contabil; 
  FOR_ID = for_id; 
  CLI_ID = cli_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Id == null)
-   this._erroMensagem.Add("Id deve ser informado.");
    if(string.IsNullOrEmpty(ProdutoId))
    this._erroMensagem.Add("ProdutoId deve ser informado.");
    if(string.IsNullOrEmpty(Tipo))
    this._erroMensagem.Add("Tipo deve ser informado.");
-   if (Quantidade == null)
-   this._erroMensagem.Add("Quantidade deve ser informado.");
-   if (MOV_PESO_UNITARIO == null)
-   this._erroMensagem.Add("MOV PESO UNITARIO deve ser informado.");
-   if (DataHoraCriacao == null || DataHoraCriacao < (new DateTime(1800, 1, 1)))
+   if(DataHoraCriacao == null || DataHoraCriacao < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("DataHoraCriacao deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

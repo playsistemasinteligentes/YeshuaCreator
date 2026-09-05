@@ -32,12 +32,12 @@
  Id = id; 
  TEM_ID = tem_id; 
  GMA_ID = gma_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TEM_ID == null)
-   this._erroMensagem.Add("TEM ID deve ser informado.");
    if(string.IsNullOrEmpty(GMA_ID))
    this._erroMensagem.Add("GMA ID deve ser informado.");
 return _erroMensagem.Count() <= 0;

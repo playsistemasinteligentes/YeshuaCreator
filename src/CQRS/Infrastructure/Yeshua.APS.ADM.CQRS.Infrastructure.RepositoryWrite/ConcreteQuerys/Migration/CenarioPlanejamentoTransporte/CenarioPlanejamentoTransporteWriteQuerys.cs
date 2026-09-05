@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCenarioPlanejamentoTransporteQuery(ICenarioPlanejamentoTransporteEntity CenarioPlanejamentoTransporte)
         {
-            this.Query = $@" INSERT INTO CenarioPlanejamentoTransporte (CenarioId, Descricao, Objetivo, QuantidadeCargas, QuantidadePedidosNaoAtendidos, CustoTotal, AderenciaCubagem, AtrasoPrevisto, AlertasResumo) VALUES(@CenarioId, @Descricao, @Objetivo, @QuantidadeCargas, @QuantidadePedidosNaoAtendidos, @CustoTotal, @AderenciaCubagem, @AtrasoPrevisto, @AlertasResumo) ";
+            this.Query = $@" INSERT INTO [CenarioPlanejamentoTransporte] ([CenarioId], [Descricao], [Objetivo], [QuantidadeCargas], [QuantidadePedidosNaoAtendidos], [CustoTotal], [AderenciaCubagem], [AtrasoPrevisto], [AlertasResumo]) VALUES(@CenarioId, @Descricao, @Objetivo, @QuantidadeCargas, @QuantidadePedidosNaoAtendidos, @CustoTotal, @AderenciaCubagem, @AtrasoPrevisto, @AlertasResumo) ";
             this.Parameters = new
             {
                 CenarioId = CenarioPlanejamentoTransporte.CenarioId,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCenarioPlanejamentoTransporteQuery(ICenarioPlanejamentoTransporteEntity CenarioPlanejamentoTransporte)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET Descricao = @Descricao, Objetivo = @Objetivo, QuantidadeCargas = @QuantidadeCargas, QuantidadePedidosNaoAtendidos = @QuantidadePedidosNaoAtendidos, CustoTotal = @CustoTotal, AderenciaCubagem = @AderenciaCubagem, AtrasoPrevisto = @AtrasoPrevisto, AlertasResumo = @AlertasResumo WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [Descricao] = @Descricao, [Objetivo] = @Objetivo, [QuantidadeCargas] = @QuantidadeCargas, [QuantidadePedidosNaoAtendidos] = @QuantidadePedidosNaoAtendidos, [CustoTotal] = @CustoTotal, [AderenciaCubagem] = @AderenciaCubagem, [AtrasoPrevisto] = @AtrasoPrevisto, [AlertasResumo] = @AlertasResumo WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 Descricao = CenarioPlanejamentoTransporte.Descricao,
@@ -64,7 +64,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescricao(string cenarioid, string value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET Descricao = @Descricao WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [Descricao] = @Descricao WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 Descricao = value,
@@ -74,7 +74,7 @@ namespace Query.Write
         }
         public QueryModel UpdateObjetivo(string cenarioid, string value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET Objetivo = @Objetivo WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [Objetivo] = @Objetivo WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 Objetivo = value,
@@ -84,7 +84,7 @@ namespace Query.Write
         }
         public QueryModel UpdateQuantidadeCargas(string cenarioid, int value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET QuantidadeCargas = @QuantidadeCargas WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [QuantidadeCargas] = @QuantidadeCargas WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 QuantidadeCargas = value,
@@ -94,7 +94,7 @@ namespace Query.Write
         }
         public QueryModel UpdateQuantidadePedidosNaoAtendidos(string cenarioid, int value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET QuantidadePedidosNaoAtendidos = @QuantidadePedidosNaoAtendidos WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [QuantidadePedidosNaoAtendidos] = @QuantidadePedidosNaoAtendidos WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 QuantidadePedidosNaoAtendidos = value,
@@ -104,7 +104,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCustoTotal(string cenarioid, Decimal value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET CustoTotal = @CustoTotal WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [CustoTotal] = @CustoTotal WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 CustoTotal = value,
@@ -114,7 +114,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAderenciaCubagem(string cenarioid, Decimal value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET AderenciaCubagem = @AderenciaCubagem WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [AderenciaCubagem] = @AderenciaCubagem WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 AderenciaCubagem = value,
@@ -124,7 +124,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAtrasoPrevisto(string cenarioid, Decimal value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET AtrasoPrevisto = @AtrasoPrevisto WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [AtrasoPrevisto] = @AtrasoPrevisto WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 AtrasoPrevisto = value,
@@ -134,7 +134,7 @@ namespace Query.Write
         }
         public QueryModel UpdateAlertasResumo(string cenarioid, string value)
         {
-            this.Query = $@" UPDATE CenarioPlanejamentoTransporte SET AlertasResumo = @AlertasResumo WHERE CenarioId = @CenarioId ";
+            this.Query = $@" UPDATE [CenarioPlanejamentoTransporte] SET [AlertasResumo] = @AlertasResumo WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 AlertasResumo = value,
@@ -144,7 +144,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCenarioPlanejamentoTransporteQuery(ICenarioPlanejamentoTransporteEntity CenarioPlanejamentoTransporte)
         {
-            this.Query = $@" DELETE FROM CenarioPlanejamentoTransporte WHERE CenarioId = @CenarioId ";
+            this.Query = $@" DELETE FROM [CenarioPlanejamentoTransporte] WHERE [CenarioId] = @CenarioId ";
             this.Parameters = new
             {
                 CenarioId = CenarioPlanejamentoTransporte.CenarioId,

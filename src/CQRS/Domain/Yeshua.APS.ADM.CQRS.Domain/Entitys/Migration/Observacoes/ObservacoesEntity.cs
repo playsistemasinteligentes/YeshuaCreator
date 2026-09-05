@@ -42,12 +42,12 @@
  PRO_ID = pro_id; 
  ROT_SEQ_TRANFORMACAO = rot_seq_tranformacao; 
  OBS_INTEGRACAO = obs_integracao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (OBS_ID == null)
-   this._erroMensagem.Add("OBS ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

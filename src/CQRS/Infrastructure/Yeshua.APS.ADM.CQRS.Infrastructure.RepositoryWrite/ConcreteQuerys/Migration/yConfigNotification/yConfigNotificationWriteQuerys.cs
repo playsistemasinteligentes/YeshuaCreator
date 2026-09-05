@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification)
         {
-            this.Query = $@" INSERT INTO yConfigNotification (Id, TenantID, EmailSmtpClient, EmailPort, EmailUserName, EmailPassword, Deleted, Changed, UserId) VALUES(@Id, @TenantID, @EmailSmtpClient, @EmailPort, @EmailUserName, @EmailPassword, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [yConfigNotification] ([Id], [TenantID], [EmailSmtpClient], [EmailPort], [EmailUserName], [EmailPassword], [Deleted], [Changed], [UserId]) VALUES(@Id, @TenantID, @EmailSmtpClient, @EmailPort, @EmailUserName, @EmailPassword, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Id = yConfigNotification.Id,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification)
         {
-            this.Query = $@" UPDATE yConfigNotification SET EmailSmtpClient = @EmailSmtpClient, EmailPort = @EmailPort, EmailUserName = @EmailUserName, EmailPassword = @EmailPassword, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [EmailSmtpClient] = @EmailSmtpClient, [EmailPort] = @EmailPort, [EmailUserName] = @EmailUserName, [EmailPassword] = @EmailPassword, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EmailSmtpClient = yConfigNotification.EmailSmtpClient,
@@ -62,7 +62,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -72,7 +72,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmailSmtpClient(int id, string value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET EmailSmtpClient = @EmailSmtpClient WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [EmailSmtpClient] = @EmailSmtpClient WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EmailSmtpClient = value,
@@ -82,7 +82,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmailPort(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET EmailPort = @EmailPort WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [EmailPort] = @EmailPort WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EmailPort = value,
@@ -92,7 +92,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmailUserName(int id, string value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET EmailUserName = @EmailUserName WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [EmailUserName] = @EmailUserName WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EmailUserName = value,
@@ -102,7 +102,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEmailPassword(int id, string value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET EmailPassword = @EmailPassword WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [EmailPassword] = @EmailPassword WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 EmailPassword = value,
@@ -112,7 +112,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -122,7 +122,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -132,7 +132,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE yConfigNotification SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yConfigNotification] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -142,7 +142,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyConfigNotificationQuery(IyConfigNotificationEntity yConfigNotification)
         {
-            this.Query = $@" DELETE FROM yConfigNotification WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yConfigNotification] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yConfigNotification.Id,

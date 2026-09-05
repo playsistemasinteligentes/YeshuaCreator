@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirParamQuery(IParamEntity Param)
         {
-            this.Query = $@" INSERT INTO Param (PAR_ID, PAR_DESCRICAO, PAR_VALOR_S, PAR_VALOR_N, PAR_VALOR_D, TenantID, Deleted, Changed, UserId) VALUES(@PAR_ID, @PAR_DESCRICAO, @PAR_VALOR_S, @PAR_VALOR_N, @PAR_VALOR_D, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Param] ([PAR_ID], [PAR_DESCRICAO], [PAR_VALOR_S], [PAR_VALOR_N], [PAR_VALOR_D], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@PAR_ID, @PAR_DESCRICAO, @PAR_VALOR_S, @PAR_VALOR_N, @PAR_VALOR_D, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PAR_ID = Param.PAR_ID,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateParamQuery(IParamEntity Param)
         {
-            this.Query = $@" UPDATE Param SET PAR_DESCRICAO = @PAR_DESCRICAO, PAR_VALOR_S = @PAR_VALOR_S, PAR_VALOR_N = @PAR_VALOR_N, PAR_VALOR_D = @PAR_VALOR_D, Changed = @Changed, UserId = @UserId WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [PAR_DESCRICAO] = @PAR_DESCRICAO, [PAR_VALOR_S] = @PAR_VALOR_S, [PAR_VALOR_N] = @PAR_VALOR_N, [PAR_VALOR_D] = @PAR_VALOR_D, [Changed] = @Changed, [UserId] = @UserId WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 PAR_DESCRICAO = Param.PAR_DESCRICAO,
@@ -62,7 +62,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAR_DESCRICAO(string par_id, string value)
         {
-            this.Query = $@" UPDATE Param SET PAR_DESCRICAO = @PAR_DESCRICAO WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [PAR_DESCRICAO] = @PAR_DESCRICAO WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 PAR_DESCRICAO = value,
@@ -72,7 +72,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAR_VALOR_S(string par_id, string value)
         {
-            this.Query = $@" UPDATE Param SET PAR_VALOR_S = @PAR_VALOR_S WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [PAR_VALOR_S] = @PAR_VALOR_S WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 PAR_VALOR_S = value,
@@ -82,7 +82,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAR_VALOR_N(string par_id, Decimal value)
         {
-            this.Query = $@" UPDATE Param SET PAR_VALOR_N = @PAR_VALOR_N WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [PAR_VALOR_N] = @PAR_VALOR_N WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 PAR_VALOR_N = value,
@@ -92,7 +92,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePAR_VALOR_D(string par_id, DateTime value)
         {
-            this.Query = $@" UPDATE Param SET PAR_VALOR_D = @PAR_VALOR_D WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [PAR_VALOR_D] = @PAR_VALOR_D WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 PAR_VALOR_D = value,
@@ -102,7 +102,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string par_id, int value)
         {
-            this.Query = $@" UPDATE Param SET TenantID = @TenantID WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [TenantID] = @TenantID WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -112,7 +112,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string par_id, bool value)
         {
-            this.Query = $@" UPDATE Param SET Deleted = @Deleted WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [Deleted] = @Deleted WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -122,7 +122,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string par_id, DateTime value)
         {
-            this.Query = $@" UPDATE Param SET Changed = @Changed WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [Changed] = @Changed WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -132,7 +132,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string par_id, int value)
         {
-            this.Query = $@" UPDATE Param SET UserId = @UserId WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" UPDATE [Param] SET [UserId] = @UserId WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -142,7 +142,7 @@ namespace Query.Write
         }
         public QueryModel DeleteParamQuery(IParamEntity Param)
         {
-            this.Query = $@" DELETE FROM Param WHERE PAR_ID = @PAR_ID ";
+            this.Query = $@" DELETE FROM [Param] WHERE [PAR_ID] = @PAR_ID ";
             this.Parameters = new
             {
                 PAR_ID = Param.PAR_ID,

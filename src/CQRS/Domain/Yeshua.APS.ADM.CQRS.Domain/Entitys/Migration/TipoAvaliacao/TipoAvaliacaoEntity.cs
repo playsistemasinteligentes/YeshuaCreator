@@ -30,12 +30,12 @@
  internal TipoAvaliacaoEntity(int ta_id, string ta_desc ){
  TA_ID = ta_id; 
  TA_DESC = ta_desc; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TA_ID == null)
-   this._erroMensagem.Add("TA ID deve ser informado.");
    if(string.IsNullOrEmpty(TA_DESC))
    this._erroMensagem.Add("TA DESC deve ser informado.");
 return _erroMensagem.Count() <= 0;

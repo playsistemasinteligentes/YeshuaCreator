@@ -32,12 +32,12 @@
  Id = id; 
  REP_ID = rep_id; 
  REP_NOME = rep_nome; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (REP_ID == null)
-   this._erroMensagem.Add("REP ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

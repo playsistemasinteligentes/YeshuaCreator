@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirConsultasQuery(IConsultasEntity Consultas)
         {
-            this.Query = $@" INSERT INTO Consultas (CON_CASAS_DECIMAIS, CON_CONEXAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@CON_CASAS_DECIMAIS, @CON_CONEXAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Consultas] ([CON_CASAS_DECIMAIS], [CON_CONEXAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@CON_CASAS_DECIMAIS, @CON_CONEXAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CON_CASAS_DECIMAIS = Consultas.CON_CASAS_DECIMAIS,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateConsultasQuery(IConsultasEntity Consultas)
         {
-            this.Query = $@" UPDATE Consultas SET CON_CASAS_DECIMAIS = @CON_CASAS_DECIMAIS, CON_CONEXAO = @CON_CONEXAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [CON_CASAS_DECIMAIS] = @CON_CASAS_DECIMAIS, [CON_CONEXAO] = @CON_CONEXAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_CASAS_DECIMAIS = Consultas.CON_CASAS_DECIMAIS,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCON_CASAS_DECIMAIS(int id, string value)
         {
-            this.Query = $@" UPDATE Consultas SET CON_CASAS_DECIMAIS = @CON_CASAS_DECIMAIS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [CON_CASAS_DECIMAIS] = @CON_CASAS_DECIMAIS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_CASAS_DECIMAIS = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCON_CONEXAO(int id, string value)
         {
-            this.Query = $@" UPDATE Consultas SET CON_CONEXAO = @CON_CONEXAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [CON_CONEXAO] = @CON_CONEXAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 CON_CONEXAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Consultas SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Consultas SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Consultas SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Consultas SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Consultas] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteConsultasQuery(IConsultasEntity Consultas)
         {
-            this.Query = $@" DELETE FROM Consultas WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Consultas] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Consultas.Id,

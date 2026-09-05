@@ -32,6 +32,8 @@
  Id = id; 
  Descricao = descricao; 
  Observacao = observacao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -28,6 +28,8 @@
     private List<string> _erroMensagem = null;
  internal MedicoesOnduladeiraEntity(int? id ){
  Id = id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirInformacoesComplementaresQuery(IInformacoesComplementaresEntity InformacoesComplementares)
         {
-            this.Query = $@" INSERT INTO InformacoesComplementares (INF_DESCRICAO, INF_VALOR, MET_ID, INF_DATA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.INF_ID VALUES(@INF_DESCRICAO, @INF_VALOR, @MET_ID, @INF_DATA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [InformacoesComplementares] ([INF_DESCRICAO], [INF_VALOR], [MET_ID], [INF_DATA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[INF_ID] VALUES(@INF_DESCRICAO, @INF_VALOR, @MET_ID, @INF_DATA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 INF_DESCRICAO = InformacoesComplementares.INF_DESCRICAO,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateInformacoesComplementaresQuery(IInformacoesComplementaresEntity InformacoesComplementares)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET INF_DESCRICAO = @INF_DESCRICAO, INF_VALOR = @INF_VALOR, MET_ID = @MET_ID, INF_DATA = @INF_DATA, Changed = @Changed, UserId = @UserId WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [INF_DESCRICAO] = @INF_DESCRICAO, [INF_VALOR] = @INF_VALOR, [MET_ID] = @MET_ID, [INF_DATA] = @INF_DATA, [Changed] = @Changed, [UserId] = @UserId WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 INF_DESCRICAO = InformacoesComplementares.INF_DESCRICAO,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateINF_DESCRICAO(int inf_id, string value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET INF_DESCRICAO = @INF_DESCRICAO WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [INF_DESCRICAO] = @INF_DESCRICAO WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 INF_DESCRICAO = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateINF_VALOR(int inf_id, Decimal value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET INF_VALOR = @INF_VALOR WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [INF_VALOR] = @INF_VALOR WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 INF_VALOR = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_ID(int inf_id, int value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET MET_ID = @MET_ID WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [MET_ID] = @MET_ID WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 MET_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateINF_DATA(int inf_id, string value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET INF_DATA = @INF_DATA WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [INF_DATA] = @INF_DATA WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 INF_DATA = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int inf_id, int value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET TenantID = @TenantID WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [TenantID] = @TenantID WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int inf_id, bool value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET Deleted = @Deleted WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [Deleted] = @Deleted WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int inf_id, DateTime value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET Changed = @Changed WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [Changed] = @Changed WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int inf_id, int value)
         {
-            this.Query = $@" UPDATE InformacoesComplementares SET UserId = @UserId WHERE INF_ID = @INF_ID ";
+            this.Query = $@" UPDATE [InformacoesComplementares] SET [UserId] = @UserId WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteInformacoesComplementaresQuery(IInformacoesComplementaresEntity InformacoesComplementares)
         {
-            this.Query = $@" DELETE FROM InformacoesComplementares WHERE INF_ID = @INF_ID ";
+            this.Query = $@" DELETE FROM [InformacoesComplementares] WHERE [INF_ID] = @INF_ID ";
             this.Parameters = new
             {
                 INF_ID = InformacoesComplementares.INF_ID,

@@ -58,6 +58,26 @@ Miolos que IA/dev devem preencher:
 - Outbox, Saga, Retry, Worker, Queue e Polling nao devem poluir o DSL de dominio como conceitos centrais.
 - Outbox deve ser tratada como politica de persistencia/entrega.
 - Saga deve nascer como coordenacao de Commands, nao como Command especial.
+- Saga nao implica RabbitMQ nem fila por padrao. Topologia de fila so deve
+  nascer quando a DSL declarar uma borda assincrona concreta, como
+  `AddOutBoxPollingWorker` ou `AddInboxListenerWorker`; se nao ha topologia
+  declarada, o Worker deve subir sem tentar inicializar RabbitMQ.
+- No APS ADM, o fluxo standard de carga deve começar como uma Saga declarada
+  na DSL (`CargaStandard`) antes de nascer um novo conceito de Workflow. Cada
+  cliente pode escolher uma saga hard coded/protegida para a carga quando o
+  fluxo standard nao atender, mantendo a flexibilidade em codigo e nao em
+  configuracao cadastravel.
+- `pendencia`: permitir que a DSL/Engine diferencie steps de saga assincronos,
+  manuais e sincronizados. A geracao atual trata `ISagaStepHandler.IsAsync`
+  como `true` fixo; prototipos podem usar inbox tecnico para avançar, mas a
+  solucao final precisa representar explicitamente passos internos/manuais.
+- `pendencia`: padronizar na Engine os repositórios internos de saga
+  (`Save`, `ClaimRunnableSagas`, `ReleaseLock`, `SetPendingApply`) para todos
+  os aplicativos, evitando copiar miolo custom entre apps.
+- `pendencia`: garantir que publicacao de inbox/outbox gerada por um step de
+  saga seja persistida no mesmo ciclo transacional da mudanca de estado do
+  step. O prototipo APS ADM escreve diretamente no miolo do handler; a solucao
+  padrao deve expor eventos/intencoes ao executor ou ao repository de saga.
 - O DSL deve permanecer pequeno e controlavel.
 - Preferir comportamentos fortes e nomes substituiveis.
 - Evitar reflection no codigo gerado quando isso afetar performance.
@@ -244,6 +264,15 @@ Regra resumida:
   aplicativo.
 - `wwwroot/Custon` pertence ao aplicativo e nunca deve ser sobrescrito pela
   sincronizacao da Engine.
+- Telas customizadas completas de aplicativo devem ter ancora pequena na DSL
+  como metadata de modulo, por exemplo `AddCustomPage`, para permitir menu,
+  permissao, descoberta e operacao; HTML, CSS, JS e provedores continuam em
+  `wwwroot/Custon` do aplicativo.
+- Agrupamentos de menu devem nascer na DSL como metadata de modulo, por
+  exemplo `AddMenuGroup`, `AddMenuGroupByPrefix` e `AddRemainingMenuGroup`.
+  O front padrao apenas renderiza a arvore entregue por `/getMenu`; regras
+  especificas de organizacao nao devem ficar escondidas em extensoes custom
+  quando forem parte da navegacao/permissao do aplicativo.
 - Melhorias genericas devem ser feitas na matriz e propagadas pela Engine;
   nao copiar manualmente arquivos de um aplicativo para outro.
 - Gravacao, upload de audio e futura transcricao sao capacidades genericas do
@@ -259,6 +288,14 @@ Regra resumida:
   `Yeshua.<Aplicativo>.CQRS.Tests.Integration.Api.Smoke`.
 - Cada projeto recebe somente entidades, ordem de dependencias, configuracao e
   customizacoes do proprio aplicativo.
+- Sagas declaradas na DSL podem gerar smoke tests E2E opt-in no projeto do
+  aplicativo. A borda gerada valida a estrutura da saga, autentica, chama API,
+  consulta `ySaga`/`ySagaStep` e espera um resultado; o miolo customizado
+  define como iniciar a saga e qual evidencia de negocio/infraestrutura prova
+  que o fluxo avancou.
+- Testes E2E de saga devem exercitar API, banco, worker, repositorios e
+  observabilidade real quando possivel. Testes mockados continuam uteis para
+  regras finas, mas nao substituem a validacao do caminho operacional completo.
 - Endpoints gerados sao relativos a `BaseUrl`, permitindo hospedar um
   aplicativo na raiz e outro em um prefixo como `/mdfe/`.
 - Smoke tests sao executados pelo Test Explorer ou `dotnet test`; iniciar o

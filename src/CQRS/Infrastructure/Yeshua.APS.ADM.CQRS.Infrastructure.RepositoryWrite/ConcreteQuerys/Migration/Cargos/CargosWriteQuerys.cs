@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirCargosQuery(ICargosEntity Cargos)
         {
-            this.Query = $@" INSERT INTO Cargos (RGO_ID, RGO_DESCRICAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RGO_ID, @RGO_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Cargos] ([RGO_ID], [RGO_DESCRICAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RGO_ID, @RGO_DESCRICAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 RGO_ID = Cargos.RGO_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCargosQuery(ICargosEntity Cargos)
         {
-            this.Query = $@" UPDATE Cargos SET RGO_ID = @RGO_ID, RGO_DESCRICAO = @RGO_DESCRICAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [RGO_ID] = @RGO_ID, [RGO_DESCRICAO] = @RGO_DESCRICAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RGO_ID = Cargos.RGO_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRGO_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Cargos SET RGO_ID = @RGO_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [RGO_ID] = @RGO_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RGO_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRGO_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE Cargos SET RGO_DESCRICAO = @RGO_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [RGO_DESCRICAO] = @RGO_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RGO_DESCRICAO = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Cargos SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Cargos SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Cargos SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Cargos SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Cargos] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteCargosQuery(ICargosEntity Cargos)
         {
-            this.Query = $@" DELETE FROM Cargos WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Cargos] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Cargos.Id,

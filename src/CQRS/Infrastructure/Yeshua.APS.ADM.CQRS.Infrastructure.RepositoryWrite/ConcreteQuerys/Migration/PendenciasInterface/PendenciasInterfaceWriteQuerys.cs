@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPendenciasInterfaceQuery(IPendenciasInterfaceEntity PendenciasInterface)
         {
-            this.Query = $@" INSERT INTO PendenciasInterface (PEN_STATUS_OUT, PEN_PROTOCOLO_OUT, PEN_ID_PROTOCOLO_OUT, PEN_STATUS_IN, PEN_PROTOCOLO_IN, PEN_ID_PROTOCOLO_IN, DATA_ENTRADA, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.PEN_ID VALUES(@PEN_STATUS_OUT, @PEN_PROTOCOLO_OUT, @PEN_ID_PROTOCOLO_OUT, @PEN_STATUS_IN, @PEN_PROTOCOLO_IN, @PEN_ID_PROTOCOLO_IN, @DATA_ENTRADA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PendenciasInterface] ([PEN_STATUS_OUT], [PEN_PROTOCOLO_OUT], [PEN_ID_PROTOCOLO_OUT], [PEN_STATUS_IN], [PEN_PROTOCOLO_IN], [PEN_ID_PROTOCOLO_IN], [DATA_ENTRADA], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[PEN_ID] VALUES(@PEN_STATUS_OUT, @PEN_PROTOCOLO_OUT, @PEN_ID_PROTOCOLO_OUT, @PEN_STATUS_IN, @PEN_PROTOCOLO_IN, @PEN_ID_PROTOCOLO_IN, @DATA_ENTRADA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PEN_STATUS_OUT = PendenciasInterface.PEN_STATUS_OUT,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePendenciasInterfaceQuery(IPendenciasInterfaceEntity PendenciasInterface)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_STATUS_OUT = @PEN_STATUS_OUT, PEN_PROTOCOLO_OUT = @PEN_PROTOCOLO_OUT, PEN_ID_PROTOCOLO_OUT = @PEN_ID_PROTOCOLO_OUT, PEN_STATUS_IN = @PEN_STATUS_IN, PEN_PROTOCOLO_IN = @PEN_PROTOCOLO_IN, PEN_ID_PROTOCOLO_IN = @PEN_ID_PROTOCOLO_IN, DATA_ENTRADA = @DATA_ENTRADA, Changed = @Changed, UserId = @UserId WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_STATUS_OUT] = @PEN_STATUS_OUT, [PEN_PROTOCOLO_OUT] = @PEN_PROTOCOLO_OUT, [PEN_ID_PROTOCOLO_OUT] = @PEN_ID_PROTOCOLO_OUT, [PEN_STATUS_IN] = @PEN_STATUS_IN, [PEN_PROTOCOLO_IN] = @PEN_PROTOCOLO_IN, [PEN_ID_PROTOCOLO_IN] = @PEN_ID_PROTOCOLO_IN, [DATA_ENTRADA] = @DATA_ENTRADA, [Changed] = @Changed, [UserId] = @UserId WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_STATUS_OUT = PendenciasInterface.PEN_STATUS_OUT,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePEN_STATUS_OUT(int pen_id, string value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_STATUS_OUT = @PEN_STATUS_OUT WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_STATUS_OUT] = @PEN_STATUS_OUT WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_STATUS_OUT = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePEN_PROTOCOLO_OUT(int pen_id, string value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_PROTOCOLO_OUT = @PEN_PROTOCOLO_OUT WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_PROTOCOLO_OUT] = @PEN_PROTOCOLO_OUT WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_PROTOCOLO_OUT = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePEN_ID_PROTOCOLO_OUT(int pen_id, string value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_ID_PROTOCOLO_OUT = @PEN_ID_PROTOCOLO_OUT WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_ID_PROTOCOLO_OUT] = @PEN_ID_PROTOCOLO_OUT WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_ID_PROTOCOLO_OUT = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePEN_STATUS_IN(int pen_id, string value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_STATUS_IN = @PEN_STATUS_IN WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_STATUS_IN] = @PEN_STATUS_IN WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_STATUS_IN = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePEN_PROTOCOLO_IN(int pen_id, string value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_PROTOCOLO_IN = @PEN_PROTOCOLO_IN WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_PROTOCOLO_IN] = @PEN_PROTOCOLO_IN WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_PROTOCOLO_IN = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePEN_ID_PROTOCOLO_IN(int pen_id, string value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET PEN_ID_PROTOCOLO_IN = @PEN_ID_PROTOCOLO_IN WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [PEN_ID_PROTOCOLO_IN] = @PEN_ID_PROTOCOLO_IN WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_ID_PROTOCOLO_IN = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDATA_ENTRADA(int pen_id, DateTime value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET DATA_ENTRADA = @DATA_ENTRADA WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [DATA_ENTRADA] = @DATA_ENTRADA WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 DATA_ENTRADA = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int pen_id, int value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET TenantID = @TenantID WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [TenantID] = @TenantID WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int pen_id, bool value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET Deleted = @Deleted WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [Deleted] = @Deleted WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int pen_id, DateTime value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET Changed = @Changed WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [Changed] = @Changed WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int pen_id, int value)
         {
-            this.Query = $@" UPDATE PendenciasInterface SET UserId = @UserId WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" UPDATE [PendenciasInterface] SET [UserId] = @UserId WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeletePendenciasInterfaceQuery(IPendenciasInterfaceEntity PendenciasInterface)
         {
-            this.Query = $@" DELETE FROM PendenciasInterface WHERE PEN_ID = @PEN_ID ";
+            this.Query = $@" DELETE FROM [PendenciasInterface] WHERE [PEN_ID] = @PEN_ID ";
             this.Parameters = new
             {
                 PEN_ID = PendenciasInterface.PEN_ID,

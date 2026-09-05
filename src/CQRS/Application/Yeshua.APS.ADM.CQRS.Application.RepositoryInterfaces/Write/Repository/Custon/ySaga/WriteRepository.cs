@@ -8,4 +8,14 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
 // </yeshua>
 
+using Dominio.Patterns.Saga;
+
+namespace IRepository.Write
+{
+    public partial interface IySagaWriteRepository
+    {
+        void Save(SagaBase saga);
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_MetasQuery(IT_MetasEntity T_Metas)
         {
-            this.Query = $@" INSERT INTO T_Metas (MET_DTINICIO, MET_DTFIM, MET_ALVO, MET_TIPOALVO, IND_ID, MET_RANGE01, MET_RANGE02, MET_RANGE03, DIM_ID, FAT_ID, DIM_SUBDIMENSAO_ID, PER_ID, DOM_EMPRESA, DOM_FILIAL, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.MET_ID VALUES(@MET_DTINICIO, @MET_DTFIM, @MET_ALVO, @MET_TIPOALVO, @IND_ID, @MET_RANGE01, @MET_RANGE02, @MET_RANGE03, @DIM_ID, @FAT_ID, @DIM_SUBDIMENSAO_ID, @PER_ID, @DOM_EMPRESA, @DOM_FILIAL, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Metas] ([MET_DTINICIO], [MET_DTFIM], [MET_ALVO], [MET_TIPOALVO], [IND_ID], [MET_RANGE01], [MET_RANGE02], [MET_RANGE03], [DIM_ID], [FAT_ID], [DIM_SUBDIMENSAO_ID], [PER_ID], [DOM_EMPRESA], [DOM_FILIAL], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[MET_ID] VALUES(@MET_DTINICIO, @MET_DTFIM, @MET_ALVO, @MET_TIPOALVO, @IND_ID, @MET_RANGE01, @MET_RANGE02, @MET_RANGE03, @DIM_ID, @FAT_ID, @DIM_SUBDIMENSAO_ID, @PER_ID, @DOM_EMPRESA, @DOM_FILIAL, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 MET_DTINICIO = T_Metas.MET_DTINICIO,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_MetasQuery(IT_MetasEntity T_Metas)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_DTINICIO = @MET_DTINICIO, MET_DTFIM = @MET_DTFIM, MET_ALVO = @MET_ALVO, MET_TIPOALVO = @MET_TIPOALVO, IND_ID = @IND_ID, MET_RANGE01 = @MET_RANGE01, MET_RANGE02 = @MET_RANGE02, MET_RANGE03 = @MET_RANGE03, DIM_ID = @DIM_ID, FAT_ID = @FAT_ID, DIM_SUBDIMENSAO_ID = @DIM_SUBDIMENSAO_ID, PER_ID = @PER_ID, DOM_EMPRESA = @DOM_EMPRESA, DOM_FILIAL = @DOM_FILIAL, Changed = @Changed, UserId = @UserId WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_DTINICIO] = @MET_DTINICIO, [MET_DTFIM] = @MET_DTFIM, [MET_ALVO] = @MET_ALVO, [MET_TIPOALVO] = @MET_TIPOALVO, [IND_ID] = @IND_ID, [MET_RANGE01] = @MET_RANGE01, [MET_RANGE02] = @MET_RANGE02, [MET_RANGE03] = @MET_RANGE03, [DIM_ID] = @DIM_ID, [FAT_ID] = @FAT_ID, [DIM_SUBDIMENSAO_ID] = @DIM_SUBDIMENSAO_ID, [PER_ID] = @PER_ID, [DOM_EMPRESA] = @DOM_EMPRESA, [DOM_FILIAL] = @DOM_FILIAL, [Changed] = @Changed, [UserId] = @UserId WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_DTINICIO = T_Metas.MET_DTINICIO,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_DTINICIO(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_DTINICIO = @MET_DTINICIO WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_DTINICIO] = @MET_DTINICIO WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_DTINICIO = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_DTFIM(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_DTFIM = @MET_DTFIM WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_DTFIM] = @MET_DTFIM WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_DTFIM = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_ALVO(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_ALVO = @MET_ALVO WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_ALVO] = @MET_ALVO WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_ALVO = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_TIPOALVO(int met_id, int value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_TIPOALVO = @MET_TIPOALVO WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_TIPOALVO] = @MET_TIPOALVO WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_TIPOALVO = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_ID(int met_id, int value)
         {
-            this.Query = $@" UPDATE T_Metas SET IND_ID = @IND_ID WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [IND_ID] = @IND_ID WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 IND_ID = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_RANGE01(int met_id, Decimal value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_RANGE01 = @MET_RANGE01 WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_RANGE01] = @MET_RANGE01 WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_RANGE01 = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_RANGE02(int met_id, Decimal value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_RANGE02 = @MET_RANGE02 WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_RANGE02] = @MET_RANGE02 WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_RANGE02 = value,
@@ -151,7 +151,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMET_RANGE03(int met_id, Decimal value)
         {
-            this.Query = $@" UPDATE T_Metas SET MET_RANGE03 = @MET_RANGE03 WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [MET_RANGE03] = @MET_RANGE03 WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_RANGE03 = value,
@@ -161,7 +161,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_ID(int met_id, int value)
         {
-            this.Query = $@" UPDATE T_Metas SET DIM_ID = @DIM_ID WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [DIM_ID] = @DIM_ID WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 DIM_ID = value,
@@ -171,7 +171,7 @@ namespace Query.Write
         }
         public QueryModel UpdateFAT_ID(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET FAT_ID = @FAT_ID WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [FAT_ID] = @FAT_ID WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 FAT_ID = value,
@@ -181,7 +181,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_SUBDIMENSAO_ID(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET DIM_SUBDIMENSAO_ID = @DIM_SUBDIMENSAO_ID WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [DIM_SUBDIMENSAO_ID] = @DIM_SUBDIMENSAO_ID WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 DIM_SUBDIMENSAO_ID = value,
@@ -191,7 +191,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_ID(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET PER_ID = @PER_ID WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [PER_ID] = @PER_ID WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 PER_ID = value,
@@ -201,7 +201,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDOM_EMPRESA(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET DOM_EMPRESA = @DOM_EMPRESA WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [DOM_EMPRESA] = @DOM_EMPRESA WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 DOM_EMPRESA = value,
@@ -211,7 +211,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDOM_FILIAL(int met_id, string value)
         {
-            this.Query = $@" UPDATE T_Metas SET DOM_FILIAL = @DOM_FILIAL WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [DOM_FILIAL] = @DOM_FILIAL WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 DOM_FILIAL = value,
@@ -221,7 +221,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int met_id, int value)
         {
-            this.Query = $@" UPDATE T_Metas SET TenantID = @TenantID WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [TenantID] = @TenantID WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -231,7 +231,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int met_id, bool value)
         {
-            this.Query = $@" UPDATE T_Metas SET Deleted = @Deleted WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [Deleted] = @Deleted WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -241,7 +241,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int met_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Metas SET Changed = @Changed WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [Changed] = @Changed WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -251,7 +251,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int met_id, int value)
         {
-            this.Query = $@" UPDATE T_Metas SET UserId = @UserId WHERE MET_ID = @MET_ID ";
+            this.Query = $@" UPDATE [T_Metas] SET [UserId] = @UserId WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -261,7 +261,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_MetasQuery(IT_MetasEntity T_Metas)
         {
-            this.Query = $@" DELETE FROM T_Metas WHERE MET_ID = @MET_ID ";
+            this.Query = $@" DELETE FROM [T_Metas] WHERE [MET_ID] = @MET_ID ";
             this.Parameters = new
             {
                 MET_ID = T_Metas.MET_ID,

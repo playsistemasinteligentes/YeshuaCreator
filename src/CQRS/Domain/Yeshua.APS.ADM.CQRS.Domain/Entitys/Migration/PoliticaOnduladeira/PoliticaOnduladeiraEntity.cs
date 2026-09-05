@@ -38,12 +38,12 @@
  POL_PROMOCAO = pol_promocao; 
  POL_DIAS_ANTECIPACAO = pol_dias_antecipacao; 
  POL_METROS_LINEARES = pol_metros_lineares; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (POL_ID == null)
-   this._erroMensagem.Add("POL ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

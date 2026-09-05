@@ -34,12 +34,12 @@
  HTML_ESTRUTURA = html_estrutura; 
  CLI_ID = cli_id; 
  EST_DESCRICAO = est_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (EST_ID == null)
-   this._erroMensagem.Add("EST ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

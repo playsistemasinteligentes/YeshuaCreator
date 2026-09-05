@@ -38,12 +38,12 @@
  PAT_QTD_CAIXAS_ATE = pat_qtd_caixas_ate; 
  PAT_N_AMOSTRAGEM = pat_n_amostragem; 
  PAT_PERCENT_ESPECIF = pat_percent_especif; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (PAT_ID == null)
-   this._erroMensagem.Add("PAT ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

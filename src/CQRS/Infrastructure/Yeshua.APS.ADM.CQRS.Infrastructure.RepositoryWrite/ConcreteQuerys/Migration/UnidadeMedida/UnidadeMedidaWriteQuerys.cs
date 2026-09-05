@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirUnidadeMedidaQuery(IUnidadeMedidaEntity UnidadeMedida)
         {
-            this.Query = $@" INSERT INTO UnidadeMedida (UNI_ID, UNI_DESCRICAO, UNI_ESCALA_TEMPO, TenantID, Deleted, Changed, UserId) VALUES(@UNI_ID, @UNI_DESCRICAO, @UNI_ESCALA_TEMPO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [UnidadeMedida] ([UNI_ID], [UNI_DESCRICAO], [UNI_ESCALA_TEMPO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@UNI_ID, @UNI_DESCRICAO, @UNI_ESCALA_TEMPO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 UNI_ID = UnidadeMedida.UNI_ID,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUnidadeMedidaQuery(IUnidadeMedidaEntity UnidadeMedida)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET UNI_DESCRICAO = @UNI_DESCRICAO, UNI_ESCALA_TEMPO = @UNI_ESCALA_TEMPO, Changed = @Changed, UserId = @UserId WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [UNI_DESCRICAO] = @UNI_DESCRICAO, [UNI_ESCALA_TEMPO] = @UNI_ESCALA_TEMPO, [Changed] = @Changed, [UserId] = @UserId WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 UNI_DESCRICAO = UnidadeMedida.UNI_DESCRICAO,
@@ -58,7 +58,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUNI_DESCRICAO(string uni_id, string value)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET UNI_DESCRICAO = @UNI_DESCRICAO WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [UNI_DESCRICAO] = @UNI_DESCRICAO WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 UNI_DESCRICAO = value,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUNI_ESCALA_TEMPO(string uni_id, string value)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET UNI_ESCALA_TEMPO = @UNI_ESCALA_TEMPO WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [UNI_ESCALA_TEMPO] = @UNI_ESCALA_TEMPO WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 UNI_ESCALA_TEMPO = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string uni_id, int value)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET TenantID = @TenantID WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [TenantID] = @TenantID WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string uni_id, bool value)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET Deleted = @Deleted WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [Deleted] = @Deleted WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string uni_id, DateTime value)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET Changed = @Changed WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [Changed] = @Changed WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string uni_id, int value)
         {
-            this.Query = $@" UPDATE UnidadeMedida SET UserId = @UserId WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" UPDATE [UnidadeMedida] SET [UserId] = @UserId WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel DeleteUnidadeMedidaQuery(IUnidadeMedidaEntity UnidadeMedida)
         {
-            this.Query = $@" DELETE FROM UnidadeMedida WHERE UNI_ID = @UNI_ID ";
+            this.Query = $@" DELETE FROM [UnidadeMedida] WHERE [UNI_ID] = @UNI_ID ";
             this.Parameters = new
             {
                 UNI_ID = UnidadeMedida.UNI_ID,

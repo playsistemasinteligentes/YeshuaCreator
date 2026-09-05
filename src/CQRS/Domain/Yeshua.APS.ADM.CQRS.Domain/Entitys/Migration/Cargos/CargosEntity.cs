@@ -32,6 +32,8 @@
  Id = id; 
  RGO_ID = rgo_id; 
  RGO_DESCRICAO = rgo_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

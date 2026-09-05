@@ -30,14 +30,14 @@
  internal MesesEntity(string mes, int fator ){
  MES = mes; 
  fator = fator; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(MES))
    this._erroMensagem.Add("MES deve ser informado.");
-   if (fator == null)
-   this._erroMensagem.Add("fator deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

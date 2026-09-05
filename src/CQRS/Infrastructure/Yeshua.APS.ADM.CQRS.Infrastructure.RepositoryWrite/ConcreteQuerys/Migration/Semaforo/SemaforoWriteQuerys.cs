@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSemaforoQuery(ISemaforoEntity Semaforo)
         {
-            this.Query = $@" INSERT INTO Semaforo (SEM_ID, SEM_STATUS, SEM_ORIGEM, SEM_EMISSAO, SEM_ID_CONEXAO, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@SEM_ID, @SEM_STATUS, @SEM_ORIGEM, @SEM_EMISSAO, @SEM_ID_CONEXAO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Semaforo] ([SEM_ID], [SEM_STATUS], [SEM_ORIGEM], [SEM_EMISSAO], [SEM_ID_CONEXAO], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@SEM_ID, @SEM_STATUS, @SEM_ORIGEM, @SEM_EMISSAO, @SEM_ID_CONEXAO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 SEM_ID = Semaforo.SEM_ID,
@@ -47,7 +47,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSemaforoQuery(ISemaforoEntity Semaforo)
         {
-            this.Query = $@" UPDATE Semaforo SET SEM_ID = @SEM_ID, SEM_STATUS = @SEM_STATUS, SEM_ORIGEM = @SEM_ORIGEM, SEM_EMISSAO = @SEM_EMISSAO, SEM_ID_CONEXAO = @SEM_ID_CONEXAO, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [SEM_ID] = @SEM_ID, [SEM_STATUS] = @SEM_STATUS, [SEM_ORIGEM] = @SEM_ORIGEM, [SEM_EMISSAO] = @SEM_EMISSAO, [SEM_ID_CONEXAO] = @SEM_ID_CONEXAO, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEM_ID = Semaforo.SEM_ID,
@@ -63,7 +63,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEM_ID(int id, string value)
         {
-            this.Query = $@" UPDATE Semaforo SET SEM_ID = @SEM_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [SEM_ID] = @SEM_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEM_ID = value,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEM_STATUS(int id, string value)
         {
-            this.Query = $@" UPDATE Semaforo SET SEM_STATUS = @SEM_STATUS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [SEM_STATUS] = @SEM_STATUS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEM_STATUS = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEM_ORIGEM(int id, string value)
         {
-            this.Query = $@" UPDATE Semaforo SET SEM_ORIGEM = @SEM_ORIGEM WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [SEM_ORIGEM] = @SEM_ORIGEM WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEM_ORIGEM = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEM_EMISSAO(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Semaforo SET SEM_EMISSAO = @SEM_EMISSAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [SEM_EMISSAO] = @SEM_EMISSAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEM_EMISSAO = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEM_ID_CONEXAO(int id, string value)
         {
-            this.Query = $@" UPDATE Semaforo SET SEM_ID_CONEXAO = @SEM_ID_CONEXAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [SEM_ID_CONEXAO] = @SEM_ID_CONEXAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SEM_ID_CONEXAO = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Semaforo SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Semaforo SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Semaforo SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Semaforo SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Semaforo] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel DeleteSemaforoQuery(ISemaforoEntity Semaforo)
         {
-            this.Query = $@" DELETE FROM Semaforo WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Semaforo] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Semaforo.Id,

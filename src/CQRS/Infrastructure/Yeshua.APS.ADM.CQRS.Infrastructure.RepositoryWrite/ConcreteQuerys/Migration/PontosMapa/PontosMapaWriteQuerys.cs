@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPontosMapaQuery(IPontosMapaEntity PontosMapa)
         {
-            this.Query = $@" INSERT INTO PontosMapa (PON_ID, PON_DESCRICAO, PON_TIPO, PON_LATITUDE, PON_LONGITUDE, PON_DISTANCIA_KM, TenantID, Deleted, Changed, UserId) VALUES(@PON_ID, @PON_DESCRICAO, @PON_TIPO, @PON_LATITUDE, @PON_LONGITUDE, @PON_DISTANCIA_KM, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PontosMapa] ([PON_ID], [PON_DESCRICAO], [PON_TIPO], [PON_LATITUDE], [PON_LONGITUDE], [PON_DISTANCIA_KM], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@PON_ID, @PON_DESCRICAO, @PON_TIPO, @PON_LATITUDE, @PON_LONGITUDE, @PON_DISTANCIA_KM, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PON_ID = PontosMapa.PON_ID,
@@ -48,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePontosMapaQuery(IPontosMapaEntity PontosMapa)
         {
-            this.Query = $@" UPDATE PontosMapa SET PON_DESCRICAO = @PON_DESCRICAO, PON_TIPO = @PON_TIPO, PON_LATITUDE = @PON_LATITUDE, PON_LONGITUDE = @PON_LONGITUDE, PON_DISTANCIA_KM = @PON_DISTANCIA_KM, Changed = @Changed, UserId = @UserId WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [PON_DESCRICAO] = @PON_DESCRICAO, [PON_TIPO] = @PON_TIPO, [PON_LATITUDE] = @PON_LATITUDE, [PON_LONGITUDE] = @PON_LONGITUDE, [PON_DISTANCIA_KM] = @PON_DISTANCIA_KM, [Changed] = @Changed, [UserId] = @UserId WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_DESCRICAO = PontosMapa.PON_DESCRICAO,
@@ -64,7 +64,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_DESCRICAO(string pon_id, string value)
         {
-            this.Query = $@" UPDATE PontosMapa SET PON_DESCRICAO = @PON_DESCRICAO WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [PON_DESCRICAO] = @PON_DESCRICAO WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_DESCRICAO = value,
@@ -74,7 +74,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_TIPO(string pon_id, string value)
         {
-            this.Query = $@" UPDATE PontosMapa SET PON_TIPO = @PON_TIPO WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [PON_TIPO] = @PON_TIPO WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_TIPO = value,
@@ -84,7 +84,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_LATITUDE(string pon_id, Decimal value)
         {
-            this.Query = $@" UPDATE PontosMapa SET PON_LATITUDE = @PON_LATITUDE WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [PON_LATITUDE] = @PON_LATITUDE WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_LATITUDE = value,
@@ -94,7 +94,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_LONGITUDE(string pon_id, Decimal value)
         {
-            this.Query = $@" UPDATE PontosMapa SET PON_LONGITUDE = @PON_LONGITUDE WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [PON_LONGITUDE] = @PON_LONGITUDE WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_LONGITUDE = value,
@@ -104,7 +104,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePON_DISTANCIA_KM(string pon_id, Decimal value)
         {
-            this.Query = $@" UPDATE PontosMapa SET PON_DISTANCIA_KM = @PON_DISTANCIA_KM WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [PON_DISTANCIA_KM] = @PON_DISTANCIA_KM WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_DISTANCIA_KM = value,
@@ -114,7 +114,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string pon_id, int value)
         {
-            this.Query = $@" UPDATE PontosMapa SET TenantID = @TenantID WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [TenantID] = @TenantID WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -124,7 +124,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string pon_id, bool value)
         {
-            this.Query = $@" UPDATE PontosMapa SET Deleted = @Deleted WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [Deleted] = @Deleted WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -134,7 +134,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string pon_id, DateTime value)
         {
-            this.Query = $@" UPDATE PontosMapa SET Changed = @Changed WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [Changed] = @Changed WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -144,7 +144,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string pon_id, int value)
         {
-            this.Query = $@" UPDATE PontosMapa SET UserId = @UserId WHERE PON_ID = @PON_ID ";
+            this.Query = $@" UPDATE [PontosMapa] SET [UserId] = @UserId WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -154,7 +154,7 @@ namespace Query.Write
         }
         public QueryModel DeletePontosMapaQuery(IPontosMapaEntity PontosMapa)
         {
-            this.Query = $@" DELETE FROM PontosMapa WHERE PON_ID = @PON_ID ";
+            this.Query = $@" DELETE FROM [PontosMapa] WHERE [PON_ID] = @PON_ID ";
             this.Parameters = new
             {
                 PON_ID = PontosMapa.PON_ID,

@@ -34,18 +34,14 @@
  CAB_DESC = cab_desc; 
  CAB_STATUS = cab_status; 
  USE_ID = use_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (CAB_ID == null)
-   this._erroMensagem.Add("CAB ID deve ser informado.");
    if(string.IsNullOrEmpty(CAB_DESC))
    this._erroMensagem.Add("CAB DESC deve ser informado.");
-   if (CAB_STATUS == null)
-   this._erroMensagem.Add("CAB STATUS deve ser informado.");
-   if (USE_ID == null)
-   this._erroMensagem.Add("USE ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

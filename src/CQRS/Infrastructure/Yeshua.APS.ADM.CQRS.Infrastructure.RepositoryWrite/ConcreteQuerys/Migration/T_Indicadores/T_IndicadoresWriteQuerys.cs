@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_IndicadoresQuery(IT_IndicadoresEntity T_Indicadores)
         {
-            this.Query = $@" INSERT INTO T_Indicadores (IND_DESCRICAO, NEG_ID, DESC_CALCULO, IND_TIPOCOMPARADOR, IND_GRAFICO, IND_CONEXAO, IND_DTCRIACAO, RESPOSAVELIND, RESPOSAVELCARGA, PROCEXTRACAO, PER_ID, DIM_ID, DOM_EMPRESA, DOM_FILIAL, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.IND_ID VALUES(@IND_DESCRICAO, @NEG_ID, @DESC_CALCULO, @IND_TIPOCOMPARADOR, @IND_GRAFICO, @IND_CONEXAO, @IND_DTCRIACAO, @RESPOSAVELIND, @RESPOSAVELCARGA, @PROCEXTRACAO, @PER_ID, @DIM_ID, @DOM_EMPRESA, @DOM_FILIAL, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_Indicadores] ([IND_DESCRICAO], [NEG_ID], [DESC_CALCULO], [IND_TIPOCOMPARADOR], [IND_GRAFICO], [IND_CONEXAO], [IND_DTCRIACAO], [RESPOSAVELIND], [RESPOSAVELCARGA], [PROCEXTRACAO], [PER_ID], [DIM_ID], [DOM_EMPRESA], [DOM_FILIAL], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[IND_ID] VALUES(@IND_DESCRICAO, @NEG_ID, @DESC_CALCULO, @IND_TIPOCOMPARADOR, @IND_GRAFICO, @IND_CONEXAO, @IND_DTCRIACAO, @RESPOSAVELIND, @RESPOSAVELCARGA, @PROCEXTRACAO, @PER_ID, @DIM_ID, @DOM_EMPRESA, @DOM_FILIAL, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IND_DESCRICAO = T_Indicadores.IND_DESCRICAO,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_IndicadoresQuery(IT_IndicadoresEntity T_Indicadores)
         {
-            this.Query = $@" UPDATE T_Indicadores SET IND_DESCRICAO = @IND_DESCRICAO, NEG_ID = @NEG_ID, DESC_CALCULO = @DESC_CALCULO, IND_TIPOCOMPARADOR = @IND_TIPOCOMPARADOR, IND_GRAFICO = @IND_GRAFICO, IND_CONEXAO = @IND_CONEXAO, IND_DTCRIACAO = @IND_DTCRIACAO, RESPOSAVELIND = @RESPOSAVELIND, RESPOSAVELCARGA = @RESPOSAVELCARGA, PROCEXTRACAO = @PROCEXTRACAO, PER_ID = @PER_ID, DIM_ID = @DIM_ID, DOM_EMPRESA = @DOM_EMPRESA, DOM_FILIAL = @DOM_FILIAL, Changed = @Changed, UserId = @UserId WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [IND_DESCRICAO] = @IND_DESCRICAO, [NEG_ID] = @NEG_ID, [DESC_CALCULO] = @DESC_CALCULO, [IND_TIPOCOMPARADOR] = @IND_TIPOCOMPARADOR, [IND_GRAFICO] = @IND_GRAFICO, [IND_CONEXAO] = @IND_CONEXAO, [IND_DTCRIACAO] = @IND_DTCRIACAO, [RESPOSAVELIND] = @RESPOSAVELIND, [RESPOSAVELCARGA] = @RESPOSAVELCARGA, [PROCEXTRACAO] = @PROCEXTRACAO, [PER_ID] = @PER_ID, [DIM_ID] = @DIM_ID, [DOM_EMPRESA] = @DOM_EMPRESA, [DOM_FILIAL] = @DOM_FILIAL, [Changed] = @Changed, [UserId] = @UserId WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_DESCRICAO = T_Indicadores.IND_DESCRICAO,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_DESCRICAO(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET IND_DESCRICAO = @IND_DESCRICAO WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [IND_DESCRICAO] = @IND_DESCRICAO WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_DESCRICAO = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNEG_ID(int ind_id, int value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET NEG_ID = @NEG_ID WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [NEG_ID] = @NEG_ID WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 NEG_ID = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDESC_CALCULO(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET DESC_CALCULO = @DESC_CALCULO WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [DESC_CALCULO] = @DESC_CALCULO WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 DESC_CALCULO = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_TIPOCOMPARADOR(int ind_id, int value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET IND_TIPOCOMPARADOR = @IND_TIPOCOMPARADOR WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [IND_TIPOCOMPARADOR] = @IND_TIPOCOMPARADOR WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_TIPOCOMPARADOR = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_GRAFICO(int ind_id, int value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET IND_GRAFICO = @IND_GRAFICO WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [IND_GRAFICO] = @IND_GRAFICO WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_GRAFICO = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_CONEXAO(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET IND_CONEXAO = @IND_CONEXAO WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [IND_CONEXAO] = @IND_CONEXAO WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_CONEXAO = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIND_DTCRIACAO(int ind_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET IND_DTCRIACAO = @IND_DTCRIACAO WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [IND_DTCRIACAO] = @IND_DTCRIACAO WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_DTCRIACAO = value,
@@ -151,7 +151,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRESPOSAVELIND(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET RESPOSAVELIND = @RESPOSAVELIND WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [RESPOSAVELIND] = @RESPOSAVELIND WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 RESPOSAVELIND = value,
@@ -161,7 +161,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRESPOSAVELCARGA(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET RESPOSAVELCARGA = @RESPOSAVELCARGA WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [RESPOSAVELCARGA] = @RESPOSAVELCARGA WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 RESPOSAVELCARGA = value,
@@ -171,7 +171,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePROCEXTRACAO(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET PROCEXTRACAO = @PROCEXTRACAO WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [PROCEXTRACAO] = @PROCEXTRACAO WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 PROCEXTRACAO = value,
@@ -181,7 +181,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_ID(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET PER_ID = @PER_ID WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [PER_ID] = @PER_ID WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 PER_ID = value,
@@ -191,7 +191,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDIM_ID(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET DIM_ID = @DIM_ID WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [DIM_ID] = @DIM_ID WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 DIM_ID = value,
@@ -201,7 +201,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDOM_EMPRESA(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET DOM_EMPRESA = @DOM_EMPRESA WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [DOM_EMPRESA] = @DOM_EMPRESA WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 DOM_EMPRESA = value,
@@ -211,7 +211,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDOM_FILIAL(int ind_id, string value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET DOM_FILIAL = @DOM_FILIAL WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [DOM_FILIAL] = @DOM_FILIAL WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 DOM_FILIAL = value,
@@ -221,7 +221,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int ind_id, int value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET TenantID = @TenantID WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [TenantID] = @TenantID WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -231,7 +231,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int ind_id, bool value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET Deleted = @Deleted WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [Deleted] = @Deleted WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -241,7 +241,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int ind_id, DateTime value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET Changed = @Changed WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [Changed] = @Changed WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -251,7 +251,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int ind_id, int value)
         {
-            this.Query = $@" UPDATE T_Indicadores SET UserId = @UserId WHERE IND_ID = @IND_ID ";
+            this.Query = $@" UPDATE [T_Indicadores] SET [UserId] = @UserId WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -261,7 +261,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_IndicadoresQuery(IT_IndicadoresEntity T_Indicadores)
         {
-            this.Query = $@" DELETE FROM T_Indicadores WHERE IND_ID = @IND_ID ";
+            this.Query = $@" DELETE FROM [T_Indicadores] WHERE [IND_ID] = @IND_ID ";
             this.Parameters = new
             {
                 IND_ID = T_Indicadores.IND_ID,

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirOcorrenciaQuery(IOcorrenciaEntity Ocorrencia)
         {
-            this.Query = $@" INSERT INTO Ocorrencia (OCO_ID, OCO_DESCRICAO, TIP_ID, GMA_ID, MAQ_ID, SPR, OCO_SUB_TIPO, SUB_ID, TenantID, Deleted, Changed, UserId) VALUES(@OCO_ID, @OCO_DESCRICAO, @TIP_ID, @GMA_ID, @MAQ_ID, @SPR, @OCO_SUB_TIPO, @SUB_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Ocorrencia] ([OCO_ID], [OCO_DESCRICAO], [TIP_ID], [GMA_ID], [MAQ_ID], [SPR], [OCO_SUB_TIPO], [SUB_ID], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@OCO_ID, @OCO_DESCRICAO, @TIP_ID, @GMA_ID, @MAQ_ID, @SPR, @OCO_SUB_TIPO, @SUB_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 OCO_ID = Ocorrencia.OCO_ID,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOcorrenciaQuery(IOcorrenciaEntity Ocorrencia)
         {
-            this.Query = $@" UPDATE Ocorrencia SET OCO_DESCRICAO = @OCO_DESCRICAO, TIP_ID = @TIP_ID, GMA_ID = @GMA_ID, MAQ_ID = @MAQ_ID, SPR = @SPR, OCO_SUB_TIPO = @OCO_SUB_TIPO, SUB_ID = @SUB_ID, Changed = @Changed, UserId = @UserId WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [OCO_DESCRICAO] = @OCO_DESCRICAO, [TIP_ID] = @TIP_ID, [GMA_ID] = @GMA_ID, [MAQ_ID] = @MAQ_ID, [SPR] = @SPR, [OCO_SUB_TIPO] = @OCO_SUB_TIPO, [SUB_ID] = @SUB_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 OCO_DESCRICAO = Ocorrencia.OCO_DESCRICAO,
@@ -68,7 +68,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOCO_DESCRICAO(string oco_id, string value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET OCO_DESCRICAO = @OCO_DESCRICAO WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [OCO_DESCRICAO] = @OCO_DESCRICAO WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 OCO_DESCRICAO = value,
@@ -78,7 +78,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTIP_ID(string oco_id, int value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET TIP_ID = @TIP_ID WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [TIP_ID] = @TIP_ID WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 TIP_ID = value,
@@ -88,7 +88,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGMA_ID(string oco_id, string value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET GMA_ID = @GMA_ID WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [GMA_ID] = @GMA_ID WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 GMA_ID = value,
@@ -98,7 +98,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMAQ_ID(string oco_id, string value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET MAQ_ID = @MAQ_ID WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [MAQ_ID] = @MAQ_ID WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 MAQ_ID = value,
@@ -108,7 +108,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSPR(string oco_id, int value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET SPR = @SPR WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [SPR] = @SPR WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 SPR = value,
@@ -118,7 +118,7 @@ namespace Query.Write
         }
         public QueryModel UpdateOCO_SUB_TIPO(string oco_id, string value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET OCO_SUB_TIPO = @OCO_SUB_TIPO WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [OCO_SUB_TIPO] = @OCO_SUB_TIPO WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 OCO_SUB_TIPO = value,
@@ -128,7 +128,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSUB_ID(string oco_id, string value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET SUB_ID = @SUB_ID WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [SUB_ID] = @SUB_ID WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 SUB_ID = value,
@@ -138,7 +138,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string oco_id, int value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET TenantID = @TenantID WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [TenantID] = @TenantID WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -148,7 +148,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string oco_id, bool value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET Deleted = @Deleted WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [Deleted] = @Deleted WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -158,7 +158,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string oco_id, DateTime value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET Changed = @Changed WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [Changed] = @Changed WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -168,7 +168,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string oco_id, int value)
         {
-            this.Query = $@" UPDATE Ocorrencia SET UserId = @UserId WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" UPDATE [Ocorrencia] SET [UserId] = @UserId WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -178,7 +178,7 @@ namespace Query.Write
         }
         public QueryModel DeleteOcorrenciaQuery(IOcorrenciaEntity Ocorrencia)
         {
-            this.Query = $@" DELETE FROM Ocorrencia WHERE OCO_ID = @OCO_ID ";
+            this.Query = $@" DELETE FROM [Ocorrencia] WHERE [OCO_ID] = @OCO_ID ";
             this.Parameters = new
             {
                 OCO_ID = Ocorrencia.OCO_ID,

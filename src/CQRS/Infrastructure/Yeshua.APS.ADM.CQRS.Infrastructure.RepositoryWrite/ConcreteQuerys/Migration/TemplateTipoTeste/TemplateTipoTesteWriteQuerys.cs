@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirTemplateTipoTesteQuery(ITemplateTipoTesteEntity TemplateTipoTeste)
         {
-            this.Query = $@" INSERT INTO TemplateTipoTeste (TT_ID, TEM_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.TTT_ID VALUES(@TT_ID, @TEM_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [TemplateTipoTeste] ([TT_ID], [TEM_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[TTT_ID] VALUES(@TT_ID, @TEM_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 TT_ID = TemplateTipoTeste.TT_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTemplateTipoTesteQuery(ITemplateTipoTesteEntity TemplateTipoTeste)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET TT_ID = @TT_ID, TEM_ID = @TEM_ID, Changed = @Changed, UserId = @UserId WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [TT_ID] = @TT_ID, [TEM_ID] = @TEM_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 TT_ID = TemplateTipoTeste.TT_ID,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTT_ID(int ttt_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET TT_ID = @TT_ID WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [TT_ID] = @TT_ID WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 TT_ID = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTEM_ID(int ttt_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET TEM_ID = @TEM_ID WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [TEM_ID] = @TEM_ID WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 TEM_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int ttt_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET TenantID = @TenantID WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [TenantID] = @TenantID WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int ttt_id, bool value)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET Deleted = @Deleted WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [Deleted] = @Deleted WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int ttt_id, DateTime value)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET Changed = @Changed WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [Changed] = @Changed WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int ttt_id, int value)
         {
-            this.Query = $@" UPDATE TemplateTipoTeste SET UserId = @UserId WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" UPDATE [TemplateTipoTeste] SET [UserId] = @UserId WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteTemplateTipoTesteQuery(ITemplateTipoTesteEntity TemplateTipoTeste)
         {
-            this.Query = $@" DELETE FROM TemplateTipoTeste WHERE TTT_ID = @TTT_ID ";
+            this.Query = $@" DELETE FROM [TemplateTipoTeste] WHERE [TTT_ID] = @TTT_ID ";
             this.Parameters = new
             {
                 TTT_ID = TemplateTipoTeste.TTT_ID,

@@ -34,6 +34,8 @@
  GRS_ID = grs_id; 
  GRS_DESCRICAO = grs_descricao; 
  GRS_INTEGRACAO_ERP = grs_integracao_erp; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

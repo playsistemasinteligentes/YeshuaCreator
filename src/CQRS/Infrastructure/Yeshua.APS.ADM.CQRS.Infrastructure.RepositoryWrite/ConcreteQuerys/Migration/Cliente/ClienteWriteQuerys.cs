@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirClienteQuery(IClienteEntity Cliente)
         {
-            this.Query = $@" INSERT INTO Cliente (CLI_ID, CLI_NOME, CLI_FONE, CLI_OBS, CLI_ENDERECO_ENTREGA, CLI_CPF_CNPJ, CLI_BAIRRO_ENTREGA, CLI_CEP_ENTREGA, CLI_EMAIL, CLI_INTEGRACAO, MUN_ID_ENTREGA, CLI_TRANSLADO, CLI_REGIAO_ENTREGA, CLI_EXIGENTE_NA_IMPRESSAO, CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, CLI_TEMPO_DESCARREGAMENTO_UNITARIO, CLI_PERCENTUAL_JANELA_EMBARQUE, REP_ID, CLI_RAZAO_SOCIAL, CLI_EMAIL_MONITORAMENTO_TRANSPORTE, CLI_CONTATO, CLI_SETOR, SEG_ID, CLI_TIPO, CLI_INTEGRACAO_ERP, CLI_LATITUDE_ENTREGA, CLI_LONGITUDE_ENTREGA, TenantID, Deleted, Changed, UserId) VALUES(@CLI_ID, @CLI_NOME, @CLI_FONE, @CLI_OBS, @CLI_ENDERECO_ENTREGA, @CLI_CPF_CNPJ, @CLI_BAIRRO_ENTREGA, @CLI_CEP_ENTREGA, @CLI_EMAIL, @CLI_INTEGRACAO, @MUN_ID_ENTREGA, @CLI_TRANSLADO, @CLI_REGIAO_ENTREGA, @CLI_EXIGENTE_NA_IMPRESSAO, @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, @CLI_TEMPO_DESCARREGAMENTO_UNITARIO, @CLI_PERCENTUAL_JANELA_EMBARQUE, @REP_ID, @CLI_RAZAO_SOCIAL, @CLI_EMAIL_MONITORAMENTO_TRANSPORTE, @CLI_CONTATO, @CLI_SETOR, @SEG_ID, @CLI_TIPO, @CLI_INTEGRACAO_ERP, @CLI_LATITUDE_ENTREGA, @CLI_LONGITUDE_ENTREGA, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Cliente] ([CLI_ID], [CLI_NOME], [CLI_FONE], [CLI_OBS], [CLI_ENDERECO_ENTREGA], [CLI_CPF_CNPJ], [CLI_BAIRRO_ENTREGA], [CLI_CEP_ENTREGA], [CLI_EMAIL], [CLI_INTEGRACAO], [MUN_ID_ENTREGA], [CLI_TRANSLADO], [CLI_REGIAO_ENTREGA], [CLI_EXIGENTE_NA_IMPRESSAO], [CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO], [CLI_TEMPO_DESCARREGAMENTO_UNITARIO], [CLI_PERCENTUAL_JANELA_EMBARQUE], [REP_ID], [CLI_RAZAO_SOCIAL], [CLI_EMAIL_MONITORAMENTO_TRANSPORTE], [CLI_CONTATO], [CLI_SETOR], [SEG_ID], [CLI_TIPO], [CLI_INTEGRACAO_ERP], [CLI_LATITUDE_ENTREGA], [CLI_LONGITUDE_ENTREGA], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@CLI_ID, @CLI_NOME, @CLI_FONE, @CLI_OBS, @CLI_ENDERECO_ENTREGA, @CLI_CPF_CNPJ, @CLI_BAIRRO_ENTREGA, @CLI_CEP_ENTREGA, @CLI_EMAIL, @CLI_INTEGRACAO, @MUN_ID_ENTREGA, @CLI_TRANSLADO, @CLI_REGIAO_ENTREGA, @CLI_EXIGENTE_NA_IMPRESSAO, @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, @CLI_TEMPO_DESCARREGAMENTO_UNITARIO, @CLI_PERCENTUAL_JANELA_EMBARQUE, @REP_ID, @CLI_RAZAO_SOCIAL, @CLI_EMAIL_MONITORAMENTO_TRANSPORTE, @CLI_CONTATO, @CLI_SETOR, @SEG_ID, @CLI_TIPO, @CLI_INTEGRACAO_ERP, @CLI_LATITUDE_ENTREGA, @CLI_LONGITUDE_ENTREGA, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 CLI_ID = Cliente.CLI_ID,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateClienteQuery(IClienteEntity Cliente)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_NOME = @CLI_NOME, CLI_FONE = @CLI_FONE, CLI_OBS = @CLI_OBS, CLI_ENDERECO_ENTREGA = @CLI_ENDERECO_ENTREGA, CLI_CPF_CNPJ = @CLI_CPF_CNPJ, CLI_BAIRRO_ENTREGA = @CLI_BAIRRO_ENTREGA, CLI_CEP_ENTREGA = @CLI_CEP_ENTREGA, CLI_EMAIL = @CLI_EMAIL, CLI_INTEGRACAO = @CLI_INTEGRACAO, MUN_ID_ENTREGA = @MUN_ID_ENTREGA, CLI_TRANSLADO = @CLI_TRANSLADO, CLI_REGIAO_ENTREGA = @CLI_REGIAO_ENTREGA, CLI_EXIGENTE_NA_IMPRESSAO = @CLI_EXIGENTE_NA_IMPRESSAO, CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO = @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, CLI_TEMPO_DESCARREGAMENTO_UNITARIO = @CLI_TEMPO_DESCARREGAMENTO_UNITARIO, CLI_PERCENTUAL_JANELA_EMBARQUE = @CLI_PERCENTUAL_JANELA_EMBARQUE, REP_ID = @REP_ID, CLI_RAZAO_SOCIAL = @CLI_RAZAO_SOCIAL, CLI_EMAIL_MONITORAMENTO_TRANSPORTE = @CLI_EMAIL_MONITORAMENTO_TRANSPORTE, CLI_CONTATO = @CLI_CONTATO, CLI_SETOR = @CLI_SETOR, SEG_ID = @SEG_ID, CLI_TIPO = @CLI_TIPO, CLI_INTEGRACAO_ERP = @CLI_INTEGRACAO_ERP, CLI_LATITUDE_ENTREGA = @CLI_LATITUDE_ENTREGA, CLI_LONGITUDE_ENTREGA = @CLI_LONGITUDE_ENTREGA, Changed = @Changed, UserId = @UserId WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_NOME] = @CLI_NOME, [CLI_FONE] = @CLI_FONE, [CLI_OBS] = @CLI_OBS, [CLI_ENDERECO_ENTREGA] = @CLI_ENDERECO_ENTREGA, [CLI_CPF_CNPJ] = @CLI_CPF_CNPJ, [CLI_BAIRRO_ENTREGA] = @CLI_BAIRRO_ENTREGA, [CLI_CEP_ENTREGA] = @CLI_CEP_ENTREGA, [CLI_EMAIL] = @CLI_EMAIL, [CLI_INTEGRACAO] = @CLI_INTEGRACAO, [MUN_ID_ENTREGA] = @MUN_ID_ENTREGA, [CLI_TRANSLADO] = @CLI_TRANSLADO, [CLI_REGIAO_ENTREGA] = @CLI_REGIAO_ENTREGA, [CLI_EXIGENTE_NA_IMPRESSAO] = @CLI_EXIGENTE_NA_IMPRESSAO, [CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO] = @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO, [CLI_TEMPO_DESCARREGAMENTO_UNITARIO] = @CLI_TEMPO_DESCARREGAMENTO_UNITARIO, [CLI_PERCENTUAL_JANELA_EMBARQUE] = @CLI_PERCENTUAL_JANELA_EMBARQUE, [REP_ID] = @REP_ID, [CLI_RAZAO_SOCIAL] = @CLI_RAZAO_SOCIAL, [CLI_EMAIL_MONITORAMENTO_TRANSPORTE] = @CLI_EMAIL_MONITORAMENTO_TRANSPORTE, [CLI_CONTATO] = @CLI_CONTATO, [CLI_SETOR] = @CLI_SETOR, [SEG_ID] = @SEG_ID, [CLI_TIPO] = @CLI_TIPO, [CLI_INTEGRACAO_ERP] = @CLI_INTEGRACAO_ERP, [CLI_LATITUDE_ENTREGA] = @CLI_LATITUDE_ENTREGA, [CLI_LONGITUDE_ENTREGA] = @CLI_LONGITUDE_ENTREGA, [Changed] = @Changed, [UserId] = @UserId WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_NOME = Cliente.CLI_NOME,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_NOME(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_NOME = @CLI_NOME WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_NOME] = @CLI_NOME WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_NOME = value,
@@ -116,7 +116,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_FONE(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_FONE = @CLI_FONE WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_FONE] = @CLI_FONE WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_FONE = value,
@@ -126,7 +126,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_OBS(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_OBS = @CLI_OBS WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_OBS] = @CLI_OBS WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_OBS = value,
@@ -136,7 +136,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_ENDERECO_ENTREGA(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_ENDERECO_ENTREGA = @CLI_ENDERECO_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_ENDERECO_ENTREGA] = @CLI_ENDERECO_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_ENDERECO_ENTREGA = value,
@@ -146,7 +146,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_CPF_CNPJ(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_CPF_CNPJ = @CLI_CPF_CNPJ WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_CPF_CNPJ] = @CLI_CPF_CNPJ WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_CPF_CNPJ = value,
@@ -156,7 +156,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_BAIRRO_ENTREGA(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_BAIRRO_ENTREGA = @CLI_BAIRRO_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_BAIRRO_ENTREGA] = @CLI_BAIRRO_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_BAIRRO_ENTREGA = value,
@@ -166,7 +166,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_CEP_ENTREGA(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_CEP_ENTREGA = @CLI_CEP_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_CEP_ENTREGA] = @CLI_CEP_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_CEP_ENTREGA = value,
@@ -176,7 +176,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_EMAIL(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_EMAIL = @CLI_EMAIL WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_EMAIL] = @CLI_EMAIL WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_EMAIL = value,
@@ -186,7 +186,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_INTEGRACAO(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_INTEGRACAO = @CLI_INTEGRACAO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_INTEGRACAO] = @CLI_INTEGRACAO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_INTEGRACAO = value,
@@ -196,7 +196,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMUN_ID_ENTREGA(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET MUN_ID_ENTREGA = @MUN_ID_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [MUN_ID_ENTREGA] = @MUN_ID_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 MUN_ID_ENTREGA = value,
@@ -206,7 +206,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_TRANSLADO(string cli_id, Decimal value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_TRANSLADO = @CLI_TRANSLADO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_TRANSLADO] = @CLI_TRANSLADO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_TRANSLADO = value,
@@ -216,7 +216,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_REGIAO_ENTREGA(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_REGIAO_ENTREGA = @CLI_REGIAO_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_REGIAO_ENTREGA] = @CLI_REGIAO_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_REGIAO_ENTREGA = value,
@@ -226,7 +226,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_EXIGENTE_NA_IMPRESSAO(string cli_id, int value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_EXIGENTE_NA_IMPRESSAO = @CLI_EXIGENTE_NA_IMPRESSAO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_EXIGENTE_NA_IMPRESSAO] = @CLI_EXIGENTE_NA_IMPRESSAO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_EXIGENTE_NA_IMPRESSAO = value,
@@ -236,7 +236,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO(string cli_id, Decimal value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO = @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO] = @CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_TEMPO_MEDIO_ESPERA_DE_DESCARREGAMENTO = value,
@@ -246,7 +246,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_TEMPO_DESCARREGAMENTO_UNITARIO(string cli_id, Decimal value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_TEMPO_DESCARREGAMENTO_UNITARIO = @CLI_TEMPO_DESCARREGAMENTO_UNITARIO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_TEMPO_DESCARREGAMENTO_UNITARIO] = @CLI_TEMPO_DESCARREGAMENTO_UNITARIO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_TEMPO_DESCARREGAMENTO_UNITARIO = value,
@@ -256,7 +256,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_PERCENTUAL_JANELA_EMBARQUE(string cli_id, Decimal value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_PERCENTUAL_JANELA_EMBARQUE = @CLI_PERCENTUAL_JANELA_EMBARQUE WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_PERCENTUAL_JANELA_EMBARQUE] = @CLI_PERCENTUAL_JANELA_EMBARQUE WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_PERCENTUAL_JANELA_EMBARQUE = value,
@@ -266,7 +266,7 @@ namespace Query.Write
         }
         public QueryModel UpdateREP_ID(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET REP_ID = @REP_ID WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [REP_ID] = @REP_ID WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 REP_ID = value,
@@ -276,7 +276,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_RAZAO_SOCIAL(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_RAZAO_SOCIAL = @CLI_RAZAO_SOCIAL WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_RAZAO_SOCIAL] = @CLI_RAZAO_SOCIAL WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_RAZAO_SOCIAL = value,
@@ -286,7 +286,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_EMAIL_MONITORAMENTO_TRANSPORTE(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_EMAIL_MONITORAMENTO_TRANSPORTE = @CLI_EMAIL_MONITORAMENTO_TRANSPORTE WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_EMAIL_MONITORAMENTO_TRANSPORTE] = @CLI_EMAIL_MONITORAMENTO_TRANSPORTE WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_EMAIL_MONITORAMENTO_TRANSPORTE = value,
@@ -296,7 +296,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_CONTATO(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_CONTATO = @CLI_CONTATO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_CONTATO] = @CLI_CONTATO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_CONTATO = value,
@@ -306,7 +306,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_SETOR(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_SETOR = @CLI_SETOR WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_SETOR] = @CLI_SETOR WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_SETOR = value,
@@ -316,7 +316,7 @@ namespace Query.Write
         }
         public QueryModel UpdateSEG_ID(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET SEG_ID = @SEG_ID WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [SEG_ID] = @SEG_ID WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 SEG_ID = value,
@@ -326,7 +326,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_TIPO(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_TIPO = @CLI_TIPO WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_TIPO] = @CLI_TIPO WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_TIPO = value,
@@ -336,7 +336,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_INTEGRACAO_ERP(string cli_id, string value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_INTEGRACAO_ERP = @CLI_INTEGRACAO_ERP WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_INTEGRACAO_ERP] = @CLI_INTEGRACAO_ERP WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_INTEGRACAO_ERP = value,
@@ -346,7 +346,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_LATITUDE_ENTREGA(string cli_id, Decimal value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_LATITUDE_ENTREGA = @CLI_LATITUDE_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_LATITUDE_ENTREGA] = @CLI_LATITUDE_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_LATITUDE_ENTREGA = value,
@@ -356,7 +356,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCLI_LONGITUDE_ENTREGA(string cli_id, Decimal value)
         {
-            this.Query = $@" UPDATE Cliente SET CLI_LONGITUDE_ENTREGA = @CLI_LONGITUDE_ENTREGA WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [CLI_LONGITUDE_ENTREGA] = @CLI_LONGITUDE_ENTREGA WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_LONGITUDE_ENTREGA = value,
@@ -366,7 +366,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string cli_id, int value)
         {
-            this.Query = $@" UPDATE Cliente SET TenantID = @TenantID WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [TenantID] = @TenantID WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -376,7 +376,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string cli_id, bool value)
         {
-            this.Query = $@" UPDATE Cliente SET Deleted = @Deleted WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [Deleted] = @Deleted WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -386,7 +386,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string cli_id, DateTime value)
         {
-            this.Query = $@" UPDATE Cliente SET Changed = @Changed WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [Changed] = @Changed WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -396,7 +396,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string cli_id, int value)
         {
-            this.Query = $@" UPDATE Cliente SET UserId = @UserId WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" UPDATE [Cliente] SET [UserId] = @UserId WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -406,7 +406,7 @@ namespace Query.Write
         }
         public QueryModel DeleteClienteQuery(IClienteEntity Cliente)
         {
-            this.Query = $@" DELETE FROM Cliente WHERE CLI_ID = @CLI_ID ";
+            this.Query = $@" DELETE FROM [Cliente] WHERE [CLI_ID] = @CLI_ID ";
             this.Parameters = new
             {
                 CLI_ID = Cliente.CLI_ID,

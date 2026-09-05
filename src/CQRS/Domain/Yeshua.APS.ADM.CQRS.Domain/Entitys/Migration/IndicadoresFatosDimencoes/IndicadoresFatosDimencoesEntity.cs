@@ -36,16 +36,14 @@
  IND_ID = ind_id; 
  DIM_ID = dim_id; 
  FAT_DESCRICAO = fat_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(FAT_ID))
    this._erroMensagem.Add("FAT ID deve ser informado.");
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
-   if (DIM_ID == null)
-   this._erroMensagem.Add("DIM ID deve ser informado.");
    if(string.IsNullOrEmpty(FAT_DESCRICAO))
    this._erroMensagem.Add("FAT DESCRICAO deve ser informado.");
 return _erroMensagem.Count() <= 0;

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEnderecosQuery(IEnderecosEntity Enderecos)
         {
-            this.Query = $@" INSERT INTO Enderecos (END_ID, END_GRUPO, TenantID, Deleted, Changed, UserId) VALUES(@END_ID, @END_GRUPO, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Enderecos] ([END_ID], [END_GRUPO], [TenantID], [Deleted], [Changed], [UserId]) VALUES(@END_ID, @END_GRUPO, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 END_ID = Enderecos.END_ID,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEnderecosQuery(IEnderecosEntity Enderecos)
         {
-            this.Query = $@" UPDATE Enderecos SET END_GRUPO = @END_GRUPO, Changed = @Changed, UserId = @UserId WHERE END_ID = @END_ID ";
+            this.Query = $@" UPDATE [Enderecos] SET [END_GRUPO] = @END_GRUPO, [Changed] = @Changed, [UserId] = @UserId WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 END_GRUPO = Enderecos.END_GRUPO,
@@ -56,7 +56,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEND_GRUPO(string end_id, string value)
         {
-            this.Query = $@" UPDATE Enderecos SET END_GRUPO = @END_GRUPO WHERE END_ID = @END_ID ";
+            this.Query = $@" UPDATE [Enderecos] SET [END_GRUPO] = @END_GRUPO WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 END_GRUPO = value,
@@ -66,7 +66,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(string end_id, int value)
         {
-            this.Query = $@" UPDATE Enderecos SET TenantID = @TenantID WHERE END_ID = @END_ID ";
+            this.Query = $@" UPDATE [Enderecos] SET [TenantID] = @TenantID WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -76,7 +76,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(string end_id, bool value)
         {
-            this.Query = $@" UPDATE Enderecos SET Deleted = @Deleted WHERE END_ID = @END_ID ";
+            this.Query = $@" UPDATE [Enderecos] SET [Deleted] = @Deleted WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -86,7 +86,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(string end_id, DateTime value)
         {
-            this.Query = $@" UPDATE Enderecos SET Changed = @Changed WHERE END_ID = @END_ID ";
+            this.Query = $@" UPDATE [Enderecos] SET [Changed] = @Changed WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 Changed = value,
@@ -96,7 +96,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(string end_id, int value)
         {
-            this.Query = $@" UPDATE Enderecos SET UserId = @UserId WHERE END_ID = @END_ID ";
+            this.Query = $@" UPDATE [Enderecos] SET [UserId] = @UserId WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 UserId = value,
@@ -106,7 +106,7 @@ namespace Query.Write
         }
         public QueryModel DeleteEnderecosQuery(IEnderecosEntity Enderecos)
         {
-            this.Query = $@" DELETE FROM Enderecos WHERE END_ID = @END_ID ";
+            this.Query = $@" DELETE FROM [Enderecos] WHERE [END_ID] = @END_ID ";
             this.Parameters = new
             {
                 END_ID = Enderecos.END_ID,

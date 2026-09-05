@@ -39,7 +39,7 @@ public partial class OndaCrudApiSeedTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "ond_id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -53,7 +53,7 @@ public partial class OndaCrudApiSeedTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["OND_ID"] = ApiTestData.Text("Onda OND_ID", 10),
+            ["OND_ID"] = ApiTestData.KeyText(10),
             ["OND_ESPESSURA"] = 10.5m,
             ["OND_PESO_COLA"] = 10.5m,
             ["OND_RENDIMENTO_ONDA_1"] = 10.5m,

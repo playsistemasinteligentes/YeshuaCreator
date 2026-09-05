@@ -30,6 +30,8 @@
  internal GrupoRecursoEntity(string gre_id, string gre_descricao ){
  GRE_ID = gre_id; 
  GRE_DESCRICAO = gre_descricao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

@@ -32,12 +32,12 @@
  TTI_ID = tti_id; 
  TIV_ID = tiv_id; 
  TEM_ID = tem_id; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (TTI_ID == null)
-   this._erroMensagem.Add("TTI ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

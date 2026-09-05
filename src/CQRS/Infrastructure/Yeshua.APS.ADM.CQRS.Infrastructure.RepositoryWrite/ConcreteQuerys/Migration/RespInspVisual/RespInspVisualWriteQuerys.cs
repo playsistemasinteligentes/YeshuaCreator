@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirRespInspVisualQuery(IRespInspVisualEntity RespInspVisual)
         {
-            this.Query = $@" INSERT INTO RespInspVisual (RIV_ID, IPV_ID, ITI_ID, RIV_STATUS, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@RIV_ID, @IPV_ID, @ITI_ID, @RIV_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [RespInspVisual] ([RIV_ID], [IPV_ID], [ITI_ID], [RIV_STATUS], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@RIV_ID, @IPV_ID, @ITI_ID, @RIV_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 RIV_ID = RespInspVisual.RIV_ID,
@@ -46,7 +46,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRespInspVisualQuery(IRespInspVisualEntity RespInspVisual)
         {
-            this.Query = $@" UPDATE RespInspVisual SET RIV_ID = @RIV_ID, IPV_ID = @IPV_ID, ITI_ID = @ITI_ID, RIV_STATUS = @RIV_STATUS, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [RIV_ID] = @RIV_ID, [IPV_ID] = @IPV_ID, [ITI_ID] = @ITI_ID, [RIV_STATUS] = @RIV_STATUS, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RIV_ID = RespInspVisual.RIV_ID,
@@ -61,7 +61,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRIV_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET RIV_ID = @RIV_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [RIV_ID] = @RIV_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RIV_ID = value,
@@ -71,7 +71,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIPV_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET IPV_ID = @IPV_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [IPV_ID] = @IPV_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IPV_ID = value,
@@ -81,7 +81,7 @@ namespace Query.Write
         }
         public QueryModel UpdateITI_ID(int id, int value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET ITI_ID = @ITI_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [ITI_ID] = @ITI_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ITI_ID = value,
@@ -91,7 +91,7 @@ namespace Query.Write
         }
         public QueryModel UpdateRIV_STATUS(int id, string value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET RIV_STATUS = @RIV_STATUS WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [RIV_STATUS] = @RIV_STATUS WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 RIV_STATUS = value,
@@ -101,7 +101,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -111,7 +111,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -121,7 +121,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -131,7 +131,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE RespInspVisual SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [RespInspVisual] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -141,7 +141,7 @@ namespace Query.Write
         }
         public QueryModel DeleteRespInspVisualQuery(IRespInspVisualEntity RespInspVisual)
         {
-            this.Query = $@" DELETE FROM RespInspVisual WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [RespInspVisual] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = RespInspVisual.Id,

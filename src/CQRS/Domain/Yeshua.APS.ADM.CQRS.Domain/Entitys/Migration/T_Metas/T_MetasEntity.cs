@@ -56,22 +56,18 @@
  PER_ID = per_id; 
  DOM_EMPRESA = dom_empresa; 
  DOM_FILIAL = dom_filial; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (MET_ID == null)
-   this._erroMensagem.Add("MET ID deve ser informado.");
    if(string.IsNullOrEmpty(MET_DTINICIO))
    this._erroMensagem.Add("MET DTINICIO deve ser informado.");
    if(string.IsNullOrEmpty(MET_DTFIM))
    this._erroMensagem.Add("MET DTFIM deve ser informado.");
    if(string.IsNullOrEmpty(MET_ALVO))
    this._erroMensagem.Add("MET ALVO deve ser informado.");
-   if (MET_TIPOALVO == null)
-   this._erroMensagem.Add("MET TIPOALVO deve ser informado.");
-   if (IND_ID == null)
-   this._erroMensagem.Add("IND ID deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

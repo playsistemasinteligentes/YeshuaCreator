@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirT_PREFERENCIASQuery(IT_PREFERENCIASEntity T_PREFERENCIAS)
         {
-            this.Query = $@" INSERT INTO T_PREFERENCIAS (PRE_ID, PRE_DESCRICAO, PRE_NAMESPACE, PRE_TIPO, PRE_VALOR, USE_ID, PER_ID, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@PRE_ID, @PRE_DESCRICAO, @PRE_NAMESPACE, @PRE_TIPO, @PRE_VALOR, @USE_ID, @PER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [T_PREFERENCIAS] ([PRE_ID], [PRE_DESCRICAO], [PRE_NAMESPACE], [PRE_TIPO], [PRE_VALOR], [USE_ID], [PER_ID], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@PRE_ID, @PRE_DESCRICAO, @PRE_NAMESPACE, @PRE_TIPO, @PRE_VALOR, @USE_ID, @PER_ID, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 PRE_ID = T_PREFERENCIAS.PRE_ID,
@@ -49,7 +49,7 @@ namespace Query.Write
         }
         public QueryModel UpdateT_PREFERENCIASQuery(IT_PREFERENCIASEntity T_PREFERENCIAS)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PRE_ID = @PRE_ID, PRE_DESCRICAO = @PRE_DESCRICAO, PRE_NAMESPACE = @PRE_NAMESPACE, PRE_TIPO = @PRE_TIPO, PRE_VALOR = @PRE_VALOR, USE_ID = @USE_ID, PER_ID = @PER_ID, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PRE_ID] = @PRE_ID, [PRE_DESCRICAO] = @PRE_DESCRICAO, [PRE_NAMESPACE] = @PRE_NAMESPACE, [PRE_TIPO] = @PRE_TIPO, [PRE_VALOR] = @PRE_VALOR, [USE_ID] = @USE_ID, [PER_ID] = @PER_ID, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRE_ID = T_PREFERENCIAS.PRE_ID,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PRE_ID = @PRE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PRE_ID] = @PRE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRE_ID = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRE_DESCRICAO(int id, string value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PRE_DESCRICAO = @PRE_DESCRICAO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PRE_DESCRICAO] = @PRE_DESCRICAO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRE_DESCRICAO = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRE_NAMESPACE(int id, string value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PRE_NAMESPACE = @PRE_NAMESPACE WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PRE_NAMESPACE] = @PRE_NAMESPACE WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRE_NAMESPACE = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRE_TIPO(int id, string value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PRE_TIPO = @PRE_TIPO WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PRE_TIPO] = @PRE_TIPO WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRE_TIPO = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePRE_VALOR(int id, string value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PRE_VALOR = @PRE_VALOR WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PRE_VALOR] = @PRE_VALOR WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PRE_VALOR = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUSE_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET USE_ID = @USE_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [USE_ID] = @USE_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 USE_ID = value,
@@ -127,7 +127,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePER_ID(int id, int value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET PER_ID = @PER_ID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [PER_ID] = @PER_ID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PER_ID = value,
@@ -137,7 +137,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -147,7 +147,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -157,7 +157,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -167,7 +167,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE T_PREFERENCIAS SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [T_PREFERENCIAS] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -177,7 +177,7 @@ namespace Query.Write
         }
         public QueryModel DeleteT_PREFERENCIASQuery(IT_PREFERENCIASEntity T_PREFERENCIAS)
         {
-            this.Query = $@" DELETE FROM T_PREFERENCIAS WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [T_PREFERENCIAS] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = T_PREFERENCIAS.Id,
