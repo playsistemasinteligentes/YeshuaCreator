@@ -780,6 +780,9 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step185.DeleteAsync);
             await step185.ExecuteAsync();
 
+            var step186 = new Saga.CargaStandard.CargaStandardSagaApiSmokeTests();
+            await step186.CargaStandard_saga_should_run_with_real_api_and_infrastructure();
+
         }
         catch (Exception ex)
         {

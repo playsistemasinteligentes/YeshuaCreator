@@ -91,6 +91,32 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("");
+            sb.AppendLine("    public class ModuleContinuation");
+            sb.AppendLine("    {");
+            sb.AppendLine("        public string SourceModule { get; set; }");
+            sb.AppendLine("        public string SourceSaga { get; set; }");
+            sb.AppendLine("        public string SourceStep { get; set; }");
+            sb.AppendLine("        public string Contract { get; set; }");
+            sb.AppendLine("        public int ContractVersion { get; set; }");
+            sb.AppendLine("        public string TargetModule { get; set; }");
+            sb.AppendLine("        public string TargetSaga { get; set; }");
+            sb.AppendLine("        public bool Required { get; set; }");
+            sb.AppendLine("        public string Direction { get; set; }");
+            sb.AppendLine("");
+            sb.AppendLine("        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            SourceModule = sourceModule;");
+            sb.AppendLine("            SourceSaga = sourceSaga;");
+            sb.AppendLine("            SourceStep = sourceStep;");
+            sb.AppendLine("            Contract = contract;");
+            sb.AppendLine("            ContractVersion = contractVersion;");
+            sb.AppendLine("            TargetModule = targetModule;");
+            sb.AppendLine("            TargetSaga = targetSaga;");
+            sb.AppendLine("            Required = required;");
+            sb.AppendLine("            Direction = direction;");
+            sb.AppendLine("        }");
+            sb.AppendLine("    }");
+            sb.AppendLine("");
 
 
 
@@ -139,6 +165,22 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("    }");
             sb.AppendLine("}");
+            sb.AppendLine("");
+            sb.AppendLine("public static class StaticYeshuaModuleContinuations");
+            sb.AppendLine("{");
+            sb.AppendLine("    public static readonly List<ModuleContinuation> Continuations = new List<ModuleContinuation>();");
+            sb.AppendLine("");
+            sb.AppendLine("    static StaticYeshuaModuleContinuations()");
+            sb.AppendLine("    {");
+            sb.AppendLine("        Continuations.Clear();");
+
+            foreach (var continuation in BuildModuleContinuations(_migration))
+            {
+                sb.AppendLine($"        Continuations.Add(new ModuleContinuation(\"{Escape(continuation.SourceModule)}\", \"{Escape(continuation.SourceSaga)}\", \"{Escape(continuation.SourceStep)}\", \"{Escape(continuation.Contract)}\", {continuation.ContractVersion}, \"{Escape(continuation.TargetModule)}\", \"{Escape(continuation.TargetSaga)}\", {continuation.Required.ToString().ToLowerInvariant()}, \"{Escape(continuation.Direction)}\"));");
+            }
+
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
 
 
 
@@ -181,6 +223,37 @@ namespace Dominio.Schemas.CQRS
         private static string Escape(string value)
         {
             return (value ?? string.Empty).Replace("\\", "\\\\").Replace("\"", "\\\"");
+        }
+
+        private static List<Dominio.YeshuaModuleContinuation> BuildModuleContinuations(Migration.MigrationBase migration)
+        {
+            var continuations = new List<Dominio.YeshuaModuleContinuation>();
+
+            foreach (var group in migration.UseCaseGroup)
+            {
+                foreach (var subGroup in group.UseCaseSubGroup)
+                {
+                    foreach (var saga in subGroup.Saga)
+                    {
+                        continuations.AddRange(saga.YeshuaModuleContinuations);
+                    }
+                }
+            }
+
+            return continuations
+                .GroupBy(x => new
+                {
+                    x.SourceModule,
+                    x.SourceSaga,
+                    x.SourceStep,
+                    x.Contract,
+                    x.ContractVersion,
+                    x.TargetModule,
+                    x.TargetSaga,
+                    x.Direction
+                })
+                .Select(group => group.First())
+                .ToList();
         }
 
         private sealed class GeneratedMenuDefinition

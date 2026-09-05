@@ -18,7 +18,7 @@ namespace Command.Receivers
 {
     public partial class DefinirDadosTransporteHandler : ISagaStepHandler
     {
-        public string Key => CargaStandardSaga.STEP_1;
+        public string Key => CargaStandardSaga.STEP_2;
 
         public bool IsAsync => true;
 

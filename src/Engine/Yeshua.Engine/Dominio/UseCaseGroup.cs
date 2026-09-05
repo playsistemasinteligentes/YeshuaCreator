@@ -303,6 +303,58 @@ Command
             return this;
         }
 
+        public UseCaseGroup PublishYeshuaModuleEvent(
+            string targetModule,
+            string contract,
+            int version,
+            string targetSaga,
+            bool required = true)
+        {
+            var saga = this.UseCaseSubGroup.Last().Saga.Last();
+            var step = saga.SagaStepGroup.Last().LastStep;
+            var continuation = new YeshuaModuleContinuation
+            {
+                SourceModule = this.Name._value,
+                SourceSaga = saga.Name._value,
+                SourceStep = step.Name._value,
+                Contract = contract,
+                ContractVersion = version,
+                TargetModule = targetModule,
+                TargetSaga = targetSaga,
+                Required = required,
+                Direction = "Publishes"
+            };
+
+            step.YeshuaModuleContinuations.Add(continuation);
+            saga.YeshuaModuleContinuations.Add(continuation);
+            return this;
+        }
+
+        public UseCaseGroup StartsFromYeshuaModuleEvent(
+            string sourceModule,
+            string contract,
+            int version,
+            string sourceSaga = "",
+            string sourceStep = "",
+            bool required = true)
+        {
+            var saga = this.UseCaseSubGroup.Last().Saga.Last();
+            saga.YeshuaModuleContinuations.Add(new YeshuaModuleContinuation
+            {
+                SourceModule = sourceModule,
+                SourceSaga = sourceSaga,
+                SourceStep = sourceStep,
+                Contract = contract,
+                ContractVersion = version,
+                TargetModule = this.Name._value,
+                TargetSaga = saga.Name._value,
+                Required = required,
+                Direction = "StartsFrom"
+            });
+
+            return this;
+        }
+
         public UseCaseGroup ExposeAsEntityAction(string entityName, string title, bool forRecord = true)
         {
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().EntityActions.Add(

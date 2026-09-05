@@ -2318,10 +2318,12 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 builder.Services.AddTransient<Dominio.Saga.CargaStandardSaga>();
 builder.Services.AddTransient<Command.Receivers.CargaStandardSagaHandlerResolver>();
+builder.Services.AddTransient<CriarCargaHandler>();
 builder.Services.AddTransient<DefinirDadosTransporteHandler>();
-builder.Services.AddTransient<EnviarNotasFiscaisHandler>();
-builder.Services.AddTransient<GerarCTeHandler>();
-builder.Services.AddTransient<GerarMDFeHandler>();
+builder.Services.AddTransient<PrepararCargaParaFiscalHandler>();
+builder.Services.AddTransient<PublicarCargaProntaParaEmissaoFiscalHandler>();
+builder.Services.AddTransient<AguardarResultadoFiscalDaCargaHandler>();
+builder.Services.AddTransient<LiberarCargaParaExpedicaoHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler>();
 

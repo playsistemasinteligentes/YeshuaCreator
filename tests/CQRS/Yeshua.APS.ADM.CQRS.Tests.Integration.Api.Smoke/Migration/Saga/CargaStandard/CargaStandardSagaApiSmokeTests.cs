@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -25,10 +25,12 @@ public partial class CargaStandardSagaApiSmokeTests : ApiIntegrationTestBase
     private const string ExpectedSagaType = "CargaStandardSaga";
     private static readonly string[] ExpectedStepKeys =
     {
+        "CriarCarga",
         "DefinirDadosTransporte",
-        "EnviarNotasFiscais",
-        "GerarCTe",
-        "GerarMDFe",
+        "PrepararCargaParaFiscal",
+        "PublicarCargaProntaParaEmissaoFiscal",
+        "AguardarResultadoFiscalDaCarga",
+        "LiberarCargaParaExpedicao",
     };
 
     [IntegrationFact]

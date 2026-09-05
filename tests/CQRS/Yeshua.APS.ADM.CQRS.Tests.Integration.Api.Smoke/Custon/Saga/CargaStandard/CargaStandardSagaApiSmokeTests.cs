@@ -33,7 +33,7 @@ public partial class CargaStandardSagaApiSmokeTests
         options.BuildSagaReadPayload = BuildSagaReadPayload;
         options.IsExpectedOutcome = (_, steps) =>
             steps.OfType<JsonObject>().Any(step =>
-                string.Equals(GetString(step, "StepKey"), "DefinirDadosTransporte", StringComparison.OrdinalIgnoreCase)
+                string.Equals(GetString(step, "StepKey"), "CriarCarga", StringComparison.OrdinalIgnoreCase)
                 && GetInt(step, "ExecutionCount") > 0);
         options.AssertOutcome = AssertWorkerTouchedSaga;
     }
@@ -337,10 +337,10 @@ public partial class CargaStandardSagaApiSmokeTests
         Assert.True(status == 1 || status == 2, $"Saga CargaStandard ficou em status inesperado: {status}.");
 
         var firstStep = steps.OfType<JsonObject>().FirstOrDefault(step =>
-            string.Equals(GetString(step, "StepKey"), "DefinirDadosTransporte", StringComparison.OrdinalIgnoreCase));
+            string.Equals(GetString(step, "StepKey"), "CriarCarga", StringComparison.OrdinalIgnoreCase));
 
         Assert.NotNull(firstStep);
-        Assert.True(GetInt(firstStep!, "ExecutionCount") > 0, "O worker da saga nao executou o primeiro passo DefinirDadosTransporte.");
+        Assert.True(GetInt(firstStep!, "ExecutionCount") > 0, "O worker da saga nao executou o primeiro passo CriarCarga.");
     }
 
     private static string? GetString(JsonNode? node, string propertyName)

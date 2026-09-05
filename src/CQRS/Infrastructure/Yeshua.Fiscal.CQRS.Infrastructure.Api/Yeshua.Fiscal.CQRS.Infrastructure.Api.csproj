@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <YeshuaCommitSha Condition="'$(YeshuaCommitSha)' == ''">$(SourceRevisionId)</YeshuaCommitSha>
+    <YeshuaBuildTimestampUtc Condition="'$(YeshuaBuildTimestampUtc)' == ''">UNSET</YeshuaBuildTimestampUtc>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yeshua.Fiscal.CQRS.Infrastructure.Shared\Yeshua.Fiscal.CQRS.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\..\Domain\Yeshua.Fiscal.CQRS.Domain\Yeshua.Fiscal.CQRS.Domain.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.Fiscal.CQRS.Application.Command\Yeshua.Fiscal.CQRS.Application.Command.csproj" />
+    <ProjectReference Include="..\..\Application\Yeshua.Fiscal.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.CQRS.Application.RepositoryInterfaces.csproj" />
+    <ProjectReference Include="..\Yeshua.Fiscal.CQRS.Infrastructure.RepositoryRead\Yeshua.Fiscal.CQRS.Infrastructure.RepositoryRead.csproj" />
+    <ProjectReference Include="..\Yeshua.Fiscal.CQRS.Infrastructure.RepositoryWrite\Yeshua.Fiscal.CQRS.Infrastructure.RepositoryWrite.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Custon\ExternalConnectors\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="Yeshua.Application" Value="Fiscal" />
+    <RuntimeHostConfigurationOption Include="Yeshua.Version" Value="$(Version)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.CommitSha" Value="$(YeshuaCommitSha)" />
+    <RuntimeHostConfigurationOption Include="Yeshua.BuildTimestampUtc" Value="$(YeshuaBuildTimestampUtc)" />
+  </ItemGroup>
+</Project>

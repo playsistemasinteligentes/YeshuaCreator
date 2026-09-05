@@ -62,15 +62,38 @@ Miolos que IA/dev devem preencher:
   nascer quando a DSL declarar uma borda assincrona concreta, como
   `AddOutBoxPollingWorker` ou `AddInboxListenerWorker`; se nao ha topologia
   declarada, o Worker deve subir sem tentar inicializar RabbitMQ.
+- Continuidade entre sagas de modulos Yeshua diferentes deve ser declarada na
+  DSL como contrato explicito de modulo, nao como chamada direta nem como
+  dependencia de tabela. A DSL pode marcar que um step publica um contrato
+  `YeshuaModuleEvent` e que outra saga inicia/continua a partir dele; a Engine
+  registra essa relacao em manifesto estatico e a infraestrutura concreta pode
+  usar outbox/inbox, fila ou outro transporte depois.
+- Esse vinculo entre modulos deve conter pelo menos modulo origem, saga origem,
+  step origem, contrato, versao, modulo destino, saga destino e obrigatoriedade.
+  O objetivo inicial e rastreabilidade, consistencia e atencao humana em
+  alteracoes cruzadas, sem mecanismo magico ou configuracao cadastravel.
 - No APS ADM, o fluxo standard de carga deve começar como uma Saga declarada
   na DSL (`CargaStandard`) antes de nascer um novo conceito de Workflow. Cada
   cliente pode escolher uma saga hard coded/protegida para a carga quando o
   fluxo standard nao atender, mantendo a flexibilidade em codigo e nao em
   configuracao cadastravel.
+- A saga standard de carga do APS deve parar sua responsabilidade na preparacao
+  da carga, publicacao do contrato `CargaProntaParaEmissaoFiscal` e consumo do
+  retorno fiscal. CT-e, MDF-e e encerramento pertencem ao modulo Fiscal e
+  retornam ao APS por contratos de modulo Yeshua, nao por consulta direta entre
+  modulos.
+- Subdivisoes como calculo fiscal, montagem de XML, assinatura por certificado,
+  validacao XSD e interpretacao de retorno SEFAZ comecam como metodos internos
+  dos handlers de saga. Elas so viram steps de saga quando precisarem de retry,
+  espera externa, observabilidade propria, retomada independente ou fronteira
+  entre modulos/processos.
 - `pendencia`: permitir que a DSL/Engine diferencie steps de saga assincronos,
   manuais e sincronizados. A geracao atual trata `ISagaStepHandler.IsAsync`
   como `true` fixo; prototipos podem usar inbox tecnico para avançar, mas a
   solucao final precisa representar explicitamente passos internos/manuais.
+- `pendencia`: representar ramificacoes de saga para sucesso, falha tecnica,
+  rejeicao fiscal e retorno manual sem transformar alternativas em uma lista
+  linear de steps obrigatorios.
 - `pendencia`: padronizar na Engine os repositórios internos de saga
   (`Save`, `ClaimRunnableSagas`, `ReleaseLock`, `SetPendingApply`) para todos
   os aplicativos, evitando copiar miolo custom entre apps.
@@ -388,9 +411,11 @@ os miolos customizados.
 - Autorizador, endpoint, contingencia e QR Code sao configuracoes por UF e
   ambiente. Para PE, AP e RR o autorizador CT-e e a SVSP; a contingencia desses
   estados usa SVC-RS.
-- CT-e, MDF-e e NF-e devem ser pensados como modulos fiscais vendaveis e
-  implantaveis isoladamente quando possivel. Um agregador `Fiscal` pode existir
-  comercialmente, mas nao deve justificar acoplamento tecnico entre documentos.
+- CT-e, MDF-e e NF-e passam a ser pensados como modulos internos de um
+  aplicativo fiscal unificado (`Yeshua.Studio.Fiscal`) sempre que isso reduzir
+  duplicacao de SEFAZ, certificado, XML, protocolo, eventos e observabilidade.
+  A separacao comercial continua possivel por modulo/permissao, sem exigir um
+  Studio ou aplicativo tecnico separado para cada documento.
 - Dentro do CT-e, separar entrada, normalizacao, orquestracao de emissao,
   rateio de frete, calculo fiscal, numeracao/chave, XML SEFAZ, assinatura,
   validacao XSD, cliente SEFAZ, interpretacao de retorno, eventos, DACTE,
@@ -399,22 +424,21 @@ os miolos customizados.
   modulo, nao copiadas como um monolito tecnico. `CTeRecepcaoEventoV4`, por
   exemplo, e uma borda unica, mas cancelamento, carta de correcao, comprovante
   de entrega e outros eventos devem nascer como fluxos separados.
-- O aplicativo Fiscal.CTe deve ser pensado como produto independente. CT-e
-  carga modelo 57, CT-e Simplificado, CT-e OS, GTV-e, eventos, distribuicao,
-  DACTE/QR Code e contingencia sao familias distintas; reutilizam infraestrutura
-  fiscal, mas nao devem dividir um miolo central.
-- O aplicativo Fiscal.MDFe tambem deve ser pensado como produto independente.
-  Encerramento, consulta, nao encerrados, eventos, emissao rodoviaria, DAMDFE,
-  distribuicao, CIOT/contrato/pagamento, MDF-e Integrado, InfraSA/DTe, PAA/NFF
-  e modais especiais sao familias distintas; reutilizam infraestrutura fiscal,
-  mas nao devem dividir um miolo central.
+- Dentro do modulo CT-e, CT-e carga modelo 57, CT-e Simplificado, CT-e OS,
+  GTV-e, eventos, distribuicao, DACTE/QR Code e contingencia continuam sendo
+  familias distintas, com miolos bem separados dentro do aplicativo Fiscal.
+- Dentro do modulo MDF-e, encerramento, consulta, nao encerrados, eventos,
+  emissao rodoviaria, DAMDFE, distribuicao, CIOT/contrato/pagamento, MDF-e
+  Integrado, InfraSA/DTe, PAA/NFF e modais especiais continuam sendo familias
+  distintas, com miolos bem separados dentro do aplicativo Fiscal.
 - O primeiro recorte de MDF-e e encerramento de MDF-e autorizado via evento
   `110112` no webservice `MDFeRecepcaoEvento` versao 3.00, com assinatura
   digital, validacao XSD, interpretacao do retorno e persistencia do XML,
   protocolo, `cStat` e `xMotivo`.
 - O playground `tools/Yeshua.Engine.Playground` preserva a prova isolada do
   encerramento real de MDF-e. Esse conhecimento deve migrar para miolo
-  customizado do aplicativo Fiscal.MDFe; o playground nao e arquitetura final.
+  customizado do modulo MDF-e dentro do aplicativo Fiscal; o playground nao e
+  arquitetura final.
 - MDF-e usa a relacao oficial de servicos do Portal MDF-e/SVRS por ambiente.
   Endpoints, QR Code, timeout, certificado e versao de schema sao configuracoes
   do aplicativo fiscal, nunca constantes escondidas na Engine.

@@ -17,27 +17,33 @@ namespace Command.Receivers
 {
     public class CargaStandardSagaHandlerResolver : ISagaHandlerResolver
     {
+        private readonly CriarCargaHandler _CriarCargaHandler;
         private readonly DefinirDadosTransporteHandler _DefinirDadosTransporteHandler;
-        private readonly EnviarNotasFiscaisHandler _EnviarNotasFiscaisHandler;
-        private readonly GerarCTeHandler _GerarCTeHandler;
-        private readonly GerarMDFeHandler _GerarMDFeHandler;
+        private readonly PrepararCargaParaFiscalHandler _PrepararCargaParaFiscalHandler;
+        private readonly PublicarCargaProntaParaEmissaoFiscalHandler _PublicarCargaProntaParaEmissaoFiscalHandler;
+        private readonly AguardarResultadoFiscalDaCargaHandler _AguardarResultadoFiscalDaCargaHandler;
+        private readonly LiberarCargaParaExpedicaoHandler _LiberarCargaParaExpedicaoHandler;
 
-        public CargaStandardSagaHandlerResolver(DefinirDadosTransporteHandler DefinirDadosTransporteHandler, EnviarNotasFiscaisHandler EnviarNotasFiscaisHandler, GerarCTeHandler GerarCTeHandler, GerarMDFeHandler GerarMDFeHandler)
+        public CargaStandardSagaHandlerResolver(CriarCargaHandler CriarCargaHandler, DefinirDadosTransporteHandler DefinirDadosTransporteHandler, PrepararCargaParaFiscalHandler PrepararCargaParaFiscalHandler, PublicarCargaProntaParaEmissaoFiscalHandler PublicarCargaProntaParaEmissaoFiscalHandler, AguardarResultadoFiscalDaCargaHandler AguardarResultadoFiscalDaCargaHandler, LiberarCargaParaExpedicaoHandler LiberarCargaParaExpedicaoHandler)
         {
+            _CriarCargaHandler = CriarCargaHandler;
             _DefinirDadosTransporteHandler = DefinirDadosTransporteHandler;
-            _EnviarNotasFiscaisHandler = EnviarNotasFiscaisHandler;
-            _GerarCTeHandler = GerarCTeHandler;
-            _GerarMDFeHandler = GerarMDFeHandler;
+            _PrepararCargaParaFiscalHandler = PrepararCargaParaFiscalHandler;
+            _PublicarCargaProntaParaEmissaoFiscalHandler = PublicarCargaProntaParaEmissaoFiscalHandler;
+            _AguardarResultadoFiscalDaCargaHandler = AguardarResultadoFiscalDaCargaHandler;
+            _LiberarCargaParaExpedicaoHandler = LiberarCargaParaExpedicaoHandler;
         }
 
         public Dictionary<string, ISagaStepHandler> GetHandlers()
         {
             return new Dictionary<string, ISagaStepHandler>
             {
-                { CargaStandardSaga.STEP_1, _DefinirDadosTransporteHandler },
-                { CargaStandardSaga.STEP_2, _EnviarNotasFiscaisHandler },
-                { CargaStandardSaga.STEP_3, _GerarCTeHandler },
-                { CargaStandardSaga.STEP_4, _GerarMDFeHandler },
+                { CargaStandardSaga.STEP_1, _CriarCargaHandler },
+                { CargaStandardSaga.STEP_2, _DefinirDadosTransporteHandler },
+                { CargaStandardSaga.STEP_3, _PrepararCargaParaFiscalHandler },
+                { CargaStandardSaga.STEP_4, _PublicarCargaProntaParaEmissaoFiscalHandler },
+                { CargaStandardSaga.STEP_5, _AguardarResultadoFiscalDaCargaHandler },
+                { CargaStandardSaga.STEP_6, _LiberarCargaParaExpedicaoHandler },
             };
         }
     }

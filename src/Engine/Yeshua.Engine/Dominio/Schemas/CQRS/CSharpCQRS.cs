@@ -796,7 +796,7 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration.WriteCode(null, filePath, filePathCuston);
             }
 
-            WriteIntegrationApiSmokeSuiteFile(orderedEntities);
+            WriteIntegrationApiSmokeSuiteFile(orderedEntities, sagas);
             WriteIntegrationApiSeedSuiteFile(orderedEntities);
             WritePostBuildManifest();
         }
@@ -918,7 +918,9 @@ namespace Dominio.Schemas.CQRS
                 .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
-        private void WriteIntegrationApiSmokeSuiteFile(IReadOnlyList<Entity> orderedEntities)
+        private void WriteIntegrationApiSmokeSuiteFile(
+            IReadOnlyList<Entity> orderedEntities,
+            IReadOnlyList<Dominio.Saga.Migration.Saga> sagas)
         {
             var sb = new StringBuilder();
             sb.AppendLine("// <yeshua>");
@@ -971,6 +973,16 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"            var {variableName} = new {entity.EntityName}.{entity.EntityName}CrudApiSmokeTests();");
                 sb.AppendLine($"            deleteSteps.Push({variableName}.DeleteAsync);");
                 sb.AppendLine($"            await {variableName}.ExecuteAsync();");
+                sb.AppendLine();
+            }
+
+            for (var index = 0; index < sagas.Count; index++)
+            {
+                var saga = sagas[index];
+                var sagaName = saga.Name.SourceType();
+                var variableName = $"step{(orderedEntities.Count + index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+                sb.AppendLine($"            var {variableName} = new Saga.{sagaName}.{sagaName}SagaApiSmokeTests();");
+                sb.AppendLine($"            await {variableName}.{sagaName}_saga_should_run_with_real_api_and_infrastructure();");
                 sb.AppendLine();
             }
 

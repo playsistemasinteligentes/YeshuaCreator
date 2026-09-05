@@ -72,6 +72,32 @@ namespace Modules
         }
     }
 
+    public class ModuleContinuation
+    {
+        public string SourceModule { get; set; }
+        public string SourceSaga { get; set; }
+        public string SourceStep { get; set; }
+        public string Contract { get; set; }
+        public int ContractVersion { get; set; }
+        public string TargetModule { get; set; }
+        public string TargetSaga { get; set; }
+        public bool Required { get; set; }
+        public string Direction { get; set; }
+
+        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction)
+        {
+            SourceModule = sourceModule;
+            SourceSaga = sourceSaga;
+            SourceStep = sourceStep;
+            Contract = contract;
+            ContractVersion = contractVersion;
+            TargetModule = targetModule;
+            TargetSaga = targetSaga;
+            Required = required;
+            Direction = direction;
+        }
+    }
+
 public static class StaticModules
 {
     public static readonly List<Module> Modules = new List<Module>();
@@ -278,6 +304,17 @@ public static class StaticModules
         Modules.LastOrDefault().Menus.Add(new Menu("yUserModule", "/getMetaDatayUserModule", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("yPerfilGrant", "/getMetaDatayPerfilGrant", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("yUserGrant", "/getMetaDatayUserGrant", "crud", "", ""));
+    }
+}
+
+public static class StaticYeshuaModuleContinuations
+{
+    public static readonly List<ModuleContinuation> Continuations = new List<ModuleContinuation>();
+
+    static StaticYeshuaModuleContinuations()
+    {
+        Continuations.Clear();
+        Continuations.Add(new ModuleContinuation("APSADM", "CargaStandard", "publicarCargaProntaParaEmissaoFiscal", "CargaProntaParaEmissaoFiscal", 1, "Fiscal", "EmissaoFiscalCargaStandard", true, "Publishes"));
     }
 }
 }

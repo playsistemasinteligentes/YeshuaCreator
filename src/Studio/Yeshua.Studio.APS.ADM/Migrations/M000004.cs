@@ -89,14 +89,21 @@ public class M000004 : MigrationBase
 
         planejamento
             .AddSaga("CargaStandard")
+            .AddStepGroup("montagemCarga")
+                .AddStep("criarCarga")
             .AddStepGroup("dadosTransporte")
                 .AddStep("definirDadosTransporte")
-            .AddStepGroup("notasFiscais")
-                .AddStep("enviarNotasFiscais")
-            .AddStepGroup("cte")
-                .AddStep("gerarCTe")
-            .AddStepGroup("mdfe")
-                .AddStep("gerarMDFe");
+            .AddStepGroup("preparacaoFiscal")
+                .AddStep("prepararCargaParaFiscal")
+                .AddStep("publicarCargaProntaParaEmissaoFiscal")
+                    .PublishYeshuaModuleEvent(
+                        "Fiscal",
+                        "CargaProntaParaEmissaoFiscal",
+                        1,
+                        "EmissaoFiscalCargaStandard")
+            .AddStepGroup("retornoFiscal")
+                .AddStep("aguardarResultadoFiscalDaCarga")
+                .AddStep("liberarCargaParaExpedicao");
 
         AddCustomPage(
             "APSADM",

@@ -1,5 +1,10 @@
 # Especificacao De Observabilidade Para Servico De Suporte SRE
 
+> Aviso de propriedade intelectual: este conteudo e protegido em partes e em
+> sua totalidade. Reproducao, adaptacao, distribuicao, publicacao, exploracao
+> comercial ou uso por terceiros dependem de autorizacao previa e expressa da
+> Play Sistemas Inteligentes, salvo instrumento especifico em sentido contrario.
+
 ## 1. Finalidade
 
 Este documento define os requisitos de observabilidade, diagnostico e
@@ -30,6 +35,62 @@ O servico deve permitir que uma equipe que nao escreveu o sistema consiga:
 
 Observabilidade produz fatos. Inteligencia operacional correlaciona fatos,
 codigo, versao e contexto para apoiar uma conclusao.
+
+### 2.1 Objetivos Gerais Para A Industria De Software
+
+A adocao deste padrao nao deve ser entendida apenas como uma exigencia de
+suporte SRE. Ela representa uma forma de organizacao industrial do software, na
+qual produto, codigo, operacao, suporte, qualidade e evolucao passam a ser
+tratados como partes rastreaveis do mesmo sistema.
+
+Para empresarios, fabricantes e gestores de produto, os principais beneficios
+esperados sao:
+
+- reduzir a curva de aprendizado do suporte, porque cada operacao passa a ter
+  identidade, versao, evidencias, responsaveis, resultados e fontes
+  relacionados;
+- diminuir a dependencia de conhecimento informal de pessoas especificas,
+  preservando contexto tecnico e operacional de forma consultavel;
+- acelerar diagnosticos e correcoes, pois falhas deixam de ser investigadas
+  apenas por relato humano e passam a ser explicadas por fatos verificaveis;
+- permitir que IA apoie ou execute correcoes com mais seguranca, porque passa
+  a conhecer a operacao afetada, a versao executada, os fontes relevantes, a
+  cadeia de impacto e os criterios de validacao;
+- permitir que melhorias sejam planejadas e implementadas por IA com menor
+  risco, ja que a relacao entre especificacao, codigo, comportamento runtime e
+  testes fica mais explicita;
+- automatizar parte crescente do suporte, desde triagem, coleta de evidencias,
+  classificacao de falhas e sugestao de causa ate geracao de bundles de
+  investigacao;
+- automatizar testes e regressao a partir de incidentes reais, transformando
+  problemas relevantes em casos repetiveis de validacao;
+- aumentar a qualidade de forma acumulativa, porque cada incidente investigado
+  melhora catalogos, testes, runbooks, instrumentacao e conhecimento
+  operacional;
+- reduzir retrabalho entre desenvolvimento, QA, suporte e operacao, pois todos
+  passam a consultar a mesma cadeia de fatos, fontes e versoes;
+- melhorar a previsibilidade de manutencao, permitindo estimar impacto, risco,
+  dependencias e abrangencia antes de alterar o sistema;
+- aumentar a satisfacao do cliente, reduzindo tempo de resposta, reincidencia
+  de problemas e comunicacoes baseadas apenas em tentativa e erro;
+- liberar tempo da equipe para evolucao do produto, ao reduzir investigacoes
+  repetitivas, testes manuais, repasses de contexto e diagnosticos sem
+  evidencia;
+- tornar auditoria, conformidade e protecao de dados mais controlaveis, porque
+  captura, acesso, retencao, mascaramento e proibicoes ficam documentados e
+  testaveis;
+- facilitar onboarding de novos times, fornecedores e agentes de IA, porque o
+  conhecimento essencial do sistema deixa de estar disperso em conversas,
+  servidores e memorias individuais;
+- criar base para maturidade operacional avancada, incluindo prevencao,
+  replay, simulacao, regressao automatizada e inteligencia operacional
+  assistida por IA.
+
+O beneficio central e reduzir o custo de entender, corrigir, testar e evoluir
+software. A empresa deixa de depender apenas de experiencia acumulada e passa a
+operar sobre uma base continua de evidencias, fontes, criterios e historico.
+Com isso, suporte, qualidade, desenvolvimento e gestao ganham velocidade sem
+perder controle.
 
 ## 3. Linguagem Normativa
 
@@ -90,14 +151,14 @@ anteriores.
 | --- | --- | --- |
 | D0 | Essential | identidade, versao, inicio, fim, resultado e erro resumido |
 | D1 | Narrative | etapas, duracoes, causalidade, retries e dependencias |
-| D2 | Diagnostic | decisoes, funcoes, queries, parametros autorizados e stack trace |
+| D2 | Diagnostic | decisoes, funcoes, queries, parametros autorizados e stack trace sanitizado |
 | D3 | Forensic | Commands, snapshots, diferencas e artefatos sanitizados |
 | D4 | Replayable | estado, leituras, relogio, IDs e respostas externas reproduziveis |
 
 Regras de profundidade:
 
 - D0 deve existir em todas as operacoes homologadas.
-- D1 deve existir nos fluxos prioritarios.
+- D1 deve existir em todas as operacoes homologadas.
 - D2 deve ser ativavel para um alvo limitado.
 - D3 exige classificacao e sanitizacao de snapshots.
 - D4 exige isolamento de efeitos e dependencias nao deterministicas.
@@ -150,7 +211,7 @@ executar Replay ou Simulation sem falsificar o resultado Live.
 | CausationId | Identifica a execucao que provocou a atual |
 | Application | Identifica o produto ou aplicativo |
 | Environment | Identifica o ambiente |
-| Version | Identifica o commit ou build confirmado |
+| Version | Identifica o commit, build imutavel ou artifact digest confirmado |
 
 SagaId, JobId, MessageId, TenantId, UserId, DocumentId e identificadores de
 negocio sao contextuais. Eles complementam as identidades universais.
@@ -206,7 +267,7 @@ obrigatorios para o escopo solicitado.
 | Entrega | Comprovacao minima |
 | --- | --- |
 | Governanca | escopo, responsaveis, restricoes e runbook |
-| Fonte e versao | repositorio, build, commit confirmado, snapshot e versao runtime |
+| Fonte e versao | repositorio, build, commit confirmado ou artifact digest, snapshot e versao runtime |
 | Catalogo operacional | operacoes, entradas, etapas, dependencias e resultados |
 | Instrumentacao | tres eixos, identidades, D0 e D1 |
 | Propagacao | cadeia sincrona e assincrona preservada |
@@ -222,7 +283,7 @@ obrigatorios para o escopo solicitado.
 O fabricante deve fornecer:
 
 - repositorio acessivel ao processo acordado;
-- commit ou build imutavel usado na implantacao;
+- commit, build imutavel ou artifact digest usado na implantacao;
 - solucao, projetos e diretorios incluidos;
 - procedimento reproduzivel de build;
 - identificador de versao exposto no runtime;
@@ -253,13 +314,13 @@ Para cada operacao coberta, informar:
 O fabricante deve implementar:
 
 - D0 em todas as operacoes cobertas;
-- D1 nos fluxos prioritarios;
+- D1 em todas as operacoes cobertas;
 - severidade independente da profundidade;
 - modo de execucao explicito;
 - resultados tecnico e de negocio separados;
 - duracao das etapas relevantes;
 - identificacao das dependencias;
-- erros com componente, versao, codigo e stack quando possivel.
+- erros com componente, versao, codigo e stack sanitizado quando possivel.
 
 ### 9.5 Propagacao De Contexto
 
@@ -409,10 +470,11 @@ Um fluxo somente e ELEGIVEL PARA SUPORTE quando comprova G1 a G7.
 - manifesto aprovado;
 - snapshot indexado;
 - runtime informa Application, Environment e Version;
-- versao corresponde ao build indexado.
+- versao corresponde ao commit, build ou artifact digest indexado.
 
 ### G3 - Identidade Operacional
 
+- RootOperationId nas operacoes principais e encadeamentos;
 - OperationId nas operacoes;
 - ExecutionId nas etapas principais;
 - CausationId quando aplicavel;
@@ -422,9 +484,9 @@ Um fluxo somente e ELEGIVEL PARA SUPORTE quando comprova G1 a G7.
 ### G4 - Evidencia Minima
 
 - D0 em todas as operacoes cobertas;
-- D1 nos fluxos prioritarios;
+- D1 em todas as operacoes cobertas;
 - tres eixos registrados separadamente;
-- erros possuem componente, versao e stack quando possivel;
+- erros possuem componente, versao e stack sanitizado quando possivel;
 - resultados tecnico e de negocio separados;
 - dados classificados;
 - NeverCapture validado.
@@ -465,9 +527,11 @@ obrigatorios para o gate inicial. Eles determinam maturidade avancada.
 | NAO ELEGIVEL | Falha em requisito obrigatorio |
 | EM ADEQUACAO | Possui plano, mas nao recebe suporte normal |
 | ELEGIVEL | Atende G1 a G7 para o escopo |
-| AVANCADO | Possui D3/D4, replay, regressao ou prevencao adicional |
+| AVANCADO | Atende G1 a G7 e possui D3/D4, replay, regressao ou prevencao adicional |
 
 EM ADEQUACAO permite onboarding, nao SLA normal de diagnostico.
+AVANCADO e uma qualificacao de maturidade acima de ELEGIVEL, nao um requisito
+adicional para aceitar o fluxo no suporte normal.
 
 ## 13. Demonstracoes De Aceitacao
 
@@ -488,7 +552,7 @@ O fabricante executa uma falha real ou controlada e demonstra:
 - identificacao da operacao;
 - componente e etapa que falharam;
 - versao executada;
-- stack ou evidencia equivalente;
+- stack sanitizado ou evidencia equivalente;
 - dependencia envolvida;
 - fontes da versao;
 - conclusao baseada em fatos.
@@ -543,7 +607,7 @@ Estados permitidos: Pendente, Nao conforme, Conforme com ressalva e Conforme.
 | Sistema | |
 | Fabricante | |
 | Ambiente | |
-| Versao avaliada | commit ou build confirmado |
+| Versao avaliada | commit, build imutavel ou artifact digest confirmado |
 | Operacoes cobertas | lista fechada |
 | Operacoes excluidas | lista e justificativa |
 | Classificacao | NAO ELEGIVEL, EM ADEQUACAO, ELEGIVEL ou AVANCADO |
@@ -635,7 +699,7 @@ Saida: ficha de escopo aprovada.
 ### Passo 2 - Confirmar Fonte E Versao
 
 1. Definir repositorio e branch de referencia.
-2. Selecionar commit confirmado.
+2. Selecionar commit, build imutavel ou artifact digest confirmado.
 3. Documentar build.
 4. Expor Version no runtime.
 5. Criar snapshot indexavel.
@@ -759,3 +823,34 @@ Saida: maturidade avancada sem comprometer o baseline.
 O sistema e considerado suportavel quando uma equipe que nao o desenvolveu
 consegue reconstruir uma operacao, identificar a versao, localizar as
 evidencias e os fontes relevantes e explicar uma falha com fatos verificaveis.
+
+## 20. Propriedade Intelectual E Uso Restrito
+
+Este documento descreve um modelo proprietario de organizacao operacional,
+observabilidade, suportabilidade, diagnostico e homologacao de software.
+
+O conteudo, estrutura, taxonomia, criterios, gates, classificacoes, exemplos,
+sequencia de aplicacao, fichas, entregaveis e forma de avaliacao deste modelo
+pertencem a Play Sistemas Inteligentes e sao protegidos por direitos autorais e
+demais direitos aplicaveis, tanto em partes quanto em sua totalidade.
+
+A disponibilizacao deste documento nao concede, de forma implicita, direito de
+uso, reproducao, adaptacao, distribuicao, publicacao, sublicenciamento,
+exploracao comercial, criacao de padroes derivados, criacao de selos,
+certificacoes, treinamentos, ferramentas, agentes de IA ou servicos baseados
+neste modelo.
+
+Qualquer uso por terceiros depende de autorizacao previa e expressa da Play
+Sistemas Inteligentes, ou de contrato/licenca especifico que defina escopo,
+finalidade, responsabilidades, limites de uso, confidencialidade, forma de
+atribuicao, vigencia e condicoes comerciais.
+
+A autorizacao de uso deste modelo em uma avaliacao, proposta, piloto,
+homologacao, suporte, auditoria ou projeto especifico nao transfere
+titularidade, nao autoriza redistribuicao e nao permite uso fora do escopo
+formalmente aprovado.
+
+O nome comercial definitivo, eventual marca, selo de homologacao e condicoes de
+licenciamento poderao ser definidos em instrumento proprio.
+
+Copyright (c) 2026 Play Sistemas Inteligentes. Todos os direitos reservados.

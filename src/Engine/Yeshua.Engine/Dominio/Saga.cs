@@ -28,6 +28,7 @@ namespace Dominio.Saga.Migration
         public Descricao Name { get; set; }
 
         public List<SagaStepGroup> SagaStepGroup { get; set; } = new List<SagaStepGroup>();
+        public List<YeshuaModuleContinuation> YeshuaModuleContinuations { get; set; } = new List<YeshuaModuleContinuation>();
 
 
         //public object[] Inputs { get; set; }
