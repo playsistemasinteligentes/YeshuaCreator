@@ -23,6 +23,7 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IySagaWriteRepository _sagaWriteRepository;
+    private readonly IExecutionContext _executionContext;
 
     public YeshuaModuleInboxSagaBridgeWorker(
         IUnitOfWork unitOfWork,
@@ -33,6 +34,7 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
     {
         _unitOfWork = unitOfWork;
         _sagaWriteRepository = sagaWriteRepository;
+        _executionContext = context;
     }
 
     protected override Task<State<YeshuaModuleInboxSagaBridgeOutputCommand>> ActionAsync(
@@ -97,6 +99,9 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
     private void StartSagaFromInbox(yInboxDTO inbox)
     {
         var correlationId = ExtractSagaCorrelationId(inbox.payload);
+        _executionContext.SetTenantId(inbox.tenantid);
+        _executionContext.SetUserId(inbox.userid);
+        _executionContext.SetTraceId(correlationId);
 
         _unitOfWork.BeginTran();
         try

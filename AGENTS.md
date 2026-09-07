@@ -460,12 +460,19 @@ os miolos customizados.
   encerramento real de MDF-e. Esse conhecimento deve migrar para miolo
   customizado do modulo MDF-e dentro do aplicativo Fiscal; o playground nao e
   arquitetura final.
+- A implementacao customizada do aplicativo Fiscal tambem ja provou autorizacao
+  MDF-e em homologacao via `MDFeRecepcaoSinc`: em 2026-09-06 retornou
+  `cStat=100`, chave `26260963249950000174580019229056541859087469` e
+  protocolo `926260000004392`. O Playground chama essa implementacao apenas
+  como prova isolada; o codigo oficial fica no Fiscal.
 - O playground `tools/Yeshua.Engine.Playground` tambem preserva a prova
   isolada de comunicacao CT-e em homologacao: `CTeStatusServicoV4` com
-  `cStat=107` e `CTeRecepcaoSincV4` com rejeicao de schema `cStat=215` usando
-  XML incompleto. Isso prova transporte, certificado, SOAP 1.2 e
-  GZip/Base64; autorizacao real ainda depende de XML completo, assinatura,
-  validacao XSD e dados fiscais consistentes no aplicativo Fiscal.
+  `cStat=107` e `CTeRecepcaoSincV4` com autorizacao homologada `cStat=100`
+  em 2026-09-05, chave `26260963249950000174570018377596831037056271` e
+  protocolo `526260000515491`. Isso prova transporte, certificado A1,
+  assinatura, XML CT-e 4.00, IBS/CBS, SOAP 1.2, GZip/Base64 e interpretacao de
+  retorno; o codigo deve migrar depois para miolos customizados do aplicativo
+  Fiscal, nao para a Engine.
 - MDF-e usa a relacao oficial de servicos do Portal MDF-e/SVRS por ambiente.
   Endpoints, QR Code, timeout, certificado e versao de schema sao configuracoes
   do aplicativo fiscal, nunca constantes escondidas na Engine.
@@ -507,6 +514,9 @@ os miolos customizados.
   saida para MDF-e. CT-e publica snapshot/evento autorizado em outbox; MDF-e
   consome por inbox/worker e executa command proprio, sem acessar tabelas
   internas do CT-e nem usar SOAP/REST interno como caminho normal.
+- `docs/Fiscal/CICLO_PRODUCAO_APS_CTE_MDFE.md` define o ciclo para retirar
+  mocagens do fluxo APS -> Fiscal, persistir dados reais e chegar ate CT-e e
+  MDF-e autorizados com XML armazenado e retorno para o APS.
 - MDF-e deve receber snapshots/requests de documentos originarios, carga,
   veiculo, condutor, percurso e dados rodoviarios; nao deve acessar diretamente
   o miolo ou tabelas internas de CT-e, NF-e, pedido, carga ou APS como forma

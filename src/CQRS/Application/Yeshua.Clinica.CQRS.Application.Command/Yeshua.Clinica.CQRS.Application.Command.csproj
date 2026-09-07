@@ -3,6 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Yeshua.CQRS.Application.Command\Yeshua.CQRS.Application.Command.csproj" />

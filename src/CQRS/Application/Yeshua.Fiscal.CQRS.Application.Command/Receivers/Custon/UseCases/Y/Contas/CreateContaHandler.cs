@@ -16,6 +16,7 @@ using RepositoryInterfaces.Patterns.UnitOfWork;
 using IRepository.Read;
 using IRepository.Write;
 using Command.UseCase;
+using Dominio.Entitys;
 
 namespace Command.Receivers.UseCase
 {
@@ -41,6 +42,82 @@ namespace Command.Receivers.UseCase
         }
 protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken)
 {
+    try
+    {
+        if (string.IsNullOrWhiteSpace(comand.CpfCnpj))
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Cpf / Cnpj e obrigatorio", default));
+
+        if (string.IsNullOrWhiteSpace(comand.email))
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Email e obrigatorio", default));
+
+        if (string.IsNullOrWhiteSpace(comand.nome))
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Nome e obrigatorio", default));
+
+        if (comand.password != comand.confirmpassword)
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Senhas nao conferem", default));
+
+        if (_repReadyTenant.ExistsByCnpjCpf(comand.CpfCnpj))
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Conta ja existente.", default));
+
+        if (_repReadyUser.ExistsByEmail(comand.email))
+        {
+            var existingUser = _repReadyUser.FirstByEmail(comand.email);
+            if (existingUser is not null && _repReadyTenant.ExistsByUserId(existingUser.id))
+                throw new ReceiverException<CreateContaOutputCommand>(Error("Conta existente.", default));
+        }
+
+        _unitOfWork.BeginTran();
+
+        var tenant = new yTenantFactory(_logger, _domainTrackingPolicy).Create(
+            comand.CpfCnpj,
+            comand.nome,
+            null);
+
+        _repWriteyTenant.Insert(tenant);
+
+        if (!tenant.isValidInsert())
+            throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", tenant.getErroMensagens()), default));
+
+        if (!tenant.Id.HasValue)
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Tenant, Id nao gerado", default));
+
+        _executionContext.SetTenantId(tenant.Id.Value);
+
+        var user = new yUserFactory(_logger, _domainTrackingPolicy).Create(
+            null,
+            comand.nome,
+            comand.email,
+            comand.password);
+
+        if (!user.isValidInsert())
+            throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default));
+
+        _repWriteyUser.Insert(user);
+
+        if (!user.Id.HasValue)
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Usuario, Id nao gerado", default));
+
+        _repWriteyTenant.UpdateUserId(tenant.Id.Value, user.Id.Value);
+
+        _unitOfWork.Commit();
+
+        state = Success("Conta criada com sucesso", new CreateContaOutputCommand
+        {
+            TenantId = tenant.Id.Value,
+            UserId = user.Id.Value
+        });
+    }
+    catch (ReceiverException<CreateContaOutputCommand>)
+    {
+        _unitOfWork.Rollback();
+        throw;
+    }
+    catch (Exception ex)
+    {
+        _unitOfWork.Rollback();
+        throw new ReceiverException<CreateContaOutputCommand>(Error(ex, default));
+    }
+
     return state;
 }
     }

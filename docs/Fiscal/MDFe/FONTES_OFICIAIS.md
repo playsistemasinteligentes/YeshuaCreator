@@ -100,7 +100,9 @@ que iniciarmos validacao XSD real para emissao, evento ou consulta.
   foram usados para validar e transmitir cada documento/evento.
 - URLs SEFAZ devem ser configuracao por ambiente e servico. No MDF-e atual,
   a relacao oficial usa SVRS como ambiente nacional.
-- O primeiro recorte do Yeshua e encerramento de MDF-e ja autorizado, nao
-  emissao completa.
+- O primeiro recorte do Yeshua nasceu pelo encerramento de MDF-e ja autorizado,
+  mas o Fiscal tambem possui prova customizada de autorizacao MDF-e em
+  homologacao por `MDFeRecepcaoSinc`.
 - O playground `tools/Yeshua.Engine.Playground` contem uma prova isolada de
-  encerramento por `MDFeRecepcaoEvento`.
+  encerramento por `MDFeRecepcaoEvento` e uma chamada fina para provar a
+  autorizacao implementada no aplicativo Fiscal.

@@ -340,8 +340,8 @@ namespace Dominio.Schemas.CQRS
                             {
                                 if (step != null)
                                 {
-                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.SagaStepUseCaseCommand.Name.SourceType()}Handler.cs");
-                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.Name}\\{step.SagaStepUseCaseCommand.Name.SourceType()}Handler.cs");
+                                    var filePath = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Migration"), $"{saga.Name}\\{stepGroup.Name}\\{step.SagaStepUseCaseCommand.Name.SourceType()}Handler.cs");
+                                    var filePathCuston = Path.Combine(GetPathAppAplicationCommandReceiversUseCasesSaga("Custon"), $"{saga.Name}\\{stepGroup.Name}\\{step.SagaStepUseCaseCommand.Name.SourceType()}Handler.cs");
                                     var sourceCodeMigrationAgent = new SourceCodeAplicationHandlesAndResolvers(saga, step);
                                     sourceCodeMigrationAgent.WriteCode(null, filePath, filePathCuston);
                                 }
@@ -1713,6 +1713,7 @@ namespace Dominio.Schemas.CQRS
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
 
   <ItemGroup>

@@ -53,6 +53,13 @@ Evidencia atual:
   retornou HTTP `200 OK` e `cStat=215`, rejeicao de schema. Isso prova a
   comunicacao de recepcao, compactacao GZip/Base64 em `cteDadosMsg` e retorno
   `retCTe`; nao prova autorizacao fiscal completa.
+- 2026-09-05: o mesmo Playground autorizou CT-e modelo 57 versao 4.00 em
+  homologacao SVSP/PE com XML gerado e assinado localmente. A SEFAZ retornou
+  `cStat=100` (`Autorizado o uso do CT-e`), chave
+  `26260963249950000174570018377596831037056271` e protocolo
+  `526260000515491`. Isso prova o ciclo tecnico minimo de certificado A1,
+  assinatura, XML CT-e, IBS/CBS, GZip/Base64, SOAP 1.2, envio sincrono e
+  interpretacao de retorno.
 
 Regra:
 

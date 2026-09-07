@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,5 +12,9 @@
                     <ProjectReference Include="..\..\Domain\Yeshua.Fiscal.CQRS.Domain\Yeshua.Fiscal.CQRS.Domain.csproj" />
                     <ProjectReference Include="..\Yeshua.Fiscal.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.CQRS.Application.RepositoryInterfaces.csproj" />
                   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.4" />
+  </ItemGroup>
 
 </Project>
