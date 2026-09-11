@@ -81,6 +81,7 @@ namespace Dominio.Patterns.Saga
         public void SetFailed(string menssage)
         {
             Status = SagaStepStatus.Failed;
+            ErrorMessage = menssage;
             MarkDirty();
         }
 

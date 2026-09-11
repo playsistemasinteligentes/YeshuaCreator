@@ -31,6 +31,7 @@ namespace IRepository.Write
         void UpdateDeleted(string pon_id, bool value);
         void UpdateChanged(string pon_id, DateTime value);
         void UpdateUserId(string pon_id, int value);
+        void UpdateMUN_ID(string pon_id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

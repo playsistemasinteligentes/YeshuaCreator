@@ -84,6 +84,9 @@ protected partial async Task<State<CriarCargaDaSelecaoPlanejamentoTransporteOutp
     var volume = pedidos.Sum(pedido => pedido.volume);
     var inicioJanela = pedidos.Min(pedido => pedido.embarquealvo);
     var fimJanela = pedidos.Max(pedido => pedido.embarquealvo);
+    var tipoVeiculoId = ParseTipoVeiculoId(comand.TipoVeiculoId);
+    var transportadoraId = NormalizeText(comand.TransportadoraId);
+    var veiculoPlaca = NormalizeText(comand.VeiculoPlaca);
 
     var contexto = DomainOperationContext.Create(
         DomainOperation.Registro,
@@ -117,9 +120,9 @@ protected partial async Task<State<CriarCargaDaSelecaoPlanejamentoTransporteOutp
         null,
         null,
         null,
-        null,
-        null,
-        null,
+        veiculoPlaca,
+        tipoVeiculoId,
+        transportadoraId,
         null,
         null,
         "Criada pela tela de planejamento de transporte.",
@@ -209,6 +212,16 @@ private void StartCargaStandardSaga(string cargaId, DateTime now)
 private static string CreateCargaId()
 {
     return "PLN" + DateTime.UtcNow.ToString("MMddHHmmssfff");
+}
+
+private static int? ParseTipoVeiculoId(string? value)
+{
+    return int.TryParse(value, out var parsed) && parsed > 0 ? parsed : null;
+}
+
+private static string? NormalizeText(string? value)
+{
+    return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }
 
 private static CriarCargaDaSelecaoPlanejamentoTransporteOutputCommand Failed(string message)

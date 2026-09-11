@@ -12,40 +12,55 @@ using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
-using RepositoryInterfaces.Patterns.Command;
 using Repositorio.Outputs;
 using System;
+using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace Command.Receivers
 {
     public partial class AutorizarMDFeNaSefazHandler
     {
+        private readonly IMDFeSolicitacaoFiscalReadRepository _mdfeSolicitacaoFiscalReadRepository;
+        private readonly IMDFeSolicitacaoFiscalWriteRepository _mdfeSolicitacaoFiscalWriteRepository;
+        private readonly IMDFeDocumentoOriginarioReadRepository _mdfeDocumentoOriginarioReadRepository;
+        private readonly IMDFeTentativaEmissaoReadRepository _mdfeTentativaEmissaoReadRepository;
+        private readonly IMDFeTentativaEmissaoWriteRepository _mdfeTentativaEmissaoWriteRepository;
         private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly IyInboxReadRepository _inboxReadRepository;
         private readonly IDocumentoFiscalWriteRepository _documentoFiscalWriteRepository;
         private readonly ILogger _logger;
 
         public AutorizarMDFeNaSefazHandler(
+            IMDFeSolicitacaoFiscalReadRepository mdfeSolicitacaoFiscalReadRepository,
+            IMDFeSolicitacaoFiscalWriteRepository mdfeSolicitacaoFiscalWriteRepository,
+            IMDFeDocumentoOriginarioReadRepository mdfeDocumentoOriginarioReadRepository,
+            IMDFeTentativaEmissaoReadRepository mdfeTentativaEmissaoReadRepository,
+            IMDFeTentativaEmissaoWriteRepository mdfeTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
-            IyInboxReadRepository inboxReadRepository,
             IDocumentoFiscalWriteRepository documentoFiscalWriteRepository,
             ILogger logger)
         {
+            _mdfeSolicitacaoFiscalReadRepository = mdfeSolicitacaoFiscalReadRepository;
+            _mdfeSolicitacaoFiscalWriteRepository = mdfeSolicitacaoFiscalWriteRepository;
+            _mdfeDocumentoOriginarioReadRepository = mdfeDocumentoOriginarioReadRepository;
+            _mdfeTentativaEmissaoReadRepository = mdfeTentativaEmissaoReadRepository;
+            _mdfeTentativaEmissaoWriteRepository = mdfeTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
-            _inboxReadRepository = inboxReadRepository;
             _documentoFiscalWriteRepository = documentoFiscalWriteRepository;
             _logger = logger;
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
         {
-            var cte = TryGetCteAutorizadoDaSaga(saga);
+            MDFeSolicitacaoFiscalDTO? solicitacao = null;
+            MDFeTentativaEmissaoDTO? tentativa = null;
+            MDFeDocumentoOriginarioDTO? documentoOriginario = null;
 
             try
             {
-                var result = MdfeRecepcaoSincHomologacaoClient.Autorizar(cte?.Chave ?? string.Empty);
+                (solicitacao, tentativa, documentoOriginario) = CarregarTentativaPreparada(saga);
+                var prepared = CarregarXmlPreparado(tentativa, documentoOriginario);
+                var result = MdfeRecepcaoSincHomologacaoClient.Autorizar(prepared);
                 var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
 
                 if (!respostaEstruturada)
@@ -72,6 +87,8 @@ namespace Command.Receivers
                         0);
                 }
 
+                RegistrarResultadoTentativa(solicitacao, tentativa, result, respostaEstruturada);
+
                 SefazFiscalDocumentStore.PersistirMDFe(
                     _documentoFiscalWriteRepository,
                     _logger,
@@ -94,7 +111,7 @@ namespace Command.Receivers
                         cStat = result.CodigoRetorno,
                         xMotivo = result.Motivo,
                         chave = result.Chave,
-                        chaveCTe = cte?.Chave ?? string.Empty,
+                        chaveCTe = documentoOriginario.chaveacesso,
                         protocolo = result.Protocolo,
                         httpStatusCode = result.HttpStatusCode,
                         entityId = saga.EntityId
@@ -102,6 +119,8 @@ namespace Command.Receivers
             }
             catch (Exception ex)
             {
+                RegistrarFalhaTecnica(solicitacao, tentativa, ex);
+
                 _logger.CommandFailed(
                     "Fiscal.MDFe.AutorizarMDFeNaSefaz.ErroTecnico",
                     step.CorrelationId,
@@ -124,8 +143,8 @@ namespace Command.Receivers
                         xMotivo = ex.InnerException == null
                             ? ex.Message
                             : ex.Message + " | inner: " + ex.InnerException.Message,
-                        chave = string.Empty,
-                        chaveCTe = cte?.Chave ?? string.Empty,
+                        chave = tentativa?.chaveacesso ?? string.Empty,
+                        chaveCTe = documentoOriginario?.chaveacesso ?? string.Empty,
                         protocolo = string.Empty,
                         httpStatusCode = 0,
                         exceptionType = ex.GetType().FullName,
@@ -139,68 +158,91 @@ namespace Command.Receivers
             _logger.Info($"Fiscal {saga.EntityId}: resposta MDF-e SEFAZ homologacao registrada.");
         }
 
-        private CteAutorizado? TryGetCteAutorizadoDaSaga(SagaBase saga)
+        private (MDFeSolicitacaoFiscalDTO Solicitacao, MDFeTentativaEmissaoDTO Tentativa, MDFeDocumentoOriginarioDTO DocumentoOriginario)
+            CarregarTentativaPreparada(SagaBase saga)
         {
-            var command = new global::Command.Read.yInboxReadCommand
-            {
-                Type = "fiscal.cte.resposta-sefaz-homologacao",
-                SagaId = saga.Id == 0 ? null : saga.Id,
-                Paginacao = new Pagination(1, 50)
-            };
+            var cargaId = saga.EntityId ?? string.Empty;
+            var solicitacao = _mdfeSolicitacaoFiscalReadRepository.FirstByCargaId(cargaId);
+            if (solicitacao == null || solicitacao.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: solicitacao fiscal MDF-e nao encontrada para autorizar MDF-e.");
 
-            var registros = _inboxReadRepository.getyInbox(command, true).Items
-                .OrderByDescending(item => item.createdat);
+            var documentoOriginario = _mdfeDocumentoOriginarioReadRepository
+                .GetAllByMDFeSolicitacaoFiscalId(solicitacao.id)
+                .FirstOrDefault(x => string.Equals(x.tipodocumento, "CTe", StringComparison.OrdinalIgnoreCase));
 
-            foreach (var registro in registros)
+            if (documentoOriginario == null || documentoOriginario.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: CT-e originario nao encontrado para autorizar MDF-e.");
+
+            var tentativa = _mdfeTentativaEmissaoReadRepository.FirstByMDFeSolicitacaoFiscalId(solicitacao.id);
+            if (tentativa == null || tentativa.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: tentativa MDF-e preparada nao encontrada para autorizar MDF-e.");
+
+            return (solicitacao, tentativa, documentoOriginario);
+        }
+
+        private static MdfeRecepcaoSincPrepared CarregarXmlPreparado(
+            MDFeTentativaEmissaoDTO tentativa,
+            MDFeDocumentoOriginarioDTO documentoOriginario)
+        {
+            if (string.IsNullOrWhiteSpace(tentativa.xmlassinadostoragekey))
+                throw new InvalidOperationException($"Tentativa MDF-e {tentativa.id}: XML assinado nao informado.");
+
+            if (!File.Exists(tentativa.xmlassinadostoragekey))
+                throw new FileNotFoundException("XML assinado do MDF-e nao encontrado.", tentativa.xmlassinadostoragekey);
+
+            var xml = File.ReadAllText(tentativa.xmlassinadostoragekey);
+            return new MdfeRecepcaoSincPrepared(
+                tentativa.chaveacesso,
+                tentativa.numero,
+                tentativa.serie,
+                documentoOriginario.chaveacesso,
+                xml,
+                tentativa.xmlhash);
+        }
+
+        private void RegistrarResultadoTentativa(
+            MDFeSolicitacaoFiscalDTO solicitacao,
+            MDFeTentativaEmissaoDTO tentativa,
+            MdfeRecepcaoSincResult result,
+            bool respostaEstruturada)
+        {
+            var statusTentativa = result.Autorizado ? 3 : respostaEstruturada ? 4 : 5;
+            var statusSolicitacao = result.Autorizado ? 3 : respostaEstruturada ? 4 : 5;
+
+            _mdfeTentativaEmissaoWriteRepository.UpdateEnviadoEmUtc(tentativa.id, DateTime.UtcNow);
+            _mdfeTentativaEmissaoWriteRepository.UpdateCodigoRetorno(tentativa.id, result.CodigoRetorno.ToString());
+            _mdfeTentativaEmissaoWriteRepository.UpdateMensagemRetorno(tentativa.id, Limitar(result.Motivo, 1000));
+            _mdfeTentativaEmissaoWriteRepository.UpdateProtocoloAutorizacao(tentativa.id, result.Protocolo ?? string.Empty);
+            _mdfeTentativaEmissaoWriteRepository.UpdateStatus(tentativa.id, statusTentativa);
+
+            if (result.Autorizado)
+                _mdfeTentativaEmissaoWriteRepository.UpdateAutorizadoEmUtc(tentativa.id, DateTime.UtcNow);
+
+            _mdfeSolicitacaoFiscalWriteRepository.UpdateStatus(solicitacao.id, statusSolicitacao);
+        }
+
+        private void RegistrarFalhaTecnica(
+            MDFeSolicitacaoFiscalDTO? solicitacao,
+            MDFeTentativaEmissaoDTO? tentativa,
+            Exception exception)
+        {
+            if (tentativa != null && tentativa.id > 0)
             {
-                var cte = TryReadCteAutorizado(registro);
-                if (cte is not null)
-                    return cte;
+                _mdfeTentativaEmissaoWriteRepository.UpdateMensagemRetorno(tentativa.id, Limitar(exception.Message, 1000));
+                _mdfeTentativaEmissaoWriteRepository.UpdateStatus(tentativa.id, 5);
             }
 
-            return null;
+            if (solicitacao != null && solicitacao.id > 0)
+                _mdfeSolicitacaoFiscalWriteRepository.UpdateStatus(solicitacao.id, 5);
         }
 
-        private static CteAutorizado? TryReadCteAutorizado(yInboxDTO registro)
+        private static string Limitar(string value, int maxLength)
         {
-            if (string.IsNullOrWhiteSpace(registro.payload))
-                return null;
+            if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
+                return value ?? string.Empty;
 
-            try
-            {
-                using var doc = JsonDocument.Parse(registro.payload);
-                if (!doc.RootElement.TryGetProperty("data", out var data))
-                    return null;
-
-                if (!ReadBoolean(data, "autorizado") || ReadBoolean(data, "erroTecnico"))
-                    return null;
-
-                var chave = ReadString(data, "chave");
-                if (string.IsNullOrWhiteSpace(chave) || chave.Length != 44)
-                    return null;
-
-                return new CteAutorizado(chave, ReadString(data, "protocolo"));
-            }
-            catch (JsonException)
-            {
-                return null;
-            }
+            return value.Substring(0, maxLength);
         }
-
-        private static bool ReadBoolean(JsonElement data, string propertyName)
-        {
-            return data.TryGetProperty(propertyName, out var value) &&
-                value.ValueKind == JsonValueKind.True;
-        }
-
-        private static string ReadString(JsonElement data, string propertyName)
-        {
-            return data.TryGetProperty(propertyName, out var value) && value.ValueKind == JsonValueKind.String
-                ? value.GetString() ?? string.Empty
-                : string.Empty;
-        }
-
-        private sealed record CteAutorizado(string Chave, string Protocolo);
     }
 }
 

@@ -126,6 +126,30 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByTRA_CNPJ(string value )
+        {
+            var query = _query.ExistsByTRA_CNPJQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTRA_INSCRICAO_ESTADUAL(string value )
+        {
+            var query = _query.ExistsByTRA_INSCRICAO_ESTADUALQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByTRA_RNTRC(string value )
+        {
+            var query = _query.ExistsByTRA_RNTRCQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTRA_EMAIL(string value )
         {
             var query = _query.ExistsByTRA_EMAILQuery(value );
@@ -222,6 +246,30 @@ namespace Read.Repository
                 return result;
         }
 
+        public TransportadoraDTO FirstByTRA_CNPJ(string value )
+        {
+            var query = _query.FirstByTRA_CNPJQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TransportadoraDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public TransportadoraDTO FirstByTRA_INSCRICAO_ESTADUAL(string value )
+        {
+            var query = _query.FirstByTRA_INSCRICAO_ESTADUALQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TransportadoraDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public TransportadoraDTO FirstByTRA_RNTRC(string value )
+        {
+            var query = _query.FirstByTRA_RNTRCQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<TransportadoraDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public TransportadoraDTO FirstByTRA_EMAIL(string value )
         {
             var query = _query.FirstByTRA_EMAILQuery(value );
@@ -313,6 +361,30 @@ namespace Read.Repository
         public IEnumerable<TransportadoraDTO> GetAllByTRA_NOME(string value )
         {
             var query = _query.FirstByTRA_NOMEQuery(value );
+
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                return result;
+        }
+
+        public IEnumerable<TransportadoraDTO> GetAllByTRA_CNPJ(string value )
+        {
+            var query = _query.FirstByTRA_CNPJQuery(value );
+
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                return result;
+        }
+
+        public IEnumerable<TransportadoraDTO> GetAllByTRA_INSCRICAO_ESTADUAL(string value )
+        {
+            var query = _query.FirstByTRA_INSCRICAO_ESTADUALQuery(value );
+
+                var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
+                return result;
+        }
+
+        public IEnumerable<TransportadoraDTO> GetAllByTRA_RNTRC(string value )
+        {
+            var query = _query.FirstByTRA_RNTRCQuery(value );
 
                 var result = _unitOfWork.Query<TransportadoraDTO>(query.Query,query.Parameters) as List<TransportadoraDTO>;
                 return result;

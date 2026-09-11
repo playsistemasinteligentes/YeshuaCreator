@@ -22,6 +22,7 @@
 {
     int? Id { get; set; }
     string VEI_PLACA { get; set; }
+    string VEI_UF { get; set; }
     int TIP_ID { get; set; }
     Decimal? VEI_CAPACIDADE_M3 { get; set; }
     Decimal? VEI_CAPACIDADE_LARGURA { get; set; }

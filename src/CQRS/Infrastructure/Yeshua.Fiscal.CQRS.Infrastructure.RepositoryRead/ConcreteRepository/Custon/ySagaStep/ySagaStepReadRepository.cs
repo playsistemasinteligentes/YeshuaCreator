@@ -9,6 +9,11 @@
 // </yeshua>
 
 // pendencia: mover esta infraestrutura interna de saga para geracao padrao da Engine.
+using Dapper;
+using Repositorio.Outputs;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Read.Repository
 {
     public partial class ySagaStepReadRepository
@@ -48,6 +53,24 @@ namespace Read.Repository
                 SELECT @Applied;";
 
             return _unitOfWork.ExecuteScalar<int>(sql);
+        }
+
+        public ySagaStepDTO? GetFirstBySagaStepKeyAndStatuses(int sagaId, string stepKey, IEnumerable<int> statuses)
+        {
+            var sql = @"
+                SELECT TOP 1 *
+                  FROM [ySagaStep]
+                 WHERE [SagaId] = @SagaId
+                   AND [StepKey] = @StepKey
+                   AND [Status] IN @Statuses
+                 ORDER BY [IndexOrder];";
+
+            return _unitOfWork.Query<ySagaStepDTO>(sql, new
+            {
+                SagaId = sagaId,
+                StepKey = stepKey,
+                Statuses = statuses.ToArray()
+            }).FirstOrDefault();
         }
     }
 }

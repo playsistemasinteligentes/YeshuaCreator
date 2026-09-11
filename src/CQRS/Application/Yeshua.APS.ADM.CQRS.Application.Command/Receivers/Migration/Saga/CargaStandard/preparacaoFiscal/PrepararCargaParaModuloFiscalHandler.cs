@@ -16,9 +16,9 @@ using System;
 
 namespace Command.Receivers
 {
-    public partial class LiberarCargaParaExpedicaoHandler : ISagaStepHandler
+    public partial class PrepararCargaParaModuloFiscalHandler : ISagaStepHandler
     {
-        public string Key => CargaStandardSaga.STEP_6;
+        public string Key => CargaStandardSaga.STEP_5;
 
         public bool IsAsync => true;
 

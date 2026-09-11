@@ -1,0 +1,210 @@
+<section class="fiscal-contingencia-page">
+    <div class="fiscal-contingencia-header">
+        <div>
+            <p class="fiscal-contingencia-kicker">Fiscal</p>
+            <h1>Nova Contingencia Fiscal</h1>
+        </div>
+        <div class="fiscal-contingencia-actions">
+            <button id="fiscal-contingencia-new" type="button">Novo</button>
+            <button id="fiscal-contingencia-submit" type="button" class="primary">Iniciar</button>
+        </div>
+    </div>
+
+    <div class="fiscal-contingencia-layout">
+        <main class="fiscal-contingencia-panel fiscal-contingencia-main">
+            <div class="fiscal-panel-title">
+                <h2>Entrada</h2>
+                <span id="fiscal-contingencia-status">pronto</span>
+            </div>
+
+            <div class="fiscal-stage" data-stage="inicio">
+            <div class="fiscal-contingencia-grid">
+                <label>
+                    Carga
+                    <input id="fiscal-carga-id" type="text">
+                </label>
+                <label>
+                    Tenant
+                    <input id="fiscal-tenant-id" type="number" min="1" value="1">
+                </label>
+                <label>
+                    Ambiente
+                    <select id="fiscal-ambiente">
+                        <option value="2">Homologacao</option>
+                        <option value="1">Producao</option>
+                    </select>
+                </label>
+                <label>
+                    Solicitante
+                    <select id="fiscal-tipo-solicitante">
+                        <option value="1">Transportador</option>
+                        <option value="2">Embarcador</option>
+                        <option value="3">Subcontratacao</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="fiscal-section-title">
+                <h3>Documentos Originarios</h3>
+                <button id="fiscal-add-documento" type="button">Adicionar NF-e</button>
+            </div>
+            <div id="fiscal-documentos"></div>
+            </div>
+
+            <div class="fiscal-stage" data-stage="transporte">
+            <div class="fiscal-section-title">
+                <h3>Dados De Transporte</h3>
+            </div>
+            <div class="fiscal-contingencia-grid">
+                <label>
+                    Emitente fiscal
+                    <input id="fiscal-emitente" type="text">
+                </label>
+                <label>
+                    Tomador
+                    <input id="fiscal-tomador" type="text">
+                </label>
+                <label>
+                    Transportador
+                    <input id="fiscal-transportador" type="text">
+                </label>
+                <label>
+                    RNTRC
+                    <input id="fiscal-rntrc" type="text">
+                </label>
+                <label>
+                    Placa
+                    <input id="fiscal-placa" type="text">
+                </label>
+                <label>
+                    UF veiculo
+                    <input id="fiscal-uf-veiculo" type="text" maxlength="2">
+                </label>
+                <label>
+                    CPF condutor
+                    <input id="fiscal-condutor-documento" type="text">
+                </label>
+                <label>
+                    Nome condutor
+                    <input id="fiscal-condutor-nome" type="text">
+                </label>
+                <label>
+                    UF inicio
+                    <input id="fiscal-uf-inicio" type="text" maxlength="2">
+                </label>
+                <label>
+                    Municipio inicio IBGE
+                    <input id="fiscal-municipio-inicio" type="text">
+                </label>
+                <label>
+                    UF fim
+                    <input id="fiscal-uf-fim" type="text" maxlength="2">
+                </label>
+                <label>
+                    Municipio fim IBGE
+                    <input id="fiscal-municipio-fim" type="text">
+                </label>
+            </div>
+            </div>
+
+            <div class="fiscal-stage" data-stage="frete">
+            <div class="fiscal-section-title">
+                <h3>Frete</h3>
+            </div>
+            <div class="fiscal-contingencia-grid">
+                <label>
+                    Valor frete
+                    <input id="fiscal-valor-frete" type="text">
+                </label>
+                <label>
+                    Rateio frete
+                    <select id="fiscal-estrategia-rateio-frete">
+                        <option value="proporcional_valor_documento">Proporcional ao valor</option>
+                        <option value="proporcional_peso_bruto">Proporcional ao peso</option>
+                        <option value="manual">Manual</option>
+                        <option value="sem_rateio">Sem rateio</option>
+                    </select>
+                </label>
+            </div>
+            </div>
+
+            <div class="fiscal-stage" data-stage="agrupamento">
+            <div class="fiscal-section-title">
+                <h3>Agrupamento CT-e</h3>
+            </div>
+            <div class="fiscal-contingencia-grid">
+                <label>
+                    Agrupamento CT-e
+                    <select id="fiscal-tipo-agrupamento-cte">
+                        <option value="um_cte_por_nfe">Um CT-e por NF-e</option>
+                        <option value="agrupar_por_destinatario">Agrupar por destinatario</option>
+                        <option value="cte_unico_da_carga">CT-e unico da carga</option>
+                    </select>
+                </label>
+                <label>
+                    Origem rota fiscal
+                    <select id="fiscal-origem-rota-fiscal">
+                        <option value="manual_contingencia">Manual contingencia</option>
+                        <option value="pontos_mapa">Pontos mapa</option>
+                        <option value="aps_snapshot">Snapshot APS</option>
+                    </select>
+                </label>
+                <label class="wide">
+                    Observacao fiscal
+                    <textarea id="fiscal-observacao-fiscal" rows="3"></textarea>
+                </label>
+            </div>
+            </div>
+
+            <div class="fiscal-stage" data-stage="confirmacao">
+            <div class="fiscal-section-title">
+                <h3>Confirmacao</h3>
+            </div>
+            <p class="fiscal-stage-note">
+                Revise os dados informados. Ao enviar esta etapa, o plano sera publicado para a emissao fiscal.
+            </p>
+            </div>
+
+            <div class="fiscal-stage" data-stage="processamento">
+            <div class="fiscal-section-title">
+                <h3>Processamento</h3>
+            </div>
+            <p class="fiscal-stage-note">
+                A saga esta executando uma etapa interna. Use Consultar para verificar o proximo passo.
+            </p>
+            </div>
+
+            <div class="fiscal-stage" data-stage="emissao">
+            <div class="fiscal-section-title">
+                <h3>Emissao Fiscal</h3>
+            </div>
+            <p class="fiscal-stage-note">
+                A emissao esta em processamento. Use Consultar para verificar o retorno.
+            </p>
+            </div>
+        </main>
+
+        <aside class="fiscal-contingencia-panel">
+            <div class="fiscal-panel-title">
+                <h2>Resultado</h2>
+                <button id="fiscal-contingencia-refresh" type="button">Consultar</button>
+            </div>
+            <dl class="fiscal-result-list">
+                <div>
+                    <dt>Correlation</dt>
+                    <dd id="fiscal-result-correlation">-</dd>
+                </div>
+                <div>
+                    <dt>Entrada</dt>
+                    <dd id="fiscal-result-entrada">-</dd>
+                </div>
+                <div>
+                    <dt>Mensagem</dt>
+                    <dd id="fiscal-result-message">-</dd>
+                </div>
+            </dl>
+            <div id="fiscal-contingencia-feedback" class="fiscal-feedback"></div>
+            <div id="fiscal-contingencia-steps" class="fiscal-steps"></div>
+        </aside>
+    </div>
+</section>

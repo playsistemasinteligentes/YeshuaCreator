@@ -56,6 +56,11 @@ namespace Input.Repository.Veiculo
             var query = _query.UpdateVEI_PLACA(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateVEI_UF(int id, string value)
+        {
+            var query = _query.UpdateVEI_UF(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTIP_ID(int id, int value)
         {
             var query = _query.UpdateTIP_ID(id, value);

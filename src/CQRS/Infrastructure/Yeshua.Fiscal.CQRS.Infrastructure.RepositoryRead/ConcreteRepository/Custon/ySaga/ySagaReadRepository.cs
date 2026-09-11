@@ -107,6 +107,70 @@ namespace Read.Repository
             saga.Steps = steps.ToList();
             return saga;
         }
+
+        public ySagaDTO? GetLatestByTypeEntity(string type, string entityType, string? entityId, string? correlationId)
+        {
+            var sql = @"
+                SELECT TOP 1 *
+                  FROM [ySaga]
+                 WHERE [Type] = @Type
+                   AND [EntityType] = @EntityType
+                   AND [TenantID] = @TenantID
+                   AND [Deleted] = 0
+                   AND (
+                        (@EntityId <> '' AND [EntityId] = @EntityId)
+                     OR (@CorrelationId <> '' AND [CorrelationId] = @CorrelationId)
+                   )
+                 ORDER BY [Id] DESC;";
+
+            var saga = _unitOfWork.Query<ySagaDTO>(sql, new
+            {
+                Type = type,
+                EntityType = entityType,
+                EntityId = entityId ?? string.Empty,
+                CorrelationId = correlationId ?? string.Empty,
+                TenantID = _executionContext.TenantID
+            }).FirstOrDefault();
+
+            if (saga == null)
+                return null;
+
+            var steps = _unitOfWork.Query<ySagaStepDTO>(
+                @"SELECT *
+                    FROM [ySagaStep]
+                   WHERE [SagaId] = @SagaId
+                     AND [TenantID] = @TenantID
+                     AND [Deleted] = 0
+                   ORDER BY [IndexOrder]",
+                new
+                {
+                    SagaId = saga.id,
+                    TenantID = _executionContext.TenantID
+                });
+
+            saga.Steps = steps.ToList();
+            return saga;
+        }
+
+        public ySagaDTO? GetLatestByTypeEntityAndStatus(string type, string entityType, string? entityId, int status)
+        {
+            var sql = @"
+                SELECT TOP 1 *
+                  FROM [ySaga]
+                 WHERE [Type] = @Type
+                   AND [EntityType] = @EntityType
+                   AND [EntityId] = @EntityId
+                   AND [Status] = @Status
+                 ORDER BY [Id] DESC;";
+
+            return _unitOfWork.Query<ySagaDTO>(sql, new
+            {
+                Type = type,
+                EntityType = entityType,
+                EntityId = entityId,
+                Status = status
+            }).FirstOrDefault();
+        }
     }
 }
 

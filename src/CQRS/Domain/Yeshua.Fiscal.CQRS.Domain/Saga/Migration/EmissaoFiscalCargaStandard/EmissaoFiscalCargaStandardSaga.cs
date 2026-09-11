@@ -15,15 +15,16 @@ namespace Dominio.Saga
     public class EmissaoFiscalCargaStandardSaga : SagaBase
     {
         public const string STEP_1 = "ReceberCargaProntaParaEmissaoFiscal";
-        public const string STEP_2 = "NormalizarDocumentosOriginarios";
-        public const string STEP_3 = "MontarSolicitacoesCTe";
-        public const string STEP_4 = "PrepararCTe";
-        public const string STEP_5 = "AutorizarCTeNaSefaz";
-        public const string STEP_6 = "PublicarCTeAutorizadoParaMDFe";
-        public const string STEP_7 = "MontarSolicitacaoMDFe";
-        public const string STEP_8 = "PrepararMDFe";
-        public const string STEP_9 = "AutorizarMDFeNaSefaz";
-        public const string STEP_10 = "PublicarDocumentosFiscaisDaCargaConcluidos";
+        public const string STEP_2 = "AguardarDocumentosOriginariosDaCarga";
+        public const string STEP_3 = "PrepararEntradaFiscalDaCarga";
+        public const string STEP_4 = "MontarSolicitacoesCTe";
+        public const string STEP_5 = "PrepararCTe";
+        public const string STEP_6 = "AutorizarCTeNaSefaz";
+        public const string STEP_7 = "PublicarCTeAutorizadoParaMDFe";
+        public const string STEP_8 = "MontarSolicitacaoMDFe";
+        public const string STEP_9 = "PrepararMDFe";
+        public const string STEP_10 = "AutorizarMDFeNaSefaz";
+        public const string STEP_11 = "PublicarDocumentosFiscaisDaCargaConcluidos";
 
         public EmissaoFiscalCargaStandardSaga()
         {
@@ -37,6 +38,7 @@ namespace Dominio.Saga
             AddStep(new EmissaoFiscalCargaStandardStep(STEP_8, 8));
             AddStep(new EmissaoFiscalCargaStandardStep(STEP_9, 9));
             AddStep(new EmissaoFiscalCargaStandardStep(STEP_10, 10));
+            AddStep(new EmissaoFiscalCargaStandardStep(STEP_11, 11));
         }
     }
 }

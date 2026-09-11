@@ -66,6 +66,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
+                    builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
                     builder.Services.AddTransient<SagaResolverRegistry>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
                     builder.Services.AddScoped<OutboxService>();
@@ -1316,6 +1317,7 @@ builder.Services.AddTransient<Command.Receivers.Write.DeletePontosMapaReceiver>(
 builder.Services.AddTransient<Command.Receivers.Read.PontosMapaReadReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PontosMapaReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PontosMapaReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.PontosMapaReadFKMUN_IDReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IT_PREFERENCIASWriteRepository, Input.Repository.T_PREFERENCIAS.T_PREFERENCIASWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IT_PREFERENCIASReadRepository, Read.Repository.T_PREFERENCIASReadRepository>();
@@ -2318,12 +2320,16 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
 builder.Services.AddTransient<Dominio.Saga.CargaStandardSaga>();
 builder.Services.AddTransient<Command.Receivers.CargaStandardSagaHandlerResolver>();
-builder.Services.AddTransient<CriarCargaHandler>();
-builder.Services.AddTransient<DefinirDadosTransporteHandler>();
-builder.Services.AddTransient<PrepararCargaParaFiscalHandler>();
+builder.Services.AddTransient<AguardarDadosTransporteHandler>();
+builder.Services.AddTransient<AguardarAgendamentoHandler>();
+builder.Services.AddTransient<AguardarInicioCarregamentoHandler>();
+builder.Services.AddTransient<AguardarFinalizacaoCarregamentoHandler>();
+builder.Services.AddTransient<PrepararCargaParaModuloFiscalHandler>();
 builder.Services.AddTransient<PublicarCargaProntaParaEmissaoFiscalHandler>();
-builder.Services.AddTransient<AguardarResultadoFiscalDaCargaHandler>();
+builder.Services.AddTransient<AguardarFinalizacaoFiscalHandler>();
 builder.Services.AddTransient<LiberarCargaParaExpedicaoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InformarDadosTransporteCargaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler>();
 

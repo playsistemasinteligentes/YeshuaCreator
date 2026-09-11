@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.Saga.EmissaoFiscalCargaStandard;
 
-[SmokeTestOrder(37)]
+[SmokeTestOrder(38)]
 [Trait("TestPurpose", "SagaE2ESmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D1")]
@@ -26,7 +26,8 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests : ApiIntegratio
     private static readonly string[] ExpectedStepKeys =
     {
         "ReceberCargaProntaParaEmissaoFiscal",
-        "NormalizarDocumentosOriginarios",
+        "AguardarDocumentosOriginariosDaCarga",
+        "PrepararEntradaFiscalDaCarga",
         "MontarSolicitacoesCTe",
         "PrepararCTe",
         "AutorizarCTeNaSefaz",

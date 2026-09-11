@@ -23,6 +23,9 @@
     public int? Id { get; set; }
     public string TRA_ID { get; set; }
     public string TRA_NOME { get; set; }
+    public string TRA_CNPJ { get; set; }
+    public string TRA_INSCRICAO_ESTADUAL { get; set; }
+    public string TRA_RNTRC { get; set; }
     public string TRA_EMAIL { get; set; }
     public string TRA_RESPONSAVEL { get; set; }
     public string TRA_FONE { get; set; }
@@ -33,10 +36,13 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     private List<string> _erroMensagem = null;
- internal TransportadoraEntity(int? id, string tra_id, string tra_nome, string tra_email, string tra_responsavel, string tra_fone, string tra_id_integracao, string tra_id_integracao_erp ){
+ internal TransportadoraEntity(int? id, string tra_id, string tra_nome, string tra_cnpj, string tra_inscricao_estadual, string tra_rntrc, string tra_email, string tra_responsavel, string tra_fone, string tra_id_integracao, string tra_id_integracao_erp ){
  Id = id; 
  TRA_ID = tra_id; 
  TRA_NOME = tra_nome; 
+ TRA_CNPJ = tra_cnpj; 
+ TRA_INSCRICAO_ESTADUAL = tra_inscricao_estadual; 
+ TRA_RNTRC = tra_rntrc; 
  TRA_EMAIL = tra_email; 
  TRA_RESPONSAVEL = tra_responsavel; 
  TRA_FONE = tra_fone; 

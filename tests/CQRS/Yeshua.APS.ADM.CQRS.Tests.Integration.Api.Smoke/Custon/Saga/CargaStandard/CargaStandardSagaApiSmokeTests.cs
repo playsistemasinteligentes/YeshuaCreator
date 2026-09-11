@@ -22,15 +22,23 @@ public partial class CargaStandardSagaApiSmokeTests
     private const string CriarClienteEndpoint = "yapi/Cliente/PostCliente";
     private const string CriarPontosMapaEndpoint = "yapi/PontosMapa/PostPontosMapa";
     private const string CriarPedidoEndpoint = "yapi/Order/PostOrder";
+    private const string CriarTransportadoraEndpoint = "yapi/Transportadora/PostTransportadora";
+    private const string CriarVeiculoEndpoint = "yapi/Veiculo/PostVeiculo";
+    private const string ApsModuleEventEndpoint = "yapi/APSADM/Inbox/YeshuaModuleEvent";
+    private const string FiscalConcluidoEvent = "DocumentosFiscaisDaCargaConcluidos.v1";
 
     partial void Configure(SagaSmokeTestOptions options)
     {
+        var evidence = new CargaStandardEvidence();
+
         options.Enabled = true;
         options.Timeout = TimeSpan.FromSeconds(240);
         options.PollInterval = TimeSpan.FromSeconds(2);
         options.BuildStartPayload = BuildContextPayload;
         options.StartSagaAsync = StartCargaStandardSagaAsync;
         options.BuildSagaReadPayload = BuildSagaReadPayload;
+        options.OnObservationAsync = (client, saga, steps, token) =>
+            SimularFiscalConcluindoCargaAsync(client, saga, steps, evidence, token);
         options.IsExpectedOutcome = (saga, steps) =>
             GetInt(saga, "Status") == 2
             && StepHasStatus(steps, "LiberarCargaParaExpedicao", 5);
@@ -50,7 +58,7 @@ public partial class CargaStandardSagaApiSmokeTests
 
     private static async Task<JsonObject> StartCargaStandardSagaAsync(HttpClient client, JsonObject payload, CancellationToken cancellationToken)
     {
-        var pedidoSemeado = await EnsurePedidoPlanejavelAsync(client, cancellationToken);
+        var seed = await EnsurePedidoPlanejavelAsync(client, cancellationToken);
 
         using var contextResponse = await client.PostAsJsonAsync(BuscarContextoEndpoint, payload, JsonOptions, cancellationToken);
         var contextState = await ApiResponseAssertions.ReadSuccessStateAsync(contextResponse);
@@ -63,7 +71,7 @@ public partial class CargaStandardSagaApiSmokeTests
         Assert.True(pedidos.Count > 0, "A lente estado-municipio nao retornou pedidos para criar carga.");
 
         string? ultimaMensagem = null;
-        foreach (var pedido in pedidos.OrderByDescending(pedido => string.Equals(GetString(pedido, "PedidoId"), pedidoSemeado, StringComparison.OrdinalIgnoreCase)))
+        foreach (var pedido in pedidos.OrderByDescending(pedido => string.Equals(GetString(pedido, "PedidoId"), seed.PedidoId, StringComparison.OrdinalIgnoreCase)))
         {
             var pedidoRefs = new JsonArray();
             pedidoRefs.Add(new JsonObject
@@ -76,7 +84,9 @@ public partial class CargaStandardSagaApiSmokeTests
             {
                 ["ContextoId"] = contextoId,
                 ["Pedidos"] = pedidoRefs,
-                ["TipoVeiculoId"] = string.Empty,
+                ["TipoVeiculoId"] = seed.TipoVeiculoId.ToString(),
+                ["TransportadoraId"] = seed.TransportadoraId,
+                ["VeiculoPlaca"] = seed.VeiculoPlaca,
                 ["Observacao"] = "Teste automatizado E2E da saga CargaStandard."
             };
 
@@ -94,12 +104,17 @@ public partial class CargaStandardSagaApiSmokeTests
         return new JsonObject();
     }
 
-    private static async Task<string> EnsurePedidoPlanejavelAsync(HttpClient client, CancellationToken cancellationToken)
+    private static async Task<CargaStandardSeed> EnsurePedidoPlanejavelAsync(HttpClient client, CancellationToken cancellationToken)
     {
         var municipioId = await CreateAndReadIdAsync(client, CriarMunicipioEndpoint, BuildMunicipioPayload(), "mun_id", cancellationToken);
         var clienteId = await CreateAndReadIdAsync(client, CriarClienteEndpoint, BuildClientePayload(municipioId), "cli_id", cancellationToken);
-        var pontoId = await CreateAndReadIdAsync(client, CriarPontosMapaEndpoint, BuildPontosMapaPayload(), "pon_id", cancellationToken);
-        return await CreateAndReadIdAsync(client, CriarPedidoEndpoint, BuildPedidoPayload(clienteId, municipioId, pontoId), "ord_id", cancellationToken);
+        var pontoId = await CreateAndReadIdAsync(client, CriarPontosMapaEndpoint, BuildPontosMapaPayload(municipioId), "pon_id", cancellationToken);
+        var transportadoraId = await CreateAndReadIdAsync(client, CriarTransportadoraEndpoint, BuildTransportadoraPayload(), "tra_id", cancellationToken);
+        var tipoVeiculoId = 1;
+        var veiculoPlaca = await CreateAndReadIdAsync(client, CriarVeiculoEndpoint, BuildVeiculoPayload(tipoVeiculoId), "vei_placa", cancellationToken);
+        var pedidoId = await CreateAndReadIdAsync(client, CriarPedidoEndpoint, BuildPedidoPayload(clienteId, municipioId, pontoId), "ord_id", cancellationToken);
+
+        return new CargaStandardSeed(pedidoId, transportadoraId, veiculoPlaca, tipoVeiculoId);
     }
 
     private static async Task<string> CreateAndReadIdAsync(HttpClient client, string endpoint, JsonObject payload, string idPropertyName, CancellationToken cancellationToken)
@@ -160,7 +175,7 @@ public partial class CargaStandardSagaApiSmokeTests
         };
     }
 
-    private static JsonObject BuildPontosMapaPayload()
+    private static JsonObject BuildPontosMapaPayload(string municipioId)
     {
         return new JsonObject
         {
@@ -169,7 +184,47 @@ public partial class CargaStandardSagaApiSmokeTests
             ["PON_TIPO"] = "REG",
             ["PON_LATITUDE"] = -23.550520m,
             ["PON_LONGITUDE"] = -46.633308m,
-            ["PON_DISTANCIA_KM"] = 120.0m
+            ["PON_DISTANCIA_KM"] = 120.0m,
+            ["MUN_ID"] = municipioId
+        };
+    }
+
+    private static JsonObject BuildTransportadoraPayload()
+    {
+        return new JsonObject
+        {
+            ["TRA_ID"] = ApiTestData.KeyText(12),
+            ["TRA_NOME"] = ApiTestData.Text("Transportadora fiscal", 80),
+            ["TRA_CNPJ"] = "05318071000150",
+            ["TRA_INSCRICAO_ESTADUAL"] = "635607900115",
+            ["TRA_RNTRC"] = "45861338",
+            ["TRA_EMAIL"] = "transporte@local.test",
+            ["TRA_RESPONSAVEL"] = "Responsavel Transporte",
+            ["TRA_FONE"] = "11999999999",
+            ["TRA_ID_INTEGRACAO"] = ApiTestData.Text("TRA INT", 80),
+            ["TRA_ID_INTEGRACAO_ERP"] = ApiTestData.Text("TRA ERP", 80)
+        };
+    }
+
+    private static JsonObject BuildVeiculoPayload(int tipoVeiculoId)
+    {
+        return new JsonObject
+        {
+            ["VEI_PLACA"] = ApiTestData.KeyText(7),
+            ["VEI_UF"] = "SP",
+            ["TIP_ID"] = tipoVeiculoId,
+            ["VEI_CAPACIDADE_M3"] = 90m,
+            ["VEI_CAPACIDADE_LARGURA"] = 2.6m,
+            ["VEI_CAPACIDADE_COMPRIMENTO"] = 14m,
+            ["VEI_CAPACIDADE_ALTURA"] = 2.8m,
+            ["VEI_MODELO"] = "TRUCK",
+            ["VEI_NOME_MOTORISTA"] = "MOTORISTA TESTE",
+            ["VEI_DADOS_CONTATO"] = "11999999999",
+            ["VEI_CPF_MOTORISTA"] = "12345678901",
+            ["TCA_ID"] = "CAR",
+            ["VEI_EMISSAO"] = DateTime.UtcNow.AddDays(-30),
+            ["VEI_VENCIMENTO"] = DateTime.UtcNow.AddYears(1),
+            ["VEI_STATUS"] = "A"
         };
     }
 
@@ -262,8 +317,62 @@ public partial class CargaStandardSagaApiSmokeTests
             ["EntityType"] = "Carga",
             ["EntityId"] = cargaId,
             ["Type"] = "CargaStandardSaga",
-            ["Paginacao"] = ApiTestData.Pagination(pageSize: 5)
+            ["Paginacao"] = ApiTestData.Pagination(pageSize: 50)
         };
+    }
+
+    private static async Task SimularFiscalConcluindoCargaAsync(
+        HttpClient client,
+        JsonObject saga,
+        JsonArray steps,
+        CargaStandardEvidence evidence,
+        CancellationToken cancellationToken)
+    {
+        if (evidence.FinalizacaoFiscalInformada)
+            return;
+
+        var waitingStep = steps.OfType<JsonObject>().FirstOrDefault(step =>
+            string.Equals(GetString(step, "StepKey"), "AguardarFinalizacaoFiscal", StringComparison.OrdinalIgnoreCase)
+            && GetInt(step, "Status") == 3);
+
+        if (waitingStep is null)
+            return;
+
+        var stepCorrelationId = GetString(waitingStep, "CorrelationId");
+        Assert.False(string.IsNullOrWhiteSpace(stepCorrelationId), "AguardarFinalizacaoFiscal esta aguardando sem CorrelationId.");
+
+        var cargaId = GetString(saga, "EntityId") ?? string.Empty;
+        var payload = new JsonObject
+        {
+            ["MessageId"] = Guid.NewGuid().ToString(),
+            ["Type"] = FiscalConcluidoEvent,
+            ["EntityType"] = "Carga",
+            ["EntityId"] = cargaId,
+            ["CorrelationId"] = stepCorrelationId,
+            ["Payload"] = new JsonObject
+            {
+                ["type"] = FiscalConcluidoEvent,
+                ["source"] = "Fiscal-MOCK",
+                ["data"] = new JsonObject
+                {
+                    ["cargaId"] = cargaId,
+                    ["cteAutorizado"] = true,
+                    ["mdfeAutorizado"] = true
+                }
+            }.ToJsonString(JsonOptions),
+            ["Source"] = "Fiscal-MOCK",
+            ["Transport"] = "YeshuaApi"
+        };
+
+        using var response = await client.PostAsJsonAsync(
+            ApsModuleEventEndpoint,
+            payload,
+            JsonOptions,
+            cancellationToken);
+
+        var body = await response.Content.ReadAsStringAsync(cancellationToken);
+        Assert.True(response.IsSuccessStatusCode, $"Fiscal MOCK nao conseguiu informar finalizacao ao APS. Status={(int)response.StatusCode}. Body={body}");
+        evidence.MarkFinalizacaoFiscalInformada();
     }
 
     private static async Task<List<JsonObject>> LoadFirstPedidosAsync(HttpClient client, string contextoId, CancellationToken cancellationToken)
@@ -335,9 +444,13 @@ public partial class CargaStandardSagaApiSmokeTests
         var status = GetInt(saga, "Status");
         Assert.Equal(2, status);
 
-        Assert.True(StepHasStatus(steps, "CriarCarga", 5), "O passo CriarCarga nao foi concluido.");
+        Assert.True(StepHasStatus(steps, "AguardarDadosTransporte", 5), "O passo AguardarDadosTransporte nao foi concluido.");
+        Assert.True(StepHasStatus(steps, "AguardarAgendamento", 5), "O passo AguardarAgendamento nao foi concluido.");
+        Assert.True(StepHasStatus(steps, "AguardarInicioCarregamento", 5), "O passo AguardarInicioCarregamento nao foi concluido.");
+        Assert.True(StepHasStatus(steps, "AguardarFinalizacaoCarregamento", 5), "O passo AguardarFinalizacaoCarregamento nao foi concluido.");
+        Assert.True(StepHasStatus(steps, "PrepararCargaParaModuloFiscal", 5), "O APS nao preparou a carga para o Fiscal.");
         Assert.True(StepHasStatus(steps, "PublicarCargaProntaParaEmissaoFiscal", 5), "O APS nao publicou a carga para o Fiscal.");
-        Assert.True(StepHasStatus(steps, "AguardarResultadoFiscalDaCarga", 5), "O APS nao recebeu o retorno fiscal.");
+        Assert.True(StepHasStatus(steps, "AguardarFinalizacaoFiscal", 5), "O APS nao recebeu a finalizacao fiscal.");
         Assert.True(StepHasStatus(steps, "LiberarCargaParaExpedicao", 5), "A carga nao foi liberada para expedicao.");
     }
 
@@ -358,5 +471,17 @@ public partial class CargaStandardSagaApiSmokeTests
         var value = ApiJson.GetProperty(node, propertyName);
         return value is null ? 0 : value.GetValue<int>();
     }
+
+    private sealed class CargaStandardEvidence
+    {
+        public bool FinalizacaoFiscalInformada { get; private set; }
+
+        public void MarkFinalizacaoFiscalInformada()
+        {
+            FinalizacaoFiscalInformada = true;
+        }
+    }
+
+    private sealed record CargaStandardSeed(string PedidoId, string TransportadoraId, string VeiculoPlaca, int TipoVeiculoId);
 }
 //Dominio.Schemas.CQRS.SourceCodeIntegrationApiSmokeSagaTestMigration

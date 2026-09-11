@@ -26,6 +26,7 @@ namespace IRepository.Read
         public IEnumerable<VeiculoUserIdDTO> getVeiculoReadFKUserId(object command );
         public bool ExistsById(int value );
         public bool ExistsByVEI_PLACA(string value );
+        public bool ExistsByVEI_UF(string value );
         public bool ExistsByTIP_ID(int value );
         public bool ExistsByVEI_CAPACIDADE_M3(Decimal value );
         public bool ExistsByVEI_CAPACIDADE_LARGURA(Decimal value );
@@ -45,6 +46,7 @@ namespace IRepository.Read
         public bool ExistsByUserId(int value );
         public VeiculoDTO FirstById(int value );
         public VeiculoDTO FirstByVEI_PLACA(string value );
+        public VeiculoDTO FirstByVEI_UF(string value );
         public VeiculoDTO FirstByTIP_ID(int value );
         public VeiculoDTO FirstByVEI_CAPACIDADE_M3(Decimal value );
         public VeiculoDTO FirstByVEI_CAPACIDADE_LARGURA(Decimal value );
@@ -64,6 +66,7 @@ namespace IRepository.Read
         public VeiculoDTO FirstByUserId(int value );
         public IEnumerable<VeiculoDTO> GetAllById(int value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_PLACA(string value );
+        public IEnumerable<VeiculoDTO> GetAllByVEI_UF(string value );
         public IEnumerable<VeiculoDTO> GetAllByTIP_ID(int value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_CAPACIDADE_M3(Decimal value );
         public IEnumerable<VeiculoDTO> GetAllByVEI_CAPACIDADE_LARGURA(Decimal value );

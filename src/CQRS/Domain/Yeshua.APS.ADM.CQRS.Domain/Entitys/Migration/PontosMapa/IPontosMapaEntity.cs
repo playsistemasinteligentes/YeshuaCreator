@@ -30,6 +30,7 @@
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
+    string MUN_ID { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

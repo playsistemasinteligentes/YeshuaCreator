@@ -20,6 +20,7 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public string vei_placa { get; set; }
+    public string vei_uf { get; set; }
     public int tip_id { get; set; }
     public Decimal vei_capacidade_m3 { get; set; }
     public Decimal vei_capacidade_largura { get; set; }

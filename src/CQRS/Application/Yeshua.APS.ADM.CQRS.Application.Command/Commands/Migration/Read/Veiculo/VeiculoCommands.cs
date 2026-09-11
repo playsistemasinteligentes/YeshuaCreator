@@ -15,6 +15,7 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public string VEI_PLACA { get; set; }
+        public string VEI_UF { get; set; }
         public int? TIP_ID { get; set; }
         public Decimal? VEI_CAPACIDADE_M3 { get; set; }
         public Decimal? VEI_CAPACIDADE_LARGURA { get; set; }

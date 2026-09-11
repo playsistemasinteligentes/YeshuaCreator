@@ -6,6 +6,7 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <YeshuaCommitSha Condition="'$(YeshuaCommitSha)' == ''">$(SourceRevisionId)</YeshuaCommitSha>
     <YeshuaBuildTimestampUtc Condition="'$(YeshuaBuildTimestampUtc)' == ''">UNSET</YeshuaBuildTimestampUtc>
+    <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**;artifacts/**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />

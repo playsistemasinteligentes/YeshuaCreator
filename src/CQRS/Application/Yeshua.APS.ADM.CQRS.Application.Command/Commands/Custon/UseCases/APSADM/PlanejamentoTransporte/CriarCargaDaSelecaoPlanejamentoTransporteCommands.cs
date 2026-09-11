@@ -8,4 +8,13 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup
 // </yeshua>
 
+namespace Command.UseCase
+{
+    public partial record CriarCargaDaSelecaoPlanejamentoTransporteInputCommand
+    {
+        public string TransportadoraId { get; set; }
+        public string VeiculoPlaca { get; set; }
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

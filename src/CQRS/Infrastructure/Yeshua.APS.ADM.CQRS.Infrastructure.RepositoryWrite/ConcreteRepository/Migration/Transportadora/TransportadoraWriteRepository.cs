@@ -61,6 +61,21 @@ namespace Input.Repository.Transportadora
             var query = _query.UpdateTRA_NOME(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateTRA_CNPJ(int id, string value)
+        {
+            var query = _query.UpdateTRA_CNPJ(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateTRA_INSCRICAO_ESTADUAL(int id, string value)
+        {
+            var query = _query.UpdateTRA_INSCRICAO_ESTADUAL(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateTRA_RNTRC(int id, string value)
+        {
+            var query = _query.UpdateTRA_RNTRC(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTRA_EMAIL(int id, string value)
         {
             var query = _query.UpdateTRA_EMAIL(id, value);

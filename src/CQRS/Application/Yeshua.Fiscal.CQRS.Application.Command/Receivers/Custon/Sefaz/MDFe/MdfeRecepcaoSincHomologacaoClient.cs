@@ -255,6 +255,14 @@ namespace Command.Receivers
         string XmlMDFe,
         string SoapResponse);
 
+    public sealed record MdfeRecepcaoSincPrepared(
+        string Chave,
+        int? Numero,
+        int? Serie,
+        string ChaveCTe,
+        string XmlMDFe,
+        string XmlHash);
+
     public static class MdfeRecepcaoSincHomologacaoClient
     {
         private const string ServiceNamespace = "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc";
@@ -267,16 +275,64 @@ namespace Command.Receivers
             if (!string.IsNullOrWhiteSpace(chaveCTe))
                 options = options with { ChaveCTe = OnlyDigits(chaveCTe) };
 
-            return AutorizarAsync(options).GetAwaiter().GetResult();
+            var prepared = Preparar(options);
+            return EnviarPreparadoAsync(options, prepared).GetAwaiter().GetResult();
+        }
+
+        public static MdfeRecepcaoSincPrepared Preparar(string chaveCTe)
+        {
+            var options = MdfeRecepcaoSincOptions.FromEnvironment();
+            if (!string.IsNullOrWhiteSpace(chaveCTe))
+                options = options with { ChaveCTe = OnlyDigits(chaveCTe) };
+
+            return Preparar(options);
+        }
+
+        public static MdfeRecepcaoSincResult Autorizar(MdfeRecepcaoSincPrepared prepared)
+        {
+            var options = MdfeRecepcaoSincOptions.FromEnvironment() with
+            {
+                ChaveCTe = OnlyDigits(prepared.ChaveCTe)
+            };
+
+            return EnviarPreparadoAsync(options, prepared).GetAwaiter().GetResult();
+        }
+
+        private static MdfeRecepcaoSincPrepared Preparar(MdfeRecepcaoSincOptions options)
+        {
+            options.ValidateForSend();
+
+            // pendencia: separar a montagem do XML fiscal do fluxo de assinatura por certificado.
+            // Futuramente a assinatura pode ocorrer fora do servidor, na maquina local do usuario,
+            // quando essa politica for escolhida para o aplicativo/cliente.
+            using var signingCertificate = LoadCertificate(options.CertificatePath, options.CertificatePassword);
+            var mdfeXml = SignMdfeXml(BuildHomologMdfeXml(options), signingCertificate);
+            var chave = ExtractChave(mdfeXml);
+            var chaveInfo = SefazChaveAcessoInfo.Parse(chave);
+
+            return new MdfeRecepcaoSincPrepared(
+                chave,
+                chaveInfo.Numero,
+                chaveInfo.Serie,
+                OnlyDigits(options.ChaveCTe),
+                mdfeXml,
+                Hash(mdfeXml));
         }
 
         private static async Task<MdfeRecepcaoSincResult> AutorizarAsync(MdfeRecepcaoSincOptions options)
         {
+            var prepared = Preparar(options);
+            return await EnviarPreparadoAsync(options, prepared).ConfigureAwait(false);
+        }
+
+        private static async Task<MdfeRecepcaoSincResult> EnviarPreparadoAsync(
+            MdfeRecepcaoSincOptions options,
+            MdfeRecepcaoSincPrepared prepared)
+        {
             options.ValidateForSend();
 
-            using var signingCertificate = LoadCertificate(options.CertificatePath, options.CertificatePassword);
-            var mdfeXml = SignMdfeXml(BuildHomologMdfeXml(options), signingCertificate);
-            var chave = ExtractChave(mdfeXml);
+            var mdfeXml = prepared.XmlMDFe;
+            var chave = prepared.Chave;
             var soapEnvelope = WrapRecepcaoInSoapEnvelope(CompressToBase64(mdfeXml));
 
             using var transportCertificate = LoadCertificate(options.CertificatePath, options.CertificatePassword);
@@ -791,6 +847,18 @@ namespace Command.Receivers
 
             var node = doc.SelectSingleNode($"//*[local-name()='{parentName}']/*[local-name()='{childName}']");
             return node?.InnerText;
+        }
+
+        private static string Hash(string value)
+        {
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(value));
+            var builder = new StringBuilder(bytes.Length * 2);
+            foreach (var b in bytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+
+            return builder.ToString();
         }
 
         private static string BuildAccessKey(

@@ -23,15 +23,18 @@
             public const ulong Id = 1UL << 0;
             public const ulong TRA_ID = 1UL << 1;
             public const ulong TRA_NOME = 1UL << 2;
-            public const ulong TRA_EMAIL = 1UL << 3;
-            public const ulong TRA_RESPONSAVEL = 1UL << 4;
-            public const ulong TRA_FONE = 1UL << 5;
-            public const ulong TRA_ID_INTEGRACAO = 1UL << 6;
-            public const ulong TRA_ID_INTEGRACAO_ERP = 1UL << 7;
-            public const ulong TenantID = 1UL << 8;
-            public const ulong Deleted = 1UL << 9;
-            public const ulong Changed = 1UL << 10;
-            public const ulong UserId = 1UL << 11;
+            public const ulong TRA_CNPJ = 1UL << 3;
+            public const ulong TRA_INSCRICAO_ESTADUAL = 1UL << 4;
+            public const ulong TRA_RNTRC = 1UL << 5;
+            public const ulong TRA_EMAIL = 1UL << 6;
+            public const ulong TRA_RESPONSAVEL = 1UL << 7;
+            public const ulong TRA_FONE = 1UL << 8;
+            public const ulong TRA_ID_INTEGRACAO = 1UL << 9;
+            public const ulong TRA_ID_INTEGRACAO_ERP = 1UL << 10;
+            public const ulong TenantID = 1UL << 11;
+            public const ulong Deleted = 1UL << 12;
+            public const ulong Changed = 1UL << 13;
+            public const ulong UserId = 1UL << 14;
         }
 
         public partial class TransportadoraDecorator : ITransportadoraEntity
@@ -99,6 +102,48 @@
                                                 _inner.TRA_NOME = value;
                                                 if ((_trackingMask & TransportadoraTrackingFields.TRA_NOME) != 0UL)
                                                     _logger.DomainValueChanged("Transportadora", "TRA_NOME", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string TRA_CNPJ
+                                    {
+                                        get => _inner.TRA_CNPJ;
+                                        set
+                                        {
+                                            if (_inner.TRA_CNPJ != value)
+                                            {
+                                                _inner.TRA_CNPJ = value;
+                                                if ((_trackingMask & TransportadoraTrackingFields.TRA_CNPJ) != 0UL)
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_CNPJ", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string TRA_INSCRICAO_ESTADUAL
+                                    {
+                                        get => _inner.TRA_INSCRICAO_ESTADUAL;
+                                        set
+                                        {
+                                            if (_inner.TRA_INSCRICAO_ESTADUAL != value)
+                                            {
+                                                _inner.TRA_INSCRICAO_ESTADUAL = value;
+                                                if ((_trackingMask & TransportadoraTrackingFields.TRA_INSCRICAO_ESTADUAL) != 0UL)
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_INSCRICAO_ESTADUAL", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string TRA_RNTRC
+                                    {
+                                        get => _inner.TRA_RNTRC;
+                                        set
+                                        {
+                                            if (_inner.TRA_RNTRC != value)
+                                            {
+                                                _inner.TRA_RNTRC = value;
+                                                if ((_trackingMask & TransportadoraTrackingFields.TRA_RNTRC) != 0UL)
+                                                    _logger.DomainValueChanged("Transportadora", "TRA_RNTRC", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

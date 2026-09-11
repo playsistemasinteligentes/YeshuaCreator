@@ -19,6 +19,8 @@ namespace IRepository.Read
         IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
         void ReleaseLock(int sagaId, string workerId);
         ySagaDTO GetByCorrelationId(string correlationId);
+        ySagaDTO? GetLatestByTypeEntity(string type, string entityType, string? entityId, string? correlationId);
+        ySagaDTO? GetLatestByTypeEntityAndStatus(string type, string entityType, string? entityId, int status);
     }
 }
 

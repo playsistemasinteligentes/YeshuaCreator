@@ -96,6 +96,11 @@ namespace Input.Repository.PontosMapa
             var query = _query.UpdateUserId(pon_id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateMUN_ID(string pon_id, string value)
+        {
+            var query = _query.UpdateMUN_ID(pon_id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

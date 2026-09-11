@@ -4808,6 +4808,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PontosMapaTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "PontosMapa", operation, recordId, "UserId"))
                         mask |= PontosMapaTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "PontosMapa", operation, recordId, "MUN_ID"))
+                        mask |= PontosMapaTrackingFields.MUN_ID;
                     return mask;
                 }
 
@@ -5952,6 +5954,12 @@ private OperationalLoggingDecision Evaluate(
                         mask |= TransportadoraTrackingFields.TRA_ID;
                     if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_NOME"))
                         mask |= TransportadoraTrackingFields.TRA_NOME;
+                    if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_CNPJ"))
+                        mask |= TransportadoraTrackingFields.TRA_CNPJ;
+                    if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_INSCRICAO_ESTADUAL"))
+                        mask |= TransportadoraTrackingFields.TRA_INSCRICAO_ESTADUAL;
+                    if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_RNTRC"))
+                        mask |= TransportadoraTrackingFields.TRA_RNTRC;
                     if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_EMAIL"))
                         mask |= TransportadoraTrackingFields.TRA_EMAIL;
                     if (DomainFieldTracked(policy, "Transportadora", operation, recordId, "TRA_RESPONSAVEL"))
@@ -6329,6 +6337,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= VeiculoTrackingFields.Id;
                     if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "VEI_PLACA"))
                         mask |= VeiculoTrackingFields.VEI_PLACA;
+                    if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "VEI_UF"))
+                        mask |= VeiculoTrackingFields.VEI_UF;
                     if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "TIP_ID"))
                         mask |= VeiculoTrackingFields.TIP_ID;
                     if (DomainFieldTracked(policy, "Veiculo", operation, recordId, "VEI_CAPACIDADE_M3"))

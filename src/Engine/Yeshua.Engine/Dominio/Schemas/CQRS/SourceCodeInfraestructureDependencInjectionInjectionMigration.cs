@@ -109,6 +109,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("                    builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>");
             sb.AppendLine("                        sp.GetRequiredService<Shered.Logger.Logger>());");
             sb.AppendLine("                    builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();");
+            sb.AppendLine("                    builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();");
             if (hasSagas)
             {
                 sb.AppendLine("                    builder.Services.AddTransient<SagaResolverRegistry>();");

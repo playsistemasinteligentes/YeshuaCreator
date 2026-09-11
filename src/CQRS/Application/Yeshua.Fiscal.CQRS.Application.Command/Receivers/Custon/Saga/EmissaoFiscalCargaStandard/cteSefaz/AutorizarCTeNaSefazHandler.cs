@@ -10,22 +10,40 @@
 
 using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
+using IRepository.Read;
 using IRepository.Write;
+using Repositorio.Outputs;
 using System;
+using System.IO;
 
 namespace Command.Receivers
 {
     public partial class AutorizarCTeNaSefazHandler
     {
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
+        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository;
+        private readonly ICTeSolicitacaoFiscalWriteRepository _cteSolicitacaoFiscalWriteRepository;
+        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository;
+        private readonly ICTeTentativaEmissaoWriteRepository _cteTentativaEmissaoWriteRepository;
         private readonly IyInboxWriteRepository _inboxWriteRepository;
         private readonly IDocumentoFiscalWriteRepository _documentoFiscalWriteRepository;
         private readonly ILogger _logger;
 
         public AutorizarCTeNaSefazHandler(
+            ICTeRomaneioConsolidadoReadRepository cteRomaneioConsolidadoReadRepository,
+            ICTeSolicitacaoFiscalReadRepository cteSolicitacaoFiscalReadRepository,
+            ICTeSolicitacaoFiscalWriteRepository cteSolicitacaoFiscalWriteRepository,
+            ICTeTentativaEmissaoReadRepository cteTentativaEmissaoReadRepository,
+            ICTeTentativaEmissaoWriteRepository cteTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
             IDocumentoFiscalWriteRepository documentoFiscalWriteRepository,
             ILogger logger)
         {
+            _cteRomaneioConsolidadoReadRepository = cteRomaneioConsolidadoReadRepository;
+            _cteSolicitacaoFiscalReadRepository = cteSolicitacaoFiscalReadRepository;
+            _cteSolicitacaoFiscalWriteRepository = cteSolicitacaoFiscalWriteRepository;
+            _cteTentativaEmissaoReadRepository = cteTentativaEmissaoReadRepository;
+            _cteTentativaEmissaoWriteRepository = cteTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
             _documentoFiscalWriteRepository = documentoFiscalWriteRepository;
             _logger = logger;
@@ -33,9 +51,14 @@ namespace Command.Receivers
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
         {
+            CTeSolicitacaoFiscalDTO? solicitacao = null;
+            CTeTentativaEmissaoDTO? tentativa = null;
+
             try
             {
-                var result = CteRecepcaoSincV4HomologacaoClient.Autorizar();
+                (solicitacao, tentativa) = CarregarTentativaPreparada(saga);
+                var prepared = CarregarXmlPreparado(tentativa);
+                var result = CteRecepcaoSincV4HomologacaoClient.Autorizar(prepared);
                 var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
 
                 if (!respostaEstruturada)
@@ -61,6 +84,8 @@ namespace Command.Receivers
                         rejection,
                         0);
                 }
+
+                RegistrarResultadoTentativa(solicitacao, tentativa, result, respostaEstruturada);
 
                 SefazFiscalDocumentStore.PersistirCTe(
                     _documentoFiscalWriteRepository,
@@ -91,6 +116,8 @@ namespace Command.Receivers
             }
             catch (Exception ex)
             {
+                RegistrarFalhaTecnica(solicitacao, tentativa, ex);
+
                 _logger.CommandFailed(
                     "Fiscal.CTe.AutorizarCTeNaSefaz.ErroTecnico",
                     step.CorrelationId,
@@ -125,6 +152,85 @@ namespace Command.Receivers
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {
             _logger.Info($"Fiscal {saga.EntityId}: resposta CT-e SEFAZ homologacao registrada.");
+        }
+
+        private (CTeSolicitacaoFiscalDTO Solicitacao, CTeTentativaEmissaoDTO Tentativa) CarregarTentativaPreparada(SagaBase saga)
+        {
+            var cargaId = saga.EntityId ?? string.Empty;
+            var romaneio = _cteRomaneioConsolidadoReadRepository.FirstByCargaId(cargaId);
+            if (romaneio == null || romaneio.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: romaneio consolidado CT-e nao encontrado para autorizar CT-e.");
+
+            var solicitacao = _cteSolicitacaoFiscalReadRepository.FirstByRomaneioConsolidadoId(romaneio.id);
+            if (solicitacao == null || solicitacao.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: solicitacao fiscal CT-e nao encontrada para autorizar CT-e.");
+
+            var tentativa = _cteTentativaEmissaoReadRepository.FirstByCTeSolicitacaoFiscalId(solicitacao.id);
+            if (tentativa == null || tentativa.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: tentativa CT-e preparada nao encontrada para autorizar CT-e.");
+
+            return (solicitacao, tentativa);
+        }
+
+        private static CteRecepcaoSincV4Prepared CarregarXmlPreparado(CTeTentativaEmissaoDTO tentativa)
+        {
+            if (string.IsNullOrWhiteSpace(tentativa.xmlassinadostoragekey))
+                throw new InvalidOperationException($"Tentativa CT-e {tentativa.id}: XML assinado nao informado.");
+
+            if (!File.Exists(tentativa.xmlassinadostoragekey))
+                throw new FileNotFoundException("XML assinado do CT-e nao encontrado.", tentativa.xmlassinadostoragekey);
+
+            var xml = File.ReadAllText(tentativa.xmlassinadostoragekey);
+            return new CteRecepcaoSincV4Prepared(
+                tentativa.chaveacesso,
+                tentativa.numero,
+                tentativa.serie,
+                xml,
+                tentativa.xmlhash);
+        }
+
+        private void RegistrarResultadoTentativa(
+            CTeSolicitacaoFiscalDTO solicitacao,
+            CTeTentativaEmissaoDTO tentativa,
+            CteRecepcaoSincV4Result result,
+            bool respostaEstruturada)
+        {
+            var statusTentativa = result.Autorizado ? 3 : respostaEstruturada ? 4 : 5;
+            var statusSolicitacao = result.Autorizado ? 4 : respostaEstruturada ? 5 : 6;
+
+            _cteTentativaEmissaoWriteRepository.UpdateEnviadoEmUtc(tentativa.id, DateTime.UtcNow);
+            _cteTentativaEmissaoWriteRepository.UpdateCodigoRetorno(tentativa.id, result.CodigoRetorno.ToString());
+            _cteTentativaEmissaoWriteRepository.UpdateMensagemRetorno(tentativa.id, Limitar(result.Motivo, 1000));
+            _cteTentativaEmissaoWriteRepository.UpdateProtocoloAutorizacao(tentativa.id, result.Protocolo ?? string.Empty);
+            _cteTentativaEmissaoWriteRepository.UpdateStatus(tentativa.id, statusTentativa);
+
+            if (result.Autorizado)
+                _cteTentativaEmissaoWriteRepository.UpdateAutorizadoEmUtc(tentativa.id, DateTime.UtcNow);
+
+            _cteSolicitacaoFiscalWriteRepository.UpdateStatus(solicitacao.id, statusSolicitacao);
+        }
+
+        private void RegistrarFalhaTecnica(
+            CTeSolicitacaoFiscalDTO? solicitacao,
+            CTeTentativaEmissaoDTO? tentativa,
+            Exception exception)
+        {
+            if (tentativa != null && tentativa.id > 0)
+            {
+                _cteTentativaEmissaoWriteRepository.UpdateMensagemRetorno(tentativa.id, Limitar(exception.Message, 1000));
+                _cteTentativaEmissaoWriteRepository.UpdateStatus(tentativa.id, 5);
+            }
+
+            if (solicitacao != null && solicitacao.id > 0)
+                _cteSolicitacaoFiscalWriteRepository.UpdateStatus(solicitacao.id, 6);
+        }
+
+        private static string Limitar(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
+                return value ?? string.Empty;
+
+            return value.Substring(0, maxLength);
         }
     }
 }

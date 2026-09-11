@@ -49,7 +49,7 @@ namespace Command.Receivers.Write
              if(comand is Command.Write.PontosMapaCrudCommand c) 
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeletePontosMapa", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeletePontosMapaReceiver), commandName: "Command.Write.PontosMapaCrudCommand");
-                 var pontosmapa = new PontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.PON_ID, c.PON_DESCRICAO, c.PON_TIPO, c.PON_LATITUDE, c.PON_LONGITUDE, c.PON_DISTANCIA_KM);
+                 var pontosmapa = new PontosMapaFactory(_logger, _domainTrackingPolicy).Create(context, c.PON_ID, c.PON_DESCRICAO, c.PON_TIPO, c.PON_LATITUDE, c.PON_LONGITUDE, c.PON_DISTANCIA_KM, c.MUN_ID);
                  var domainResult = PontosMapaDomainBehavior.Apply(pontosmapa, context);
                  if (!domainResult.IsValid)
                      return ValidationError(domainResult.Errors, null);

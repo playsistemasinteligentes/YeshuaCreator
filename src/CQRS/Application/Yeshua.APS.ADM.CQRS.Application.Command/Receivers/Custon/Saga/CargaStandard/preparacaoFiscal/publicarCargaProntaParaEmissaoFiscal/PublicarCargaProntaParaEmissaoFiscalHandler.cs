@@ -10,6 +10,7 @@
 
 using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
+using IRepository.Read;
 using IRepository.Write;
 
 namespace Command.Receivers
@@ -18,35 +19,54 @@ namespace Command.Receivers
     {
         private readonly IyOutboxWriteRepository _outboxWriteRepository;
         private readonly IyInboxWriteRepository _inboxWriteRepository;
+        private readonly ICargaReadRepository _cargaReadRepository;
+        private readonly IVeiculoReadRepository _veiculoReadRepository;
+        private readonly ITransportadoraReadRepository _transportadoraReadRepository;
         private readonly ILogger _logger;
 
         public PublicarCargaProntaParaEmissaoFiscalHandler(
             IyOutboxWriteRepository outboxWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
+            ICargaReadRepository cargaReadRepository,
+            IVeiculoReadRepository veiculoReadRepository,
+            ITransportadoraReadRepository transportadoraReadRepository,
             ILogger logger)
         {
             _outboxWriteRepository = outboxWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
+            _cargaReadRepository = cargaReadRepository;
+            _veiculoReadRepository = veiculoReadRepository;
+            _transportadoraReadRepository = transportadoraReadRepository;
             _logger = logger;
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
         {
+            var snapshotBuilder = new CargaFiscalSnapshotBuilder(
+                _cargaReadRepository,
+                _veiculoReadRepository,
+                _transportadoraReadRepository);
+            var snapshot = snapshotBuilder.Build(saga, step);
+
+            if (!snapshot.ProntoParaPublicacao)
+            {
+                var bloqueio = CargaStandardSagaPayloads.CreateInbox(
+                    _logger,
+                    saga,
+                    step,
+                    "carga.publicacao-fiscal.bloqueada",
+                    snapshotBuilder.BuildBlockedPublicationEvidence(snapshot));
+
+                _inboxWriteRepository.Insert(bloqueio);
+                return;
+            }
+
             var outbox = CargaStandardSagaPayloads.CreateOutbox(
                 _logger,
                 saga,
                 step,
                 "CargaProntaParaEmissaoFiscal.v1",
-                new
-                {
-                    origem = "APSADM",
-                    moduloOrigem = "APSADM",
-                    sagaOrigem = "CargaStandard",
-                    stepOrigem = "publicarCargaProntaParaEmissaoFiscal",
-                    moduloDestino = "Fiscal",
-                    sagaDestino = "EmissaoFiscalCargaStandard",
-                    cargaId = saga.EntityId
-                },
+                snapshot,
                 "Fiscal",
                 "/yapi/Fiscal/Inbox/YeshuaModuleEvent",
                 "YeshuaModules:Fiscal:BaseUrl");
@@ -60,9 +80,10 @@ namespace Command.Receivers
                 "carga.publicacao-fiscal-enfileirada",
                 new
                 {
-                    origem = "APSADM",
-                    modo = "interno-prototipo",
-                    cargaId = saga.EntityId
+                    origem = snapshot.Origem,
+                    cargaId = snapshot.CargaId,
+                    contrato = "CargaProntaParaEmissaoFiscal.v1",
+                    publicado = true
                 });
 
             _inboxWriteRepository.Insert(inbox);

@@ -237,6 +237,15 @@ app.MapPost("/yapi/CertificadoDigital/PostCertificadoDigital", async ([FromServi
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/EntradaFiscalContingencia/PostEntradaFiscalContingencia", async ([FromServices] Command.Receivers.Write.InsertEntradaFiscalContingenciaReceiver receiver, [FromBody] Command.Write.EntradaFiscalContingenciaCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yFileUpload/PostyFileUpload", async ([FromServices] Command.Receivers.Write.InsertyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -570,6 +579,15 @@ app.MapPut("/yapi/CertificadoDigital/PutCertificadoDigital", async ([FromService
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/EntradaFiscalContingencia/PutEntradaFiscalContingencia", async ([FromServices] Command.Receivers.Write.UpdateEntradaFiscalContingenciaReceiver receiver, [FromBody] Command.Write.EntradaFiscalContingenciaCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yFileUpload/PutyFileUpload", async ([FromServices] Command.Receivers.Write.UpdateyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -899,6 +917,15 @@ app.MapDelete("/yapi/CertificadoDigital/DeleteCertificadoDigital", async ([FromS
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.CertificadoDigitalEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.CertificadoDigitalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/EntradaFiscalContingencia/DeleteEntradaFiscalContingencia", async ([FromServices] Command.Receivers.Write.DeleteEntradaFiscalContingenciaReceiver receiver, [FromBody] Command.Write.EntradaFiscalContingenciaCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1269,6 +1296,15 @@ app.MapPost("/yapi/CertificadoDigital/ReadCertificadoDigital", async ([FromServi
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.CertificadoDigitalEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.CertificadoDigitalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/EntradaFiscalContingencia/ReadEntradaFiscalContingencia", async ([FromServices] Command.Receivers.Read.EntradaFiscalContingenciaReadReceiver receiver, [FromBody] Command.Read.EntradaFiscalContingenciaReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EntradaFiscalContingenciaEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -2388,6 +2424,40 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/CertificadoDigital/CertificadoDigitalReadFKUserId", async ([FromServices] Command.Receivers.Read.CertificadoDigitalReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/EntradaFiscalContingencia/EntradaFiscalContingenciaReadFKTenantID", async ([FromServices] Command.Receivers.Read.EntradaFiscalContingenciaReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/EntradaFiscalContingencia/EntradaFiscalContingenciaReadFKUserId", async ([FromServices] Command.Receivers.Read.EntradaFiscalContingenciaReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -4868,6 +4938,158 @@ app.MapGet("/yapi/getMetaDataCertificadoDigital", (HttpContext context) =>
     };
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataEntradaFiscalContingencia", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "EntradaFiscalContingencia",
+        entityDescription = "Entrada Fiscal Contingencia",
+        source = new
+        {
+            kind = "table",
+            name = "EntradaFiscalContingencia"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/EntradaFiscalContingencia/ReadEntradaFiscalContingencia",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "correlationid", label = "CorrelationId", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "cargaid", label = "Carga", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
+                new { id = "ambiente", label = "Ambiente", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+                new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sourcemodule", label = "Modulo Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "emitentefiscaldocumento", label = "Emitente Fiscal", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tomadordocumento", label = "Tomador", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "transportadordocumento", label = "Transportador", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "remetentedocumento", label = "Remetente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "destinatariodocumento", label = "Destinatario", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "ufinicio", label = "UF Inicio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "uffim", label = "UF Fim", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rntrc", label = "RNTRC", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "placaveiculo", label = "Placa Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "ufveiculo", label = "UF Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "condutordocumento", label = "CPF Condutor", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "condutornome", label = "Nome Condutor", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valorcarga", label = "Valor Carga", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pendenciasjson", label = "Pendencias", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "snapshotjson", label = "Snapshot", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "emissaofiscalcorrelationid", label = "CorrelationId Emissao Fiscal", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "emissaofiscalsagaid", label = "Saga Emissao Fiscal", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "correlationid", label = "CorrelationId", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "cargaid", label = "Carga", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
+                new { id = "ambiente", label = "Ambiente", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+                new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sourcemodule", label = "Modulo Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "emitentefiscaldocumento", label = "Emitente Fiscal", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tomadordocumento", label = "Tomador", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "transportadordocumento", label = "Transportador", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "remetentedocumento", label = "Remetente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "destinatariodocumento", label = "Destinatario", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "ufinicio", label = "UF Inicio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "uffim", label = "UF Fim", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "rntrc", label = "RNTRC", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "placaveiculo", label = "Placa Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "ufveiculo", label = "UF Veiculo", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "condutordocumento", label = "CPF Condutor", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "condutornome", label = "Nome Condutor", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valorcarga", label = "Valor Carga", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "volume", label = "Volume", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "pendenciasjson", label = "Pendencias", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "snapshotjson", label = "Snapshot", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "emissaofiscalcorrelationid", label = "CorrelationId Emissao Fiscal", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "emissaofiscalsagaid", label = "Saga Emissao Fiscal", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", required = false, displaygroup = "Solicitante", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentefiscaldocumento", label = "Emitente Fiscal", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "remetentedocumento", label = "Remetente", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "destinatariodocumento", label = "Destinatario", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uffim", label = "UF Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "rntrc", label = "RNTRC", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "placaveiculo", label = "Placa Veiculo", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufveiculo", label = "UF Veiculo", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "condutordocumento", label = "CPF Condutor", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "condutornome", label = "Nome Condutor", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pendenciasjson", label = "Pendencias", type = "memo", required = false, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emissaofiscalcorrelationid", label = "CorrelationId Emissao Fiscal", type = "string", required = false, displaygroup = "Emissao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emissaofiscalsagaid", label = "Saga Emissao Fiscal", type = "int", required = false, displaygroup = "Emissao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "/EntradaFiscalContingencia/PostEntradaFiscalContingencia",
+            read = "/EntradaFiscalContingencia/ReadEntradaFiscalContingencia",
+            update = "/EntradaFiscalContingencia/PutEntradaFiscalContingencia",
+            delete = "/EntradaFiscalContingencia/DeleteEntradaFiscalContingencia"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
 app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -6152,6 +6374,40 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/Fiscal/EntradaInformarDocumentosOriginariosDaCargaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarDocumentosOriginariosDaCargaHandler receiver, [FromBody] Command.UseCase.InformarDocumentosOriginariosDaCargaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase", async ([FromServices] Command.Receivers.UseCase.IniciarContingenciaFiscalHandler receiver, [FromBody] Command.UseCase.IniciarContingenciaFiscalInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/Fiscal/CTeReceberRomaneioConsolidadoParaCTeUseCase", async ([FromServices] Command.Receivers.UseCase.ReceberRomaneioConsolidadoParaCTeHandler receiver, [FromBody] Command.UseCase.ReceberRomaneioConsolidadoParaCTeInputCommand command) =>
 {
 try
@@ -6272,6 +6528,108 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Fiscal/SEFAZValidarCertificadoDigitalUseCase", async ([FromServices] Command.Receivers.UseCase.ValidarCertificadoDigitalHandler receiver, [FromBody] Command.UseCase.ValidarCertificadoDigitalInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaInformarNotasFiscaisContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarNotasFiscaisContingenciaHandler receiver, [FromBody] Command.UseCase.InformarNotasFiscaisContingenciaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaEscolherModeloAgrupamentoCTeContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.EscolherModeloAgrupamentoCTeContingenciaHandler receiver, [FromBody] Command.UseCase.EscolherModeloAgrupamentoCTeContingenciaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaInformarFreteERateioContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarFreteERateioContingenciaHandler receiver, [FromBody] Command.UseCase.InformarFreteERateioContingenciaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaInformarDadosTransporteContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarDadosTransporteContingenciaHandler receiver, [FromBody] Command.UseCase.InformarDadosTransporteContingenciaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaConfirmarPlanoEmissaoFiscalContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarPlanoEmissaoFiscalContingenciaHandler receiver, [FromBody] Command.UseCase.ConfirmarPlanoEmissaoFiscalContingenciaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaInformarResultadoEmissaoFiscalContingenciaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarResultadoEmissaoFiscalContingenciaHandler receiver, [FromBody] Command.UseCase.InformarResultadoEmissaoFiscalContingenciaInputCommand command) =>
 {
 try
 {

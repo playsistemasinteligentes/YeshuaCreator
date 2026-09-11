@@ -118,6 +118,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByVEI_UF(string value )
+        {
+            var query = _query.ExistsByVEI_UFQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public bool ExistsByTIP_ID(int value )
         {
             var query = _query.ExistsByTIP_IDQuery(value );
@@ -270,6 +278,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public VeiculoDTO FirstByVEI_UF(string value )
+        {
+            var query = _query.FirstByVEI_UFQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<VeiculoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public VeiculoDTO FirstByTIP_ID(int value )
         {
             var query = _query.FirstByTIP_IDQuery(value );
@@ -417,6 +433,14 @@ namespace Read.Repository
         public IEnumerable<VeiculoDTO> GetAllByVEI_PLACA(string value )
         {
             var query = _query.FirstByVEI_PLACAQuery(value );
+
+                var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
+                return result;
+        }
+
+        public IEnumerable<VeiculoDTO> GetAllByVEI_UF(string value )
+        {
+            var query = _query.FirstByVEI_UFQuery(value );
 
                 var result = _unitOfWork.Query<VeiculoDTO>(query.Query,query.Parameters) as List<VeiculoDTO>;
                 return result;

@@ -17,20 +17,24 @@ namespace Command.Receivers
 {
     public class CargaStandardSagaHandlerResolver : ISagaHandlerResolver
     {
-        private readonly CriarCargaHandler _CriarCargaHandler;
-        private readonly DefinirDadosTransporteHandler _DefinirDadosTransporteHandler;
-        private readonly PrepararCargaParaFiscalHandler _PrepararCargaParaFiscalHandler;
+        private readonly AguardarDadosTransporteHandler _AguardarDadosTransporteHandler;
+        private readonly AguardarAgendamentoHandler _AguardarAgendamentoHandler;
+        private readonly AguardarInicioCarregamentoHandler _AguardarInicioCarregamentoHandler;
+        private readonly AguardarFinalizacaoCarregamentoHandler _AguardarFinalizacaoCarregamentoHandler;
+        private readonly PrepararCargaParaModuloFiscalHandler _PrepararCargaParaModuloFiscalHandler;
         private readonly PublicarCargaProntaParaEmissaoFiscalHandler _PublicarCargaProntaParaEmissaoFiscalHandler;
-        private readonly AguardarResultadoFiscalDaCargaHandler _AguardarResultadoFiscalDaCargaHandler;
+        private readonly AguardarFinalizacaoFiscalHandler _AguardarFinalizacaoFiscalHandler;
         private readonly LiberarCargaParaExpedicaoHandler _LiberarCargaParaExpedicaoHandler;
 
-        public CargaStandardSagaHandlerResolver(CriarCargaHandler CriarCargaHandler, DefinirDadosTransporteHandler DefinirDadosTransporteHandler, PrepararCargaParaFiscalHandler PrepararCargaParaFiscalHandler, PublicarCargaProntaParaEmissaoFiscalHandler PublicarCargaProntaParaEmissaoFiscalHandler, AguardarResultadoFiscalDaCargaHandler AguardarResultadoFiscalDaCargaHandler, LiberarCargaParaExpedicaoHandler LiberarCargaParaExpedicaoHandler)
+        public CargaStandardSagaHandlerResolver(AguardarDadosTransporteHandler AguardarDadosTransporteHandler, AguardarAgendamentoHandler AguardarAgendamentoHandler, AguardarInicioCarregamentoHandler AguardarInicioCarregamentoHandler, AguardarFinalizacaoCarregamentoHandler AguardarFinalizacaoCarregamentoHandler, PrepararCargaParaModuloFiscalHandler PrepararCargaParaModuloFiscalHandler, PublicarCargaProntaParaEmissaoFiscalHandler PublicarCargaProntaParaEmissaoFiscalHandler, AguardarFinalizacaoFiscalHandler AguardarFinalizacaoFiscalHandler, LiberarCargaParaExpedicaoHandler LiberarCargaParaExpedicaoHandler)
         {
-            _CriarCargaHandler = CriarCargaHandler;
-            _DefinirDadosTransporteHandler = DefinirDadosTransporteHandler;
-            _PrepararCargaParaFiscalHandler = PrepararCargaParaFiscalHandler;
+            _AguardarDadosTransporteHandler = AguardarDadosTransporteHandler;
+            _AguardarAgendamentoHandler = AguardarAgendamentoHandler;
+            _AguardarInicioCarregamentoHandler = AguardarInicioCarregamentoHandler;
+            _AguardarFinalizacaoCarregamentoHandler = AguardarFinalizacaoCarregamentoHandler;
+            _PrepararCargaParaModuloFiscalHandler = PrepararCargaParaModuloFiscalHandler;
             _PublicarCargaProntaParaEmissaoFiscalHandler = PublicarCargaProntaParaEmissaoFiscalHandler;
-            _AguardarResultadoFiscalDaCargaHandler = AguardarResultadoFiscalDaCargaHandler;
+            _AguardarFinalizacaoFiscalHandler = AguardarFinalizacaoFiscalHandler;
             _LiberarCargaParaExpedicaoHandler = LiberarCargaParaExpedicaoHandler;
         }
 
@@ -38,12 +42,14 @@ namespace Command.Receivers
         {
             return new Dictionary<string, ISagaStepHandler>
             {
-                { CargaStandardSaga.STEP_1, _CriarCargaHandler },
-                { CargaStandardSaga.STEP_2, _DefinirDadosTransporteHandler },
-                { CargaStandardSaga.STEP_3, _PrepararCargaParaFiscalHandler },
-                { CargaStandardSaga.STEP_4, _PublicarCargaProntaParaEmissaoFiscalHandler },
-                { CargaStandardSaga.STEP_5, _AguardarResultadoFiscalDaCargaHandler },
-                { CargaStandardSaga.STEP_6, _LiberarCargaParaExpedicaoHandler },
+                { CargaStandardSaga.STEP_1, _AguardarDadosTransporteHandler },
+                { CargaStandardSaga.STEP_2, _AguardarAgendamentoHandler },
+                { CargaStandardSaga.STEP_3, _AguardarInicioCarregamentoHandler },
+                { CargaStandardSaga.STEP_4, _AguardarFinalizacaoCarregamentoHandler },
+                { CargaStandardSaga.STEP_5, _PrepararCargaParaModuloFiscalHandler },
+                { CargaStandardSaga.STEP_6, _PublicarCargaProntaParaEmissaoFiscalHandler },
+                { CargaStandardSaga.STEP_7, _AguardarFinalizacaoFiscalHandler },
+                { CargaStandardSaga.STEP_8, _LiberarCargaParaExpedicaoHandler },
             };
         }
     }

@@ -14,6 +14,7 @@ public class M000001 : MigrationBase
         AddModule("MDFE", "MDF-e");
         AddModule("NFE", "NF-e");
         AddModule("SEFAZ", "SEFAZ");
+        AddModule("CONT", "Contingencia Fiscal");
 
         AddEntity("DocumentoFiscal", "Documento Fiscal").AddModule("DFE")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
@@ -395,6 +396,47 @@ public class M000001 : MigrationBase
             .AddEntity("NFeProdutoSnapshot");
 
         AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Entrada")
+            .AddCommand(
+                "InformarDocumentosOriginariosDaCarga",
+                new InformarDocumentosOriginariosDaCargaInput(
+                    string.Empty,
+                    0,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty),
+                new InformarDocumentosOriginariosDaCargaOutput(string.Empty, false, 0, string.Empty))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.documentos-originarios-carga.informar")
+            .AddEntity("NFeProdutoSnapshot");
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Contingencia")
+            .AddCommand(
+                "IniciarContingenciaFiscal",
+                new IniciarContingenciaFiscalInput(
+                    string.Empty,
+                    0,
+                    1,
+                    2,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty),
+                new IniciarContingenciaFiscalOutput(string.Empty, false, 0, string.Empty, string.Empty))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.contingencia.iniciar")
+            .AddEntity("EntradaFiscalContingencia");
+
+        AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("CTe")
             .AddCommand(
                 "ReceberRomaneioConsolidadoParaCTe",
@@ -503,7 +545,8 @@ public class M000001 : MigrationBase
                     "publicarCargaProntaParaEmissaoFiscal")
             .AddStepGroup("entrada")
                 .AddStep("receberCargaProntaParaEmissaoFiscal")
-                .AddStep("normalizarDocumentosOriginarios")
+                .AddStepWait("aguardarDocumentosOriginariosDaCarga")
+                .AddStep("prepararEntradaFiscalDaCarga")
             .AddStepGroup("ctePreparacao")
                 .AddStep("montarSolicitacoesCTe")
                 .AddStep("prepararCTe")
@@ -522,6 +565,65 @@ public class M000001 : MigrationBase
                         1,
                         "CargaStandard")
                     .DeliverByYeshuaApi();
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Contingencia")
+            .AddSaga("ContingenciaFiscalStandard")
+            .AddStepGroup("documentos")
+                .AddStepWait("receberNotasFiscaisDaContingencia")
+                    .HttpApi("InformarNotasFiscaisContingencia",
+                        new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
+                        new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.contingencia.notas.informar")
+                    .AddEntity("EntradaFiscalContingencia")
+                .AddStep("analisarNotasFiscaisDaContingencia")
+            .AddStepGroup("agrupamento")
+                .AddStepWait("escolherModeloAgrupamentoCTe")
+                    .HttpApi("EscolherModeloAgrupamentoCTeContingencia",
+                        new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
+                        new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.contingencia.agrupamento.informar")
+                    .AddEntity("EntradaFiscalContingencia")
+                .AddStep("simularAgrupamentoCTe")
+            .AddStepGroup("frete")
+                .AddStepWait("informarFreteERateio")
+                    .HttpApi("InformarFreteERateioContingencia",
+                        new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
+                        new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.contingencia.frete.informar")
+                    .AddEntity("EntradaFiscalContingencia")
+                .AddStep("simularRateioFrete")
+            .AddStepGroup("transporte")
+                .AddStepWait("informarDadosTransporte")
+                    .HttpApi("InformarDadosTransporteContingencia",
+                        new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
+                        new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.contingencia.transporte.informar")
+                    .AddEntity("EntradaFiscalContingencia")
+                .AddStep("validarPlanoEmissaoFiscal")
+            .AddStepGroup("confirmacao")
+                .AddStepWait("confirmarPlanoEmissaoFiscal")
+                    .HttpApi("ConfirmarPlanoEmissaoFiscalContingencia",
+                        new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
+                        new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.contingencia.plano.confirmar")
+                    .AddEntity("EntradaFiscalContingencia")
+                .AddStep("publicarPlanoParaSagaFiscal")
+            .AddStepGroup("emissao")
+                .AddStepWait("aguardarResultadoEmissaoFiscal")
+                    .HttpApi("InformarResultadoEmissaoFiscalContingencia",
+                        new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
+                        new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.contingencia.resultado-emissao.informar")
+                    .AddEntity("EntradaFiscalContingencia")
+            .AddStepGroup("finalizacao")
+                .AddStep("finalizarContingenciaFiscal");
 
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("EncerramentoFiscal")
@@ -564,6 +666,17 @@ public class M000001 : MigrationBase
             "SefazEndpoint",
             "CertificadoDigital");
 
+        AddCustomPage(
+            "CONT",
+            "Nova Contingencia Fiscal",
+            "contingencia-fiscal",
+            "fiscal.contingencia.tela",
+            "Contingencia Fiscal");
+
+        AddMenuGroup("CONT", "Contingencia Fiscal",
+            "Nova Contingencia Fiscal",
+            "EntradaFiscalContingencia");
+
         // pendencia: eventos CT-e -> MDF-e devem usar outbox/inbox quando forem
         // fluxos entre processos; dentro do Fiscal unificado, manter a intencao em
         // commands/receivers e preservar os snapshots legais.
@@ -585,6 +698,65 @@ public sealed record ReceberNotasFiscaisProdutoOutput(
     string CorrelationId,
     bool Accepted,
     int QuantidadeNotas,
+    string Mensagem);
+
+public sealed record InformarDocumentosOriginariosDaCargaInput(
+    string CorrelationId,
+    int TenantId,
+    string SourceApplication,
+    string SourceModule,
+    string SourceMessageId,
+    string CargaId,
+    string DocumentosOriginariosJson,
+    string PayloadHash,
+    string PayloadStorageKey);
+
+public sealed record InformarDocumentosOriginariosDaCargaOutput(
+    string CorrelationId,
+    bool Accepted,
+    int QuantidadeDocumentos,
+    string Mensagem);
+
+public sealed record IniciarContingenciaFiscalInput(
+    string CorrelationId,
+    int TenantId,
+    int TipoSolicitante,
+    int Ambiente,
+    string CargaId,
+    string SourceApplication,
+    string SourceModule,
+    string SourceMessageId,
+    string DocumentosOriginariosJson,
+    string DadosComplementaresJson,
+    string PayloadHash,
+    string PayloadStorageKey);
+
+public sealed record IniciarContingenciaFiscalOutput(
+    string CorrelationId,
+    bool Accepted,
+    int EntradaFiscalContingenciaId,
+    string CargaId,
+    string Mensagem);
+
+public sealed record ContingenciaFiscalStepInput(
+    string CorrelationId,
+    int TenantId,
+    string CargaId,
+    int EntradaFiscalContingenciaId,
+    string UserAction,
+    string DocumentosOriginariosJson,
+    string DadosComplementaresJson,
+    string PayloadHash,
+    string PayloadStorageKey);
+
+public sealed record ContingenciaFiscalStepOutput(
+    string CorrelationId,
+    string CargaId,
+    string StepKey,
+    int SagaId,
+    int SagaStepId,
+    int InboxId,
+    bool Accepted,
     string Mensagem);
 
 public sealed record ReceberRomaneioConsolidadoParaCTeInput(

@@ -120,75 +120,82 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step20.DeleteAsync);
             await step20.ExecuteAsync();
 
-            var step21 = new yFileUpload.yFileUploadCrudApiSmokeTests();
+            var step21 = new EntradaFiscalContingencia.EntradaFiscalContingenciaCrudApiSmokeTests();
             deleteSteps.Push(step21.DeleteAsync);
             await step21.ExecuteAsync();
 
-            var step22 = new ySaga.ySagaCrudApiSmokeTests();
+            var step22 = new yFileUpload.yFileUploadCrudApiSmokeTests();
             deleteSteps.Push(step22.DeleteAsync);
             await step22.ExecuteAsync();
 
-            var step23 = new ySagaStep.ySagaStepCrudApiSmokeTests();
+            var step23 = new ySaga.ySagaCrudApiSmokeTests();
             deleteSteps.Push(step23.DeleteAsync);
             await step23.ExecuteAsync();
 
-            var step24 = new yOutbox.yOutboxCrudApiSmokeTests();
+            var step24 = new ySagaStep.ySagaStepCrudApiSmokeTests();
             deleteSteps.Push(step24.DeleteAsync);
             await step24.ExecuteAsync();
 
-            var step25 = new yInbox.yInboxCrudApiSmokeTests();
+            var step25 = new yOutbox.yOutboxCrudApiSmokeTests();
             deleteSteps.Push(step25.DeleteAsync);
             await step25.ExecuteAsync();
 
-            var step26 = new yToken.yTokenCrudApiSmokeTests();
+            var step26 = new yInbox.yInboxCrudApiSmokeTests();
             deleteSteps.Push(step26.DeleteAsync);
             await step26.ExecuteAsync();
 
-            var step27 = new yUser.yUserCrudApiSmokeTests();
+            var step27 = new yToken.yTokenCrudApiSmokeTests();
             deleteSteps.Push(step27.DeleteAsync);
             await step27.ExecuteAsync();
 
-            var step28 = new yConfigArcteture.yConfigArctetureCrudApiSmokeTests();
+            var step28 = new yUser.yUserCrudApiSmokeTests();
             deleteSteps.Push(step28.DeleteAsync);
             await step28.ExecuteAsync();
 
-            var step29 = new yConfigNotification.yConfigNotificationCrudApiSmokeTests();
+            var step29 = new yConfigArcteture.yConfigArctetureCrudApiSmokeTests();
             deleteSteps.Push(step29.DeleteAsync);
             await step29.ExecuteAsync();
 
-            var step30 = new yPerfil.yPerfilCrudApiSmokeTests();
+            var step30 = new yConfigNotification.yConfigNotificationCrudApiSmokeTests();
             deleteSteps.Push(step30.DeleteAsync);
             await step30.ExecuteAsync();
 
-            var step31 = new yModule.yModuleCrudApiSmokeTests();
+            var step31 = new yPerfil.yPerfilCrudApiSmokeTests();
             deleteSteps.Push(step31.DeleteAsync);
             await step31.ExecuteAsync();
 
-            var step32 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
+            var step32 = new yModule.yModuleCrudApiSmokeTests();
             deleteSteps.Push(step32.DeleteAsync);
             await step32.ExecuteAsync();
 
-            var step33 = new yUserModule.yUserModuleCrudApiSmokeTests();
+            var step33 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
             deleteSteps.Push(step33.DeleteAsync);
             await step33.ExecuteAsync();
 
-            var step34 = new yGrant.yGrantCrudApiSmokeTests();
+            var step34 = new yUserModule.yUserModuleCrudApiSmokeTests();
             deleteSteps.Push(step34.DeleteAsync);
             await step34.ExecuteAsync();
 
-            var step35 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
+            var step35 = new yGrant.yGrantCrudApiSmokeTests();
             deleteSteps.Push(step35.DeleteAsync);
             await step35.ExecuteAsync();
 
-            var step36 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            var step36 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
             deleteSteps.Push(step36.DeleteAsync);
             await step36.ExecuteAsync();
 
-            var step37 = new Saga.EmissaoFiscalCargaStandard.EmissaoFiscalCargaStandardSagaApiSmokeTests();
-            await step37.EmissaoFiscalCargaStandard_saga_should_run_with_real_api_and_infrastructure();
+            var step37 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            deleteSteps.Push(step37.DeleteAsync);
+            await step37.ExecuteAsync();
 
-            var step38 = new Saga.EncerramentoMDFeStandard.EncerramentoMDFeStandardSagaApiSmokeTests();
-            await step38.EncerramentoMDFeStandard_saga_should_run_with_real_api_and_infrastructure();
+            var step38 = new Saga.EmissaoFiscalCargaStandard.EmissaoFiscalCargaStandardSagaApiSmokeTests();
+            await step38.EmissaoFiscalCargaStandard_saga_should_run_with_real_api_and_infrastructure();
+
+            var step39 = new Saga.ContingenciaFiscalStandard.ContingenciaFiscalStandardSagaApiSmokeTests();
+            await step39.ContingenciaFiscalStandard_saga_should_run_with_real_api_and_infrastructure();
+
+            var step40 = new Saga.EncerramentoMDFeStandard.EncerramentoMDFeStandardSagaApiSmokeTests();
+            await step40.EncerramentoMDFeStandard_saga_should_run_with_real_api_and_infrastructure();
 
         }
         catch (Exception ex)

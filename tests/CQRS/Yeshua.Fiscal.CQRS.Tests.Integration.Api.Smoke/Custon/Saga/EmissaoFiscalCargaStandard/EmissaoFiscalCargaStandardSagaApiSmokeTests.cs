@@ -18,6 +18,7 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
 {
     private const string StartFiscalSagaEndpoint = "yapi/Fiscal/Inbox/YeshuaModuleEvent";
     private const string ReadInboxEndpoint = "yapi/yInbox/ReadyInbox";
+    private const string InformarDocumentosOriginariosEndpoint = "yapi/Fiscal/EntradaInformarDocumentosOriginariosDaCargaUseCase";
     private const string StartFiscalSagaEvent = "CargaProntaParaEmissaoFiscal.v1";
     private const string CteSefazResponseEvent = "fiscal.cte.resposta-sefaz-homologacao";
     private const string MdfeSefazResponseEvent = "fiscal.mdfe.resposta-sefaz-homologacao";
@@ -40,6 +41,8 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
             var sagaId = GetInt(saga, "Id");
             if (sagaId > 0)
                 await ObserveInboxEvidenceAsync(client, sagaId, evidence, token);
+
+            await SimularErpInformandoDocumentosOriginariosAsync(client, saga, steps, evidence, token);
         };
         options.IsExpectedOutcome = (_, steps) =>
             AllExpectedStepsCompleted(steps);
@@ -61,7 +64,6 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
             ["cargaId"] = entityId,
             ["origem"] = "SmokeTest",
             ["modo"] = "sefaz-homologacao",
-            ["documentosOriginarios"] = new JsonArray(),
             ["createdAtUtc"] = DateTime.UtcNow
         };
 
@@ -99,7 +101,7 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
             ["EntityType"] = GetString(startPayload, "EntityType"),
             ["EntityId"] = GetString(startPayload, "EntityId"),
             ["Type"] = "EmissaoFiscalCargaStandardSaga",
-            ["Paginacao"] = ApiTestData.Pagination(pageSize: 5)
+            ["Paginacao"] = ApiTestData.Pagination(pageSize: 50)
         };
     }
 
@@ -126,6 +128,62 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
             evidence.Observe(item);
     }
 
+    private static async Task SimularErpInformandoDocumentosOriginariosAsync(
+        HttpClient client,
+        JsonObject saga,
+        JsonArray steps,
+        FiscalSagaEvidence evidence,
+        CancellationToken cancellationToken)
+    {
+        if (evidence.DocumentosOriginariosInformados)
+            return;
+
+        if (!StepHasStatus(steps, "AguardarDocumentosOriginariosDaCarga", 3))
+            return;
+
+        var cargaId = GetString(saga, "EntityId") ?? ("FISCAL-SMOKE-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"));
+        var correlationId = GetString(saga, "CorrelationId") ?? Guid.NewGuid().ToString();
+        var documento = new JsonObject
+        {
+            ["tipoDocumento"] = "NFe",
+            ["chaveAcesso"] = "26260963249950000174550010000000011000000018",
+            ["numero"] = "1",
+            ["serie"] = "1",
+            ["emitenteDocumento"] = "63249950000174",
+            ["destinatarioDocumento"] = "63249950000174",
+            ["ufOrigem"] = "PE",
+            ["ufDestino"] = "PE",
+            ["municipioOrigemCodigoIbge"] = "2611606",
+            ["municipioDestinoCodigoIbge"] = "2611606",
+            ["valorDocumento"] = 1000.00m,
+            ["pesoBruto"] = 100.00m,
+            ["volume"] = 1.00m,
+            ["xmlStorageKey"] = "smoke/nfe-produto.xml"
+        };
+
+        var payload = new JsonObject
+        {
+            ["CorrelationId"] = correlationId,
+            ["TenantId"] = 1,
+            ["SourceApplication"] = "ERP-MOCK",
+            ["SourceModule"] = "NotasFiscaisProduto",
+            ["SourceMessageId"] = Guid.NewGuid().ToString(),
+            ["CargaId"] = cargaId,
+            ["DocumentosOriginariosJson"] = new JsonArray(documento).ToJsonString(JsonOptions),
+            ["PayloadHash"] = string.Empty,
+            ["PayloadStorageKey"] = "smoke/documentos-originarios.json"
+        };
+
+        using var response = await client.PostAsJsonAsync(
+            InformarDocumentosOriginariosEndpoint,
+            payload,
+            JsonOptions,
+            cancellationToken);
+
+        await ApiResponseAssertions.ReadSuccessStateAsync(response);
+        evidence.MarkDocumentosOriginariosInformados();
+    }
+
     private static JsonArray ReadItems(JsonObject state)
     {
         var data = ApiJson.GetRequiredProperty(state, "data");
@@ -137,7 +195,8 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
     private static bool AllExpectedStepsCompleted(JsonArray steps)
     {
         return StepHasStatus(steps, "ReceberCargaProntaParaEmissaoFiscal", 5)
-            && StepHasStatus(steps, "NormalizarDocumentosOriginarios", 5)
+            && StepHasStatus(steps, "AguardarDocumentosOriginariosDaCarga", 5)
+            && StepHasStatus(steps, "PrepararEntradaFiscalDaCarga", 5)
             && StepHasStatus(steps, "MontarSolicitacoesCTe", 5)
             && StepHasStatus(steps, "PrepararCTe", 5)
             && StepHasStatus(steps, "AutorizarCTeNaSefaz", 5)
@@ -186,10 +245,16 @@ public partial class EmissaoFiscalCargaStandardSagaApiSmokeTests
 
     private sealed class FiscalSagaEvidence
     {
+        public bool DocumentosOriginariosInformados { get; private set; }
         public bool CteAutorizado { get; private set; }
         public bool MdfeAutorizado { get; private set; }
         public string CteResumo { get; private set; } = "Retorno SEFAZ CT-e autorizado nao encontrado no yInbox nem nos steps.";
         public string MdfeResumo { get; private set; } = "Retorno SEFAZ MDF-e autorizado nao encontrado no yInbox nem nos steps.";
+
+        public void MarkDocumentosOriginariosInformados()
+        {
+            DocumentosOriginariosInformados = true;
+        }
 
         public void Observe(JsonObject item)
         {

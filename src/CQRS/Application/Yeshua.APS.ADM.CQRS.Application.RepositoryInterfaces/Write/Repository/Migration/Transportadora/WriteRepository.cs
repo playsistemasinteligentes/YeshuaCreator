@@ -24,6 +24,9 @@ namespace IRepository.Write
         void Delete(ITransportadoraEntity transportadora);
         void UpdateTRA_ID(int id, string value);
         void UpdateTRA_NOME(int id, string value);
+        void UpdateTRA_CNPJ(int id, string value);
+        void UpdateTRA_INSCRICAO_ESTADUAL(int id, string value);
+        void UpdateTRA_RNTRC(int id, string value);
         void UpdateTRA_EMAIL(int id, string value);
         void UpdateTRA_RESPONSAVEL(int id, string value);
         void UpdateTRA_FONE(int id, string value);

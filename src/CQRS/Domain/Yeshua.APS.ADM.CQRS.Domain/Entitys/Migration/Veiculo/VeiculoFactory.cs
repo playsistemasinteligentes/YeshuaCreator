@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IVeiculoEntity Create(int? id, string vei_placa, int tip_id, Decimal? vei_capacidade_m3, Decimal? vei_capacidade_largura, Decimal? vei_capacidade_comprimento, Decimal? vei_capacidade_altura, string vei_modelo, string vei_nome_motorista, string vei_dados_contato, string vei_cpf_motorista, string tca_id, DateTime? vei_emissao, DateTime? vei_vencimento, string vei_status )
+                                    } public IVeiculoEntity Create(int? id, string vei_placa, string vei_uf, int tip_id, Decimal? vei_capacidade_m3, Decimal? vei_capacidade_largura, Decimal? vei_capacidade_comprimento, Decimal? vei_capacidade_altura, string vei_modelo, string vei_nome_motorista, string vei_dados_contato, string vei_cpf_motorista, string tca_id, DateTime? vei_emissao, DateTime? vei_vencimento, string vei_status )
                             {
-                                return Create(null, id, vei_placa, tip_id, vei_capacidade_m3, vei_capacidade_largura, vei_capacidade_comprimento, vei_capacidade_altura, vei_modelo, vei_nome_motorista, vei_dados_contato, vei_cpf_motorista, tca_id, vei_emissao, vei_vencimento, vei_status);
+                                return Create(null, id, vei_placa, vei_uf, tip_id, vei_capacidade_m3, vei_capacidade_largura, vei_capacidade_comprimento, vei_capacidade_altura, vei_modelo, vei_nome_motorista, vei_dados_contato, vei_cpf_motorista, tca_id, vei_emissao, vei_vencimento, vei_status);
                             }
 
                             public IVeiculoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string vei_placa, int tip_id, Decimal? vei_capacidade_m3, Decimal? vei_capacidade_largura, Decimal? vei_capacidade_comprimento, Decimal? vei_capacidade_altura, string vei_modelo, string vei_nome_motorista, string vei_dados_contato, string vei_cpf_motorista, string tca_id, DateTime? vei_emissao, DateTime? vei_vencimento, string vei_status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string vei_placa, string vei_uf, int tip_id, Decimal? vei_capacidade_m3, Decimal? vei_capacidade_largura, Decimal? vei_capacidade_comprimento, Decimal? vei_capacidade_altura, string vei_modelo, string vei_nome_motorista, string vei_dados_contato, string vei_cpf_motorista, string tca_id, DateTime? vei_emissao, DateTime? vei_vencimento, string vei_status )
                             {
-                            var entity = new VeiculoEntity(id, vei_placa, tip_id, vei_capacidade_m3, vei_capacidade_largura, vei_capacidade_comprimento, vei_capacidade_altura, vei_modelo, vei_nome_motorista, vei_dados_contato, vei_cpf_motorista, tca_id, vei_emissao, vei_vencimento, vei_status );
+                            var entity = new VeiculoEntity(id, vei_placa, vei_uf, tip_id, vei_capacidade_m3, vei_capacidade_largura, vei_capacidade_comprimento, vei_capacidade_altura, vei_modelo, vei_nome_motorista, vei_dados_contato, vei_cpf_motorista, tca_id, vei_emissao, vei_vencimento, vei_status );
 
 
                             var trackingMask = _trackingPolicy?.GetMask("Veiculo", context?.Intent, context?.RecordId) ?? 0UL;

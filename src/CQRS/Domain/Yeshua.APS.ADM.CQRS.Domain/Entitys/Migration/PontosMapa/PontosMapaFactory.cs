@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPontosMapaEntity Create(string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km )
+                                    } public IPontosMapaEntity Create(string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string mun_id )
                             {
-                                return Create(null, pon_id, pon_descricao, pon_tipo, pon_latitude, pon_longitude, pon_distancia_km);
+                                return Create(null, pon_id, pon_descricao, pon_tipo, pon_latitude, pon_longitude, pon_distancia_km, mun_id);
                             }
 
                             public IPontosMapaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string pon_id, string pon_descricao, string pon_tipo, Decimal? pon_latitude, Decimal? pon_longitude, Decimal? pon_distancia_km, string mun_id )
                             {
-                            var entity = new PontosMapaEntity(pon_id, pon_descricao, pon_tipo, pon_latitude, pon_longitude, pon_distancia_km );
+                            var entity = new PontosMapaEntity(pon_id, pon_descricao, pon_tipo, pon_latitude, pon_longitude, pon_distancia_km, mun_id );
 
 
                             var trackingMask = _trackingPolicy?.GetMask("PontosMapa", context?.Intent, context?.RecordId) ?? 0UL;

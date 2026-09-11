@@ -54,6 +54,7 @@ public partial class VeiculoCrudApiSeedTests : ApiIntegrationTestBase
         return new JsonObject
         {
             ["VEI_PLACA"] = ApiTestData.Text("Veiculo VEI_PLACA", 8),
+            ["VEI_UF"] = ApiTestData.Text("Veiculo VEI_UF", 2),
             ["TIP_ID"] = 1,
             ["VEI_CAPACIDADE_M3"] = 10.5m,
             ["VEI_CAPACIDADE_LARGURA"] = 10.5m,
@@ -84,6 +85,7 @@ public partial class VeiculoCrudApiSeedTests : ApiIntegrationTestBase
         var payload = (JsonObject)createPayload.DeepClone();
         payload["Id"] = id.DeepClone();
         payload["VEI_PLACA"] = ApiTestData.Text("Veiculo VEI_PLACA Update", 8);
+        payload["VEI_UF"] = ApiTestData.Text("Veiculo VEI_UF Update", 2);
         payload["TIP_ID"] = 2;
         payload["VEI_CAPACIDADE_M3"] = 20.5m;
         payload["VEI_CAPACIDADE_LARGURA"] = 20.5m;

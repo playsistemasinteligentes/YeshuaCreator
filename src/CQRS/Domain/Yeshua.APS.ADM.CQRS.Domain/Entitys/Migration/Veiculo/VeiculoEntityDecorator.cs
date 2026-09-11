@@ -22,23 +22,24 @@
         {
             public const ulong Id = 1UL << 0;
             public const ulong VEI_PLACA = 1UL << 1;
-            public const ulong TIP_ID = 1UL << 2;
-            public const ulong VEI_CAPACIDADE_M3 = 1UL << 3;
-            public const ulong VEI_CAPACIDADE_LARGURA = 1UL << 4;
-            public const ulong VEI_CAPACIDADE_COMPRIMENTO = 1UL << 5;
-            public const ulong VEI_CAPACIDADE_ALTURA = 1UL << 6;
-            public const ulong VEI_MODELO = 1UL << 7;
-            public const ulong VEI_NOME_MOTORISTA = 1UL << 8;
-            public const ulong VEI_DADOS_CONTATO = 1UL << 9;
-            public const ulong VEI_CPF_MOTORISTA = 1UL << 10;
-            public const ulong TCA_ID = 1UL << 11;
-            public const ulong VEI_EMISSAO = 1UL << 12;
-            public const ulong VEI_VENCIMENTO = 1UL << 13;
-            public const ulong VEI_STATUS = 1UL << 14;
-            public const ulong TenantID = 1UL << 15;
-            public const ulong Deleted = 1UL << 16;
-            public const ulong Changed = 1UL << 17;
-            public const ulong UserId = 1UL << 18;
+            public const ulong VEI_UF = 1UL << 2;
+            public const ulong TIP_ID = 1UL << 3;
+            public const ulong VEI_CAPACIDADE_M3 = 1UL << 4;
+            public const ulong VEI_CAPACIDADE_LARGURA = 1UL << 5;
+            public const ulong VEI_CAPACIDADE_COMPRIMENTO = 1UL << 6;
+            public const ulong VEI_CAPACIDADE_ALTURA = 1UL << 7;
+            public const ulong VEI_MODELO = 1UL << 8;
+            public const ulong VEI_NOME_MOTORISTA = 1UL << 9;
+            public const ulong VEI_DADOS_CONTATO = 1UL << 10;
+            public const ulong VEI_CPF_MOTORISTA = 1UL << 11;
+            public const ulong TCA_ID = 1UL << 12;
+            public const ulong VEI_EMISSAO = 1UL << 13;
+            public const ulong VEI_VENCIMENTO = 1UL << 14;
+            public const ulong VEI_STATUS = 1UL << 15;
+            public const ulong TenantID = 1UL << 16;
+            public const ulong Deleted = 1UL << 17;
+            public const ulong Changed = 1UL << 18;
+            public const ulong UserId = 1UL << 19;
         }
 
         public partial class VeiculoDecorator : IVeiculoEntity
@@ -92,6 +93,20 @@
                                                 _inner.VEI_PLACA = value;
                                                 if ((_trackingMask & VeiculoTrackingFields.VEI_PLACA) != 0UL)
                                                     _logger.DomainValueChanged("Veiculo", "VEI_PLACA", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string VEI_UF
+                                    {
+                                        get => _inner.VEI_UF;
+                                        set
+                                        {
+                                            if (_inner.VEI_UF != value)
+                                            {
+                                                _inner.VEI_UF = value;
+                                                if ((_trackingMask & VeiculoTrackingFields.VEI_UF) != 0UL)
+                                                    _logger.DomainValueChanged("Veiculo", "VEI_UF", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

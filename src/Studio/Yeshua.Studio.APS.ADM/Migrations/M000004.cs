@@ -89,12 +89,30 @@ public class M000004 : MigrationBase
 
         planejamento
             .AddSaga("CargaStandard")
-            .AddStepGroup("montagemCarga")
-                .AddStep("criarCarga")
-            .AddStepGroup("dadosTransporte")
-                .AddStep("definirDadosTransporte")
+            .AddStepGroup("preparacaoTransporte")
+                .AddStepWait("aguardarDadosTransporte")
+                    .HttpApi("InformarDadosTransporteCarga",
+                        new InformarDadosTransporteCargaInput(
+                            string.Empty,
+                            string.Empty,
+                            string.Empty,
+                            0,
+                            string.Empty,
+                            string.Empty,
+                            string.Empty,
+                            string.Empty),
+                        new InformarDadosTransporteCargaOutput(false, string.Empty, string.Empty, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("apsadm.carga.dados-transporte.informar")
+                    .AddEntity("Carga")
+                    .AddEntity("Transportadora")
+                    .AddEntity("Veiculo")
+                .AddStepWait("aguardarAgendamento")
+            .AddStepGroup("carregamento")
+                .AddStepWait("aguardarInicioCarregamento")
+                .AddStepWait("aguardarFinalizacaoCarregamento")
             .AddStepGroup("preparacaoFiscal")
-                .AddStep("prepararCargaParaFiscal")
+                .AddStep("prepararCargaParaModuloFiscal")
                 .AddStep("publicarCargaProntaParaEmissaoFiscal")
                     .PublishYeshuaModuleEvent(
                         "Fiscal",
@@ -103,7 +121,7 @@ public class M000004 : MigrationBase
                         "EmissaoFiscalCargaStandard")
                     .DeliverByYeshuaApi()
             .AddStepGroup("retornoFiscal")
-                .AddStep("aguardarResultadoFiscalDaCarga")
+                .AddStepWait("aguardarFinalizacaoFiscal")
                 .AddStep("liberarCargaParaExpedicao");
 
         AddCustomPage(
@@ -303,6 +321,18 @@ public sealed record RevalidarSelecaoPlanejamentoTransporteOutput(bool Valida, s
 public sealed record CriarCargaDaSelecaoPlanejamentoTransporteInput(string ContextoId, List<PedidoPlanejamentoRef> Pedidos, string TipoVeiculoId, string Observacao);
 
 public sealed record CriarCargaDaSelecaoPlanejamentoTransporteOutput(string CargaId, bool Criada, string Mensagem);
+
+public sealed record InformarDadosTransporteCargaInput(
+    string CargaId,
+    string TransportadoraId,
+    string VeiculoPlaca,
+    int TipoVeiculoId,
+    string VeiculoUf,
+    string CondutorNome,
+    string CondutorCpf,
+    string Observacao);
+
+public sealed record InformarDadosTransporteCargaOutput(bool Sucesso, string Mensagem, string CargaId, string ProximoStep);
 
 public sealed record ListarCargasAbertasPlanejamentoTransporteInput(string ContextoId);
 

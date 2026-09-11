@@ -23,17 +23,19 @@ namespace Command.Receivers.Migration.Saga
         private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;
         private readonly Dictionary<string, Func<SagaBase>> _factoryMap;
 
-        public SagaResolverRegistry(EmissaoFiscalCargaStandardSagaHandlerResolver EmissaoFiscalCargaStandardResolver, EncerramentoMDFeStandardSagaHandlerResolver EncerramentoMDFeStandardResolver)
+        public SagaResolverRegistry(EmissaoFiscalCargaStandardSagaHandlerResolver EmissaoFiscalCargaStandardResolver, ContingenciaFiscalStandardSagaHandlerResolver ContingenciaFiscalStandardResolver, EncerramentoMDFeStandardSagaHandlerResolver EncerramentoMDFeStandardResolver)
         {
             _resolverMap = new Dictionary<string, ISagaHandlerResolver>
             {
                 { nameof(EmissaoFiscalCargaStandardSaga), EmissaoFiscalCargaStandardResolver },
+                { nameof(ContingenciaFiscalStandardSaga), ContingenciaFiscalStandardResolver },
                 { nameof(EncerramentoMDFeStandardSaga), EncerramentoMDFeStandardResolver },
             };
 
             _factoryMap = new Dictionary<string, Func<SagaBase>>
             {
                 { nameof(EmissaoFiscalCargaStandardSaga), () => new EmissaoFiscalCargaStandardSaga() },
+                { nameof(ContingenciaFiscalStandardSaga), () => new ContingenciaFiscalStandardSaga() },
                 { nameof(EncerramentoMDFeStandardSaga), () => new EncerramentoMDFeStandardSaga() },
             };
         }

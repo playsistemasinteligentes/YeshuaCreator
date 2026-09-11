@@ -18,9 +18,9 @@ namespace Command.Receivers
 {
     public partial class AutorizarMDFeNaSefazHandler : ISagaStepHandler
     {
-        public string Key => EmissaoFiscalCargaStandardSaga.STEP_9;
+        public string Key => EmissaoFiscalCargaStandardSaga.STEP_10;
 
-        public bool IsAsync => true;
+        public bool IsAsync => false;
 
         public void Execute(SagaBase saga, SagaStepBase step)
         {
@@ -44,7 +44,6 @@ namespace Command.Receivers
             }
             catch (Exception ex)
             {
-                saga.MarkFailed(ex.Message);
                 throw;
             }
         }
@@ -59,7 +58,6 @@ namespace Command.Receivers
             }
             catch (Exception ex)
             {
-                saga.MarkFailed(ex.Message);
                 throw;
             }
         }

@@ -49,7 +49,7 @@ namespace Command.Receivers.Write
              if(comand is Command.Write.TransportadoraCrudCommand c) 
              {    
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertTransportadora", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertTransportadoraReceiver), commandName: "Command.Write.TransportadoraCrudCommand");
-                 var transportadora = new TransportadoraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TRA_ID, c.TRA_NOME, c.TRA_EMAIL, c.TRA_RESPONSAVEL, c.TRA_FONE, c.TRA_ID_INTEGRACAO, c.TRA_ID_INTEGRACAO_ERP);
+                 var transportadora = new TransportadoraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.TRA_ID, c.TRA_NOME, c.TRA_CNPJ, c.TRA_INSCRICAO_ESTADUAL, c.TRA_RNTRC, c.TRA_EMAIL, c.TRA_RESPONSAVEL, c.TRA_FONE, c.TRA_ID_INTEGRACAO, c.TRA_ID_INTEGRACAO_ERP);
                  var domainResult = TransportadoraDomainBehavior.Apply(transportadora, context);
                  if (!domainResult.IsValid)
                      return ValidationError(domainResult.Errors, null);

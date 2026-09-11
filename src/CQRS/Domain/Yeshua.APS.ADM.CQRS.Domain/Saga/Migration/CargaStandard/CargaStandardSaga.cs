@@ -14,12 +14,14 @@ namespace Dominio.Saga
 {
     public class CargaStandardSaga : SagaBase
     {
-        public const string STEP_1 = "CriarCarga";
-        public const string STEP_2 = "DefinirDadosTransporte";
-        public const string STEP_3 = "PrepararCargaParaFiscal";
-        public const string STEP_4 = "PublicarCargaProntaParaEmissaoFiscal";
-        public const string STEP_5 = "AguardarResultadoFiscalDaCarga";
-        public const string STEP_6 = "LiberarCargaParaExpedicao";
+        public const string STEP_1 = "AguardarDadosTransporte";
+        public const string STEP_2 = "AguardarAgendamento";
+        public const string STEP_3 = "AguardarInicioCarregamento";
+        public const string STEP_4 = "AguardarFinalizacaoCarregamento";
+        public const string STEP_5 = "PrepararCargaParaModuloFiscal";
+        public const string STEP_6 = "PublicarCargaProntaParaEmissaoFiscal";
+        public const string STEP_7 = "AguardarFinalizacaoFiscal";
+        public const string STEP_8 = "LiberarCargaParaExpedicao";
 
         public CargaStandardSaga()
         {
@@ -29,6 +31,8 @@ namespace Dominio.Saga
             AddStep(new CargaStandardStep(STEP_4, 4));
             AddStep(new CargaStandardStep(STEP_5, 5));
             AddStep(new CargaStandardStep(STEP_6, 6));
+            AddStep(new CargaStandardStep(STEP_7, 7));
+            AddStep(new CargaStandardStep(STEP_8, 8));
         }
     }
 }

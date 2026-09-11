@@ -185,6 +185,54 @@ Command
             return this;
         }
 
+        public UseCaseGroup AddStepWait(string EventName)
+        {
+            AddStep(EventName);
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.IsWait = true;
+            return this;
+        }
+
+        public UseCaseGroup StepWait(string EventName)
+        {
+            return AddStepWait(EventName);
+        }
+
+        public UseCaseGroup HttpApi(string commandName, params object[] input)
+        {
+            return AddStepCommandTransport("HttpApi", commandName, input);
+        }
+
+        public UseCaseGroup HttpAPI(string commandName, params object[] input)
+        {
+            return HttpApi(commandName, input);
+        }
+
+        private UseCaseGroup AddStepCommandTransport(string transportKind, string commandName, params object[] input)
+        {
+            var useCaseSubGroup = this.UseCaseSubGroup.Last();
+            var saga = useCaseSubGroup.Saga.Last();
+            var step = saga.SagaStepGroup.Last().LastStep;
+            var name = string.IsNullOrWhiteSpace(commandName) ? step.Name._value : commandName;
+
+            UseCaseCommand command = new UseCaseCommand(name);
+            command.UseCaseGroup = this;
+            command.UseCaseSubGroup = useCaseSubGroup;
+            command.IsSagaStepStimulus = true;
+            command.SagaName = saga.Name._value;
+            command.SagaStepName = step.Name._value;
+            command.SagaStimulusTransport = transportKind;
+
+            if (input != null && input.Length > 0)
+            {
+                command.Inputs = new object[] { input.First() };
+                command.Outputs = new object[] { input.Last() };
+            }
+
+            useCaseSubGroup.UseCaseCommand.Add(command);
+            step.CommandTransports.Add(new SagaStepCommandTransport(transportKind, command));
+            return this;
+        }
+
 
         public UseCaseGroup AddInBoxPollingWorker()
         {

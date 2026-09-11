@@ -27,6 +27,9 @@ namespace IRepository.Read
         public bool ExistsById(int value );
         public bool ExistsByTRA_ID(string value );
         public bool ExistsByTRA_NOME(string value );
+        public bool ExistsByTRA_CNPJ(string value );
+        public bool ExistsByTRA_INSCRICAO_ESTADUAL(string value );
+        public bool ExistsByTRA_RNTRC(string value );
         public bool ExistsByTRA_EMAIL(string value );
         public bool ExistsByTRA_RESPONSAVEL(string value );
         public bool ExistsByTRA_FONE(string value );
@@ -39,6 +42,9 @@ namespace IRepository.Read
         public TransportadoraDTO FirstById(int value );
         public TransportadoraDTO FirstByTRA_ID(string value );
         public TransportadoraDTO FirstByTRA_NOME(string value );
+        public TransportadoraDTO FirstByTRA_CNPJ(string value );
+        public TransportadoraDTO FirstByTRA_INSCRICAO_ESTADUAL(string value );
+        public TransportadoraDTO FirstByTRA_RNTRC(string value );
         public TransportadoraDTO FirstByTRA_EMAIL(string value );
         public TransportadoraDTO FirstByTRA_RESPONSAVEL(string value );
         public TransportadoraDTO FirstByTRA_FONE(string value );
@@ -51,6 +57,9 @@ namespace IRepository.Read
         public IEnumerable<TransportadoraDTO> GetAllById(int value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_ID(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_NOME(string value );
+        public IEnumerable<TransportadoraDTO> GetAllByTRA_CNPJ(string value );
+        public IEnumerable<TransportadoraDTO> GetAllByTRA_INSCRICAO_ESTADUAL(string value );
+        public IEnumerable<TransportadoraDTO> GetAllByTRA_RNTRC(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_EMAIL(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_RESPONSAVEL(string value );
         public IEnumerable<TransportadoraDTO> GetAllByTRA_FONE(string value );

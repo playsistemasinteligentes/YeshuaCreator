@@ -23,6 +23,7 @@ namespace IRepository.Write
         void Update(IVeiculoEntity veiculo);
         void Delete(IVeiculoEntity veiculo);
         void UpdateVEI_PLACA(int id, string value);
+        void UpdateVEI_UF(int id, string value);
         void UpdateTIP_ID(int id, int value);
         void UpdateVEI_CAPACIDADE_M3(int id, Decimal value);
         void UpdateVEI_CAPACIDADE_LARGURA(int id, Decimal value);

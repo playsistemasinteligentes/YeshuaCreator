@@ -66,6 +66,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
+                    builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
                     builder.Services.AddTransient<SagaResolverRegistry>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
                     builder.Services.AddScoped<OutboxService>();
@@ -308,6 +309,17 @@ builder.Services.AddTransient<Command.Receivers.Read.CertificadoDigitalReadRecei
 builder.Services.AddTransient<Command.Receivers.Read.CertificadoDigitalReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.CertificadoDigitalReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IEntradaFiscalContingenciaWriteRepository, Input.Repository.EntradaFiscalContingencia.EntradaFiscalContingenciaWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IEntradaFiscalContingenciaReadRepository, Read.Repository.EntradaFiscalContingenciaReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IEntradaFiscalContingenciaQueryRead, Query.Read.EntradaFiscalContingenciaQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IEntradaFiscalContingenciaQueryWrite, Query.Write.EntradaFiscalContingenciaQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertEntradaFiscalContingenciaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateEntradaFiscalContingenciaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteEntradaFiscalContingenciaReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
@@ -538,7 +550,8 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdRecei
 builder.Services.AddTransient<Dominio.Saga.EmissaoFiscalCargaStandardSaga>();
 builder.Services.AddTransient<Command.Receivers.EmissaoFiscalCargaStandardSagaHandlerResolver>();
 builder.Services.AddTransient<ReceberCargaProntaParaEmissaoFiscalHandler>();
-builder.Services.AddTransient<NormalizarDocumentosOriginariosHandler>();
+builder.Services.AddTransient<AguardarDocumentosOriginariosDaCargaHandler>();
+builder.Services.AddTransient<PrepararEntradaFiscalDaCargaHandler>();
 builder.Services.AddTransient<MontarSolicitacoesCTeHandler>();
 builder.Services.AddTransient<PrepararCTeHandler>();
 builder.Services.AddTransient<AutorizarCTeNaSefazHandler>();
@@ -547,6 +560,20 @@ builder.Services.AddTransient<MontarSolicitacaoMDFeHandler>();
 builder.Services.AddTransient<PrepararMDFeHandler>();
 builder.Services.AddTransient<AutorizarMDFeNaSefazHandler>();
 builder.Services.AddTransient<PublicarDocumentosFiscaisDaCargaConcluidosHandler>();
+builder.Services.AddTransient<Dominio.Saga.ContingenciaFiscalStandardSaga>();
+builder.Services.AddTransient<Command.Receivers.ContingenciaFiscalStandardSagaHandlerResolver>();
+builder.Services.AddTransient<ReceberNotasFiscaisDaContingenciaHandler>();
+builder.Services.AddTransient<AnalisarNotasFiscaisDaContingenciaHandler>();
+builder.Services.AddTransient<EscolherModeloAgrupamentoCTeHandler>();
+builder.Services.AddTransient<SimularAgrupamentoCTeHandler>();
+builder.Services.AddTransient<InformarFreteERateioHandler>();
+builder.Services.AddTransient<SimularRateioFreteHandler>();
+builder.Services.AddTransient<InformarDadosTransporteHandler>();
+builder.Services.AddTransient<ValidarPlanoEmissaoFiscalHandler>();
+builder.Services.AddTransient<ConfirmarPlanoEmissaoFiscalHandler>();
+builder.Services.AddTransient<PublicarPlanoParaSagaFiscalHandler>();
+builder.Services.AddTransient<AguardarResultadoEmissaoFiscalHandler>();
+builder.Services.AddTransient<FinalizarContingenciaFiscalHandler>();
 builder.Services.AddTransient<Dominio.Saga.EncerramentoMDFeStandardSaga>();
 builder.Services.AddTransient<Command.Receivers.EncerramentoMDFeStandardSagaHandlerResolver>();
 builder.Services.AddTransient<SolicitarEncerramentoMDFeHandler>();
@@ -555,6 +582,10 @@ builder.Services.AddTransient<AutorizarEncerramentoMDFeNaSefazHandler>();
 builder.Services.AddTransient<PublicarMDFeEncerradoHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ReceberNotasFiscaisProdutoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InformarDocumentosOriginariosDaCargaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.IniciarContingenciaFiscalHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ReceberRomaneioConsolidadoParaCTeHandler>();
 
@@ -571,6 +602,18 @@ builder.Services.AddTransient<Command.Receivers.UseCase.AutorizarMDFeHandler>();
 builder.Services.AddTransient<Command.Receivers.UseCase.EncerrarMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ValidarCertificadoDigitalHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InformarNotasFiscaisContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.EscolherModeloAgrupamentoCTeContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InformarFreteERateioContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InformarDadosTransporteContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarPlanoEmissaoFiscalContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.InformarResultadoEmissaoFiscalContingenciaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

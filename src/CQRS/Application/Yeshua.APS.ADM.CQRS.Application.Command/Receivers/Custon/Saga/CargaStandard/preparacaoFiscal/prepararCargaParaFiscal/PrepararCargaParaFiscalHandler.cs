@@ -10,6 +10,7 @@
 
 using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
+using IRepository.Read;
 using IRepository.Write;
 
 namespace Command.Receivers
@@ -17,27 +18,38 @@ namespace Command.Receivers
     public partial class PrepararCargaParaFiscalHandler
     {
         private readonly IyInboxWriteRepository _inboxWriteRepository;
+        private readonly ICargaReadRepository _cargaReadRepository;
+        private readonly IVeiculoReadRepository _veiculoReadRepository;
+        private readonly ITransportadoraReadRepository _transportadoraReadRepository;
         private readonly ILogger _logger;
 
-        public PrepararCargaParaFiscalHandler(IyInboxWriteRepository inboxWriteRepository, ILogger logger)
+        public PrepararCargaParaFiscalHandler(
+            IyInboxWriteRepository inboxWriteRepository,
+            ICargaReadRepository cargaReadRepository,
+            IVeiculoReadRepository veiculoReadRepository,
+            ITransportadoraReadRepository transportadoraReadRepository,
+            ILogger logger)
         {
             _inboxWriteRepository = inboxWriteRepository;
+            _cargaReadRepository = cargaReadRepository;
+            _veiculoReadRepository = veiculoReadRepository;
+            _transportadoraReadRepository = transportadoraReadRepository;
             _logger = logger;
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
         {
+            var snapshotBuilder = new CargaFiscalSnapshotBuilder(
+                _cargaReadRepository,
+                _veiculoReadRepository,
+                _transportadoraReadRepository);
+
             var inbox = CargaStandardSagaPayloads.CreateInbox(
                 _logger,
                 saga,
                 step,
                 "carga.preparada-para-fiscal",
-                new
-                {
-                    origem = "APSADM",
-                    modo = "interno-prototipo",
-                    cargaId = saga.EntityId
-                });
+                snapshotBuilder.BuildPreparationEvidence(saga, step));
 
             _inboxWriteRepository.Insert(inbox);
         }

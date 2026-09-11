@@ -77,6 +77,9 @@ public partial class TransportadoraCrudApiSmokeTests : ApiIntegrationTestBase
         {
             ["TRA_ID"] = ApiTestData.Text("Transportadora TRA_ID", 30),
             ["TRA_NOME"] = ApiTestData.Text("Transportadora TRA_NOME", 80),
+            ["TRA_CNPJ"] = ApiTestData.Text("Transportadora TRA_CNPJ", 14),
+            ["TRA_INSCRICAO_ESTADUAL"] = ApiTestData.Text("Transportadora TRA_INSCRICAO_ESTADUAL", 20),
+            ["TRA_RNTRC"] = ApiTestData.Text("Transportadora TRA_RNTRC", 20),
             ["TRA_EMAIL"] = ApiTestData.Text("Transportadora TRA_EMAIL", 80),
             ["TRA_RESPONSAVEL"] = ApiTestData.Text("Transportadora TRA_RESPONSAVEL", 80),
             ["TRA_FONE"] = ApiTestData.Text("Transportadora TRA_FONE", 15),
@@ -100,6 +103,9 @@ public partial class TransportadoraCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Id"] = id.DeepClone();
         payload["TRA_ID"] = ApiTestData.Text("Transportadora TRA_ID Update", 30);
         payload["TRA_NOME"] = ApiTestData.Text("Transportadora TRA_NOME Update", 80);
+        payload["TRA_CNPJ"] = ApiTestData.Text("Transportadora TRA_CNPJ Update", 14);
+        payload["TRA_INSCRICAO_ESTADUAL"] = ApiTestData.Text("Transportadora TRA_INSCRICAO_ESTADUAL Update", 20);
+        payload["TRA_RNTRC"] = ApiTestData.Text("Transportadora TRA_RNTRC Update", 20);
         payload["TRA_EMAIL"] = ApiTestData.Text("Transportadora TRA_EMAIL Update", 80);
         payload["TRA_RESPONSAVEL"] = ApiTestData.Text("Transportadora TRA_RESPONSAVEL Update", 80);
         payload["TRA_FONE"] = ApiTestData.Text("Transportadora TRA_FONE Update", 15);

@@ -30,6 +30,20 @@ Application orquestra.
 Infrastructure entrega tecnologia.
 ```
 
+Invariante CQRS:
+
+```text
+Receiver nao consulta banco diretamente.
+Receiver chama repository.
+Repository usa query/unit of work.
+```
+
+Isso significa que handlers/receivers nao devem conter SQL, Dapper,
+`SqlConnection`, `SqlCommand`, `_unitOfWork.Query`, `_unitOfWork.Execute` ou
+`_unitOfWork.ExecuteScalar`. O `UnitOfWork` pode aparecer no receiver somente
+para coordenar transacao do caso de uso; toda leitura e escrita deve passar por
+repository.
+
 Evitar no vocabulario de dominio:
 
 - `BeforeInsert`

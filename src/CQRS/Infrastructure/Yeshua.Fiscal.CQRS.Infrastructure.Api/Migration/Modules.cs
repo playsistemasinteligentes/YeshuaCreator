@@ -145,6 +145,11 @@ public static class StaticModules
         menuGroup5_0.AddSubMenu(new SubMenu("SefazEndpoint", "/getMetaDataSefazEndpoint", "crud", "", ""));
         menuGroup5_0.AddSubMenu(new SubMenu("CertificadoDigital", "/getMetaDataCertificadoDigital", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(menuGroup5_0);
+        Modules.Add(new Module("CONT", "Contingencia  Fiscal"));
+        var menuGroup6_0 = new Menu("Contingencia Fiscal", "", "menuGroup");
+        menuGroup6_0.AddSubMenu(new SubMenu("Nova Contingencia Fiscal", "#contingencia-fiscal", "customPage", "contingencia-fiscal", "fiscal.contingencia.tela"));
+        menuGroup6_0.AddSubMenu(new SubMenu("EntradaFiscalContingencia", "/getMetaDataEntradaFiscalContingencia", "crud", "", ""));
+        Modules.LastOrDefault().Menus.Add(menuGroup6_0);
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
         Modules.LastOrDefault().Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));

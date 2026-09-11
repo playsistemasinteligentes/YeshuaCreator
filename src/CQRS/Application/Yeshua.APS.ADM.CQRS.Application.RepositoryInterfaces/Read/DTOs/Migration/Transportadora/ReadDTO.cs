@@ -21,6 +21,9 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public string tra_id { get; set; }
     public string tra_nome { get; set; }
+    public string tra_cnpj { get; set; }
+    public string tra_inscricao_estadual { get; set; }
+    public string tra_rntrc { get; set; }
     public string tra_email { get; set; }
     public string tra_responsavel { get; set; }
     public string tra_fone { get; set; }

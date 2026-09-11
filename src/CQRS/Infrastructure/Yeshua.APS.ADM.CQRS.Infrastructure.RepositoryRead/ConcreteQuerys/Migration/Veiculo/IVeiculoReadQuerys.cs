@@ -18,6 +18,7 @@ namespace IQuery.Read
         public QueryModel VeiculoUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByVEI_PLACAQuery(string value );
+        public QueryModel ExistsByVEI_UFQuery(string value );
         public QueryModel ExistsByTIP_IDQuery(int value );
         public QueryModel ExistsByVEI_CAPACIDADE_M3Query(Decimal value );
         public QueryModel ExistsByVEI_CAPACIDADE_LARGURAQuery(Decimal value );
@@ -37,6 +38,7 @@ namespace IQuery.Read
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByVEI_PLACAQuery(string value );
+        public QueryModel FirstByVEI_UFQuery(string value );
         public QueryModel FirstByTIP_IDQuery(int value );
         public QueryModel FirstByVEI_CAPACIDADE_M3Query(Decimal value );
         public QueryModel FirstByVEI_CAPACIDADE_LARGURAQuery(Decimal value );

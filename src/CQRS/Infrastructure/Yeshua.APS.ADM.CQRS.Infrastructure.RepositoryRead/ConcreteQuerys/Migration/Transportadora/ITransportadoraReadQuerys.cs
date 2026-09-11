@@ -19,6 +19,9 @@ namespace IQuery.Read
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByTRA_IDQuery(string value );
         public QueryModel ExistsByTRA_NOMEQuery(string value );
+        public QueryModel ExistsByTRA_CNPJQuery(string value );
+        public QueryModel ExistsByTRA_INSCRICAO_ESTADUALQuery(string value );
+        public QueryModel ExistsByTRA_RNTRCQuery(string value );
         public QueryModel ExistsByTRA_EMAILQuery(string value );
         public QueryModel ExistsByTRA_RESPONSAVELQuery(string value );
         public QueryModel ExistsByTRA_FONEQuery(string value );
@@ -31,6 +34,9 @@ namespace IQuery.Read
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByTRA_IDQuery(string value );
         public QueryModel FirstByTRA_NOMEQuery(string value );
+        public QueryModel FirstByTRA_CNPJQuery(string value );
+        public QueryModel FirstByTRA_INSCRICAO_ESTADUALQuery(string value );
+        public QueryModel FirstByTRA_RNTRCQuery(string value );
         public QueryModel FirstByTRA_EMAILQuery(string value );
         public QueryModel FirstByTRA_RESPONSAVELQuery(string value );
         public QueryModel FirstByTRA_FONEQuery(string value );

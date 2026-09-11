@@ -35,13 +35,19 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] from [Transportadora] ";
+            this.Query = $@" select [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] from [Transportadora] ";
 if (Command.Id.HasValue) dict["Id"] = Command.Id.Value;
 if (Command.Id.HasValue) whereClauses.Add($"[Id] = @Id");
 if (!string.IsNullOrEmpty(Command.TRA_ID)) dict["TRA_ID"] = $"%{Command.TRA_ID}%";
 if (!string.IsNullOrEmpty(Command.TRA_ID)) whereClauses.Add($"[TRA_ID] like @TRA_ID");
 if (!string.IsNullOrEmpty(Command.TRA_NOME)) dict["TRA_NOME"] = $"%{Command.TRA_NOME}%";
 if (!string.IsNullOrEmpty(Command.TRA_NOME)) whereClauses.Add($"[TRA_NOME] like @TRA_NOME");
+if (!string.IsNullOrEmpty(Command.TRA_CNPJ)) dict["TRA_CNPJ"] = $"%{Command.TRA_CNPJ}%";
+if (!string.IsNullOrEmpty(Command.TRA_CNPJ)) whereClauses.Add($"[TRA_CNPJ] like @TRA_CNPJ");
+if (!string.IsNullOrEmpty(Command.TRA_INSCRICAO_ESTADUAL)) dict["TRA_INSCRICAO_ESTADUAL"] = $"%{Command.TRA_INSCRICAO_ESTADUAL}%";
+if (!string.IsNullOrEmpty(Command.TRA_INSCRICAO_ESTADUAL)) whereClauses.Add($"[TRA_INSCRICAO_ESTADUAL] like @TRA_INSCRICAO_ESTADUAL");
+if (!string.IsNullOrEmpty(Command.TRA_RNTRC)) dict["TRA_RNTRC"] = $"%{Command.TRA_RNTRC}%";
+if (!string.IsNullOrEmpty(Command.TRA_RNTRC)) whereClauses.Add($"[TRA_RNTRC] like @TRA_RNTRC");
 if (!string.IsNullOrEmpty(Command.TRA_EMAIL)) dict["TRA_EMAIL"] = $"%{Command.TRA_EMAIL}%";
 if (!string.IsNullOrEmpty(Command.TRA_EMAIL)) whereClauses.Add($"[TRA_EMAIL] like @TRA_EMAIL");
 if (!string.IsNullOrEmpty(Command.TRA_RESPONSAVEL)) dict["TRA_RESPONSAVEL"] = $"%{Command.TRA_RESPONSAVEL}%";
@@ -180,6 +186,60 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TRA_NOME"] = value; //04
                       whereClauses.Add($" [TRA_NOME] = @TRA_NOME ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByTRA_CNPJQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Transportadora] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["TRA_CNPJ"] = value; //04
+                      whereClauses.Add($" [TRA_CNPJ] = @TRA_CNPJ ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByTRA_INSCRICAO_ESTADUALQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Transportadora] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["TRA_INSCRICAO_ESTADUAL"] = value; //04
+                      whereClauses.Add($" [TRA_INSCRICAO_ESTADUAL] = @TRA_INSCRICAO_ESTADUAL ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByTRA_RNTRCQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Transportadora] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["TRA_RNTRC"] = value; //04
+                      whereClauses.Add($" [TRA_RNTRC] = @TRA_RNTRC ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -353,7 +413,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -371,7 +431,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -389,7 +449,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -401,13 +461,67 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel FirstByTRA_CNPJQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["TRA_CNPJ"] = value; //06
+                      whereClauses.Add($" [TRA_CNPJ] = @TRA_CNPJ ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByTRA_INSCRICAO_ESTADUALQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["TRA_INSCRICAO_ESTADUAL"] = value; //06
+                      whereClauses.Add($" [TRA_INSCRICAO_ESTADUAL] = @TRA_INSCRICAO_ESTADUAL ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByTRA_RNTRCQuery(string value )
+        {
+            this.Parameters = null;
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["TRA_RNTRC"] = value; //06
+                      whereClauses.Add($" [TRA_RNTRC] = @TRA_RNTRC ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByTRA_EMAILQuery(string value )
         {
             this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -425,7 +539,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -443,7 +557,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -461,7 +575,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -479,7 +593,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -497,7 +611,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -515,7 +629,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -533,7 +647,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -551,7 +665,7 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
+            this.Query = $"SELECT [Id], [TRA_ID], [TRA_NOME], [TRA_CNPJ], [TRA_INSCRICAO_ESTADUAL], [TRA_RNTRC], [TRA_EMAIL], [TRA_RESPONSAVEL], [TRA_FONE], [TRA_ID_INTEGRACAO], [TRA_ID_INTEGRACAO_ERP], [TenantID], [Deleted], [Changed], [UserId] FROM [Transportadora] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;

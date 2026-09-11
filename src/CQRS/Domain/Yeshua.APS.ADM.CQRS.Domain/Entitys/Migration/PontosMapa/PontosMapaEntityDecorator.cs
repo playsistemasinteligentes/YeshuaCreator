@@ -30,6 +30,7 @@
             public const ulong Deleted = 1UL << 7;
             public const ulong Changed = 1UL << 8;
             public const ulong UserId = 1UL << 9;
+            public const ulong MUN_ID = 1UL << 10;
         }
 
         public partial class PontosMapaDecorator : IPontosMapaEntity
@@ -195,6 +196,20 @@
                                                 _inner.UserId = value;
                                                 if ((_trackingMask & PontosMapaTrackingFields.UserId) != 0UL)
                                                     _logger.DomainValueChanged("PontosMapa", "UserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
+                                            }
+                                        }
+                                    }
+
+                                    public string MUN_ID
+                                    {
+                                        get => _inner.MUN_ID;
+                                        set
+                                        {
+                                            if (_inner.MUN_ID != value)
+                                            {
+                                                _inner.MUN_ID = value;
+                                                if ((_trackingMask & PontosMapaTrackingFields.MUN_ID) != 0UL)
+                                                    _logger.DomainValueChanged("PontosMapa", "MUN_ID", _trackingTraceId, _trackingOperation, _trackingRecordId, value);
                                             }
                                         }
                                     }

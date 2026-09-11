@@ -25,11 +25,13 @@ public partial class CargaStandardSagaApiSmokeTests : ApiIntegrationTestBase
     private const string ExpectedSagaType = "CargaStandardSaga";
     private static readonly string[] ExpectedStepKeys =
     {
-        "CriarCarga",
-        "DefinirDadosTransporte",
-        "PrepararCargaParaFiscal",
+        "AguardarDadosTransporte",
+        "AguardarAgendamento",
+        "AguardarInicioCarregamento",
+        "AguardarFinalizacaoCarregamento",
+        "PrepararCargaParaModuloFiscal",
         "PublicarCargaProntaParaEmissaoFiscal",
-        "AguardarResultadoFiscalDaCarga",
+        "AguardarFinalizacaoFiscal",
         "LiberarCargaParaExpedicao",
     };
 

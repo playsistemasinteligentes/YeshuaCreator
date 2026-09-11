@@ -39,6 +39,8 @@ namespace Dominio
         public UseCaseCommand OutBoxPollingWorker { get; set; }
         public UseCaseCommand InBoxPollingWorker { get; set; }
         public UseCaseCommand QueueListenerWorker { get; set; }
+        public bool IsWait { get; set; }
+        public List<SagaStepCommandTransport> CommandTransports { get; set; } = new List<SagaStepCommandTransport>();
         //public QueueTopology queueTopologyConsumer { get; set; }
         public List<QueueTopology> LstQueueTopology { get; set; } = new List<QueueTopology>();
         public List<YeshuaModuleContinuation> YeshuaModuleContinuations { get; set; } = new List<YeshuaModuleContinuation>();
@@ -51,6 +53,18 @@ namespace Dominio
         {
             Scopes.Add(scope);
         }
+    }
+
+    public class SagaStepCommandTransport
+    {
+        public SagaStepCommandTransport(string transportKind, UseCaseCommand command)
+        {
+            TransportKind = transportKind;
+            Command = command;
+        }
+
+        public string TransportKind { get; }
+        public UseCaseCommand Command { get; }
     }
 
 }

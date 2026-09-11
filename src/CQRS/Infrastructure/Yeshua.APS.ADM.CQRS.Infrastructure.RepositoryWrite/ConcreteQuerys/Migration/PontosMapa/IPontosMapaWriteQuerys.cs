@@ -26,6 +26,7 @@ namespace IQuery.Write
         QueryModel UpdateDeleted(string pon_id, bool value);
         QueryModel UpdateChanged(string pon_id, DateTime value);
         QueryModel UpdateUserId(string pon_id, int value);
+        QueryModel UpdateMUN_ID(string pon_id, string value);
         public QueryModel DeletePontosMapaQuery(IPontosMapaEntity PontosMapa);
     }
 }

@@ -27,6 +27,13 @@ public static class DependenceInjectionCuston
         builder.Services.AddScoped<IFileStorage, StorageService>();
         builder.Services.AddScoped<IStorageProvider, DiskStorageProvider>();
         builder.Services.AddScoped<StorageResolver>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.ContingenciaFiscalStepStimulusService>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.InformarNotasFiscaisContingenciaHandler>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.EscolherModeloAgrupamentoCTeContingenciaHandler>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.InformarFreteERateioContingenciaHandler>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.InformarDadosTransporteContingenciaHandler>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarPlanoEmissaoFiscalContingenciaHandler>();
+        builder.Services.AddTransient<Command.Receivers.UseCase.InformarResultadoEmissaoFiscalContingenciaHandler>();
 
         builder.Services.AddScoped<ISqlFactory>(_ =>
             new SqlFactory(EnumSqlConections.SqlServer, GS.I.MYC.ReadConectionString));

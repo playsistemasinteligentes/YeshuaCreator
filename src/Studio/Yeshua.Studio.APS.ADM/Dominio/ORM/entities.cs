@@ -2752,6 +2752,8 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
+        public string MUN_ID { get; set; }
+        public Municipio Municipio { get; set; }
 
         public static MyApp.QueryBuilder.Query<PontosMapa> Query() => new MyApp.QueryBuilder.Query<PontosMapa>();
     }
@@ -3468,6 +3470,9 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? Id { get; set; }
         public string TRA_ID { get; set; }
         public string TRA_NOME { get; set; }
+        public string TRA_CNPJ { get; set; }
+        public string TRA_INSCRICAO_ESTADUAL { get; set; }
+        public string TRA_RNTRC { get; set; }
         public string TRA_EMAIL { get; set; }
         public string TRA_RESPONSAVEL { get; set; }
         public string TRA_FONE { get; set; }
@@ -3711,6 +3716,7 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
     {
         public int? Id { get; set; }
         public string VEI_PLACA { get; set; }
+        public string VEI_UF { get; set; }
         public int TIP_ID { get; set; }
         public Decimal? VEI_CAPACIDADE_M3 { get; set; }
         public Decimal? VEI_CAPACIDADE_LARGURA { get; set; }

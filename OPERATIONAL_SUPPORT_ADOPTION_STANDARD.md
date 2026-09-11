@@ -149,7 +149,7 @@ anteriores.
 
 | Nivel | Nome | Evidencia esperada |
 | --- | --- | --- |
-| D0 | Essential | identidade, versao, inicio, fim, resultado e erro resumido |
+| D0 | Essential | identidade, versao, inicio, fim, resultado e erro resumido, rapido acesso         |
 | D1 | Narrative | etapas, duracoes, causalidade, retries e dependencias |
 | D2 | Diagnostic | decisoes, funcoes, queries, parametros autorizados e stack trace sanitizado |
 | D3 | Forensic | Commands, snapshots, diferencas e artefatos sanitizados |

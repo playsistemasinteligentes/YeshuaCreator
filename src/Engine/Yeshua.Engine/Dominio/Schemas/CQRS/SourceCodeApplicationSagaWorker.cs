@@ -46,6 +46,7 @@ namespace Command.Patterns
         private readonly IySagaReadRepository _sagaReadRepository;
         private readonly IySagaWriteRepository _sagaWriteRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public SagaWorkerCommandHandler(
             Dominio.Interfaces.ILogger logger,
@@ -62,6 +63,7 @@ namespace Command.Patterns
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
             _unitOfWork = unitOfWork;
+            _executionContext = context;
         }
 
         protected override async Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
@@ -84,6 +86,13 @@ namespace Command.Patterns
 
                     try
                     {
+                        if (sagaDto.tenantid > 0)
+                            _executionContext.SetTenantId(sagaDto.tenantid);
+                        if (sagaDto.userid > 0)
+                            _executionContext.SetUserId(sagaDto.userid);
+                        if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
+                            _executionContext.SetTraceId(sagaDto.correlationid);
+
                         var saga = _registry.Map(sagaDto);
                         sagaId = saga.CorrelationId.ToString();
                         saga.LockedBy = lockedBy;
@@ -99,7 +108,7 @@ namespace Command.Patterns
                         var resolver = _registry.Resolve(saga);
                         _executor.Execute(saga, resolver);
 
-                        if (!saga.IsDirty)
+                        if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
                             continue;
 
                         _unitOfWork.BeginTran();

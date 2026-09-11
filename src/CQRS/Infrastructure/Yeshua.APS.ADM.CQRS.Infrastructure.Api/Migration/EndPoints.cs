@@ -12059,6 +12059,23 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/PontosMapa/PontosMapaReadFKMUN_ID", async ([FromServices] Command.Receivers.Read.PontosMapaReadFKMUN_IDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/T_PREFERENCIAS/T_PREFERENCIASReadFKTenantID", async ([FromServices] Command.Receivers.Read.T_PREFERENCIASReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -24055,6 +24072,15 @@ app.MapGet("/yapi/getMetaDataMunicipio", (HttpContext context) =>
                 childField = "mun_id_entrega",
                 endpoint = "/Order/ReadOrder"
             },
+            new
+            {
+                id = "PontosMapa",
+                title = "PontosMapa",
+                entity = "PontosMapa",
+                parentField = "mun_id",
+                childField = "mun_id",
+                endpoint = "/PontosMapa/ReadPontosMapa"
+            },
         },
         customTabs = Array.Empty<object>(),
         actions = Array.Empty<object>(),
@@ -25975,6 +26001,7 @@ app.MapGet("/yapi/getMetaDataPontosMapa", (HttpContext context) =>
                 new { id = "pon_latitude", label = "PON LATITUDE", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pon_longitude", label = "PON LONGITUDE", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pon_distancia_km", label = "PON DISTANCIA KM", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "mun_id", label = "Municipio", type = "string", isFk = true, endPontGetMetadata = "/getMetaDataMunicipio", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -25984,10 +26011,12 @@ app.MapGet("/yapi/getMetaDataPontosMapa", (HttpContext context) =>
                 new { id = "pon_latitude", label = "PON LATITUDE", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pon_longitude", label = "PON LONGITUDE", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pon_distancia_km", label = "PON DISTANCIA KM", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "mun_id", label = "Municipio", type = "string", isFk = true, endPontGetMetadata = "/getMetaDataMunicipio", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
             {
+                mun_id = "/PontosMapa/PontosMapaReadFKMUN_ID",
             }
             },
         },
@@ -25999,6 +26028,7 @@ app.MapGet("/yapi/getMetaDataPontosMapa", (HttpContext context) =>
             new { id = "pon_latitude", label = "PON LATITUDE", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "pon_longitude", label = "PON LONGITUDE", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "pon_distancia_km", label = "PON DISTANCIA KM", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mun_id", label = "Municipio", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataMunicipio", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = new[]
         {
@@ -26034,6 +26064,7 @@ app.MapGet("/yapi/getMetaDataPontosMapa", (HttpContext context) =>
         actions = Array.Empty<object>(),
         endpoints = new
         {
+                 mun_id = "/PontosMapa/PontosMapaReadFKMUN_ID",
             create = "/PontosMapa/PostPontosMapa",
             read = "/PontosMapa/ReadPontosMapa",
             update = "/PontosMapa/PutPontosMapa",
@@ -28871,6 +28902,9 @@ app.MapGet("/yapi/getMetaDataTransportadora", (HttpContext context) =>
                 new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_id", label = "TRA ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_nome", label = "TRA NOME", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tra_cnpj", label = "CNPJ", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tra_inscricao_estadual", label = "Inscricao Estadual", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tra_rntrc", label = "RNTRC", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_email", label = "TRA EMAIL", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_responsavel", label = "TRA RESPONSAVEL", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_fone", label = "TRA FONE", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -28882,6 +28916,9 @@ app.MapGet("/yapi/getMetaDataTransportadora", (HttpContext context) =>
                 new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_id", label = "TRA ID", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_nome", label = "TRA NOME", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tra_cnpj", label = "CNPJ", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tra_inscricao_estadual", label = "Inscricao Estadual", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tra_rntrc", label = "RNTRC", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_email", label = "TRA EMAIL", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_responsavel", label = "TRA RESPONSAVEL", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tra_fone", label = "TRA FONE", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -28899,6 +28936,9 @@ app.MapGet("/yapi/getMetaDataTransportadora", (HttpContext context) =>
             new { id = "id", label = "Id", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "tra_id", label = "TRA ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "tra_nome", label = "TRA NOME", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tra_cnpj", label = "CNPJ", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tra_inscricao_estadual", label = "Inscricao Estadual", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tra_rntrc", label = "RNTRC", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "tra_email", label = "TRA EMAIL", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "tra_responsavel", label = "TRA RESPONSAVEL", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "tra_fone", label = "TRA FONE", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -30085,6 +30125,7 @@ app.MapGet("/yapi/getMetaDataVeiculo", (HttpContext context) =>
             {
                 new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "vei_placa", label = "VEI PLACA", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "vei_uf", label = "UF", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tip_id", label = "TIP ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "vei_capacidade_m3", label = "VEI CAPACIDADE M3", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "vei_capacidade_largura", label = "VEI CAPACIDADE LARGURA", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -30103,6 +30144,7 @@ app.MapGet("/yapi/getMetaDataVeiculo", (HttpContext context) =>
             {
                 new { id = "id", label = "Id", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "vei_placa", label = "VEI PLACA", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "vei_uf", label = "UF", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tip_id", label = "TIP ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "vei_capacidade_m3", label = "VEI CAPACIDADE M3", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "vei_capacidade_largura", label = "VEI CAPACIDADE LARGURA", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -30127,6 +30169,7 @@ app.MapGet("/yapi/getMetaDataVeiculo", (HttpContext context) =>
         {
             new { id = "id", label = "Id", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "vei_placa", label = "VEI PLACA", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "vei_uf", label = "UF", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "tip_id", label = "TIP ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "vei_capacidade_m3", label = "VEI CAPACIDADE M3", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "vei_capacidade_largura", label = "VEI CAPACIDADE LARGURA", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -32767,6 +32810,23 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
 #region ServicesMethod
+app.MapPost("/yapi/APSADM/PlanejamentoTransporteInformarDadosTransporteCargaUseCase", async ([FromServices] Command.Receivers.UseCase.InformarDadosTransporteCargaHandler receiver, [FromBody] Command.UseCase.InformarDadosTransporteCargaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/APSADM/PlanejamentoTransporteBuscarContextoPlanejamentoTransporteUseCase", async ([FromServices] Command.Receivers.UseCase.BuscarContextoPlanejamentoTransporteHandler receiver, [FromBody] Command.UseCase.BuscarContextoPlanejamentoTransporteInputCommand command) =>
 {
 try

@@ -55,6 +55,8 @@ Regra de trabalho:
 | `FK` | Declara relacionamento entre entidades. |
 | `RelationTab` | Declara aba inversa na entidade pai a partir de uma FK. |
 | `CustomTab` | Declara aba customizada da entidade, ligada a use case ou componente de front. |
+| `AddCustomPage` | Declara uma tela customizada do aplicativo para menu, escopo/permissao e descoberta pelo front. O miolo visual fica no Front do aplicativo. |
+| `AddMenuGroup` | Organiza entidades, telas customizadas e itens de menu em grupos logicos do modulo. |
 | `Group` | Agrupa campos para formulario, tela e organizacao visual. |
 | `EditFront` | Controla se o campo pode ser editado no front gerado. |
 | `VisivelFront` | Controla se o campo aparece no front gerado. |
@@ -84,6 +86,8 @@ Regra de trabalho:
 | `Saga` | Declara uma orquestracao de commands ao longo do tempo. |
 | `SagaStepGroup` | Agrupa passos de uma saga. |
 | `SagaStep` | Declara uma etapa da saga. |
+| `StepWait` | Declara uma etapa que fica aguardando estimulo para continuar. Continua sendo uma intencao executavel. |
+| `HttpApi` em `StepWait` | Declara que o estimulo de um `StepWait` chega por command HTTP normal, com input/output no mesmo padrao de use case. |
 | `InboxPollingWorker` | Representa processamento por polling de mensagens recebidas. |
 | `OutBoxPollingWorker` | Representa processamento por polling de mensagens/eventos de saida. |
 | `InboxListenerWorker` | Representa consumo de fila para mensagens de entrada. |
@@ -102,6 +106,121 @@ Regra de trabalho:
 | `ConnectorOperation` | Declara servico, operacao e rota exposta por um conector. |
 | `StoreRawPayload` | Indica que o payload bruto do conector deve ser preservado. |
 | `DeferredProcessing` | Indica que o processamento pode ser feito posteriormente. |
+
+## Modelo Conceitual Desejado Para Saga
+
+A saga deve evoluir para separar explicitamente intencao, fato, evento e
+espera. A implementacao atual ainda nao diferencia formalmente todos esses
+tipos na DSL; esta secao orienta a evolucao da DSL, da Engine e dos miolos de
+aplicativo.
+
+O nome do step ajuda a leitura humana, mas nao deve ser usado sozinho para
+inferir o tipo semantico da etapa.
+
+Regra base:
+
+```text
+Step/intencao executa
+Fato confirma que aconteceu
+Evento informa para fora
+Wait explica por que a saga parou
+```
+
+| Conceito | Significado | Exemplo |
+| --- | --- | --- |
+| Step/intencao | Acao que a saga tenta executar. Deve representar trabalho a fazer. | `autorizarCTeNaSefaz`, `publicarCargaProntaParaEmissaoFiscal` |
+| Fato | Resultado de negocio produzido quando uma intencao conclui com sucesso. | `CTeAutorizadoNaSefaz`, `CargaProntaParaEmissaoFiscalPublicada` |
+| Evento | Contrato publicado para outro modulo, sistema ou borda apos um fato relevante. | `CargaProntaParaEmissaoFiscal.v1`, `DocumentosFiscaisDaCargaConcluidos.v1` |
+| Wait | Estado/motivo pelo qual a saga nao pode avancar naquele momento. | aguardando evento externo, resposta externa, decisao manual ou retry tecnico |
+
+Regras de modelagem:
+
+- Todo `SagaStep` e uma intencao executavel, nao um fato.
+- Fatos devem representar algo que ja aconteceu, preferencialmente com nome no
+  passado semantico.
+- Eventos publicados devem representar fatos, nao comandos disfarçados.
+- Wait nao deve ser inferido apenas por nomes como `aguardar...`; a DSL deve
+  declarar explicitamente `StepWait`.
+- Um step pode executar e concluir no mesmo ciclo, executar e ficar aguardando,
+  ou ficar parado esperando um fato externo.
+- A Engine pode gerar a casca tecnica de espera, mas o motivo semantico da
+  espera precisa ficar declarado ou evidente no contrato do aplicativo.
+- Inbox, Outbox, fila e polling sao mecanismos de entrega/processamento; nao
+  substituem os conceitos de fato, evento e wait.
+- O estimulo que acorda um `StepWait` deve ser um `Command` comum. Quando o
+  transporte for HTTP, declarar `.HttpApi("NomeDoCommand", input, output)` para
+  gerar a borda padrao de use case.
+
+Classificacao inicial de `SagaStep`:
+
+| Tipo de step | Objetivo |
+| --- | --- |
+| `Intencao` | Executa trabalho interno e pode concluir no mesmo ciclo. |
+| `IntencaoWait` | Aguarda estimulo externo, manual, polling, fila, inbox ou chamada HTTP para continuar. |
+
+O transporte do estimulo e uma classificacao tecnica separada do tipo do step.
+Na primeira versao implementada, `StepWait.HttpApi` cria um command HTTP normal.
+
+### Padrao: Tela Assistente Sobre Saga
+
+Quando uma tela customizada representar um assistente operacional, como
+contingencia fiscal, planejamento guiado ou fluxo de aprovacao, ela deve usar a
+propria saga como fonte de estado. Nao deve nascer um segundo workflow paralelo.
+
+Regra conceitual:
+
+```text
+Tela customizada consulta saga
+        -> identifica step atual
+        -> renderiza os campos daquele step
+        -> envia estimulo pelo command HTTP gerado pelo StepWait
+        -> worker aplica resposta e avanca a saga
+        -> usuario consulta novamente para ver o novo step
+```
+
+Regras obrigatorias:
+
+- A tela nao decide avancar a saga por conta propria.
+- A tela nao deve chamar endpoint generico de "atualizar etapa" como caminho
+  principal quando o step ja possui `StepWait.HttpApi`.
+- Cada etapa de interacao com usuario deve ser um `StepWait` declarado na DSL.
+- O estimulo do usuario deve chegar como `Command` normal gerado pela DSL,
+  usando `.HttpApi("NomeDoCommand", input, output)`.
+- O command gerado deve chamar `ISagaStepInvoker.Invoke(...)`.
+- O miolo customizado do command deve validar a entrada daquela etapa e gravar
+  o estimulo pelo caminho padrao de persistencia, normalmente `yInbox` ou
+  repository especifico.
+- O worker de inbox transforma o estimulo em `PendingApply`; o worker de saga
+  aplica a resposta e segue para o proximo step.
+- A tela deve ter acao explicita de consulta. Polling automatico, websocket ou
+  push sao evolucoes tecnicas futuras, nao regra inicial.
+- Se o step estiver em espera corrigivel ou falha corrigivel, a tela pode
+  permitir reenviar/corrigir a etapa atual.
+- Payload grande nao deve ser jogado em `yInbox.Payload`; deve ficar em storage,
+  tabela/snapshot do dominio ou estrutura propria, deixando no inbox somente a
+  referencia e o minimo para correlacao.
+
+Formato recomendado na DSL:
+
+```csharp
+AddSaga<Carga>("ContingenciaFiscalStandard", saga => saga
+    .StepWait("receberNotasFiscaisDaContingencia")
+        .HttpApi("InformarNotasFiscaisContingencia",
+            new ContingenciaFiscalStepInput(...),
+            new ContingenciaFiscalStepOutput(...))
+        .Authorization(Authorization.User)
+        .AddScope("fiscal.contingencia.notas.informar")
+        .AddEntity("EntradaFiscalContingencia"));
+```
+
+Consequencias de geracao:
+
+- `InputCommand` e `OutputCommand` do estimulo.
+- `Receiver` gerado chamando `ISagaStepInvoker.Invoke(...)`.
+- Endpoint HTTP do use case.
+- Registro de DI do receiver.
+- Escopos/permissoes e metadata operacional.
+- Miolo customizado protegido para validar e persistir o estimulo.
 
 ## Conceitos Gerados Como Consequencia
 
@@ -137,6 +256,8 @@ Regra de trabalho:
 | Injecao de dependencia | Registro explicito de services, receivers, repositorios, strategies, sagas e infra. |
 | `Modules.cs` | Metadata de modulos, entidades, campos, formularios, filtros e acoes para UI. |
 | Front metadata | Estrutura dinamica usada pelo front para formularios, grids, menus e acoes. |
+| Custom page front | Tela customizada do aplicativo, declarada na DSL e implementada em `wwwroot/Custon/pages`. |
+| `wwwroot/Custon/extensions.js` | Ponto protegido do aplicativo para registrar paginas, extensoes de menu e comportamentos customizados do front. |
 | Worker host | Processo de fundo do aplicativo. |
 | Polling worker | Execucao recorrente por polling. |
 | Queue listener worker | Consumo de mensagens de fila. |
@@ -156,6 +277,113 @@ Regra de trabalho:
 | Repository telemetry | Medicao de consultas e operacoes de repositorio. |
 | `entities.cs` do Studio | Dicionario tipado usado pela DSL nas geracoes seguintes. |
 | Marcadores de ownership | Identificam se fonte e regeneravel, customizado ou especificacao DSL. |
+
+## Telas Customizadas No Front
+
+Telas customizadas existem para fluxos que nao cabem bem no CRUD/formulario
+gerado, como planejamento, operacao assistida, contingencia, dashboards ou
+experiencias com varios comandos na mesma tela.
+
+Regra base:
+
+- A DSL declara somente a ancora arquitetural da tela: modulo, titulo, pagina,
+  escopo/permissao e grupo de menu.
+- A implementacao visual pertence ao aplicativo, em
+  `Yeshua.<App>.CQRS.Infrastructure.Front/wwwroot/Custon/pages`.
+- `wwwroot/Custon` e area protegida do aplicativo e nao deve ser sobrescrita
+  pela sincronizacao da Engine.
+- A tela customizada nao deve virar regra de negocio. Ela monta entrada,
+  chama endpoints oficiais de use case/query/saga e apresenta o resultado.
+- O backend continua sendo Command + Receiver + Repository; a tela nao deve
+  inventar rota paralela nem acessar banco.
+
+Formato recomendado na DSL:
+
+```csharp
+AddCustomPage(
+    "MODULO",
+    "Titulo Da Tela",
+    "slug-da-tela",
+    "modulo.tela.escopo",
+    "Grupo Do Menu");
+
+AddMenuGroup("MODULO", "Grupo Do Menu",
+    "Titulo Da Tela",
+    "EntidadeRelacionada");
+```
+
+Formato recomendado no Front do aplicativo:
+
+```text
+Yeshua.<App>.CQRS.Infrastructure.Front/
+  wwwroot/
+    Custon/
+      extensions.js
+      pages/
+        slug-da-tela.html
+        slug-da-tela.js
+        slug-da-tela.css
+```
+
+`extensions.js` registra a tela no front:
+
+```javascript
+window.yeshuaExtensions = window.yeshuaExtensions || {};
+window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
+
+window.yeshuaExtensions.pages['slug-da-tela'] = async function openPage() {
+    const page = await import('/Custon/pages/slug-da-tela.js');
+    await page.renderSlugDaTela();
+};
+```
+
+Quando a tela precisa aparecer antes de uma nova rodada de geracao, o
+`extensions.js` pode complementar o menu em runtime. Ainda assim, a fonte de
+verdade para menu/permissao continua sendo a DSL com `AddCustomPage` e
+`AddMenuGroup`.
+
+## Invariantes CQRS De Persistencia
+
+Estas regras fazem parte da arquitetura, nao sao preferencia de implementacao.
+
+Fluxo correto:
+
+```text
+Endpoint / Worker / Borda
+        -> Command
+        -> Receiver
+        -> DomainBehavior / servicos de aplicacao quando aplicavel
+        -> Repository
+        -> Query / UnitOfWork / banco
+```
+
+Regras:
+
+- `Command` carrega dados e representa intencao; nao acessa banco.
+- `Receiver` executa ou orquestra a intencao; nao contem SQL.
+- `Receiver` nao pode usar Dapper, `SqlConnection`, `SqlCommand`,
+  `_unitOfWork.Query`, `_unitOfWork.Execute` ou `_unitOfWork.ExecuteScalar`.
+- Quando o receiver precisar ler ou gravar dados, ele injeta e chama o
+  repository de leitura ou escrita apropriado.
+- O `UnitOfWork` pode ser usado no receiver apenas para coordenar transacao do
+  caso de uso quando houver mais de uma operacao que precise ser atomica.
+- SQL gerado ou customizado pertence a `Infrastructure.RepositoryRead`,
+  `Infrastructure.RepositoryWrite` e as queries usadas por esses projetos.
+- Regra de negocio nao deve nascer em query SQL. Se uma decisao pertence ao
+  dominio ou ao caso de uso, ela fica em `DomainBehavior`, receiver ou servico
+  de aplicacao; a query apenas busca ou persiste dados.
+- Queries customizadas frequentes ou compartilhadas devem virar metodos de
+  repository. Nao devem ser copiadas para handlers como atalho.
+- A Engine deve gerar receivers que dependem de contratos de repository, nunca
+  de SQL direto.
+
+Consequencia pratica:
+
+- Se um handler precisa localizar saga, step, entidade, documento fiscal,
+  backlog, token ou qualquer outro registro, a busca deve existir no repository
+  correspondente.
+- Se nao existe repository adequado, cria-se ou evolui-se o contrato de
+  repository antes de escrever a consulta.
 
 ## Conceitos Internos Padrao
 

@@ -30,10 +30,11 @@ namespace Query.Write
         }
         public QueryModel InserirVeiculoQuery(IVeiculoEntity Veiculo)
         {
-            this.Query = $@" INSERT INTO [Veiculo] ([VEI_PLACA], [TIP_ID], [VEI_CAPACIDADE_M3], [VEI_CAPACIDADE_LARGURA], [VEI_CAPACIDADE_COMPRIMENTO], [VEI_CAPACIDADE_ALTURA], [VEI_MODELO], [VEI_NOME_MOTORISTA], [VEI_DADOS_CONTATO], [VEI_CPF_MOTORISTA], [TCA_ID], [VEI_EMISSAO], [VEI_VENCIMENTO], [VEI_STATUS], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VEI_PLACA, @TIP_ID, @VEI_CAPACIDADE_M3, @VEI_CAPACIDADE_LARGURA, @VEI_CAPACIDADE_COMPRIMENTO, @VEI_CAPACIDADE_ALTURA, @VEI_MODELO, @VEI_NOME_MOTORISTA, @VEI_DADOS_CONTATO, @VEI_CPF_MOTORISTA, @TCA_ID, @VEI_EMISSAO, @VEI_VENCIMENTO, @VEI_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Veiculo] ([VEI_PLACA], [VEI_UF], [TIP_ID], [VEI_CAPACIDADE_M3], [VEI_CAPACIDADE_LARGURA], [VEI_CAPACIDADE_COMPRIMENTO], [VEI_CAPACIDADE_ALTURA], [VEI_MODELO], [VEI_NOME_MOTORISTA], [VEI_DADOS_CONTATO], [VEI_CPF_MOTORISTA], [TCA_ID], [VEI_EMISSAO], [VEI_VENCIMENTO], [VEI_STATUS], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@VEI_PLACA, @VEI_UF, @TIP_ID, @VEI_CAPACIDADE_M3, @VEI_CAPACIDADE_LARGURA, @VEI_CAPACIDADE_COMPRIMENTO, @VEI_CAPACIDADE_ALTURA, @VEI_MODELO, @VEI_NOME_MOTORISTA, @VEI_DADOS_CONTATO, @VEI_CPF_MOTORISTA, @TCA_ID, @VEI_EMISSAO, @VEI_VENCIMENTO, @VEI_STATUS, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 VEI_PLACA = Veiculo.VEI_PLACA,
+                VEI_UF = Veiculo.VEI_UF,
                 TIP_ID = Veiculo.TIP_ID,
                 VEI_CAPACIDADE_M3 = Veiculo.VEI_CAPACIDADE_M3,
                 VEI_CAPACIDADE_LARGURA = Veiculo.VEI_CAPACIDADE_LARGURA,
@@ -56,10 +57,11 @@ namespace Query.Write
         }
         public QueryModel UpdateVeiculoQuery(IVeiculoEntity Veiculo)
         {
-            this.Query = $@" UPDATE [Veiculo] SET [VEI_PLACA] = @VEI_PLACA, [TIP_ID] = @TIP_ID, [VEI_CAPACIDADE_M3] = @VEI_CAPACIDADE_M3, [VEI_CAPACIDADE_LARGURA] = @VEI_CAPACIDADE_LARGURA, [VEI_CAPACIDADE_COMPRIMENTO] = @VEI_CAPACIDADE_COMPRIMENTO, [VEI_CAPACIDADE_ALTURA] = @VEI_CAPACIDADE_ALTURA, [VEI_MODELO] = @VEI_MODELO, [VEI_NOME_MOTORISTA] = @VEI_NOME_MOTORISTA, [VEI_DADOS_CONTATO] = @VEI_DADOS_CONTATO, [VEI_CPF_MOTORISTA] = @VEI_CPF_MOTORISTA, [TCA_ID] = @TCA_ID, [VEI_EMISSAO] = @VEI_EMISSAO, [VEI_VENCIMENTO] = @VEI_VENCIMENTO, [VEI_STATUS] = @VEI_STATUS, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [Veiculo] SET [VEI_PLACA] = @VEI_PLACA, [VEI_UF] = @VEI_UF, [TIP_ID] = @TIP_ID, [VEI_CAPACIDADE_M3] = @VEI_CAPACIDADE_M3, [VEI_CAPACIDADE_LARGURA] = @VEI_CAPACIDADE_LARGURA, [VEI_CAPACIDADE_COMPRIMENTO] = @VEI_CAPACIDADE_COMPRIMENTO, [VEI_CAPACIDADE_ALTURA] = @VEI_CAPACIDADE_ALTURA, [VEI_MODELO] = @VEI_MODELO, [VEI_NOME_MOTORISTA] = @VEI_NOME_MOTORISTA, [VEI_DADOS_CONTATO] = @VEI_DADOS_CONTATO, [VEI_CPF_MOTORISTA] = @VEI_CPF_MOTORISTA, [TCA_ID] = @TCA_ID, [VEI_EMISSAO] = @VEI_EMISSAO, [VEI_VENCIMENTO] = @VEI_VENCIMENTO, [VEI_STATUS] = @VEI_STATUS, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 VEI_PLACA = Veiculo.VEI_PLACA,
+                VEI_UF = Veiculo.VEI_UF,
                 TIP_ID = Veiculo.TIP_ID,
                 VEI_CAPACIDADE_M3 = Veiculo.VEI_CAPACIDADE_M3,
                 VEI_CAPACIDADE_LARGURA = Veiculo.VEI_CAPACIDADE_LARGURA,
@@ -85,6 +87,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 VEI_PLACA = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateVEI_UF(int id, string value)
+        {
+            this.Query = $@" UPDATE [Veiculo] SET [VEI_UF] = @VEI_UF WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                VEI_UF = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

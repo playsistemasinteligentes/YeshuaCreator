@@ -8,11 +8,15 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
 // </yeshua>
 
+using Repositorio.Outputs;
+using System.Collections.Generic;
+
 namespace IRepository.Read
 {
     public partial interface IySagaStepReadRepository
     {
         int SetPendingApply();
+        ySagaStepDTO? GetFirstBySagaStepKeyAndStatuses(int sagaId, string stepKey, IEnumerable<int> statuses);
     }
 }
 

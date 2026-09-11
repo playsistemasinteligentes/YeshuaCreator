@@ -59,6 +59,7 @@ public partial class PontosMapaCrudApiSeedTests : ApiIntegrationTestBase
             ["PON_LATITUDE"] = 10.5m,
             ["PON_LONGITUDE"] = 10.5m,
             ["PON_DISTANCIA_KM"] = 10.5m,
+            ["MUN_ID"] = ApiSeedTestContext.GetRequiredCreatedId("Municipio", "MUN_ID"),
         };
     }
 
@@ -80,6 +81,7 @@ public partial class PontosMapaCrudApiSeedTests : ApiIntegrationTestBase
         payload["PON_LATITUDE"] = 20.5m;
         payload["PON_LONGITUDE"] = 20.5m;
         payload["PON_DISTANCIA_KM"] = 20.5m;
+        payload["MUN_ID"] = ApiSeedTestContext.GetRequiredCreatedId("Municipio", "MUN_ID");
         return payload;
     }
 

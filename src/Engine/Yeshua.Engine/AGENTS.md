@@ -66,6 +66,13 @@ dependencia conceitual da engine.
 - Receiver representa execucao.
 - Receiver pequeno executa uma acao especifica.
 - Receiver orquestrador coordena outros receivers.
+- Receiver/handler gerado ou customizado nao pode conter SQL, Dapper,
+  `SqlConnection`, `SqlCommand` nem `_unitOfWork.Query/Execute/ExecuteScalar`.
+  A Engine deve gerar receivers chamando contratos de repository; qualquer
+  consulta ou comando SQL pertence a RepositoryRead/RepositoryWrite e suas
+  queries.
+- O `UnitOfWork` pode aparecer em receiver somente como coordenador de
+  transacao, quando o fluxo exigir atomicidade entre repositories.
 - Execution Policy descreve como algo acontece no tempo e na infraestrutura.
 - Outbox, Inbox, Saga, Retry, Worker, Queue e Polling devem ficar como policy,
   coordenacao ou infraestrutura, nao como ruido no DSL de dominio.

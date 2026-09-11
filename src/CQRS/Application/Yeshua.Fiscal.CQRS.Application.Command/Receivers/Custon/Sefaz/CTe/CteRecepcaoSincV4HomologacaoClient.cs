@@ -100,6 +100,13 @@ namespace Command.Receivers
         string XmlCte,
         string SoapResponse);
 
+    internal sealed record CteRecepcaoSincV4Prepared(
+        string Chave,
+        int? Numero,
+        int? Serie,
+        string XmlCte,
+        string XmlHash);
+
     internal static class CteRecepcaoSincV4HomologacaoClient
     {
         private const string ServiceNamespace = "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4";
@@ -113,13 +120,52 @@ namespace Command.Receivers
                 .GetResult();
         }
 
+        public static CteRecepcaoSincV4Prepared Preparar()
+        {
+            return Preparar(CteRecepcaoSincV4Options.FromEnvironment());
+        }
+
+        public static CteRecepcaoSincV4Result Autorizar(CteRecepcaoSincV4Prepared prepared)
+        {
+            return EnviarAsync(CteRecepcaoSincV4Options.FromEnvironment(), prepared)
+                .GetAwaiter()
+                .GetResult();
+        }
+
         private static async Task<CteRecepcaoSincV4Result> AutorizarAsync(CteRecepcaoSincV4Options options)
+        {
+            var prepared = Preparar(options);
+            return await EnviarAsync(options, prepared).ConfigureAwait(false);
+        }
+
+        private static CteRecepcaoSincV4Prepared Preparar(CteRecepcaoSincV4Options options)
         {
             options.ValidateForSend();
 
+            // pendencia: separar a montagem do XML fiscal do fluxo de assinatura por certificado.
+            // Futuramente a assinatura pode ocorrer fora do servidor, na maquina local do usuario,
+            // quando essa politica for escolhida para o aplicativo/cliente.
             using var signingCertificate = LoadCertificate(options.CertificatePath, options.CertificatePassword);
             var cteXml = SignCteXml(BuildHomologCteXml(options), signingCertificate);
             var chave = ExtractChave(cteXml);
+            var chaveInfo = SefazChaveAcessoInfo.Parse(chave);
+
+            return new CteRecepcaoSincV4Prepared(
+                chave,
+                chaveInfo.Numero,
+                chaveInfo.Serie,
+                cteXml,
+                Hash(cteXml));
+        }
+
+        private static async Task<CteRecepcaoSincV4Result> EnviarAsync(
+            CteRecepcaoSincV4Options options,
+            CteRecepcaoSincV4Prepared prepared)
+        {
+            options.ValidateForSend();
+
+            var cteXml = prepared.XmlCte;
+            var chave = prepared.Chave;
             var soapEnvelope = WrapRecepcaoInSoapEnvelope(CompressToBase64(cteXml));
             using var transportCertificate = LoadCertificate(options.CertificatePath, options.CertificatePassword);
 
@@ -594,6 +640,18 @@ namespace Command.Receivers
 
             var node = doc.SelectSingleNode($"//*[local-name()='{parentName}']/*[local-name()='{childName}']");
             return node?.InnerText;
+        }
+
+        private static string Hash(string value)
+        {
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(value));
+            var builder = new StringBuilder(bytes.Length * 2);
+            foreach (var b in bytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+
+            return builder.ToString();
         }
 
         private static string BuildAccessKey(

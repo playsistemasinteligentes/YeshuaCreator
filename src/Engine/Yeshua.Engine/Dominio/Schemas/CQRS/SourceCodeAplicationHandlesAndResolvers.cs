@@ -244,7 +244,7 @@ namespace Dominio.Schemas.CQRS
 
                     sb.AppendLine($"        public string Key => {stepConst};");
                     sb.AppendLine();
-                    sb.AppendLine($"        public bool IsAsync => true;");
+                    sb.AppendLine($"        public bool IsAsync => {(_step.IsWait ? "true" : "false")};");
                     sb.AppendLine();
 
                     // =============================
@@ -276,7 +276,6 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("            }");
                     sb.AppendLine("            catch (Exception ex)");
                     sb.AppendLine("            {");
-                    sb.AppendLine("                saga.MarkFailed(ex.Message);");
                     sb.AppendLine("                throw;");
                     sb.AppendLine("            }");
                     sb.AppendLine("        }");
@@ -297,7 +296,6 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("            }");
                     sb.AppendLine("            catch (Exception ex)");
                     sb.AppendLine("            {");
-                    sb.AppendLine("                saga.MarkFailed(ex.Message);");
                     sb.AppendLine("                throw;");
                     sb.AppendLine("            }");
                     sb.AppendLine("        }");
@@ -580,15 +578,31 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine("		   private readonly Dominio.Interfaces.ILogger _logger;");
                 sb.AppendLine("        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;");
+                if (_useCase.IsSagaStepStimulus)
+                {
+                    sb.AppendLine("        private readonly Command.Interfaces.ISagaStepInvoker _sagaStepInvoker;");
+                }
 
 
                 sb.AppendLine($"        public {_useCase.HandlerName}(");
                 sb.AppendLine($"            Dominio.Interfaces.ILogger logger,");
-                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context)");
+                sb.AppendLine($"            Aplication.Interfaces.Services.IExecutionContext context{(_useCase.IsSagaStepStimulus ? "," : "")}");
+                if (_useCase.IsSagaStepStimulus)
+                {
+                    sb.AppendLine("            Command.Interfaces.ISagaStepInvoker sagaStepInvoker)");
+                }
+                else
+                {
+                    sb.AppendLine(")");
+                }
                 sb.AppendLine($"            : base(logger, context)");
                 sb.AppendLine("        {");
                 sb.AppendLine("            _logger = logger;");
                 sb.AppendLine("            _executionContext = context;");
+                if (_useCase.IsSagaStepStimulus)
+                {
+                    sb.AppendLine("            _sagaStepInvoker = sagaStepInvoker;");
+                }
                 sb.AppendLine("        }");
                 sb.AppendLine();
 
@@ -602,7 +616,20 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"                 State<{_useCase.OutputCommandName}> retorno = Success(\"OK\", null);");
 
 
-                sb.AppendLine("                 return await CustomActionHookAsync(retorno, comand, cancellationToken);");
+                if (_useCase.IsSagaStepStimulus)
+                {
+                    sb.AppendLine("                 return await _sagaStepInvoker.Invoke(");
+                    sb.AppendLine($"                     \"{_useCase.SagaName}\",");
+                    sb.AppendLine($"                     \"{_useCase.SagaStepName}\",");
+                    sb.AppendLine("                     comand,");
+                    sb.AppendLine("                     retorno,");
+                    sb.AppendLine("                     CustomActionHookAsync,");
+                    sb.AppendLine("                     cancellationToken);");
+                }
+                else
+                {
+                    sb.AppendLine("                 return await CustomActionHookAsync(retorno, comand, cancellationToken);");
+                }
 
                 sb.AppendLine("            }");
 
@@ -719,6 +746,10 @@ namespace Dominio.Schemas.CQRS
                     }
 
                     sb.Append($"        public {_useCase.HandlerName}(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy");
+                    if (_useCase.IsSagaStepStimulus)
+                    {
+                        sb.Append(",Command.Interfaces.ISagaStepInvoker sagaStepInvoker");
+                    }
                     for (int i = 0; i < _useCase.Entitys.Count; i++)
                     {
                         var entity = _useCase.Entitys[i];
@@ -732,6 +763,10 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"           _logger = logger;");
                     sb.AppendLine("           _executionContext = executionContext;");
                     sb.AppendLine("           _domainTrackingPolicy = domainTrackingPolicy;");
+                    if (_useCase.IsSagaStepStimulus)
+                    {
+                        sb.AppendLine("           _sagaStepInvoker = sagaStepInvoker;");
+                    }
 
 
                     foreach (var entity in _useCase.Entitys)

@@ -43,6 +43,10 @@ namespace Dominio
         public Authorization Authorization { get; set; } = Authorization.User;
         public bool IsWorker { get; internal set; } = false;
         public bool IsListener { get; internal set; } = false;
+        public bool IsSagaStepStimulus { get; set; } = false;
+        public string SagaName { get; set; }
+        public string SagaStepName { get; set; }
+        public string SagaStimulusTransport { get; set; }
 
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();

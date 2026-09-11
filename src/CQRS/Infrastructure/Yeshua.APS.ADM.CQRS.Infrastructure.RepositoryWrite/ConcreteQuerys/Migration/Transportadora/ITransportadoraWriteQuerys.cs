@@ -19,6 +19,9 @@ namespace IQuery.Write
         public QueryModel UpdateTransportadoraQuery(ITransportadoraEntity Transportadora);
         QueryModel UpdateTRA_ID(int id, string value);
         QueryModel UpdateTRA_NOME(int id, string value);
+        QueryModel UpdateTRA_CNPJ(int id, string value);
+        QueryModel UpdateTRA_INSCRICAO_ESTADUAL(int id, string value);
+        QueryModel UpdateTRA_RNTRC(int id, string value);
         QueryModel UpdateTRA_EMAIL(int id, string value);
         QueryModel UpdateTRA_RESPONSAVEL(int id, string value);
         QueryModel UpdateTRA_FONE(int id, string value);

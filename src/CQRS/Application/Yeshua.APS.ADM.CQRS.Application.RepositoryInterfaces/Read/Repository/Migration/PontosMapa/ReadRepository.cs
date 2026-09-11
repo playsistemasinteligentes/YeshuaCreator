@@ -24,6 +24,7 @@ namespace IRepository.Read
         public DataPagination<PontosMapaDTO> getPontosMapa(ICommandRead command );
         public IEnumerable<PontosMapaTenantIDDTO> getPontosMapaReadFKTenantID(object command );
         public IEnumerable<PontosMapaUserIdDTO> getPontosMapaReadFKUserId(object command );
+        public IEnumerable<PontosMapaMUN_IDDTO> getPontosMapaReadFKMUN_ID(object command );
         public bool ExistsByPON_ID(string value );
         public bool ExistsByPON_DESCRICAO(string value );
         public bool ExistsByPON_TIPO(string value );
@@ -34,6 +35,7 @@ namespace IRepository.Read
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
+        public bool ExistsByMUN_ID(string value );
         public PontosMapaDTO FirstByPON_ID(string value );
         public PontosMapaDTO FirstByPON_DESCRICAO(string value );
         public PontosMapaDTO FirstByPON_TIPO(string value );
@@ -44,6 +46,7 @@ namespace IRepository.Read
         public PontosMapaDTO FirstByDeleted(bool value );
         public PontosMapaDTO FirstByChanged(DateTime value );
         public PontosMapaDTO FirstByUserId(int value );
+        public PontosMapaDTO FirstByMUN_ID(string value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_ID(string value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_DESCRICAO(string value );
         public IEnumerable<PontosMapaDTO> GetAllByPON_TIPO(string value );
@@ -54,6 +57,7 @@ namespace IRepository.Read
         public IEnumerable<PontosMapaDTO> GetAllByDeleted(bool value );
         public IEnumerable<PontosMapaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PontosMapaDTO> GetAllByUserId(int value );
+        public IEnumerable<PontosMapaDTO> GetAllByMUN_ID(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

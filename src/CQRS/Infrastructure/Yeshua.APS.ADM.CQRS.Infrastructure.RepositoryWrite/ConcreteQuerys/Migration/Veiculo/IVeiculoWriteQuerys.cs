@@ -18,6 +18,7 @@ namespace IQuery.Write
         public QueryModel InserirVeiculoQuery(IVeiculoEntity Veiculo);
         public QueryModel UpdateVeiculoQuery(IVeiculoEntity Veiculo);
         QueryModel UpdateVEI_PLACA(int id, string value);
+        QueryModel UpdateVEI_UF(int id, string value);
         QueryModel UpdateTIP_ID(int id, int value);
         QueryModel UpdateVEI_CAPACIDADE_M3(int id, Decimal value);
         QueryModel UpdateVEI_CAPACIDADE_LARGURA(int id, Decimal value);

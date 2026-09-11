@@ -54,6 +54,19 @@ Miolos que IA/dev devem preencher:
 - Receiver executa a intencao.
 - Receiver pequeno faz uma acao especifica.
 - Receiver orquestrador coordena varios receivers.
+- Receiver/handler nunca deve conter SQL, Dapper, `SqlConnection`,
+  `SqlCommand` nem chamadas diretas de leitura/escrita como
+  `_unitOfWork.Query`, `_unitOfWork.Execute` ou `_unitOfWork.ExecuteScalar`.
+  Pela arquitetura CQRS, todo acesso a banco passa por repository; SQL pertence
+  aos projetos `Infrastructure.RepositoryRead` e `Infrastructure.RepositoryWrite`
+  ou as queries usadas por eles.
+- Quando um miolo customizado precisar ler ou gravar dados, ele deve injetar o
+  repository correto. O `UnitOfWork` no receiver pode existir apenas para
+  coordenar transacao do caso de uso, nunca para executar consulta solta.
+- Em sagas, separar sempre os quatro conceitos: Step/intencao executa, Fato
+  confirma que aconteceu, Evento informa para fora, e Wait explica por que a
+  saga parou. O nome do step nao deve ser usado sozinho para inferir se ele e
+  fato, evento ou espera.
 - Execution Policy descreve como a execucao acontece no tempo e na infraestrutura.
 - Outbox, Saga, Retry, Worker, Queue e Polling nao devem poluir o DSL de dominio como conceitos centrais.
 - Outbox deve ser tratada como politica de persistencia/entrega.
@@ -82,6 +95,10 @@ Miolos que IA/dev devem preencher:
   `/yapi/{Modulo}/Inbox/YeshuaModuleEvent`. Essa borda deve gravar o minimo
   necessario em `yInbox` e responder rapido; processamento pesado, SEFAZ,
   normalizacao e continuacao de saga pertencem a worker/receiver posterior.
+- Comandos gerados por `StepWait().HttpApi(...)` devem passar por
+  `ISagaStepInvoker.Invoke(...)`; esse e o ponto unico para evoluir execucao
+  direta do step e continuidade entre steps sem depender obrigatoriamente do
+  ciclo do worker.
 - No prototipo APS -> Fiscal por API, o `yInbox` recebido por modulo externo
   nao deve tentar acordar steps por coincidencia tecnica de `CorrelationId`.
   Uma ponte explicita de inbox para saga deve consumir apenas contratos
@@ -108,10 +125,16 @@ Miolos que IA/dev devem preencher:
   dos handlers de saga. Elas so viram steps de saga quando precisarem de retry,
   espera externa, observabilidade propria, retomada independente ou fronteira
   entre modulos/processos.
-- `pendencia`: permitir que a DSL/Engine diferencie steps de saga assincronos,
-  manuais e sincronizados. A geracao atual trata `ISagaStepHandler.IsAsync`
-  como `true` fixo; prototipos podem usar inbox tecnico para avançar, mas a
-  solucao final precisa representar explicitamente passos internos/manuais.
+- A classificacao conceitual inicial de saga deve permanecer minima:
+  `Intencao` executa e `IntencaoWait` aguarda estimulo. Detalhes como HTTP,
+  tela, inbox, fila, polling ou worker sao transporte/politica tecnica do
+  estimulo, nao novos conceitos principais.
+- `StepWait.HttpApi("NomeDoCommand", input, output)` declara que o estimulo
+  de um wait chega por command HTTP normal, seguindo o mesmo padrao de use case
+  ja usado pela Engine.
+- `pendencia`: usar o metadado de `StepWait`/transporte para diferenciar
+  execucao interna imediata, espera externa/manual e acordar de saga sem
+  depender de inbox tecnico por coincidencia de correlacao.
 - `pendencia`: representar ramificacoes de saga para sucesso, falha tecnica,
   rejeicao fiscal e retorno manual sem transformar alternativas em uma lista
   linear de steps obrigatorios.
@@ -524,6 +547,16 @@ os miolos customizados.
 - A Engine gera bordas, comandos, receivers, endpoints, workers, repositorios e
   pontos de extensao. XML fiscal, assinatura, schemas, DACTE/DAMDFE, tratamento
   de `cStat` e comunicacao SEFAZ pertencem ao aplicativo fiscal.
+- A contingencia fiscal deve ser tratada como uma saga de preparacao/assistente
+  dentro do proprio modulo Fiscal. Ela recebe NF-es e dados operacionais,
+  simula agrupamento CT-e, rateio de frete e plano de emissao, confirma o plano
+  e entao publica para a saga fiscal quente `EmissaoFiscalCargaStandard`. A
+  saga quente continua responsavel por CT-e, MDF-e, XML, SEFAZ e retorno.
+- A tela de contingencia fiscal deve operar como assistente sobre a propria
+  saga: inicia a saga, consulta o step atual sob acao explicita do usuario e
+  envia estimulos para os `StepWait` por commands HTTP gerados pela DSL. A tela
+  nao deve chamar um endpoint generico de "atualizar etapa" como caminho
+  principal nem avancar steps por mecanismo paralelo.
 - O material oficial inicial de CT-e fica em `docs/Fiscal/CTe`; atualizar esse
   dossie antes de implementar mudancas fiscais relevantes.
 - Referencias open-source de CT-e sao apoio tecnico, nao fonte fiscal oficial.

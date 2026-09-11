@@ -102,6 +102,24 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
+        private IEnumerable<PontosMapaMUN_IDDTO> getPontosMapaReadFKMUN_ID(Command.Patterns.Command.SearchFKCommand command )
+        {
+            List<PontosMapaMUN_IDDTO> lista;
+            var query = _query.PontosMapaMUN_IDQuery(command );
+
+                lista = _unitOfWork.Query<PontosMapaMUN_IDDTO>(query.Query,query.Parameters) as List<PontosMapaMUN_IDDTO>;
+            return lista;
+        }
+
+        public IEnumerable<PontosMapaMUN_IDDTO> getPontosMapaReadFKMUN_ID(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getPontosMapaReadFKMUN_ID(c );
+            }
+            throw new NotImplementedException();
+        }
+
         public bool ExistsByPON_ID(string value )
         {
             var query = _query.ExistsByPON_IDQuery(value );
@@ -177,6 +195,14 @@ namespace Read.Repository
         public bool ExistsByUserId(int value )
         {
             var query = _query.ExistsByUserIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByMUN_ID(string value )
+        {
+            var query = _query.ExistsByMUN_IDQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -262,6 +288,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public PontosMapaDTO FirstByMUN_ID(string value )
+        {
+            var query = _query.FirstByMUN_IDQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<PontosMapaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<PontosMapaDTO> GetAllByPON_ID(string value )
         {
             var query = _query.FirstByPON_IDQuery(value );
@@ -337,6 +371,14 @@ namespace Read.Repository
         public IEnumerable<PontosMapaDTO> GetAllByUserId(int value )
         {
             var query = _query.FirstByUserIdQuery(value );
+
+                var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
+                return result;
+        }
+
+        public IEnumerable<PontosMapaDTO> GetAllByMUN_ID(string value )
+        {
+            var query = _query.FirstByMUN_IDQuery(value );
 
                 var result = _unitOfWork.Query<PontosMapaDTO>(query.Query,query.Parameters) as List<PontosMapaDTO>;
                 return result;
