@@ -574,6 +574,7 @@ public class M000001 : MigrationBase
                     .HttpApi("InformarNotasFiscaisContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Sync()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.notas.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -583,6 +584,7 @@ public class M000001 : MigrationBase
                     .HttpApi("EscolherModeloAgrupamentoCTeContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Sync()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.agrupamento.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -592,6 +594,7 @@ public class M000001 : MigrationBase
                     .HttpApi("InformarFreteERateioContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Sync()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.frete.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -601,6 +604,7 @@ public class M000001 : MigrationBase
                     .HttpApi("InformarDadosTransporteContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Sync()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.transporte.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -610,6 +614,7 @@ public class M000001 : MigrationBase
                     .HttpApi("ConfirmarPlanoEmissaoFiscalContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Sync()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.plano.confirmar")
                     .AddEntity("EntradaFiscalContingencia")

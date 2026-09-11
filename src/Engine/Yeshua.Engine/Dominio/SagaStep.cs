@@ -61,10 +61,12 @@ namespace Dominio
         {
             TransportKind = transportKind;
             Command = command;
+            ExecutionMode = command?.SagaStimulusExecutionMode ?? "Async";
         }
 
         public string TransportKind { get; }
         public UseCaseCommand Command { get; }
+        public string ExecutionMode { get; set; }
     }
 
 }

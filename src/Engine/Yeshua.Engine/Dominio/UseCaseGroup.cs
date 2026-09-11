@@ -207,6 +207,16 @@ Command
             return HttpApi(commandName, input);
         }
 
+        public UseCaseGroup Sync()
+        {
+            return SetLastSagaStimulusExecutionMode("Sync");
+        }
+
+        public UseCaseGroup Async()
+        {
+            return SetLastSagaStimulusExecutionMode("Async");
+        }
+
         private UseCaseGroup AddStepCommandTransport(string transportKind, string commandName, params object[] input)
         {
             var useCaseSubGroup = this.UseCaseSubGroup.Last();
@@ -230,6 +240,25 @@ Command
 
             useCaseSubGroup.UseCaseCommand.Add(command);
             step.CommandTransports.Add(new SagaStepCommandTransport(transportKind, command));
+            return this;
+        }
+
+        private UseCaseGroup SetLastSagaStimulusExecutionMode(string executionMode)
+        {
+            var useCaseSubGroup = this.UseCaseSubGroup.Last();
+            var command = useCaseSubGroup.UseCaseCommand.Last();
+            if (!command.IsSagaStepStimulus)
+                throw new InvalidOperationException("Sync/Async deve ser chamado apos HttpApi de StepWait.");
+
+            command.SagaStimulusExecutionMode = executionMode;
+
+            var saga = useCaseSubGroup.Saga.Last();
+            var step = saga.SagaStepGroup.Last().LastStep;
+            var transport = step.CommandTransports.LastOrDefault(x => ReferenceEquals(x.Command, command))
+                ?? step.CommandTransports.LastOrDefault();
+            if (transport != null)
+                transport.ExecutionMode = executionMode;
+
             return this;
         }
 
@@ -336,6 +365,8 @@ Command
 
         public UseCaseGroup Authorization(Authorization autorization)
         {
+            // pendencia: revisar o padrao de autorizacao da DSL. Se User for o padrao,
+            // a DSL deveria exigir marcacao explicita apenas para excecoes como Free.
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().Authorization = autorization;
             return this;
         }

@@ -621,6 +621,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("                 return await _sagaStepInvoker.Invoke(");
                     sb.AppendLine($"                     \"{_useCase.SagaName}\",");
                     sb.AppendLine($"                     \"{_useCase.SagaStepName}\",");
+                    sb.AppendLine($"                     \"{_useCase.SagaStimulusExecutionMode}\",");
                     sb.AppendLine("                     comand,");
                     sb.AppendLine("                     retorno,");
                     sb.AppendLine("                     CustomActionHookAsync,");
