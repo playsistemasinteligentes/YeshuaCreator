@@ -16,6 +16,7 @@ namespace IRepository.Read
     public partial interface IySagaStepReadRepository
     {
         int SetPendingApply();
+        int SetPendingApplyByInboxId(int inboxId);
         ySagaStepDTO? GetFirstBySagaStepKeyAndStatuses(int sagaId, string stepKey, IEnumerable<int> statuses);
     }
 }

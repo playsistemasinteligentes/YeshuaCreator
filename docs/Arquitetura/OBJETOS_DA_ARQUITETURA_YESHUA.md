@@ -160,6 +160,32 @@ Classificacao inicial de `SagaStep`:
 
 O transporte do estimulo e uma classificacao tecnica separada do tipo do step.
 Na primeira versao implementada, `StepWait.HttpApi` cria um command HTTP normal.
+Quando um step declara `AddInboxListenerWorker(...)`, ele tambem deve ser
+tratado como `IntencaoWait`, mesmo que tenha sido criado com `AddStep(...)`.
+Esse e o caso da transcricao da Clinica: o step publica no outbox e aguarda a
+resposta da IA chegar pelo inbox. `AddOutBoxPollingWorker(...)` sozinho nao
+implica espera; ele apenas declara publicacao.
+No codigo gerado, essa decisao aparece no handler como
+`RequiresExternalStimulus`, evitando a ambiguidade do nome antigo `IsAsync`.
+
+Politica de execucao do estimulo:
+
+| Politica | Comportamento |
+| --- | --- |
+| `Async` | O command grava o estimulo e deixa o worker aplicar/continuar a saga. |
+| `Sync` | O command grava o estimulo, aplica a resposta e executa a saga ate o proximo `IntencaoWait`, falha ou fim. |
+
+Na DSL, a politica fica junto do transporte:
+
+```csharp
+.StepWait("informarDadosTransporte")
+    .HttpApi("InformarDadosTransporteCarga", input, output)
+    .Sync()
+```
+
+`Sync` nao muda o conceito do step e nao cria borda nova. Ele apenas evita que
+uma interacao de tela precise esperar o proximo ciclo do worker quando a
+continuidade imediata for segura.
 
 ### Padrao: Tela Assistente Sobre Saga
 
@@ -174,7 +200,7 @@ Tela customizada consulta saga
         -> identifica step atual
         -> renderiza os campos daquele step
         -> envia estimulo pelo command HTTP gerado pelo StepWait
-        -> worker aplica resposta e avanca a saga
+        -> Sync aplica resposta e avanca ate o proximo wait, ou Async deixa para worker
         -> usuario consulta novamente para ver o novo step
 ```
 
@@ -187,11 +213,16 @@ Regras obrigatorias:
 - O estimulo do usuario deve chegar como `Command` normal gerado pela DSL,
   usando `.HttpApi("NomeDoCommand", input, output)`.
 - O command gerado deve chamar `ISagaStepInvoker.Invoke(...)`.
+- Quando o step usar `.Sync()`, `ISagaStepInvoker` deve ser o unico ponto que
+  dispara a continuacao imediata da saga; tela e endpoint nao podem chamar
+  executor de saga diretamente.
 - O miolo customizado do command deve validar a entrada daquela etapa e gravar
   o estimulo pelo caminho padrao de persistencia, normalmente `yInbox` ou
   repository especifico.
-- O worker de inbox transforma o estimulo em `PendingApply`; o worker de saga
-  aplica a resposta e segue para o proximo step.
+- Em `Async`, o worker de inbox transforma o estimulo em `PendingApply`; o
+  worker de saga aplica a resposta e segue para o proximo step.
+- Em `Sync`, o command faz esse avanco pelo invoker padrao e deve parar ao
+  encontrar outro `StepWait`, falha ou fim da saga.
 - A tela deve ter acao explicita de consulta. Polling automatico, websocket ou
   push sao evolucoes tecnicas futuras, nao regra inicial.
 - Se o step estiver em espera corrigivel ou falha corrigivel, a tela pode

@@ -20,7 +20,7 @@ namespace Command.Receivers
     {
         public string Key => ContingenciaFiscalStandardSaga.STEP_11;
 
-        public bool IsAsync => true;
+        public bool RequiresExternalStimulus => true;
 
         public void Execute(SagaBase saga, SagaStepBase step)
         {
@@ -33,7 +33,7 @@ namespace Command.Receivers
                 CustomExecute(saga, step);
 
                 // define próximo estado
-                if (IsAsync)
+                if (RequiresExternalStimulus)
                 {
                     step.SetWaiting();
                 }

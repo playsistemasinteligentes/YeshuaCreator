@@ -114,6 +114,7 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine("                    builder.Services.AddTransient<SagaResolverRegistry>();");
                 sb.AppendLine("                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();");
+                sb.AppendLine("                    builder.Services.AddTransient<ISagaSyncRunner, SagaSyncRunner>();");
             }
             if (hasSagas)
             {

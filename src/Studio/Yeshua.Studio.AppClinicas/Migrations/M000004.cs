@@ -69,12 +69,18 @@ Consumes    fato sistema externo continuar fluxo
             AddUsecaseGroup("Saga").AddUseCaseSubGrup("Psychology").
                                 AddSaga("PsychologySessionInsight").
                                 AddStepGroup("audioTranscript").
+                                    // pendencia: esta saga antiga usa AddStep + AddInboxListenerWorker
+                                    // para representar uma espera externa pela IA. Conceitualmente isso
+                                    // deve ficar unificado como StepWait, ou o motor deve preservar a regra
+                                    // de que InboxListenerWorker torna o step uma espera externa.
                                     AddStep("audioTranscriptRequested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "audio.transcribe.outbox", "audio.transcribe").
                                         AddInboxListenerWorker("ai.results", ExchangeType.topic, "audio.transcribed.inbox", "audio.transcribed").
 
 
                                 AddStepGroup("reportSumary").
+                                    // pendencia: mesmo caso do step anterior; este step publica o pedido
+                                    // de resumo e aguarda retorno externo pelo inbox antes de seguir.
                                     AddStep("reportEndProntuaryRequested"). // “faça isso”
                                         AddOutBoxPollingWorker("ai.tasks", ExchangeType.topic, "text.summarize.outbox", "text.summarize").
                                         AddInboxListenerWorker("ai.results", ExchangeType.topic, "text.summarized.inbox", "text.summarized");

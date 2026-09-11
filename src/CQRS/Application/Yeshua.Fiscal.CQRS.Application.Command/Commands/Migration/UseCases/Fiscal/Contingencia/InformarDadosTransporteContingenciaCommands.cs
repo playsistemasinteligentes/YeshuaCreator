@@ -11,6 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
@@ -27,7 +28,7 @@ public partial record InformarDadosTransporteContingenciaInputCommand : ICommand
     public string PayloadStorageKey { get; set; }
 }
 
-public partial record InformarDadosTransporteContingenciaOutputCommand : ICommand
+public partial record InformarDadosTransporteContingenciaOutputCommand : ICommand, ISagaStepStimulusOutput
 {
     public string CorrelationId { get; set; }
     public string CargaId { get; set; }

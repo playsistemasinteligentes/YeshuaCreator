@@ -6408,6 +6408,23 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/Fiscal/TesteIniciarSagaTesteSyncUseCase", async ([FromServices] Command.Receivers.UseCase.IniciarSagaTesteSyncHandler receiver, [FromBody] Command.UseCase.IniciarSagaTesteSyncInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/Fiscal/CTeReceberRomaneioConsolidadoParaCTeUseCase", async ([FromServices] Command.Receivers.UseCase.ReceberRomaneioConsolidadoParaCTeHandler receiver, [FromBody] Command.UseCase.ReceberRomaneioConsolidadoParaCTeInputCommand command) =>
 {
 try

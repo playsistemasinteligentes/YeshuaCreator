@@ -132,6 +132,19 @@ Miolos que IA/dev devem preencher:
 - `StepWait.HttpApi("NomeDoCommand", input, output)` declara que o estimulo
   de um wait chega por command HTTP normal, seguindo o mesmo padrao de use case
   ja usado pela Engine.
+- `AddInboxListenerWorker(...)` tambem torna o step uma `IntencaoWait`, mesmo
+  quando a DSL usou `AddStep(...)`, porque consumir inbox significa aguardar
+  uma resposta externa para aplicar e continuar. `AddOutBoxPollingWorker(...)`
+  sozinho nao torna o step wait; publicar uma mensagem nao implica esperar
+  resposta.
+- No codigo gerado, a propriedade do handler que representa essa espera deve
+  se chamar `RequiresExternalStimulus`; evitar nomes como `IsAsync`, pois eles
+  confundem espera externa da saga com `async/await` do C#.
+- `StepWait.HttpApi(...).Sync()` declara que, apos o command aceitar o
+  estimulo, a API pode aplicar a resposta do step e executar a saga ate o
+  proximo `IntencaoWait`, falha ou fim. Isso evita esperar o ciclo do worker
+  quando a interacao de tela precisa avancar rapido, sem criar endpoint
+  paralelo nem mecanismo fora da saga.
 - `pendencia`: usar o metadado de `StepWait`/transporte para diferenciar
   execucao interna imediata, espera externa/manual e acordar de saga sem
   depender de inbox tecnico por coincidencia de correlacao.

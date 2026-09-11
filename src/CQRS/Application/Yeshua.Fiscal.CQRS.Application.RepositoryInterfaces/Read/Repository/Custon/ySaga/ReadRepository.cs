@@ -17,7 +17,9 @@ namespace IRepository.Read
     public partial interface IySagaReadRepository
     {
         IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
+        bool TryClaimSagaForExecution(int sagaId, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
         void ReleaseLock(int sagaId, string workerId);
+        ySagaDTO? GetByIdWithSteps(int sagaId);
         ySagaDTO GetByCorrelationId(string correlationId);
         ySagaDTO? GetLatestByTypeEntity(string type, string entityType, string? entityId, string? correlationId);
         ySagaDTO? GetLatestByTypeEntityAndStatus(string type, string entityType, string? entityId, int status);

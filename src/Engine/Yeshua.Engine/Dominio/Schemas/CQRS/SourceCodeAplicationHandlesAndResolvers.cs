@@ -1,4 +1,4 @@
-﻿
+
 using Migration.Dominio;
 using System.Text;
 using Migration.Dominio.Schemas.CQRS;
@@ -244,7 +244,7 @@ namespace Dominio.Schemas.CQRS
 
                     sb.AppendLine($"        public string Key => {stepConst};");
                     sb.AppendLine();
-                    sb.AppendLine($"        public bool IsAsync => {(_step.IsWait ? "true" : "false")};");
+                    sb.AppendLine($"        public bool RequiresExternalStimulus => {(_step.IsWait ? "true" : "false")};");
                     sb.AppendLine();
 
                     // =============================
@@ -264,7 +264,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine();
 
                     sb.AppendLine("                // define próximo estado");
-                    sb.AppendLine("                if (IsAsync)");
+                    sb.AppendLine("                if (RequiresExternalStimulus)");
                     sb.AppendLine("                {");
                     sb.AppendLine("                    step.SetWaiting();");
                     sb.AppendLine("                }");

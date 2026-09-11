@@ -55,6 +55,39 @@ namespace Read.Repository
             return _unitOfWork.ExecuteScalar<int>(sql);
         }
 
+        public int SetPendingApplyByInboxId(int inboxId)
+        {
+            var sql = @"
+                UPDATE s
+                   SET s.[Status] = 4,
+                       s.[Payload] = i.[Payload]
+                  FROM [ySagaStep] s
+                 INNER JOIN [yInbox] i ON i.[Id] = @InboxId
+                                      AND i.[CorrelationId] = s.[CorrelationId]
+                                      AND i.[SagaId] = s.[SagaId]
+                                      AND i.[SagaStepId] = s.[Id]
+                 WHERE i.[Status] = 0
+                   AND s.[Status] = 3;
+
+                DECLARE @Applied INT = @@ROWCOUNT;
+
+                UPDATE sg
+                   SET sg.[NextExecutionAt] = SYSUTCDATETIME()
+                  FROM [ySaga] sg
+                 INNER JOIN [yInbox] i ON i.[Id] = @InboxId
+                                      AND i.[SagaId] = sg.[Id]
+                 WHERE @Applied > 0;
+
+                UPDATE [yInbox]
+                   SET [Status] = 1
+                 WHERE [Id] = @InboxId
+                   AND @Applied > 0;
+
+                SELECT @Applied;";
+
+            return _unitOfWork.ExecuteScalar<int>(sql, new { InboxId = inboxId });
+        }
+
         public ySagaStepDTO? GetFirstBySagaStepKeyAndStatuses(int sagaId, string stepKey, IEnumerable<int> statuses)
         {
             var sql = @"

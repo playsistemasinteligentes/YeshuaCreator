@@ -1,4 +1,4 @@
-﻿using Dominio.Patterns.Saga;
+using Dominio.Patterns.Saga;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace RepositoryInterfaces.Patterns.Saga
     public interface ISagaStepHandler
     {
         string Key { get; }     // 🔑 casa com o step.Key
-        bool IsAsync { get; }
+        bool RequiresExternalStimulus { get; }
 
         void Execute(SagaBase saga, SagaStepBase step);
         void ApplyResponse(SagaBase saga, SagaStepBase step, string payload);

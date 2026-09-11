@@ -50,6 +50,7 @@ namespace Command.Receivers.UseCase
                  return await _sagaStepInvoker.Invoke(
                      "ContingenciaFiscalStandard",
                      "escolherModeloAgrupamentoCTe",
+                     "Sync",
                      comand,
                      retorno,
                      CustomActionHookAsync,

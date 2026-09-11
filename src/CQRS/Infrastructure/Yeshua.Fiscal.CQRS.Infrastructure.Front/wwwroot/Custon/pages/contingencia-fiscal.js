@@ -1,11 +1,12 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260910-cont20';
+import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260911-sync01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260910-cont20';
+const assetVersion = '20260911-sync01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
+    testeSync: '/Fiscal/TesteIniciarSagaTesteSyncUseCase',
     steps: {
         ReceberNotasFiscaisDaContingencia: '/Fiscal/ContingenciaInformarNotasFiscaisContingenciaUseCase',
         EscolherModeloAgrupamentoCTe: '/Fiscal/ContingenciaEscolherModeloAgrupamentoCTeContingenciaUseCase',
@@ -96,6 +97,7 @@ function bindEvents() {
     document.getElementById('fiscal-add-documento')?.addEventListener('click', () => addDocumento());
     document.getElementById('fiscal-contingencia-submit')?.addEventListener('click', enviarFluxo);
     document.getElementById('fiscal-contingencia-refresh')?.addEventListener('click', consultarSaga);
+    document.getElementById('fiscal-contingencia-teste-sync')?.addEventListener('click', executarTesteSync);
 }
 
 function resetForm() {
@@ -239,6 +241,32 @@ async function enviarFluxo() {
     }
 
     await enviarEtapaAtual();
+}
+
+async function executarTesteSync() {
+    const correlationId = crypto.randomUUID();
+    const entityId = 'TESTE-SYNC-FRONT-' + compactDate(new Date());
+
+    setText('fiscal-contingencia-status', 'teste sync');
+    feedback('');
+
+    try {
+        const result = await postUseCase(endpoints.testeSync, {
+            correlationId,
+            tenantId: currentTenantId(),
+            entityId
+        });
+
+        renderResult(
+            readField(result, 'correlationId', 'CorrelationId') || correlationId,
+            readField(result, 'sagaId', 'SagaId') || '-',
+            readField(result, 'mensagem', 'Mensagem') || 'Saga TesteSync chamada.');
+        feedback('Teste Sync enviado para IniciarSagaTesteSyncHandler.');
+        setText('fiscal-contingencia-status', 'teste sync chamado');
+    } catch (error) {
+        setText('fiscal-contingencia-status', 'erro');
+        feedback(error.message || 'Nao foi possivel chamar o Teste Sync.');
+    }
 }
 
 async function enviarEtapaAtual() {

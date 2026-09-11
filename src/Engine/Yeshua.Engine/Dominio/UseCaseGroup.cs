@@ -304,6 +304,7 @@ Command
 
         public UseCaseGroup AddInboxListenerWorker(string exchangeName, ExchangeType exchangeType, string queueName, string routingKey)
         {
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.IsWait = true;
 
             QueueTopology queueTopology = new QueueTopology
             {

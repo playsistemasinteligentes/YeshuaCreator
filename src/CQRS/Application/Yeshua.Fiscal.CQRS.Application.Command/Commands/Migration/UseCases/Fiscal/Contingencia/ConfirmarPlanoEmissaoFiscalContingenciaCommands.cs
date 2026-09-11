@@ -11,6 +11,7 @@
 using RepositoryInterfaces.Patterns.Command;
 using Command.Patterns.Command;
 using Dominio.Enum.Strategy;
+using Command.Interfaces;
 using Microsoft.AspNetCore.Http;
 namespace Command.UseCase
 {
@@ -27,7 +28,7 @@ public partial record ConfirmarPlanoEmissaoFiscalContingenciaInputCommand : ICom
     public string PayloadStorageKey { get; set; }
 }
 
-public partial record ConfirmarPlanoEmissaoFiscalContingenciaOutputCommand : ICommand
+public partial record ConfirmarPlanoEmissaoFiscalContingenciaOutputCommand : ICommand, ISagaStepStimulusOutput
 {
     public string CorrelationId { get; set; }
     public string CargaId { get; set; }

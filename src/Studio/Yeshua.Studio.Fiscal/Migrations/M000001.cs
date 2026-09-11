@@ -437,6 +437,15 @@ public class M000001 : MigrationBase
             .AddEntity("EntradaFiscalContingencia");
 
         AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Teste")
+            .AddCommand(
+                "IniciarSagaTesteSync",
+                new IniciarSagaTesteSyncInput(string.Empty, 0, string.Empty),
+                new IniciarSagaTesteSyncOutput(string.Empty, 0, string.Empty, bool.FalseString, string.Empty))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.teste.saga-sync.iniciar");
+
+        AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("CTe")
             .AddCommand(
                 "ReceberRomaneioConsolidadoParaCTe",
@@ -649,6 +658,16 @@ public class M000001 : MigrationBase
                         false)
                     .DeliverByYeshuaApi();
 
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Teste")
+            .AddSaga("TesteSync")
+            .AddStepGroup("execucao")
+                .AddStep("testeSyncPasso1")
+                .AddStep("testeSyncPasso2")
+                .AddStep("testeSyncPasso3")
+                .AddStep("testeSyncPasso4")
+                .AddStep("testeSyncPasso5");
+
         AddMenuGroup("DFE", "Entrada Fiscal",
             "DocumentoFiscal",
             "DocumentoFiscalOriginario",
@@ -741,6 +760,18 @@ public sealed record IniciarContingenciaFiscalOutput(
     bool Accepted,
     int EntradaFiscalContingenciaId,
     string CargaId,
+    string Mensagem);
+
+public sealed record IniciarSagaTesteSyncInput(
+    string CorrelationId,
+    int TenantId,
+    string EntityId);
+
+public sealed record IniciarSagaTesteSyncOutput(
+    string CorrelationId,
+    int SagaId,
+    string EntityId,
+    string Status,
     string Mensagem);
 
 public sealed record ContingenciaFiscalStepInput(

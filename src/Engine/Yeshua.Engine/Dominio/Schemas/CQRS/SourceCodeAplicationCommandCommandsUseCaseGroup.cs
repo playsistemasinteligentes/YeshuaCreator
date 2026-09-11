@@ -47,6 +47,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"using {CQRSParam.I.NameSpaceInterfaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceCommandsPartners};");
             sb.AppendLine($"using {CQRSParam.I.NameSpaceEnumStrategy};");
+            sb.AppendLine($"using Command.Interfaces;");
             sb.AppendLine($"using Microsoft.AspNetCore.Http;");
             
 
@@ -182,8 +183,12 @@ namespace Dominio.Schemas.CQRS
 
             _generatedTypes.Add(className);
 
+            var commandContracts = "ICommand";
+            if (IsSagaStepStimulusOutput(className))
+                commandContracts += ", ISagaStepStimulusOutput";
+
             // Começa a geração da classe record
-            sb.AppendLine($"public partial record {className} : ICommand");
+            sb.AppendLine($"public partial record {className} : {commandContracts}");
             sb.AppendLine("{");
 
             foreach (PropertyInfo prop in type.GetProperties())
@@ -219,6 +224,13 @@ namespace Dominio.Schemas.CQRS
                     }
                 }
             }
+        }
+
+        private bool IsSagaStepStimulusOutput(string className)
+        {
+            return _method != null
+                && _method.IsSagaStepStimulus
+                && className == _method.OutputCommandName;
         }
 
         // Função auxiliar para nome de tipos amigável permanece igual

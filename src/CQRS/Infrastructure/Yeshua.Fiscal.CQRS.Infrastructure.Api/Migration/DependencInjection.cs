@@ -65,6 +65,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
                     builder.Services.AddTransient<SagaResolverRegistry>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaSyncRunner, SagaSyncRunner>();
                     builder.Services.AddScoped<OutboxService>();
 
 
@@ -576,12 +577,21 @@ builder.Services.AddTransient<SolicitarEncerramentoMDFeHandler>();
 builder.Services.AddTransient<PrepararEventoEncerramentoMDFeHandler>();
 builder.Services.AddTransient<AutorizarEncerramentoMDFeNaSefazHandler>();
 builder.Services.AddTransient<PublicarMDFeEncerradoHandler>();
+builder.Services.AddTransient<Dominio.Saga.TesteSyncSaga>();
+builder.Services.AddTransient<Command.Receivers.TesteSyncSagaHandlerResolver>();
+builder.Services.AddTransient<TesteSyncPasso1Handler>();
+builder.Services.AddTransient<TesteSyncPasso2Handler>();
+builder.Services.AddTransient<TesteSyncPasso3Handler>();
+builder.Services.AddTransient<TesteSyncPasso4Handler>();
+builder.Services.AddTransient<TesteSyncPasso5Handler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ReceberNotasFiscaisProdutoHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.InformarDocumentosOriginariosDaCargaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.IniciarContingenciaFiscalHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.IniciarSagaTesteSyncHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ReceberRomaneioConsolidadoParaCTeHandler>();
 
