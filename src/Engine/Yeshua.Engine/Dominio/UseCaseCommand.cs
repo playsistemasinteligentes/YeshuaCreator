@@ -47,7 +47,7 @@ namespace Dominio
         public string SagaName { get; set; }
         public string SagaStepName { get; set; }
         public string SagaStimulusTransport { get; set; }
-        public string SagaStimulusExecutionMode { get; set; } = "Async";
+        public string SagaStimulusExecutionMode { get; set; } = "Deferred";
 
         public List<string> Scopes = new List<string>();
         public List<Entity> Entitys = new List<Entity>();

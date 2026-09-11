@@ -1,12 +1,13 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260911-sync01';
+import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260911-sync03';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260911-sync01';
+const assetVersion = '20260911-sync03';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
     testeSync: '/Fiscal/TesteIniciarSagaTesteSyncUseCase',
+    testeSyncAcordarPasso3: '/Fiscal/TesteAcordarSagaTesteSyncPasso3UseCase',
     steps: {
         ReceberNotasFiscaisDaContingencia: '/Fiscal/ContingenciaInformarNotasFiscaisContingenciaUseCase',
         EscolherModeloAgrupamentoCTe: '/Fiscal/ContingenciaEscolherModeloAgrupamentoCTeContingenciaUseCase',
@@ -25,6 +26,9 @@ const state = {
     entradaId: 0,
     documentoIndex: 0,
     sagaId: 0,
+    testeSyncCorrelationId: '',
+    testeSyncSagaId: 0,
+    testeSyncEntityId: '',
     currentStepKey: '',
     currentStepStatus: 0,
     started: false
@@ -98,6 +102,7 @@ function bindEvents() {
     document.getElementById('fiscal-contingencia-submit')?.addEventListener('click', enviarFluxo);
     document.getElementById('fiscal-contingencia-refresh')?.addEventListener('click', consultarSaga);
     document.getElementById('fiscal-contingencia-teste-sync')?.addEventListener('click', executarTesteSync);
+    document.getElementById('fiscal-contingencia-teste-sync-acordar')?.addEventListener('click', acordarTesteSyncPasso3);
 }
 
 function resetForm() {
@@ -106,6 +111,9 @@ function resetForm() {
     state.entradaId = 0;
     state.documentoIndex = 0;
     state.sagaId = 0;
+    state.testeSyncCorrelationId = '';
+    state.testeSyncSagaId = 0;
+    state.testeSyncEntityId = '';
     state.currentStepKey = '';
     state.currentStepStatus = 0;
     state.started = false;
@@ -257,15 +265,53 @@ async function executarTesteSync() {
             entityId
         });
 
+        state.testeSyncCorrelationId = readField(result, 'correlationId', 'CorrelationId') || correlationId;
+        state.testeSyncSagaId = Number(readField(result, 'sagaId', 'SagaId') || 0);
+        state.testeSyncEntityId = readField(result, 'entityId', 'EntityId') || entityId;
+        state.correlationId = state.testeSyncCorrelationId;
+        state.sagaId = state.testeSyncSagaId;
+        state.cargaId = state.testeSyncEntityId;
+        setValue('fiscal-carga-id', state.cargaId);
+
         renderResult(
-            readField(result, 'correlationId', 'CorrelationId') || correlationId,
-            readField(result, 'sagaId', 'SagaId') || '-',
+            state.testeSyncCorrelationId,
+            state.testeSyncSagaId || '-',
             readField(result, 'mensagem', 'Mensagem') || 'Saga TesteSync chamada.');
         feedback('Teste Sync enviado para IniciarSagaTesteSyncHandler.');
         setText('fiscal-contingencia-status', 'teste sync chamado');
     } catch (error) {
         setText('fiscal-contingencia-status', 'erro');
         feedback(error.message || 'Nao foi possivel chamar o Teste Sync.');
+    }
+}
+
+async function acordarTesteSyncPasso3() {
+    if (!state.testeSyncCorrelationId && !state.testeSyncSagaId) {
+        feedback('Chame Teste Sync antes de acordar o passo 3.');
+        return;
+    }
+
+    setText('fiscal-contingencia-status', 'acordando step 3');
+    feedback('');
+
+    try {
+        const result = await postUseCase(endpoints.testeSyncAcordarPasso3, {
+            correlationId: state.testeSyncCorrelationId,
+            tenantId: currentTenantId(),
+            sagaId: state.testeSyncSagaId,
+            entityId: state.testeSyncEntityId,
+            mensagem: 'Estimulo manual da tela para o passo 3'
+        });
+
+        renderResult(
+            readField(result, 'correlationId', 'CorrelationId') || state.testeSyncCorrelationId,
+            readField(result, 'sagaId', 'SagaId') || state.testeSyncSagaId || '-',
+            readField(result, 'mensagem', 'Mensagem') || 'Passo 3 acordado.');
+        feedback('Estimulo do passo 3 enviado pela borda gerada da DSL. Com o worker ligado, clique em Consultar para ver a continuacao.');
+        setText('fiscal-contingencia-status', 'step 3 acordado');
+    } catch (error) {
+        setText('fiscal-contingencia-status', 'erro');
+        feedback(error.message || 'Nao foi possivel acordar o passo 3.');
     }
 }
 

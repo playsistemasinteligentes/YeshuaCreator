@@ -47,6 +47,42 @@ namespace Command.Patterns
             }
         }
 
+        public void ExecuteUntilWait(SagaBase saga, ISagaHandlerResolver resolver, int maxSteps = 25)
+        {
+            if (saga == null)
+                throw new ArgumentNullException(nameof(saga));
+
+            if (resolver == null)
+                throw new ArgumentNullException(nameof(resolver));
+
+            if (maxSteps <= 0)
+                maxSteps = 25;
+
+            for (var i = 0; i < maxSteps; i++)
+            {
+                var step = saga.GetCurrent();
+
+                if (step == null || step.Status == SagaStepStatus.WaitingResponse)
+                    return;
+
+                var previousStep = step;
+                var previousStatus = step.Status;
+
+                Execute(saga, resolver);
+
+                if (saga.Status != SagaStatus.InProgress)
+                    return;
+
+                var current = saga.GetCurrent();
+
+                if (current == null || current.Status == SagaStepStatus.WaitingResponse)
+                    return;
+
+                if (ReferenceEquals(previousStep, current) && previousStatus == current.Status)
+                    return;
+            }
+        }
+
         private void HandleFailure(SagaBase saga, SagaStepBase step, Exception e)
         {
             step.IncrementRetry();

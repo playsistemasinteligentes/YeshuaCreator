@@ -583,7 +583,7 @@ public class M000001 : MigrationBase
                     .HttpApi("InformarNotasFiscaisContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
-                    .Sync()
+                    .Immediate()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.notas.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -593,7 +593,7 @@ public class M000001 : MigrationBase
                     .HttpApi("EscolherModeloAgrupamentoCTeContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
-                    .Sync()
+                    .Immediate()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.agrupamento.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -603,7 +603,7 @@ public class M000001 : MigrationBase
                     .HttpApi("InformarFreteERateioContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
-                    .Sync()
+                    .Immediate()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.frete.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -613,7 +613,7 @@ public class M000001 : MigrationBase
                     .HttpApi("InformarDadosTransporteContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
-                    .Sync()
+                    .Immediate()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.transporte.informar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -623,7 +623,7 @@ public class M000001 : MigrationBase
                     .HttpApi("ConfirmarPlanoEmissaoFiscalContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
-                    .Sync()
+                    .Immediate()
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.plano.confirmar")
                     .AddEntity("EntradaFiscalContingencia")
@@ -664,7 +664,12 @@ public class M000001 : MigrationBase
             .AddStepGroup("execucao")
                 .AddStep("testeSyncPasso1")
                 .AddStep("testeSyncPasso2")
-                .AddStep("testeSyncPasso3")
+                .AddStepWait("testeSyncPasso3")
+                    .HttpApi("AcordarSagaTesteSyncPasso3",
+                        new AcordarSagaTesteSyncPasso3Input(string.Empty, 0, 0, string.Empty, string.Empty),
+                        new AcordarSagaTesteSyncPasso3Output(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
+                    .Authorization(Authorization.User)
+                    .AddScope("fiscal.teste.saga-sync.acordar-passo3")
                 .AddStep("testeSyncPasso4")
                 .AddStep("testeSyncPasso5");
 
@@ -772,6 +777,23 @@ public sealed record IniciarSagaTesteSyncOutput(
     int SagaId,
     string EntityId,
     string Status,
+    string Mensagem);
+
+public sealed record AcordarSagaTesteSyncPasso3Input(
+    string CorrelationId,
+    int TenantId,
+    int SagaId,
+    string EntityId,
+    string Mensagem);
+
+public sealed record AcordarSagaTesteSyncPasso3Output(
+    string CorrelationId,
+    string EntityId,
+    string StepKey,
+    int SagaId,
+    int SagaStepId,
+    int InboxId,
+    bool Accepted,
     string Mensagem);
 
 public sealed record ContingenciaFiscalStepInput(

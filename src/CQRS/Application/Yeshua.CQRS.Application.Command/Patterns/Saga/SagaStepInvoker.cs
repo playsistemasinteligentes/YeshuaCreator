@@ -10,13 +10,13 @@ namespace Command.Patterns
 {
     public class SagaStepInvoker : ISagaStepInvoker
     {
-        private const string AsyncExecutionMode = "Async";
-        private const string SyncExecutionMode = "Sync";
-        private readonly ISagaSyncRunner? _syncRunner;
+        private const string DeferredExecutionMode = "Deferred";
+        private const string ImmediateExecutionMode = "Immediate";
+        private readonly ISagaStepContinuation? _continuation;
 
-        public SagaStepInvoker(IEnumerable<ISagaSyncRunner> syncRunners)
+        public SagaStepInvoker(IEnumerable<ISagaStepContinuation> continuations)
         {
-            _syncRunner = syncRunners.FirstOrDefault();
+            _continuation = continuations.FirstOrDefault();
         }
 
         public Task<State<TOutput>> Invoke<TInput, TOutput>(
@@ -29,7 +29,7 @@ namespace Command.Patterns
             where TInput : ICommand
             where TOutput : ICommand
         {
-            return Invoke(sagaName, stepName, AsyncExecutionMode, command, state, action, cancellationToken);
+            return Invoke(sagaName, stepName, DeferredExecutionMode, command, state, action, cancellationToken);
         }
 
         public async Task<State<TOutput>> Invoke<TInput, TOutput>(
@@ -45,7 +45,7 @@ namespace Command.Patterns
         {
             var result = await action(state, command, cancellationToken).ConfigureAwait(false);
 
-            if (!IsSync(executionMode))
+            if (!IsImmediate(executionMode))
                 return result;
 
             if (result.Data is not ISagaStepStimulusOutput stimulus)
@@ -54,14 +54,14 @@ namespace Command.Patterns
             if (!stimulus.Accepted || stimulus.SagaId <= 0 || stimulus.InboxId <= 0)
                 return result;
 
-            if (_syncRunner == null)
+            if (_continuation == null)
                 return result;
 
-            await _syncRunner.RunUntilWaitAsync(stimulus, cancellationToken).ConfigureAwait(false);
+            await _continuation.ContinueUntilWaitAsync(stimulus, cancellationToken).ConfigureAwait(false);
             return result;
         }
 
-        private static bool IsSync(string executionMode)
-            => string.Equals(executionMode, SyncExecutionMode, StringComparison.OrdinalIgnoreCase);
+        private static bool IsImmediate(string executionMode)
+            => string.Equals(executionMode, ImmediateExecutionMode, StringComparison.OrdinalIgnoreCase);
     }
 }

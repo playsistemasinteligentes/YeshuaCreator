@@ -65,7 +65,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
                     builder.Services.AddTransient<SagaResolverRegistry>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
-                    builder.Services.AddTransient<ISagaSyncRunner, SagaSyncRunner>();
+                    builder.Services.AddTransient<ISagaStepContinuation, SagaStepContinuation>();
                     builder.Services.AddScoped<OutboxService>();
 
 
@@ -620,6 +620,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.InformarDadosTransporteC
 builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarPlanoEmissaoFiscalContingenciaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.InformarResultadoEmissaoFiscalContingenciaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AcordarSagaTesteSyncPasso3Handler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

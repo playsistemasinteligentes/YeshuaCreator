@@ -11,6 +11,7 @@
 //scope;
 using Aplication.Interfaces.Services;
 using Command.Interfaces;
+using Command.Receivers.Migration.Saga;
 using Command.UseCase;
 using Dominio.Interfaces;
 using Dominio.Saga;
@@ -27,24 +28,27 @@ namespace Command.Receivers.UseCase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IySagaWriteRepository _sagaWriteRepository;
-        private readonly ISagaSyncRunner _sagaSyncRunner;
+        private readonly ISagaExecutor _sagaExecutor;
+        private readonly SagaResolverRegistry _sagaResolverRegistry;
 
         public IniciarSagaTesteSyncHandler(
             IUnitOfWork unitOfWork,
             ILogger logger,
             IExecutionContext executionContext,
             IySagaWriteRepository sagaWriteRepository,
-            ISagaSyncRunner sagaSyncRunner)
+            ISagaExecutor sagaExecutor,
+            SagaResolverRegistry sagaResolverRegistry)
             : base(logger, executionContext)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _executionContext = executionContext;
             _sagaWriteRepository = sagaWriteRepository;
-            _sagaSyncRunner = sagaSyncRunner;
+            _sagaExecutor = sagaExecutor;
+            _sagaResolverRegistry = sagaResolverRegistry;
         }
 
-        protected partial async Task<State<IniciarSagaTesteSyncOutputCommand>> CustomActionHookAsync(
+        protected partial Task<State<IniciarSagaTesteSyncOutputCommand>> CustomActionHookAsync(
             State<IniciarSagaTesteSyncOutputCommand> state,
             IniciarSagaTesteSyncInputCommand comand,
             CancellationToken cancellationToken)
@@ -71,6 +75,9 @@ namespace Command.Receivers.UseCase
             saga.SetCorrelationId(correlationId);
             saga.Start(entityId, "TesteSync");
 
+            var resolver = _sagaResolverRegistry.Resolve(saga);
+            _sagaExecutor.ExecuteUntilWait(saga, resolver);
+
             _unitOfWork.BeginTran();
             try
             {
@@ -83,16 +90,14 @@ namespace Command.Receivers.UseCase
                 throw;
             }
 
-            await _sagaSyncRunner.RunSagaAsync(saga.Id, correlationId, cancellationToken).ConfigureAwait(false);
-
-            return Success("OK", new IniciarSagaTesteSyncOutputCommand
+            return Task.FromResult(Success("OK", new IniciarSagaTesteSyncOutputCommand
             {
                 CorrelationId = correlationId,
                 SagaId = saga.Id,
                 EntityId = entityId,
                 Status = "Executada",
                 Mensagem = "Saga TesteSync executada ate o fim ou ate o primeiro wait."
-            });
+            }));
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Dominio
         {
             TransportKind = transportKind;
             Command = command;
-            ExecutionMode = command?.SagaStimulusExecutionMode ?? "Async";
+            ExecutionMode = command?.SagaStimulusExecutionMode ?? "Deferred";
         }
 
         public string TransportKind { get; }

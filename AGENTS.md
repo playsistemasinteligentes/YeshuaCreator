@@ -49,6 +49,15 @@ Miolos que IA/dev devem preencher:
 
 ## Principios Arquiteturais
 
+- Antes de criar qualquer conceito, servico, runner, endpoint, transporte,
+  padrao de execucao ou camada nova, procurar primeiro o caminho arquitetural
+  ja existente e tentar resolver por ele.
+- A arquitetura deve ter caminhos unicos e previsiveis. Duplicar mecanismos
+  para resolver o mesmo problema so e aceitavel quando houver decisao
+  arquitetural explicita, justificativa forte e registro claro neste contexto.
+- Mudancas arquiteturais devem ser hiper pensadas antes de implementadas. Em
+  caso de duvida, parar, mapear o que ja existe e apresentar a menor mudanca
+  possivel.
 - Tudo executavel tende a ser Command + Receiver.
 - Command representa uma intencao e carrega dados.
 - Receiver executa a intencao.
@@ -140,11 +149,15 @@ Miolos que IA/dev devem preencher:
 - No codigo gerado, a propriedade do handler que representa essa espera deve
   se chamar `RequiresExternalStimulus`; evitar nomes como `IsAsync`, pois eles
   confundem espera externa da saga com `async/await` do C#.
-- `StepWait.HttpApi(...).Sync()` declara que, apos o command aceitar o
+- `StepWait.HttpApi(...).Immediate()` declara que, apos o command aceitar o
   estimulo, a API pode aplicar a resposta do step e executar a saga ate o
   proximo `IntencaoWait`, falha ou fim. Isso evita esperar o ciclo do worker
   quando a interacao de tela precisa avancar rapido, sem criar endpoint
   paralelo nem mecanismo fora da saga.
+- A continuacao imediata nao deve criar runner paralelo de saga. A repeticao
+  dos steps pertence a `ISagaExecutor.ExecuteUntilWait(...)`; a peca gerada no
+  aplicativo fica limitada a carregar/travar/aplicar/salvar usando os
+  repositorios do proprio app.
 - `pendencia`: usar o metadado de `StepWait`/transporte para diferenciar
   execucao interna imediata, espera externa/manual e acordar de saga sem
   depender de inbox tecnico por coincidencia de correlacao.

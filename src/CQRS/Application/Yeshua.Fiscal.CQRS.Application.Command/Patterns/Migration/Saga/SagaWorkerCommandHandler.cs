@@ -25,9 +25,9 @@ using System.Threading.Tasks;
 
 namespace Command.Patterns
 {
-    public class SagaSyncRunner : ISagaSyncRunner
+    public class SagaStepContinuation : ISagaStepContinuation
     {
-        private const int MaxSyncSteps = 25;
+        private const int MaxImmediateSteps = 25;
         private readonly SagaResolverRegistry _registry;
         private readonly ISagaExecutor _executor;
         private readonly IySagaReadRepository _sagaReadRepository;
@@ -36,7 +36,7 @@ namespace Command.Patterns
         private readonly IUnitOfWork _unitOfWork;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
-        public SagaSyncRunner(
+        public SagaStepContinuation(
             Aplication.Interfaces.Services.IExecutionContext context,
             SagaResolverRegistry registry,
             ISagaExecutor executor,
@@ -54,12 +54,12 @@ namespace Command.Patterns
             _unitOfWork = unitOfWork;
         }
 
-        public Task RunUntilWaitAsync(ISagaStepStimulusOutput stimulus, CancellationToken cancellationToken = default)
+        public Task ContinueUntilWaitAsync(ISagaStepStimulusOutput stimulus, CancellationToken cancellationToken = default)
         {
             if (stimulus == null || !stimulus.Accepted || stimulus.SagaId <= 0 || stimulus.InboxId <= 0)
                 return Task.CompletedTask;
 
-            var lockedBy = $"Sync_{Environment.MachineName}_{Guid.NewGuid():N}";
+            var lockedBy = $"Immediate_{Environment.MachineName}_{Guid.NewGuid():N}";
             var lockedAt = DateTime.UtcNow;
             var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
 
@@ -95,80 +95,48 @@ namespace Command.Patterns
             }
         }
 
-        public Task RunSagaAsync(int sagaId, string? correlationId = null, CancellationToken cancellationToken = default)
-        {
-            if (sagaId <= 0)
-                return Task.CompletedTask;
-
-            var lockedBy = $"Sync_{Environment.MachineName}_{Guid.NewGuid():N}";
-            var lockedAt = DateTime.UtcNow;
-            var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
-
-            if (!_sagaReadRepository.TryClaimSagaForExecution(sagaId, lockedBy, lockedAt, nextExecutionAt))
-                return Task.CompletedTask;
-
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(correlationId))
-                    _executionContext.SetTraceId(correlationId);
-
-                RunClaimedSaga(sagaId, lockedBy, lockedAt, cancellationToken);
-                return Task.CompletedTask;
-            }
-            finally
-            {
-                _sagaReadRepository.ReleaseLock(sagaId, lockedBy);
-            }
-        }
-
         private void RunClaimedSaga(int sagaId, string lockedBy, DateTime lockedAt, CancellationToken cancellationToken)
         {
-            for (var i = 0; i < MaxSyncSteps; i++)
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var sagaDto = _sagaReadRepository.GetByIdWithSteps(sagaId);
+            if (sagaDto == null)
+                return;
+
+            if (sagaDto.tenantid > 0)
+                _executionContext.SetTenantId(sagaDto.tenantid);
+            if (sagaDto.userid > 0)
+                _executionContext.SetUserId(sagaDto.userid);
+            if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
+                _executionContext.SetTraceId(sagaDto.correlationid);
+
+            var saga = _registry.Map(sagaDto);
+            saga.LockedBy = lockedBy;
+            saga.LockedAt = lockedAt;
+
+            if (saga.Status != SagaStatus.InProgress)
+                return;
+
+            var current = saga.GetCurrent();
+            if (current == null || current.Status == SagaStepStatus.WaitingResponse)
+                return;
+
+            var resolver = _registry.Resolve(saga);
+            _executor.ExecuteUntilWait(saga, resolver, MaxImmediateSteps);
+
+            if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
+                return;
+
+            _unitOfWork.BeginTran();
+            try
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var sagaDto = _sagaReadRepository.GetByIdWithSteps(sagaId);
-                if (sagaDto == null)
-                    return;
-
-                if (sagaDto.tenantid > 0)
-                    _executionContext.SetTenantId(sagaDto.tenantid);
-                if (sagaDto.userid > 0)
-                    _executionContext.SetUserId(sagaDto.userid);
-                if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
-                    _executionContext.SetTraceId(sagaDto.correlationid);
-
-                var saga = _registry.Map(sagaDto);
-                saga.LockedBy = lockedBy;
-                saga.LockedAt = lockedAt;
-
-                if (saga.Status != SagaStatus.InProgress)
-                    return;
-
-                var current = saga.GetCurrent();
-                if (current == null || current.Status == SagaStepStatus.WaitingResponse)
-                    return;
-
-                var resolver = _registry.Resolve(saga);
-                _executor.Execute(saga, resolver);
-
-                if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
-                    return;
-
-                _unitOfWork.BeginTran();
-                try
-                {
-                    _sagaWriteRepository.Save(saga);
-                    _unitOfWork.Commit();
-                }
-                catch
-                {
-                    _unitOfWork.Rollback();
-                    throw;
-                }
-
-                if (saga.Status == SagaStatus.Completed || saga.Status == SagaStatus.Failed)
-                    return;
+                _sagaWriteRepository.Save(saga);
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+                throw;
             }
         }
     }

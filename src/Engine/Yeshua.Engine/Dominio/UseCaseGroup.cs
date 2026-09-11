@@ -207,14 +207,14 @@ Command
             return HttpApi(commandName, input);
         }
 
-        public UseCaseGroup Sync()
+        public UseCaseGroup Immediate()
         {
-            return SetLastSagaStimulusExecutionMode("Sync");
+            return SetLastSagaStimulusExecutionMode("Immediate");
         }
 
-        public UseCaseGroup Async()
+        public UseCaseGroup Deferred()
         {
-            return SetLastSagaStimulusExecutionMode("Async");
+            return SetLastSagaStimulusExecutionMode("Deferred");
         }
 
         private UseCaseGroup AddStepCommandTransport(string transportKind, string commandName, params object[] input)
@@ -248,7 +248,7 @@ Command
             var useCaseSubGroup = this.UseCaseSubGroup.Last();
             var command = useCaseSubGroup.UseCaseCommand.Last();
             if (!command.IsSagaStepStimulus)
-                throw new InvalidOperationException("Sync/Async deve ser chamado apos HttpApi de StepWait.");
+                throw new InvalidOperationException("Immediate/Deferred deve ser chamado apos HttpApi de StepWait.");
 
             command.SagaStimulusExecutionMode = executionMode;
 

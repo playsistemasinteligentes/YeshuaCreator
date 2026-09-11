@@ -172,20 +172,25 @@ Politica de execucao do estimulo:
 
 | Politica | Comportamento |
 | --- | --- |
-| `Async` | O command grava o estimulo e deixa o worker aplicar/continuar a saga. |
-| `Sync` | O command grava o estimulo, aplica a resposta e executa a saga ate o proximo `IntencaoWait`, falha ou fim. |
+| `Deferred` | O command grava o estimulo e deixa o worker aplicar/continuar a saga. |
+| `Immediate` | O command grava o estimulo, aplica a resposta e executa a saga ate o proximo `IntencaoWait`, falha ou fim. |
 
 Na DSL, a politica fica junto do transporte:
 
 ```csharp
 .StepWait("informarDadosTransporte")
     .HttpApi("InformarDadosTransporteCarga", input, output)
-    .Sync()
+    .Immediate()
 ```
 
-`Sync` nao muda o conceito do step e nao cria borda nova. Ele apenas evita que
+`Immediate` nao muda o conceito do step e nao cria borda nova. Ele apenas evita que
 uma interacao de tela precise esperar o proximo ciclo do worker quando a
 continuidade imediata for segura.
+
+Regra de implementacao: nao criar runner paralelo de saga. O loop de
+continuidade fica em `ISagaExecutor.ExecuteUntilWait(...)`. A peca gerada por
+aplicativo que lida com banco deve apenas carregar, travar, aplicar o estimulo,
+chamar o executor e salvar.
 
 ### Padrao: Tela Assistente Sobre Saga
 
@@ -200,7 +205,7 @@ Tela customizada consulta saga
         -> identifica step atual
         -> renderiza os campos daquele step
         -> envia estimulo pelo command HTTP gerado pelo StepWait
-        -> Sync aplica resposta e avanca ate o proximo wait, ou Async deixa para worker
+        -> Immediate aplica resposta e avanca ate o proximo wait, ou Deferred deixa para worker
         -> usuario consulta novamente para ver o novo step
 ```
 
@@ -213,15 +218,15 @@ Regras obrigatorias:
 - O estimulo do usuario deve chegar como `Command` normal gerado pela DSL,
   usando `.HttpApi("NomeDoCommand", input, output)`.
 - O command gerado deve chamar `ISagaStepInvoker.Invoke(...)`.
-- Quando o step usar `.Sync()`, `ISagaStepInvoker` deve ser o unico ponto que
+- Quando o step usar `.Immediate()`, `ISagaStepInvoker` deve ser o unico ponto que
   dispara a continuacao imediata da saga; tela e endpoint nao podem chamar
   executor de saga diretamente.
 - O miolo customizado do command deve validar a entrada daquela etapa e gravar
   o estimulo pelo caminho padrao de persistencia, normalmente `yInbox` ou
   repository especifico.
-- Em `Async`, o worker de inbox transforma o estimulo em `PendingApply`; o
+- Em `Deferred`, o worker de inbox transforma o estimulo em `PendingApply`; o
   worker de saga aplica a resposta e segue para o proximo step.
-- Em `Sync`, o command faz esse avanco pelo invoker padrao e deve parar ao
+- Em `Immediate`, o command faz esse avanco pelo invoker padrao e deve parar ao
   encontrar outro `StepWait`, falha ou fim da saga.
 - A tela deve ter acao explicita de consulta. Polling automatico, websocket ou
   push sao evolucoes tecnicas futuras, nao regra inicial.

@@ -20,7 +20,7 @@ namespace Command.Receivers
     {
         public string Key => TesteSyncSaga.STEP_3;
 
-        public bool RequiresExternalStimulus => false;
+        public bool RequiresExternalStimulus => true;
 
         public void Execute(SagaBase saga, SagaStepBase step)
         {

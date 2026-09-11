@@ -8,7 +8,7 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
 // </yeshua>
 
-// Escopo: fiscal.contingencia.frete.informar
+// Escopo: fiscal.teste.saga-sync.acordar-passo3
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
@@ -24,13 +24,13 @@ using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
 {
-    public partial class InformarFreteERateioContingenciaHandler : ReciverBase< InformarFreteERateioContingenciaInputCommand, InformarFreteERateioContingenciaOutputCommand>
+    public partial class AcordarSagaTesteSyncPasso3Handler : ReciverBase< AcordarSagaTesteSyncPasso3InputCommand, AcordarSagaTesteSyncPasso3OutputCommand>
     {
 
 		   private readonly Dominio.Interfaces.ILogger _logger;
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         private readonly Command.Interfaces.ISagaStepInvoker _sagaStepInvoker;
-        public InformarFreteERateioContingenciaHandler(
+        public AcordarSagaTesteSyncPasso3Handler(
             Dominio.Interfaces.ILogger logger,
             Aplication.Interfaces.Services.IExecutionContext context,
             Command.Interfaces.ISagaStepInvoker sagaStepInvoker)
@@ -42,21 +42,21 @@ namespace Command.Receivers.UseCase
         }
 
 
-        protected override async Task<State<InformarFreteERateioContingenciaOutputCommand>> ActionAsync(InformarFreteERateioContingenciaInputCommand comand, CancellationToken cancellationToken = default)
+        protected override async Task<State<AcordarSagaTesteSyncPasso3OutputCommand>> ActionAsync(AcordarSagaTesteSyncPasso3InputCommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
-                 State<InformarFreteERateioContingenciaOutputCommand> retorno = Success("OK", null);
+                 State<AcordarSagaTesteSyncPasso3OutputCommand> retorno = Success("OK", null);
                  return await _sagaStepInvoker.Invoke(
-                     "ContingenciaFiscalStandard",
-                     "informarFreteERateio",
-                     "Immediate",
+                     "TesteSync",
+                     "testeSyncPasso3",
+                     "Deferred",
                      comand,
                      retorno,
                      CustomActionHookAsync,
                      cancellationToken);
             }
-            catch (ReceiverException<InformarFreteERateioContingenciaOutputCommand> e)
+            catch (ReceiverException<AcordarSagaTesteSyncPasso3OutputCommand> e)
             {
                 return e.State;
             }
@@ -65,7 +65,7 @@ namespace Command.Receivers.UseCase
                 return Error(e, default);
             }
         }
-protected partial Task<State<InformarFreteERateioContingenciaOutputCommand>> CustomActionHookAsync(State<InformarFreteERateioContingenciaOutputCommand> state, InformarFreteERateioContingenciaInputCommand comand, CancellationToken cancellationToken);
+protected partial Task<State<AcordarSagaTesteSyncPasso3OutputCommand>> CustomActionHookAsync(State<AcordarSagaTesteSyncPasso3OutputCommand> state, AcordarSagaTesteSyncPasso3InputCommand comand, CancellationToken cancellationToken);
 }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
