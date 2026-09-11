@@ -50,13 +50,12 @@ export async function apiFetch(url, options = {}) {
         throw new Error("Usuário não autenticado.");
     }
 
-    //const headers = {
-    //    "Content-Type": "application/json",
-    //    "Authorization": `Bearer ${token}`
-    //    ...(options || {}),
-    //};
+    const headers = {
+        ...(options.headers || {}),
+        "Authorization": `Bearer ${token}`
+    };
 
-    let response = await fetch(url, { options });
+    let response = await fetch(url, { ...options, headers });
 
     // Token expirado → tenta refresh
     if (response.status === 401) {
