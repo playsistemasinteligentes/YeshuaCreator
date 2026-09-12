@@ -20,19 +20,19 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int entradaoficialid { get; set; }
-    public string correlationid { get; set; }
-    public string romaneioid { get; set; }
-    public string cargaid { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public string romaneioid { get; set; } = string.Empty;
+    public string cargaid { get; set; } = string.Empty;
     public DateTime consolidadoemutc { get; set; }
-    public string ufinicio { get; set; }
-    public string uffim { get; set; }
-    public string municipioiniciocodigoibge { get; set; }
-    public string municipiofimcodigoibge { get; set; }
-    public string emitentedocumento { get; set; }
-    public string tomadordocumento { get; set; }
-    public string rotasnapshotjson { get; set; }
-    public string cargasnapshotjson { get; set; }
-    public string preferenciasfiscaisjson { get; set; }
+    public string ufinicio { get; set; } = string.Empty;
+    public string uffim { get; set; } = string.Empty;
+    public string municipioiniciocodigoibge { get; set; } = string.Empty;
+    public string municipiofimcodigoibge { get; set; } = string.Empty;
+    public string emitentedocumento { get; set; } = string.Empty;
+    public string tomadordocumento { get; set; } = string.Empty;
+    public string rotasnapshotjson { get; set; } = string.Empty;
+    public string cargasnapshotjson { get; set; } = string.Empty;
+    public string preferenciasfiscaisjson { get; set; } = string.Empty;
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

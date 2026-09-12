@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<CreateContaOutputCommand> retorno = Success("OK", null);
+                 State<CreateContaOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<CreateContaOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<CreateContaOutputCommand>> CustomActionHookAsync(State<CreateContaOutputCommand> state, CreateContaInputCommand comand, CancellationToken cancellationToken);

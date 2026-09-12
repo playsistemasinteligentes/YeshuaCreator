@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel yUserQuery(Command.Read.yUserReadCommand Command , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -62,7 +61,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         public QueryModel yUserTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command , bool TakeOffTenantID = false)
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -92,7 +90,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsByIdQuery(int value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -110,7 +107,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsByNomeQuery(string value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -128,7 +124,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsByEmailQuery(string value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -146,7 +141,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsBySenhaQuery(string value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -164,7 +158,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsByTenantIDQuery(int value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -182,7 +175,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsByDeletedQuery(bool value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -200,7 +192,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel ExistsByChangedQuery(DateTime value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -218,7 +209,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstByIdQuery(int value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -236,7 +226,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstByNomeQuery(string value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -254,7 +243,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstByEmailQuery(string value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -272,7 +260,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstBySenhaQuery(string value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -290,7 +277,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstByTenantIDQuery(int value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -308,7 +294,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstByDeletedQuery(bool value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -326,7 +311,6 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
         }
         public QueryModel FirstByChangedQuery(DateTime value , bool TakeOffTenantID = false)
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

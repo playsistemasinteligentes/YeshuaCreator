@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<yPerfilGrantGrantIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<yPerfilGrantGrantIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var yPerfilGrantReadRepository = _repository.getyPerfilGrantReadFKGrantId(c);
-                return Success("OK", yPerfilGrantReadRepository);
+                return Task.FromResult(Success("OK", yPerfilGrantReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

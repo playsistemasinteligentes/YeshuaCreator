@@ -21,9 +21,9 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public int mdfesolicitacaofiscalid { get; set; }
     public int documentofiscaloriginarioid { get; set; }
-    public string tipodocumento { get; set; }
-    public string chaveacesso { get; set; }
-    public string snapshotjson { get; set; }
+    public string tipodocumento { get; set; } = string.Empty;
+    public string chaveacesso { get; set; } = string.Empty;
+    public string snapshotjson { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

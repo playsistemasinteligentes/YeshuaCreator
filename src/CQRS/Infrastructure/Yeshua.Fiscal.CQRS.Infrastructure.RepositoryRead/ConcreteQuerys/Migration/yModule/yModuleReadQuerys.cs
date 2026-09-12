@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel yModuleQuery(Command.Read.yModuleReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -53,7 +52,6 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"[Description]
         }
         public QueryModel ExistsByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -67,7 +65,6 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"[Description]
         }
         public QueryModel ExistsByDescriptionQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -81,7 +78,6 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"[Description]
         }
         public QueryModel FirstByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -95,7 +91,6 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"[Description]
         }
         public QueryModel FirstByDescriptionQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

@@ -17,12 +17,12 @@ namespace Command.UseCase
 {
 public partial record CreateContaInputCommand : ICommand
 {
-    public string CpfCnpj { get; set; }
-    public string nome { get; set; }
-    public string email { get; set; }
-    public string phone { get; set; }
-    public string password { get; set; }
-    public string confirmpassword { get; set; }
+    public string CpfCnpj { get; set; } = string.Empty;
+    public string nome { get; set; } = string.Empty;
+    public string email { get; set; } = string.Empty;
+    public string phone { get; set; } = string.Empty;
+    public string password { get; set; } = string.Empty;
+    public string confirmpassword { get; set; } = string.Empty;
 }
 
 public partial record CreateContaOutputCommand : ICommand

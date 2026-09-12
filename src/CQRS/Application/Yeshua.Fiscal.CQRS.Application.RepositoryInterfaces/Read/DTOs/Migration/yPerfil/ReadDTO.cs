@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record yPerfilDTO
     {
     public int id { get; set; }
-    public string description { get; set; }
+    public string description { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

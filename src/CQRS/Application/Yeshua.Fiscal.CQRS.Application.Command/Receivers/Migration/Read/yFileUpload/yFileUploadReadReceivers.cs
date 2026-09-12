@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<yFileUploadDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<yFileUploadDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.yFileUploadReadCommand c) 
              {    
                 var yFileUploadReadRepository = _repository.getyFileUpload(c);
-                return Success("OK", yFileUploadReadRepository);
+                return Task.FromResult(Success("OK", yFileUploadReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

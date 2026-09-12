@@ -177,8 +177,8 @@ Polling
         }
         public class Message : IMessage
         {
-            public string Destination { get; set; }
-            public string Body { get; set; }
+            public string Destination { get; set; } = string.Empty;
+            public string Body { get; set; } = string.Empty;
             public string? Subject { get; set; } = null;
             public byte[]? Attachment { get; set; } = null;
         }

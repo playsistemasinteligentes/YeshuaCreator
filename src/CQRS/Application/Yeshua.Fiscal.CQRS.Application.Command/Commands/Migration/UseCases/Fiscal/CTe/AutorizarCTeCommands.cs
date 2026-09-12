@@ -24,10 +24,10 @@ public partial record AutorizarCTeInputCommand : ICommand
 public partial record AutorizarCTeOutputCommand : ICommand
 {
     public int TentativaId { get; set; }
-    public string ChaveAcesso { get; set; }
+    public string ChaveAcesso { get; set; } = string.Empty;
     public bool Autorizado { get; set; }
-    public string Protocolo { get; set; }
-    public string Mensagem { get; set; }
+    public string Protocolo { get; set; } = string.Empty;
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

@@ -15,7 +15,7 @@ namespace Command.Receivers
 {
     public partial class ReceberDocumentosOriginariosContingenciaHandler
     {
-        private readonly ILogger _logger;
+        private readonly ILogger _logger = default!;
 
         public ReceberDocumentosOriginariosContingenciaHandler(ILogger logger)
         {

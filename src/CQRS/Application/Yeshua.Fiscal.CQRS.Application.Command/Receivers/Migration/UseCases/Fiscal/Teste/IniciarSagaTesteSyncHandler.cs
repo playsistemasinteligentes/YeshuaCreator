@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<IniciarSagaTesteSyncOutputCommand> retorno = Success("OK", null);
+                 State<IniciarSagaTesteSyncOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<IniciarSagaTesteSyncOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<IniciarSagaTesteSyncOutputCommand>> CustomActionHookAsync(State<IniciarSagaTesteSyncOutputCommand> state, IniciarSagaTesteSyncInputCommand comand, CancellationToken cancellationToken);

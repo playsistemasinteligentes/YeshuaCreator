@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -21,10 +21,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class PublicarCTeAutorizadoParaMDFeHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly ICTeSaidaMDFeReadRepository _repReadCTeSaidaMDFe;
-        private readonly ICTeSaidaMDFeWriteRepository _repWriteCTeSaidaMDFe;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly ICTeSaidaMDFeReadRepository _repReadCTeSaidaMDFe = default!;
+        private readonly ICTeSaidaMDFeWriteRepository _repWriteCTeSaidaMDFe = default!;
         public PublicarCTeAutorizadoParaMDFeHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,ICTeSaidaMDFeReadRepository repReadCTeSaidaMDFe, ICTeSaidaMDFeWriteRepository repWriteCTeSaidaMDFe)
             : base(logger, executionContext)
         {

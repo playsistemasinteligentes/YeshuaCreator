@@ -17,27 +17,27 @@ namespace Command.UseCase
 {
 public partial record InformarFreteERateioContingenciaInputCommand : ICommand
 {
-    public string CorrelationId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
     public int TenantId { get; set; }
-    public string CargaId { get; set; }
+    public string CargaId { get; set; } = string.Empty;
     public int EntradaFiscalContingenciaId { get; set; }
-    public string UserAction { get; set; }
-    public string DocumentosOriginariosJson { get; set; }
-    public string DadosComplementaresJson { get; set; }
-    public string PayloadHash { get; set; }
-    public string PayloadStorageKey { get; set; }
+    public string UserAction { get; set; } = string.Empty;
+    public string DocumentosOriginariosJson { get; set; } = string.Empty;
+    public string DadosComplementaresJson { get; set; } = string.Empty;
+    public string PayloadHash { get; set; } = string.Empty;
+    public string PayloadStorageKey { get; set; } = string.Empty;
 }
 
 public partial record InformarFreteERateioContingenciaOutputCommand : ICommand, ISagaStepStimulusOutput
 {
-    public string CorrelationId { get; set; }
-    public string CargaId { get; set; }
-    public string StepKey { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
+    public string CargaId { get; set; } = string.Empty;
+    public string StepKey { get; set; } = string.Empty;
     public int SagaId { get; set; }
     public int SagaStepId { get; set; }
     public int InboxId { get; set; }
     public bool Accepted { get; set; }
-    public string Mensagem { get; set; }
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

@@ -19,15 +19,15 @@ namespace Repositorio.Outputs
     public partial record MDFeSolicitacaoFiscalDTO
     {
     public int id { get; set; }
-    public string correlationid { get; set; }
-    public string cargaid { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public string cargaid { get; set; } = string.Empty;
     public int ambiente { get; set; }
-    public string ufcarregamento { get; set; }
-    public string ufdescarregamento { get; set; }
-    public string placaveiculo { get; set; }
-    public string condutordocumento { get; set; }
-    public string documentosoriginariosjson { get; set; }
-    public string transportesnapshotjson { get; set; }
+    public string ufcarregamento { get; set; } = string.Empty;
+    public string ufdescarregamento { get; set; } = string.Empty;
+    public string placaveiculo { get; set; } = string.Empty;
+    public string condutordocumento { get; set; } = string.Empty;
+    public string documentosoriginariosjson { get; set; } = string.Empty;
+    public string transportesnapshotjson { get; set; } = string.Empty;
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

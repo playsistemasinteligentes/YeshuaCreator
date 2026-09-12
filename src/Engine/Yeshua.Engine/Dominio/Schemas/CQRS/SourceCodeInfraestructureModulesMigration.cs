@@ -161,12 +161,12 @@ namespace Dominio.Schemas.CQRS
                         groupedMenuDefinitions.Add(menuItem);
                     }
 
-                    sb.AppendLine($"        Modules.LastOrDefault().Menus.Add({menuVariable});");
+                    sb.AppendLine($"        Modules[Modules.Count - 1].Menus.Add({menuVariable});");
                 }
 
                 foreach (var menuItem in menuDefinitions.Where(x => !groupedMenuDefinitions.Contains(x)))
                 {
-                    sb.AppendLine($"        Modules.LastOrDefault().Menus.Add(new Menu(\"{Escape(menuItem.Title)}\", \"{Escape(menuItem.Endpoint)}\", \"{Escape(menuItem.Type)}\", \"{Escape(menuItem.Page)}\", \"{Escape(menuItem.Scope)}\"));");
+                    sb.AppendLine($"        Modules[Modules.Count - 1].Menus.Add(new Menu(\"{Escape(menuItem.Title)}\", \"{Escape(menuItem.Endpoint)}\", \"{Escape(menuItem.Type)}\", \"{Escape(menuItem.Page)}\", \"{Escape(menuItem.Scope)}\"));");
                 }
             }
 

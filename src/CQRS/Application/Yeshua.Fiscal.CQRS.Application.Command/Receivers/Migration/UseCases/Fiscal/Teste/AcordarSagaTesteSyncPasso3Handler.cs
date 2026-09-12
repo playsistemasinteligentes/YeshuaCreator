@@ -46,7 +46,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<AcordarSagaTesteSyncPasso3OutputCommand> retorno = Success("OK", null);
+                 State<AcordarSagaTesteSyncPasso3OutputCommand> retorno = Success("OK");
                  return await _sagaStepInvoker.Invoke(
                      "TesteSync",
                      "testeSyncPasso3",
@@ -62,7 +62,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<AcordarSagaTesteSyncPasso3OutputCommand>> CustomActionHookAsync(State<AcordarSagaTesteSyncPasso3OutputCommand> state, AcordarSagaTesteSyncPasso3InputCommand comand, CancellationToken cancellationToken);

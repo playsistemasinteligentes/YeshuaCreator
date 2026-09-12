@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMDFeVeiculoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMDFeVeiculoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MDFeVeiculoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mdfeveiculo = new MDFeVeiculoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.Placa, c.Renavam, c.Tara, c.CapacidadeKg, c.CapacidadeM3);
                  var domainResult = MDFeVeiculoDomainBehavior.Apply(mdfeveiculo, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(mdfeveiculo);
-                     return Success("OK", mdfeveiculo);
+                     return Task.FromResult(Success("OK", mdfeveiculo));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mdfeveiculo);
+                    return Task.FromResult(Error(e, mdfeveiculo));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

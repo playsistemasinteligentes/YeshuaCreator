@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IyTenantModuleEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IyTenantModuleEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yTenantModuleCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var ytenantmodule = new yTenantModuleFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ModuleId, c.ValidUntil);
                  var domainResult = yTenantModuleDomainBehavior.Apply(ytenantmodule, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(ytenantmodule);
-                     return Success("OK", ytenantmodule);
+                     return Task.FromResult(Success("OK", ytenantmodule));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, ytenantmodule);
+                    return Task.FromResult(Error(e, ytenantmodule));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -119,7 +119,7 @@ namespace Dominio.Schemas.CQRS
                 //sb.AppendLine("                 Agent = getAgent(comand);    ");
                 //sb.AppendLine("                 comand = Agent.getMenu(comand);    ");
 
-                sb.AppendLine($"                 State<{_classeOutputCommand}> retorno = Success(\"OK\", null);");
+                sb.AppendLine($"                 State<{_classeOutputCommand}> retorno = Success(\"OK\");");
 
 
                 sb.AppendLine("                 return await CustomActionHookAsync(retorno, comand, cancellationToken);");
@@ -238,9 +238,9 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-            sb.AppendLine($"protected partial async Task<State<{_classeOutputCommand}>> CustomActionHookAsync(State<{_classeOutputCommand}> state, {_classeInputCommand} comand, CancellationToken cancellationToken)");
+            sb.AppendLine($"protected partial Task<State<{_classeOutputCommand}>> CustomActionHookAsync(State<{_classeOutputCommand}> state, {_classeInputCommand} comand, CancellationToken cancellationToken)");
             sb.AppendLine("{");
-            sb.AppendLine("    return state;");
+            sb.AppendLine("    return Task.FromResult(state);");
             sb.AppendLine("}");
 
 

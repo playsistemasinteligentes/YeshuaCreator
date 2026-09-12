@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -21,10 +21,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class ReceberRomaneioConsolidadoParaCTeHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly ICTeRomaneioConsolidadoReadRepository _repReadCTeRomaneioConsolidado;
-        private readonly ICTeRomaneioConsolidadoWriteRepository _repWriteCTeRomaneioConsolidado;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly ICTeRomaneioConsolidadoReadRepository _repReadCTeRomaneioConsolidado = default!;
+        private readonly ICTeRomaneioConsolidadoWriteRepository _repWriteCTeRomaneioConsolidado = default!;
         public ReceberRomaneioConsolidadoParaCTeHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,ICTeRomaneioConsolidadoReadRepository repReadCTeRomaneioConsolidado, ICTeRomaneioConsolidadoWriteRepository repWriteCTeRomaneioConsolidado)
             : base(logger, executionContext)
         {

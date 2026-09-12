@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<IniciarContingenciaFiscalOutputCommand> retorno = Success("OK", null);
+                 State<IniciarContingenciaFiscalOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<IniciarContingenciaFiscalOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<IniciarContingenciaFiscalOutputCommand>> CustomActionHookAsync(State<IniciarContingenciaFiscalOutputCommand> state, IniciarContingenciaFiscalInputCommand comand, CancellationToken cancellationToken);

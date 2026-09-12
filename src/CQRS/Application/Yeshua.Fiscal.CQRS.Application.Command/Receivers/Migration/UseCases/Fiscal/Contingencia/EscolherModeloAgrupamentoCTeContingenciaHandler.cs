@@ -46,7 +46,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<EscolherModeloAgrupamentoCTeContingenciaOutputCommand> retorno = Success("OK", null);
+                 State<EscolherModeloAgrupamentoCTeContingenciaOutputCommand> retorno = Success("OK");
                  return await _sagaStepInvoker.Invoke(
                      "ContingenciaFiscalStandard",
                      "escolherModeloAgrupamentoCTe",
@@ -62,7 +62,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<EscolherModeloAgrupamentoCTeContingenciaOutputCommand>> CustomActionHookAsync(State<EscolherModeloAgrupamentoCTeContingenciaOutputCommand> state, EscolherModeloAgrupamentoCTeContingenciaInputCommand comand, CancellationToken cancellationToken);

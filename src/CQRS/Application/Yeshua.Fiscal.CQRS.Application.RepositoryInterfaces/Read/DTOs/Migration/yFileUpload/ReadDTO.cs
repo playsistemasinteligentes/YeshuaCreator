@@ -19,12 +19,12 @@ namespace Repositorio.Outputs
     public partial record yFileUploadDTO
     {
     public int id { get; set; }
-    public string type { get; set; }
+    public string type { get; set; } = string.Empty;
     public int status { get; set; }
-    public string filepath { get; set; }
+    public string filepath { get; set; } = string.Empty;
     public long filesize { get; set; }
-    public string entitytype { get; set; }
-    public string entityid { get; set; }
+    public string entitytype { get; set; } = string.Empty;
+    public string entityid { get; set; } = string.Empty;
     public DateTime createdat { get; set; }
     public DateTime completedat { get; set; }
     public int tenantid { get; set; }

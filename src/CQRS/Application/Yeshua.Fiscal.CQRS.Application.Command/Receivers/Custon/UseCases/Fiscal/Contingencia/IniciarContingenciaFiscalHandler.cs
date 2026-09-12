@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -27,13 +27,13 @@ namespace Command.Receivers.UseCase
 {
     public partial class IniciarContingenciaFiscalHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia;
-        private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia;
-        private readonly IDocumentoFiscalOriginarioWriteRepository _repWriteDocumentoFiscalOriginario;
-        private readonly INFeProdutoSnapshotWriteRepository _repWriteNFeProdutoSnapshot;
-        private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia = default!;
+        private readonly IEntradaFiscalContingenciaWriteRepository _repWriteEntradaFiscalContingencia = default!;
+        private readonly IDocumentoFiscalOriginarioWriteRepository _repWriteDocumentoFiscalOriginario = default!;
+        private readonly INFeProdutoSnapshotWriteRepository _repWriteNFeProdutoSnapshot = default!;
+        private readonly IySagaWriteRepository _sagaWriteRepository = default!;
 
         public IniciarContingenciaFiscalHandler(
             IUnitOfWork unitOfWork,

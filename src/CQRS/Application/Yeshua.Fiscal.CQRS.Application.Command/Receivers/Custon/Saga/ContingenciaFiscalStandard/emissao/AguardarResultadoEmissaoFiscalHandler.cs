@@ -19,9 +19,9 @@ namespace Command.Receivers
 {
     public partial class AguardarResultadoEmissaoFiscalHandler
     {
-        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository;
-        private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository;
-        private readonly ILogger _logger;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository = default!;
+        private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public AguardarResultadoEmissaoFiscalHandler(
             IEntradaFiscalContingenciaReadRepository entradaReadRepository,

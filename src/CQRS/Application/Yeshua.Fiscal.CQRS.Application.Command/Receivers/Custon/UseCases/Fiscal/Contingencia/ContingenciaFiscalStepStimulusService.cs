@@ -31,15 +31,15 @@ namespace Command.Receivers.UseCase
         private const int StepStatusFailed = 6;
         private const string InboxType = "fiscal.contingencia.step-input.v1";
 
-        private readonly ILogger _logger;
-        private readonly IExecutionContext _executionContext;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IySagaReadRepository _sagaReadRepository;
-        private readonly IySagaWriteRepository _sagaWriteRepository;
-        private readonly IySagaStepReadRepository _sagaStepReadRepository;
-        private readonly IySagaStepWriteRepository _sagaStepWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository;
+        private readonly ILogger _logger = default!;
+        private readonly IExecutionContext _executionContext = default!;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IySagaReadRepository _sagaReadRepository = default!;
+        private readonly IySagaWriteRepository _sagaWriteRepository = default!;
+        private readonly IySagaStepReadRepository _sagaStepReadRepository = default!;
+        private readonly IySagaStepWriteRepository _sagaStepWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
 
         public ContingenciaFiscalStepStimulusService(
             ILogger logger,

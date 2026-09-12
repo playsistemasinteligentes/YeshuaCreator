@@ -18,8 +18,8 @@ namespace Command.UseCase
 public partial record SolicitarEmissaoCTeInputCommand : ICommand
 {
     public int RomaneioConsolidadoId { get; set; }
-    public string UFEmitente { get; set; }
-    public string EmitenteDocumento { get; set; }
+    public string UFEmitente { get; set; } = string.Empty;
+    public string EmitenteDocumento { get; set; } = string.Empty;
     public int Ambiente { get; set; }
     public int ProdutoFiscal { get; set; }
     public int TipoCTe { get; set; }
@@ -30,8 +30,8 @@ public partial record SolicitarEmissaoCTeInputCommand : ICommand
 public partial record SolicitarEmissaoCTeOutputCommand : ICommand
 {
     public int SolicitacaoId { get; set; }
-    public string CorrelationId { get; set; }
-    public string Status { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
     public bool ProntoParaAutorizar { get; set; }
 }
 

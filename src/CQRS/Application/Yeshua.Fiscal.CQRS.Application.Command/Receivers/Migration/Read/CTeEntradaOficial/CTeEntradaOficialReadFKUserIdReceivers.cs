@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<CTeEntradaOficialUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<CTeEntradaOficialUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var CTeEntradaOficialReadRepository = _repository.getCTeEntradaOficialReadFKUserId(c);
-                return Success("OK", CTeEntradaOficialReadRepository);
+                return Task.FromResult(Success("OK", CTeEntradaOficialReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

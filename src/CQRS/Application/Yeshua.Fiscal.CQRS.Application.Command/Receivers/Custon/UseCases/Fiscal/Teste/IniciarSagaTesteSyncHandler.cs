@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -26,10 +26,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class IniciarSagaTesteSyncHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IySagaWriteRepository _sagaWriteRepository;
-        private readonly ISagaExecutor _sagaExecutor;
-        private readonly SagaResolverRegistry _sagaResolverRegistry;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IySagaWriteRepository _sagaWriteRepository = default!;
+        private readonly ISagaExecutor _sagaExecutor = default!;
+        private readonly SagaResolverRegistry _sagaResolverRegistry = default!;
 
         public IniciarSagaTesteSyncHandler(
             IUnitOfWork unitOfWork,

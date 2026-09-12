@@ -22,9 +22,9 @@ namespace Command.Receivers
 {
     public partial class ReceberCargaProntaParaEmissaoFiscalHandler
     {
-        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public ReceberCargaProntaParaEmissaoFiscalHandler(
             INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository,

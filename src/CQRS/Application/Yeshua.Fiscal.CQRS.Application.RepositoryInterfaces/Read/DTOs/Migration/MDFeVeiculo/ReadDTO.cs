@@ -20,8 +20,8 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int mdfesolicitacaofiscalid { get; set; }
-    public string placa { get; set; }
-    public string renavam { get; set; }
+    public string placa { get; set; } = string.Empty;
+    public string renavam { get; set; } = string.Empty;
     public Decimal tara { get; set; }
     public Decimal capacidadekg { get; set; }
     public Decimal capacidadem3 { get; set; }

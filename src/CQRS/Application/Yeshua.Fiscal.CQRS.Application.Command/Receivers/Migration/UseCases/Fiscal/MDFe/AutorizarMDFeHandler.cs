@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<AutorizarMDFeOutputCommand> retorno = Success("OK", null);
+                 State<AutorizarMDFeOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<AutorizarMDFeOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<AutorizarMDFeOutputCommand>> CustomActionHookAsync(State<AutorizarMDFeOutputCommand> state, AutorizarMDFeInputCommand comand, CancellationToken cancellationToken);

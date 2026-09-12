@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<DocumentoFiscalOriginarioDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<DocumentoFiscalOriginarioDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.DocumentoFiscalOriginarioReadCommand c) 
              {    
                 var DocumentoFiscalOriginarioReadRepository = _repository.getDocumentoFiscalOriginario(c);
-                return Success("OK", DocumentoFiscalOriginarioReadRepository);
+                return Task.FromResult(Success("OK", DocumentoFiscalOriginarioReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

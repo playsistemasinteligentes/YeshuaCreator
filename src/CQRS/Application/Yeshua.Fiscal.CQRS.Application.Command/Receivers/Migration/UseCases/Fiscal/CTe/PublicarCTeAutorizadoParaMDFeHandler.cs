@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<PublicarCTeAutorizadoParaMDFeOutputCommand> retorno = Success("OK", null);
+                 State<PublicarCTeAutorizadoParaMDFeOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<PublicarCTeAutorizadoParaMDFeOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<PublicarCTeAutorizadoParaMDFeOutputCommand>> CustomActionHookAsync(State<PublicarCTeAutorizadoParaMDFeOutputCommand> state, PublicarCTeAutorizadoParaMDFeInputCommand comand, CancellationToken cancellationToken);

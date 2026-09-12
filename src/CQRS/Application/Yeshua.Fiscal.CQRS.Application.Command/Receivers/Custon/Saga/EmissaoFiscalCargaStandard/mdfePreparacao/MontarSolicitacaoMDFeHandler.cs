@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -20,14 +20,14 @@ namespace Command.Receivers
 {
     public partial class MontarSolicitacaoMDFeHandler
     {
-        private readonly ICTeSaidaMDFeReadRepository _cteSaidaMDFeReadRepository;
-        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
-        private readonly IMDFeSolicitacaoFiscalReadRepository _mdfeSolicitacaoFiscalReadRepository;
-        private readonly IMDFeSolicitacaoFiscalWriteRepository _mdfeSolicitacaoFiscalWriteRepository;
-        private readonly IMDFeDocumentoOriginarioReadRepository _mdfeDocumentoOriginarioReadRepository;
-        private readonly IMDFeDocumentoOriginarioWriteRepository _mdfeDocumentoOriginarioWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly ICTeSaidaMDFeReadRepository _cteSaidaMDFeReadRepository = default!;
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository = default!;
+        private readonly IMDFeSolicitacaoFiscalReadRepository _mdfeSolicitacaoFiscalReadRepository = default!;
+        private readonly IMDFeSolicitacaoFiscalWriteRepository _mdfeSolicitacaoFiscalWriteRepository = default!;
+        private readonly IMDFeDocumentoOriginarioReadRepository _mdfeDocumentoOriginarioReadRepository = default!;
+        private readonly IMDFeDocumentoOriginarioWriteRepository _mdfeDocumentoOriginarioWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public MontarSolicitacaoMDFeHandler(
             ICTeSaidaMDFeReadRepository cteSaidaMDFeReadRepository,

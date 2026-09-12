@@ -20,15 +20,15 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int sagaid { get; set; }
-    public string stepkey { get; set; }
+    public string stepkey { get; set; } = string.Empty;
     public int indexorder { get; set; }
-    public string correlationid { get; set; }
+    public string correlationid { get; set; } = string.Empty;
     public int status { get; set; }
     public int executioncount { get; set; }
     public DateTime lastexecutionat { get; set; }
     public DateTime completedat { get; set; }
-    public string errormessage { get; set; }
-    public string payload { get; set; }
+    public string errormessage { get; set; } = string.Empty;
+    public string payload { get; set; } = string.Empty;
     public int retrycount { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

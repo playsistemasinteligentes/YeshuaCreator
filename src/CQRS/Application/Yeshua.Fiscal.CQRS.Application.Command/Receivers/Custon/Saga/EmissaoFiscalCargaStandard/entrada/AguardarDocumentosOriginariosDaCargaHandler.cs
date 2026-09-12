@@ -15,7 +15,7 @@ namespace Command.Receivers
 {
     public partial class AguardarDocumentosOriginariosDaCargaHandler
     {
-        private readonly ILogger _logger;
+        private readonly ILogger _logger = default!;
 
         public AguardarDocumentosOriginariosDaCargaHandler(ILogger logger)
         {

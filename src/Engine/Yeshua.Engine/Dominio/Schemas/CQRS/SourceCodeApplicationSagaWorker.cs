@@ -185,7 +185,7 @@ namespace Command.Patterns
             _executionContext = context;
         }
 
-        protected override async Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
+        protected override Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -254,32 +254,32 @@ namespace Command.Patterns
                     }
                 }
 
-                return Success("OK", new OutputCommand
+                return Task.FromResult(Success("OK", new OutputCommand
                 {
                     Claimed = sagas.Count,
                     Processed = processed,
                     Failed = failed
-                });
+                }));
             }
             catch (ReceiverException<OutputCommand> ex)
             {
-                return ex.State;
+                return Task.FromResult(ex.State);
             }
             catch (Exception ex)
             {
-                return Error(ex, default);
+                return Task.FromResult(Error(ex));
             }
         }
     }
 
     public partial record InputCommand : ICommand
     {
-        public List<int> lst { get; set; }
+        public List<int> lst { get; set; } = new();
     }
 
     public partial record OutputCommand : ICommand, IWorkerCycleResult
     {
-        public List<int> lst { get; set; }
+        public List<int> lst { get; set; } = new();
         public int BatchLimit => 5;
         public int Claimed { get; init; }
         public int Processed { get; init; }
@@ -316,24 +316,24 @@ namespace Command.Patterns
             _sagaStepReadRepository = sagaStepReadRepository;
         }
 
-        protected override async Task<State<InboxOutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
+        protected override Task<State<InboxOutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {
                 var processed = _sagaStepReadRepository.SetPendingApply();
-                return Success("OK", new InboxOutputCommand
+                return Task.FromResult(Success("OK", new InboxOutputCommand
                 {
                     Claimed = processed,
                     Processed = processed
-                });
+                }));
             }
             catch (ReceiverException<InboxOutputCommand> ex)
             {
-                return ex.State;
+                return Task.FromResult(ex.State);
             }
             catch (Exception ex)
             {
-                return Error(ex, default);
+                return Task.FromResult(Error(ex));
             }
         }
     }

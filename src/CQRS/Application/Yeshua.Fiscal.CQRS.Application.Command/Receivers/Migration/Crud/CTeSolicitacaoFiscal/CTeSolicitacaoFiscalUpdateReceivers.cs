@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICTeSolicitacaoFiscalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICTeSolicitacaoFiscalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CTeSolicitacaoFiscalCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var ctesolicitacaofiscal = new CTeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.RomaneioConsolidadoId, c.CorrelationId, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.ProdutoFiscal, c.TipoCTe, c.TipoServico, c.Modal, c.Globalizado, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.ValorServico, c.ValorCarga, c.PreferenciasManifestoJson, c.Status);
                  var domainResult = CTeSolicitacaoFiscalDomainBehavior.Apply(ctesolicitacaofiscal, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(ctesolicitacaofiscal);
-                     return Success("OK", ctesolicitacaofiscal);
+                     return Task.FromResult(Success("OK", ctesolicitacaofiscal));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, ctesolicitacaofiscal);
+                    return Task.FromResult(Error(e, ctesolicitacaofiscal));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

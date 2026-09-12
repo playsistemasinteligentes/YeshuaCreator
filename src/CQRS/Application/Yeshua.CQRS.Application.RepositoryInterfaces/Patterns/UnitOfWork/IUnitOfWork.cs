@@ -10,11 +10,11 @@ namespace RepositoryInterfaces.Patterns.UnitOfWork
         void Commit();
         void Rollback();
 
-        int Execute(string sql, object param = null);
-        T ExecuteScalar<T>(string sql, object param = null);
+        int Execute(string sql, object? param = null);
+        T ExecuteScalar<T>(string sql, object? param = null);
 
-        IEnumerable<T> Query<T>(string sql, object param = null);
-        T QuerySingle<T>(string sql, object param = null);
-        T QueryFirstOrDefault<T>(string sql, object param = null);
+        IEnumerable<T> Query<T>(string sql, object? param = null);
+        T QuerySingle<T>(string sql, object? param = null);
+        T QueryFirstOrDefault<T>(string sql, object? param = null);
     }
 }

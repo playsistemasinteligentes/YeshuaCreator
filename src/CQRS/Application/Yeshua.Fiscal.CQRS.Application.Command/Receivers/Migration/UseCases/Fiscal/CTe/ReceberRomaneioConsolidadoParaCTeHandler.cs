@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<ReceberRomaneioConsolidadoParaCTeOutputCommand> retorno = Success("OK", null);
+                 State<ReceberRomaneioConsolidadoParaCTeOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<ReceberRomaneioConsolidadoParaCTeOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<ReceberRomaneioConsolidadoParaCTeOutputCommand>> CustomActionHookAsync(State<ReceberRomaneioConsolidadoParaCTeOutputCommand> state, ReceberRomaneioConsolidadoParaCTeInputCommand comand, CancellationToken cancellationToken);

@@ -20,12 +20,12 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int ctetentativaemissaoid { get; set; }
-    public string correlationid { get; set; }
-    public string chaveacessocte { get; set; }
-    public string snapshothash { get; set; }
-    public string outboxmessageid { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public string chaveacessocte { get; set; } = string.Empty;
+    public string snapshothash { get; set; } = string.Empty;
+    public string outboxmessageid { get; set; } = string.Empty;
     public DateTime publicadoemutc { get; set; }
-    public string ultimoerro { get; set; }
+    public string ultimoerro { get; set; } = string.Empty;
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

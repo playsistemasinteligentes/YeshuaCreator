@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<MDFeEncerramentoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<MDFeEncerramentoDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.MDFeEncerramentoReadCommand c) 
              {    
                 var MDFeEncerramentoReadRepository = _repository.getMDFeEncerramento(c);
-                return Success("OK", MDFeEncerramentoReadRepository);
+                return Task.FromResult(Success("OK", MDFeEncerramentoReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

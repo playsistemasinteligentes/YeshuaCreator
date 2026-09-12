@@ -51,7 +51,10 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("    {");
 
                     foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
-                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name.ToLower()} {{ get; set; }}");
+                    {
+                        var typeName = column.getCsharpType();
+                        sb.AppendLine($"    public {typeName} {column.Name.ToLower()} {{ get; set; }}{DefaultInitializer(typeName)}");
+                    }
 
                     break;
                 case CommandType.ReadQuery:
@@ -59,7 +62,10 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("    {");
 
                     foreach (var column in _query.Meta.SelectFields)
-                        sb.AppendLine($"    public {GetFriendlyTypeName(column.FieldType, true)} {column.Field.ToLower()} {{ get; set; }}//01");
+                    {
+                        var typeName = GetFriendlyTypeName(column.FieldType, true);
+                        sb.AppendLine($"    public {typeName} {column.Field.ToLower()} {{ get; set; }}{DefaultInitializer(typeName)}//01");
+                    }
 
                     break;
                 case CommandType.ReadFK:
@@ -69,7 +75,10 @@ namespace Dominio.Schemas.CQRS
 
                     Column columnFK = _entity.AddColumns.Where(x => x.Name == _column).FirstOrDefault();
                     foreach (var column in columnFK.EntityFK.AddColumns.Where(x => x.DisplayFK))
-                        sb.AppendLine($"    public {column.getCsharpType()} {column.Name.ToLower()} {{ get; set; }}");
+                    {
+                        var typeName = column.getCsharpType();
+                        sb.AppendLine($"    public {typeName} {column.Name.ToLower()} {{ get; set; }}{DefaultInitializer(typeName)}");
+                    }
 
                     break;
                 default:
@@ -86,6 +95,11 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCustonCode()
         {
             return new StringBuilder();
+        }
+
+        private static string DefaultInitializer(string typeName)
+        {
+            return typeName == "string" ? " = string.Empty;" : string.Empty;
         }
     }
 }

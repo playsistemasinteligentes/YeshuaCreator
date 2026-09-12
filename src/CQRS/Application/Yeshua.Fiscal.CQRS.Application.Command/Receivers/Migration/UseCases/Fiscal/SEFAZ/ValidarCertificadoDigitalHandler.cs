@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<ValidarCertificadoDigitalOutputCommand> retorno = Success("OK", null);
+                 State<ValidarCertificadoDigitalOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<ValidarCertificadoDigitalOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<ValidarCertificadoDigitalOutputCommand>> CustomActionHookAsync(State<ValidarCertificadoDigitalOutputCommand> state, ValidarCertificadoDigitalInputCommand comand, CancellationToken cancellationToken);

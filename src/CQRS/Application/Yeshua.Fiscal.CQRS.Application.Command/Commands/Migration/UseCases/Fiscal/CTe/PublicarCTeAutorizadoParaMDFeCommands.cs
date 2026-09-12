@@ -18,13 +18,13 @@ namespace Command.UseCase
 public partial record PublicarCTeAutorizadoParaMDFeInputCommand : ICommand
 {
     public int TentativaEmissaoId { get; set; }
-    public string ChaveAcessoCTe { get; set; }
+    public string ChaveAcessoCTe { get; set; } = string.Empty;
 }
 
 public partial record PublicarCTeAutorizadoParaMDFeOutputCommand : ICommand
 {
     public bool Publicado { get; set; }
-    public string Mensagem { get; set; }
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

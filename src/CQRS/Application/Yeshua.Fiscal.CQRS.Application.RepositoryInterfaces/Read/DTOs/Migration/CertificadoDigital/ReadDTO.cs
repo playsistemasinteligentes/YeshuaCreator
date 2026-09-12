@@ -19,10 +19,10 @@ namespace Repositorio.Outputs
     public partial record CertificadoDigitalDTO
     {
     public int id { get; set; }
-    public string apelido { get; set; }
-    public string documentotitular { get; set; }
-    public string storagekey { get; set; }
-    public string thumbprint { get; set; }
+    public string apelido { get; set; } = string.Empty;
+    public string documentotitular { get; set; } = string.Empty;
+    public string storagekey { get; set; } = string.Empty;
+    public string thumbprint { get; set; } = string.Empty;
     public DateTime validode { get; set; }
     public DateTime validoate { get; set; }
     public int ativo { get; set; }

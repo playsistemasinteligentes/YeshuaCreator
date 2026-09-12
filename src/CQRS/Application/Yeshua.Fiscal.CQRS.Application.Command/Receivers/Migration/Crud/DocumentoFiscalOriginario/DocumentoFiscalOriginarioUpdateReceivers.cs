@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IDocumentoFiscalOriginarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IDocumentoFiscalOriginarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.DocumentoFiscalOriginarioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var documentofiscaloriginario = new DocumentoFiscalOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DocumentoFiscalId, c.CorrelationId, c.SourceApplication, c.SourceModule, c.SourceMessageId, c.TipoDocumento, c.ChaveAcesso, c.Numero, c.Serie, c.EmitenteDocumento, c.DestinatarioDocumento, c.ValorDocumento, c.PesoBruto, c.Volume, c.SnapshotJson, c.Status);
                  var domainResult = DocumentoFiscalOriginarioDomainBehavior.Apply(documentofiscaloriginario, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(documentofiscaloriginario);
-                     return Success("OK", documentofiscaloriginario);
+                     return Task.FromResult(Success("OK", documentofiscaloriginario));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, documentofiscaloriginario);
+                    return Task.FromResult(Error(e, documentofiscaloriginario));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

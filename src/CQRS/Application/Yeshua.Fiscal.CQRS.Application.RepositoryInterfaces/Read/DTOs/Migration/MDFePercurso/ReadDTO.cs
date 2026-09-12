@@ -20,7 +20,7 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int mdfesolicitacaofiscalid { get; set; }
-    public string uf { get; set; }
+    public string uf { get; set; } = string.Empty;
     public int ordem { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

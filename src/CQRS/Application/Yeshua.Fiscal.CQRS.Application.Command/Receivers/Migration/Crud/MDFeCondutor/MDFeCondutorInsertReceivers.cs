@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMDFeCondutorEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMDFeCondutorEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MDFeCondutorCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mdfecondutor = new MDFeCondutorFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.Nome, c.Documento);
                  var domainResult = MDFeCondutorDomainBehavior.Apply(mdfecondutor, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(mdfecondutor);
-                     return Success("OK", mdfecondutor);
+                     return Task.FromResult(Success("OK", mdfecondutor));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mdfecondutor);
+                    return Task.FromResult(Error(e, mdfecondutor));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

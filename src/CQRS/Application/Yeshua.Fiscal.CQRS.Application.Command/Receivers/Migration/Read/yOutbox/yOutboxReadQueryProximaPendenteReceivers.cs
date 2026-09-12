@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<yOutboxStandardDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<yOutboxStandardDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.yOutboxProximaPendenteCommand c) 
              {    
                 var yOutboxReadRepository = _repository.GetyOutboxProximaPendente(c);
-                return Success("OK", yOutboxReadRepository);
+                return Task.FromResult(Success("OK", yOutboxReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

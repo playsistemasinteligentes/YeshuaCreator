@@ -19,10 +19,10 @@ namespace Command.Receivers
 {
     public partial class SimularRateioFreteHandler
     {
-        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository;
-        private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository;
-        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository;
-        private readonly ILogger _logger;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository = default!;
+        private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public SimularRateioFreteHandler(
             IEntradaFiscalContingenciaReadRepository entradaReadRepository,

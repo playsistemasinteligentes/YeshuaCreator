@@ -42,7 +42,7 @@ namespace Command.Receivers
                     step.SetPendingApply();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -56,7 +56,7 @@ namespace Command.Receivers
                 CustomApplyResponse(saga, step, payload);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

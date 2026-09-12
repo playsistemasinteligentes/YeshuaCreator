@@ -17,12 +17,12 @@ namespace Command.UseCase
 {
 public partial record SendFileInputCommand : ICommand
 {
-    public string token { get; set; }
+    public string token { get; set; } = string.Empty;
     public int ChunkIndex { get; set; }
     public bool IsFinalChunk { get; set; }
-    public string FileName { get; set; }
-    public string ContentType { get; set; }
-    public IFormFile FileStream { get; set; }
+    public string FileName { get; set; } = string.Empty;
+    public string ContentType { get; set; } = string.Empty;
+    public IFormFile FileStream { get; set; } = default!;
 }
 
 public partial record SendFileOutputCommand : ICommand

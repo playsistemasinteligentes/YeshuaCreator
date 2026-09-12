@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMDFePercursoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMDFePercursoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MDFePercursoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mdfepercurso = new MDFePercursoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.UF, c.Ordem);
                  var domainResult = MDFePercursoDomainBehavior.Apply(mdfepercurso, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(mdfepercurso);
-                     return Success("OK", mdfepercurso);
+                     return Task.FromResult(Success("OK", mdfepercurso));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mdfepercurso);
+                    return Task.FromResult(Error(e, mdfepercurso));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

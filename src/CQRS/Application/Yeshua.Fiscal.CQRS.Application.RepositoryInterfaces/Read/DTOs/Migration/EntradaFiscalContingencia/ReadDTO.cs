@@ -19,34 +19,34 @@ namespace Repositorio.Outputs
     public partial record EntradaFiscalContingenciaDTO
     {
     public int id { get; set; }
-    public string correlationid { get; set; }
-    public string cargaid { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public string cargaid { get; set; } = string.Empty;
     public int tiposolicitante { get; set; }
     public int ambiente { get; set; }
-    public string sourceapplication { get; set; }
-    public string sourcemodule { get; set; }
-    public string sourcemessageid { get; set; }
-    public string emitentefiscaldocumento { get; set; }
-    public string tomadordocumento { get; set; }
-    public string transportadordocumento { get; set; }
-    public string remetentedocumento { get; set; }
-    public string destinatariodocumento { get; set; }
-    public string ufinicio { get; set; }
-    public string uffim { get; set; }
-    public string municipioiniciocodigoibge { get; set; }
-    public string municipiofimcodigoibge { get; set; }
-    public string rntrc { get; set; }
-    public string placaveiculo { get; set; }
-    public string ufveiculo { get; set; }
-    public string condutordocumento { get; set; }
-    public string condutornome { get; set; }
+    public string sourceapplication { get; set; } = string.Empty;
+    public string sourcemodule { get; set; } = string.Empty;
+    public string sourcemessageid { get; set; } = string.Empty;
+    public string emitentefiscaldocumento { get; set; } = string.Empty;
+    public string tomadordocumento { get; set; } = string.Empty;
+    public string transportadordocumento { get; set; } = string.Empty;
+    public string remetentedocumento { get; set; } = string.Empty;
+    public string destinatariodocumento { get; set; } = string.Empty;
+    public string ufinicio { get; set; } = string.Empty;
+    public string uffim { get; set; } = string.Empty;
+    public string municipioiniciocodigoibge { get; set; } = string.Empty;
+    public string municipiofimcodigoibge { get; set; } = string.Empty;
+    public string rntrc { get; set; } = string.Empty;
+    public string placaveiculo { get; set; } = string.Empty;
+    public string ufveiculo { get; set; } = string.Empty;
+    public string condutordocumento { get; set; } = string.Empty;
+    public string condutornome { get; set; } = string.Empty;
     public int quantidadedocumentos { get; set; }
     public Decimal valorcarga { get; set; }
     public Decimal pesobruto { get; set; }
     public Decimal volume { get; set; }
-    public string pendenciasjson { get; set; }
-    public string snapshotjson { get; set; }
-    public string emissaofiscalcorrelationid { get; set; }
+    public string pendenciasjson { get; set; } = string.Empty;
+    public string snapshotjson { get; set; } = string.Empty;
+    public string emissaofiscalcorrelationid { get; set; } = string.Empty;
     public int emissaofiscalsagaid { get; set; }
     public DateTime criadoemutc { get; set; }
     public DateTime atualizadoemutc { get; set; }

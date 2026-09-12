@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -22,12 +22,12 @@ namespace Command.Receivers.UseCase
 {
     public partial class CreateContaHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly IyTenantReadRepository _repReadyTenant;
-        private readonly IyTenantWriteRepository _repWriteyTenant;
-        private readonly IyUserReadRepository _repReadyUser;
-        private readonly IyUserWriteRepository _repWriteyUser;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly IyTenantReadRepository _repReadyTenant = default!;
+        private readonly IyTenantWriteRepository _repWriteyTenant = default!;
+        private readonly IyUserReadRepository _repReadyUser = default!;
+        private readonly IyUserWriteRepository _repWriteyUser = default!;
         public CreateContaHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyTenantReadRepository repReadyTenant, IyTenantWriteRepository repWriteyTenant,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser)
             : base(logger, executionContext)
         {
@@ -45,25 +45,25 @@ protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAs
     try
     {
         if (string.IsNullOrWhiteSpace(comand.CpfCnpj))
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Cpf / Cnpj e obrigatorio", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Cpf / Cnpj e obrigatorio", default!));
 
         if (string.IsNullOrWhiteSpace(comand.email))
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Email e obrigatorio", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Email e obrigatorio", default!));
 
         if (string.IsNullOrWhiteSpace(comand.nome))
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Nome e obrigatorio", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Nome e obrigatorio", default!));
 
         if (comand.password != comand.confirmpassword)
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Senhas nao conferem", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Senhas nao conferem", default!));
 
         if (_repReadyTenant.ExistsByCnpjCpf(comand.CpfCnpj))
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Conta ja existente.", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Conta ja existente.", default!));
 
         if (_repReadyUser.ExistsByEmail(comand.email))
         {
             var existingUser = _repReadyUser.FirstByEmail(comand.email);
             if (existingUser is not null && _repReadyTenant.ExistsByUserId(existingUser.id))
-                throw new ReceiverException<CreateContaOutputCommand>(Error("Conta existente.", default));
+                throw new ReceiverException<CreateContaOutputCommand>(Error("Conta existente.", default!));
         }
 
         _unitOfWork.BeginTran();
@@ -76,10 +76,10 @@ protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAs
         _repWriteyTenant.Insert(tenant);
 
         if (!tenant.isValidInsert())
-            throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", tenant.getErroMensagens()), default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", tenant.getErroMensagens()), default!));
 
         if (!tenant.Id.HasValue)
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Tenant, Id nao gerado", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Tenant, Id nao gerado", default!));
 
         _executionContext.SetTenantId(tenant.Id.Value);
 
@@ -90,12 +90,12 @@ protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAs
             comand.password);
 
         if (!user.isValidInsert())
-            throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error(string.Join("; ", user.getErroMensagens()), default!));
 
         _repWriteyUser.Insert(user);
 
         if (!user.Id.HasValue)
-            throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Usuario, Id nao gerado", default));
+            throw new ReceiverException<CreateContaOutputCommand>(Error("Erro ao criar Usuario, Id nao gerado", default!));
 
         _repWriteyTenant.UpdateUserId(tenant.Id.Value, user.Id.Value);
 
@@ -115,7 +115,7 @@ protected partial async Task<State<CreateContaOutputCommand>> CustomActionHookAs
     catch (Exception ex)
     {
         _unitOfWork.Rollback();
-        throw new ReceiverException<CreateContaOutputCommand>(Error(ex, default));
+        throw new ReceiverException<CreateContaOutputCommand>(Error(ex, default!));
     }
 
     return state;

@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -21,10 +21,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class AutorizarCTeHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly ICTeTentativaEmissaoReadRepository _repReadCTeTentativaEmissao;
-        private readonly ICTeTentativaEmissaoWriteRepository _repWriteCTeTentativaEmissao;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly ICTeTentativaEmissaoReadRepository _repReadCTeTentativaEmissao = default!;
+        private readonly ICTeTentativaEmissaoWriteRepository _repWriteCTeTentativaEmissao = default!;
         public AutorizarCTeHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,ICTeTentativaEmissaoReadRepository repReadCTeTentativaEmissao, ICTeTentativaEmissaoWriteRepository repWriteCTeTentativaEmissao)
             : base(logger, executionContext)
         {

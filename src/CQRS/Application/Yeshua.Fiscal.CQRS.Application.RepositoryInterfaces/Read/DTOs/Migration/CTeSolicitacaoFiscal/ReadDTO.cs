@@ -21,22 +21,22 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public int entradaoficialid { get; set; }
     public int romaneioconsolidadoid { get; set; }
-    public string correlationid { get; set; }
+    public string correlationid { get; set; } = string.Empty;
     public int ambiente { get; set; }
-    public string ufemitente { get; set; }
-    public string emitentedocumento { get; set; }
+    public string ufemitente { get; set; } = string.Empty;
+    public string emitentedocumento { get; set; } = string.Empty;
     public int produtofiscal { get; set; }
     public int tipocte { get; set; }
     public int tiposervico { get; set; }
     public int modal { get; set; }
     public int globalizado { get; set; }
-    public string ufinicio { get; set; }
-    public string uffim { get; set; }
-    public string municipioiniciocodigoibge { get; set; }
-    public string municipiofimcodigoibge { get; set; }
+    public string ufinicio { get; set; } = string.Empty;
+    public string uffim { get; set; } = string.Empty;
+    public string municipioiniciocodigoibge { get; set; } = string.Empty;
+    public string municipiofimcodigoibge { get; set; } = string.Empty;
     public Decimal valorservico { get; set; }
     public Decimal valorcarga { get; set; }
-    public string preferenciasmanifestojson { get; set; }
+    public string preferenciasmanifestojson { get; set; } = string.Empty;
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

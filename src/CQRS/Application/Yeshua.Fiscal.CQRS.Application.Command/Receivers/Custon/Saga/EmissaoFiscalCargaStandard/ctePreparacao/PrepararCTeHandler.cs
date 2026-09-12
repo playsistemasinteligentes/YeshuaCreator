@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -19,13 +19,13 @@ namespace Command.Receivers
 {
     public partial class PrepararCTeHandler
     {
-        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
-        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository;
-        private readonly ICTeSolicitacaoFiscalWriteRepository _cteSolicitacaoFiscalWriteRepository;
-        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository;
-        private readonly ICTeTentativaEmissaoWriteRepository _cteTentativaEmissaoWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository = default!;
+        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository = default!;
+        private readonly ICTeSolicitacaoFiscalWriteRepository _cteSolicitacaoFiscalWriteRepository = default!;
+        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository = default!;
+        private readonly ICTeTentativaEmissaoWriteRepository _cteTentativaEmissaoWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public PrepararCTeHandler(
             ICTeRomaneioConsolidadoReadRepository cteRomaneioConsolidadoReadRepository,

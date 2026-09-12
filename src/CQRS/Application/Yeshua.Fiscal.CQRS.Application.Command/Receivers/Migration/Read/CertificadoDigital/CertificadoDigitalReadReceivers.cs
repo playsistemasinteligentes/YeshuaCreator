@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<CertificadoDigitalDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<CertificadoDigitalDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.CertificadoDigitalReadCommand c) 
              {    
                 var CertificadoDigitalReadRepository = _repository.getCertificadoDigital(c);
-                return Success("OK", CertificadoDigitalReadRepository);
+                return Task.FromResult(Success("OK", CertificadoDigitalReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

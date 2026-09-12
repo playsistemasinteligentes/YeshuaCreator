@@ -25,13 +25,13 @@ namespace Command.Receivers
 {
     public partial class PrepararEntradaFiscalDaCargaHandler
     {
-        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository;
-        private readonly ICTeEntradaOficialReadRepository _cteEntradaOficialReadRepository;
-        private readonly ICTeEntradaOficialWriteRepository _cteEntradaOficialWriteRepository;
-        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
-        private readonly ICTeRomaneioConsolidadoWriteRepository _cteRomaneioConsolidadoWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ICTeEntradaOficialReadRepository _cteEntradaOficialReadRepository = default!;
+        private readonly ICTeEntradaOficialWriteRepository _cteEntradaOficialWriteRepository = default!;
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository = default!;
+        private readonly ICTeRomaneioConsolidadoWriteRepository _cteRomaneioConsolidadoWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public PrepararEntradaFiscalDaCargaHandler(
             INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository,

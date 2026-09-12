@@ -20,15 +20,15 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int mdfeid { get; set; }
-    public string chaveacesso { get; set; }
-    public string ufcarregamento { get; set; }
-    public string ufdescarregamento { get; set; }
-    public string placaveiculo { get; set; }
+    public string chaveacesso { get; set; } = string.Empty;
+    public string ufcarregamento { get; set; } = string.Empty;
+    public string ufdescarregamento { get; set; } = string.Empty;
+    public string placaveiculo { get; set; } = string.Empty;
     public DateTime solicitadoem { get; set; }
     public DateTime autorizadoem { get; set; }
-    public string protocolo { get; set; }
-    public string codigoretorno { get; set; }
-    public string mensagemretorno { get; set; }
+    public string protocolo { get; set; } = string.Empty;
+    public string codigoretorno { get; set; } = string.Empty;
+    public string mensagemretorno { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

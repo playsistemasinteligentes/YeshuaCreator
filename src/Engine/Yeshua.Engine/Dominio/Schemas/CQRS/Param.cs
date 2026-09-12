@@ -58,16 +58,16 @@ namespace Migration.Dominio.Schemas.CQRS
 
 
 
-        public void AddExeptionReceiver(StringBuilder sb, string classe)
+        public void AddExeptionReceiver(StringBuilder sb, string classe, bool returnsTask = false)
         {
             sb.AppendLine($"            catch (ReceiverException<{classe}> e)");
             sb.AppendLine("            {");
-            sb.AppendLine("                return e.State;");
+            sb.AppendLine(returnsTask ? "                return Task.FromResult(e.State);" : "                return e.State;");
             sb.AppendLine("            }");
 
             sb.AppendLine("            catch (Exception e)");
             sb.AppendLine("            {");
-            sb.AppendLine("                return Error(e, default);");
+            sb.AppendLine(returnsTask ? "                return Task.FromResult(Error(e));" : "                return Error(e);");
             sb.AppendLine("            }");
         }
         private CQRSParam() { }

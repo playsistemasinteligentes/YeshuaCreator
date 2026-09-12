@@ -22,8 +22,8 @@ namespace Input.Repository.ySaga
 {
     public partial class ySagaWriteRepository : IySagaWriteRepository
     {
-        private readonly IySagaStepWriteRepository _stepWriteRepository;
-        private readonly ILogger _logger;
+        private readonly IySagaStepWriteRepository _stepWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public ySagaWriteRepository(
             IUnitOfWork unitOfWork,

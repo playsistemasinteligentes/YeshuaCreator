@@ -19,15 +19,15 @@ namespace Repositorio.Outputs
     public partial record CTeEntradaOficialDTO
     {
     public int id { get; set; }
-    public string correlationid { get; set; }
-    public string sourceapplication { get; set; }
-    public string sourcemodule { get; set; }
-    public string sourcemessageid { get; set; }
-    public string messagetype { get; set; }
-    public string messageversion { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public string sourceapplication { get; set; } = string.Empty;
+    public string sourcemodule { get; set; } = string.Empty;
+    public string sourcemessageid { get; set; } = string.Empty;
+    public string messagetype { get; set; } = string.Empty;
+    public string messageversion { get; set; } = string.Empty;
     public DateTime receivedatutc { get; set; }
-    public string payloadhash { get; set; }
-    public string payloadstoragekey { get; set; }
+    public string payloadhash { get; set; } = string.Empty;
+    public string payloadstoragekey { get; set; } = string.Empty;
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

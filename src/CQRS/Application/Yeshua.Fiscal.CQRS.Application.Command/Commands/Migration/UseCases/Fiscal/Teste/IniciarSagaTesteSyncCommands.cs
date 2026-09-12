@@ -17,18 +17,18 @@ namespace Command.UseCase
 {
 public partial record IniciarSagaTesteSyncInputCommand : ICommand
 {
-    public string CorrelationId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
     public int TenantId { get; set; }
-    public string EntityId { get; set; }
+    public string EntityId { get; set; } = string.Empty;
 }
 
 public partial record IniciarSagaTesteSyncOutputCommand : ICommand
 {
-    public string CorrelationId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
     public int SagaId { get; set; }
-    public string EntityId { get; set; }
-    public string Status { get; set; }
-    public string Mensagem { get; set; }
+    public string EntityId { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

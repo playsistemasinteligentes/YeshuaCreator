@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<ReceberNotasFiscaisProdutoOutputCommand> retorno = Success("OK", null);
+                 State<ReceberNotasFiscaisProdutoOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<ReceberNotasFiscaisProdutoOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<ReceberNotasFiscaisProdutoOutputCommand>> CustomActionHookAsync(State<ReceberNotasFiscaisProdutoOutputCommand> state, ReceberNotasFiscaisProdutoInputCommand comand, CancellationToken cancellationToken);

@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -23,15 +23,15 @@ namespace Command.Receivers
 {
     public partial class MontarSolicitacoesCTeHandler
     {
-        private readonly ICTeEntradaOficialReadRepository _cteEntradaOficialReadRepository;
-        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
-        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository;
-        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository;
-        private readonly ICTeSolicitacaoFiscalWriteRepository _cteSolicitacaoFiscalWriteRepository;
-        private readonly ICTeDocumentoOriginarioReadRepository _cteDocumentoOriginarioReadRepository;
-        private readonly ICTeDocumentoOriginarioWriteRepository _cteDocumentoOriginarioWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly ICTeEntradaOficialReadRepository _cteEntradaOficialReadRepository = default!;
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository = default!;
+        private readonly ICTeSolicitacaoFiscalWriteRepository _cteSolicitacaoFiscalWriteRepository = default!;
+        private readonly ICTeDocumentoOriginarioReadRepository _cteDocumentoOriginarioReadRepository = default!;
+        private readonly ICTeDocumentoOriginarioWriteRepository _cteDocumentoOriginarioWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public MontarSolicitacoesCTeHandler(
             ICTeEntradaOficialReadRepository cteEntradaOficialReadRepository,
@@ -171,8 +171,8 @@ namespace Command.Receivers
                     nota.documentofiscaloriginarioid,
                     "NFe",
                     nota.chaveacesso,
-                    NumeroDocumento(nota.chaveacesso),
-                    SerieDocumento(nota.chaveacesso),
+                    NumeroDocumento(nota.chaveacesso ?? string.Empty),
+                    SerieDocumento(nota.chaveacesso ?? string.Empty),
                     nota.emitentedocumento,
                     nota.destinatariodocumento,
                     nota.valordocumento,

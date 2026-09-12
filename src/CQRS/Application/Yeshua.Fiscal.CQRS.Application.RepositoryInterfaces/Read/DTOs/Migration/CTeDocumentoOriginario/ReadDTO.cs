@@ -21,15 +21,15 @@ namespace Repositorio.Outputs
     public int id { get; set; }
     public int ctesolicitacaofiscalid { get; set; }
     public int documentofiscaloriginarioid { get; set; }
-    public string tipodocumento { get; set; }
-    public string chaveacesso { get; set; }
-    public string numero { get; set; }
-    public string serie { get; set; }
-    public string emitentedocumento { get; set; }
-    public string destinatariodocumento { get; set; }
+    public string tipodocumento { get; set; } = string.Empty;
+    public string chaveacesso { get; set; } = string.Empty;
+    public string numero { get; set; } = string.Empty;
+    public string serie { get; set; } = string.Empty;
+    public string emitentedocumento { get; set; } = string.Empty;
+    public string destinatariodocumento { get; set; } = string.Empty;
     public Decimal valordocumento { get; set; }
     public Decimal pesobruto { get; set; }
-    public string snapshotjson { get; set; }
+    public string snapshotjson { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

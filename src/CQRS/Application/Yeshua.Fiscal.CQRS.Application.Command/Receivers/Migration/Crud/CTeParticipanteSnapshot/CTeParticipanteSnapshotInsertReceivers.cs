@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICTeParticipanteSnapshotEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICTeParticipanteSnapshotEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CTeParticipanteSnapshotCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cteparticipantesnapshot = new CTeParticipanteSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CTeSolicitacaoFiscalId, c.Papel, c.Documento, c.Nome, c.InscricaoEstadual, c.UF, c.MunicipioCodigoIbge, c.EnderecoJson);
                  var domainResult = CTeParticipanteSnapshotDomainBehavior.Apply(cteparticipantesnapshot, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(cteparticipantesnapshot);
-                     return Success("OK", cteparticipantesnapshot);
+                     return Task.FromResult(Success("OK", cteparticipantesnapshot));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cteparticipantesnapshot);
+                    return Task.FromResult(Error(e, cteparticipantesnapshot));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

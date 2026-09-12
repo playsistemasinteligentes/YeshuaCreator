@@ -274,7 +274,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("                }");
 
                     sb.AppendLine("            }");
-                    sb.AppendLine("            catch (Exception ex)");
+                    sb.AppendLine("            catch (Exception)");
                     sb.AppendLine("            {");
                     sb.AppendLine("                throw;");
                     sb.AppendLine("            }");
@@ -294,7 +294,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine();
 
                     sb.AppendLine("            }");
-                    sb.AppendLine("            catch (Exception ex)");
+                    sb.AppendLine("            catch (Exception)");
                     sb.AppendLine("            {");
                     sb.AppendLine("                throw;");
                     sb.AppendLine("            }");
@@ -613,7 +613,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            {");
                 // chamar o custon receiver
 
-                sb.AppendLine($"                 State<{_useCase.OutputCommandName}> retorno = Success(\"OK\", null);");
+                sb.AppendLine($"                 State<{_useCase.OutputCommandName}> retorno = Success(\"OK\");");
 
 
                 if (_useCase.IsSagaStepStimulus)
@@ -738,12 +738,12 @@ namespace Dominio.Schemas.CQRS
 
                 if (_useCase != null && _useCase.Entitys.Count > 0)
                 {
-                    sb.AppendLine("        private readonly IUnitOfWork _unitOfWork;");
-                    sb.AppendLine("        private readonly IDomainTrackingPolicy _domainTrackingPolicy;");
+                    sb.AppendLine("        private readonly IUnitOfWork _unitOfWork = default!;");
+                    sb.AppendLine("        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;");
                     foreach (var entity in _useCase.Entitys)
                     {
-                        sb.AppendLine($"        private readonly I{entity.EntityName}ReadRepository _repRead{entity.EntityName};");
-                        sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName};");
+                        sb.AppendLine($"        private readonly I{entity.EntityName}ReadRepository _repRead{entity.EntityName} = default!;");
+                        sb.AppendLine($"        private readonly I{entity.EntityName}WriteRepository _repWrite{entity.EntityName} = default!;");
                     }
 
                     sb.Append($"        public {_useCase.HandlerName}(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy");
@@ -779,9 +779,9 @@ namespace Dominio.Schemas.CQRS
                 }
 
 
-                sb.AppendLine($"protected partial async Task<State<{_useCase.OutputCommandName}>> CustomActionHookAsync(State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand, CancellationToken cancellationToken)");
+                sb.AppendLine($"protected partial Task<State<{_useCase.OutputCommandName}>> CustomActionHookAsync(State<{_useCase.OutputCommandName}> state, {_useCase.InputCommandName} comand, CancellationToken cancellationToken)");
                 sb.AppendLine("{");
-                sb.AppendLine("    return state;");
+                sb.AppendLine("    return Task.FromResult(state);");
                 sb.AppendLine("}");
 
 

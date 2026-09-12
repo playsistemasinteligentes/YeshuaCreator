@@ -44,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<InformarDocumentosOriginariosDaCargaOutputCommand> retorno = Success("OK", null);
+                 State<InformarDocumentosOriginariosDaCargaOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<InformarDocumentosOriginariosDaCargaOutputCommand> e)
@@ -53,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<InformarDocumentosOriginariosDaCargaOutputCommand>> CustomActionHookAsync(State<InformarDocumentosOriginariosDaCargaOutputCommand> state, InformarDocumentosOriginariosDaCargaInputCommand comand, CancellationToken cancellationToken);

@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -25,10 +25,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class ReceberNotasFiscaisProdutoHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly INFeProdutoSnapshotReadRepository _repReadNFeProdutoSnapshot;
-        private readonly INFeProdutoSnapshotWriteRepository _repWriteNFeProdutoSnapshot;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly INFeProdutoSnapshotReadRepository _repReadNFeProdutoSnapshot = default!;
+        private readonly INFeProdutoSnapshotWriteRepository _repWriteNFeProdutoSnapshot = default!;
         public ReceberNotasFiscaisProdutoHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,INFeProdutoSnapshotReadRepository repReadNFeProdutoSnapshot, INFeProdutoSnapshotWriteRepository repWriteNFeProdutoSnapshot)
             : base(logger, executionContext)
         {

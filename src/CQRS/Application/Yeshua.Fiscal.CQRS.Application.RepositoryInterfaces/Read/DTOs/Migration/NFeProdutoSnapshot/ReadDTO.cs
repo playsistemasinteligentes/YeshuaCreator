@@ -20,21 +20,21 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int documentofiscaloriginarioid { get; set; }
-    public string correlationid { get; set; }
-    public string cargaid { get; set; }
-    public string pedidoid { get; set; }
-    public string chaveacesso { get; set; }
-    public string emitentedocumento { get; set; }
-    public string destinatariodocumento { get; set; }
-    public string uforigem { get; set; }
-    public string ufdestino { get; set; }
-    public string municipioorigemcodigoibge { get; set; }
-    public string municipiodestinocodigoibge { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public string cargaid { get; set; } = string.Empty;
+    public string pedidoid { get; set; } = string.Empty;
+    public string chaveacesso { get; set; } = string.Empty;
+    public string emitentedocumento { get; set; } = string.Empty;
+    public string destinatariodocumento { get; set; } = string.Empty;
+    public string uforigem { get; set; } = string.Empty;
+    public string ufdestino { get; set; } = string.Empty;
+    public string municipioorigemcodigoibge { get; set; } = string.Empty;
+    public string municipiodestinocodigoibge { get; set; } = string.Empty;
     public Decimal valordocumento { get; set; }
     public Decimal pesobruto { get; set; }
     public Decimal volume { get; set; }
-    public string xmlstoragekey { get; set; }
-    public string snapshotjson { get; set; }
+    public string xmlstoragekey { get; set; } = string.Empty;
+    public string snapshotjson { get; set; } = string.Empty;
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

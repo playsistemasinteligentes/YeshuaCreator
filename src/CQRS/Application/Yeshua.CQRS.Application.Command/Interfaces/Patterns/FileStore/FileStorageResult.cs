@@ -8,7 +8,7 @@ namespace Command.Interfaces.Patterns.FileStore
 {
     public class FileStorageResult
     {
-        public string Path { get; init; }
+        public string Path { get; init; } = string.Empty;
         public long Size { get; init; }
     }
 

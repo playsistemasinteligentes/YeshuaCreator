@@ -17,15 +17,15 @@ namespace Command.UseCase
 {
 public partial record LoginInputCommand : ICommand
 {
-    public string email { get; set; }
-    public string password { get; set; }
+    public string email { get; set; } = string.Empty;
+    public string password { get; set; } = string.Empty;
 }
 
 public partial record LoginOutputCommand : ICommand
 {
-    public List<string> modulos { get; set; }
+    public List<string> modulos { get; set; } = default!;
     public int UserId { get; set; }
-    public string email { get; set; }
+    public string email { get; set; } = string.Empty;
     public int tenantId { get; set; }
 }
 

@@ -89,7 +89,7 @@ namespace Shered.DB.Connection
         // DAPPER WRAPPER
         // ========================
 
-        public int Execute(string sql, object param = null)
+        public int Execute(string sql, object? param = null)
         {
             EnsureConnectionOpen();
 
@@ -100,7 +100,7 @@ namespace Shered.DB.Connection
             return result;
         }
 
-        public T ExecuteScalar<T>(string sql, object param = null)
+        public T ExecuteScalar<T>(string sql, object? param = null)
         {
             EnsureConnectionOpen();
 
@@ -111,7 +111,7 @@ namespace Shered.DB.Connection
             return result;
         }
 
-        public IEnumerable<T> Query<T>(string sql, object param = null)
+        public IEnumerable<T> Query<T>(string sql, object? param = null)
         {
             EnsureConnectionOpen();
 
@@ -122,7 +122,7 @@ namespace Shered.DB.Connection
             return result;
         }
 
-        public T QuerySingle<T>(string sql, object param = null)
+        public T QuerySingle<T>(string sql, object? param = null)
         {
             EnsureConnectionOpen();
 
@@ -133,7 +133,7 @@ namespace Shered.DB.Connection
             return result;
         }
 
-        public T QueryFirstOrDefault<T>(string sql, object param = null)
+        public T QueryFirstOrDefault<T>(string sql, object? param = null)
         {
             EnsureConnectionOpen();
 
@@ -141,7 +141,7 @@ namespace Shered.DB.Connection
 
             AutoCloseIfNeeded();
 
-            return result;
+            return result!;
         }
 
         // ========================

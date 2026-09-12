@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -21,10 +21,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class SolicitarEmissaoCTeHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly ICTeSolicitacaoFiscalReadRepository _repReadCTeSolicitacaoFiscal;
-        private readonly ICTeSolicitacaoFiscalWriteRepository _repWriteCTeSolicitacaoFiscal;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly ICTeSolicitacaoFiscalReadRepository _repReadCTeSolicitacaoFiscal = default!;
+        private readonly ICTeSolicitacaoFiscalWriteRepository _repWriteCTeSolicitacaoFiscal = default!;
         public SolicitarEmissaoCTeHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,ICTeSolicitacaoFiscalReadRepository repReadCTeSolicitacaoFiscal, ICTeSolicitacaoFiscalWriteRepository repWriteCTeSolicitacaoFiscal)
             : base(logger, executionContext)
         {

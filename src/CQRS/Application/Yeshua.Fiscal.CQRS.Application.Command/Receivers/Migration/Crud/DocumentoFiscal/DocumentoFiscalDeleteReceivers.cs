@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IDocumentoFiscalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IDocumentoFiscalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.DocumentoFiscalCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var documentofiscal = new DocumentoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.ProdutoFiscal, c.ChaveAcesso, c.Serie, c.Numero, c.Ambiente, c.UFEmitente, c.EmitenteDocumento, c.DestinatarioDocumento, c.XmlStorageKey, c.XmlHash, c.ProtocoloAutorizacao, c.CodigoRetorno, c.MensagemRetorno, c.Status);
                  var domainResult = DocumentoFiscalDomainBehavior.Apply(documentofiscal, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(documentofiscal);
-                     return Success("OK", documentofiscal);
+                     return Task.FromResult(Success("OK", documentofiscal));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, documentofiscal);
+                    return Task.FromResult(Error(e, documentofiscal));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

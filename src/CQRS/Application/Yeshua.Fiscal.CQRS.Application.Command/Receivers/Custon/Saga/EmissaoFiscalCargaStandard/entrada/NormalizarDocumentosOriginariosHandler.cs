@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -16,8 +16,8 @@ namespace Command.Receivers
 {
     public partial class NormalizarDocumentosOriginariosHandler
     {
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public NormalizarDocumentosOriginariosHandler(IyInboxWriteRepository inboxWriteRepository, ILogger logger)
         {

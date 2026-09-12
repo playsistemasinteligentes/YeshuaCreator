@@ -19,7 +19,7 @@ namespace Repositorio.Outputs
     public partial record yUserGrantTenantIDDTO
     {
     public int id { get; set; }
-    public string nome { get; set; }
+    public string nome { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

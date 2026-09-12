@@ -17,18 +17,18 @@ namespace Command.UseCase
 {
 public partial record EncerrarMDFeInputCommand : ICommand
 {
-    public string ChaveAcesso { get; set; }
-    public string UfCarregamento { get; set; }
-    public string UfDescarregamento { get; set; }
-    public string PlacaVeiculo { get; set; }
+    public string ChaveAcesso { get; set; } = string.Empty;
+    public string UfCarregamento { get; set; } = string.Empty;
+    public string UfDescarregamento { get; set; } = string.Empty;
+    public string PlacaVeiculo { get; set; } = string.Empty;
 }
 
 public partial record EncerrarMDFeOutputCommand : ICommand
 {
-    public string ChaveAcesso { get; set; }
+    public string ChaveAcesso { get; set; } = string.Empty;
     public bool Encerrado { get; set; }
-    public string Protocolo { get; set; }
-    public string Mensagem { get; set; }
+    public string Protocolo { get; set; } = string.Empty;
+    public string Mensagem { get; set; } = string.Empty;
     public Nullable<DateTime> EncerradoEm { get; set; }
 }
 

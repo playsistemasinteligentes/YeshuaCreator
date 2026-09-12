@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IEntradaFiscalContingenciaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEntradaFiscalContingenciaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.EntradaFiscalContingenciaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var entradafiscalcontingencia = new EntradaFiscalContingenciaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.CargaId, c.TipoSolicitante, c.Ambiente, c.SourceApplication, c.SourceModule, c.SourceMessageId, c.EmitenteFiscalDocumento, c.TomadorDocumento, c.TransportadorDocumento, c.RemetenteDocumento, c.DestinatarioDocumento, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.RNTRC, c.PlacaVeiculo, c.UFVeiculo, c.CondutorDocumento, c.CondutorNome, c.QuantidadeDocumentos, c.ValorCarga, c.PesoBruto, c.Volume, c.PendenciasJson, c.SnapshotJson, c.EmissaoFiscalCorrelationId, c.EmissaoFiscalSagaId, c.CriadoEmUtc, c.AtualizadoEmUtc, c.Status);
                  var domainResult = EntradaFiscalContingenciaDomainBehavior.Apply(entradafiscalcontingencia, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(entradafiscalcontingencia);
-                     return Success("OK", entradafiscalcontingencia);
+                     return Task.FromResult(Success("OK", entradafiscalcontingencia));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, entradafiscalcontingencia);
+                    return Task.FromResult(Error(e, entradafiscalcontingencia));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

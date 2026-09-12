@@ -53,14 +53,14 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        }");
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendLine($"        protected override async Task<State<{_agent.Name.SourceType()}HubAgentReceiver>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
+            sb.AppendLine($"        protected override Task<State<{_agent.Name.SourceType()}HubAgentReceiver>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
             sb.AppendLine("        {");
             sb.AppendLine("            try");
             sb.AppendLine("            {");
             //sb.AppendLine("                comand = getMenu();");
-            sb.AppendLine("                return Success(\"OK\", null);");
+            sb.AppendLine("                return Task.FromResult(Success(\"OK\"));");
             sb.AppendLine("            }");
-            CQRSParam.I.AddExeptionReceiver(sb, $"{_agent.Name.SourceType()}HubAgentReceiver");
+            CQRSParam.I.AddExeptionReceiver(sb, $"{_agent.Name.SourceType()}HubAgentReceiver", returnsTask: true);
             sb.AppendLine("        }");
             foreach (var menu in _agent.Menus)
             {

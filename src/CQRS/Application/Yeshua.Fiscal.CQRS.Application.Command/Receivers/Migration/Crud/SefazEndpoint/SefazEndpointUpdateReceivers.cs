@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ISefazEndpointEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ISefazEndpointEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.SefazEndpointCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var sefazendpoint = new SefazEndpointFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.ProdutoFiscal, c.UF, c.Ambiente, c.Servico, c.Versao, c.Url, c.Ativo);
                  var domainResult = SefazEndpointDomainBehavior.Apply(sefazendpoint, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(sefazendpoint);
-                     return Success("OK", sefazendpoint);
+                     return Task.FromResult(Success("OK", sefazendpoint));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, sefazendpoint);
+                    return Task.FromResult(Error(e, sefazendpoint));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

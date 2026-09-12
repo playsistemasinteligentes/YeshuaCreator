@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IyConfigNotificationEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IyConfigNotificationEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yConfigNotificationCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var yconfignotification = new yConfigNotificationFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EmailSmtpClient, c.EmailPort, c.EmailUserName, c.EmailPassword);
                  var domainResult = yConfigNotificationDomainBehavior.Apply(yconfignotification, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(yconfignotification);
-                     return Success("OK", yconfignotification);
+                     return Task.FromResult(Success("OK", yconfignotification));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, yconfignotification);
+                    return Task.FromResult(Error(e, yconfignotification));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

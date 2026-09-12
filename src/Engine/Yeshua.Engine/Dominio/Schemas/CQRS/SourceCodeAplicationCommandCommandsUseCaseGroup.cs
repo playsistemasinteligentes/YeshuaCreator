@@ -151,6 +151,9 @@ namespace Dominio.Schemas.CQRS
             if (type == typeof(string))
                 return;
 
+            if (type.IsEnum)
+                return;
+
             if (type.IsGenericType)
             {
                 foreach (var arg in type.GetGenericArguments())
@@ -194,7 +197,7 @@ namespace Dominio.Schemas.CQRS
             foreach (PropertyInfo prop in type.GetProperties())
             {
                 string propTypeName = GetFriendlyTypeName(prop.PropertyType);
-                sb.AppendLine($"    public {propTypeName} {prop.Name} {{ get; set; }}");
+                sb.AppendLine($"    public {propTypeName} {prop.Name} {{ get; set; }}{DefaultInitializer(prop.PropertyType)}");
             }
 
             sb.AppendLine("}");
@@ -231,6 +234,14 @@ namespace Dominio.Schemas.CQRS
             return _method != null
                 && _method.IsSagaStepStimulus
                 && className == _method.OutputCommandName;
+        }
+
+        private static string DefaultInitializer(Type type)
+        {
+            if (type == typeof(string))
+                return " = string.Empty;";
+
+            return type.IsValueType ? string.Empty : " = default!;";
         }
 
         // Função auxiliar para nome de tipos amigável permanece igual

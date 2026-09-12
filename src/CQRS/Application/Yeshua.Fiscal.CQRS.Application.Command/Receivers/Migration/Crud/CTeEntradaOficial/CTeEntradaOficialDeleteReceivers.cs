@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICTeEntradaOficialEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICTeEntradaOficialEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CTeEntradaOficialCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cteentradaoficial = new CTeEntradaOficialFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.SourceApplication, c.SourceModule, c.SourceMessageId, c.MessageType, c.MessageVersion, c.ReceivedAtUtc, c.PayloadHash, c.PayloadStorageKey, c.Status);
                  var domainResult = CTeEntradaOficialDomainBehavior.Apply(cteentradaoficial, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(cteentradaoficial);
-                     return Success("OK", cteentradaoficial);
+                     return Task.FromResult(Success("OK", cteentradaoficial));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cteentradaoficial);
+                    return Task.FromResult(Error(e, cteentradaoficial));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

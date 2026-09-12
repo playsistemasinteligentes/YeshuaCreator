@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICertificadoDigitalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICertificadoDigitalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CertificadoDigitalCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var certificadodigital = new CertificadoDigitalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Apelido, c.DocumentoTitular, c.StorageKey, c.Thumbprint, c.ValidoDe, c.ValidoAte, c.Ativo);
                  var domainResult = CertificadoDigitalDomainBehavior.Apply(certificadodigital, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(certificadodigital);
-                     return Success("OK", certificadodigital);
+                     return Task.FromResult(Success("OK", certificadodigital));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, certificadodigital);
+                    return Task.FromResult(Error(e, certificadodigital));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

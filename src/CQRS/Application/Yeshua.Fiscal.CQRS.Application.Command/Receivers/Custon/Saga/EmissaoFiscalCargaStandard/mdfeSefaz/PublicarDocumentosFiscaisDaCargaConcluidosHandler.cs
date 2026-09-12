@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -22,18 +22,18 @@ namespace Command.Receivers
 {
     public partial class PublicarDocumentosFiscaisDaCargaConcluidosHandler
     {
-        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
-        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository;
-        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository;
-        private readonly IMDFeSolicitacaoFiscalReadRepository _mdfeSolicitacaoFiscalReadRepository;
-        private readonly IMDFeTentativaEmissaoReadRepository _mdfeTentativaEmissaoReadRepository;
-        private readonly IEntradaFiscalContingenciaReadRepository _entradaFiscalContingenciaReadRepository;
-        private readonly IEntradaFiscalContingenciaWriteRepository _entradaFiscalContingenciaWriteRepository;
-        private readonly IySagaReadRepository _sagaReadRepository;
-        private readonly IySagaStepReadRepository _sagaStepReadRepository;
-        private readonly IyOutboxWriteRepository _outboxWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository = default!;
+        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository = default!;
+        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository = default!;
+        private readonly IMDFeSolicitacaoFiscalReadRepository _mdfeSolicitacaoFiscalReadRepository = default!;
+        private readonly IMDFeTentativaEmissaoReadRepository _mdfeTentativaEmissaoReadRepository = default!;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaFiscalContingenciaReadRepository = default!;
+        private readonly IEntradaFiscalContingenciaWriteRepository _entradaFiscalContingenciaWriteRepository = default!;
+        private readonly IySagaReadRepository _sagaReadRepository = default!;
+        private readonly IySagaStepReadRepository _sagaStepReadRepository = default!;
+        private readonly IyOutboxWriteRepository _outboxWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public PublicarDocumentosFiscaisDaCargaConcluidosHandler(
             ICTeRomaneioConsolidadoReadRepository cteRomaneioConsolidadoReadRepository,

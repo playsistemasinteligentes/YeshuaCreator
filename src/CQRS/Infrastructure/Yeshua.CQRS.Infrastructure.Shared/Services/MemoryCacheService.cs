@@ -18,7 +18,7 @@ namespace Shered.Services
         public T Get(string key)
         {
             _cache.TryGetValue(key, out T value);
-            return value;
+            return value!;
         }
 
         public void Set(string key, T value, string prefix, TimeSpan? expiration = null)

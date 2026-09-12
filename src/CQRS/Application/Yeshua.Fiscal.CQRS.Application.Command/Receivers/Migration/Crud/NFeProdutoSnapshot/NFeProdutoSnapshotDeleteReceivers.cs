@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<INFeProdutoSnapshotEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<INFeProdutoSnapshotEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.NFeProdutoSnapshotCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var nfeprodutosnapshot = new NFeProdutoSnapshotFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.DocumentoFiscalOriginarioId, c.CorrelationId, c.CargaId, c.PedidoId, c.ChaveAcesso, c.EmitenteDocumento, c.DestinatarioDocumento, c.UFOrigem, c.UFDestino, c.MunicipioOrigemCodigoIbge, c.MunicipioDestinoCodigoIbge, c.ValorDocumento, c.PesoBruto, c.Volume, c.XmlStorageKey, c.SnapshotJson, c.Status);
                  var domainResult = NFeProdutoSnapshotDomainBehavior.Apply(nfeprodutosnapshot, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(nfeprodutosnapshot);
-                     return Success("OK", nfeprodutosnapshot);
+                     return Task.FromResult(Success("OK", nfeprodutosnapshot));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, nfeprodutosnapshot);
+                    return Task.FromResult(Error(e, nfeprodutosnapshot));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

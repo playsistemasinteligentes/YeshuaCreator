@@ -20,16 +20,16 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int ctesolicitacaofiscalid { get; set; }
-    public string chaveacesso { get; set; }
+    public string chaveacesso { get; set; } = string.Empty;
     public int numero { get; set; }
     public int serie { get; set; }
     public int tentativa { get; set; }
-    public string xmlassinadostoragekey { get; set; }
-    public string xmlprocstoragekey { get; set; }
-    public string xmlhash { get; set; }
-    public string codigoretorno { get; set; }
-    public string mensagemretorno { get; set; }
-    public string protocoloautorizacao { get; set; }
+    public string xmlassinadostoragekey { get; set; } = string.Empty;
+    public string xmlprocstoragekey { get; set; } = string.Empty;
+    public string xmlhash { get; set; } = string.Empty;
+    public string codigoretorno { get; set; } = string.Empty;
+    public string mensagemretorno { get; set; } = string.Empty;
+    public string protocoloautorizacao { get; set; } = string.Empty;
     public DateTime enviadoemutc { get; set; }
     public DateTime autorizadoemutc { get; set; }
     public int status { get; set; }

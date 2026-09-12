@@ -19,9 +19,5 @@ namespace Command.UseCase
     {
     }
 
-public partial record TypeNotification : ICommand
-{
-}
-
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ICTeRomaneioConsolidadoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ICTeRomaneioConsolidadoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.CTeRomaneioConsolidadoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var cteromaneioconsolidado = new CTeRomaneioConsolidadoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.EntradaOficialId, c.CorrelationId, c.RomaneioId, c.CargaId, c.ConsolidadoEmUtc, c.UFInicio, c.UFFim, c.MunicipioInicioCodigoIbge, c.MunicipioFimCodigoIbge, c.EmitenteDocumento, c.TomadorDocumento, c.RotaSnapshotJson, c.CargaSnapshotJson, c.PreferenciasFiscaisJson, c.Status);
                  var domainResult = CTeRomaneioConsolidadoDomainBehavior.Apply(cteromaneioconsolidado, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(cteromaneioconsolidado);
-                     return Success("OK", cteromaneioconsolidado);
+                     return Task.FromResult(Success("OK", cteromaneioconsolidado));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, cteromaneioconsolidado);
+                    return Task.FromResult(Error(e, cteromaneioconsolidado));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

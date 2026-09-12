@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMDFeDocumentoOriginarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMDFeDocumentoOriginarioEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MDFeDocumentoOriginarioCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mdfedocumentooriginario = new MDFeDocumentoOriginarioFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeSolicitacaoFiscalId, c.DocumentoFiscalOriginarioId, c.TipoDocumento, c.ChaveAcesso, c.SnapshotJson);
                  var domainResult = MDFeDocumentoOriginarioDomainBehavior.Apply(mdfedocumentooriginario, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(mdfedocumentooriginario);
-                     return Success("OK", mdfedocumentooriginario);
+                     return Task.FromResult(Success("OK", mdfedocumentooriginario));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mdfedocumentooriginario);
+                    return Task.FromResult(Error(e, mdfedocumentooriginario));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

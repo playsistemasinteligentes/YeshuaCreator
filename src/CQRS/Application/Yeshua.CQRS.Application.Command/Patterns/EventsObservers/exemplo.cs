@@ -10,7 +10,7 @@ namespace Command.Patterns.EventsObservers
 
     public class Stock
     {
-        public event EventHandler<StockLevelChangedEventArgs> StockLevelChanged;
+        public event EventHandler<StockLevelChangedEventArgs>? StockLevelChanged;
 
         private int _quantity;
 
@@ -71,7 +71,7 @@ namespace Command.Patterns.EventsObservers
             stock.StockLevelChanged += OnStockLevelChanged;
         }
 
-        private void OnStockLevelChanged(object sender, StockLevelChangedEventArgs e)
+        private void OnStockLevelChanged(object? sender, StockLevelChangedEventArgs e)
         {
             Console.WriteLine($"Stock level changed. New quantity: {e.NewQuantity}");
             // Implement additional logic, such as sending alerts or updating databases.

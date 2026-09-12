@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -16,8 +16,8 @@ namespace Command.Receivers
 {
     public partial class PublicarMDFeEncerradoHandler
     {
-        private readonly IyOutboxWriteRepository _outboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly IyOutboxWriteRepository _outboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public PublicarMDFeEncerradoHandler(IyOutboxWriteRepository outboxWriteRepository, ILogger logger)
         {

@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -21,10 +21,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class ValidarCertificadoDigitalHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly ICertificadoDigitalReadRepository _repReadCertificadoDigital;
-        private readonly ICertificadoDigitalWriteRepository _repWriteCertificadoDigital;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly ICertificadoDigitalReadRepository _repReadCertificadoDigital = default!;
+        private readonly ICertificadoDigitalWriteRepository _repWriteCertificadoDigital = default!;
         public ValidarCertificadoDigitalHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,ICertificadoDigitalReadRepository repReadCertificadoDigital, ICertificadoDigitalWriteRepository repWriteCertificadoDigital)
             : base(logger, executionContext)
         {

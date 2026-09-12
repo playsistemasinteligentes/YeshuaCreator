@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -21,10 +21,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class EncerrarMDFeHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly IMDFeReadRepository _repReadMDFe;
-        private readonly IMDFeWriteRepository _repWriteMDFe;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly IMDFeReadRepository _repReadMDFe = default!;
+        private readonly IMDFeWriteRepository _repWriteMDFe = default!;
         public EncerrarMDFeHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IMDFeReadRepository repReadMDFe, IMDFeWriteRepository repWriteMDFe)
             : base(logger, executionContext)
         {

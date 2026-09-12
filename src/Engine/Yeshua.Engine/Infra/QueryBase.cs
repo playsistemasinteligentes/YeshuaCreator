@@ -8,7 +8,7 @@ namespace Infra
 {
     public abstract class QueryBase
     {
-        public string Query { get; set; }
-        public object Parameters { get; set; }
+        public string Query { get; set; } = string.Empty;
+        public object Parameters { get; set; } = new object();
     }
 }

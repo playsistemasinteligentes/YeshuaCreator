@@ -33,7 +33,7 @@ namespace Shered.DB.Connection
         public void Rollback() => _inner.Rollback();
         public void Dispose() => _inner.Dispose();
 
-        public int Execute(string sql, object param = null)
+        public int Execute(string sql, object? param = null)
         {
             var queryId = _telemetry.GetQueryId(sql);
             var startedAt = Stopwatch.GetTimestamp();
@@ -50,7 +50,7 @@ namespace Shered.DB.Connection
             }
         }
 
-        public T ExecuteScalar<T>(string sql, object param = null)
+        public T ExecuteScalar<T>(string sql, object? param = null)
         {
             var queryId = _telemetry.GetQueryId(sql);
             var startedAt = Stopwatch.GetTimestamp();
@@ -67,7 +67,7 @@ namespace Shered.DB.Connection
             }
         }
 
-        public IEnumerable<T> Query<T>(string sql, object param = null)
+        public IEnumerable<T> Query<T>(string sql, object? param = null)
         {
             var queryId = _telemetry.GetQueryId(sql);
             var startedAt = Stopwatch.GetTimestamp();
@@ -84,7 +84,7 @@ namespace Shered.DB.Connection
             }
         }
 
-        public T QuerySingle<T>(string sql, object param = null)
+        public T QuerySingle<T>(string sql, object? param = null)
         {
             var queryId = _telemetry.GetQueryId(sql);
             var startedAt = Stopwatch.GetTimestamp();
@@ -101,7 +101,7 @@ namespace Shered.DB.Connection
             }
         }
 
-        public T QueryFirstOrDefault<T>(string sql, object param = null)
+        public T QueryFirstOrDefault<T>(string sql, object? param = null)
         {
             var queryId = _telemetry.GetQueryId(sql);
             var startedAt = Stopwatch.GetTimestamp();

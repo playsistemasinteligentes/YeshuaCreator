@@ -20,13 +20,13 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int ctesolicitacaofiscalid { get; set; }
-    public string papel { get; set; }
-    public string documento { get; set; }
-    public string nome { get; set; }
-    public string inscricaoestadual { get; set; }
-    public string uf { get; set; }
-    public string municipiocodigoibge { get; set; }
-    public string enderecojson { get; set; }
+    public string papel { get; set; } = string.Empty;
+    public string documento { get; set; } = string.Empty;
+    public string nome { get; set; } = string.Empty;
+    public string inscricaoestadual { get; set; } = string.Empty;
+    public string uf { get; set; } = string.Empty;
+    public string municipiocodigoibge { get; set; } = string.Empty;
+    public string enderecojson { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

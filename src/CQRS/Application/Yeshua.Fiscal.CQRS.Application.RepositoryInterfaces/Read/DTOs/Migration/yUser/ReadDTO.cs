@@ -19,9 +19,9 @@ namespace Repositorio.Outputs
     public partial record yUserDTO
     {
     public int id { get; set; }
-    public string nome { get; set; }
-    public string email { get; set; }
-    public string senha { get; set; }
+    public string nome { get; set; } = string.Empty;
+    public string email { get; set; } = string.Empty;
+    public string senha { get; set; } = string.Empty;
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }

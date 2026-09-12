@@ -18,9 +18,9 @@ namespace Command.Receivers
 {
     public partial class ReceberNotasFiscaisDaContingenciaHandler
     {
-        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository;
-        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository;
-        private readonly ILogger _logger;
+        private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository = default!;
+        private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public ReceberNotasFiscaisDaContingenciaHandler(
             IEntradaFiscalContingenciaReadRepository entradaReadRepository,

@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record yTenantModuleModuleIdDTO
     {
-    public string id { get; set; }
+    public string id { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

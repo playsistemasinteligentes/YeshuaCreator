@@ -17,20 +17,20 @@ namespace Command.UseCase
 {
 public partial record SolicitarEmissaoMDFeInputCommand : ICommand
 {
-    public string CorrelationId { get; set; }
-    public string CargaId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
+    public string CargaId { get; set; } = string.Empty;
     public int Ambiente { get; set; }
-    public string UFCarregamento { get; set; }
-    public string UFDescarregamento { get; set; }
-    public string PlacaVeiculo { get; set; }
-    public string DocumentosOriginariosJson { get; set; }
+    public string UFCarregamento { get; set; } = string.Empty;
+    public string UFDescarregamento { get; set; } = string.Empty;
+    public string PlacaVeiculo { get; set; } = string.Empty;
+    public string DocumentosOriginariosJson { get; set; } = string.Empty;
 }
 
 public partial record SolicitarEmissaoMDFeOutputCommand : ICommand
 {
     public int SolicitacaoId { get; set; }
-    public string CorrelationId { get; set; }
-    public string Status { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
     public bool ProntoParaAutorizar { get; set; }
 }
 

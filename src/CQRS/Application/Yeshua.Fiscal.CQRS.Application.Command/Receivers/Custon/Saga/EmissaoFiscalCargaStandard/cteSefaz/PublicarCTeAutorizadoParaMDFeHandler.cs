@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -19,13 +19,13 @@ namespace Command.Receivers
 {
     public partial class PublicarCTeAutorizadoParaMDFeHandler
     {
-        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository;
-        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository;
-        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository;
-        private readonly ICTeSaidaMDFeReadRepository _cteSaidaMDFeReadRepository;
-        private readonly ICTeSaidaMDFeWriteRepository _cteSaidaMDFeWriteRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
-        private readonly ILogger _logger;
+        private readonly ICTeRomaneioConsolidadoReadRepository _cteRomaneioConsolidadoReadRepository = default!;
+        private readonly ICTeSolicitacaoFiscalReadRepository _cteSolicitacaoFiscalReadRepository = default!;
+        private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository = default!;
+        private readonly ICTeSaidaMDFeReadRepository _cteSaidaMDFeReadRepository = default!;
+        private readonly ICTeSaidaMDFeWriteRepository _cteSaidaMDFeWriteRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
+        private readonly ILogger _logger = default!;
 
         public PublicarCTeAutorizadoParaMDFeHandler(
             ICTeRomaneioConsolidadoReadRepository cteRomaneioConsolidadoReadRepository,

@@ -13,8 +13,8 @@ namespace DominioDeTestes.config
             new Lazy<GlobalSettingsSingleton>(() => new GlobalSettingsSingleton());
         public object _instanceLock = new object();
 
-        private string _connectionStringWrite { get; set;}
-        private string _connectionStringRead { get; set;}
+        private string _connectionStringWrite { get; set;} = string.Empty;
+        private string _connectionStringRead { get; set;} = string.Empty;
         public HttpClient Client = new HttpClient();
         public int Contador { get; private set; }
 

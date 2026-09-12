@@ -80,38 +80,38 @@ namespace Command.Patterns.Command
 
         protected static State<TResponse> Error(
             string message,
-            TResponse data = default,
+            TResponse data = default!,
             bool propagation = true)
             => new State<TResponse>(500, message, data, propagation);
 
         protected static State<TResponse> Error(
             Exception exception,
-            TResponse data = default)
+            TResponse data = default!)
             => new State<TResponse>(500, exception, data, false);
 
         protected static State<TResponse> Success(
             string message,
-            TResponse data = default)
+            TResponse data = default!)
             => new State<TResponse>(200, message, data);
 
         protected static State<TResponse> Created(
             string message,
-            TResponse data = default)
+            TResponse data = default!)
             => new State<TResponse>(201, message, data);
 
         protected static State<TResponse> Accepted(
             string message,
-            TResponse data = default)
+            TResponse data = default!)
             => new State<TResponse>(202, message, data);
 
         protected static State<TResponse> ValidationError(
             string message,
-            TResponse data = default)
+            TResponse data = default!)
             => new State<TResponse>(400, message, data);
 
         protected static State<TResponse> ValidationError(
             List<string> messages,
-            TResponse data = default)
+            TResponse data = default!)
             => new State<TResponse>(400, messages, data);
     }
 }

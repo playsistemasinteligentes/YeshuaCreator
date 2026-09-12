@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMDFeSolicitacaoFiscalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMDFeSolicitacaoFiscalEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MDFeSolicitacaoFiscalCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mdfesolicitacaofiscal = new MDFeSolicitacaoFiscalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.CorrelationId, c.CargaId, c.Ambiente, c.UFCarregamento, c.UFDescarregamento, c.PlacaVeiculo, c.CondutorDocumento, c.DocumentosOriginariosJson, c.TransporteSnapshotJson, c.Status);
                  var domainResult = MDFeSolicitacaoFiscalDomainBehavior.Apply(mdfesolicitacaofiscal, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(mdfesolicitacaofiscal);
-                     return Success("OK", mdfesolicitacaofiscal);
+                     return Task.FromResult(Success("OK", mdfesolicitacaofiscal));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mdfesolicitacaofiscal);
+                    return Task.FromResult(Error(e, mdfesolicitacaofiscal));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -17,23 +17,23 @@ namespace Command.UseCase
 {
 public partial record ReceberNotasFiscaisProdutoInputCommand : ICommand
 {
-    public string CorrelationId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
     public int TenantId { get; set; }
-    public string SourceApplication { get; set; }
-    public string SourceModule { get; set; }
-    public string SourceMessageId { get; set; }
-    public string CargaId { get; set; }
-    public string NotasFiscaisJson { get; set; }
-    public string PayloadHash { get; set; }
-    public string PayloadStorageKey { get; set; }
+    public string SourceApplication { get; set; } = string.Empty;
+    public string SourceModule { get; set; } = string.Empty;
+    public string SourceMessageId { get; set; } = string.Empty;
+    public string CargaId { get; set; } = string.Empty;
+    public string NotasFiscaisJson { get; set; } = string.Empty;
+    public string PayloadHash { get; set; } = string.Empty;
+    public string PayloadStorageKey { get; set; } = string.Empty;
 }
 
 public partial record ReceberNotasFiscaisProdutoOutputCommand : ICommand
 {
-    public string CorrelationId { get; set; }
+    public string CorrelationId { get; set; } = string.Empty;
     public bool Accepted { get; set; }
     public int QuantidadeNotas { get; set; }
-    public string Mensagem { get; set; }
+    public string Mensagem { get; set; } = string.Empty;
 }
 
 }

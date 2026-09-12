@@ -60,11 +60,11 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             }
             else if (message.Payload is string str && str.TrimStart().StartsWith("{"))
             {
-                args = new object[] { message.CorrelationId, str };
+                args = new object[] { message.CorrelationId ?? string.Empty, str };
             }
             else if (message.Payload != null)
             {
-                args = new object[] { message.Payload.ToString() };
+                args = new object[] { message.Payload.ToString() ?? string.Empty };
             }
             else
             {
@@ -74,6 +74,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             // 🔥 GARANTE nome correto da task (caso venha errado)
             var taskId = message.CorrelationId ?? message.Id.ToString();
 
+            string? eta = null;
             var celeryBody = new
             {
                 id = taskId,
@@ -81,7 +82,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
                 args = args,
                 kwargs = new { },
                 retries = 0,
-                eta = (string)null
+                eta
             };
 
             var json = JsonSerializer.Serialize(celeryBody);
@@ -96,13 +97,13 @@ public class RabbitMQQueuePublisher : IQueuePublisher
                 Persistent = true,
                 ContentType = "application/json",
                 ContentEncoding = "utf-8",
-                Headers = new Dictionary<string, object>
+                Headers = new Dictionary<string, object?>
             {
                 { "task", taskName },
                 { "id", taskId },
                 { "lang", "py" },
                 { "retries", 0 },
-                { "eta", null }
+                { "eta", eta }
             }
             };
 

@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -20,15 +20,15 @@ namespace Command.Receivers.UseCase
 {
     public partial class LoginHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly IyUserReadRepository _repReadyUser;
-        private readonly IyUserWriteRepository _repWriteyUser;
-        private readonly IyTenantModuleReadRepository _repReadyTenantModule;
-        private readonly IyTenantModuleWriteRepository _repWriteyTenantModule;
-        private readonly IyUserModuleReadRepository _repReadyUserModule;
-        private readonly IyUserModuleWriteRepository _repWriteyUserModule;
-        private readonly IyTenantReadRepository _repReadYtenantRepository;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly IyUserReadRepository _repReadyUser = default!;
+        private readonly IyUserWriteRepository _repWriteyUser = default!;
+        private readonly IyTenantModuleReadRepository _repReadyTenantModule = default!;
+        private readonly IyTenantModuleWriteRepository _repWriteyTenantModule = default!;
+        private readonly IyUserModuleReadRepository _repReadyUserModule = default!;
+        private readonly IyUserModuleWriteRepository _repWriteyUserModule = default!;
+        private readonly IyTenantReadRepository _repReadYtenantRepository = default!;
         public LoginHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,IyTenantModuleReadRepository repReadyTenantModule, IyTenantModuleWriteRepository repWriteyTenantModule,IyUserModuleReadRepository repReadyUserModule, IyUserModuleWriteRepository repWriteyUserModule,IyTenantReadRepository repReadYtenantRepository)
             : base(logger, executionContext)
         {
@@ -50,10 +50,10 @@ protected partial async Task<State<LoginOutputCommand>> CustomActionHookAsync(St
     {
         var user = _repReadyUser.FirstByEmail(comand.email, true);
         if (user is null)
-            throw new ReceiverException<LoginOutputCommand>(Error("Erro login.", default));
+            throw new ReceiverException<LoginOutputCommand>(Error("Erro login.", default!));
 
         if (user.senha != comand.password)
-            throw new ReceiverException<LoginOutputCommand>(Error("Erro login.", default));
+            throw new ReceiverException<LoginOutputCommand>(Error("Erro login.", default!));
 
         _executionContext.SetTenantId(user.tenantid);
 
@@ -82,7 +82,7 @@ protected partial async Task<State<LoginOutputCommand>> CustomActionHookAsync(St
     }
     catch (Exception ex)
     {
-        throw new ReceiverException<LoginOutputCommand>(Error(ex, default));
+        throw new ReceiverException<LoginOutputCommand>(Error(ex, default!));
     }
 
     return state;

@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -30,10 +30,10 @@ namespace Command.Receivers.UseCase
         private const int StepStatusWaiting = 3;
         private const string InboxType = "fiscal.teste-sync.step3-input.v1";
 
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IySagaReadRepository _sagaReadRepository;
-        private readonly IySagaStepReadRepository _sagaStepReadRepository;
-        private readonly IyInboxWriteRepository _inboxWriteRepository;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IySagaReadRepository _sagaReadRepository = default!;
+        private readonly IySagaStepReadRepository _sagaStepReadRepository = default!;
+        private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
 
         public AcordarSagaTesteSyncPasso3Handler(
             IUnitOfWork unitOfWork,

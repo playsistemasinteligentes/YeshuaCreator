@@ -19,12 +19,12 @@ namespace Repositorio.Outputs
     public partial record MDFeDTO
     {
     public int id { get; set; }
-    public string chaveacesso { get; set; }
+    public string chaveacesso { get; set; } = string.Empty;
     public int serie { get; set; }
     public int numero { get; set; }
-    public string ufcarregamento { get; set; }
-    public string ufdescarregamento { get; set; }
-    public string placaveiculo { get; set; }
+    public string ufcarregamento { get; set; } = string.Empty;
+    public string ufdescarregamento { get; set; } = string.Empty;
+    public string placaveiculo { get; set; } = string.Empty;
     public DateTime emitidoem { get; set; }
     public DateTime autorizadoem { get; set; }
     public DateTime iniciadoem { get; set; }

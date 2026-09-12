@@ -20,11 +20,11 @@ namespace Repositorio.Outputs
     {
     public int id { get; set; }
     public int produtofiscal { get; set; }
-    public string uf { get; set; }
+    public string uf { get; set; } = string.Empty;
     public int ambiente { get; set; }
-    public string servico { get; set; }
-    public string versao { get; set; }
-    public string url { get; set; }
+    public string servico { get; set; } = string.Empty;
+    public string versao { get; set; } = string.Empty;
+    public string url { get; set; } = string.Empty;
     public int ativo { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }

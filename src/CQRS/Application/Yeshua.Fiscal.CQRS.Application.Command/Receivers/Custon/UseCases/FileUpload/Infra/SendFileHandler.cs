@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -20,10 +20,10 @@ namespace Command.Receivers.UseCase
 {
     public partial class SendFileHandler
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy;
-        private readonly IyFileUploadReadRepository _repReadyFileUpload;
-        private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
+        private readonly IUnitOfWork _unitOfWork = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
+        private readonly IyFileUploadReadRepository _repReadyFileUpload = default!;
+        private readonly IyFileUploadWriteRepository _repWriteyFileUpload = default!;
         public SendFileHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload)
             : base(logger, executionContext)
         {

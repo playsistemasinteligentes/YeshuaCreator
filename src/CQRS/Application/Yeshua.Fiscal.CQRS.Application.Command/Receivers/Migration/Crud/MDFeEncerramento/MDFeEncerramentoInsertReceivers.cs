@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMDFeEncerramentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMDFeEncerramentoEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MDFeEncerramentoCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var mdfeencerramento = new MDFeEncerramentoFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.MDFeId, c.ChaveAcesso, c.UfCarregamento, c.UfDescarregamento, c.PlacaVeiculo, c.SolicitadoEm, c.AutorizadoEm, c.Protocolo, c.CodigoRetorno, c.MensagemRetorno);
                  var domainResult = MDFeEncerramentoDomainBehavior.Apply(mdfeencerramento, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(mdfeencerramento);
-                     return Success("OK", mdfeencerramento);
+                     return Task.FromResult(Success("OK", mdfeencerramento));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, mdfeencerramento);
+                    return Task.FromResult(Error(e, mdfeencerramento));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }
