@@ -22,7 +22,7 @@
 {
     public int? Id { get; set; }
     public int? PerfilId { get; set; }
-    public string GrantId { get; set; }
+    public string? GrantId { get; set; }
     public bool? CanGrant { get; set; }
     public bool? CanCreate { get; set; }
     public bool? CanRead { get; set; }
@@ -33,8 +33,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal yPerfilGrantEntity(int? id, int? perfilid, string grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil ){
+    private List<string> _erroMensagem = new List<string>();
+ internal yPerfilGrantEntity(int? id, int? perfilid, string? grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil ){
  Id = id; 
  PerfilId = perfilid; 
  GrantId = grantid; 
@@ -43,7 +43,7 @@
  CanRead = canread; 
  CanUpdate = canupdate; 
  CanDelete = candelete; 
- ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
+ ValidUntil = validuntil.HasValue && validuntil.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validuntil; 
  Deleted = false; 
  Changed = DateTime.Now; 
 }

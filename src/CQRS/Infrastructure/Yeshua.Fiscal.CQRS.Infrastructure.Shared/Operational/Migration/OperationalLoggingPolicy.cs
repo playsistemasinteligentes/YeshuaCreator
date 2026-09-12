@@ -239,6 +239,9 @@ private OperationalLoggingDecision Evaluate(
                         "SefazEndpoint" => GetSefazEndpointMask(policy, operation, recordId),
                         "CertificadoDigital" => GetCertificadoDigitalMask(policy, operation, recordId),
                         "EntradaFiscalContingencia" => GetEntradaFiscalContingenciaMask(policy, operation, recordId),
+                        "EmissaoFiscalTransporte" => GetEmissaoFiscalTransporteMask(policy, operation, recordId),
+                        "ContingenciaFiscal" => GetContingenciaFiscalMask(policy, operation, recordId),
+                        "EmissaoFiscalTransporteDocumento" => GetEmissaoFiscalTransporteDocumentoMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -1140,6 +1143,177 @@ private OperationalLoggingDecision Evaluate(
                         mask |= EntradaFiscalContingenciaTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "EntradaFiscalContingencia", operation, recordId, "UserId"))
                         mask |= EntradaFiscalContingenciaTrackingFields.UserId;
+                    return mask;
+                }
+
+                private ulong GetEmissaoFiscalTransporteMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "Id"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "CorrelationId"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.CorrelationId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "OrigemFluxo"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.OrigemFluxo;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "CargaId"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.CargaId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "RomaneioId"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.RomaneioId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "Ambiente"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.Ambiente;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "EmitenteDocumento"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.EmitenteDocumento;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "TomadorDocumento"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.TomadorDocumento;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "TransportadorDocumento"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.TransportadorDocumento;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "UFInicio"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.UFInicio;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "UFFim"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.UFFim;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "MunicipioInicioCodigoIbge"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.MunicipioInicioCodigoIbge;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "MunicipioFimCodigoIbge"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.MunicipioFimCodigoIbge;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "QuantidadeNFe"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.QuantidadeNFe;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "QuantidadeCTe"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.QuantidadeCTe;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "QuantidadeMDFe"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.QuantidadeMDFe;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "ValorCarga"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.ValorCarga;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "PesoBruto"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.PesoBruto;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "Volume"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.Volume;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "UltimaMensagem"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.UltimaMensagem;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "CriadoEmUtc"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.CriadoEmUtc;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "AtualizadoEmUtc"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.AtualizadoEmUtc;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "ConcluidoEmUtc"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.ConcluidoEmUtc;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "Status"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "TenantID"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "Deleted"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "Changed"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporte", operation, recordId, "UserId"))
+                        mask |= EmissaoFiscalTransporteTrackingFields.UserId;
+                    return mask;
+                }
+
+                private ulong GetContingenciaFiscalMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "Id"))
+                        mask |= ContingenciaFiscalTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "EmissaoFiscalTransporteId"))
+                        mask |= ContingenciaFiscalTrackingFields.EmissaoFiscalTransporteId;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "EntradaFiscalContingenciaId"))
+                        mask |= ContingenciaFiscalTrackingFields.EntradaFiscalContingenciaId;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "CorrelationId"))
+                        mask |= ContingenciaFiscalTrackingFields.CorrelationId;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "CargaId"))
+                        mask |= ContingenciaFiscalTrackingFields.CargaId;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "TipoSolicitante"))
+                        mask |= ContingenciaFiscalTrackingFields.TipoSolicitante;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "Ambiente"))
+                        mask |= ContingenciaFiscalTrackingFields.Ambiente;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "EmitenteDocumento"))
+                        mask |= ContingenciaFiscalTrackingFields.EmitenteDocumento;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "TomadorDocumento"))
+                        mask |= ContingenciaFiscalTrackingFields.TomadorDocumento;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "TransportadorDocumento"))
+                        mask |= ContingenciaFiscalTrackingFields.TransportadorDocumento;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "QuantidadeDocumentos"))
+                        mask |= ContingenciaFiscalTrackingFields.QuantidadeDocumentos;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "QuantidadeCTe"))
+                        mask |= ContingenciaFiscalTrackingFields.QuantidadeCTe;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "QuantidadeMDFe"))
+                        mask |= ContingenciaFiscalTrackingFields.QuantidadeMDFe;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "ValorCarga"))
+                        mask |= ContingenciaFiscalTrackingFields.ValorCarga;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "PesoBruto"))
+                        mask |= ContingenciaFiscalTrackingFields.PesoBruto;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "UltimaMensagem"))
+                        mask |= ContingenciaFiscalTrackingFields.UltimaMensagem;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "CriadoEmUtc"))
+                        mask |= ContingenciaFiscalTrackingFields.CriadoEmUtc;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "AtualizadoEmUtc"))
+                        mask |= ContingenciaFiscalTrackingFields.AtualizadoEmUtc;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "ConcluidoEmUtc"))
+                        mask |= ContingenciaFiscalTrackingFields.ConcluidoEmUtc;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "Status"))
+                        mask |= ContingenciaFiscalTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "TenantID"))
+                        mask |= ContingenciaFiscalTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "Deleted"))
+                        mask |= ContingenciaFiscalTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "Changed"))
+                        mask |= ContingenciaFiscalTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "ContingenciaFiscal", operation, recordId, "UserId"))
+                        mask |= ContingenciaFiscalTrackingFields.UserId;
+                    return mask;
+                }
+
+                private ulong GetEmissaoFiscalTransporteDocumentoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "Id"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "EmissaoFiscalTransporteId"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.EmissaoFiscalTransporteId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "DocumentoFiscalId"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.DocumentoFiscalId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "DocumentoFiscalOriginarioId"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.DocumentoFiscalOriginarioId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "NFeProdutoSnapshotId"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.NFeProdutoSnapshotId;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "ProdutoFiscal"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.ProdutoFiscal;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "Papel"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.Papel;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "TipoEvento"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.TipoEvento;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "ChaveAcesso"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.ChaveAcesso;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "XmlStorageKey"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.XmlStorageKey;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "PdfStorageKey"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.PdfStorageKey;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "Protocolo"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.Protocolo;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "CodigoRetorno"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.CodigoRetorno;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "MensagemRetorno"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.MensagemRetorno;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "CriadoEmUtc"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.CriadoEmUtc;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "Status"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "TenantID"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "Deleted"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "Changed"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "EmissaoFiscalTransporteDocumento", operation, recordId, "UserId"))
+                        mask |= EmissaoFiscalTransporteDocumentoTrackingFields.UserId;
                     return mask;
                 }
 

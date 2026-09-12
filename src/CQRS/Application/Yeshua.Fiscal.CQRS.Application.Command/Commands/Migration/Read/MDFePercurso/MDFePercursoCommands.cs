@@ -15,7 +15,7 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? MDFeSolicitacaoFiscalId { get; set; }
-        public string UF { get; set; }
+        public string? UF { get; set; }
         public int? Ordem { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

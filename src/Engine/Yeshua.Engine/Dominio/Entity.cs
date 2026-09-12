@@ -335,8 +335,6 @@ namespace Dominio
                 return this.AddColumns.Last().NotAplicableEntityToStandardField(entidade);
             else
                 return this.AlterColumns.Last().NotAplicableEntityToStandardField(entidade);
-
-            return this;
         }
 
 

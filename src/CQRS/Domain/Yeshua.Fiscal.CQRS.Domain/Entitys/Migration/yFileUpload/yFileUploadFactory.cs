@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyFileUploadEntity Create(int? id, string type, int status, string filepath, long? filesize, string entitytype, string entityid, DateTime createdat, DateTime? completedat )
+                                    } public IyFileUploadEntity Create(int? id, string type, int status, string? filepath, long? filesize, string? entitytype, string? entityid, DateTime createdat, DateTime? completedat )
                             {
                                 return Create(null, id, type, status, filepath, filesize, entitytype, entityid, createdat, completedat);
                             }
 
                             public IyFileUploadEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string type, int status, string filepath, long? filesize, string entitytype, string entityid, DateTime createdat, DateTime? completedat )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string type, int status, string? filepath, long? filesize, string? entitytype, string? entityid, DateTime createdat, DateTime? completedat )
                             {
                             var entity = new yFileUploadEntity(id, type, status, filepath, filesize, entitytype, entityid, createdat, completedat );
 

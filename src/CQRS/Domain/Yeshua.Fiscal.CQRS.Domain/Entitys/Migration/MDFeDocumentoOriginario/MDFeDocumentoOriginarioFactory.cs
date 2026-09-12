@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMDFeDocumentoOriginarioEntity Create(int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string chaveacesso, string snapshotjson )
+                                    } public IMDFeDocumentoOriginarioEntity Create(int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? snapshotjson )
                             {
                                 return Create(null, id, mdfesolicitacaofiscalid, documentofiscaloriginarioid, tipodocumento, chaveacesso, snapshotjson);
                             }
 
                             public IMDFeDocumentoOriginarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string chaveacesso, string snapshotjson )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? snapshotjson )
                             {
                             var entity = new MDFeDocumentoOriginarioEntity(id, mdfesolicitacaofiscalid, documentofiscaloriginarioid, tipodocumento, chaveacesso, snapshotjson );
 

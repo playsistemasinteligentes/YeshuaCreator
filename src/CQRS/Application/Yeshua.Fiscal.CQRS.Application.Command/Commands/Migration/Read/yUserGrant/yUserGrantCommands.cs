@@ -15,7 +15,7 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
-        public string GrantId { get; set; }
+        public string? GrantId { get; set; }
         public bool? CanGrant { get; set; }
         public bool? CanCreate { get; set; }
         public bool? CanRead { get; set; }

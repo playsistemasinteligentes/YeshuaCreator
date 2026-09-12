@@ -22,7 +22,7 @@
 {
     public int? Id { get; set; }
     public string TokenHash { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public string ConnectorKey { get; set; }
     public bool Active { get; set; }
     public DateTime? ValidUntil { get; set; }
@@ -32,14 +32,14 @@
     public int? UserId { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
-    private List<string> _erroMensagem = null;
- internal yTokenEntity(int? id, string tokenhash, string description, string connectorkey, DateTime? validuntil, DateTime? lastusedat ){
+    private List<string> _erroMensagem = new List<string>();
+ internal yTokenEntity(int? id, string tokenhash, string? description, string connectorkey, DateTime? validuntil, DateTime? lastusedat ){
  Id = id; 
  TokenHash = tokenhash; 
  Description = description; 
  ConnectorKey = connectorkey; 
- ValidUntil = (validuntil < (new DateTime(1800, 1, 1))) ? DateTime.Now : validuntil; 
- LastUsedAt = (lastusedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lastusedat; 
+ ValidUntil = validuntil.HasValue && validuntil.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : validuntil; 
+ LastUsedAt = lastusedat.HasValue && lastusedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : lastusedat; 
  Active = true; 
  CreatedAt = DateTime.Now; 
  Deleted = false; 

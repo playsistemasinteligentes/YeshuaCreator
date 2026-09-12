@@ -24,11 +24,11 @@
     int CTeSolicitacaoFiscalId { get; set; }
     string Papel { get; set; }
     string Documento { get; set; }
-    string Nome { get; set; }
-    string InscricaoEstadual { get; set; }
-    string UF { get; set; }
-    string MunicipioCodigoIbge { get; set; }
-    string EnderecoJson { get; set; }
+    string? Nome { get; set; }
+    string? InscricaoEstadual { get; set; }
+    string? UF { get; set; }
+    string? MunicipioCodigoIbge { get; set; }
+    string? EnderecoJson { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

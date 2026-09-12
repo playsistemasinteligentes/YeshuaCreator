@@ -22,21 +22,21 @@
 {
     public int? Id { get; set; }
     public string CorrelationId { get; set; }
-    public string CargaId { get; set; }
+    public string? CargaId { get; set; }
     public int Ambiente { get; set; }
     public string UFCarregamento { get; set; }
     public string UFDescarregamento { get; set; }
-    public string PlacaVeiculo { get; set; }
-    public string CondutorDocumento { get; set; }
-    public string DocumentosOriginariosJson { get; set; }
-    public string TransporteSnapshotJson { get; set; }
+    public string? PlacaVeiculo { get; set; }
+    public string? CondutorDocumento { get; set; }
+    public string? DocumentosOriginariosJson { get; set; }
+    public string? TransporteSnapshotJson { get; set; }
     public int Status { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal MDFeSolicitacaoFiscalEntity(int? id, string correlationid, string cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string placaveiculo, string condutordocumento, string documentosoriginariosjson, string transportesnapshotjson, int status ){
+    private List<string> _erroMensagem = new List<string>();
+ internal MDFeSolicitacaoFiscalEntity(int? id, string correlationid, string? cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string? placaveiculo, string? condutordocumento, string? documentosoriginariosjson, string? transportesnapshotjson, int status ){
  Id = id; 
  CorrelationId = correlationid; 
  CargaId = cargaid; 

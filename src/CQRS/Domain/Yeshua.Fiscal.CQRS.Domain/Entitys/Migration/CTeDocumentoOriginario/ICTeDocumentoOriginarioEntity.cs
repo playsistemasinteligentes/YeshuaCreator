@@ -24,14 +24,14 @@
     int CTeSolicitacaoFiscalId { get; set; }
     int? DocumentoFiscalOriginarioId { get; set; }
     string TipoDocumento { get; set; }
-    string ChaveAcesso { get; set; }
-    string Numero { get; set; }
-    string Serie { get; set; }
-    string EmitenteDocumento { get; set; }
-    string DestinatarioDocumento { get; set; }
+    string? ChaveAcesso { get; set; }
+    string? Numero { get; set; }
+    string? Serie { get; set; }
+    string? EmitenteDocumento { get; set; }
+    string? DestinatarioDocumento { get; set; }
     Decimal? ValorDocumento { get; set; }
     Decimal? PesoBruto { get; set; }
-    string SnapshotJson { get; set; }
+    string? SnapshotJson { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MDFeTentativaEmissaoDTO> getMDFeTentativaEmissao(Command.Read.MDFeTentativaEmissaoReadCommand command )
         {
-            DataPagination<MDFeTentativaEmissaoDTO> customResult = null;
+            var customResult = new DataPagination<MDFeTentativaEmissaoDTO>();
             var customHandled = false;
             TryGetMDFeTentativaEmissaoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFeTentativaEmissaoMDFeSolicitacaoFiscalIdDTO> getMDFeTentativaEmissaoReadFKMDFeSolicitacaoFiscalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFeTentativaEmissaoMDFeSolicitacaoFiscalIdDTO> lista;
             var query = _query.MDFeTentativaEmissaoMDFeSolicitacaoFiscalIdQuery(command );
 
-                lista = _unitOfWork.Query<MDFeTentativaEmissaoMDFeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoMDFeSolicitacaoFiscalIdDTO>;
+                var lista = _unitOfWork.Query<MDFeTentativaEmissaoMDFeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFeTentativaEmissaoTenantIDDTO> getMDFeTentativaEmissaoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFeTentativaEmissaoTenantIDDTO> lista;
             var query = _query.MDFeTentativaEmissaoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MDFeTentativaEmissaoTenantIDDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoTenantIDDTO>;
+                var lista = _unitOfWork.Query<MDFeTentativaEmissaoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFeTentativaEmissaoUserIdDTO> getMDFeTentativaEmissaoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFeTentativaEmissaoUserIdDTO> lista;
             var query = _query.MDFeTentativaEmissaoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MDFeTentativaEmissaoUserIdDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoUserIdDTO>;
+                var lista = _unitOfWork.Query<MDFeTentativaEmissaoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -436,7 +433,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDFeSolicitacaoFiscalIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChaveAcessoQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNumeroQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySerieQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTentativaQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByXmlAssinadoStorageKeyQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByXmlProcStorageKeyQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByXmlHashQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCodigoRetornoQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMensagemRetornoQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProtocoloAutorizacaoQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEnviadoEmUtcQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAutorizadoEmUtcQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters) as List<MDFeTentativaEmissaoDTO>;
+                var result = _unitOfWork.Query<MDFeTentativaEmissaoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

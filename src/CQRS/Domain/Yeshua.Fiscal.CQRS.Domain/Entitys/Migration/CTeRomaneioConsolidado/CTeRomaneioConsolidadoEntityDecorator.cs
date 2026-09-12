@@ -125,7 +125,7 @@
                                         }
                                     }
 
-                                    public string CargaId
+                                    public string? CargaId
                                     {
                                         get => _inner.CargaId;
                                         set
@@ -181,7 +181,7 @@
                                         }
                                     }
 
-                                    public string MunicipioInicioCodigoIbge
+                                    public string? MunicipioInicioCodigoIbge
                                     {
                                         get => _inner.MunicipioInicioCodigoIbge;
                                         set
@@ -195,7 +195,7 @@
                                         }
                                     }
 
-                                    public string MunicipioFimCodigoIbge
+                                    public string? MunicipioFimCodigoIbge
                                     {
                                         get => _inner.MunicipioFimCodigoIbge;
                                         set
@@ -209,7 +209,7 @@
                                         }
                                     }
 
-                                    public string EmitenteDocumento
+                                    public string? EmitenteDocumento
                                     {
                                         get => _inner.EmitenteDocumento;
                                         set
@@ -223,7 +223,7 @@
                                         }
                                     }
 
-                                    public string TomadorDocumento
+                                    public string? TomadorDocumento
                                     {
                                         get => _inner.TomadorDocumento;
                                         set
@@ -237,7 +237,7 @@
                                         }
                                     }
 
-                                    public string RotaSnapshotJson
+                                    public string? RotaSnapshotJson
                                     {
                                         get => _inner.RotaSnapshotJson;
                                         set
@@ -251,7 +251,7 @@
                                         }
                                     }
 
-                                    public string CargaSnapshotJson
+                                    public string? CargaSnapshotJson
                                     {
                                         get => _inner.CargaSnapshotJson;
                                         set
@@ -265,7 +265,7 @@
                                         }
                                     }
 
-                                    public string PreferenciasFiscaisJson
+                                    public string? PreferenciasFiscaisJson
                                     {
                                         get => _inner.PreferenciasFiscaisJson;
                                         set

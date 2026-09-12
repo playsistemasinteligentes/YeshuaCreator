@@ -96,7 +96,7 @@
                                         }
                                     }
 
-                                    public string ChaveAcesso
+                                    public string? ChaveAcesso
                                     {
                                         get => _inner.ChaveAcesso;
                                         set
@@ -152,7 +152,7 @@
                                         }
                                     }
 
-                                    public string XmlAssinadoStorageKey
+                                    public string? XmlAssinadoStorageKey
                                     {
                                         get => _inner.XmlAssinadoStorageKey;
                                         set
@@ -166,7 +166,7 @@
                                         }
                                     }
 
-                                    public string XmlProcStorageKey
+                                    public string? XmlProcStorageKey
                                     {
                                         get => _inner.XmlProcStorageKey;
                                         set
@@ -180,7 +180,7 @@
                                         }
                                     }
 
-                                    public string XmlHash
+                                    public string? XmlHash
                                     {
                                         get => _inner.XmlHash;
                                         set
@@ -194,7 +194,7 @@
                                         }
                                     }
 
-                                    public string CodigoRetorno
+                                    public string? CodigoRetorno
                                     {
                                         get => _inner.CodigoRetorno;
                                         set
@@ -208,7 +208,7 @@
                                         }
                                     }
 
-                                    public string MensagemRetorno
+                                    public string? MensagemRetorno
                                     {
                                         get => _inner.MensagemRetorno;
                                         set
@@ -222,7 +222,7 @@
                                         }
                                     }
 
-                                    public string ProtocoloAutorizacao
+                                    public string? ProtocoloAutorizacao
                                     {
                                         get => _inner.ProtocoloAutorizacao;
                                         set

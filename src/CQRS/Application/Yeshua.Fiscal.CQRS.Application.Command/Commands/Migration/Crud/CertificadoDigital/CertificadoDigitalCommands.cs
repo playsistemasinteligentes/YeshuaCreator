@@ -17,7 +17,7 @@ namespace Command.Write
         public string Apelido { get; set; }
         public string DocumentoTitular { get; set; }
         public string StorageKey { get; set; }
-        public string Thumbprint { get; set; }
+        public string? Thumbprint { get; set; }
         public DateTime? ValidoDe { get; set; }
         public DateTime? ValidoAte { get; set; }
         public int Ativo { get; set; }

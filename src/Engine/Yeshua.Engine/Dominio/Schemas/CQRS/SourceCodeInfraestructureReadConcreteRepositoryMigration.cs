@@ -132,7 +132,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("            if (cached != null) return cached;");
                     sb.AppendLine($"            var result = _inner.get{_entity.EntityName}{CommandType.ReadFK}{column.Name}(command {VariavaltakeOff});");
                     sb.AppendLine($"            if (result != null) _cacheFK{column.Name}.Set(key, result,\"{_entity.EntityName}\");");
-                    sb.AppendLine("            return result;");
+                    sb.AppendLine($"            return result ?? System.Array.Empty<{_entity.EntityName}{column.Name}DTO>();");
                     sb.AppendLine("        }");
 
 
@@ -231,7 +231,7 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine($"        private DataPagination<{_entity.EntityName}DTO> get{_entity.EntityName}({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command command {takeOff})");
             sb.AppendLine("        {");
-            sb.AppendLine($"            DataPagination<{_entity.EntityName}DTO> customResult = null;");
+            sb.AppendLine($"            var customResult = new DataPagination<{_entity.EntityName}DTO>();");
             sb.AppendLine("            var customHandled = false;");
             sb.AppendLine($"            TryGet{_entity.EntityName}Custom(command, ref customResult, ref customHandled);");
             sb.AppendLine("            if (customHandled)");
@@ -253,10 +253,9 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"        private IEnumerable<{_entity.EntityName}{column.Name}DTO> get{_entity.EntityName}{CommandType.ReadFK}{column.Name}({CQRSParam.I.NameSpaceCommandsPartners}.SearchFKCommand command {takeOff})");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            List<{_entity.EntityName}{column.Name}DTO> lista;");
                 sb.AppendLine($"            var query = _query.{_entity.EntityName}{column.Name}Query(command {VariavaltakeOff});");
                 sb.AppendLine();
-                sb.AppendLine($"                lista = _unitOfWork.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}{column.Name}DTO>;");
+                sb.AppendLine($"                var lista = _unitOfWork.Query<{_entity.EntityName}{column.Name}DTO>(query.Query,query.Parameters).ToList();");
                 sb.AppendLine("            return lista;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -309,7 +308,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("        {");
                 sb.AppendLine($"            var query = _query.FirstBy{column.Name}Query(value {VariavaltakeOff});");
                 sb.AppendLine();
-                sb.AppendLine($"                var result = _unitOfWork.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters) as List<{_entity.EntityName}DTO>;");
+                sb.AppendLine($"                var result = _unitOfWork.Query<{_entity.EntityName}DTO>(query.Query,query.Parameters).ToList();");
                 sb.AppendLine("                return result;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -378,26 +377,7 @@ namespace Dominio.Schemas.CQRS
         }
         protected override StringBuilder GenerateCustonCode()
         {
-            var sb = new StringBuilder();
-
-            return sb;
-
-            // Adiciona o comentário de descrição da entidade
-            sb.AppendLine("// " + _entity.EntityDescription);
-
-            // Define a classe
-            sb.AppendLine($"public partial class {_entity.EntityName}");
-            sb.AppendLine("{");
-
-            // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField))
-            {
-                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
-            }
-
-            // Fecha a classe
-            sb.AppendLine("}");
-            return sb;
+            return new StringBuilder();
         }
     }
 }

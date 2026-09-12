@@ -89,7 +89,7 @@
                                         }
                                     }
 
-                                    public string Description
+                                    public string? Description
                                     {
                                         get => _inner.Description;
                                         set

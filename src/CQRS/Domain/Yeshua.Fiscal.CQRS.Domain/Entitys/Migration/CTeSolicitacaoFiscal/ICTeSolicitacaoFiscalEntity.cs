@@ -34,11 +34,11 @@
     int Globalizado { get; set; }
     string UFInicio { get; set; }
     string UFFim { get; set; }
-    string MunicipioInicioCodigoIbge { get; set; }
-    string MunicipioFimCodigoIbge { get; set; }
+    string? MunicipioInicioCodigoIbge { get; set; }
+    string? MunicipioFimCodigoIbge { get; set; }
     Decimal? ValorServico { get; set; }
     Decimal? ValorCarga { get; set; }
-    string PreferenciasManifestoJson { get; set; }
+    string? PreferenciasManifestoJson { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

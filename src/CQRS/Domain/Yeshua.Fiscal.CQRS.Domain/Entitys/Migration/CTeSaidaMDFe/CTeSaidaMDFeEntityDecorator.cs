@@ -132,7 +132,7 @@
                                         }
                                     }
 
-                                    public string OutboxMessageId
+                                    public string? OutboxMessageId
                                     {
                                         get => _inner.OutboxMessageId;
                                         set
@@ -160,7 +160,7 @@
                                         }
                                     }
 
-                                    public string UltimoErro
+                                    public string? UltimoErro
                                     {
                                         get => _inner.UltimoErro;
                                         set

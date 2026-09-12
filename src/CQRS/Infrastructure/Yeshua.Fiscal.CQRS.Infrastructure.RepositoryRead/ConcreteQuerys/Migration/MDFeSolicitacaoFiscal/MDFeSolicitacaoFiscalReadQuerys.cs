@@ -31,7 +31,6 @@ namespace Query.Read
         }
         public QueryModel MDFeSolicitacaoFiscalQuery(Command.Read.MDFeSolicitacaoFiscalReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -42,16 +41,10 @@ if (!string.IsNullOrEmpty(Command.CorrelationId)) dict["CorrelationId"] = $"%{Co
 if (!string.IsNullOrEmpty(Command.CorrelationId)) whereClauses.Add($"[CorrelationId] like @CorrelationId");
 if (!string.IsNullOrEmpty(Command.CargaId)) dict["CargaId"] = $"%{Command.CargaId}%";
 if (!string.IsNullOrEmpty(Command.CargaId)) whereClauses.Add($"[CargaId] like @CargaId");
-if (Command.Ambiente != null && Command.Ambiente.Any())
+if (Command.Ambiente.HasValue)
 {
-    var paramList_Ambiente = new List<string>();
-    for (int i = 0; i < Command.Ambiente.Count; i++)
-    {
-        string paramName = "Ambiente_" + i;
-        dict[paramName] = Command.Ambiente[i];
-        paramList_Ambiente.Add("@" + paramName);
-    }
-    whereClauses.Add($"t0.Ambiente IN ({string.Join(", ", paramList_Ambiente)})");
+    dict["Ambiente"] = Command.Ambiente.Value;
+    whereClauses.Add($"[Ambiente] = @Ambiente");
 }
 if (!string.IsNullOrEmpty(Command.UFCarregamento)) dict["UFCarregamento"] = $"%{Command.UFCarregamento}%";
 if (!string.IsNullOrEmpty(Command.UFCarregamento)) whereClauses.Add($"[UFCarregamento] like @UFCarregamento");
@@ -65,16 +58,10 @@ if (!string.IsNullOrEmpty(Command.DocumentosOriginariosJson)) dict["DocumentosOr
 if (!string.IsNullOrEmpty(Command.DocumentosOriginariosJson)) whereClauses.Add($"[DocumentosOriginariosJson] like @DocumentosOriginariosJson");
 if (!string.IsNullOrEmpty(Command.TransporteSnapshotJson)) dict["TransporteSnapshotJson"] = $"%{Command.TransporteSnapshotJson}%";
 if (!string.IsNullOrEmpty(Command.TransporteSnapshotJson)) whereClauses.Add($"[TransporteSnapshotJson] like @TransporteSnapshotJson");
-if (Command.Status != null && Command.Status.Any())
+if (Command.Status.HasValue)
 {
-    var paramList_Status = new List<string>();
-    for (int i = 0; i < Command.Status.Count; i++)
-    {
-        string paramName = "Status_" + i;
-        dict[paramName] = Command.Status[i];
-        paramList_Status.Add("@" + paramName);
-    }
-    whereClauses.Add($"t0.Status IN ({string.Join(", ", paramList_Status)})");
+    dict["Status"] = Command.Status.Value;
+    whereClauses.Add($"[Status] = @Status");
 }
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
@@ -96,7 +83,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         public QueryModel MDFeSolicitacaoFiscalTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yTenant] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -127,7 +113,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         public QueryModel MDFeSolicitacaoFiscalUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -157,7 +142,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -175,7 +159,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByCorrelationIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -193,7 +176,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByCargaIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -211,7 +193,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByAmbienteQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -229,7 +210,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByUFCarregamentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -247,7 +227,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByUFDescarregamentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -265,7 +244,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByPlacaVeiculoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -283,7 +261,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByCondutorDocumentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -301,7 +278,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByDocumentosOriginariosJsonQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -319,7 +295,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByTransporteSnapshotJsonQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -337,7 +312,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByStatusQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -355,7 +329,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -373,7 +346,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -391,7 +363,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -409,7 +380,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel ExistsByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -427,7 +397,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -445,7 +414,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByCorrelationIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -463,7 +431,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByCargaIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -481,7 +448,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByAmbienteQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -499,7 +465,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByUFCarregamentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -517,7 +482,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByUFDescarregamentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -535,7 +499,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByPlacaVeiculoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -553,7 +516,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByCondutorDocumentoQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -571,7 +533,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByDocumentosOriginariosJsonQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -589,7 +550,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByTransporteSnapshotJsonQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -607,7 +567,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByStatusQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -625,7 +584,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByTenantIDQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -643,7 +601,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByDeletedQuery(bool value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -661,7 +618,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByChangedQuery(DateTime value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
@@ -679,7 +635,6 @@ if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
         }
         public QueryModel FirstByUserIdQuery(int value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;

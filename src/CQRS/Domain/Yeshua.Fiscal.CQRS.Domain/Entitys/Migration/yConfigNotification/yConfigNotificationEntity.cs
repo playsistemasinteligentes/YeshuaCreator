@@ -22,15 +22,15 @@
 {
     public int? Id { get; set; }
     public int? TenantID { get; set; }
-    public string EmailSmtpClient { get; set; }
+    public string? EmailSmtpClient { get; set; }
     public int? EmailPort { get; set; }
-    public string EmailUserName { get; set; }
-    public string EmailPassword { get; set; }
+    public string? EmailUserName { get; set; }
+    public string? EmailPassword { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal yConfigNotificationEntity(int? id, string emailsmtpclient, int? emailport, string emailusername, string emailpassword ){
+    private List<string> _erroMensagem = new List<string>();
+ internal yConfigNotificationEntity(int? id, string? emailsmtpclient, int? emailport, string? emailusername, string? emailpassword ){
  Id = id; 
  EmailSmtpClient = emailsmtpclient; 
  EmailPort = emailport; 

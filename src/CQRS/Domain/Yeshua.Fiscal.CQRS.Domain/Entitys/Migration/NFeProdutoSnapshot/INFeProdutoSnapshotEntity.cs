@@ -23,20 +23,20 @@
     int? Id { get; set; }
     int? DocumentoFiscalOriginarioId { get; set; }
     string CorrelationId { get; set; }
-    string CargaId { get; set; }
-    string PedidoId { get; set; }
+    string? CargaId { get; set; }
+    string? PedidoId { get; set; }
     string ChaveAcesso { get; set; }
-    string EmitenteDocumento { get; set; }
-    string DestinatarioDocumento { get; set; }
-    string UFOrigem { get; set; }
-    string UFDestino { get; set; }
-    string MunicipioOrigemCodigoIbge { get; set; }
-    string MunicipioDestinoCodigoIbge { get; set; }
+    string? EmitenteDocumento { get; set; }
+    string? DestinatarioDocumento { get; set; }
+    string? UFOrigem { get; set; }
+    string? UFDestino { get; set; }
+    string? MunicipioOrigemCodigoIbge { get; set; }
+    string? MunicipioDestinoCodigoIbge { get; set; }
     Decimal? ValorDocumento { get; set; }
     Decimal? PesoBruto { get; set; }
     Decimal? Volume { get; set; }
-    string XmlStorageKey { get; set; }
-    string SnapshotJson { get; set; }
+    string? XmlStorageKey { get; set; }
+    string? SnapshotJson { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

@@ -15,21 +15,21 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? DocumentoFiscalId { get; set; }
-        public string CorrelationId { get; set; }
-        public string SourceApplication { get; set; }
-        public string SourceModule { get; set; }
-        public string SourceMessageId { get; set; }
-        public string TipoDocumento { get; set; }
-        public string ChaveAcesso { get; set; }
-        public string Numero { get; set; }
-        public string Serie { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public string DestinatarioDocumento { get; set; }
+        public string? CorrelationId { get; set; }
+        public string? SourceApplication { get; set; }
+        public string? SourceModule { get; set; }
+        public string? SourceMessageId { get; set; }
+        public string? TipoDocumento { get; set; }
+        public string? ChaveAcesso { get; set; }
+        public string? Numero { get; set; }
+        public string? Serie { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? DestinatarioDocumento { get; set; }
         public Decimal? ValorDocumento { get; set; }
         public Decimal? PesoBruto { get; set; }
         public Decimal? Volume { get; set; }
-        public string SnapshotJson { get; set; }
-        public List<int> Status { get; set; }
+        public string? SnapshotJson { get; set; }
+        public int? Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

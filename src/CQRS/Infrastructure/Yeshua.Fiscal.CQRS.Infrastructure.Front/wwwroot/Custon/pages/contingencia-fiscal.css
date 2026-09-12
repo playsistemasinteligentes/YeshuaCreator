@@ -111,7 +111,8 @@
 }
 
 .fiscal-contingencia-grid label,
-.fiscal-documento-grid label {
+.fiscal-documento-grid label,
+.fiscal-xml-grid label {
     color: #475569;
     display: flex;
     flex-direction: column;
@@ -123,7 +124,9 @@
 .fiscal-contingencia-grid input,
 .fiscal-contingencia-grid select,
 .fiscal-contingencia-grid textarea,
-.fiscal-documento-grid input {
+.fiscal-documento-grid input,
+.fiscal-xml-grid input,
+.fiscal-xml-grid textarea {
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     color: #172033;
@@ -135,6 +138,38 @@
 .fiscal-contingencia-grid textarea {
     min-height: 78px;
     resize: vertical;
+}
+
+.fiscal-xml-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    margin-bottom: 12px;
+}
+
+.fiscal-xml-grid .wide {
+    grid-column: span 1;
+}
+
+.fiscal-xml-grid textarea {
+    font-family: Consolas, "Courier New", monospace;
+    min-height: 260px;
+    resize: vertical;
+}
+
+.fiscal-xml-preview {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #475569;
+    display: grid;
+    font-size: 13px;
+    font-weight: 700;
+    gap: 6px;
+    padding: 10px 12px;
+}
+
+.fiscal-xml-empty {
+    color: #94a3b8;
 }
 
 .fiscal-contingencia-grid .wide {
@@ -240,7 +275,8 @@
 @media (max-width: 1080px) {
     .fiscal-contingencia-layout,
     .fiscal-contingencia-grid,
-    .fiscal-documento-grid {
+    .fiscal-documento-grid,
+    .fiscal-xml-grid {
         grid-template-columns: 1fr 1fr;
     }
 }
@@ -254,7 +290,8 @@
 
     .fiscal-contingencia-layout,
     .fiscal-contingencia-grid,
-    .fiscal-documento-grid {
+    .fiscal-documento-grid,
+    .fiscal-xml-grid {
         grid-template-columns: 1fr;
     }
 

@@ -111,7 +111,7 @@
                                         }
                                     }
 
-                                    public string ChaveAcesso
+                                    public string? ChaveAcesso
                                     {
                                         get => _inner.ChaveAcesso;
                                         set
@@ -167,7 +167,7 @@
                                         }
                                     }
 
-                                    public string UFEmitente
+                                    public string? UFEmitente
                                     {
                                         get => _inner.UFEmitente;
                                         set
@@ -181,7 +181,7 @@
                                         }
                                     }
 
-                                    public string EmitenteDocumento
+                                    public string? EmitenteDocumento
                                     {
                                         get => _inner.EmitenteDocumento;
                                         set
@@ -195,7 +195,7 @@
                                         }
                                     }
 
-                                    public string DestinatarioDocumento
+                                    public string? DestinatarioDocumento
                                     {
                                         get => _inner.DestinatarioDocumento;
                                         set
@@ -209,7 +209,7 @@
                                         }
                                     }
 
-                                    public string XmlStorageKey
+                                    public string? XmlStorageKey
                                     {
                                         get => _inner.XmlStorageKey;
                                         set
@@ -223,7 +223,7 @@
                                         }
                                     }
 
-                                    public string XmlHash
+                                    public string? XmlHash
                                     {
                                         get => _inner.XmlHash;
                                         set
@@ -237,7 +237,7 @@
                                         }
                                     }
 
-                                    public string ProtocoloAutorizacao
+                                    public string? ProtocoloAutorizacao
                                     {
                                         get => _inner.ProtocoloAutorizacao;
                                         set
@@ -251,7 +251,7 @@
                                         }
                                     }
 
-                                    public string CodigoRetorno
+                                    public string? CodigoRetorno
                                     {
                                         get => _inner.CodigoRetorno;
                                         set
@@ -265,7 +265,7 @@
                                         }
                                     }
 
-                                    public string MensagemRetorno
+                                    public string? MensagemRetorno
                                     {
                                         get => _inner.MensagemRetorno;
                                         set

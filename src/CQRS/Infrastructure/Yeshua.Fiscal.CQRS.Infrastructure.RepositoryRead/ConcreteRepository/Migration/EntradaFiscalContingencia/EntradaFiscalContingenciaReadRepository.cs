@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<EntradaFiscalContingenciaDTO> getEntradaFiscalContingencia(Command.Read.EntradaFiscalContingenciaReadCommand command )
         {
-            DataPagination<EntradaFiscalContingenciaDTO> customResult = null;
+            var customResult = new DataPagination<EntradaFiscalContingenciaDTO>();
             var customHandled = false;
             TryGetEntradaFiscalContingenciaCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EntradaFiscalContingenciaTenantIDDTO> getEntradaFiscalContingenciaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EntradaFiscalContingenciaTenantIDDTO> lista;
             var query = _query.EntradaFiscalContingenciaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EntradaFiscalContingenciaTenantIDDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaTenantIDDTO>;
+                var lista = _unitOfWork.Query<EntradaFiscalContingenciaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EntradaFiscalContingenciaUserIdDTO> getEntradaFiscalContingenciaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EntradaFiscalContingenciaUserIdDTO> lista;
             var query = _query.EntradaFiscalContingenciaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EntradaFiscalContingenciaUserIdDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaUserIdDTO>;
+                var lista = _unitOfWork.Query<EntradaFiscalContingenciaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -698,7 +696,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -706,7 +704,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -714,7 +712,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCargaIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -722,7 +720,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoSolicitanteQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -730,7 +728,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAmbienteQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -738,7 +736,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceApplicationQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -746,7 +744,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceModuleQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -754,7 +752,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceMessageIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -762,7 +760,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmitenteFiscalDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -770,7 +768,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTomadorDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -778,7 +776,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTransportadorDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -786,7 +784,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRemetenteDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -794,7 +792,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDestinatarioDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -802,7 +800,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFInicioQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -810,7 +808,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFFimQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -818,7 +816,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioInicioCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -826,7 +824,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioFimCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -834,7 +832,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRNTRCQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -842,7 +840,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPlacaVeiculoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -850,7 +848,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFVeiculoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -858,7 +856,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCondutorDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -866,7 +864,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCondutorNomeQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -874,7 +872,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuantidadeDocumentosQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -882,7 +880,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorCargaQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -890,7 +888,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoBrutoQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -898,7 +896,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -906,7 +904,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPendenciasJsonQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -914,7 +912,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySnapshotJsonQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -922,7 +920,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmissaoFiscalCorrelationIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -930,7 +928,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmissaoFiscalSagaIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -938,7 +936,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCriadoEmUtcQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -946,7 +944,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAtualizadoEmUtcQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -954,7 +952,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -962,7 +960,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -970,7 +968,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -978,7 +976,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -986,7 +984,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters) as List<EntradaFiscalContingenciaDTO>;
+                var result = _unitOfWork.Query<EntradaFiscalContingenciaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

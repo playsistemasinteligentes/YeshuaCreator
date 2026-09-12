@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<NFeProdutoSnapshotDTO> getNFeProdutoSnapshot(Command.Read.NFeProdutoSnapshotReadCommand command )
         {
-            DataPagination<NFeProdutoSnapshotDTO> customResult = null;
+            var customResult = new DataPagination<NFeProdutoSnapshotDTO>();
             var customHandled = false;
             TryGetNFeProdutoSnapshotCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<NFeProdutoSnapshotDocumentoFiscalOriginarioIdDTO> getNFeProdutoSnapshotReadFKDocumentoFiscalOriginarioId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<NFeProdutoSnapshotDocumentoFiscalOriginarioIdDTO> lista;
             var query = _query.NFeProdutoSnapshotDocumentoFiscalOriginarioIdQuery(command );
 
-                lista = _unitOfWork.Query<NFeProdutoSnapshotDocumentoFiscalOriginarioIdDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDocumentoFiscalOriginarioIdDTO>;
+                var lista = _unitOfWork.Query<NFeProdutoSnapshotDocumentoFiscalOriginarioIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<NFeProdutoSnapshotTenantIDDTO> getNFeProdutoSnapshotReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<NFeProdutoSnapshotTenantIDDTO> lista;
             var query = _query.NFeProdutoSnapshotTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<NFeProdutoSnapshotTenantIDDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotTenantIDDTO>;
+                var lista = _unitOfWork.Query<NFeProdutoSnapshotTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<NFeProdutoSnapshotUserIdDTO> getNFeProdutoSnapshotReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<NFeProdutoSnapshotUserIdDTO> lista;
             var query = _query.NFeProdutoSnapshotUserIdQuery(command );
 
-                lista = _unitOfWork.Query<NFeProdutoSnapshotUserIdDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotUserIdDTO>;
+                var lista = _unitOfWork.Query<NFeProdutoSnapshotUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDocumentoFiscalOriginarioIdQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCargaIdQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPedidoIdQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChaveAcessoQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmitenteDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDestinatarioDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFOrigemQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFDestinoQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioOrigemCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioDestinoCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -580,7 +577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoBrutoQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -588,7 +585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -596,7 +593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByXmlStorageKeyQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -604,7 +601,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySnapshotJsonQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -612,7 +609,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -620,7 +617,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -628,7 +625,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -636,7 +633,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -644,7 +641,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters) as List<NFeProdutoSnapshotDTO>;
+                var result = _unitOfWork.Query<NFeProdutoSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

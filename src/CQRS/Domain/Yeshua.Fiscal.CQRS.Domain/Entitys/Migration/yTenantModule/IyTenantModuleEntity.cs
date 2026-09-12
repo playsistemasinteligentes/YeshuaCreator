@@ -21,7 +21,7 @@
                     public interface IyTenantModuleEntity
 {
     int? Id { get; set; }
-    string ModuleId { get; set; }
+    string? ModuleId { get; set; }
     int? TenantID { get; set; }
     DateTime? ValidUntil { get; set; }
     bool? Deleted { get; set; }

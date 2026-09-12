@@ -98,7 +98,7 @@
                                         }
                                     }
 
-                                    public string Senha
+                                    public string? Senha
                                     {
                                         get => _inner.Senha;
                                         set

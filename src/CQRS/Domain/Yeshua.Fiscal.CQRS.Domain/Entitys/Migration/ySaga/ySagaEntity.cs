@@ -24,31 +24,31 @@
     public string CorrelationId { get; set; }
     public string Type { get; set; }
     public int Status { get; set; }
-    public string KeyCurrentStep { get; set; }
+    public string? KeyCurrentStep { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
-    public string EntityType { get; set; }
-    public string EntityId { get; set; }
+    public string? EntityType { get; set; }
+    public string? EntityId { get; set; }
     public DateTime? NextExecutionAt { get; set; }
     public DateTime? LockedAt { get; set; }
-    public string LockedBy { get; set; }
+    public string? LockedBy { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ySagaEntity(int? id, string correlationid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid, DateTime? nextexecutionat, DateTime? lockedat, string lockedby ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ySagaEntity(int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby ){
  Id = id; 
  CorrelationId = correlationid; 
  Type = type; 
  Status = status; 
  KeyCurrentStep = keycurrentstep; 
  CreatedAt = (createdat < (new DateTime(1800, 1, 1))) ? DateTime.Now : createdat; 
- CompletedAt = (completedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : completedat; 
+ CompletedAt = completedat.HasValue && completedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : completedat; 
  EntityType = entitytype; 
  EntityId = entityid; 
- NextExecutionAt = (nextexecutionat < (new DateTime(1800, 1, 1))) ? DateTime.Now : nextexecutionat; 
- LockedAt = (lockedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lockedat; 
+ NextExecutionAt = nextexecutionat.HasValue && nextexecutionat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : nextexecutionat; 
+ LockedAt = lockedat.HasValue && lockedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : lockedat; 
  LockedBy = lockedby; 
  Deleted = false; 
  Changed = DateTime.Now; 
@@ -60,7 +60,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("CorrelationId deve ser informado.");
    if(string.IsNullOrEmpty(Type))
    this._erroMensagem.Add("Type deve ser informado.");
-   if(CreatedAt == null || CreatedAt < (new DateTime(1800, 1, 1)))
+   if(CreatedAt < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Criado em deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

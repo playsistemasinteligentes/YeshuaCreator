@@ -60,6 +60,15 @@ namespace Command.Receivers.UseCase
                 var sourceMessageId = string.IsNullOrWhiteSpace(request.SourceMessageId)
                     ? Guid.NewGuid().ToString()
                     : request.SourceMessageId;
+                var xmlStorageKey = FiscalEntradaPayloadReader.Text(documento, "xmlStorageKey", "xmlKey", "storageKey");
+                var rawXml = FiscalEntradaPayloadReader.RawXml(documento);
+                if (!string.IsNullOrWhiteSpace(rawXml))
+                {
+                    var storage = SefazFiscalDocumentStore.SalvarXmlResposta("nfe", "originario", chave, rawXml);
+                    xmlStorageKey = storage.Path;
+                }
+
+                var snapshotJson = FiscalEntradaPayloadReader.SnapshotJson(documento);
 
                 var originario = documentoFactory.Create(
                     null,
@@ -77,7 +86,7 @@ namespace Command.Receivers.UseCase
                     valor,
                     peso,
                     volume,
-                    documento.GetRawText(),
+                    snapshotJson,
                     1);
 
                 documentoWriteRepository.Insert(originario);
@@ -98,8 +107,8 @@ namespace Command.Receivers.UseCase
                     valor,
                     peso,
                     volume,
-                    FiscalEntradaPayloadReader.Text(documento, "xmlStorageKey", "xmlKey", "storageKey"),
-                    documento.GetRawText(),
+                    xmlStorageKey,
+                    snapshotJson,
                     1);
 
                 nfeWriteRepository.Insert(snapshot);

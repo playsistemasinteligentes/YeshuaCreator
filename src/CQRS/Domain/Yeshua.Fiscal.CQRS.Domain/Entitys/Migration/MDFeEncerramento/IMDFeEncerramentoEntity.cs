@@ -28,9 +28,9 @@
     string PlacaVeiculo { get; set; }
     DateTime SolicitadoEm { get; set; }
     DateTime? AutorizadoEm { get; set; }
-    string Protocolo { get; set; }
-    string CodigoRetorno { get; set; }
-    string MensagemRetorno { get; set; }
+    string? Protocolo { get; set; }
+    string? CodigoRetorno { get; set; }
+    string? MensagemRetorno { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

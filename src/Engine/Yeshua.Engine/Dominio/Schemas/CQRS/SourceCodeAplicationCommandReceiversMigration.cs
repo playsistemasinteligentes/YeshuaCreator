@@ -14,7 +14,6 @@ namespace Dominio.Schemas.CQRS
         private readonly CommandType _commandType;
         private readonly string _nameSpace;
         private readonly string _column;
-        private readonly string _generiClass;
         private readonly string _whereName;
         private readonly IQueryWithMeta _query;
 
@@ -44,22 +43,16 @@ namespace Dominio.Schemas.CQRS
             {
                 case CommandType.Insert:
                     return CommandCrud(CommandType.Insert);
-                    break;
                 case CommandType.Update:
                     return CommandCrud(CommandType.Update);
-                    break;
                 case CommandType.Delete:
                     return CommandCrud(CommandType.Delete);
-                    break;
                 case CommandType.Read:
                     return CommandCrud(CommandType.Read);
-                    break;
                 case CommandType.ReadQuery:
                     return CommandCrud(CommandType.ReadQuery);
-                    break;
                 case CommandType.ReadFK:
                     return CommandCrud(CommandType.ReadFK);
-                    break;
                 default:
                     break;
             }
@@ -109,7 +102,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override async Task<State<I{_entity.EntityName}Entity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
+                sb.AppendLine($"        protected override Task<State<I{_entity.EntityName}Entity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"             if(comand is {CQRSParam.I.NameSpaceCommandWrite}.{_entity.EntityName}CrudCommand c) ");
@@ -131,21 +124,21 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine($"                 var {_entity.EntityName.ToLower()} = new {_entity.EntityName}Factory(_logger, _domainTrackingPolicy).Create({factoryCallArguments});");
                 sb.AppendLine($"                 var domainResult = {_entity.EntityName}DomainBehavior.Apply({_entity.EntityName.ToLower()}, context);");
                 sb.AppendLine("                 if (!domainResult.IsValid)");
-                sb.AppendLine("                     return ValidationError(domainResult.Errors, null);");
+                sb.AppendLine("                     return Task.FromResult(ValidationError(domainResult.Errors));");
                 sb.AppendLine();
                 sb.AppendLine("                 try");
                 sb.AppendLine("                 {");
                 sb.AppendLine($"                     _repository.{action.ToString()}({_entity.EntityName.ToLower()});");
-                sb.AppendLine($"                     return Success(\"OK\", {_entity.EntityName.ToLower()});");
+                sb.AppendLine($"                     return Task.FromResult(Success(\"OK\", {_entity.EntityName.ToLower()}));");
                 sb.AppendLine("                 }");
                 sb.AppendLine("                 catch (Exception e)");
                 sb.AppendLine("                 {");
-                sb.AppendLine($"                    return Error(e, {_entity.EntityName.ToLower()});");
+                sb.AppendLine($"                    return Task.FromResult(Error(e, {_entity.EntityName.ToLower()}));");
                 sb.AppendLine("                 }");
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
+                sb.AppendLine("                 return Task.FromResult(Error(\"ErroConversao\"));");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
@@ -184,16 +177,16 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override async Task<State<DataPagination<{_entity.EntityName}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
+                sb.AppendLine($"        protected override Task<State<DataPagination<{_entity.EntityName}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_commandType}{_column}Command c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}(c);");
-                sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine($"                return Task.FromResult(Success(\"OK\", {_entity.EntityName}ReadRepository));");
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
+                sb.AppendLine("                 return Task.FromResult(Error(\"ErroConversao\"));");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
@@ -232,16 +225,16 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override async Task<State<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
+                sb.AppendLine($"        protected override Task<State<DataPagination<{_entity.EntityName}{_query.Meta.QueryName}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            if(comand is {CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{_whereName}Command c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.Get{_entity.EntityName}{_whereName}(c);");
-                sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine($"                return Task.FromResult(Success(\"OK\", {_entity.EntityName}ReadRepository));");
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
+                sb.AppendLine("                 return Task.FromResult(Error(\"ErroConversao\"));");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
@@ -282,17 +275,17 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            _executionContext = context;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
-                sb.AppendLine($"        protected override async Task<State<IEnumerable<{_entity.EntityName}{_column}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
+                sb.AppendLine($"        protected override Task<State<IEnumerable<{_entity.EntityName}{_column}DTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)");
                 sb.AppendLine("        {");
 
                 sb.AppendLine($"            if(comand is SearchFKCommand c) ");
                 sb.AppendLine("             {    ");
                 sb.AppendLine($"                var {_entity.EntityName}ReadRepository = _repository.get{_entity.EntityName}{action}{_column}(c);");
-                sb.AppendLine($"                return Success(\"OK\", {_entity.EntityName}ReadRepository);");
+                sb.AppendLine($"                return Task.FromResult(Success(\"OK\", {_entity.EntityName}ReadRepository));");
                 sb.AppendLine("            }");
                 sb.AppendLine("            else ");
                 sb.AppendLine("            {");
-                sb.AppendLine("                 return Error(\"ErroConversao\", default);");
+                sb.AppendLine("                 return Task.FromResult(Error(\"ErroConversao\"));");
                 sb.AppendLine("            }");
                 sb.AppendLine("        }");
                 sb.AppendLine("    }");
@@ -306,25 +299,7 @@ namespace Dominio.Schemas.CQRS
 
         protected override StringBuilder GenerateCustonCode()
         {
-            var sb = new StringBuilder();
             return new StringBuilder();
-            // Adiciona o comentário de descrição da entidade
-            sb.AppendLine("// " + _entity.EntityDescription);
-
-            // Define a classe
-            sb.AppendLine($"public partial class {_entity.EntityName}");
-            sb.AppendLine("{");
-
-            // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns)
-            {
-                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
-            }
-
-            // Fecha a classe
-            sb.AppendLine("}");
-
-            return sb;
         }
 
     }

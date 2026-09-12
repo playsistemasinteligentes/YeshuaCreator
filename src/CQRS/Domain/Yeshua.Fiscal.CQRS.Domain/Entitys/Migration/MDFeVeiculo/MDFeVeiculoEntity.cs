@@ -23,7 +23,7 @@
     public int? Id { get; set; }
     public int MDFeSolicitacaoFiscalId { get; set; }
     public string Placa { get; set; }
-    public string Renavam { get; set; }
+    public string? Renavam { get; set; }
     public Decimal? Tara { get; set; }
     public Decimal? CapacidadeKg { get; set; }
     public Decimal? CapacidadeM3 { get; set; }
@@ -31,8 +31,8 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal MDFeVeiculoEntity(int? id, int mdfesolicitacaofiscalid, string placa, string renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 ){
+    private List<string> _erroMensagem = new List<string>();
+ internal MDFeVeiculoEntity(int? id, int mdfesolicitacaofiscalid, string placa, string? renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 ){
  Id = id; 
  MDFeSolicitacaoFiscalId = mdfesolicitacaofiscalid; 
  Placa = placa; 

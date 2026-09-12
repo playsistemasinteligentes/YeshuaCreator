@@ -103,10 +103,7 @@ namespace Dominio.Schemas.CQRS
 
 
                     if (_commandType == CommandType.Read || _commandType == CommandType.ReadFK)
-                        if (column.Enum != null)
-                            sb.AppendLine($"        public List<int> {column.Name} {{ get; set; }}");
-                        else
-                            sb.AppendLine($"        public {column.getCsharpType(true, true)} {column.Name} {{ get; set; }}");
+                        sb.AppendLine($"        public {column.getCsharpType(true, true)} {column.Name} {{ get; set; }}");
                     else
                         sb.AppendLine($"        public {column.getCsharpType(true, false)} {column.Name} {{ get; set; }}");
 

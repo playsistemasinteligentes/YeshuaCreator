@@ -14,7 +14,7 @@ namespace Command.Write
     public struct yTenantModuleCrudCommand : ICommand
     {
         public int? Id { get; set; }
-        public string ModuleId { get; set; }
+        public string? ModuleId { get; set; }
         public int? TenantID { get; set; }
         public DateTime? ValidUntil { get; set; }
         public bool? Deleted { get; set; }

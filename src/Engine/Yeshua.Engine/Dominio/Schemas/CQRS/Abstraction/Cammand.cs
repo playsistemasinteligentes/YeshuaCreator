@@ -37,8 +37,6 @@ namespace Dominio.Schemas.CQRS.Abstraction
                 FieldTypes.Custom => null, // motor deve preencher com algo manualmente
                 _ => "object"
             };
-
-            return "";
         }
     }
 

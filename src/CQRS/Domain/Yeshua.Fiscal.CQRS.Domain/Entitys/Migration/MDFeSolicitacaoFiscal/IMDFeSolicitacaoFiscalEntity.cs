@@ -22,14 +22,14 @@
 {
     int? Id { get; set; }
     string CorrelationId { get; set; }
-    string CargaId { get; set; }
+    string? CargaId { get; set; }
     int Ambiente { get; set; }
     string UFCarregamento { get; set; }
     string UFDescarregamento { get; set; }
-    string PlacaVeiculo { get; set; }
-    string CondutorDocumento { get; set; }
-    string DocumentosOriginariosJson { get; set; }
-    string TransporteSnapshotJson { get; set; }
+    string? PlacaVeiculo { get; set; }
+    string? CondutorDocumento { get; set; }
+    string? DocumentosOriginariosJson { get; set; }
+    string? TransporteSnapshotJson { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

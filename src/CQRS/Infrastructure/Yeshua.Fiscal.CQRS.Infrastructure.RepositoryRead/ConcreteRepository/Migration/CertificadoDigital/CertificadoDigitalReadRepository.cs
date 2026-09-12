@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CertificadoDigitalDTO> getCertificadoDigital(Command.Read.CertificadoDigitalReadCommand command )
         {
-            DataPagination<CertificadoDigitalDTO> customResult = null;
+            var customResult = new DataPagination<CertificadoDigitalDTO>();
             var customHandled = false;
             TryGetCertificadoDigitalCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CertificadoDigitalTenantIDDTO> getCertificadoDigitalReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CertificadoDigitalTenantIDDTO> lista;
             var query = _query.CertificadoDigitalTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CertificadoDigitalTenantIDDTO>(query.Query,query.Parameters) as List<CertificadoDigitalTenantIDDTO>;
+                var lista = _unitOfWork.Query<CertificadoDigitalTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CertificadoDigitalUserIdDTO> getCertificadoDigitalReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CertificadoDigitalUserIdDTO> lista;
             var query = _query.CertificadoDigitalUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CertificadoDigitalUserIdDTO>(query.Query,query.Parameters) as List<CertificadoDigitalUserIdDTO>;
+                var lista = _unitOfWork.Query<CertificadoDigitalUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByApelidoQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDocumentoTitularQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStorageKeyQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByThumbprintQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidoDeQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidoAteQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAtivoQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters) as List<CertificadoDigitalDTO>;
+                var result = _unitOfWork.Query<CertificadoDigitalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

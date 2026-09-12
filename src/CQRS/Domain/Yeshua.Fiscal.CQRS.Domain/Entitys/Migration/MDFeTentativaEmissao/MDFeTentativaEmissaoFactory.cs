@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMDFeTentativaEmissaoEntity Create(int? id, int mdfesolicitacaofiscalid, string chaveacesso, int? numero, int? serie, int tentativa, string xmlassinadostoragekey, string xmlprocstoragekey, string xmlhash, string codigoretorno, string mensagemretorno, string protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
+                                    } public IMDFeTentativaEmissaoEntity Create(int? id, int mdfesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
                             {
                                 return Create(null, id, mdfesolicitacaofiscalid, chaveacesso, numero, serie, tentativa, xmlassinadostoragekey, xmlprocstoragekey, xmlhash, codigoretorno, mensagemretorno, protocoloautorizacao, enviadoemutc, autorizadoemutc, status);
                             }
 
                             public IMDFeTentativaEmissaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string chaveacesso, int? numero, int? serie, int tentativa, string xmlassinadostoragekey, string xmlprocstoragekey, string xmlhash, string codigoretorno, string mensagemretorno, string protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
                             {
                             var entity = new MDFeTentativaEmissaoEntity(id, mdfesolicitacaofiscalid, chaveacesso, numero, serie, tentativa, xmlassinadostoragekey, xmlprocstoragekey, xmlhash, codigoretorno, mensagemretorno, protocoloautorizacao, enviadoemutc, autorizadoemutc, status );
 

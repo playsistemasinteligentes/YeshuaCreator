@@ -32,7 +32,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal SefazEndpointEntity(int? id, int produtofiscal, string uf, int ambiente, string servico, string versao, string url, int ativo ){
  Id = id; 
  ProdutoFiscal = produtofiscal; 

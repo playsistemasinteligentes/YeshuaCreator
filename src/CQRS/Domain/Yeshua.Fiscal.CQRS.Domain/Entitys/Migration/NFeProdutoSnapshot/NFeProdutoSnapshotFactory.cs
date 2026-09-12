@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public INFeProdutoSnapshotEntity Create(int? id, int? documentofiscaloriginarioid, string correlationid, string cargaid, string pedidoid, string chaveacesso, string emitentedocumento, string destinatariodocumento, string uforigem, string ufdestino, string municipioorigemcodigoibge, string municipiodestinocodigoibge, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string xmlstoragekey, string snapshotjson, int status )
+                                    } public INFeProdutoSnapshotEntity Create(int? id, int? documentofiscaloriginarioid, string correlationid, string? cargaid, string? pedidoid, string chaveacesso, string? emitentedocumento, string? destinatariodocumento, string? uforigem, string? ufdestino, string? municipioorigemcodigoibge, string? municipiodestinocodigoibge, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? xmlstoragekey, string? snapshotjson, int status )
                             {
                                 return Create(null, id, documentofiscaloriginarioid, correlationid, cargaid, pedidoid, chaveacesso, emitentedocumento, destinatariodocumento, uforigem, ufdestino, municipioorigemcodigoibge, municipiodestinocodigoibge, valordocumento, pesobruto, volume, xmlstoragekey, snapshotjson, status);
                             }
 
                             public INFeProdutoSnapshotEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? documentofiscaloriginarioid, string correlationid, string cargaid, string pedidoid, string chaveacesso, string emitentedocumento, string destinatariodocumento, string uforigem, string ufdestino, string municipioorigemcodigoibge, string municipiodestinocodigoibge, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string xmlstoragekey, string snapshotjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? documentofiscaloriginarioid, string correlationid, string? cargaid, string? pedidoid, string chaveacesso, string? emitentedocumento, string? destinatariodocumento, string? uforigem, string? ufdestino, string? municipioorigemcodigoibge, string? municipiodestinocodigoibge, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? xmlstoragekey, string? snapshotjson, int status )
                             {
                             var entity = new NFeProdutoSnapshotEntity(id, documentofiscaloriginarioid, correlationid, cargaid, pedidoid, chaveacesso, emitentedocumento, destinatariodocumento, uforigem, ufdestino, municipioorigemcodigoibge, municipiodestinocodigoibge, valordocumento, pesobruto, volume, xmlstoragekey, snapshotjson, status );
 

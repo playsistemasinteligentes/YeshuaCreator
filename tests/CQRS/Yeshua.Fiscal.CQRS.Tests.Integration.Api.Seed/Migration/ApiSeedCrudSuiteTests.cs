@@ -97,53 +97,62 @@ public sealed class ApiSeedCrudSuiteTests
         var step21 = new EntradaFiscalContingencia.EntradaFiscalContingenciaCrudApiSeedTests();
         await step21.ExecuteAsync();
 
-        var step22 = new yFileUpload.yFileUploadCrudApiSeedTests();
+        var step22 = new EmissaoFiscalTransporte.EmissaoFiscalTransporteCrudApiSeedTests();
         await step22.ExecuteAsync();
 
-        var step23 = new ySaga.ySagaCrudApiSeedTests();
+        var step23 = new ContingenciaFiscal.ContingenciaFiscalCrudApiSeedTests();
         await step23.ExecuteAsync();
 
-        var step24 = new ySagaStep.ySagaStepCrudApiSeedTests();
+        var step24 = new EmissaoFiscalTransporteDocumento.EmissaoFiscalTransporteDocumentoCrudApiSeedTests();
         await step24.ExecuteAsync();
 
-        var step25 = new yOutbox.yOutboxCrudApiSeedTests();
+        var step25 = new yFileUpload.yFileUploadCrudApiSeedTests();
         await step25.ExecuteAsync();
 
-        var step26 = new yInbox.yInboxCrudApiSeedTests();
+        var step26 = new ySaga.ySagaCrudApiSeedTests();
         await step26.ExecuteAsync();
 
-        var step27 = new yToken.yTokenCrudApiSeedTests();
+        var step27 = new ySagaStep.ySagaStepCrudApiSeedTests();
         await step27.ExecuteAsync();
 
-        var step28 = new yUser.yUserCrudApiSeedTests();
+        var step28 = new yOutbox.yOutboxCrudApiSeedTests();
         await step28.ExecuteAsync();
 
-        var step29 = new yConfigArcteture.yConfigArctetureCrudApiSeedTests();
+        var step29 = new yInbox.yInboxCrudApiSeedTests();
         await step29.ExecuteAsync();
 
-        var step30 = new yConfigNotification.yConfigNotificationCrudApiSeedTests();
+        var step30 = new yToken.yTokenCrudApiSeedTests();
         await step30.ExecuteAsync();
 
-        var step31 = new yPerfil.yPerfilCrudApiSeedTests();
+        var step31 = new yUser.yUserCrudApiSeedTests();
         await step31.ExecuteAsync();
 
-        var step32 = new yModule.yModuleCrudApiSeedTests();
+        var step32 = new yConfigArcteture.yConfigArctetureCrudApiSeedTests();
         await step32.ExecuteAsync();
 
-        var step33 = new yTenantModule.yTenantModuleCrudApiSeedTests();
+        var step33 = new yConfigNotification.yConfigNotificationCrudApiSeedTests();
         await step33.ExecuteAsync();
 
-        var step34 = new yUserModule.yUserModuleCrudApiSeedTests();
+        var step34 = new yPerfil.yPerfilCrudApiSeedTests();
         await step34.ExecuteAsync();
 
-        var step35 = new yGrant.yGrantCrudApiSeedTests();
+        var step35 = new yModule.yModuleCrudApiSeedTests();
         await step35.ExecuteAsync();
 
-        var step36 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        var step36 = new yTenantModule.yTenantModuleCrudApiSeedTests();
         await step36.ExecuteAsync();
 
-        var step37 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        var step37 = new yUserModule.yUserModuleCrudApiSeedTests();
         await step37.ExecuteAsync();
+
+        var step38 = new yGrant.yGrantCrudApiSeedTests();
+        await step38.ExecuteAsync();
+
+        var step39 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        await step39.ExecuteAsync();
+
+        var step40 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        await step40.ExecuteAsync();
 
     }
 }

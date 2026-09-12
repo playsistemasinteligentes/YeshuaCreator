@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CTeEntradaOficialDTO> getCTeEntradaOficial(Command.Read.CTeEntradaOficialReadCommand command )
         {
-            DataPagination<CTeEntradaOficialDTO> customResult = null;
+            var customResult = new DataPagination<CTeEntradaOficialDTO>();
             var customHandled = false;
             TryGetCTeEntradaOficialCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeEntradaOficialTenantIDDTO> getCTeEntradaOficialReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeEntradaOficialTenantIDDTO> lista;
             var query = _query.CTeEntradaOficialTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CTeEntradaOficialTenantIDDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialTenantIDDTO>;
+                var lista = _unitOfWork.Query<CTeEntradaOficialTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeEntradaOficialUserIdDTO> getCTeEntradaOficialReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeEntradaOficialUserIdDTO> lista;
             var query = _query.CTeEntradaOficialUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CTeEntradaOficialUserIdDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialUserIdDTO>;
+                var lista = _unitOfWork.Query<CTeEntradaOficialUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceApplicationQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceModuleQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceMessageIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMessageTypeQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMessageVersionQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByReceivedAtUtcQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPayloadHashQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPayloadStorageKeyQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters) as List<CTeEntradaOficialDTO>;
+                var result = _unitOfWork.Query<CTeEntradaOficialDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

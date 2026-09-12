@@ -189,14 +189,11 @@ namespace Dominio.Schemas.CQRS
 
             if (_commandType == CommandType.Entity)
             {
-                sb.AppendLine("    private List<string> _erroMensagem = null;");
+                sb.AppendLine("    private List<string> _erroMensagem = new List<string>();");
                 // construtor 
                 sb.AppendLine(@$" internal {_entity.EntityName}Entity({string.Join(", ", _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault).Select(c => c.getCsharpType(true) + " " + c.getParameterConstructor()))} ){{");
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && !x.IsValueDefault))
-                    if (column.getCsharpType() == "DateTime")
-                        sb.AppendLine($" {column.Name} = ({column.getParameterConstructor()} < (new DateTime(1800, 1, 1))) ? DateTime.Now : {column.getParameterConstructor()}; ");
-                    else
-                        sb.AppendLine($" {column.Name} = {column.getParameterConstructor()}; ");
+                    sb.AppendLine($" {column.Name} = {BuildConstructorAssignmentExpression(column)}; ");
 
                 foreach (var column in _entity.AddColumns.Where(x => !x.IsBackEndField && x.IsValueDefault && !IsExecutionContextDefault(x)))
                     sb.AppendLine($" {column.Name} = {BuildDefaultValueExpression(column)}; ");
@@ -210,13 +207,7 @@ namespace Dominio.Schemas.CQRS
 
                 foreach (var column in _entity.AddColumns.Where(x => x.IsNotNull && !x.IsBackEndField && !x.IsValueDefault))
                 {
-                    var validationCondition = column.getCsharpType() switch
-                    {
-                        "string" => $"string.IsNullOrEmpty({column.Name})",
-                        "DateTime" => $"{column.Name} == null || {column.Name} < (new DateTime(1800, 1, 1))",
-                        "int" or "Float" or "Decimal" or "long" when column.getCsharpType(true).EndsWith("?") => $"{column.Name} == null",
-                        _ => null
-                    };
+                    var validationCondition = BuildRequiredValidationCondition(column);
 
                     if (validationCondition is null)
                         continue;
@@ -274,6 +265,34 @@ namespace Dominio.Schemas.CQRS
         private static bool IsExecutionContextDefault(Column column)
         {
             return column.ValueDefault?.Contains("_executionContext", StringComparison.Ordinal) == true;
+        }
+
+        private static string? BuildRequiredValidationCondition(Column column)
+        {
+            var generatedType = column.getCsharpType(true);
+            var isNullableValueType = generatedType.EndsWith("?", StringComparison.Ordinal);
+
+            return column.GetSqlType() switch
+            {
+                "varchar" => $"string.IsNullOrEmpty({column.Name})",
+                "datetime" when isNullableValueType => $"!{column.Name}.HasValue || {column.Name}.Value < (new DateTime(1800, 1, 1))",
+                "datetime" => $"{column.Name} < (new DateTime(1800, 1, 1))",
+                "int" or "float" or "decimal" or "long" or "bool" when isNullableValueType => $"!{column.Name}.HasValue",
+                _ => null
+            };
+        }
+
+        private static string BuildConstructorAssignmentExpression(Column column)
+        {
+            var parameter = column.getParameterConstructor();
+            var generatedType = column.getCsharpType(true);
+
+            return column.GetSqlType() switch
+            {
+                "datetime" when generatedType == "DateTime?" => $"{parameter}.HasValue && {parameter}.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : {parameter}",
+                "datetime" => $"({parameter} < (new DateTime(1800, 1, 1))) ? DateTime.Now : {parameter}",
+                _ => parameter
+            };
         }
 
         private static string BuildDefaultValueExpression(Column column)

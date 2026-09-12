@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Seed.Migration.yConfigArcteture;
 
-[SeedTestOrder(29)]
+[SeedTestOrder(32)]
 public partial class yConfigArctetureCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yConfigArcteture/PostyConfigArcteture";

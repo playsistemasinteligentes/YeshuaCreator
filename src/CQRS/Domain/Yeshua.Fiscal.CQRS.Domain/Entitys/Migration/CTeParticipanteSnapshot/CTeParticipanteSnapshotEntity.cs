@@ -24,17 +24,17 @@
     public int CTeSolicitacaoFiscalId { get; set; }
     public string Papel { get; set; }
     public string Documento { get; set; }
-    public string Nome { get; set; }
-    public string InscricaoEstadual { get; set; }
-    public string UF { get; set; }
-    public string MunicipioCodigoIbge { get; set; }
-    public string EnderecoJson { get; set; }
+    public string? Nome { get; set; }
+    public string? InscricaoEstadual { get; set; }
+    public string? UF { get; set; }
+    public string? MunicipioCodigoIbge { get; set; }
+    public string? EnderecoJson { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CTeParticipanteSnapshotEntity(int? id, int ctesolicitacaofiscalid, string papel, string documento, string nome, string inscricaoestadual, string uf, string municipiocodigoibge, string enderecojson ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CTeParticipanteSnapshotEntity(int? id, int ctesolicitacaofiscalid, string papel, string documento, string? nome, string? inscricaoestadual, string? uf, string? municipiocodigoibge, string? enderecojson ){
  Id = id; 
  CTeSolicitacaoFiscalId = ctesolicitacaofiscalid; 
  Papel = papel; 

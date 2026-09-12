@@ -15,14 +15,14 @@ namespace Command.Write
     {
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
-        public string CargaId { get; set; }
+        public string? CargaId { get; set; }
         public int Ambiente { get; set; }
         public string UFCarregamento { get; set; }
         public string UFDescarregamento { get; set; }
-        public string PlacaVeiculo { get; set; }
-        public string CondutorDocumento { get; set; }
-        public string DocumentosOriginariosJson { get; set; }
-        public string TransporteSnapshotJson { get; set; }
+        public string? PlacaVeiculo { get; set; }
+        public string? CondutorDocumento { get; set; }
+        public string? DocumentosOriginariosJson { get; set; }
+        public string? TransporteSnapshotJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

@@ -27,7 +27,6 @@ namespace MyApp.QueryBuilder
         private readonly List<string> _wheres = new();
         private readonly DynamicParameters _parameters = new();
         private readonly List<QueryField> _selectFields = new();
-        private string _lastAlias = RootAlias;
 
         private int _paramIndex = 0;
         private const string RootAlias = "t0";

@@ -27,11 +27,11 @@ namespace Command.Write
         public int Globalizado { get; set; }
         public string UFInicio { get; set; }
         public string UFFim { get; set; }
-        public string MunicipioInicioCodigoIbge { get; set; }
-        public string MunicipioFimCodigoIbge { get; set; }
+        public string? MunicipioInicioCodigoIbge { get; set; }
+        public string? MunicipioFimCodigoIbge { get; set; }
         public Decimal? ValorServico { get; set; }
         public Decimal? ValorCarga { get; set; }
-        public string PreferenciasManifestoJson { get; set; }
+        public string? PreferenciasManifestoJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

@@ -92,7 +92,7 @@
                                         }
                                     }
 
-                                    public string CargaId
+                                    public string? CargaId
                                     {
                                         get => _inner.CargaId;
                                         set
@@ -148,7 +148,7 @@
                                         }
                                     }
 
-                                    public string PlacaVeiculo
+                                    public string? PlacaVeiculo
                                     {
                                         get => _inner.PlacaVeiculo;
                                         set
@@ -162,7 +162,7 @@
                                         }
                                     }
 
-                                    public string CondutorDocumento
+                                    public string? CondutorDocumento
                                     {
                                         get => _inner.CondutorDocumento;
                                         set
@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string DocumentosOriginariosJson
+                                    public string? DocumentosOriginariosJson
                                     {
                                         get => _inner.DocumentosOriginariosJson;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string TransporteSnapshotJson
+                                    public string? TransporteSnapshotJson
                                     {
                                         get => _inner.TransporteSnapshotJson;
                                         set

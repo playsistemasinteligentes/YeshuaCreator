@@ -22,16 +22,16 @@
 {
     int? Id { get; set; }
     int MDFeSolicitacaoFiscalId { get; set; }
-    string ChaveAcesso { get; set; }
+    string? ChaveAcesso { get; set; }
     int? Numero { get; set; }
     int? Serie { get; set; }
     int Tentativa { get; set; }
-    string XmlAssinadoStorageKey { get; set; }
-    string XmlProcStorageKey { get; set; }
-    string XmlHash { get; set; }
-    string CodigoRetorno { get; set; }
-    string MensagemRetorno { get; set; }
-    string ProtocoloAutorizacao { get; set; }
+    string? XmlAssinadoStorageKey { get; set; }
+    string? XmlProcStorageKey { get; set; }
+    string? XmlHash { get; set; }
+    string? CodigoRetorno { get; set; }
+    string? MensagemRetorno { get; set; }
+    string? ProtocoloAutorizacao { get; set; }
     DateTime? EnviadoEmUtc { get; set; }
     DateTime? AutorizadoEmUtc { get; set; }
     int Status { get; set; }

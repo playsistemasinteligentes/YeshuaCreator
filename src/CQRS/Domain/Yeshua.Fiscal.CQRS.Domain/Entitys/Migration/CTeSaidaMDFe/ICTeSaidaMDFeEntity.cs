@@ -25,9 +25,9 @@
     string CorrelationId { get; set; }
     string ChaveAcessoCTe { get; set; }
     string SnapshotHash { get; set; }
-    string OutboxMessageId { get; set; }
+    string? OutboxMessageId { get; set; }
     DateTime? PublicadoEmUtc { get; set; }
-    string UltimoErro { get; set; }
+    string? UltimoErro { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

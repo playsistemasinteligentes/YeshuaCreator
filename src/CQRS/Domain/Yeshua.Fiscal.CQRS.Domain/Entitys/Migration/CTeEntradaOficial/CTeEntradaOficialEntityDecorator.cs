@@ -106,7 +106,7 @@
                                         }
                                     }
 
-                                    public string SourceModule
+                                    public string? SourceModule
                                     {
                                         get => _inner.SourceModule;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string PayloadStorageKey
+                                    public string? PayloadStorageKey
                                     {
                                         get => _inner.PayloadStorageKey;
                                         set

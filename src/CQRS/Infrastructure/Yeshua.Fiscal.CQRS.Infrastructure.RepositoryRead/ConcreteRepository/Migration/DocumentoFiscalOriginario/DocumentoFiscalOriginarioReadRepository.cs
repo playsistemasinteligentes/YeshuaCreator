@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<DocumentoFiscalOriginarioDTO> getDocumentoFiscalOriginario(Command.Read.DocumentoFiscalOriginarioReadCommand command )
         {
-            DataPagination<DocumentoFiscalOriginarioDTO> customResult = null;
+            var customResult = new DataPagination<DocumentoFiscalOriginarioDTO>();
             var customHandled = false;
             TryGetDocumentoFiscalOriginarioCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<DocumentoFiscalOriginarioDocumentoFiscalIdDTO> getDocumentoFiscalOriginarioReadFKDocumentoFiscalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<DocumentoFiscalOriginarioDocumentoFiscalIdDTO> lista;
             var query = _query.DocumentoFiscalOriginarioDocumentoFiscalIdQuery(command );
 
-                lista = _unitOfWork.Query<DocumentoFiscalOriginarioDocumentoFiscalIdDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDocumentoFiscalIdDTO>;
+                var lista = _unitOfWork.Query<DocumentoFiscalOriginarioDocumentoFiscalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<DocumentoFiscalOriginarioTenantIDDTO> getDocumentoFiscalOriginarioReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<DocumentoFiscalOriginarioTenantIDDTO> lista;
             var query = _query.DocumentoFiscalOriginarioTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<DocumentoFiscalOriginarioTenantIDDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioTenantIDDTO>;
+                var lista = _unitOfWork.Query<DocumentoFiscalOriginarioTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<DocumentoFiscalOriginarioUserIdDTO> getDocumentoFiscalOriginarioReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<DocumentoFiscalOriginarioUserIdDTO> lista;
             var query = _query.DocumentoFiscalOriginarioUserIdQuery(command );
 
-                lista = _unitOfWork.Query<DocumentoFiscalOriginarioUserIdDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioUserIdDTO>;
+                var lista = _unitOfWork.Query<DocumentoFiscalOriginarioUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDocumentoFiscalIdQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceApplicationQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceModuleQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySourceMessageIdQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChaveAcessoQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNumeroQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySerieQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmitenteDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDestinatarioDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPesoBrutoQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVolumeQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -580,7 +577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySnapshotJsonQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -588,7 +585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -596,7 +593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -604,7 +601,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -612,7 +609,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -620,7 +617,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters) as List<DocumentoFiscalOriginarioDTO>;
+                var result = _unitOfWork.Query<DocumentoFiscalOriginarioDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

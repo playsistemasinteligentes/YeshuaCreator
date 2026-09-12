@@ -321,6 +321,45 @@ builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaRe
 builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.EntradaFiscalContingenciaReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IEmissaoFiscalTransporteWriteRepository, Input.Repository.EmissaoFiscalTransporte.EmissaoFiscalTransporteWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IEmissaoFiscalTransporteReadRepository, Read.Repository.EmissaoFiscalTransporteReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IEmissaoFiscalTransporteQueryRead, Query.Read.EmissaoFiscalTransporteQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IEmissaoFiscalTransporteQueryWrite, Query.Write.EmissaoFiscalTransporteQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertEmissaoFiscalTransporteReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateEmissaoFiscalTransporteReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteEmissaoFiscalTransporteReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IContingenciaFiscalWriteRepository, Input.Repository.ContingenciaFiscal.ContingenciaFiscalWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IContingenciaFiscalReadRepository, Read.Repository.ContingenciaFiscalReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IContingenciaFiscalQueryRead, Query.Read.ContingenciaFiscalQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IContingenciaFiscalQueryWrite, Query.Write.ContingenciaFiscalQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertContingenciaFiscalReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateContingenciaFiscalReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteContingenciaFiscalReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ContingenciaFiscalReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ContingenciaFiscalReadFKEmissaoFiscalTransporteIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ContingenciaFiscalReadFKEntradaFiscalContingenciaIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ContingenciaFiscalReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ContingenciaFiscalReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IEmissaoFiscalTransporteDocumentoWriteRepository, Input.Repository.EmissaoFiscalTransporteDocumento.EmissaoFiscalTransporteDocumentoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IEmissaoFiscalTransporteDocumentoReadRepository, Read.Repository.EmissaoFiscalTransporteDocumentoReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IEmissaoFiscalTransporteDocumentoQueryRead, Query.Read.EmissaoFiscalTransporteDocumentoQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IEmissaoFiscalTransporteDocumentoQueryWrite, Query.Write.EmissaoFiscalTransporteDocumentoQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertEmissaoFiscalTransporteDocumentoReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateEmissaoFiscalTransporteDocumentoReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteEmissaoFiscalTransporteDocumentoReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadFKEmissaoFiscalTransporteIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadFKDocumentoFiscalIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadFKDocumentoFiscalOriginarioIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadFKNFeProdutoSnapshotIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.EmissaoFiscalTransporteDocumentoReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();

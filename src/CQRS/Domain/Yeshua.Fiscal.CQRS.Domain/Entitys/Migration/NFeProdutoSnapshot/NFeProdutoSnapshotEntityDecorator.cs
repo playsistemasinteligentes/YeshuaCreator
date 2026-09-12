@@ -113,7 +113,7 @@
                                         }
                                     }
 
-                                    public string CargaId
+                                    public string? CargaId
                                     {
                                         get => _inner.CargaId;
                                         set
@@ -127,7 +127,7 @@
                                         }
                                     }
 
-                                    public string PedidoId
+                                    public string? PedidoId
                                     {
                                         get => _inner.PedidoId;
                                         set
@@ -155,7 +155,7 @@
                                         }
                                     }
 
-                                    public string EmitenteDocumento
+                                    public string? EmitenteDocumento
                                     {
                                         get => _inner.EmitenteDocumento;
                                         set
@@ -169,7 +169,7 @@
                                         }
                                     }
 
-                                    public string DestinatarioDocumento
+                                    public string? DestinatarioDocumento
                                     {
                                         get => _inner.DestinatarioDocumento;
                                         set
@@ -183,7 +183,7 @@
                                         }
                                     }
 
-                                    public string UFOrigem
+                                    public string? UFOrigem
                                     {
                                         get => _inner.UFOrigem;
                                         set
@@ -197,7 +197,7 @@
                                         }
                                     }
 
-                                    public string UFDestino
+                                    public string? UFDestino
                                     {
                                         get => _inner.UFDestino;
                                         set
@@ -211,7 +211,7 @@
                                         }
                                     }
 
-                                    public string MunicipioOrigemCodigoIbge
+                                    public string? MunicipioOrigemCodigoIbge
                                     {
                                         get => _inner.MunicipioOrigemCodigoIbge;
                                         set
@@ -225,7 +225,7 @@
                                         }
                                     }
 
-                                    public string MunicipioDestinoCodigoIbge
+                                    public string? MunicipioDestinoCodigoIbge
                                     {
                                         get => _inner.MunicipioDestinoCodigoIbge;
                                         set
@@ -281,7 +281,7 @@
                                         }
                                     }
 
-                                    public string XmlStorageKey
+                                    public string? XmlStorageKey
                                     {
                                         get => _inner.XmlStorageKey;
                                         set
@@ -295,7 +295,7 @@
                                         }
                                     }
 
-                                    public string SnapshotJson
+                                    public string? SnapshotJson
                                     {
                                         get => _inner.SnapshotJson;
                                         set

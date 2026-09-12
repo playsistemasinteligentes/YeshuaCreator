@@ -21,9 +21,9 @@ namespace Command.Write
         public string PlacaVeiculo { get; set; }
         public DateTime SolicitadoEm { get; set; }
         public DateTime? AutorizadoEm { get; set; }
-        public string Protocolo { get; set; }
-        public string CodigoRetorno { get; set; }
-        public string MensagemRetorno { get; set; }
+        public string? Protocolo { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

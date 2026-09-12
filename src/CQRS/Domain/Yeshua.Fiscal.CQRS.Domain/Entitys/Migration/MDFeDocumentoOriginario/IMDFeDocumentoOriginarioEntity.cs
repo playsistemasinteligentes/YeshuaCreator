@@ -24,8 +24,8 @@
     int MDFeSolicitacaoFiscalId { get; set; }
     int? DocumentoFiscalOriginarioId { get; set; }
     string TipoDocumento { get; set; }
-    string ChaveAcesso { get; set; }
-    string SnapshotJson { get; set; }
+    string? ChaveAcesso { get; set; }
+    string? SnapshotJson { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

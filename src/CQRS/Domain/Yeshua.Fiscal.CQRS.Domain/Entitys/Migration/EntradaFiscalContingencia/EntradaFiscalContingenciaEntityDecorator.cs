@@ -170,7 +170,7 @@
                                         }
                                     }
 
-                                    public string SourceModule
+                                    public string? SourceModule
                                     {
                                         get => _inner.SourceModule;
                                         set
@@ -198,7 +198,7 @@
                                         }
                                     }
 
-                                    public string EmitenteFiscalDocumento
+                                    public string? EmitenteFiscalDocumento
                                     {
                                         get => _inner.EmitenteFiscalDocumento;
                                         set
@@ -212,7 +212,7 @@
                                         }
                                     }
 
-                                    public string TomadorDocumento
+                                    public string? TomadorDocumento
                                     {
                                         get => _inner.TomadorDocumento;
                                         set
@@ -226,7 +226,7 @@
                                         }
                                     }
 
-                                    public string TransportadorDocumento
+                                    public string? TransportadorDocumento
                                     {
                                         get => _inner.TransportadorDocumento;
                                         set
@@ -240,7 +240,7 @@
                                         }
                                     }
 
-                                    public string RemetenteDocumento
+                                    public string? RemetenteDocumento
                                     {
                                         get => _inner.RemetenteDocumento;
                                         set
@@ -254,7 +254,7 @@
                                         }
                                     }
 
-                                    public string DestinatarioDocumento
+                                    public string? DestinatarioDocumento
                                     {
                                         get => _inner.DestinatarioDocumento;
                                         set
@@ -268,7 +268,7 @@
                                         }
                                     }
 
-                                    public string UFInicio
+                                    public string? UFInicio
                                     {
                                         get => _inner.UFInicio;
                                         set
@@ -282,7 +282,7 @@
                                         }
                                     }
 
-                                    public string UFFim
+                                    public string? UFFim
                                     {
                                         get => _inner.UFFim;
                                         set
@@ -296,7 +296,7 @@
                                         }
                                     }
 
-                                    public string MunicipioInicioCodigoIbge
+                                    public string? MunicipioInicioCodigoIbge
                                     {
                                         get => _inner.MunicipioInicioCodigoIbge;
                                         set
@@ -310,7 +310,7 @@
                                         }
                                     }
 
-                                    public string MunicipioFimCodigoIbge
+                                    public string? MunicipioFimCodigoIbge
                                     {
                                         get => _inner.MunicipioFimCodigoIbge;
                                         set
@@ -324,7 +324,7 @@
                                         }
                                     }
 
-                                    public string RNTRC
+                                    public string? RNTRC
                                     {
                                         get => _inner.RNTRC;
                                         set
@@ -338,7 +338,7 @@
                                         }
                                     }
 
-                                    public string PlacaVeiculo
+                                    public string? PlacaVeiculo
                                     {
                                         get => _inner.PlacaVeiculo;
                                         set
@@ -352,7 +352,7 @@
                                         }
                                     }
 
-                                    public string UFVeiculo
+                                    public string? UFVeiculo
                                     {
                                         get => _inner.UFVeiculo;
                                         set
@@ -366,7 +366,7 @@
                                         }
                                     }
 
-                                    public string CondutorDocumento
+                                    public string? CondutorDocumento
                                     {
                                         get => _inner.CondutorDocumento;
                                         set
@@ -380,7 +380,7 @@
                                         }
                                     }
 
-                                    public string CondutorNome
+                                    public string? CondutorNome
                                     {
                                         get => _inner.CondutorNome;
                                         set
@@ -450,7 +450,7 @@
                                         }
                                     }
 
-                                    public string PendenciasJson
+                                    public string? PendenciasJson
                                     {
                                         get => _inner.PendenciasJson;
                                         set
@@ -464,7 +464,7 @@
                                         }
                                     }
 
-                                    public string SnapshotJson
+                                    public string? SnapshotJson
                                     {
                                         get => _inner.SnapshotJson;
                                         set
@@ -478,7 +478,7 @@
                                         }
                                     }
 
-                                    public string EmissaoFiscalCorrelationId
+                                    public string? EmissaoFiscalCorrelationId
                                     {
                                         get => _inner.EmissaoFiscalCorrelationId;
                                         set

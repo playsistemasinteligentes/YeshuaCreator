@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CTeParticipanteSnapshotDTO> getCTeParticipanteSnapshot(Command.Read.CTeParticipanteSnapshotReadCommand command )
         {
-            DataPagination<CTeParticipanteSnapshotDTO> customResult = null;
+            var customResult = new DataPagination<CTeParticipanteSnapshotDTO>();
             var customHandled = false;
             TryGetCTeParticipanteSnapshotCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeParticipanteSnapshotCTeSolicitacaoFiscalIdDTO> getCTeParticipanteSnapshotReadFKCTeSolicitacaoFiscalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeParticipanteSnapshotCTeSolicitacaoFiscalIdDTO> lista;
             var query = _query.CTeParticipanteSnapshotCTeSolicitacaoFiscalIdQuery(command );
 
-                lista = _unitOfWork.Query<CTeParticipanteSnapshotCTeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotCTeSolicitacaoFiscalIdDTO>;
+                var lista = _unitOfWork.Query<CTeParticipanteSnapshotCTeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeParticipanteSnapshotTenantIDDTO> getCTeParticipanteSnapshotReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeParticipanteSnapshotTenantIDDTO> lista;
             var query = _query.CTeParticipanteSnapshotTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CTeParticipanteSnapshotTenantIDDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotTenantIDDTO>;
+                var lista = _unitOfWork.Query<CTeParticipanteSnapshotTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeParticipanteSnapshotUserIdDTO> getCTeParticipanteSnapshotReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeParticipanteSnapshotUserIdDTO> lista;
             var query = _query.CTeParticipanteSnapshotUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CTeParticipanteSnapshotUserIdDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotUserIdDTO>;
+                var lista = _unitOfWork.Query<CTeParticipanteSnapshotUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -332,7 +329,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -340,7 +337,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCTeSolicitacaoFiscalIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -348,7 +345,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPapelQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -356,7 +353,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -364,7 +361,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -372,7 +369,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByInscricaoEstadualQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEnderecoJsonQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -412,7 +409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -420,7 +417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters) as List<CTeParticipanteSnapshotDTO>;
+                var result = _unitOfWork.Query<CTeParticipanteSnapshotDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

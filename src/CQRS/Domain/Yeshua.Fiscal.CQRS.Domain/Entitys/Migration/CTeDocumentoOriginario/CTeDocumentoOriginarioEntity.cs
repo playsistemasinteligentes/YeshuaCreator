@@ -24,20 +24,20 @@
     public int CTeSolicitacaoFiscalId { get; set; }
     public int? DocumentoFiscalOriginarioId { get; set; }
     public string TipoDocumento { get; set; }
-    public string ChaveAcesso { get; set; }
-    public string Numero { get; set; }
-    public string Serie { get; set; }
-    public string EmitenteDocumento { get; set; }
-    public string DestinatarioDocumento { get; set; }
+    public string? ChaveAcesso { get; set; }
+    public string? Numero { get; set; }
+    public string? Serie { get; set; }
+    public string? EmitenteDocumento { get; set; }
+    public string? DestinatarioDocumento { get; set; }
     public Decimal? ValorDocumento { get; set; }
     public Decimal? PesoBruto { get; set; }
-    public string SnapshotJson { get; set; }
+    public string? SnapshotJson { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CTeDocumentoOriginarioEntity(int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string chaveacesso, string numero, string serie, string emitentedocumento, string destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string snapshotjson ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CTeDocumentoOriginarioEntity(int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string? snapshotjson ){
  Id = id; 
  CTeSolicitacaoFiscalId = ctesolicitacaofiscalid; 
  DocumentoFiscalOriginarioId = documentofiscaloriginarioid; 

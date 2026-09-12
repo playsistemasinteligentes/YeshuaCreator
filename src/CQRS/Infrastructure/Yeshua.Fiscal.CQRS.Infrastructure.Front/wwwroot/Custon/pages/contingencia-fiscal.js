@@ -1,8 +1,8 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260911-sync03';
+import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260912-nxml01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260911-sync03';
+const assetVersion = '20260912-nxml01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
@@ -24,14 +24,14 @@ const state = {
     correlationId: '',
     cargaId: '',
     entradaId: 0,
-    documentoIndex: 0,
     sagaId: 0,
     testeSyncCorrelationId: '',
     testeSyncSagaId: 0,
     testeSyncEntityId: '',
     currentStepKey: '',
     currentStepStatus: 0,
-    started: false
+    started: false,
+    nfeFiles: []
 };
 
 const stageLabels = {
@@ -98,7 +98,12 @@ function injectCss() {
 
 function bindEvents() {
     document.getElementById('fiscal-contingencia-new')?.addEventListener('click', resetForm);
-    document.getElementById('fiscal-add-documento')?.addEventListener('click', () => addDocumento());
+    document.getElementById('fiscal-clear-xmls')?.addEventListener('click', clearXmls);
+    document.getElementById('fiscal-nfe-files')?.addEventListener('change', event => {
+        state.nfeFiles = Array.from(event.target.files || []);
+        renderXmlPreview();
+    });
+    document.getElementById('fiscal-nfe-xmls')?.addEventListener('input', renderXmlPreview);
     document.getElementById('fiscal-contingencia-submit')?.addEventListener('click', enviarFluxo);
     document.getElementById('fiscal-contingencia-refresh')?.addEventListener('click', consultarSaga);
     document.getElementById('fiscal-contingencia-teste-sync')?.addEventListener('click', executarTesteSync);
@@ -109,7 +114,6 @@ function resetForm() {
     state.correlationId = crypto.randomUUID();
     state.cargaId = 'CONT-FISCAL-' + compactDate(new Date());
     state.entradaId = 0;
-    state.documentoIndex = 0;
     state.sagaId = 0;
     state.testeSyncCorrelationId = '';
     state.testeSyncSagaId = 0;
@@ -117,6 +121,7 @@ function resetForm() {
     state.currentStepKey = '';
     state.currentStepStatus = 0;
     state.started = false;
+    state.nfeFiles = [];
 
     setValue('fiscal-carga-id', state.cargaId);
     setValue('fiscal-tenant-id', String(currentTenantId()));
@@ -140,22 +145,10 @@ function resetForm() {
     setValue('fiscal-origem-rota-fiscal', 'manual_contingencia');
     setValue('fiscal-observacao-fiscal', '');
 
-    const documentos = document.getElementById('fiscal-documentos');
-    if (documentos) documentos.innerHTML = '';
-    addDocumento({
-        chaveAcesso: '26260963249950000174550010000000011000000018',
-        numero: '1',
-        serie: '1',
-        emitenteDocumento: '63249950000174',
-        destinatarioDocumento: '63249950000174',
-        ufOrigem: 'PE',
-        ufDestino: 'PE',
-        municipioOrigemCodigoIbge: '2611606',
-        municipioDestinoCodigoIbge: '2611606',
-        valorDocumento: '1000,00',
-        pesoBruto: '100,00',
-        volume: '1,00'
-    });
+    setValue('fiscal-nfe-xmls', '');
+    const fileInput = document.getElementById('fiscal-nfe-files');
+    if (fileInput) fileInput.value = '';
+    renderXmlPreview();
 
     renderResult('-', '-', '-');
     setText('fiscal-contingencia-status', 'pronto');
@@ -165,60 +158,12 @@ function resetForm() {
     updatePrimaryButton();
 }
 
-function addDocumento(values = {}) {
-    state.documentoIndex += 1;
-    const id = state.documentoIndex;
-    const host = document.getElementById('fiscal-documentos');
-    if (!host) return;
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'fiscal-documento';
-    wrapper.dataset.documento = 'true';
-    wrapper.innerHTML = `
-        <div class="fiscal-documento-header">
-            <strong>NF-e ${id}</strong>
-            <button type="button" data-remove-documento>Remover</button>
-        </div>
-        <div class="fiscal-documento-grid">
-            ${field(id, 'chaveAcesso', 'Chave acesso', values.chaveAcesso, 'wide')}
-            ${field(id, 'numero', 'Numero', values.numero)}
-            ${field(id, 'serie', 'Serie', values.serie)}
-            ${field(id, 'emitenteDocumento', 'Emitente', values.emitenteDocumento)}
-            ${field(id, 'destinatarioDocumento', 'Destinatario', values.destinatarioDocumento)}
-            ${field(id, 'ufOrigem', 'UF origem', values.ufOrigem)}
-            ${field(id, 'municipioOrigemCodigoIbge', 'Municipio origem IBGE', values.municipioOrigemCodigoIbge)}
-            ${field(id, 'ufDestino', 'UF destino', values.ufDestino)}
-            ${field(id, 'municipioDestinoCodigoIbge', 'Municipio destino IBGE', values.municipioDestinoCodigoIbge)}
-            ${field(id, 'valorDocumento', 'Valor', values.valorDocumento)}
-            ${field(id, 'pesoBruto', 'Peso bruto', values.pesoBruto)}
-            ${field(id, 'volume', 'Volume', values.volume)}
-        </div>
-    `;
-
-    wrapper.querySelector('[data-remove-documento]')?.addEventListener('click', () => {
-        if (host.querySelectorAll('[data-documento="true"]').length > 1) {
-            wrapper.remove();
-        }
-    });
-
-    host.appendChild(wrapper);
-}
-
-function field(index, name, label, value = '', extraClass = '') {
-    return `
-        <label class="${extraClass}">
-            ${label}
-            <input data-field="${name}" data-documento-index="${index}" type="text" value="${escapeAttribute(value || '')}">
-        </label>
-    `;
-}
-
 async function iniciarContingencia() {
     setText('fiscal-contingencia-status', 'enviando');
     feedback('');
 
     try {
-        const payload = buildInitialPayload();
+        const payload = await buildInitialPayload();
         const result = await postUseCase(endpoints.iniciar, payload);
 
         state.correlationId = readField(result, 'correlationId', 'CorrelationId') || state.correlationId;
@@ -346,7 +291,7 @@ async function enviarEtapaAtual() {
             return;
         }
 
-        const payload = buildStepPayload(state.currentStepKey);
+        const payload = await buildStepPayload(state.currentStepKey);
         const result = await postUseCase(endpoint, {
             correlationId: state.correlationId,
             tenantId: payload.tenantId,
@@ -475,9 +420,9 @@ function buildBasePayload() {
     };
 }
 
-function buildInitialPayload() {
+async function buildInitialPayload() {
     const payload = buildBasePayload();
-    const documentos = readRequiredDocumentos();
+    const documentos = await readRequiredDocumentos();
 
     return {
         ...payload,
@@ -487,10 +432,10 @@ function buildInitialPayload() {
     };
 }
 
-function buildStepPayload(stepKey) {
+async function buildStepPayload(stepKey) {
     const payload = buildBasePayload();
     const documentos = stepKey === 'ReceberNotasFiscaisDaContingencia'
-        ? readRequiredDocumentos()
+        ? await readRequiredDocumentos()
         : [];
     const complemento = buildComplementoForStep(stepKey, documentos);
 
@@ -502,10 +447,10 @@ function buildStepPayload(stepKey) {
     };
 }
 
-function readRequiredDocumentos() {
-    const documentos = readDocumentos();
+async function readRequiredDocumentos() {
+    const documentos = await readDocumentos();
     if (documentos.length === 0) {
-        throw new Error('Informe pelo menos uma NF-e.');
+        throw new Error('Informe pelo menos um XML de NF-e.');
     }
 
     return documentos;
@@ -528,7 +473,7 @@ function buildComplementoForStep(stepKey, documentos) {
     }
 
     if (stepKey === 'InformarDadosTransporte') {
-        const docs = documentos && documentos.length > 0 ? documentos : readDocumentos();
+        const docs = documentos && documentos.length > 0 ? documentos : [];
         const complemento = buildTransporteComplemento(docs);
         complemento.pendenciasNegocio = buildPendenciasNegocio(complemento, docs);
         return complemento;
@@ -574,26 +519,70 @@ function buildTransporteComplemento(documentos) {
     };
 }
 
-function readDocumentos() {
-    return Array.from(document.querySelectorAll('[data-documento="true"]')).map((wrapper, index) => {
-        const value = name => wrapper.querySelector(`[data-field="${name}"]`)?.value || '';
+async function readDocumentos() {
+    const xmls = [];
+    xmls.push(...splitXmlDocuments(getValue('fiscal-nfe-xmls')));
+
+    for (const file of state.nfeFiles || []) {
+        const text = await file.text();
+        xmls.push(...splitXmlDocuments(text));
+    }
+
+    const unique = [];
+    const seen = new Set();
+    for (const xml of xmls) {
+        const key = xml.trim();
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        unique.push(xml);
+    }
+
+    return unique.map((xml, index) => {
         return {
             tipoDocumento: 'NFe',
-            chaveAcesso: onlyDigits(value('chaveAcesso')),
-            numero: value('numero'),
-            serie: value('serie'),
-            emitenteDocumento: onlyDigits(value('emitenteDocumento')),
-            destinatarioDocumento: onlyDigits(value('destinatarioDocumento')),
-            ufOrigem: upper(value('ufOrigem')),
-            ufDestino: upper(value('ufDestino')),
-            municipioOrigemCodigoIbge: value('municipioOrigemCodigoIbge'),
-            municipioDestinoCodigoIbge: value('municipioDestinoCodigoIbge'),
-            valorDocumento: parseDecimal(value('valorDocumento')),
-            pesoBruto: parseDecimal(value('pesoBruto')),
-            volume: parseDecimal(value('volume')),
-            xmlStorageKey: `front/contingencia/nfe-${index + 1}.xml`
+            xml,
+            xmlStorageKey: `front/contingencia/${state.cargaId || 'sem-carga'}/nfe-${index + 1}.xml`
         };
-    }).filter(item => item.chaveAcesso);
+    });
+}
+
+function clearXmls() {
+    state.nfeFiles = [];
+    setValue('fiscal-nfe-xmls', '');
+    const fileInput = document.getElementById('fiscal-nfe-files');
+    if (fileInput) fileInput.value = '';
+    renderXmlPreview();
+}
+
+function renderXmlPreview() {
+    const host = document.getElementById('fiscal-documentos');
+    if (!host) return;
+
+    const pastedCount = splitXmlDocuments(getValue('fiscal-nfe-xmls')).length;
+    const fileCount = (state.nfeFiles || []).length;
+    const total = pastedCount + fileCount;
+
+    if (total === 0) {
+        host.innerHTML = '<div class="fiscal-xml-empty">Nenhum XML informado.</div>';
+        return;
+    }
+
+    const itens = [];
+    if (pastedCount > 0) itens.push(`<div>${pastedCount} XML(s) colado(s)</div>`);
+    if (fileCount > 0) itens.push(`<div>${fileCount} arquivo(s) selecionado(s)</div>`);
+    host.innerHTML = itens.join('');
+}
+
+function splitXmlDocuments(value) {
+    const text = String(value || '').trim();
+    if (!text) return [];
+
+    const matches = text.match(/(?:<\?xml[\s\S]*?\?>\s*)?(?:<nfeProc[\s\S]*?<\/nfeProc>|<NFe[\s\S]*?<\/NFe>)/gi);
+    if (matches && matches.length > 0) {
+        return matches.map(item => item.trim()).filter(Boolean);
+    }
+
+    return text.startsWith('<') ? [text] : [];
 }
 
 function buildPendenciasNegocio(complemento, documentos) {
@@ -894,8 +883,4 @@ function escapeHtml(value) {
     const div = document.createElement('div');
     div.textContent = String(value ?? '');
     return div.innerHTML;
-}
-
-function escapeAttribute(value) {
-    return String(value ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 }

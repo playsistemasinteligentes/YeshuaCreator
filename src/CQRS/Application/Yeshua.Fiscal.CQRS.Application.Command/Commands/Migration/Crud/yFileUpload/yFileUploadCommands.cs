@@ -16,10 +16,10 @@ namespace Command.Write
         public int? Id { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
         public long? FileSize { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }

@@ -14,7 +14,7 @@ namespace Command.Read
     public struct yFileUploadReadFKTenantIDCommand : ICommand
     {
         public int? Id { get; set; }
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsMigration

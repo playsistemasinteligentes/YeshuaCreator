@@ -126,7 +126,7 @@
                                         }
                                     }
 
-                                    public string SourceModule
+                                    public string? SourceModule
                                     {
                                         get => _inner.SourceModule;
                                         set
@@ -168,7 +168,7 @@
                                         }
                                     }
 
-                                    public string ChaveAcesso
+                                    public string? ChaveAcesso
                                     {
                                         get => _inner.ChaveAcesso;
                                         set
@@ -182,7 +182,7 @@
                                         }
                                     }
 
-                                    public string Numero
+                                    public string? Numero
                                     {
                                         get => _inner.Numero;
                                         set
@@ -196,7 +196,7 @@
                                         }
                                     }
 
-                                    public string Serie
+                                    public string? Serie
                                     {
                                         get => _inner.Serie;
                                         set
@@ -210,7 +210,7 @@
                                         }
                                     }
 
-                                    public string EmitenteDocumento
+                                    public string? EmitenteDocumento
                                     {
                                         get => _inner.EmitenteDocumento;
                                         set
@@ -224,7 +224,7 @@
                                         }
                                     }
 
-                                    public string DestinatarioDocumento
+                                    public string? DestinatarioDocumento
                                     {
                                         get => _inner.DestinatarioDocumento;
                                         set
@@ -280,7 +280,7 @@
                                         }
                                     }
 
-                                    public string SnapshotJson
+                                    public string? SnapshotJson
                                     {
                                         get => _inner.SnapshotJson;
                                         set

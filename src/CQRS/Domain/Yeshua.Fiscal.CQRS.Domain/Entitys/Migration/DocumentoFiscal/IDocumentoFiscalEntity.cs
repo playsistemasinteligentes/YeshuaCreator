@@ -23,18 +23,18 @@
     int? Id { get; set; }
     string CorrelationId { get; set; }
     int ProdutoFiscal { get; set; }
-    string ChaveAcesso { get; set; }
+    string? ChaveAcesso { get; set; }
     int? Serie { get; set; }
     int? Numero { get; set; }
     int Ambiente { get; set; }
-    string UFEmitente { get; set; }
-    string EmitenteDocumento { get; set; }
-    string DestinatarioDocumento { get; set; }
-    string XmlStorageKey { get; set; }
-    string XmlHash { get; set; }
-    string ProtocoloAutorizacao { get; set; }
-    string CodigoRetorno { get; set; }
-    string MensagemRetorno { get; set; }
+    string? UFEmitente { get; set; }
+    string? EmitenteDocumento { get; set; }
+    string? DestinatarioDocumento { get; set; }
+    string? XmlStorageKey { get; set; }
+    string? XmlHash { get; set; }
+    string? ProtocoloAutorizacao { get; set; }
+    string? CodigoRetorno { get; set; }
+    string? MensagemRetorno { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

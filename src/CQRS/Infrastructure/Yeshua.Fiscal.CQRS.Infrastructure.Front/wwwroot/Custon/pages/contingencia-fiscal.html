@@ -47,10 +47,20 @@
             </div>
 
             <div class="fiscal-section-title">
-                <h3>Documentos Originarios</h3>
-                <button id="fiscal-add-documento" type="button">Adicionar NF-e</button>
+                <h3>XMLs Das NF-e</h3>
+                <button id="fiscal-clear-xmls" type="button">Limpar XMLs</button>
             </div>
-            <div id="fiscal-documentos"></div>
+            <div class="fiscal-xml-grid">
+                <label>
+                    Arquivos
+                    <input id="fiscal-nfe-files" type="file" multiple accept=".xml,text/xml,application/xml">
+                </label>
+                <label class="wide">
+                    XMLs
+                    <textarea id="fiscal-nfe-xmls" rows="14"></textarea>
+                </label>
+            </div>
+            <div id="fiscal-documentos" class="fiscal-xml-preview"></div>
             </div>
 
             <div class="fiscal-stage" data-stage="transporte">

@@ -118,7 +118,7 @@
                                         }
                                     }
 
-                                    public string Nome
+                                    public string? Nome
                                     {
                                         get => _inner.Nome;
                                         set
@@ -132,7 +132,7 @@
                                         }
                                     }
 
-                                    public string InscricaoEstadual
+                                    public string? InscricaoEstadual
                                     {
                                         get => _inner.InscricaoEstadual;
                                         set
@@ -146,7 +146,7 @@
                                         }
                                     }
 
-                                    public string UF
+                                    public string? UF
                                     {
                                         get => _inner.UF;
                                         set
@@ -160,7 +160,7 @@
                                         }
                                     }
 
-                                    public string MunicipioCodigoIbge
+                                    public string? MunicipioCodigoIbge
                                     {
                                         get => _inner.MunicipioCodigoIbge;
                                         set
@@ -174,7 +174,7 @@
                                         }
                                     }
 
-                                    public string EnderecoJson
+                                    public string? EnderecoJson
                                     {
                                         get => _inner.EnderecoJson;
                                         set

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IDocumentoFiscalEntity Create(int? id, string correlationid, int produtofiscal, string chaveacesso, int? serie, int? numero, int ambiente, string ufemitente, string emitentedocumento, string destinatariodocumento, string xmlstoragekey, string xmlhash, string protocoloautorizacao, string codigoretorno, string mensagemretorno, int status )
+                                    } public IDocumentoFiscalEntity Create(int? id, string correlationid, int produtofiscal, string? chaveacesso, int? serie, int? numero, int ambiente, string? ufemitente, string? emitentedocumento, string? destinatariodocumento, string? xmlstoragekey, string? xmlhash, string? protocoloautorizacao, string? codigoretorno, string? mensagemretorno, int status )
                             {
                                 return Create(null, id, correlationid, produtofiscal, chaveacesso, serie, numero, ambiente, ufemitente, emitentedocumento, destinatariodocumento, xmlstoragekey, xmlhash, protocoloautorizacao, codigoretorno, mensagemretorno, status);
                             }
 
                             public IDocumentoFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, int produtofiscal, string chaveacesso, int? serie, int? numero, int ambiente, string ufemitente, string emitentedocumento, string destinatariodocumento, string xmlstoragekey, string xmlhash, string protocoloautorizacao, string codigoretorno, string mensagemretorno, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, int produtofiscal, string? chaveacesso, int? serie, int? numero, int ambiente, string? ufemitente, string? emitentedocumento, string? destinatariodocumento, string? xmlstoragekey, string? xmlhash, string? protocoloautorizacao, string? codigoretorno, string? mensagemretorno, int status )
                             {
                             var entity = new DocumentoFiscalEntity(id, correlationid, produtofiscal, chaveacesso, serie, numero, ambiente, ufemitente, emitentedocumento, destinatariodocumento, xmlstoragekey, xmlhash, protocoloautorizacao, codigoretorno, mensagemretorno, status );
 

@@ -17,18 +17,18 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
         public int ProdutoFiscal { get; set; }
-        public string ChaveAcesso { get; set; }
+        public string? ChaveAcesso { get; set; }
         public int? Serie { get; set; }
         public int? Numero { get; set; }
         public int Ambiente { get; set; }
-        public string UFEmitente { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public string DestinatarioDocumento { get; set; }
-        public string XmlStorageKey { get; set; }
-        public string XmlHash { get; set; }
-        public string ProtocoloAutorizacao { get; set; }
-        public string CodigoRetorno { get; set; }
-        public string MensagemRetorno { get; set; }
+        public string? UFEmitente { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? DestinatarioDocumento { get; set; }
+        public string? XmlStorageKey { get; set; }
+        public string? XmlHash { get; set; }
+        public string? ProtocoloAutorizacao { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -47,18 +47,18 @@ namespace MyApp.Domain.Entities
         public DocumentoFiscal DocumentoFiscal { get; set; }
         public string CorrelationId { get; set; }
         public string SourceApplication { get; set; }
-        public string SourceModule { get; set; }
+        public string? SourceModule { get; set; }
         public string SourceMessageId { get; set; }
         public string TipoDocumento { get; set; }
-        public string ChaveAcesso { get; set; }
-        public string Numero { get; set; }
-        public string Serie { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public string DestinatarioDocumento { get; set; }
+        public string? ChaveAcesso { get; set; }
+        public string? Numero { get; set; }
+        public string? Serie { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? DestinatarioDocumento { get; set; }
         public Decimal? ValorDocumento { get; set; }
         public Decimal? PesoBruto { get; set; }
         public Decimal? Volume { get; set; }
-        public string SnapshotJson { get; set; }
+        public string? SnapshotJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -76,20 +76,20 @@ namespace MyApp.Domain.Entities
         public int? DocumentoFiscalOriginarioId { get; set; }
         public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
         public string CorrelationId { get; set; }
-        public string CargaId { get; set; }
-        public string PedidoId { get; set; }
+        public string? CargaId { get; set; }
+        public string? PedidoId { get; set; }
         public string ChaveAcesso { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public string DestinatarioDocumento { get; set; }
-        public string UFOrigem { get; set; }
-        public string UFDestino { get; set; }
-        public string MunicipioOrigemCodigoIbge { get; set; }
-        public string MunicipioDestinoCodigoIbge { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? DestinatarioDocumento { get; set; }
+        public string? UFOrigem { get; set; }
+        public string? UFDestino { get; set; }
+        public string? MunicipioOrigemCodigoIbge { get; set; }
+        public string? MunicipioDestinoCodigoIbge { get; set; }
         public Decimal? ValorDocumento { get; set; }
         public Decimal? PesoBruto { get; set; }
         public Decimal? Volume { get; set; }
-        public string XmlStorageKey { get; set; }
-        public string SnapshotJson { get; set; }
+        public string? XmlStorageKey { get; set; }
+        public string? SnapshotJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -106,13 +106,13 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
         public string SourceApplication { get; set; }
-        public string SourceModule { get; set; }
+        public string? SourceModule { get; set; }
         public string SourceMessageId { get; set; }
         public string MessageType { get; set; }
         public string MessageVersion { get; set; }
         public DateTime ReceivedAtUtc { get; set; }
         public string PayloadHash { get; set; }
-        public string PayloadStorageKey { get; set; }
+        public string? PayloadStorageKey { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -131,17 +131,17 @@ namespace MyApp.Domain.Entities
         public CTeEntradaOficial CTeEntradaOficial { get; set; }
         public string CorrelationId { get; set; }
         public string RomaneioId { get; set; }
-        public string CargaId { get; set; }
+        public string? CargaId { get; set; }
         public DateTime ConsolidadoEmUtc { get; set; }
         public string UFInicio { get; set; }
         public string UFFim { get; set; }
-        public string MunicipioInicioCodigoIbge { get; set; }
-        public string MunicipioFimCodigoIbge { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public string TomadorDocumento { get; set; }
-        public string RotaSnapshotJson { get; set; }
-        public string CargaSnapshotJson { get; set; }
-        public string PreferenciasFiscaisJson { get; set; }
+        public string? MunicipioInicioCodigoIbge { get; set; }
+        public string? MunicipioFimCodigoIbge { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? TomadorDocumento { get; set; }
+        public string? RotaSnapshotJson { get; set; }
+        public string? CargaSnapshotJson { get; set; }
+        public string? PreferenciasFiscaisJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -171,11 +171,11 @@ namespace MyApp.Domain.Entities
         public int Globalizado { get; set; }
         public string UFInicio { get; set; }
         public string UFFim { get; set; }
-        public string MunicipioInicioCodigoIbge { get; set; }
-        public string MunicipioFimCodigoIbge { get; set; }
+        public string? MunicipioInicioCodigoIbge { get; set; }
+        public string? MunicipioFimCodigoIbge { get; set; }
         public Decimal? ValorServico { get; set; }
         public Decimal? ValorCarga { get; set; }
-        public string PreferenciasManifestoJson { get; set; }
+        public string? PreferenciasManifestoJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -195,14 +195,14 @@ namespace MyApp.Domain.Entities
         public int? DocumentoFiscalOriginarioId { get; set; }
         public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
         public string TipoDocumento { get; set; }
-        public string ChaveAcesso { get; set; }
-        public string Numero { get; set; }
-        public string Serie { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public string DestinatarioDocumento { get; set; }
+        public string? ChaveAcesso { get; set; }
+        public string? Numero { get; set; }
+        public string? Serie { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? DestinatarioDocumento { get; set; }
         public Decimal? ValorDocumento { get; set; }
         public Decimal? PesoBruto { get; set; }
-        public string SnapshotJson { get; set; }
+        public string? SnapshotJson { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -220,11 +220,11 @@ namespace MyApp.Domain.Entities
         public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
         public string Papel { get; set; }
         public string Documento { get; set; }
-        public string Nome { get; set; }
-        public string InscricaoEstadual { get; set; }
-        public string UF { get; set; }
-        public string MunicipioCodigoIbge { get; set; }
-        public string EnderecoJson { get; set; }
+        public string? Nome { get; set; }
+        public string? InscricaoEstadual { get; set; }
+        public string? UF { get; set; }
+        public string? MunicipioCodigoIbge { get; set; }
+        public string? EnderecoJson { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -240,16 +240,16 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int CTeSolicitacaoFiscalId { get; set; }
         public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
-        public string ChaveAcesso { get; set; }
+        public string? ChaveAcesso { get; set; }
         public int? Numero { get; set; }
         public int? Serie { get; set; }
         public int Tentativa { get; set; }
-        public string XmlAssinadoStorageKey { get; set; }
-        public string XmlProcStorageKey { get; set; }
-        public string XmlHash { get; set; }
-        public string CodigoRetorno { get; set; }
-        public string MensagemRetorno { get; set; }
-        public string ProtocoloAutorizacao { get; set; }
+        public string? XmlAssinadoStorageKey { get; set; }
+        public string? XmlProcStorageKey { get; set; }
+        public string? XmlHash { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
+        public string? ProtocoloAutorizacao { get; set; }
         public DateTime? EnviadoEmUtc { get; set; }
         public DateTime? AutorizadoEmUtc { get; set; }
         public int Status { get; set; }
@@ -271,9 +271,9 @@ namespace MyApp.Domain.Entities
         public string CorrelationId { get; set; }
         public string ChaveAcessoCTe { get; set; }
         public string SnapshotHash { get; set; }
-        public string OutboxMessageId { get; set; }
+        public string? OutboxMessageId { get; set; }
         public DateTime? PublicadoEmUtc { get; set; }
-        public string UltimoErro { get; set; }
+        public string? UltimoErro { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -314,14 +314,14 @@ namespace MyApp.Domain.Entities
     {
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
-        public string CargaId { get; set; }
+        public string? CargaId { get; set; }
         public int Ambiente { get; set; }
         public string UFCarregamento { get; set; }
         public string UFDescarregamento { get; set; }
-        public string PlacaVeiculo { get; set; }
-        public string CondutorDocumento { get; set; }
-        public string DocumentosOriginariosJson { get; set; }
-        public string TransporteSnapshotJson { get; set; }
+        public string? PlacaVeiculo { get; set; }
+        public string? CondutorDocumento { get; set; }
+        public string? DocumentosOriginariosJson { get; set; }
+        public string? TransporteSnapshotJson { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -341,8 +341,8 @@ namespace MyApp.Domain.Entities
         public int? DocumentoFiscalOriginarioId { get; set; }
         public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
         public string TipoDocumento { get; set; }
-        public string ChaveAcesso { get; set; }
-        public string SnapshotJson { get; set; }
+        public string? ChaveAcesso { get; set; }
+        public string? SnapshotJson { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -376,7 +376,7 @@ namespace MyApp.Domain.Entities
         public int MDFeSolicitacaoFiscalId { get; set; }
         public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
         public string Placa { get; set; }
-        public string Renavam { get; set; }
+        public string? Renavam { get; set; }
         public Decimal? Tara { get; set; }
         public Decimal? CapacidadeKg { get; set; }
         public Decimal? CapacidadeM3 { get; set; }
@@ -412,16 +412,16 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int MDFeSolicitacaoFiscalId { get; set; }
         public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
-        public string ChaveAcesso { get; set; }
+        public string? ChaveAcesso { get; set; }
         public int? Numero { get; set; }
         public int? Serie { get; set; }
         public int Tentativa { get; set; }
-        public string XmlAssinadoStorageKey { get; set; }
-        public string XmlProcStorageKey { get; set; }
-        public string XmlHash { get; set; }
-        public string CodigoRetorno { get; set; }
-        public string MensagemRetorno { get; set; }
-        public string ProtocoloAutorizacao { get; set; }
+        public string? XmlAssinadoStorageKey { get; set; }
+        public string? XmlProcStorageKey { get; set; }
+        public string? XmlHash { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
+        public string? ProtocoloAutorizacao { get; set; }
         public DateTime? EnviadoEmUtc { get; set; }
         public DateTime? AutorizadoEmUtc { get; set; }
         public int Status { get; set; }
@@ -446,9 +446,9 @@ namespace MyApp.Domain.Entities
         public string PlacaVeiculo { get; set; }
         public DateTime SolicitadoEm { get; set; }
         public DateTime? AutorizadoEm { get; set; }
-        public string Protocolo { get; set; }
-        public string CodigoRetorno { get; set; }
-        public string MensagemRetorno { get; set; }
+        public string? Protocolo { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -485,7 +485,7 @@ namespace MyApp.Domain.Entities
         public string Apelido { get; set; }
         public string DocumentoTitular { get; set; }
         public string StorageKey { get; set; }
-        public string Thumbprint { get; set; }
+        public string? Thumbprint { get; set; }
         public DateTime? ValidoDe { get; set; }
         public DateTime? ValidoAte { get; set; }
         public int Ativo { get; set; }
@@ -507,29 +507,29 @@ namespace MyApp.Domain.Entities
         public int TipoSolicitante { get; set; }
         public int Ambiente { get; set; }
         public string SourceApplication { get; set; }
-        public string SourceModule { get; set; }
+        public string? SourceModule { get; set; }
         public string SourceMessageId { get; set; }
-        public string EmitenteFiscalDocumento { get; set; }
-        public string TomadorDocumento { get; set; }
-        public string TransportadorDocumento { get; set; }
-        public string RemetenteDocumento { get; set; }
-        public string DestinatarioDocumento { get; set; }
-        public string UFInicio { get; set; }
-        public string UFFim { get; set; }
-        public string MunicipioInicioCodigoIbge { get; set; }
-        public string MunicipioFimCodigoIbge { get; set; }
-        public string RNTRC { get; set; }
-        public string PlacaVeiculo { get; set; }
-        public string UFVeiculo { get; set; }
-        public string CondutorDocumento { get; set; }
-        public string CondutorNome { get; set; }
+        public string? EmitenteFiscalDocumento { get; set; }
+        public string? TomadorDocumento { get; set; }
+        public string? TransportadorDocumento { get; set; }
+        public string? RemetenteDocumento { get; set; }
+        public string? DestinatarioDocumento { get; set; }
+        public string? UFInicio { get; set; }
+        public string? UFFim { get; set; }
+        public string? MunicipioInicioCodigoIbge { get; set; }
+        public string? MunicipioFimCodigoIbge { get; set; }
+        public string? RNTRC { get; set; }
+        public string? PlacaVeiculo { get; set; }
+        public string? UFVeiculo { get; set; }
+        public string? CondutorDocumento { get; set; }
+        public string? CondutorNome { get; set; }
         public int? QuantidadeDocumentos { get; set; }
         public Decimal? ValorCarga { get; set; }
         public Decimal? PesoBruto { get; set; }
         public Decimal? Volume { get; set; }
-        public string PendenciasJson { get; set; }
-        public string SnapshotJson { get; set; }
-        public string EmissaoFiscalCorrelationId { get; set; }
+        public string? PendenciasJson { get; set; }
+        public string? SnapshotJson { get; set; }
+        public string? EmissaoFiscalCorrelationId { get; set; }
         public int? EmissaoFiscalSagaId { get; set; }
         public DateTime CriadoEmUtc { get; set; }
         public DateTime? AtualizadoEmUtc { get; set; }
@@ -544,15 +544,117 @@ namespace MyApp.Domain.Entities
         public static MyApp.QueryBuilder.Query<EntradaFiscalContingencia> Query() => new MyApp.QueryBuilder.Query<EntradaFiscalContingencia>();
     }
 
+    public class EmissaoFiscalTransporte
+    {
+        public int? Id { get; set; }
+        public string CorrelationId { get; set; }
+        public int OrigemFluxo { get; set; }
+        public string? CargaId { get; set; }
+        public string? RomaneioId { get; set; }
+        public int Ambiente { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? TomadorDocumento { get; set; }
+        public string? TransportadorDocumento { get; set; }
+        public string? UFInicio { get; set; }
+        public string? UFFim { get; set; }
+        public string? MunicipioInicioCodigoIbge { get; set; }
+        public string? MunicipioFimCodigoIbge { get; set; }
+        public int? QuantidadeNFe { get; set; }
+        public int? QuantidadeCTe { get; set; }
+        public int? QuantidadeMDFe { get; set; }
+        public Decimal? ValorCarga { get; set; }
+        public Decimal? PesoBruto { get; set; }
+        public Decimal? Volume { get; set; }
+        public string? UltimaMensagem { get; set; }
+        public DateTime CriadoEmUtc { get; set; }
+        public DateTime? AtualizadoEmUtc { get; set; }
+        public DateTime? ConcluidoEmUtc { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<EmissaoFiscalTransporte> Query() => new MyApp.QueryBuilder.Query<EmissaoFiscalTransporte>();
+    }
+
+    public class ContingenciaFiscal
+    {
+        public int? Id { get; set; }
+        public int? EmissaoFiscalTransporteId { get; set; }
+        public EmissaoFiscalTransporte EmissaoFiscalTransporte { get; set; }
+        public int? EntradaFiscalContingenciaId { get; set; }
+        public EntradaFiscalContingencia EntradaFiscalContingencia { get; set; }
+        public string CorrelationId { get; set; }
+        public string CargaId { get; set; }
+        public int TipoSolicitante { get; set; }
+        public int Ambiente { get; set; }
+        public string? EmitenteDocumento { get; set; }
+        public string? TomadorDocumento { get; set; }
+        public string? TransportadorDocumento { get; set; }
+        public int? QuantidadeDocumentos { get; set; }
+        public int? QuantidadeCTe { get; set; }
+        public int? QuantidadeMDFe { get; set; }
+        public Decimal? ValorCarga { get; set; }
+        public Decimal? PesoBruto { get; set; }
+        public string? UltimaMensagem { get; set; }
+        public DateTime CriadoEmUtc { get; set; }
+        public DateTime? AtualizadoEmUtc { get; set; }
+        public DateTime? ConcluidoEmUtc { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<ContingenciaFiscal> Query() => new MyApp.QueryBuilder.Query<ContingenciaFiscal>();
+    }
+
+    public class EmissaoFiscalTransporteDocumento
+    {
+        public int? Id { get; set; }
+        public int EmissaoFiscalTransporteId { get; set; }
+        public EmissaoFiscalTransporte EmissaoFiscalTransporte { get; set; }
+        public int? DocumentoFiscalId { get; set; }
+        public DocumentoFiscal DocumentoFiscal { get; set; }
+        public int? DocumentoFiscalOriginarioId { get; set; }
+        public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
+        public int? NFeProdutoSnapshotId { get; set; }
+        public NFeProdutoSnapshot NFeProdutoSnapshot { get; set; }
+        public int ProdutoFiscal { get; set; }
+        public int Papel { get; set; }
+        public string? TipoEvento { get; set; }
+        public string? ChaveAcesso { get; set; }
+        public string? XmlStorageKey { get; set; }
+        public string? PdfStorageKey { get; set; }
+        public string? Protocolo { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
+        public DateTime CriadoEmUtc { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+
+        public static MyApp.QueryBuilder.Query<EmissaoFiscalTransporteDocumento> Query() => new MyApp.QueryBuilder.Query<EmissaoFiscalTransporteDocumento>();
+    }
+
     public class yFileUpload
     {
         public int? Id { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
         public long? FileSize { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
@@ -571,14 +673,14 @@ namespace MyApp.Domain.Entities
         public string CorrelationId { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
-        public string KeyCurrentStep { get; set; }
+        public string? KeyCurrentStep { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
         public DateTime? NextExecutionAt { get; set; }
         public DateTime? LockedAt { get; set; }
-        public string LockedBy { get; set; }
+        public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -601,8 +703,8 @@ namespace MyApp.Domain.Entities
         public int ExecutionCount { get; set; }
         public DateTime? LastExecutionAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public string ErrorMessage { get; set; }
-        public string Payload { get; set; }
+        public string? ErrorMessage { get; set; }
+        public string? Payload { get; set; }
         public int RetryCount { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -617,19 +719,19 @@ namespace MyApp.Domain.Entities
     public class yOutbox
     {
         public int? Id { get; set; }
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
         public string Type { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
-        public string CorrelationId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
+        public string? CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public int TransportType { get; set; }
-        public string TransportData { get; set; }
+        public string? TransportData { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int RetryCount { get; set; }
-        public string LastError { get; set; }
+        public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }
@@ -649,16 +751,16 @@ namespace MyApp.Domain.Entities
     public class yInbox
     {
         public int? Id { get; set; }
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
         public string Type { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
-        public string CorrelationId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
+        public string? CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public int RetryCount { get; set; }
-        public string LastError { get; set; }
+        public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }
@@ -679,7 +781,7 @@ namespace MyApp.Domain.Entities
     {
         public int? Id { get; set; }
         public string TokenHash { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string ConnectorKey { get; set; }
         public bool Active { get; set; }
         public DateTime? ValidUntil { get; set; }
@@ -712,7 +814,7 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
-        public string Senha { get; set; }
+        public string? Senha { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -741,10 +843,10 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string EmailSmtpClient { get; set; }
+        public string? EmailSmtpClient { get; set; }
         public int? EmailPort { get; set; }
-        public string EmailUserName { get; set; }
-        public string EmailPassword { get; set; }
+        public string? EmailUserName { get; set; }
+        public string? EmailPassword { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -769,8 +871,8 @@ namespace MyApp.Domain.Entities
 
     public class yModule
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        public string? Id { get; set; }
+        public string? Description { get; set; }
 
         public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
     }
@@ -778,7 +880,7 @@ namespace MyApp.Domain.Entities
     public class yTenantModule
     {
         public int? Id { get; set; }
-        public string ModuleId { get; set; }
+        public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -794,7 +896,7 @@ namespace MyApp.Domain.Entities
     public class yUserModule
     {
         public int? Id { get; set; }
-        public string ModuleId { get; set; }
+        public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
@@ -809,8 +911,8 @@ namespace MyApp.Domain.Entities
 
     public class yGrant
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        public string? Id { get; set; }
+        public string? Description { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -826,7 +928,7 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
-        public string GrantId { get; set; }
+        public string? GrantId { get; set; }
         public yGrant yGrant { get; set; }
         public bool? CanGrant { get; set; }
         public bool? CanCreate { get; set; }
@@ -849,7 +951,7 @@ namespace MyApp.Domain.Entities
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
-        public string GrantId { get; set; }
+        public string? GrantId { get; set; }
         public yGrant yGrant { get; set; }
         public bool? CanGrant { get; set; }
         public bool? CanCreate { get; set; }

@@ -292,7 +292,7 @@ namespace Dominio.Migration
 
                 unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch
             {
                 unitOfWork.Rollback();
                 throw;

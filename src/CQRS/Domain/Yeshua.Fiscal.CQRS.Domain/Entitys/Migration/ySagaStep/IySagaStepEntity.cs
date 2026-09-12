@@ -29,8 +29,8 @@
     int ExecutionCount { get; set; }
     DateTime? LastExecutionAt { get; set; }
     DateTime? CompletedAt { get; set; }
-    string ErrorMessage { get; set; }
-    string Payload { get; set; }
+    string? ErrorMessage { get; set; }
+    string? Payload { get; set; }
     int RetryCount { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

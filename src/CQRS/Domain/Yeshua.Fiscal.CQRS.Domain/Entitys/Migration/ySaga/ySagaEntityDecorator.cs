@@ -121,7 +121,7 @@
                                         }
                                     }
 
-                                    public string KeyCurrentStep
+                                    public string? KeyCurrentStep
                                     {
                                         get => _inner.KeyCurrentStep;
                                         set
@@ -163,7 +163,7 @@
                                         }
                                     }
 
-                                    public string EntityType
+                                    public string? EntityType
                                     {
                                         get => _inner.EntityType;
                                         set
@@ -177,7 +177,7 @@
                                         }
                                     }
 
-                                    public string EntityId
+                                    public string? EntityId
                                     {
                                         get => _inner.EntityId;
                                         set
@@ -219,7 +219,7 @@
                                         }
                                     }
 
-                                    public string LockedBy
+                                    public string? LockedBy
                                     {
                                         get => _inner.LockedBy;
                                         set

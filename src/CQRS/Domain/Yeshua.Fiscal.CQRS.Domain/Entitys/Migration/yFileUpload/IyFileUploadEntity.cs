@@ -23,10 +23,10 @@
     int? Id { get; set; }
     string Type { get; set; }
     int Status { get; set; }
-    string FilePath { get; set; }
+    string? FilePath { get; set; }
     long? FileSize { get; set; }
-    string EntityType { get; set; }
-    string EntityId { get; set; }
+    string? EntityType { get; set; }
+    string? EntityId { get; set; }
     DateTime CreatedAt { get; set; }
     DateTime? CompletedAt { get; set; }
     int? TenantID { get; set; }

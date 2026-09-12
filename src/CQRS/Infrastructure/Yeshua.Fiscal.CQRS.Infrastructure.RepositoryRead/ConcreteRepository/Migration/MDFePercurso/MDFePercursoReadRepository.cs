@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MDFePercursoDTO> getMDFePercurso(Command.Read.MDFePercursoReadCommand command )
         {
-            DataPagination<MDFePercursoDTO> customResult = null;
+            var customResult = new DataPagination<MDFePercursoDTO>();
             var customHandled = false;
             TryGetMDFePercursoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFePercursoMDFeSolicitacaoFiscalIdDTO> getMDFePercursoReadFKMDFeSolicitacaoFiscalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFePercursoMDFeSolicitacaoFiscalIdDTO> lista;
             var query = _query.MDFePercursoMDFeSolicitacaoFiscalIdQuery(command );
 
-                lista = _unitOfWork.Query<MDFePercursoMDFeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters) as List<MDFePercursoMDFeSolicitacaoFiscalIdDTO>;
+                var lista = _unitOfWork.Query<MDFePercursoMDFeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFePercursoTenantIDDTO> getMDFePercursoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFePercursoTenantIDDTO> lista;
             var query = _query.MDFePercursoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MDFePercursoTenantIDDTO>(query.Query,query.Parameters) as List<MDFePercursoTenantIDDTO>;
+                var lista = _unitOfWork.Query<MDFePercursoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFePercursoUserIdDTO> getMDFePercursoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFePercursoUserIdDTO> lista;
             var query = _query.MDFePercursoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MDFePercursoUserIdDTO>(query.Query,query.Parameters) as List<MDFePercursoUserIdDTO>;
+                var lista = _unitOfWork.Query<MDFePercursoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDFeSolicitacaoFiscalIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByOrdemQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters) as List<MDFePercursoDTO>;
+                var result = _unitOfWork.Query<MDFePercursoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

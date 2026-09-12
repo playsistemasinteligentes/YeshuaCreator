@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string Protocolo
+                                    public string? Protocolo
                                     {
                                         get => _inner.Protocolo;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string CodigoRetorno
+                                    public string? CodigoRetorno
                                     {
                                         get => _inner.CodigoRetorno;
                                         set
@@ -204,7 +204,7 @@
                                         }
                                     }
 
-                                    public string MensagemRetorno
+                                    public string? MensagemRetorno
                                     {
                                         get => _inner.MensagemRetorno;
                                         set

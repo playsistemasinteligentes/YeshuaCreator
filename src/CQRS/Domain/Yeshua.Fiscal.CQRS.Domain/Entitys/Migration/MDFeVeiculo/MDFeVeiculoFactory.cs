@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMDFeVeiculoEntity Create(int? id, int mdfesolicitacaofiscalid, string placa, string renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 )
+                                    } public IMDFeVeiculoEntity Create(int? id, int mdfesolicitacaofiscalid, string placa, string? renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 )
                             {
                                 return Create(null, id, mdfesolicitacaofiscalid, placa, renavam, tara, capacidadekg, capacidadem3);
                             }
 
                             public IMDFeVeiculoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string placa, string renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfesolicitacaofiscalid, string placa, string? renavam, Decimal? tara, Decimal? capacidadekg, Decimal? capacidadem3 )
                             {
                             var entity = new MDFeVeiculoEntity(id, mdfesolicitacaofiscalid, placa, renavam, tara, capacidadekg, capacidadem3 );
 

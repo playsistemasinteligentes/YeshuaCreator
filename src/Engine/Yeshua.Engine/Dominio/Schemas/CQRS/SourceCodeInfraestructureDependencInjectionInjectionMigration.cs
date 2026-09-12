@@ -247,9 +247,6 @@ namespace Dominio.Schemas.CQRS
 
                             List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
                             SourceCodeAplicationHandlesAndResolvers strategys = new SourceCodeAplicationHandlesAndResolvers(useCase, strategy, paths, ref CodigoGerado, CommandType.UseCaseCommandHandler);
-                            bool contexto = false;
-                            if (strategy.Type.Name == "INotification")
-                                contexto = true;
                             foreach (var code in CodigoGerado.Where(x => x.CommandType == CommandType.DependencyIngection))
                             {
                                 var linhas = code.Conteudo.ToString().Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);

@@ -14,19 +14,19 @@ namespace Command.Write
     public struct yOutboxCrudCommand : ICommand
     {
         public int? Id { get; set; }
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
         public string Type { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
-        public string CorrelationId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
+        public string? CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public int TransportType { get; set; }
-        public string TransportData { get; set; }
+        public string? TransportData { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int RetryCount { get; set; }
-        public string LastError { get; set; }
+        public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }

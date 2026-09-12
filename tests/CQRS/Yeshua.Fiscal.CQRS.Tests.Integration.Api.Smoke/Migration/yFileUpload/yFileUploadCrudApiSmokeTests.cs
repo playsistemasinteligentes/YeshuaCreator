@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.yFileUpload;
 
-[SmokeTestOrder(22)]
+[SmokeTestOrder(25)]
 public partial class yFileUploadCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yFileUpload/PostyFileUpload";

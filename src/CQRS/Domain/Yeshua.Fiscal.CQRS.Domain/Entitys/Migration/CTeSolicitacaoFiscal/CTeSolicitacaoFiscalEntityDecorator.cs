@@ -269,7 +269,7 @@
                                         }
                                     }
 
-                                    public string MunicipioInicioCodigoIbge
+                                    public string? MunicipioInicioCodigoIbge
                                     {
                                         get => _inner.MunicipioInicioCodigoIbge;
                                         set
@@ -283,7 +283,7 @@
                                         }
                                     }
 
-                                    public string MunicipioFimCodigoIbge
+                                    public string? MunicipioFimCodigoIbge
                                     {
                                         get => _inner.MunicipioFimCodigoIbge;
                                         set
@@ -325,7 +325,7 @@
                                         }
                                     }
 
-                                    public string PreferenciasManifestoJson
+                                    public string? PreferenciasManifestoJson
                                     {
                                         get => _inner.PreferenciasManifestoJson;
                                         set

@@ -70,7 +70,7 @@
                                         }
                                     }
 
-                                    public string ModuleId
+                                    public string? ModuleId
                                     {
                                         get => _inner.ModuleId;
                                         set

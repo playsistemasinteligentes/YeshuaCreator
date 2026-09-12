@@ -85,7 +85,7 @@
                                         }
                                     }
 
-                                    public string MessageId
+                                    public string? MessageId
                                     {
                                         get => _inner.MessageId;
                                         set
@@ -113,7 +113,7 @@
                                         }
                                     }
 
-                                    public string EntityType
+                                    public string? EntityType
                                     {
                                         get => _inner.EntityType;
                                         set
@@ -127,7 +127,7 @@
                                         }
                                     }
 
-                                    public string EntityId
+                                    public string? EntityId
                                     {
                                         get => _inner.EntityId;
                                         set
@@ -141,7 +141,7 @@
                                         }
                                     }
 
-                                    public string CorrelationId
+                                    public string? CorrelationId
                                     {
                                         get => _inner.CorrelationId;
                                         set
@@ -197,7 +197,7 @@
                                         }
                                     }
 
-                                    public string TransportData
+                                    public string? TransportData
                                     {
                                         get => _inner.TransportData;
                                         set
@@ -253,7 +253,7 @@
                                         }
                                     }
 
-                                    public string LastError
+                                    public string? LastError
                                     {
                                         get => _inner.LastError;
                                         set

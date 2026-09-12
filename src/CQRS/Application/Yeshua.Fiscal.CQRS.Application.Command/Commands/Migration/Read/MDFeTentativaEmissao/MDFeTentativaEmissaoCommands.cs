@@ -15,19 +15,19 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? MDFeSolicitacaoFiscalId { get; set; }
-        public string ChaveAcesso { get; set; }
+        public string? ChaveAcesso { get; set; }
         public int? Numero { get; set; }
         public int? Serie { get; set; }
         public int? Tentativa { get; set; }
-        public string XmlAssinadoStorageKey { get; set; }
-        public string XmlProcStorageKey { get; set; }
-        public string XmlHash { get; set; }
-        public string CodigoRetorno { get; set; }
-        public string MensagemRetorno { get; set; }
-        public string ProtocoloAutorizacao { get; set; }
+        public string? XmlAssinadoStorageKey { get; set; }
+        public string? XmlProcStorageKey { get; set; }
+        public string? XmlHash { get; set; }
+        public string? CodigoRetorno { get; set; }
+        public string? MensagemRetorno { get; set; }
+        public string? ProtocoloAutorizacao { get; set; }
         public DateTime? EnviadoEmUtc { get; set; }
         public DateTime? AutorizadoEmUtc { get; set; }
-        public List<int> Status { get; set; }
+        public int? Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

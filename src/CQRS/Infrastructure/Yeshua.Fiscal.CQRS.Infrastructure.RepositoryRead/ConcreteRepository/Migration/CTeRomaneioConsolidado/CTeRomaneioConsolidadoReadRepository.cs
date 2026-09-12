@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<CTeRomaneioConsolidadoDTO> getCTeRomaneioConsolidado(Command.Read.CTeRomaneioConsolidadoReadCommand command )
         {
-            DataPagination<CTeRomaneioConsolidadoDTO> customResult = null;
+            var customResult = new DataPagination<CTeRomaneioConsolidadoDTO>();
             var customHandled = false;
             TryGetCTeRomaneioConsolidadoCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeRomaneioConsolidadoEntradaOficialIdDTO> getCTeRomaneioConsolidadoReadFKEntradaOficialId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeRomaneioConsolidadoEntradaOficialIdDTO> lista;
             var query = _query.CTeRomaneioConsolidadoEntradaOficialIdQuery(command );
 
-                lista = _unitOfWork.Query<CTeRomaneioConsolidadoEntradaOficialIdDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoEntradaOficialIdDTO>;
+                var lista = _unitOfWork.Query<CTeRomaneioConsolidadoEntradaOficialIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeRomaneioConsolidadoTenantIDDTO> getCTeRomaneioConsolidadoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeRomaneioConsolidadoTenantIDDTO> lista;
             var query = _query.CTeRomaneioConsolidadoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<CTeRomaneioConsolidadoTenantIDDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoTenantIDDTO>;
+                var lista = _unitOfWork.Query<CTeRomaneioConsolidadoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<CTeRomaneioConsolidadoUserIdDTO> getCTeRomaneioConsolidadoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<CTeRomaneioConsolidadoUserIdDTO> lista;
             var query = _query.CTeRomaneioConsolidadoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<CTeRomaneioConsolidadoUserIdDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoUserIdDTO>;
+                var lista = _unitOfWork.Query<CTeRomaneioConsolidadoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEntradaOficialIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRomaneioIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCargaIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByConsolidadoEmUtcQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFInicioQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFFimQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -508,7 +505,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioInicioCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -516,7 +513,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMunicipioFimCodigoIbgeQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -524,7 +521,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmitenteDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -532,7 +529,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTomadorDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -540,7 +537,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRotaSnapshotJsonQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -548,7 +545,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCargaSnapshotJsonQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -556,7 +553,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPreferenciasFiscaisJsonQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -564,7 +561,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -572,7 +569,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -580,7 +577,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -588,7 +585,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -596,7 +593,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters) as List<CTeRomaneioConsolidadoDTO>;
+                var result = _unitOfWork.Query<CTeRomaneioConsolidadoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -24,17 +24,17 @@
     int EntradaOficialId { get; set; }
     string CorrelationId { get; set; }
     string RomaneioId { get; set; }
-    string CargaId { get; set; }
+    string? CargaId { get; set; }
     DateTime ConsolidadoEmUtc { get; set; }
     string UFInicio { get; set; }
     string UFFim { get; set; }
-    string MunicipioInicioCodigoIbge { get; set; }
-    string MunicipioFimCodigoIbge { get; set; }
-    string EmitenteDocumento { get; set; }
-    string TomadorDocumento { get; set; }
-    string RotaSnapshotJson { get; set; }
-    string CargaSnapshotJson { get; set; }
-    string PreferenciasFiscaisJson { get; set; }
+    string? MunicipioInicioCodigoIbge { get; set; }
+    string? MunicipioFimCodigoIbge { get; set; }
+    string? EmitenteDocumento { get; set; }
+    string? TomadorDocumento { get; set; }
+    string? RotaSnapshotJson { get; set; }
+    string? CargaSnapshotJson { get; set; }
+    string? PreferenciasFiscaisJson { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

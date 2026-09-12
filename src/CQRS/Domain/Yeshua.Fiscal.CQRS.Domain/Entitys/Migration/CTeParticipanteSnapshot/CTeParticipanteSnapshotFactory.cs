@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeParticipanteSnapshotEntity Create(int? id, int ctesolicitacaofiscalid, string papel, string documento, string nome, string inscricaoestadual, string uf, string municipiocodigoibge, string enderecojson )
+                                    } public ICTeParticipanteSnapshotEntity Create(int? id, int ctesolicitacaofiscalid, string papel, string documento, string? nome, string? inscricaoestadual, string? uf, string? municipiocodigoibge, string? enderecojson )
                             {
                                 return Create(null, id, ctesolicitacaofiscalid, papel, documento, nome, inscricaoestadual, uf, municipiocodigoibge, enderecojson);
                             }
 
                             public ICTeParticipanteSnapshotEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string papel, string documento, string nome, string inscricaoestadual, string uf, string municipiocodigoibge, string enderecojson )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string papel, string documento, string? nome, string? inscricaoestadual, string? uf, string? municipiocodigoibge, string? enderecojson )
                             {
                             var entity = new CTeParticipanteSnapshotEntity(id, ctesolicitacaofiscalid, papel, documento, nome, inscricaoestadual, uf, municipiocodigoibge, enderecojson );
 

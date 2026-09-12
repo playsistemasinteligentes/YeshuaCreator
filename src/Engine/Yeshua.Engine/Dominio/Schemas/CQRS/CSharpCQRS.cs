@@ -596,6 +596,254 @@ namespace Dominio.Schemas.CQRS
             return _solutionDirectory;
         }
 
+        public void CleanApplicationGeneratedMigration()
+        {
+            var projectDirectories = GetApplicationProjectDirectories()
+                .Where(Directory.Exists)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var reportDirectory = GetCleanupReportDirectory();
+            Directory.CreateDirectory(reportDirectory);
+            var reportPath = Path.Combine(
+                reportDirectory,
+                $"{DateTime.UtcNow:yyyyMMdd-HHmmss}-generated-cleanup.txt");
+
+            var deletedDirectories = new List<string>();
+
+            foreach (var projectDirectory in projectDirectories)
+            {
+                var migrationDirectories = Directory
+                    .GetDirectories(projectDirectory, "Migration", System.IO.SearchOption.AllDirectories)
+                    .OrderByDescending(x => x.Length)
+                    .ToList();
+
+                foreach (var migrationDirectory in migrationDirectories)
+                {
+                    DeleteDirectoryInside(projectDirectory, migrationDirectory);
+                    deletedDirectories.Add(Path.GetRelativePath(GetPathAppSolution(), migrationDirectory));
+                }
+            }
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"Application: {GetApplicationName()}");
+            sb.AppendLine($"Generated cleanup UTC: {DateTime.UtcNow:O}");
+            sb.AppendLine($"Projects scanned: {projectDirectories.Count}");
+            sb.AppendLine($"Migration directories deleted: {deletedDirectories.Count}");
+            sb.AppendLine();
+
+            foreach (var deletedDirectory in deletedDirectories)
+                sb.AppendLine(deletedDirectory);
+
+            File.WriteAllText(reportPath, sb.ToString(), Encoding.UTF8);
+
+            Console.WriteLine($"Generated cleanup finished. App={GetApplicationName()} MigrationDirectoriesDeleted={deletedDirectories.Count}");
+            Console.WriteLine($"Generated cleanup report: {reportPath}");
+        }
+
+        public string WriteApplicationCustonCleanupReport()
+        {
+            var projectDirectories = GetApplicationProjectDirectories()
+                .Where(Directory.Exists)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var custonFiles = projectDirectories
+                .SelectMany(GetCustonFiles)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var reportDirectory = GetCleanupReportDirectory();
+            Directory.CreateDirectory(reportDirectory);
+            var reportPath = Path.Combine(
+                reportDirectory,
+                $"{DateTime.UtcNow:yyyyMMdd-HHmmss}-custon-cleanup-report.md");
+
+            var classifications = custonFiles
+                .Select(ClassifyCustonFile)
+                .ToList();
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"# Custon Cleanup Report - {GetApplicationName()}");
+            sb.AppendLine();
+            sb.AppendLine($"Generated UTC: {DateTime.UtcNow:O}");
+            sb.AppendLine($"Projects scanned: {projectDirectories.Count}");
+            sb.AppendLine($"Custon files scanned: {custonFiles.Count}");
+            sb.AppendLine();
+            sb.AppendLine("| Classification | Count |");
+            sb.AppendLine("| --- | ---: |");
+            foreach (var group in classifications.GroupBy(x => x.Classification).OrderBy(x => x.Key))
+                sb.AppendLine($"| {group.Key} | {group.Count()} |");
+
+            sb.AppendLine();
+            sb.AppendLine("## Candidates");
+            sb.AppendLine();
+            sb.AppendLine("Arquivos candidatos parecem ser apenas esqueletos sem miolo. Nenhum arquivo foi apagado.");
+            sb.AppendLine();
+            AppendReportTable(sb, classifications.Where(x => x.Classification.StartsWith("candidate_", StringComparison.OrdinalIgnoreCase)));
+
+            sb.AppendLine();
+            sb.AppendLine("## Review Required");
+            sb.AppendLine();
+            sb.AppendLine("Arquivos abaixo nao devem ser apagados automaticamente nesta fase.");
+            sb.AppendLine();
+            AppendReportTable(sb, classifications.Where(x => !x.Classification.StartsWith("candidate_", StringComparison.OrdinalIgnoreCase)));
+
+            File.WriteAllText(reportPath, sb.ToString(), Encoding.UTF8);
+
+            Console.WriteLine($"Custon cleanup report: {reportPath}");
+            return reportPath;
+        }
+
+        private IEnumerable<string> GetApplicationProjectDirectories()
+        {
+            yield return GetPathAppDominio();
+            yield return GetPathAppAplicationCommand();
+            yield return GetPathAppAplicationRepositoryInterfaces();
+            yield return GetPathAppInfraestructureShered();
+            yield return GetPathAppInfraestructureRead();
+            yield return GetPathAppInfraestructureWrite();
+            yield return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureApiProjectName());
+            yield return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureWorkerProjectName());
+            yield return Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureFrontProjectName());
+            yield return GetPathTestsIntegrationApiSmoke();
+            yield return GetPathTestsIntegrationApiSeed();
+        }
+
+        private string GetCleanupReportDirectory()
+        {
+            return Path.Combine(
+                GetPathAppSolution(),
+                "artifacts",
+                "cleanup",
+                GetApplicationName());
+        }
+
+        private static IEnumerable<string> GetCustonFiles(string projectDirectory)
+        {
+            foreach (var custonDirectory in Directory.GetDirectories(projectDirectory, "Custon", System.IO.SearchOption.AllDirectories))
+            {
+                foreach (var file in Directory.GetFiles(custonDirectory, "*.*", System.IO.SearchOption.AllDirectories))
+                    yield return file;
+            }
+        }
+
+        private static void DeleteDirectoryInside(string rootDirectory, string targetDirectory)
+        {
+            var root = EnsureTrailingSeparator(Path.GetFullPath(rootDirectory));
+            var target = EnsureTrailingSeparator(Path.GetFullPath(targetDirectory));
+
+            if (!target.StartsWith(root, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException($"Tentativa bloqueada de apagar diretorio fora do projeto: {targetDirectory}");
+
+            Directory.Delete(targetDirectory, true);
+        }
+
+        private static string EnsureTrailingSeparator(string path)
+        {
+            return path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                   + Path.DirectorySeparatorChar;
+        }
+
+        private CustonFileClassification ClassifyCustonFile(string filePath)
+        {
+            var relativePath = Path.GetRelativePath(GetPathAppSolution(), filePath);
+            var extension = Path.GetExtension(filePath);
+
+            if (!string.Equals(extension, ".cs", StringComparison.OrdinalIgnoreCase))
+                return new CustonFileClassification(
+                    "review_non_csharp",
+                    relativePath,
+                    "Arquivo Custon nao C#; limpeza automatica nao avaliada.");
+
+            var text = File.ReadAllText(filePath);
+            var hasYeshuaMarker = text.Contains("DSL_SEEDED_CUSTOM_OWNED_BY_DEV", StringComparison.OrdinalIgnoreCase)
+                || text.Contains("//Dominio.Schemas.CQRS.", StringComparison.OrdinalIgnoreCase);
+
+            if (!hasYeshuaMarker)
+                return new CustonFileClassification(
+                    "review_unmarked",
+                    relativePath,
+                    "Arquivo Custon sem marcador Yeshua; tratar como manual.");
+
+            if (HasImplementationSignal(text))
+                return new CustonFileClassification(
+                    "review_has_code",
+                    relativePath,
+                    "Possui sinais de miolo ou observacao humana.");
+
+            return new CustonFileClassification(
+                "candidate_empty_seed",
+                relativePath,
+                "Marcado como seed da DSL e sem sinal simples de miolo.");
+        }
+
+        private static bool HasImplementationSignal(string text)
+        {
+            var signals = new[]
+            {
+                "await ",
+                "if (",
+                "foreach",
+                "for (",
+                "while (",
+                "switch",
+                "try",
+                "catch",
+                "throw ",
+                ".Execute",
+                ".Query",
+                ".Insert",
+                ".Update",
+                ".Delete",
+                ".Save",
+                ".Add(",
+                ".Create",
+                "HttpClient",
+                "Sefaz",
+                "SEFAZ",
+                "Sql",
+                "Dapper",
+                "pendencia",
+                "TODO",
+                "observacao",
+                "state.",
+                "comand."
+            };
+
+            foreach (var signal in signals)
+            {
+                if (text.Contains(signal, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static void AppendReportTable(
+            StringBuilder sb,
+            IEnumerable<CustonFileClassification> files)
+        {
+            sb.AppendLine("| Classification | File | Reason |");
+            sb.AppendLine("| --- | --- | --- |");
+
+            var wroteAny = false;
+            foreach (var file in files.OrderBy(x => x.File, StringComparer.OrdinalIgnoreCase))
+            {
+                wroteAny = true;
+                sb.AppendLine($"| {file.Classification} | `{file.File}` | {file.Reason} |");
+            }
+
+            if (!wroteAny)
+                sb.AppendLine("| - | - | - |");
+        }
+
+        private sealed record CustonFileClassification(
+            string Classification,
+            string File,
+            string Reason);
+
         public void AppDominioGenerateDominioEntitys(Migration.MigrationBase migration)
         {
             foreach (var entity in migration.Entitys)

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeSolicitacaoFiscalEntity Create(int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string municipioiniciocodigoibge, string municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string preferenciasmanifestojson, int status )
+                                    } public ICTeSolicitacaoFiscalEntity Create(int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string? preferenciasmanifestojson, int status )
                             {
                                 return Create(null, id, entradaoficialid, romaneioconsolidadoid, correlationid, ambiente, ufemitente, emitentedocumento, produtofiscal, tipocte, tiposervico, modal, globalizado, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, valorservico, valorcarga, preferenciasmanifestojson, status);
                             }
 
                             public ICTeSolicitacaoFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string municipioiniciocodigoibge, string municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string preferenciasmanifestojson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string? preferenciasmanifestojson, int status )
                             {
                             var entity = new CTeSolicitacaoFiscalEntity(id, entradaoficialid, romaneioconsolidadoid, correlationid, ambiente, ufemitente, emitentedocumento, produtofiscal, tipocte, tiposervico, modal, globalizado, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, valorservico, valorcarga, preferenciasmanifestojson, status );
 

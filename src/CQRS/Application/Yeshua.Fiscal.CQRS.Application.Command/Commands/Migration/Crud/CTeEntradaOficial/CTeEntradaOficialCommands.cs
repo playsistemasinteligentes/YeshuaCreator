@@ -16,13 +16,13 @@ namespace Command.Write
         public int? Id { get; set; }
         public string CorrelationId { get; set; }
         public string SourceApplication { get; set; }
-        public string SourceModule { get; set; }
+        public string? SourceModule { get; set; }
         public string SourceMessageId { get; set; }
         public string MessageType { get; set; }
         public string MessageVersion { get; set; }
         public DateTime ReceivedAtUtc { get; set; }
         public string PayloadHash { get; set; }
-        public string PayloadStorageKey { get; set; }
+        public string? PayloadStorageKey { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

@@ -26,29 +26,29 @@
     int TipoSolicitante { get; set; }
     int Ambiente { get; set; }
     string SourceApplication { get; set; }
-    string SourceModule { get; set; }
+    string? SourceModule { get; set; }
     string SourceMessageId { get; set; }
-    string EmitenteFiscalDocumento { get; set; }
-    string TomadorDocumento { get; set; }
-    string TransportadorDocumento { get; set; }
-    string RemetenteDocumento { get; set; }
-    string DestinatarioDocumento { get; set; }
-    string UFInicio { get; set; }
-    string UFFim { get; set; }
-    string MunicipioInicioCodigoIbge { get; set; }
-    string MunicipioFimCodigoIbge { get; set; }
-    string RNTRC { get; set; }
-    string PlacaVeiculo { get; set; }
-    string UFVeiculo { get; set; }
-    string CondutorDocumento { get; set; }
-    string CondutorNome { get; set; }
+    string? EmitenteFiscalDocumento { get; set; }
+    string? TomadorDocumento { get; set; }
+    string? TransportadorDocumento { get; set; }
+    string? RemetenteDocumento { get; set; }
+    string? DestinatarioDocumento { get; set; }
+    string? UFInicio { get; set; }
+    string? UFFim { get; set; }
+    string? MunicipioInicioCodigoIbge { get; set; }
+    string? MunicipioFimCodigoIbge { get; set; }
+    string? RNTRC { get; set; }
+    string? PlacaVeiculo { get; set; }
+    string? UFVeiculo { get; set; }
+    string? CondutorDocumento { get; set; }
+    string? CondutorNome { get; set; }
     int? QuantidadeDocumentos { get; set; }
     Decimal? ValorCarga { get; set; }
     Decimal? PesoBruto { get; set; }
     Decimal? Volume { get; set; }
-    string PendenciasJson { get; set; }
-    string SnapshotJson { get; set; }
-    string EmissaoFiscalCorrelationId { get; set; }
+    string? PendenciasJson { get; set; }
+    string? SnapshotJson { get; set; }
+    string? EmissaoFiscalCorrelationId { get; set; }
     int? EmissaoFiscalSagaId { get; set; }
     DateTime CriadoEmUtc { get; set; }
     DateTime? AtualizadoEmUtc { get; set; }

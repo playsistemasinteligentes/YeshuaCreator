@@ -23,7 +23,7 @@
     int? Id { get; set; }
     int MDFeSolicitacaoFiscalId { get; set; }
     string Placa { get; set; }
-    string Renavam { get; set; }
+    string? Renavam { get; set; }
     Decimal? Tara { get; set; }
     Decimal? CapacidadeKg { get; set; }
     Decimal? CapacidadeM3 { get; set; }

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IDocumentoFiscalOriginarioEntity Create(int? id, int? documentofiscalid, string correlationid, string sourceapplication, string sourcemodule, string sourcemessageid, string tipodocumento, string chaveacesso, string numero, string serie, string emitentedocumento, string destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string snapshotjson, int status )
+                                    } public IDocumentoFiscalOriginarioEntity Create(int? id, int? documentofiscalid, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? snapshotjson, int status )
                             {
                                 return Create(null, id, documentofiscalid, correlationid, sourceapplication, sourcemodule, sourcemessageid, tipodocumento, chaveacesso, numero, serie, emitentedocumento, destinatariodocumento, valordocumento, pesobruto, volume, snapshotjson, status);
                             }
 
                             public IDocumentoFiscalOriginarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? documentofiscalid, string correlationid, string sourceapplication, string sourcemodule, string sourcemessageid, string tipodocumento, string chaveacesso, string numero, string serie, string emitentedocumento, string destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string snapshotjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? documentofiscalid, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, Decimal? volume, string? snapshotjson, int status )
                             {
                             var entity = new DocumentoFiscalOriginarioEntity(id, documentofiscalid, correlationid, sourceapplication, sourcemodule, sourcemessageid, tipodocumento, chaveacesso, numero, serie, emitentedocumento, destinatariodocumento, valordocumento, pesobruto, volume, snapshotjson, status );
 

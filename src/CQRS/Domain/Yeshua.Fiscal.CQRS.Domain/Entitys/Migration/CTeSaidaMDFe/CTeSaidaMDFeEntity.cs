@@ -25,23 +25,23 @@
     public string CorrelationId { get; set; }
     public string ChaveAcessoCTe { get; set; }
     public string SnapshotHash { get; set; }
-    public string OutboxMessageId { get; set; }
+    public string? OutboxMessageId { get; set; }
     public DateTime? PublicadoEmUtc { get; set; }
-    public string UltimoErro { get; set; }
+    public string? UltimoErro { get; set; }
     public int Status { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CTeSaidaMDFeEntity(int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string outboxmessageid, DateTime? publicadoemutc, string ultimoerro, int status ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CTeSaidaMDFeEntity(int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string? outboxmessageid, DateTime? publicadoemutc, string? ultimoerro, int status ){
  Id = id; 
  CTeTentativaEmissaoId = ctetentativaemissaoid; 
  CorrelationId = correlationid; 
  ChaveAcessoCTe = chaveacessocte; 
  SnapshotHash = snapshothash; 
  OutboxMessageId = outboxmessageid; 
- PublicadoEmUtc = (publicadoemutc < (new DateTime(1800, 1, 1))) ? DateTime.Now : publicadoemutc; 
+ PublicadoEmUtc = publicadoemutc.HasValue && publicadoemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : publicadoemutc; 
  UltimoErro = ultimoerro; 
  Status = status; 
  Deleted = false; 

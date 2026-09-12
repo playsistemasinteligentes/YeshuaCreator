@@ -23,13 +23,13 @@
     int? Id { get; set; }
     string CorrelationId { get; set; }
     string SourceApplication { get; set; }
-    string SourceModule { get; set; }
+    string? SourceModule { get; set; }
     string SourceMessageId { get; set; }
     string MessageType { get; set; }
     string MessageVersion { get; set; }
     DateTime ReceivedAtUtc { get; set; }
     string PayloadHash { get; set; }
-    string PayloadStorageKey { get; set; }
+    string? PayloadStorageKey { get; set; }
     int Status { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }

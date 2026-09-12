@@ -23,20 +23,20 @@
     public int? Id { get; set; }
     public string CorrelationId { get; set; }
     public string SourceApplication { get; set; }
-    public string SourceModule { get; set; }
+    public string? SourceModule { get; set; }
     public string SourceMessageId { get; set; }
     public string MessageType { get; set; }
     public string MessageVersion { get; set; }
     public DateTime ReceivedAtUtc { get; set; }
     public string PayloadHash { get; set; }
-    public string PayloadStorageKey { get; set; }
+    public string? PayloadStorageKey { get; set; }
     public int Status { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CTeEntradaOficialEntity(int? id, string correlationid, string sourceapplication, string sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string payloadstoragekey, int status ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CTeEntradaOficialEntity(int? id, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string? payloadstoragekey, int status ){
  Id = id; 
  CorrelationId = correlationid; 
  SourceApplication = sourceapplication; 
@@ -64,7 +64,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Tipo da Mensagem deve ser informado.");
    if(string.IsNullOrEmpty(MessageVersion))
    this._erroMensagem.Add("Versao da Mensagem deve ser informado.");
-   if(ReceivedAtUtc == null || ReceivedAtUtc < (new DateTime(1800, 1, 1)))
+   if(ReceivedAtUtc < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Recebido em UTC deve ser informado.");
    if(string.IsNullOrEmpty(PayloadHash))
    this._erroMensagem.Add("Hash do Payload deve ser informado.");

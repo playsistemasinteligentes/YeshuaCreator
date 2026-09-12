@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMDFeSolicitacaoFiscalEntity Create(int? id, string correlationid, string cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string placaveiculo, string condutordocumento, string documentosoriginariosjson, string transportesnapshotjson, int status )
+                                    } public IMDFeSolicitacaoFiscalEntity Create(int? id, string correlationid, string? cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string? placaveiculo, string? condutordocumento, string? documentosoriginariosjson, string? transportesnapshotjson, int status )
                             {
                                 return Create(null, id, correlationid, cargaid, ambiente, ufcarregamento, ufdescarregamento, placaveiculo, condutordocumento, documentosoriginariosjson, transportesnapshotjson, status);
                             }
 
                             public IMDFeSolicitacaoFiscalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string placaveiculo, string condutordocumento, string documentosoriginariosjson, string transportesnapshotjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string? cargaid, int ambiente, string ufcarregamento, string ufdescarregamento, string? placaveiculo, string? condutordocumento, string? documentosoriginariosjson, string? transportesnapshotjson, int status )
                             {
                             var entity = new MDFeSolicitacaoFiscalEntity(id, correlationid, cargaid, ambiente, ufcarregamento, ufdescarregamento, placaveiculo, condutordocumento, documentosoriginariosjson, transportesnapshotjson, status );
 

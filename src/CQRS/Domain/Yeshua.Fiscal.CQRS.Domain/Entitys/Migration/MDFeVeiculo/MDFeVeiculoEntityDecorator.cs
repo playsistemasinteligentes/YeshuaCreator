@@ -102,7 +102,7 @@
                                         }
                                     }
 
-                                    public string Renavam
+                                    public string? Renavam
                                     {
                                         get => _inner.Renavam;
                                         set

@@ -113,7 +113,6 @@ namespace Dominio.Schemas.CQRS
 
                 sb.AppendLine($"        public QueryModel {_entity.EntityName}Query({CQRSParam.I.NameSpaceCommandRead}.{_entity.EntityName}{CommandType.Read}Command Command {takeOff})");
                 sb.AppendLine("        {");
-                sb.AppendLine($"            this.Parameters = null;");
                 sb.AppendLine($"            var whereClauses = new List<string>();");
                 sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
                 sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
@@ -157,7 +156,6 @@ namespace Dominio.Schemas.CQRS
                     var fkReferenceColumn = column.EntityFK.AddColumns.FirstOrDefault(x => x.Name == column.ColumnReference);
                     var fkReferenceSqlColumn = fkReferenceColumn == null ? column.ColumnReference : GetReadSqlColumn(column.EntityFK, fkReferenceColumn);
                     sb.AppendLine($"            this.Query = $@\" select {columnsString} from {fkSourceName} \";");
-                    sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
                     sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
@@ -203,7 +201,6 @@ namespace Dominio.Schemas.CQRS
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel ExistsBy{column.Name}Query({csharpType} value {takeOff})");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
                     sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
@@ -230,7 +227,6 @@ namespace Dominio.Schemas.CQRS
                     string csharpType = column.getCsharpType();
                     sb.AppendLine($"        public QueryModel FirstBy{column.Name}Query({csharpType} value {takeOff})");
                     sb.AppendLine("        {");
-                    sb.AppendLine($"            this.Parameters = null;");
                     sb.AppendLine($"            var whereClauses = new List<string>();");
                     sb.AppendLine($"            dynamic parameters = new ExpandoObject();");
                     sb.AppendLine($"            var dict = (IDictionary<string, object>)parameters;");
@@ -367,9 +363,9 @@ namespace Dominio.Schemas.CQRS
                         {
                             sb.AppendLine("");
 
-                            if (cond.Column.Enum != null)
+                            if (cond.Column.Enum != null && cond.Column.Enum.Count > 0)
                             {
-                                EnumParameters(sb, cond.Column);
+                                EnumParameters(sb, cond.Column, $"{cond.Prefix}.{cond.Field}", cond.Operator);
                                 continue;
                             }
 
@@ -439,20 +435,15 @@ namespace Dominio.Schemas.CQRS
 
         }
 
-        private void EnumParameters(StringBuilder sb, Column colunm)
+        private void EnumParameters(StringBuilder sb, Column colunm, string? sqlColumnName = null, string sqlOperator = "=")
         {
             if (colunm.Enum != null && colunm.Enum.Count() > 0)
             {
-                sb.AppendLine($"if (Command.{colunm.Name} != null && Command.{colunm.Name}.Any())");
+                var columnName = sqlColumnName ?? $"t0.{colunm.Name}";
+                sb.AppendLine($"if (Command.{colunm.Name}.HasValue)");
                 sb.AppendLine("{");
-                sb.AppendLine($"    var paramList_{colunm.Name} = new List<string>();");
-                sb.AppendLine($"    for (int i = 0; i < Command.{colunm.Name}.Count; i++)");
-                sb.AppendLine("    {");
-                sb.AppendLine($"        string paramName = \"{colunm.Name}_\" + i;");
-                sb.AppendLine($"        dict[paramName] = Command.{colunm.Name}[i];");
-                sb.AppendLine($"        paramList_{colunm.Name}.Add(\"@\" + paramName);");
-                sb.AppendLine("    }");
-                sb.AppendLine($"    whereClauses.Add($\"t0.{colunm.Name} IN ({{string.Join(\", \", paramList_{colunm.Name})}})\");");
+                sb.AppendLine($"    dict[\"{colunm.Name}\"] = Command.{colunm.Name}.Value;");
+                sb.AppendLine($"    whereClauses.Add($\"{columnName} {sqlOperator} @{colunm.Name}\");");
                 sb.AppendLine("}");
             }
         }
@@ -502,7 +493,7 @@ namespace Dominio.Schemas.CQRS
 
                 if (colunm.Enum != null && colunm.Enum.Count() > 0)
                 {
-                    EnumParameters(sb, colunm);
+                    EnumParameters(sb, colunm, sqlColumnName);
                 }
                 else if (colunm.getCsharpType() == "string")
                 {
@@ -526,24 +517,7 @@ namespace Dominio.Schemas.CQRS
         }
         protected override StringBuilder GenerateCustonCode()
         {
-            var sb = new StringBuilder();
             return new StringBuilder();
-            // Adiciona o comentário de descrição da entidade
-            sb.AppendLine("// " + _entity.EntityDescription);
-
-            // Define a classe
-            sb.AppendLine($"public partial class {_entity.EntityName}");
-            sb.AppendLine("{");
-
-            // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns)
-            {
-                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
-            }
-
-            // Fecha a classe
-            sb.AppendLine("}");
-            return sb;
         }
     }
 }

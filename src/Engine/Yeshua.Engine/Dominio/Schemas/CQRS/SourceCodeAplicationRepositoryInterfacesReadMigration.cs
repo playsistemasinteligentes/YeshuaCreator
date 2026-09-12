@@ -91,26 +91,7 @@ namespace Dominio.Schemas.CQRS
         }
         protected override StringBuilder GenerateCustonCode()
         {
-            var sb = new StringBuilder();
             return new StringBuilder();
-
-            sb.AppendLine($"namespace {CQRSParam.I.NameSpaceIRepositoryRead}");
-            sb.AppendLine("{");
-
-            // Define a classe
-            sb.AppendLine($"public partial class I{_entity.EntityName}");
-            sb.AppendLine("{");
-
-            // Adiciona as propriedades da entidade
-            foreach (var column in _entity.AddColumns)
-            {
-                sb.AppendLine($"    public {column.getCsharpType()} {column.Name} {{ get; set; }}");
-            }
-
-            // Fecha a classe
-            sb.AppendLine("}");
-            sb.AppendLine("}");
-            return sb;
         }
     }
 }

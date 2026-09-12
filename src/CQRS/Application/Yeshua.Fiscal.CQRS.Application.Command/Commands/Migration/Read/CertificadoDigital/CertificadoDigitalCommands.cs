@@ -14,13 +14,13 @@ namespace Command.Read
     public struct CertificadoDigitalReadCommand : ICommandRead
     {
         public int? Id { get; set; }
-        public string Apelido { get; set; }
-        public string DocumentoTitular { get; set; }
-        public string StorageKey { get; set; }
-        public string Thumbprint { get; set; }
+        public string? Apelido { get; set; }
+        public string? DocumentoTitular { get; set; }
+        public string? StorageKey { get; set; }
+        public string? Thumbprint { get; set; }
         public DateTime? ValidoDe { get; set; }
         public DateTime? ValidoAte { get; set; }
-        public List<int> Ativo { get; set; }
+        public int? Ativo { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

@@ -18,9 +18,9 @@ namespace Command.Write
         public string CorrelationId { get; set; }
         public string ChaveAcessoCTe { get; set; }
         public string SnapshotHash { get; set; }
-        public string OutboxMessageId { get; set; }
+        public string? OutboxMessageId { get; set; }
         public DateTime? PublicadoEmUtc { get; set; }
-        public string UltimoErro { get; set; }
+        public string? UltimoErro { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

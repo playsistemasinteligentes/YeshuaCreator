@@ -115,7 +115,7 @@
                                         }
                                     }
 
-                                    public string ChaveAcesso
+                                    public string? ChaveAcesso
                                     {
                                         get => _inner.ChaveAcesso;
                                         set
@@ -129,7 +129,7 @@
                                         }
                                     }
 
-                                    public string SnapshotJson
+                                    public string? SnapshotJson
                                     {
                                         get => _inner.SnapshotJson;
                                         set

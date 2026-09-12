@@ -21,19 +21,19 @@
                     public interface IyOutboxEntity
 {
     int? Id { get; set; }
-    string MessageId { get; set; }
+    string? MessageId { get; set; }
     string Type { get; set; }
-    string EntityType { get; set; }
-    string EntityId { get; set; }
-    string CorrelationId { get; set; }
+    string? EntityType { get; set; }
+    string? EntityId { get; set; }
+    string? CorrelationId { get; set; }
     string Payload { get; set; }
     int Status { get; set; }
     int TransportType { get; set; }
-    string TransportData { get; set; }
+    string? TransportData { get; set; }
     DateTime CreatedAt { get; set; }
     DateTime? SentAt { get; set; }
     int RetryCount { get; set; }
-    string LastError { get; set; }
+    string? LastError { get; set; }
     DateTime? ProcessingAt { get; set; }
     DateTime? NextAttemptAt { get; set; }
     int? SagaId { get; set; }

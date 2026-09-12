@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyGrantEntity Create(string id, string description )
+                                    } public IyGrantEntity Create(string? id, string? description )
                             {
                                 return Create(null, id, description);
                             }
 
                             public IyGrantEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string id, string description )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? description )
                             {
                             var entity = new yGrantEntity(id, description );
 

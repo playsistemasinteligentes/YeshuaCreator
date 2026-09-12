@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Seed.Migration.ySaga;
 
-[SeedTestOrder(23)]
+[SeedTestOrder(26)]
 public partial class ySagaCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/ySaga/PostySaga";

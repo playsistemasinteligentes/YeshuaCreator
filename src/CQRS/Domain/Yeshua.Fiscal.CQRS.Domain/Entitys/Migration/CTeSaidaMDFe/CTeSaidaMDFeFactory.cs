@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeSaidaMDFeEntity Create(int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string outboxmessageid, DateTime? publicadoemutc, string ultimoerro, int status )
+                                    } public ICTeSaidaMDFeEntity Create(int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string? outboxmessageid, DateTime? publicadoemutc, string? ultimoerro, int status )
                             {
                                 return Create(null, id, ctetentativaemissaoid, correlationid, chaveacessocte, snapshothash, outboxmessageid, publicadoemutc, ultimoerro, status);
                             }
 
                             public ICTeSaidaMDFeEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string outboxmessageid, DateTime? publicadoemutc, string ultimoerro, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctetentativaemissaoid, string correlationid, string chaveacessocte, string snapshothash, string? outboxmessageid, DateTime? publicadoemutc, string? ultimoerro, int status )
                             {
                             var entity = new CTeSaidaMDFeEntity(id, ctetentativaemissaoid, correlationid, chaveacessocte, snapshothash, outboxmessageid, publicadoemutc, ultimoerro, status );
 

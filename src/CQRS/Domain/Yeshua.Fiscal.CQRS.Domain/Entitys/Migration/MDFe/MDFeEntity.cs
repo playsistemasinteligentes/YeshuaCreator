@@ -37,7 +37,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal MDFeEntity(int? id, string chaveacesso, int serie, int numero, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime emitidoem, DateTime? autorizadoem, DateTime? iniciadoem, DateTime? encerradoem, DateTime? canceladoem, int situacao ){
  Id = id; 
  ChaveAcesso = chaveacesso; 
@@ -47,10 +47,10 @@
  UfDescarregamento = ufdescarregamento; 
  PlacaVeiculo = placaveiculo; 
  EmitidoEm = (emitidoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : emitidoem; 
- AutorizadoEm = (autorizadoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : autorizadoem; 
- IniciadoEm = (iniciadoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : iniciadoem; 
- EncerradoEm = (encerradoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : encerradoem; 
- CanceladoEm = (canceladoem < (new DateTime(1800, 1, 1))) ? DateTime.Now : canceladoem; 
+ AutorizadoEm = autorizadoem.HasValue && autorizadoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : autorizadoem; 
+ IniciadoEm = iniciadoem.HasValue && iniciadoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : iniciadoem; 
+ EncerradoEm = encerradoem.HasValue && encerradoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : encerradoem; 
+ CanceladoEm = canceladoem.HasValue && canceladoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : canceladoem; 
  Situacao = situacao; 
  Deleted = false; 
  Changed = DateTime.Now; 
@@ -66,7 +66,7 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("UF de Descarregamento deve ser informado.");
    if(string.IsNullOrEmpty(PlacaVeiculo))
    this._erroMensagem.Add("Placa do Veiculo deve ser informado.");
-   if(EmitidoEm == null || EmitidoEm < (new DateTime(1800, 1, 1)))
+   if(EmitidoEm < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Emitido em deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

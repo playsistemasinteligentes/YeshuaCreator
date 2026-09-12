@@ -136,7 +136,7 @@ namespace Dominio
                 case "int":
                     return "int" + nulable;
                 case "varchar":
-                    return "string";
+                    return "string" + nulable;
                 case "datetime":
                     return "DateTime" + nulable;
                 case "float":
@@ -197,23 +197,6 @@ namespace Dominio
         internal string GetSqlType()
         {
             return this.Type;
-            switch (this.Type)
-            {
-                case "int":
-                    return "int";
-                case "varchar":
-                    return "string";
-                case "datetime":
-                    return "DateTime";
-                case "float":
-                    return "Float";
-                case "decimal":
-                    return "Decimal";
-                case "long":
-                    return "long";
-                default:
-                    throw new ArgumentException("Tipo SQL desconhecido: " + this.Type);
-            }
         }
 
         public Entity FK(string entityName, string columnReference)

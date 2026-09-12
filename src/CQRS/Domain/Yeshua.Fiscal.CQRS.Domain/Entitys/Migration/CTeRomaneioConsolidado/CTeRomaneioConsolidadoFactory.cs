@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeRomaneioConsolidadoEntity Create(int? id, int entradaoficialid, string correlationid, string romaneioid, string cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string municipioiniciocodigoibge, string municipiofimcodigoibge, string emitentedocumento, string tomadordocumento, string rotasnapshotjson, string cargasnapshotjson, string preferenciasfiscaisjson, int status )
+                                    } public ICTeRomaneioConsolidadoEntity Create(int? id, int entradaoficialid, string correlationid, string romaneioid, string? cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? emitentedocumento, string? tomadordocumento, string? rotasnapshotjson, string? cargasnapshotjson, string? preferenciasfiscaisjson, int status )
                             {
                                 return Create(null, id, entradaoficialid, correlationid, romaneioid, cargaid, consolidadoemutc, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, emitentedocumento, tomadordocumento, rotasnapshotjson, cargasnapshotjson, preferenciasfiscaisjson, status);
                             }
 
                             public ICTeRomaneioConsolidadoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int entradaoficialid, string correlationid, string romaneioid, string cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string municipioiniciocodigoibge, string municipiofimcodigoibge, string emitentedocumento, string tomadordocumento, string rotasnapshotjson, string cargasnapshotjson, string preferenciasfiscaisjson, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int entradaoficialid, string correlationid, string romaneioid, string? cargaid, DateTime consolidadoemutc, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, string? emitentedocumento, string? tomadordocumento, string? rotasnapshotjson, string? cargasnapshotjson, string? preferenciasfiscaisjson, int status )
                             {
                             var entity = new CTeRomaneioConsolidadoEntity(id, entradaoficialid, correlationid, romaneioid, cargaid, consolidadoemutc, ufinicio, uffim, municipioiniciocodigoibge, municipiofimcodigoibge, emitentedocumento, tomadordocumento, rotasnapshotjson, cargasnapshotjson, preferenciasfiscaisjson, status );
 

@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeDocumentoOriginarioEntity Create(int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string chaveacesso, string numero, string serie, string emitentedocumento, string destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string snapshotjson )
+                                    } public ICTeDocumentoOriginarioEntity Create(int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string? snapshotjson )
                             {
                                 return Create(null, id, ctesolicitacaofiscalid, documentofiscaloriginarioid, tipodocumento, chaveacesso, numero, serie, emitentedocumento, destinatariodocumento, valordocumento, pesobruto, snapshotjson);
                             }
 
                             public ICTeDocumentoOriginarioEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string chaveacesso, string numero, string serie, string emitentedocumento, string destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string snapshotjson )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? numero, string? serie, string? emitentedocumento, string? destinatariodocumento, Decimal? valordocumento, Decimal? pesobruto, string? snapshotjson )
                             {
                             var entity = new CTeDocumentoOriginarioEntity(id, ctesolicitacaofiscalid, documentofiscaloriginarioid, tipodocumento, chaveacesso, numero, serie, emitentedocumento, destinatariodocumento, valordocumento, pesobruto, snapshotjson );
 

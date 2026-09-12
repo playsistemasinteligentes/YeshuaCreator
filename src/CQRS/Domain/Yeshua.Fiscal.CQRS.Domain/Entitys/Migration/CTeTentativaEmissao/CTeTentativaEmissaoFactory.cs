@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeTentativaEmissaoEntity Create(int? id, int ctesolicitacaofiscalid, string chaveacesso, int? numero, int? serie, int tentativa, string xmlassinadostoragekey, string xmlprocstoragekey, string xmlhash, string codigoretorno, string mensagemretorno, string protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
+                                    } public ICTeTentativaEmissaoEntity Create(int? id, int ctesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
                             {
                                 return Create(null, id, ctesolicitacaofiscalid, chaveacesso, numero, serie, tentativa, xmlassinadostoragekey, xmlprocstoragekey, xmlhash, codigoretorno, mensagemretorno, protocoloautorizacao, enviadoemutc, autorizadoemutc, status);
                             }
 
                             public ICTeTentativaEmissaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string chaveacesso, int? numero, int? serie, int tentativa, string xmlassinadostoragekey, string xmlprocstoragekey, string xmlhash, string codigoretorno, string mensagemretorno, string protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int ctesolicitacaofiscalid, string? chaveacesso, int? numero, int? serie, int tentativa, string? xmlassinadostoragekey, string? xmlprocstoragekey, string? xmlhash, string? codigoretorno, string? mensagemretorno, string? protocoloautorizacao, DateTime? enviadoemutc, DateTime? autorizadoemutc, int status )
                             {
                             var entity = new CTeTentativaEmissaoEntity(id, ctesolicitacaofiscalid, chaveacesso, numero, serie, tentativa, xmlassinadostoragekey, xmlprocstoragekey, xmlhash, codigoretorno, mensagemretorno, protocoloautorizacao, enviadoemutc, autorizadoemutc, status );
 

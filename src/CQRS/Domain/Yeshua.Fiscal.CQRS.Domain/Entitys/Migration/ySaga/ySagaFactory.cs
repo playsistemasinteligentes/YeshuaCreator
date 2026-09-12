@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IySagaEntity Create(int? id, string correlationid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid, DateTime? nextexecutionat, DateTime? lockedat, string lockedby )
+                                    } public IySagaEntity Create(int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby )
                             {
                                 return Create(null, id, correlationid, type, status, keycurrentstep, createdat, completedat, entitytype, entityid, nextexecutionat, lockedat, lockedby);
                             }
 
                             public IySagaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string type, int status, string keycurrentstep, DateTime createdat, DateTime? completedat, string entitytype, string entityid, DateTime? nextexecutionat, DateTime? lockedat, string lockedby )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string type, int status, string? keycurrentstep, DateTime createdat, DateTime? completedat, string? entitytype, string? entityid, DateTime? nextexecutionat, DateTime? lockedat, string? lockedby )
                             {
                             var entity = new ySagaEntity(id, correlationid, type, status, keycurrentstep, createdat, completedat, entitytype, entityid, nextexecutionat, lockedat, lockedby );
 

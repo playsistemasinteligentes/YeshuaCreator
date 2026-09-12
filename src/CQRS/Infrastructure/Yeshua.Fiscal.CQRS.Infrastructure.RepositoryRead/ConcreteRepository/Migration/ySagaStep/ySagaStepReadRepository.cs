@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<ySagaStepDTO> getySagaStep(Command.Read.ySagaStepReadCommand command , bool TakeOffTenantID = false)
         {
-            DataPagination<ySagaStepDTO> customResult = null;
+            var customResult = new DataPagination<ySagaStepDTO>();
             var customHandled = false;
             TryGetySagaStepCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ySagaStepSagaIdDTO> getySagaStepReadFKSagaId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<ySagaStepSagaIdDTO> lista;
             var query = _query.ySagaStepSagaIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<ySagaStepSagaIdDTO>(query.Query,query.Parameters) as List<ySagaStepSagaIdDTO>;
+                var lista = _unitOfWork.Query<ySagaStepSagaIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ySagaStepTenantIDDTO> getySagaStepReadFKTenantID(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<ySagaStepTenantIDDTO> lista;
             var query = _query.ySagaStepTenantIDQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<ySagaStepTenantIDDTO>(query.Query,query.Parameters) as List<ySagaStepTenantIDDTO>;
+                var lista = _unitOfWork.Query<ySagaStepTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ySagaStepUserIdDTO> getySagaStepReadFKUserId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<ySagaStepUserIdDTO> lista;
             var query = _query.ySagaStepUserIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<ySagaStepUserIdDTO>(query.Query,query.Parameters) as List<ySagaStepUserIdDTO>;
+                var lista = _unitOfWork.Query<ySagaStepUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -380,7 +377,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -388,7 +385,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySagaIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -396,7 +393,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStepKeyQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -404,7 +401,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIndexOrderQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -412,7 +409,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -420,7 +417,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -428,7 +425,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByExecutionCountQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -436,7 +433,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLastExecutionAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -444,7 +441,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCompletedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -452,7 +449,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByErrorMessageQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -460,7 +457,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPayloadQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -468,7 +465,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRetryCountQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -476,7 +473,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -484,7 +481,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -492,7 +489,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -500,7 +497,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters) as List<ySagaStepDTO>;
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

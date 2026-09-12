@@ -117,7 +117,7 @@
                                         }
                                     }
 
-                                    public string Thumbprint
+                                    public string? Thumbprint
                                     {
                                         get => _inner.Thumbprint;
                                         set

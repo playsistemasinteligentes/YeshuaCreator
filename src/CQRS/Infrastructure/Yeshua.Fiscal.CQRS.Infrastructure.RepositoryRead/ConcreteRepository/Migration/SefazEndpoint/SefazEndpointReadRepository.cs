@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<SefazEndpointDTO> getSefazEndpoint(Command.Read.SefazEndpointReadCommand command )
         {
-            DataPagination<SefazEndpointDTO> customResult = null;
+            var customResult = new DataPagination<SefazEndpointDTO>();
             var customHandled = false;
             TryGetSefazEndpointCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<SefazEndpointTenantIDDTO> getSefazEndpointReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SefazEndpointTenantIDDTO> lista;
             var query = _query.SefazEndpointTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<SefazEndpointTenantIDDTO>(query.Query,query.Parameters) as List<SefazEndpointTenantIDDTO>;
+                var lista = _unitOfWork.Query<SefazEndpointTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<SefazEndpointUserIdDTO> getSefazEndpointReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SefazEndpointUserIdDTO> lista;
             var query = _query.SefazEndpointUserIdQuery(command );
 
-                lista = _unitOfWork.Query<SefazEndpointUserIdDTO>(query.Query,query.Parameters) as List<SefazEndpointUserIdDTO>;
+                var lista = _unitOfWork.Query<SefazEndpointUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProdutoFiscalQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUFQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -322,7 +320,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAmbienteQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -330,7 +328,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByServicoQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -338,7 +336,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByVersaoQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -346,7 +344,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUrlQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -354,7 +352,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByAtivoQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters) as List<SefazEndpointDTO>;
+                var result = _unitOfWork.Query<SefazEndpointDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

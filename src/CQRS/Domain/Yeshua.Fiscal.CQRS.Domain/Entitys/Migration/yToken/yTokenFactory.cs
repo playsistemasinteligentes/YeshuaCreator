@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyTokenEntity Create(int? id, string tokenhash, string description, string connectorkey, DateTime? validuntil, DateTime? lastusedat )
+                                    } public IyTokenEntity Create(int? id, string tokenhash, string? description, string connectorkey, DateTime? validuntil, DateTime? lastusedat )
                             {
                                 return Create(null, id, tokenhash, description, connectorkey, validuntil, lastusedat);
                             }
 
                             public IyTokenEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tokenhash, string description, string connectorkey, DateTime? validuntil, DateTime? lastusedat )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string tokenhash, string? description, string connectorkey, DateTime? validuntil, DateTime? lastusedat )
                             {
                             var entity = new yTokenEntity(id, tokenhash, description, connectorkey, validuntil, lastusedat );
 

@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<MDFeCondutorDTO> getMDFeCondutor(Command.Read.MDFeCondutorReadCommand command )
         {
-            DataPagination<MDFeCondutorDTO> customResult = null;
+            var customResult = new DataPagination<MDFeCondutorDTO>();
             var customHandled = false;
             TryGetMDFeCondutorCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFeCondutorMDFeSolicitacaoFiscalIdDTO> getMDFeCondutorReadFKMDFeSolicitacaoFiscalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFeCondutorMDFeSolicitacaoFiscalIdDTO> lista;
             var query = _query.MDFeCondutorMDFeSolicitacaoFiscalIdQuery(command );
 
-                lista = _unitOfWork.Query<MDFeCondutorMDFeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters) as List<MDFeCondutorMDFeSolicitacaoFiscalIdDTO>;
+                var lista = _unitOfWork.Query<MDFeCondutorMDFeSolicitacaoFiscalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFeCondutorTenantIDDTO> getMDFeCondutorReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFeCondutorTenantIDDTO> lista;
             var query = _query.MDFeCondutorTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MDFeCondutorTenantIDDTO>(query.Query,query.Parameters) as List<MDFeCondutorTenantIDDTO>;
+                var lista = _unitOfWork.Query<MDFeCondutorTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MDFeCondutorUserIdDTO> getMDFeCondutorReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MDFeCondutorUserIdDTO> lista;
             var query = _query.MDFeCondutorUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MDFeCondutorUserIdDTO>(query.Query,query.Parameters) as List<MDFeCondutorUserIdDTO>;
+                var lista = _unitOfWork.Query<MDFeCondutorUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMDFeSolicitacaoFiscalIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDocumentoQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -308,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters) as List<MDFeCondutorDTO>;
+                var result = _unitOfWork.Query<MDFeCondutorDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

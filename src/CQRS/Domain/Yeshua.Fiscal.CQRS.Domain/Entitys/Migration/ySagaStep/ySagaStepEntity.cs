@@ -29,15 +29,15 @@
     public int ExecutionCount { get; set; }
     public DateTime? LastExecutionAt { get; set; }
     public DateTime? CompletedAt { get; set; }
-    public string ErrorMessage { get; set; }
-    public string Payload { get; set; }
+    public string? ErrorMessage { get; set; }
+    public string? Payload { get; set; }
     public int RetryCount { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal ySagaStepEntity(int? id, int sagaid, string stepkey, int indexorder, string correlationid, int status, int executioncount, DateTime? lastexecutionat, DateTime? completedat, string errormessage, string payload, int retrycount ){
+    private List<string> _erroMensagem = new List<string>();
+ internal ySagaStepEntity(int? id, int sagaid, string stepkey, int indexorder, string correlationid, int status, int executioncount, DateTime? lastexecutionat, DateTime? completedat, string? errormessage, string? payload, int retrycount ){
  Id = id; 
  SagaId = sagaid; 
  StepKey = stepkey; 
@@ -45,8 +45,8 @@
  CorrelationId = correlationid; 
  Status = status; 
  ExecutionCount = executioncount; 
- LastExecutionAt = (lastexecutionat < (new DateTime(1800, 1, 1))) ? DateTime.Now : lastexecutionat; 
- CompletedAt = (completedat < (new DateTime(1800, 1, 1))) ? DateTime.Now : completedat; 
+ LastExecutionAt = lastexecutionat.HasValue && lastexecutionat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : lastexecutionat; 
+ CompletedAt = completedat.HasValue && completedat.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : completedat; 
  ErrorMessage = errormessage; 
  Payload = payload; 
  RetryCount = retrycount; 

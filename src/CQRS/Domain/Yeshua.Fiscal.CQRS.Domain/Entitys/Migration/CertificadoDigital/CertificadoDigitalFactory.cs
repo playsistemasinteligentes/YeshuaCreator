@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICertificadoDigitalEntity Create(int? id, string apelido, string documentotitular, string storagekey, string thumbprint, DateTime? validode, DateTime? validoate, int ativo )
+                                    } public ICertificadoDigitalEntity Create(int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo )
                             {
                                 return Create(null, id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo);
                             }
 
                             public ICertificadoDigitalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string apelido, string documentotitular, string storagekey, string thumbprint, DateTime? validode, DateTime? validoate, int ativo )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string apelido, string documentotitular, string storagekey, string? thumbprint, DateTime? validode, DateTime? validoate, int ativo )
                             {
                             var entity = new CertificadoDigitalEntity(id, apelido, documentotitular, storagekey, thumbprint, validode, validoate, ativo );
 

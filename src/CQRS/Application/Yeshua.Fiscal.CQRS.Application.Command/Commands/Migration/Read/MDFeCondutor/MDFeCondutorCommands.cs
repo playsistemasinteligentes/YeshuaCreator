@@ -15,8 +15,8 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? MDFeSolicitacaoFiscalId { get; set; }
-        public string Nome { get; set; }
-        public string Documento { get; set; }
+        public string? Nome { get; set; }
+        public string? Documento { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }

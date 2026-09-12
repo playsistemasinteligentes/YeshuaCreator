@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<yUserModuleDTO> getyUserModule(Command.Read.yUserModuleReadCommand command )
         {
-            DataPagination<yUserModuleDTO> customResult = null;
+            var customResult = new DataPagination<yUserModuleDTO>();
             var customHandled = false;
             TryGetyUserModuleCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserModuleModuleIdDTO> getyUserModuleReadFKModuleId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserModuleModuleIdDTO> lista;
             var query = _query.yUserModuleModuleIdQuery(command );
 
-                lista = _unitOfWork.Query<yUserModuleModuleIdDTO>(query.Query,query.Parameters) as List<yUserModuleModuleIdDTO>;
+                var lista = _unitOfWork.Query<yUserModuleModuleIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserModuleUserIdDTO> getyUserModuleReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserModuleUserIdDTO> lista;
             var query = _query.yUserModuleUserIdQuery(command );
 
-                lista = _unitOfWork.Query<yUserModuleUserIdDTO>(query.Query,query.Parameters) as List<yUserModuleUserIdDTO>;
+                var lista = _unitOfWork.Query<yUserModuleUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -104,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserModuleTenantIDDTO> getyUserModuleReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserModuleTenantIDDTO> lista;
             var query = _query.yUserModuleTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<yUserModuleTenantIDDTO>(query.Query,query.Parameters) as List<yUserModuleTenantIDDTO>;
+                var lista = _unitOfWork.Query<yUserModuleTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -236,7 +233,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -244,7 +241,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByModuleIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -252,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidUntilQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters) as List<yUserModuleDTO>;
+                var result = _unitOfWork.Query<yUserModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

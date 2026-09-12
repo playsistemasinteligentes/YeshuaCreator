@@ -34,18 +34,18 @@
     public int Globalizado { get; set; }
     public string UFInicio { get; set; }
     public string UFFim { get; set; }
-    public string MunicipioInicioCodigoIbge { get; set; }
-    public string MunicipioFimCodigoIbge { get; set; }
+    public string? MunicipioInicioCodigoIbge { get; set; }
+    public string? MunicipioFimCodigoIbge { get; set; }
     public Decimal? ValorServico { get; set; }
     public Decimal? ValorCarga { get; set; }
-    public string PreferenciasManifestoJson { get; set; }
+    public string? PreferenciasManifestoJson { get; set; }
     public int Status { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal CTeSolicitacaoFiscalEntity(int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string municipioiniciocodigoibge, string municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string preferenciasmanifestojson, int status ){
+    private List<string> _erroMensagem = new List<string>();
+ internal CTeSolicitacaoFiscalEntity(int? id, int? entradaoficialid, int? romaneioconsolidadoid, string correlationid, int ambiente, string ufemitente, string emitentedocumento, int produtofiscal, int tipocte, int tiposervico, int modal, int globalizado, string ufinicio, string uffim, string? municipioiniciocodigoibge, string? municipiofimcodigoibge, Decimal? valorservico, Decimal? valorcarga, string? preferenciasmanifestojson, int status ){
  Id = id; 
  EntradaOficialId = entradaoficialid; 
  RomaneioConsolidadoId = romaneioconsolidadoid; 

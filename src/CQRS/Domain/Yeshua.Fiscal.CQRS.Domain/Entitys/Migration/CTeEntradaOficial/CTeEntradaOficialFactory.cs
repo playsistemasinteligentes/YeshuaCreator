@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public ICTeEntradaOficialEntity Create(int? id, string correlationid, string sourceapplication, string sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string payloadstoragekey, int status )
+                                    } public ICTeEntradaOficialEntity Create(int? id, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string? payloadstoragekey, int status )
                             {
                                 return Create(null, id, correlationid, sourceapplication, sourcemodule, sourcemessageid, messagetype, messageversion, receivedatutc, payloadhash, payloadstoragekey, status);
                             }
 
                             public ICTeEntradaOficialEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string sourceapplication, string sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string payloadstoragekey, int status )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string correlationid, string sourceapplication, string? sourcemodule, string sourcemessageid, string messagetype, string messageversion, DateTime receivedatutc, string payloadhash, string? payloadstoragekey, int status )
                             {
                             var entity = new CTeEntradaOficialEntity(id, correlationid, sourceapplication, sourcemodule, sourcemessageid, messagetype, messageversion, receivedatutc, payloadhash, payloadstoragekey, status );
 

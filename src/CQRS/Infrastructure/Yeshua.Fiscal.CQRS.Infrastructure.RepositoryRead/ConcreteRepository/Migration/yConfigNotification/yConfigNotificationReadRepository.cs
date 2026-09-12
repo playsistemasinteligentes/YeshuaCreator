@@ -50,7 +50,7 @@ namespace Read.Repository
         }
         private DataPagination<yConfigNotificationDTO> getyConfigNotification(Command.Read.yConfigNotificationReadCommand command )
         {
-            DataPagination<yConfigNotificationDTO> customResult = null;
+            var customResult = new DataPagination<yConfigNotificationDTO>();
             var customHandled = false;
             TryGetyConfigNotificationCustom(command, ref customResult, ref customHandled);
             if (customHandled)
@@ -68,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<yConfigNotificationTenantIDDTO> getyConfigNotificationReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yConfigNotificationTenantIDDTO> lista;
             var query = _query.yConfigNotificationTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<yConfigNotificationTenantIDDTO>(query.Query,query.Parameters) as List<yConfigNotificationTenantIDDTO>;
+                var lista = _unitOfWork.Query<yConfigNotificationTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -86,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<yConfigNotificationUserIdDTO> getyConfigNotificationReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yConfigNotificationUserIdDTO> lista;
             var query = _query.yConfigNotificationUserIdQuery(command );
 
-                lista = _unitOfWork.Query<yConfigNotificationUserIdDTO>(query.Query,query.Parameters) as List<yConfigNotificationUserIdDTO>;
+                var lista = _unitOfWork.Query<yConfigNotificationUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -250,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailSmtpClientQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailPortQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailUserNameQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -290,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEmailPasswordQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -298,7 +296,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -306,7 +304,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -314,7 +312,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters) as List<yConfigNotificationDTO>;
+                var result = _unitOfWork.Query<yConfigNotificationDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -24,14 +24,14 @@
     public int MDFeSolicitacaoFiscalId { get; set; }
     public int? DocumentoFiscalOriginarioId { get; set; }
     public string TipoDocumento { get; set; }
-    public string ChaveAcesso { get; set; }
-    public string SnapshotJson { get; set; }
+    public string? ChaveAcesso { get; set; }
+    public string? SnapshotJson { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal MDFeDocumentoOriginarioEntity(int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string chaveacesso, string snapshotjson ){
+    private List<string> _erroMensagem = new List<string>();
+ internal MDFeDocumentoOriginarioEntity(int? id, int mdfesolicitacaofiscalid, int? documentofiscaloriginarioid, string tipodocumento, string? chaveacesso, string? snapshotjson ){
  Id = id; 
  MDFeSolicitacaoFiscalId = mdfesolicitacaofiscalid; 
  DocumentoFiscalOriginarioId = documentofiscaloriginarioid; 

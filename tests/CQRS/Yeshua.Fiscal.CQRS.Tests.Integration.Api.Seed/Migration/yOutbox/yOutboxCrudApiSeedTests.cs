@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Seed.Migration.yOutbox;
 
-[SeedTestOrder(25)]
+[SeedTestOrder(28)]
 public partial class yOutboxCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yOutbox/PostyOutbox";

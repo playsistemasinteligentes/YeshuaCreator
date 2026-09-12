@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyConfigNotificationEntity Create(int? id, string emailsmtpclient, int? emailport, string emailusername, string emailpassword )
+                                    } public IyConfigNotificationEntity Create(int? id, string? emailsmtpclient, int? emailport, string? emailusername, string? emailpassword )
                             {
                                 return Create(null, id, emailsmtpclient, emailport, emailusername, emailpassword);
                             }
 
                             public IyConfigNotificationEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string emailsmtpclient, int? emailport, string emailusername, string emailpassword )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? emailsmtpclient, int? emailport, string? emailusername, string? emailpassword )
                             {
                             var entity = new yConfigNotificationEntity(id, emailsmtpclient, emailport, emailusername, emailpassword );
 

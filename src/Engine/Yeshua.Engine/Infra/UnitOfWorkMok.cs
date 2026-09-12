@@ -11,7 +11,6 @@ namespace Infra
     public class UnitOfWorkMok : IUnitOfWork
     {
         private readonly IDbConnection _connection;
-        private IDbTransaction _transaction;
 
         public UnitOfWorkMok(IDbConnection connection)
         {
@@ -52,7 +51,7 @@ namespace Infra
         }
 
         public IDbConnection Connection => _connection;
-        public IDbTransaction Transaction => _transaction;
+        public IDbTransaction Transaction => null!;
 
         public void ExecuteCommand(string sql, object parameters = null)
         {
@@ -69,7 +68,7 @@ namespace Infra
 
         public T QuerySingle<T>(string sql, object parameters = null)
         {
-            return _connection.QuerySingle<T>(sql, parameters, _transaction);
+            return _connection.QuerySingle<T>(sql, parameters);
         }
 
 

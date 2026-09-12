@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyUserModuleEntity Create(int? id, string moduleid, int? userid, DateTime? validuntil )
+                                    } public IyUserModuleEntity Create(int? id, string? moduleid, int? userid, DateTime? validuntil )
                             {
                                 return Create(null, id, moduleid, userid, validuntil);
                             }
 
                             public IyUserModuleEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string moduleid, int? userid, DateTime? validuntil )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string? moduleid, int? userid, DateTime? validuntil )
                             {
                             var entity = new yUserModuleEntity(id, moduleid, userid, validuntil );
 

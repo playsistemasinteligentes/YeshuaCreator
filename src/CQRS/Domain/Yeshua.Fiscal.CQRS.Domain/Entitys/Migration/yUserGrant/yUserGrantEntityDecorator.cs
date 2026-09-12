@@ -90,7 +90,7 @@
                                         }
                                     }
 
-                                    public string GrantId
+                                    public string? GrantId
                                     {
                                         get => _inner.GrantId;
                                         set

@@ -24,7 +24,7 @@
     string Apelido { get; set; }
     string DocumentoTitular { get; set; }
     string StorageKey { get; set; }
-    string Thumbprint { get; set; }
+    string? Thumbprint { get; set; }
     DateTime? ValidoDe { get; set; }
     DateTime? ValidoAte { get; set; }
     int Ativo { get; set; }

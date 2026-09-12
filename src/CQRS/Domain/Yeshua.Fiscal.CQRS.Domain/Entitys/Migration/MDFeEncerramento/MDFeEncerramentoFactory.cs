@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IMDFeEncerramentoEntity Create(int? id, int mdfeid, string chaveacesso, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime solicitadoem, DateTime? autorizadoem, string protocolo, string codigoretorno, string mensagemretorno )
+                                    } public IMDFeEncerramentoEntity Create(int? id, int mdfeid, string chaveacesso, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime solicitadoem, DateTime? autorizadoem, string? protocolo, string? codigoretorno, string? mensagemretorno )
                             {
                                 return Create(null, id, mdfeid, chaveacesso, ufcarregamento, ufdescarregamento, placaveiculo, solicitadoem, autorizadoem, protocolo, codigoretorno, mensagemretorno);
                             }
 
                             public IMDFeEncerramentoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfeid, string chaveacesso, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime solicitadoem, DateTime? autorizadoem, string protocolo, string codigoretorno, string mensagemretorno )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int mdfeid, string chaveacesso, string ufcarregamento, string ufdescarregamento, string placaveiculo, DateTime solicitadoem, DateTime? autorizadoem, string? protocolo, string? codigoretorno, string? mensagemretorno )
                             {
                             var entity = new MDFeEncerramentoEntity(id, mdfeid, chaveacesso, ufcarregamento, ufdescarregamento, placaveiculo, solicitadoem, autorizadoem, protocolo, codigoretorno, mensagemretorno );
 

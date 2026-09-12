@@ -16,7 +16,7 @@ namespace Command.Write
         public int? Id { get; set; }
         public int MDFeSolicitacaoFiscalId { get; set; }
         public string Placa { get; set; }
-        public string Renavam { get; set; }
+        public string? Renavam { get; set; }
         public Decimal? Tara { get; set; }
         public Decimal? CapacidadeKg { get; set; }
         public Decimal? CapacidadeM3 { get; set; }
