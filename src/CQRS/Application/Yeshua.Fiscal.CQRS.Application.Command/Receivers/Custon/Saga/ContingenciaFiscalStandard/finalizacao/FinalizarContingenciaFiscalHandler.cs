@@ -51,7 +51,7 @@ namespace Command.Receivers
                 occurredAtUtc = DateTime.UtcNow
             }));
             _entradaWriteRepository.UpdateAtualizadoEmUtc(entrada.id, DateTime.UtcNow);
-            _entradaWriteRepository.UpdateStatus(entrada.id, 7);
+            _entradaWriteRepository.UpdateStatus(entrada.id, 6);
 
             step.SetPayload(JsonSerializer.Serialize(new
             {

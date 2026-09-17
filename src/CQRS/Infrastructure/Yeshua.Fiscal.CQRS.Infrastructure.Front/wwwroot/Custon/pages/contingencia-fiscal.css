@@ -63,6 +63,11 @@
     background: #166534;
 }
 
+.fiscal-contingencia-page button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 body.yeshua-request-wait,
 body.yeshua-request-wait * {
     cursor: wait !important;
@@ -120,6 +125,28 @@ body.yeshua-request-wait * {
 .fiscal-side-debug-actions button {
     font-size: 12px;
     padding: 7px 8px;
+}
+
+.fiscal-processing-documents {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.fiscal-processing-summary,
+.fiscal-document-list {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    display: grid;
+    gap: 4px;
+    padding: 9px 10px;
+}
+
+.fiscal-processing-summary span,
+.fiscal-document-list span {
+    color: #475569;
+    font-size: 11px;
+    overflow-wrap: anywhere;
 }
 
 .fiscal-panel-title {
@@ -387,6 +414,12 @@ body.yeshua-request-wait * {
     margin: 0 0 14px;
 }
 
+.fiscal-followup-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
 .fiscal-result-list div {
     border-bottom: 1px solid #e2e8f0;
     padding-bottom: 8px;
@@ -418,6 +451,15 @@ body.yeshua-request-wait * {
     margin-top: 12px;
 }
 
+.fiscal-sagas-acompanhamento {
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fiscal-sagas-acompanhamento .fiscal-saga-card {
+    margin-top: 0;
+}
+
 .fiscal-step {
     border: 1px solid #e2e8f0;
     border-radius: 6px;
@@ -430,6 +472,106 @@ body.yeshua-request-wait * {
     color: #64748b;
     font-size: 12px;
     font-weight: 700;
+}
+
+.fiscal-saga-card {
+    border: 1px solid #dbe3ee;
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 12px;
+}
+
+.fiscal-saga-header,
+.fiscal-saga-header > div {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.fiscal-saga-header > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fiscal-saga-header strong {
+    color: #172033;
+    font-size: 13px;
+}
+
+.fiscal-saga-header span,
+.fiscal-saga-current {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.fiscal-saga-status {
+    text-align: right;
+}
+
+.fiscal-saga-progress {
+    background: #e2e8f0;
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+}
+
+.fiscal-saga-progress span {
+    background: #2563eb;
+    display: block;
+    height: 100%;
+    transition: width 160ms ease;
+}
+
+.fiscal-saga-steps {
+    display: grid;
+    gap: 5px;
+}
+
+.fiscal-saga-step {
+    align-items: flex-start;
+    border-top: 1px solid #eef2f7;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    padding-top: 7px;
+}
+
+.fiscal-saga-step > div {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+}
+
+.fiscal-saga-step strong,
+.fiscal-saga-step span,
+.fiscal-saga-step small {
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+
+.fiscal-saga-step strong {
+    color: #334155;
+}
+
+.fiscal-saga-step span {
+    color: #64748b;
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+@media (max-width: 980px) {
+    .fiscal-sagas-acompanhamento {
+        grid-template-columns: 1fr;
+    }
+}
+
+.fiscal-saga-step small {
+    color: #b91c1c;
 }
 
 @media (max-width: 1080px) {

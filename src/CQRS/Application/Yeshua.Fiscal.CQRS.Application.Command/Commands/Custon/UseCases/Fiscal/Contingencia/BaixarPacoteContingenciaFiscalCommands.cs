@@ -8,12 +8,4 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup
 // </yeshua>
 
-namespace Command.UseCase
-{
-    public partial record InformarDadosTransporteContingenciaOutputCommand
-    {
-        public string PlanoEmissaoJson { get; set; } = string.Empty;
-    }
-}
-
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

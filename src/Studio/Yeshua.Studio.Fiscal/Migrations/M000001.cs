@@ -437,6 +437,40 @@ public class M000001 : MigrationBase
             .AddEntity("EntradaFiscalContingencia");
 
         AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Contingencia")
+            .AddCommand(
+                "ConsultarProcessamentoContingenciaFiscal",
+                new ConsultarProcessamentoContingenciaFiscalInput(0),
+                new ConsultarProcessamentoContingenciaFiscalOutput(
+                    0,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    false,
+                    false,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.contingencia.processamento.consultar")
+            .AddEntity("EntradaFiscalContingencia");
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("Contingencia")
+            .AddCommand(
+                "BaixarPacoteContingenciaFiscal",
+                new BaixarPacoteContingenciaFiscalInput(0),
+                new BaixarPacoteContingenciaFiscalOutput(
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    0))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.contingencia.documentos.baixar")
+            .AddEntity("EntradaFiscalContingencia");
+
+        AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("Teste")
             .AddCommand(
                 "IniciarSagaTesteSync",
@@ -797,6 +831,30 @@ public sealed record IniciarContingenciaFiscalOutput(
     int EntradaFiscalContingenciaId,
     string CargaId,
     string Mensagem);
+
+public sealed record ConsultarProcessamentoContingenciaFiscalInput(
+    int EntradaFiscalContingenciaId);
+
+public sealed record ConsultarProcessamentoContingenciaFiscalOutput(
+    int EntradaFiscalContingenciaId,
+    string CorrelationId,
+    string CargaId,
+    string Status,
+    string EtapaAtual,
+    bool Concluida,
+    bool DownloadDisponivel,
+    string Mensagem,
+    string SagasJson,
+    string DocumentosJson);
+
+public sealed record BaixarPacoteContingenciaFiscalInput(
+    int EntradaFiscalContingenciaId);
+
+public sealed record BaixarPacoteContingenciaFiscalOutput(
+    string NomeArquivo,
+    string ContentType,
+    string ArquivoBase64,
+    int QuantidadeArquivos);
 
 public sealed record IniciarSagaTesteSyncInput(
     string CorrelationId,

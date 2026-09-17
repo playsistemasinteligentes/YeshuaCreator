@@ -1,12 +1,14 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260916-simpleflow04';
-import { showAlert } from '/spa/scripts/alerts.js?v=20260916-simpleflow04';
+import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260917-followupbutton01';
+import { showAlert } from '/spa/scripts/alerts.js?v=20260917-followupbutton01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260916-simpleflow04';
+const assetVersion = '20260917-followupbutton01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
+    consultarProcessamento: '/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase',
+    baixarPacote: '/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase',
     testeSync: '/Fiscal/TesteIniciarSagaTesteSyncUseCase',
     testeSyncAcordarPasso3: '/Fiscal/TesteAcordarSagaTesteSyncPasso3UseCase',
     steps: {
@@ -69,8 +71,10 @@ const state = {
     currentStepStatus: 0,
     preparationActionIndex: 0,
     sectionStatus: {},
-    visualRefreshId: 0,
+    planPreview: null,
     started: false,
+    fiscalProcessingStarted: false,
+    downloadAvailable: false,
     nfeFiles: []
 };
 
@@ -79,7 +83,9 @@ const actionButtonIds = [
     'fiscal-contingencia-new',
     'fiscal-send-notas',
     'fiscal-send-preview',
-    'fiscal-confirmar-plano'
+    'fiscal-confirmar-plano',
+    'fiscal-consultar-processamento',
+    'fiscal-baixar-documentos'
 ];
 
 const preparationSectionByCommand = {
@@ -169,6 +175,8 @@ function bindEvents() {
     document.getElementById('fiscal-send-notas')?.addEventListener('click', enviarXmls);
     document.getElementById('fiscal-send-preview')?.addEventListener('click', enviarPreview);
     document.getElementById('fiscal-confirmar-plano')?.addEventListener('click', confirmarPlano);
+    document.getElementById('fiscal-consultar-processamento')?.addEventListener('click', consultarProcessamentoFiscal);
+    document.getElementById('fiscal-baixar-documentos')?.addEventListener('click', baixarDocumentosFiscais);
     bindPreparationPreviewEvents();
 }
 
@@ -201,11 +209,11 @@ function bindPreparationPreviewEvents() {
         const element = document.getElementById(id);
         element?.addEventListener('input', () => {
             invalidatePreparationData();
-            refreshPreparationVisuals();
+            renderPlanPreview();
         });
         element?.addEventListener('change', () => {
             invalidatePreparationData();
-            refreshPreparationVisuals();
+            renderPlanPreview();
         });
     }
 }
@@ -222,8 +230,10 @@ function resetForm() {
     state.currentStepStatus = 0;
     state.preparationActionIndex = 0;
     state.sectionStatus = {};
-    state.visualRefreshId = 0;
+    state.planPreview = null;
     state.started = false;
+    state.fiscalProcessingStarted = false;
+    state.downloadAvailable = false;
     state.nfeFiles = [];
 
     setValue('fiscal-carga-id', state.cargaId);
@@ -256,10 +266,12 @@ function resetForm() {
     renderResult('-', '-', '-');
     setText('fiscal-contingencia-status', 'pronto');
     feedback('Envie os XMLs para abrir o protocolo da carga. Depois gere o preview e confirme.');
-    renderSteps([]);
+    renderSagaProgress(null);
+    renderFiscalDocuments(null);
+    setProcessingActions(false, false);
     setStage('preparacao');
     updatePrimaryButton();
-    refreshPreparationVisuals();
+    renderPlanPreview();
 }
 
 async function iniciarContingencia(documentos = []) {
@@ -332,7 +344,7 @@ async function enviarXmls() {
         setText('fiscal-contingencia-status', 'xmls enviados');
         feedback('XMLs enviados e protocolo aberto para esta carga. Voce pode enviar mais XMLs ou gerar o preview.');
         notify('XMLs enviados e protocolo aberto.', 'success');
-        refreshPreparationVisuals();
+        renderPlanPreview();
         return;
     }
 
@@ -400,11 +412,17 @@ async function enviarPreparacao(commandName, options = {}) {
         const message = commandName === 'ConfirmarPlanoEmissaoFiscalContingencia'
             ? 'Plano confirmado. A saga fiscal foi liberada para processamento.'
             : `${labelForPreparationCommand(commandName)} enviado.`;
+        if (commandName === 'ConfirmarPlanoEmissaoFiscalContingencia') {
+            state.fiscalProcessingStarted = true;
+            state.downloadAvailable = false;
+            setProcessingActions(true, false);
+            setStage('emissao');
+        }
         feedback(message);
         notify(message, commandName === 'ConfirmarPlanoEmissaoFiscalContingencia' ? 'success' : 'info');
-        refreshPreparationVisuals();
+        renderPlanPreview();
         updatePrimaryButton();
-        return true;
+        return result;
     } catch (error) {
         const message = error.message || 'Nao foi possivel enviar a preparacao.';
         setText('fiscal-contingencia-status', 'erro');
@@ -424,36 +442,179 @@ async function enviarPreview() {
         return;
     }
 
-    const issues = previewIssues();
-    if (issues.length > 0) {
-        const message = `Nao da para gerar preview. Falta revisar: ${issues.join(', ')}.`;
-        setText('fiscal-contingencia-status', 'pendente');
-        feedback(message);
-        notify(message, 'warning', 6500);
-        refreshPreparationVisuals();
-        return;
-    }
-
     setText('fiscal-contingencia-status', 'enviando preview');
     feedback('Enviando dados de transporte, frete e agrupamento...');
 
-    const ok = await enviarPreparacao('InformarDadosTransporteContingencia', {
+    const result = await enviarPreparacao('InformarDadosTransporteContingencia', {
         forceFullComplemento: true
     });
-    if (!ok) return;
+    if (!result) return;
 
-    state.sectionStatus.agrupamento = 'sent';
-    state.sectionStatus.frete = 'sent';
-    state.sectionStatus.transporte = 'sent';
+    const planoEmissaoJson = readField(result, 'planoEmissaoJson', 'PlanoEmissaoJson');
+    const planoEmissao = parseJsonObject(planoEmissaoJson);
+    if (!planoEmissao) {
+        const message = 'O backend nao retornou o plano de emissao calculado.';
+        setPreparationSectionStatus('ConfirmarPlanoEmissaoFiscalContingencia', 'error');
+        setText('fiscal-contingencia-status', 'erro no preview');
+        feedback(message);
+        notify(message, 'error');
+        return;
+    }
+
+    state.planPreview = planoEmissao;
+
+    setPreparationSectionStatus('EscolherModeloAgrupamentoCTeContingencia', 'sent');
+    setPreparationSectionStatus('InformarFreteERateioContingencia', 'sent');
+    setPreparationSectionStatus('InformarDadosTransporteContingencia', 'sent');
     setPreparationSectionStatus('ConfirmarPlanoEmissaoFiscalContingencia', 'sent');
     setText('fiscal-contingencia-status', 'preview pronto');
-    refreshPreparationVisuals();
+    renderPlanPreview();
     feedback('Preview enviado. Revise a previa do plano e clique em Confirmar para iniciar o processamento fiscal.');
     notify('Preview enviado. Revise e confirme.', 'success');
 }
 
 async function confirmarPlano() {
     await enviarPreparacao('ConfirmarPlanoEmissaoFiscalContingencia');
+}
+
+async function consultarProcessamentoFiscal() {
+    if (!state.entradaId) {
+        const message = 'Nenhum protocolo de contingencia foi iniciado.';
+        feedback(message);
+        notify(message, 'warning');
+        return;
+    }
+
+    setText('fiscal-contingencia-status', 'consultando emissao');
+    try {
+        const result = await postUseCase(endpoints.consultarProcessamento, {
+            entradaFiscalContingenciaId: state.entradaId
+        });
+
+        const status = readField(result, 'status', 'Status') || 'Em processamento';
+        const etapaAtual = readField(result, 'etapaAtual', 'EtapaAtual') || '-';
+        const mensagem = readField(result, 'mensagem', 'Mensagem') || 'Processamento fiscal consultado.';
+        const concluida = Boolean(readField(result, 'concluida', 'Concluida'));
+        const downloadDisponivel = Boolean(readField(result, 'downloadDisponivel', 'DownloadDisponivel'));
+        const sagas = parseJsonObject(readField(result, 'sagasJson', 'SagasJson'));
+        const documentos = parseJsonObject(readField(result, 'documentosJson', 'DocumentosJson'));
+
+        state.fiscalProcessingStarted = true;
+        state.downloadAvailable = downloadDisponivel;
+        state.correlationId = readField(result, 'correlationId', 'CorrelationId') || state.correlationId;
+        state.cargaId = readField(result, 'cargaId', 'CargaId') || state.cargaId;
+
+        renderResult(state.correlationId, state.entradaId, mensagem);
+        renderSagaProgress(sagas);
+        renderFiscalDocuments(documentos, status, etapaAtual);
+        setProcessingActions(true, downloadDisponivel);
+        setText('fiscal-contingencia-status', concluida ? 'emissao concluida' : status.toLowerCase());
+        feedback(`${status}. Etapa atual: ${etapaAtual}. ${mensagem}`);
+        notify(
+            downloadDisponivel ? 'Documentos fiscais prontos para download.' : mensagem,
+            downloadDisponivel ? 'success' : 'info');
+    } catch (error) {
+        const message = error.message || 'Nao foi possivel consultar o processamento fiscal.';
+        setText('fiscal-contingencia-status', 'erro na consulta');
+        feedback(message);
+        notify(message, 'error');
+    }
+}
+
+async function baixarDocumentosFiscais() {
+    if (!state.entradaId || !state.downloadAvailable) {
+        const message = 'Consulte o processamento e aguarde a conclusao fiscal antes do download.';
+        feedback(message);
+        notify(message, 'warning');
+        return;
+    }
+
+    setText('fiscal-contingencia-status', 'gerando pacote');
+    try {
+        const result = await postUseCase(endpoints.baixarPacote, {
+            entradaFiscalContingenciaId: state.entradaId
+        });
+        const arquivoBase64 = readField(result, 'arquivoBase64', 'ArquivoBase64');
+        if (!arquivoBase64) throw new Error('O backend nao retornou o pacote fiscal.');
+
+        downloadBase64File(
+            arquivoBase64,
+            readField(result, 'contentType', 'ContentType') || 'application/zip',
+            readField(result, 'nomeArquivo', 'NomeArquivo') || `contingencia-${state.entradaId}.zip`);
+
+        const quantidade = Number(readField(result, 'quantidadeArquivos', 'QuantidadeArquivos') || 0);
+        setText('fiscal-contingencia-status', 'download pronto');
+        feedback(`Pacote fiscal gerado com ${quantidade} arquivo(s).`);
+        notify('Download do pacote fiscal iniciado.', 'success');
+    } catch (error) {
+        const message = error.message || 'Nao foi possivel baixar os documentos fiscais.';
+        setText('fiscal-contingencia-status', 'erro no download');
+        feedback(message);
+        notify(message, 'error');
+    }
+}
+
+function setProcessingActions(showQuery, downloadAvailable) {
+    const queryButton = document.getElementById('fiscal-consultar-processamento');
+    const downloadButton = document.getElementById('fiscal-baixar-documentos');
+    if (queryButton) queryButton.hidden = !showQuery;
+    if (downloadButton) {
+        downloadButton.disabled = !downloadAvailable;
+    }
+}
+
+function renderFiscalDocuments(documentos, status = '-', etapaAtual = '-') {
+    const host = document.getElementById('fiscal-documentos-processamento');
+    if (!host) return;
+
+    if (!documentos) {
+        host.innerHTML = '';
+        return;
+    }
+
+    const ctes = normalizeArray(readField(documentos, 'ctes', 'Ctes'));
+    const mdfes = normalizeArray(readField(documentos, 'mdfes', 'Mdfes'));
+    host.innerHTML = `
+        <div class="fiscal-processing-summary">
+            <strong>${escapeHtml(status)}</strong>
+            <span>Etapa: ${escapeHtml(etapaAtual)}</span>
+        </div>
+        ${renderDocumentList('CT-e', ctes)}
+        ${renderDocumentList('MDF-e', mdfes)}
+    `;
+}
+
+function renderDocumentList(label, documents) {
+    if (!documents.length) return `<div class="fiscal-document-list"><strong>${label}</strong><span>Ainda nao disponivel.</span></div>`;
+
+    return `
+        <div class="fiscal-document-list">
+            <strong>${label}</strong>
+            ${documents.map(document => {
+                const chave = readField(document, 'chaveAcesso', 'ChaveAcesso') || '-';
+                const protocolo = readField(document, 'protocolo', 'Protocolo') || '-';
+                const motivo = readField(document, 'motivo', 'Motivo') || '';
+                return `<span>${escapeHtml(chave)} | protocolo ${escapeHtml(protocolo)}${motivo ? ` | ${escapeHtml(motivo)}` : ''}</span>`;
+            }).join('')}
+        </div>
+    `;
+}
+
+function downloadBase64File(base64, contentType, fileName) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+        bytes[index] = binary.charCodeAt(index);
+    }
+
+    const url = URL.createObjectURL(new Blob([bytes], { type: contentType }));
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
 }
 
 async function executarTesteSync() {
@@ -769,7 +930,7 @@ async function buildStepPayload(stepKey, options = {}) {
 }
 
 async function readRequiredDocumentos() {
-    const documentos = await readDocumentos();
+    const documentos = await readDocumentosBrutos();
     if (documentos.length === 0) {
         throw new Error('Informe pelo menos um XML de NF-e.');
     }
@@ -779,7 +940,7 @@ async function readRequiredDocumentos() {
 
 function buildComplementoForStep(stepKey, documentos, forceFullComplemento = false) {
     if (forceFullComplemento) {
-        return buildTransporteComplemento(documentos || []);
+        return buildTransporteComplemento();
     }
 
     if (stepKey === 'EscolherModeloAgrupamentoCTeContingencia'
@@ -801,16 +962,13 @@ function buildComplementoForStep(stepKey, documentos, forceFullComplemento = fal
 
     if (stepKey === 'InformarDadosTransporteContingencia'
         || stepKey === 'InformarDadosTransporte') {
-        const docs = documentos && documentos.length > 0 ? documentos : [];
-        const complemento = buildTransporteComplemento(docs);
-        complemento.pendenciasNegocio = buildPendenciasNegocio(complemento, docs);
-        return complemento;
+        return buildTransporteComplemento();
     }
 
     if (stepKey === 'ConfirmarPlanoEmissaoFiscalContingencia'
         || stepKey === 'ConfirmarPlanoEmissaoFiscal') {
         return {
-            ...buildTransporteComplemento(documentos || []),
+            ...buildTransporteComplemento(),
             confirmado: true
         };
     }
@@ -818,15 +976,14 @@ function buildComplementoForStep(stepKey, documentos, forceFullComplemento = fal
     return {};
 }
 
-function buildTransporteComplemento(documentos) {
-    const docs = documentos || [];
+function buildTransporteComplemento() {
     const valorFrete = parseDecimal(getValue('fiscal-valor-frete'));
     return {
         emitenteFiscalDocumento: onlyDigits(getValue('fiscal-emitente')),
         tomadorDocumento: onlyDigits(getValue('fiscal-tomador')),
         transportadorDocumento: onlyDigits(getValue('fiscal-transportador')),
         remetenteDocumento: onlyDigits(getValue('fiscal-emitente')),
-        destinatarioDocumento: onlyDigits((docs[0] && docs[0].destinatarioDocumento) || getValue('fiscal-tomador')),
+        destinatarioDocumento: onlyDigits(getValue('fiscal-tomador')),
         ufInicio: upper(getValue('fiscal-uf-inicio')),
         ufFim: upper(getValue('fiscal-uf-fim')),
         municipioInicioCodigoIbge: getValue('fiscal-municipio-inicio'),
@@ -849,151 +1006,25 @@ function buildTransporteComplemento(documentos) {
     };
 }
 
-async function readDocumentos() {
-    const xmls = [];
-    xmls.push(...splitXmlDocuments(getValue('fiscal-nfe-xmls')));
-
-    for (const file of state.nfeFiles || []) {
-        const text = await file.text();
-        xmls.push(...splitXmlDocuments(text));
+async function readDocumentosBrutos() {
+    const documentos = [];
+    const textoColado = getValue('fiscal-nfe-xmls').trim();
+    if (textoColado) {
+        documentos.push({ xml: textoColado });
     }
 
-    const unique = [];
-    const seen = new Set();
-    for (const xml of xmls) {
-        const key = xml.trim();
-        if (!key || seen.has(key)) continue;
-        seen.add(key);
-        unique.push(xml);
-    }
-
-    return unique.map((xml, index) => {
-        const nfe = readNFeXmlData(xml);
-        if (!nfe.chaveAcesso) {
-            throw new Error(`XML de NF-e ${index + 1} sem chave de acesso. Informe um XML NF-e/nfeProc valido.`);
-        }
-
-        return {
-            tipoDocumento: 'NFe',
-            ...nfe,
+    const arquivos = state.nfeFiles || [];
+    const conteudos = await Promise.all(arquivos.map(file => file.text()));
+    for (let index = 0; index < conteudos.length; index += 1) {
+        const xml = String(conteudos[index] || '').trim();
+        if (!xml) continue;
+        documentos.push({
             xml,
-            xmlStorageKey: `front/contingencia/${state.cargaId || 'sem-carga'}/nfe-${index + 1}.xml`
-        };
-    });
-}
-
-function readNFeXmlData(xml) {
-    const data = {
-        chaveAcesso: '',
-        numero: '',
-        serie: '',
-        emitenteDocumento: '',
-        destinatarioDocumento: '',
-        ufOrigem: '',
-        ufDestino: '',
-        municipioOrigemCodigoIbge: '',
-        municipioDestinoCodigoIbge: '',
-        valorDocumento: 0,
-        pesoBruto: 0,
-        volume: 0,
-        modelo: ''
-    };
-
-    try {
-        const parser = new DOMParser();
-        const document = parser.parseFromString(xml, 'application/xml');
-        if (document.querySelector('parsererror')) {
-            return readNFeXmlDataByRegex(xml, data);
-        }
-
-        const infNFe = firstByLocalName(document, 'infNFe');
-        if (!infNFe) {
-            return readNFeXmlDataByRegex(xml, data);
-        }
-
-        data.chaveAcesso = cleanAccessKey(infNFe.getAttribute('Id')) || cleanAccessKey(textByLocalName(document, 'chNFe'));
-        data.numero = childTextByLocalName(firstChildByLocalName(infNFe, 'ide'), 'nNF');
-        data.serie = childTextByLocalName(firstChildByLocalName(infNFe, 'ide'), 'serie');
-        data.modelo = childTextByLocalName(firstChildByLocalName(infNFe, 'ide'), 'mod');
-
-        const emit = firstChildByLocalName(infNFe, 'emit');
-        const dest = firstChildByLocalName(infNFe, 'dest');
-        const enderEmit = firstChildByLocalName(emit, 'enderEmit');
-        const enderDest = firstChildByLocalName(dest, 'enderDest');
-        const total = firstChildByLocalName(firstChildByLocalName(infNFe, 'total'), 'ICMSTot');
-
-        data.emitenteDocumento = childTextByLocalName(emit, 'CNPJ') || childTextByLocalName(emit, 'CPF');
-        data.destinatarioDocumento = childTextByLocalName(dest, 'CNPJ') || childTextByLocalName(dest, 'CPF');
-        data.ufOrigem = childTextByLocalName(enderEmit, 'UF');
-        data.ufDestino = childTextByLocalName(enderDest, 'UF');
-        data.municipioOrigemCodigoIbge = childTextByLocalName(enderEmit, 'cMun');
-        data.municipioDestinoCodigoIbge = childTextByLocalName(enderDest, 'cMun');
-        data.valorDocumento = parseDecimal(childTextByLocalName(total, 'vNF'));
-
-        const volumes = allByLocalName(document, 'vol');
-        data.pesoBruto = volumes
-            .map(item => parseDecimal(childTextByLocalName(item, 'pesoB')))
-            .reduce((sum, value) => sum + value, 0);
-        data.volume = volumes
-            .map(item => parseDecimal(childTextByLocalName(item, 'qVol')))
-            .reduce((sum, value) => sum + value, 0);
-
-        return data;
-    } catch {
-        return readNFeXmlDataByRegex(xml, data);
+            nomeArquivo: arquivos[index]?.name || `documento-${index + 1}.xml`
+        });
     }
-}
 
-function readNFeXmlDataByRegex(xml, data) {
-    data.chaveAcesso = cleanAccessKey(matchXmlAttribute(xml, 'infNFe', 'Id')) || cleanAccessKey(matchXmlText(xml, 'chNFe'));
-    data.numero = data.numero || matchXmlText(xml, 'nNF');
-    data.serie = data.serie || matchXmlText(xml, 'serie');
-    data.modelo = data.modelo || matchXmlText(xml, 'mod');
-    data.valorDocumento = data.valorDocumento || parseDecimal(matchXmlText(xml, 'vNF'));
-    return data;
-}
-
-function firstByLocalName(document, name) {
-    return allByLocalName(document, name)[0] || null;
-}
-
-function allByLocalName(document, name) {
-    return Array.from(document.getElementsByTagName('*'))
-        .filter(element => sameLocalName(element, name));
-}
-
-function firstChildByLocalName(element, name) {
-    if (!element) return null;
-    return Array.from(element.children || []).find(child => sameLocalName(child, name)) || null;
-}
-
-function childTextByLocalName(element, name) {
-    return firstChildByLocalName(element, name)?.textContent?.trim() || '';
-}
-
-function textByLocalName(document, name) {
-    return firstByLocalName(document, name)?.textContent?.trim() || '';
-}
-
-function sameLocalName(element, name) {
-    return String(element.localName || element.nodeName || '').toLowerCase() === String(name || '').toLowerCase();
-}
-
-function cleanAccessKey(value) {
-    const text = String(value || '').trim();
-    const withoutPrefix = text.toLowerCase().startsWith('nfe') ? text.substring(3) : text;
-    const digits = onlyDigits(withoutPrefix);
-    return digits.length === 44 ? digits : '';
-}
-
-function matchXmlText(xml, tagName) {
-    const pattern = new RegExp(`<[^>:/]*:?${tagName}[^>]*>([\\s\\S]*?)<\\/[^>:/]*:?${tagName}>`, 'i');
-    return (String(xml || '').match(pattern)?.[1] || '').trim();
-}
-
-function matchXmlAttribute(xml, elementName, attributeName) {
-    const pattern = new RegExp(`<[^>:/]*:?${elementName}\\b[^>]*\\s${attributeName}=["']([^"']+)["']`, 'i');
-    return (String(xml || '').match(pattern)?.[1] || '').trim();
+    return documentos;
 }
 
 function clearXmls() {
@@ -1018,6 +1049,7 @@ function invalidatePreparationData() {
 }
 
 function invalidatePreview() {
+    state.planPreview = null;
     invalidateSection('preview');
 }
 
@@ -1031,43 +1063,23 @@ function renderXmlPreview() {
     const host = document.getElementById('fiscal-documentos');
     if (!host) return;
 
-    const pastedCount = splitXmlDocuments(getValue('fiscal-nfe-xmls')).length;
+    const pastedCount = getValue('fiscal-nfe-xmls').trim() ? 1 : 0;
     const fileCount = (state.nfeFiles || []).length;
     const total = pastedCount + fileCount;
 
     if (total === 0) {
         host.innerHTML = '<div class="fiscal-xml-empty">Nenhum XML informado.</div>';
-        refreshPreparationVisuals();
+        updateLocalSectionStatus('xmls', 'pending');
+        renderPlanPreview();
         return;
     }
 
     const itens = [];
-    if (pastedCount > 0) itens.push(`<div>${pastedCount} XML(s) colado(s)</div>`);
+    if (pastedCount > 0) itens.push('<div>Conteudo XML colado pronto para envio</div>');
     if (fileCount > 0) itens.push(`<div>${fileCount} arquivo(s) selecionado(s)</div>`);
     host.innerHTML = itens.join('');
-    refreshPreparationVisuals();
-}
-
-async function refreshPreparationVisuals() {
-    const refreshId = ++state.visualRefreshId;
-    let documentos = [];
-    let documentosError = '';
-
-    try {
-        documentos = await readDocumentos();
-    } catch (error) {
-        documentosError = error.message || 'Nao foi possivel ler os XMLs.';
-    }
-
-    if (refreshId !== state.visualRefreshId) {
-        return;
-    }
-
-    updateLocalSectionStatus('xmls', documentosError ? 'error' : (documentos.length > 0 ? 'ready' : 'pending'));
-    updateLocalSectionStatus('transporte', isTransportReady(documentos) ? 'ready' : 'pending');
-    updateLocalSectionStatus('frete', isFreteReady() ? 'ready' : 'pending');
-    updateLocalSectionStatus('agrupamento', isAgrupamentoReady() ? 'ready' : 'pending');
-    renderPlanPreview(documentos, documentosError);
+    updateLocalSectionStatus('xmls', 'ready');
+    renderPlanPreview();
 }
 
 function updateLocalSectionStatus(section, computedStatus) {
@@ -1105,118 +1117,47 @@ function sectionStatusText(status) {
     return 'pendente';
 }
 
-function isTransportReady(documentos) {
-    const complemento = buildTransporteComplemento(documentos || []);
-    return Boolean(
-        complemento.emitenteFiscalDocumento &&
-        complemento.tomadorDocumento &&
-        complemento.transportadorDocumento &&
-        complemento.rntrc &&
-        complemento.placaVeiculo &&
-        complemento.ufVeiculo &&
-        complemento.condutorDocumento &&
-        complemento.condutorNome &&
-        complemento.ufInicio &&
-        complemento.municipioInicioCodigoIbge &&
-        complemento.ufFim &&
-        complemento.municipioFimCodigoIbge);
-}
-
-function isFreteReady() {
-    return parseDecimal(getValue('fiscal-valor-frete')) > 0 &&
-        Boolean(getValue('fiscal-estrategia-rateio-frete'));
-}
-
-function isAgrupamentoReady() {
-    return Boolean(getValue('fiscal-tipo-agrupamento-cte')) &&
-        Boolean(getValue('fiscal-origem-rota-fiscal'));
-}
-
-function renderPlanPreview(documentos, documentosError) {
+function renderPlanPreview() {
     const host = document.getElementById('fiscal-plano-preview');
     if (!host) return;
 
-    const complemento = buildTransporteComplemento(documentos || []);
-    const pendencias = documentosError ? [documentosError] : buildPendenciasNegocio(complemento, documentos || []);
-    if (!documentos || documentos.length === 0) {
-        pendencias.unshift('Informe pelo menos um XML de NF-e.');
+    if (state.planPreview) {
+        renderBackendPlanPreview(host, state.planPreview);
+        return;
     }
 
-    if (!isTransportReady(documentos || [])) {
-        pendencias.push('Dados de transporte incompletos.');
-    }
+    renderSectionStatus('preview', state.sectionStatus.preview || 'pending');
+    host.innerHTML = '<div class="fiscal-preview-empty">Clique em Preview para calcular e validar o plano no servidor.</div>';
+}
 
-    const grupos = buildCtePreviewGroups(documentos || [], complemento);
-    const rota = buildRotaPreview(complemento);
-    const totalDocumentos = sumBy(documentos || [], item => Number(item.valorDocumento || 0));
-    const pesoTotal = sumBy(documentos || [], item => Number(item.pesoBruto || 0));
-
-    const previewStatus = pendencias.length === 0 ? 'ready' : 'pending';
-    if (state.sectionStatus.preview !== 'sent' || previewStatus !== 'ready') {
-        state.sectionStatus.preview = previewStatus;
-    }
-    renderSectionStatus('preview', state.sectionStatus.preview);
+function renderBackendPlanPreview(host, plano) {
+    const grupos = normalizeArray(readField(plano, 'ctesPrevistos', 'CtesPrevistos')).map(grupo => ({
+        descricao: readField(grupo, 'descricao', 'Descricao') || '-',
+        quantidadeDocumentos: Number(readField(grupo, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0),
+        valorDocumentos: Number(readField(grupo, 'valorDocumentos', 'ValorDocumentos') || 0),
+        pesoBruto: Number(readField(grupo, 'pesoBruto', 'PesoBruto') || 0),
+        valorFreteRateado: Number(readField(grupo, 'valorFreteRateado', 'ValorFreteRateado') || 0)
+    }));
+    const pendencias = normalizeArray(readField(plano, 'pendencias', 'Pendencias'));
+    const ufInicio = readField(plano, 'ufinicio', 'ufInicio', 'UFInicio') || '-';
+    const municipioInicio = readField(plano, 'municipioiniciocodigoibge', 'municipioInicioCodigoIbge', 'MunicipioInicioCodigoIbge') || '-';
+    const ufFim = readField(plano, 'uffim', 'ufFim', 'UFFim') || '-';
+    const municipioFim = readField(plano, 'municipiofimcodigoibge', 'municipioFimCodigoIbge', 'MunicipioFimCodigoIbge') || '-';
+    const rota = `${ufInicio}/${municipioInicio} -> ${ufFim}/${municipioFim}`;
 
     host.innerHTML = `
         <div class="fiscal-preview-summary">
-            ${previewCard('NF-e', String((documentos || []).length))}
+            ${previewCard('NF-e', String(readField(plano, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0))}
             ${previewCard('CT-e previstos', String(grupos.length))}
-            ${previewCard('Valor documentos', formatMoney(totalDocumentos))}
-            ${previewCard('Frete', formatMoney(complemento.valorFrete || 0))}
-            ${previewCard('Peso bruto', formatDecimal(pesoTotal))}
-            ${previewCard('Rota', rota.resumo)}
+            ${previewCard('Valor documentos', formatMoney(readField(plano, 'valorCarga', 'ValorCarga') || 0))}
+            ${previewCard('Frete', formatMoney(readField(plano, 'valorFrete', 'ValorFrete') || 0))}
+            ${previewCard('Peso bruto', formatDecimal(readField(plano, 'pesoBruto', 'PesoBruto') || 0))}
+            ${previewCard('Rota', rota)}
         </div>
-        <div class="fiscal-preview-route">${escapeHtml(rota.detalhe)}</div>
+        <div class="fiscal-preview-route">Plano calculado pelo backend. Agrupamento: ${escapeHtml(readField(plano, 'tipoAgrupamentoCTe', 'TipoAgrupamentoCTe') || '-')}.</div>
         ${pendencias.length > 0 ? renderPendenciasPreview(pendencias) : ''}
         ${renderCteGroupsPreview(grupos)}
     `;
-}
-
-async function blockingPreparationIssues() {
-    let documentos = [];
-    const issues = [];
-
-    try {
-        documentos = await readDocumentos();
-    } catch (error) {
-        issues.push(error.message || 'XMLs das NF-e');
-    }
-
-    if (documentos.length === 0) {
-        issues.push('XMLs das NF-e');
-    }
-
-    if (!isTransportReady(documentos)) {
-        issues.push('Dados de transporte');
-    }
-
-    if (!isFreteReady()) {
-        issues.push('Frete');
-    }
-
-    if (!isAgrupamentoReady()) {
-        issues.push('Agrupamento CT-e');
-    }
-
-    return Array.from(new Set(issues.filter(Boolean)));
-}
-
-function previewIssues() {
-    const issues = [];
-
-    if (!isTransportReady([])) {
-        issues.push('Dados de transporte');
-    }
-
-    if (!isFreteReady()) {
-        issues.push('Frete');
-    }
-
-    if (!isAgrupamentoReady()) {
-        issues.push('Agrupamento CT-e');
-    }
-
-    return Array.from(new Set(issues.filter(Boolean)));
 }
 
 function previewCard(label, value) {
@@ -1256,159 +1197,6 @@ function renderCteGroupsPreview(grupos) {
             `).join('')}
         </div>
     `;
-}
-
-function buildCtePreviewGroups(documentos, complemento) {
-    const docs = documentos || [];
-    if (docs.length === 0) return [];
-
-    const tipo = complemento.tipoAgrupamentoCTe || 'um_cte_por_nfe';
-    const map = new Map();
-
-    docs.forEach((doc, index) => {
-        const key = ctePreviewGroupKey(doc, index, tipo);
-        const descricao = ctePreviewGroupDescription(doc, index, tipo);
-        if (!map.has(key)) {
-            map.set(key, {
-                key,
-                descricao,
-                quantidadeDocumentos: 0,
-                valorDocumentos: 0,
-                pesoBruto: 0,
-                valorFreteRateado: 0
-            });
-        }
-
-        const grupo = map.get(key);
-        grupo.quantidadeDocumentos++;
-        grupo.valorDocumentos += Number(doc.valorDocumento || 0);
-        grupo.pesoBruto += Number(doc.pesoBruto || 0);
-    });
-
-    const grupos = Array.from(map.values());
-    ratearFretePreview(grupos, complemento);
-    return grupos;
-}
-
-function ctePreviewGroupKey(doc, index, tipo) {
-    if (tipo === 'cte_unico_da_carga') return 'carga';
-    if (tipo === 'agrupar_por_destinatario') return doc.destinatarioDocumento || `destinatario-${index}`;
-    return doc.chaveAcesso || `documento-${index}`;
-}
-
-function ctePreviewGroupDescription(doc, index, tipo) {
-    if (tipo === 'cte_unico_da_carga') return 'CT-e unico da carga';
-    if (tipo === 'agrupar_por_destinatario') return `Destinatario ${doc.destinatarioDocumento || index + 1}`;
-    return `NF-e ${doc.numero || doc.chaveAcesso || index + 1}`;
-}
-
-function ratearFretePreview(grupos, complemento) {
-    const valorFrete = Number(complemento.valorFrete || 0);
-    if (valorFrete <= 0 || grupos.length === 0) return;
-
-    const estrategia = complemento.estrategiaRateioFrete || 'proporcional_valor_documento';
-    if (estrategia === 'sem_rateio') {
-        grupos[0].valorFreteRateado = valorFrete;
-        return;
-    }
-
-    if (estrategia === 'manual') {
-        return;
-    }
-
-    const campo = estrategia === 'proporcional_peso_bruto' ? 'pesoBruto' : 'valorDocumentos';
-    const total = sumBy(grupos, grupo => Number(grupo[campo] || 0));
-    if (total <= 0) {
-        grupos[0].valorFreteRateado = valorFrete;
-        return;
-    }
-
-    let acumulado = 0;
-    grupos.forEach((grupo, index) => {
-        if (index === grupos.length - 1) {
-            grupo.valorFreteRateado = Math.max(0, valorFrete - acumulado);
-            return;
-        }
-
-        grupo.valorFreteRateado = roundMoney(valorFrete * (Number(grupo[campo] || 0) / total));
-        acumulado += grupo.valorFreteRateado;
-    });
-}
-
-function buildRotaPreview(complemento) {
-    const origem = `${complemento.ufInicio || '-'}/${complemento.municipioInicioCodigoIbge || '-'}`;
-    const destino = `${complemento.ufFim || '-'}/${complemento.municipioFimCodigoIbge || '-'}`;
-    const origemRota = origemRotaFiscalText(complemento.origemRotaFiscal);
-    const detalheBase = `${origem} -> ${destino}. Origem da rota: ${origemRota}.`;
-
-    if (complemento.origemRotaFiscal === 'pontos_mapa') {
-        return {
-            resumo: `${origem} -> ${destino}`,
-            detalhe: `${detalheBase} Pontos intermediarios ainda nao sao calculados nesta tela.`
-        };
-    }
-
-    if (complemento.origemRotaFiscal === 'aps_snapshot') {
-        return {
-            resumo: `${origem} -> ${destino}`,
-            detalhe: `${detalheBase} Snapshot APS sera usado quando o fluxo vier do APS.`
-        };
-    }
-
-    return {
-        resumo: `${origem} -> ${destino}`,
-        detalhe: `${detalheBase} Rota fiscal simples informada manualmente.`
-    };
-}
-
-function origemRotaFiscalText(value) {
-    if (value === 'pontos_mapa') return 'pontos mapa';
-    if (value === 'aps_snapshot') return 'snapshot APS';
-    return 'manual contingencia';
-}
-
-function splitXmlDocuments(value) {
-    const text = String(value || '').trim();
-    if (!text) return [];
-
-    const matches = text.match(/(?:<\?xml[\s\S]*?\?>\s*)?(?:<nfeProc[\s\S]*?<\/nfeProc>|<NFe[\s\S]*?<\/NFe>)/gi);
-    if (matches && matches.length > 0) {
-        return matches.map(item => item.trim()).filter(Boolean);
-    }
-
-    return text.startsWith('<') ? [text] : [];
-}
-
-function buildPendenciasNegocio(complemento, documentos) {
-    const pendencias = [];
-
-    if (!complemento.valorFrete || complemento.valorFrete <= 0) {
-        pendencias.push('ValorFrete');
-    }
-
-    if (!complemento.tipoAgrupamentoCTe) {
-        pendencias.push('TipoAgrupamentoCTe');
-    }
-
-    if (!complemento.estrategiaRateioFrete) {
-        pendencias.push('EstrategiaRateioFrete');
-    }
-
-    if (complemento.estrategiaRateioFrete === 'manual') {
-        pendencias.push('RateioManualPorDocumento');
-    }
-
-    if (documentos.length > 1 && complemento.tipoAgrupamentoCTe !== 'um_cte_por_nfe') {
-        pendencias.push('RegraAgrupamentoCTe');
-    }
-
-    if (complemento.origemRotaFiscal === 'pontos_mapa') {
-        pendencias.push('ExtrairRotaFiscalDePontosMapa');
-    }
-
-    // pendencia: no fluxo APS esses parametros devem vir no snapshot da carga;
-    // na contingencia eles nascem na tela porque o Fiscal opera sozinho.
-    return pendencias;
 }
 
 async function postUseCase(endpoint, body) {
@@ -1455,7 +1243,8 @@ function updateRequestUi() {
     const disabled = pendingRequests > 0;
     for (const id of actionButtonIds) {
         const button = document.getElementById(id);
-        if (button) button.disabled = disabled;
+        if (!button) continue;
+        button.disabled = disabled || (id === 'fiscal-baixar-documentos' && !state.downloadAvailable);
     }
 }
 
@@ -1492,6 +1281,71 @@ function renderSteps(steps) {
         `;
         host.appendChild(item);
     }
+}
+
+function renderSagaProgress(sagas) {
+    const host = document.getElementById('fiscal-contingencia-steps');
+    if (!host) return;
+
+    if (!sagas) {
+        host.innerHTML = '';
+        return;
+    }
+
+    const contingencia = readField(sagas, 'contingencia', 'Contingencia');
+    const emissaoFiscal = readField(sagas, 'emissaoFiscal', 'EmissaoFiscal');
+    host.innerHTML = [contingencia, emissaoFiscal]
+        .filter(Boolean)
+        .map(renderSagaCard)
+        .join('');
+}
+
+function renderSagaCard(saga) {
+    const nome = readField(saga, 'nome', 'Nome') || 'Saga';
+    const iniciada = Boolean(readField(saga, 'iniciada', 'Iniciada'));
+    const status = readField(saga, 'statusDescricao', 'StatusDescricao') || 'Nao iniciada';
+    const stepAtual = readField(saga, 'stepAtual', 'StepAtual') || '-';
+    const posicaoAtual = Number(readField(saga, 'posicaoAtual', 'PosicaoAtual') || 0);
+    const totalSteps = Number(readField(saga, 'totalSteps', 'TotalSteps') || 0);
+    const progresso = totalSteps > 0
+        ? Math.min(100, Math.max(0, Math.round((posicaoAtual / totalSteps) * 100)))
+        : 0;
+    const steps = normalizeArray(readField(saga, 'steps', 'Steps'));
+
+    return `
+        <section class="fiscal-saga-card">
+            <div class="fiscal-saga-header">
+                <div>
+                    <strong>${escapeHtml(nome)}</strong>
+                    <span>${iniciada ? `${posicaoAtual} de ${totalSteps}` : 'Ainda nao iniciada'}</span>
+                </div>
+                <span class="fiscal-saga-status">${escapeHtml(status)}</span>
+            </div>
+            <div class="fiscal-saga-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progresso}">
+                <span style="width: ${progresso}%"></span>
+            </div>
+            ${iniciada ? `<div class="fiscal-saga-current">Atual: ${escapeHtml(stepAtual)}</div>` : ''}
+            <div class="fiscal-saga-steps">
+                ${steps.map(renderSagaStep).join('')}
+            </div>
+        </section>
+    `;
+}
+
+function renderSagaStep(step) {
+    const nome = readField(step, 'stepKey', 'StepKey') || '-';
+    const status = readField(step, 'statusDescricao', 'StatusDescricao') || 'Desconhecido';
+    const erro = readField(step, 'erro', 'Erro') || '';
+
+    return `
+        <div class="fiscal-saga-step">
+            <div>
+                <strong>${escapeHtml(nome)}</strong>
+                ${erro ? `<small>${escapeHtml(erro)}</small>` : ''}
+            </div>
+            <span>${escapeHtml(status)}</span>
+        </div>
+    `;
 }
 
 function buildApiUrl(endpoint) {
@@ -1653,14 +1507,6 @@ function parseDecimal(value) {
     return Number.isFinite(number) ? number : 0;
 }
 
-function roundMoney(value) {
-    return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
-}
-
-function sumBy(items, selector) {
-    return (items || []).reduce((sum, item) => sum + Number(selector(item) || 0), 0);
-}
-
 function formatMoney(value) {
     return Number(value || 0).toLocaleString('pt-BR', {
         style: 'currency',
@@ -1776,6 +1622,17 @@ function readJsonField(json, ...names) {
         return readField(data, ...names) || '';
     } catch {
         return '';
+    }
+}
+
+function parseJsonObject(json) {
+    if (!json || typeof json !== 'string') return null;
+
+    try {
+        const value = JSON.parse(json);
+        return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+    } catch {
+        return null;
     }
 }
 

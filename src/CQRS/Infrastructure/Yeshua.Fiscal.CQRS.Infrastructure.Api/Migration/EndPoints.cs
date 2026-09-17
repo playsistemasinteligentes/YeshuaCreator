@@ -7091,6 +7091,40 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/Fiscal/ContingenciaConsultarProcessamentoContingenciaFiscalUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarProcessamentoContingenciaFiscalHandler receiver, [FromBody] Command.UseCase.ConsultarProcessamentoContingenciaFiscalInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/ContingenciaBaixarPacoteContingenciaFiscalUseCase", async ([FromServices] Command.Receivers.UseCase.BaixarPacoteContingenciaFiscalHandler receiver, [FromBody] Command.UseCase.BaixarPacoteContingenciaFiscalInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/Fiscal/TesteIniciarSagaTesteSyncUseCase", async ([FromServices] Command.Receivers.UseCase.IniciarSagaTesteSyncHandler receiver, [FromBody] Command.UseCase.IniciarSagaTesteSyncInputCommand command) =>
 {
 try

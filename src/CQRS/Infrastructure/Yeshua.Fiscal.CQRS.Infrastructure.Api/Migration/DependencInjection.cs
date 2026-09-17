@@ -623,6 +623,10 @@ builder.Services.AddTransient<Command.Receivers.UseCase.InformarDocumentosOrigin
 
 builder.Services.AddTransient<Command.Receivers.UseCase.IniciarContingenciaFiscalHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarProcessamentoContingenciaFiscalHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.BaixarPacoteContingenciaFiscalHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.IniciarSagaTesteSyncHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ReceberRomaneioConsolidadoParaCTeHandler>();

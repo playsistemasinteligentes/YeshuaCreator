@@ -27,6 +27,12 @@ namespace Read.Repository
                     FROM [ySaga] WITH (UPDLOCK, READPAST, ROWLOCK)
                     WHERE [Status] = 1
                       AND ([LockedBy] IS NULL OR [LockedAt] < @StaleLockLimit)
+                      AND EXISTS (
+                          SELECT 1
+                            FROM [ySagaStep] st
+                           WHERE st.[SagaId] = [ySaga].[Id]
+                             AND st.[Status] IN (1, 4)
+                      )
                       AND (
                           [NextExecutionAt] IS NULL
                           OR [NextExecutionAt] <= @Now
@@ -34,7 +40,7 @@ namespace Read.Repository
                               SELECT 1
                                 FROM [ySagaStep] st
                                WHERE st.[SagaId] = [ySaga].[Id]
-                                 AND st.[Status] IN (1, 4)
+                                 AND st.[Status] = 4
                           )
                       )
                     ORDER BY ISNULL([NextExecutionAt], '1900-01-01') ASC
