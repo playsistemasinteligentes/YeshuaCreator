@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
-            this.Query = $@" INSERT INTO PlanoConta (Codigo, Nome, Tipo, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Codigo, @Nome, @Tipo, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [PlanoConta] ([Codigo], [Nome], [Tipo], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Codigo, @Nome, @Tipo, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Codigo = PlanoConta.Codigo,
@@ -45,7 +45,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
-            this.Query = $@" UPDATE PlanoConta SET Codigo = @Codigo, Nome = @Nome, Tipo = @Tipo, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [Codigo] = @Codigo, [Nome] = @Nome, [Tipo] = @Tipo, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Codigo = PlanoConta.Codigo,
@@ -59,7 +59,7 @@ namespace Query.Write
         }
         public QueryModel UpdateCodigo(int id, string value)
         {
-            this.Query = $@" UPDATE PlanoConta SET Codigo = @Codigo WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [Codigo] = @Codigo WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Codigo = value,
@@ -69,7 +69,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNome(int id, string value)
         {
-            this.Query = $@" UPDATE PlanoConta SET Nome = @Nome WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [Nome] = @Nome WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Nome = value,
@@ -79,7 +79,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTipo(int id, int value)
         {
-            this.Query = $@" UPDATE PlanoConta SET Tipo = @Tipo WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [Tipo] = @Tipo WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Tipo = value,
@@ -89,7 +89,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE PlanoConta SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -99,7 +99,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE PlanoConta SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -109,7 +109,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE PlanoConta SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -119,7 +119,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE PlanoConta SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [PlanoConta] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -129,7 +129,7 @@ namespace Query.Write
         }
         public QueryModel DeletePlanoContaQuery(IPlanoContaEntity PlanoConta)
         {
-            this.Query = $@" DELETE FROM PlanoConta WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [PlanoConta] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = PlanoConta.Id,

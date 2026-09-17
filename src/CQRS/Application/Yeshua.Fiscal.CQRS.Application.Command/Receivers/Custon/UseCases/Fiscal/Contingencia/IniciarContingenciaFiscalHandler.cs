@@ -11,6 +11,8 @@
 //scope;
 using Dominio.Interfaces;
 using Aplication.Interfaces.Services;
+using Command.Interfaces;
+using Command.Receivers.Migration.Saga;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using IRepository.Read;
@@ -34,6 +36,8 @@ namespace Command.Receivers.UseCase
         private readonly IDocumentoFiscalOriginarioWriteRepository _repWriteDocumentoFiscalOriginario = default!;
         private readonly INFeProdutoSnapshotWriteRepository _repWriteNFeProdutoSnapshot = default!;
         private readonly IySagaWriteRepository _sagaWriteRepository = default!;
+        private readonly ISagaExecutor _sagaExecutor = default!;
+        private readonly SagaResolverRegistry _sagaResolverRegistry = default!;
 
         public IniciarContingenciaFiscalHandler(
             IUnitOfWork unitOfWork,
@@ -44,7 +48,9 @@ namespace Command.Receivers.UseCase
             IEntradaFiscalContingenciaWriteRepository repWriteEntradaFiscalContingencia,
             IDocumentoFiscalOriginarioWriteRepository repWriteDocumentoFiscalOriginario,
             INFeProdutoSnapshotWriteRepository repWriteNFeProdutoSnapshot,
-            IySagaWriteRepository sagaWriteRepository)
+            IySagaWriteRepository sagaWriteRepository,
+            ISagaExecutor sagaExecutor,
+            SagaResolverRegistry sagaResolverRegistry)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -56,6 +62,8 @@ namespace Command.Receivers.UseCase
             _repWriteDocumentoFiscalOriginario = repWriteDocumentoFiscalOriginario;
             _repWriteNFeProdutoSnapshot = repWriteNFeProdutoSnapshot;
             _sagaWriteRepository = sagaWriteRepository;
+            _sagaExecutor = sagaExecutor;
+            _sagaResolverRegistry = sagaResolverRegistry;
         }
 
         protected partial Task<State<IniciarContingenciaFiscalOutputCommand>> CustomActionHookAsync(
@@ -75,40 +83,31 @@ namespace Command.Receivers.UseCase
             _executionContext.SetTraceId(correlationId);
 
             var documentos = FiscalEntradaPayloadReader.ReadItems(comand.DocumentosOriginariosJson);
-            if (documentos.Count == 0)
-            {
-                return Task.FromResult(ValidationError(
-                    "Nenhum documento originario informado para a contingencia fiscal.",
-                    new IniciarContingenciaFiscalOutputCommand
-                    {
-                        CorrelationId = correlationId,
-                        Accepted = false,
-                        EntradaFiscalContingenciaId = 0,
-                        CargaId = cargaId,
-                        Mensagem = "Nenhum documento originario informado para a contingencia fiscal."
-                    }));
-            }
 
             _unitOfWork.BeginTran();
             try
             {
-                var persistResult = FiscalDocumentosOriginariosPersister.Persist(
-                    _logger,
-                    _domainTrackingPolicy,
-                    _repWriteDocumentoFiscalOriginario,
-                    _repWriteNFeProdutoSnapshot,
-                    new FiscalDocumentosOriginariosPersistRequest(
-                        correlationId,
-                        cargaId,
-                        ValueOrDefault(comand.SourceApplication, "ContingenciaFiscal"),
-                        ValueOrDefault(comand.SourceModule, "DocumentosOriginariosContingencia"),
-                        ValueOrDefault(comand.SourceMessageId, Guid.NewGuid().ToString())),
-                    documentos);
+                var persistResult = documentos.Count == 0
+                    ? new FiscalDocumentosOriginariosPersistResult()
+                    : FiscalDocumentosOriginariosPersister.Persist(
+                        _logger,
+                        _domainTrackingPolicy,
+                        _repWriteDocumentoFiscalOriginario,
+                        _repWriteNFeProdutoSnapshot,
+                        new FiscalDocumentosOriginariosPersistRequest(
+                            correlationId,
+                            cargaId,
+                            ValueOrDefault(comand.SourceApplication, "ContingenciaFiscal"),
+                            ValueOrDefault(comand.SourceModule, "DocumentosOriginariosContingencia"),
+                            ValueOrDefault(comand.SourceMessageId, Guid.NewGuid().ToString())),
+                        documentos);
 
                 var entrada = CriarEntrada(comand, correlationId, cargaId, persistResult);
                 _repWriteEntradaFiscalContingencia.Insert(entrada);
 
                 var saga = CriarSaga(correlationId, cargaId, entrada.Id.GetValueOrDefault(), comand, persistResult);
+                var resolver = _sagaResolverRegistry.Resolve(saga);
+                _sagaExecutor.ExecuteUntilWait(saga, resolver);
                 _sagaWriteRepository.Save(saga);
 
                 _unitOfWork.Commit();
@@ -122,6 +121,7 @@ namespace Command.Receivers.UseCase
                     Mensagem = "Contingencia fiscal iniciada.",
                     SagaId = saga.Id,
                     StepKey = saga.KeyCurrentStep,
+                    StepStatus = (int)(saga.GetCurrent()?.Status ?? 0),
                     SagaStatus = (int)saga.Status
                 }));
             }

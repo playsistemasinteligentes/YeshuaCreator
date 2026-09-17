@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetEspecialidadeCustom(Command.Read.EspecialidadeReadCommand command, ref DataPagination<EspecialidadeDTO> result, ref bool handled);
+
         public DataPagination<EspecialidadeDTO> getEspecialidade(ICommandRead command )
          {
             if (command is Command.Read.EspecialidadeReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<EspecialidadeDTO> getEspecialidade(Command.Read.EspecialidadeReadCommand command )
         {
+            var customResult = new DataPagination<EspecialidadeDTO>();
+            var customHandled = false;
+            TryGetEspecialidadeCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.EspecialidadeQuery(command );
 
                 var itens = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<EspecialidadeTenantIDDTO> getEspecialidadeReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EspecialidadeTenantIDDTO> lista;
             var query = _query.EspecialidadeTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<EspecialidadeTenantIDDTO>(query.Query,query.Parameters) as List<EspecialidadeTenantIDDTO>;
+                var lista = _unitOfWork.Query<EspecialidadeTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<EspecialidadeUserIdDTO> getEspecialidadeReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<EspecialidadeUserIdDTO> lista;
             var query = _query.EspecialidadeUserIdQuery(command );
 
-                lista = _unitOfWork.Query<EspecialidadeUserIdDTO>(query.Query,query.Parameters) as List<EspecialidadeUserIdDTO>;
+                var lista = _unitOfWork.Query<EspecialidadeUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -194,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -202,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters) as List<EspecialidadeDTO>;
+                var result = _unitOfWork.Query<EspecialidadeDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

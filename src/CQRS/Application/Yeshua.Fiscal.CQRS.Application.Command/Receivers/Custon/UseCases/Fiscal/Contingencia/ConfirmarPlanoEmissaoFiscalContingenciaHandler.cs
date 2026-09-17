@@ -42,12 +42,12 @@ namespace Command.Receivers.UseCase
 protected partial async Task<State<ConfirmarPlanoEmissaoFiscalContingenciaOutputCommand>> CustomActionHookAsync(State<ConfirmarPlanoEmissaoFiscalContingenciaOutputCommand> state, ConfirmarPlanoEmissaoFiscalContingenciaInputCommand comand, CancellationToken cancellationToken)
 {
     var result = await _stepStimulusService.SubmitAsync(
-        ContingenciaFiscalStandardSaga.STEP_9,
+        ContingenciaFiscalStandardSaga.STEP_1,
         comand.CorrelationId,
         comand.TenantId,
         comand.CargaId,
         comand.EntradaFiscalContingenciaId,
-        comand.UserAction,
+        "ConfirmarPlanoEmissaoFiscalContingencia",
         comand.DocumentosOriginariosJson,
         comand.DadosComplementaresJson,
         comand.PayloadHash,

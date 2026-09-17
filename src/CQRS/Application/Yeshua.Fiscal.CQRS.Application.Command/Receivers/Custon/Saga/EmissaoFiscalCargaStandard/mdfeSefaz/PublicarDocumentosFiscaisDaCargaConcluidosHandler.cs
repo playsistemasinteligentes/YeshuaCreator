@@ -179,7 +179,7 @@ namespace Command.Receivers
 
             var waitStep = _sagaStepReadRepository.GetFirstBySagaStepKeyAndStatuses(
                 contingencia.id,
-                ContingenciaFiscalStandardSaga.STEP_11,
+                ContingenciaFiscalStandardSaga.STEP_4,
                 new[] { 0, 1, 2, 3, 4 });
 
             if (waitStep == null || waitStep.id <= 0)

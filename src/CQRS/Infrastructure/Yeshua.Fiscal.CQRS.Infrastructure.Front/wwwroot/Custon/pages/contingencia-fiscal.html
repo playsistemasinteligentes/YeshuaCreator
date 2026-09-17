@@ -4,12 +4,6 @@
             <p class="fiscal-contingencia-kicker">Fiscal</p>
             <h1>Nova Contingencia Fiscal</h1>
         </div>
-        <div class="fiscal-contingencia-actions">
-            <button id="fiscal-contingencia-new" type="button">Novo</button>
-            <button id="fiscal-contingencia-teste-sync" type="button">Teste Sync</button>
-            <button id="fiscal-contingencia-teste-sync-acordar" type="button">Acordar Step 3</button>
-            <button id="fiscal-contingencia-submit" type="button" class="primary">Iniciar</button>
-        </div>
     </div>
 
     <div class="fiscal-contingencia-layout">
@@ -19,7 +13,7 @@
                 <span id="fiscal-contingencia-status">pronto</span>
             </div>
 
-            <div class="fiscal-stage" data-stage="inicio">
+            <div class="fiscal-stage" data-stage="preparacao">
             <div class="fiscal-contingencia-grid">
                 <label>
                     Carga
@@ -47,8 +41,13 @@
             </div>
 
             <div class="fiscal-section-title">
-                <h3>XMLs Das NF-e</h3>
-                <button id="fiscal-clear-xmls" type="button">Limpar XMLs</button>
+                <div class="fiscal-section-heading">
+                    <h3>XMLs Das NF-e</h3>
+                    <span id="fiscal-status-xmls" class="fiscal-section-status pending">pendente</span>
+                </div>
+                <div class="fiscal-section-actions">
+                    <button id="fiscal-clear-xmls" type="button">Limpar XMLs</button>
+                </div>
             </div>
             <div class="fiscal-xml-grid">
                 <label>
@@ -63,9 +62,12 @@
             <div id="fiscal-documentos" class="fiscal-xml-preview"></div>
             </div>
 
-            <div class="fiscal-stage" data-stage="transporte">
+            <div class="fiscal-stage" data-stage="preparacao">
             <div class="fiscal-section-title">
-                <h3>Dados De Transporte</h3>
+                <div class="fiscal-section-heading">
+                    <h3>Dados De Transporte</h3>
+                    <span id="fiscal-status-transporte" class="fiscal-section-status pending">pendente</span>
+                </div>
             </div>
             <div class="fiscal-contingencia-grid">
                 <label>
@@ -119,9 +121,12 @@
             </div>
             </div>
 
-            <div class="fiscal-stage" data-stage="frete">
+            <div class="fiscal-stage" data-stage="preparacao">
             <div class="fiscal-section-title">
-                <h3>Frete</h3>
+                <div class="fiscal-section-heading">
+                    <h3>Frete</h3>
+                    <span id="fiscal-status-frete" class="fiscal-section-status pending">pendente</span>
+                </div>
             </div>
             <div class="fiscal-contingencia-grid">
                 <label>
@@ -140,9 +145,12 @@
             </div>
             </div>
 
-            <div class="fiscal-stage" data-stage="agrupamento">
+            <div class="fiscal-stage" data-stage="preparacao">
             <div class="fiscal-section-title">
-                <h3>Agrupamento CT-e</h3>
+                <div class="fiscal-section-heading">
+                    <h3>Agrupamento CT-e</h3>
+                    <span id="fiscal-status-agrupamento" class="fiscal-section-status pending">pendente</span>
+                </div>
             </div>
             <div class="fiscal-contingencia-grid">
                 <label>
@@ -168,12 +176,22 @@
             </div>
             </div>
 
-            <div class="fiscal-stage" data-stage="confirmacao">
+            <div class="fiscal-stage" data-stage="preparacao">
+            <div class="fiscal-section-title">
+                <div class="fiscal-section-heading">
+                    <h3>Previa Do Plano</h3>
+                    <span id="fiscal-status-preview" class="fiscal-section-status pending">pendente</span>
+                </div>
+            </div>
+            <div id="fiscal-plano-preview" class="fiscal-plan-preview"></div>
+            </div>
+
+            <div class="fiscal-stage" data-stage="preparacao">
             <div class="fiscal-section-title">
                 <h3>Confirmacao</h3>
             </div>
             <p class="fiscal-stage-note">
-                Revise os dados informados. Ao enviar esta etapa, o plano sera publicado para a emissao fiscal.
+                Use o painel lateral para abrir o protocolo, enviar XMLs, gerar a previa e confirmar o inicio do processamento fiscal.
             </p>
             </div>
 
@@ -182,7 +200,7 @@
                 <h3>Processamento</h3>
             </div>
             <p class="fiscal-stage-note">
-                A saga esta executando uma etapa interna. Use Consultar para verificar o proximo passo.
+                A saga esta executando uma etapa interna.
             </p>
             </div>
 
@@ -191,15 +209,25 @@
                 <h3>Emissao Fiscal</h3>
             </div>
             <p class="fiscal-stage-note">
-                A emissao esta em processamento. Use Consultar para verificar o retorno.
+                A emissao esta em processamento.
             </p>
             </div>
         </main>
 
-        <aside class="fiscal-contingencia-panel">
+        <aside class="fiscal-contingencia-panel fiscal-contingencia-side">
+            <div class="fiscal-side-actions">
+                <div class="fiscal-panel-title">
+                    <h2>Acoes</h2>
+                </div>
+                <div class="fiscal-side-action-grid">
+                    <button id="fiscal-contingencia-new" type="button">Novo</button>
+                    <button id="fiscal-send-notas" type="button" class="primary">Enviar XMLs</button>
+                    <button id="fiscal-send-preview" type="button">Preview</button>
+                    <button id="fiscal-confirmar-plano" type="button" class="primary">Confirmar</button>
+                </div>
+            </div>
             <div class="fiscal-panel-title">
-                <h2>Resultado</h2>
-                <button id="fiscal-contingencia-refresh" type="button">Consultar</button>
+                <h2>Processamento</h2>
             </div>
             <dl class="fiscal-result-list">
                 <div>

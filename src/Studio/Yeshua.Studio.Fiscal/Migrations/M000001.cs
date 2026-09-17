@@ -504,6 +504,26 @@ public class M000001 : MigrationBase
             .AddEntity("CTeSaidaMDFe");
 
         AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("CTeUtilitarios")
+            .AddCommand(
+                "ObterXmlCTe",
+                new ObterXmlCTeInput(string.Empty),
+                new ObterXmlCTeOutput(string.Empty, string.Empty, string.Empty, string.Empty))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.cte.utilitarios.xml.obter")
+            .AddEntity("CTeTentativaEmissao");
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("CTeUtilitarios")
+            .AddCommand(
+                "GerarDacte",
+                new GerarDacteInput(new List<string>()),
+                new GerarDacteOutput(string.Empty, string.Empty, string.Empty, 0))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.cte.utilitarios.dacte.gerar")
+            .AddEntity("CTeTentativaEmissao");
+
+        AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("MDFe")
             .AddCommand(
                 "SolicitarEmissaoMDFe",
@@ -532,6 +552,26 @@ public class M000001 : MigrationBase
             .Authorization(Authorization.User)
             .AddScope("fiscal.mdfe.encerrar")
             .AddEntity("MDFe");
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("MDFeUtilitarios")
+            .AddCommand(
+                "ObterXmlMDFe",
+                new ObterXmlMDFeInput(string.Empty),
+                new ObterXmlMDFeOutput(string.Empty, string.Empty, string.Empty, string.Empty))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.mdfe.utilitarios.xml.obter")
+            .AddEntity("MDFeTentativaEmissao");
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("MDFeUtilitarios")
+            .AddCommand(
+                "GerarDamdfe",
+                new GerarDamdfeInput(new List<string>()),
+                new GerarDamdfeOutput(string.Empty, string.Empty, string.Empty, 0))
+            .Authorization(Authorization.User)
+            .AddScope("fiscal.mdfe.utilitarios.damdfe.gerar")
+            .AddEntity("MDFeTentativaEmissao");
 
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("SEFAZ")
@@ -578,8 +618,8 @@ public class M000001 : MigrationBase
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("Contingencia")
             .AddSaga("ContingenciaFiscalStandard")
-            .AddStepGroup("documentos")
-                .AddStepWait("receberNotasFiscaisDaContingencia")
+            .AddStepGroup("preparacao")
+                .AddStepWait("prepararEntradaContingencia")
                     .HttpApi("InformarNotasFiscaisContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
@@ -587,9 +627,6 @@ public class M000001 : MigrationBase
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.notas.informar")
                     .AddEntity("EntradaFiscalContingencia")
-                .AddStep("analisarNotasFiscaisDaContingencia")
-            .AddStepGroup("agrupamento")
-                .AddStepWait("escolherModeloAgrupamentoCTe")
                     .HttpApi("EscolherModeloAgrupamentoCTeContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
@@ -597,9 +634,6 @@ public class M000001 : MigrationBase
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.agrupamento.informar")
                     .AddEntity("EntradaFiscalContingencia")
-                .AddStep("simularAgrupamentoCTe")
-            .AddStepGroup("frete")
-                .AddStepWait("informarFreteERateio")
                     .HttpApi("InformarFreteERateioContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
@@ -607,9 +641,6 @@ public class M000001 : MigrationBase
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.frete.informar")
                     .AddEntity("EntradaFiscalContingencia")
-                .AddStep("simularRateioFrete")
-            .AddStepGroup("transporte")
-                .AddStepWait("informarDadosTransporte")
                     .HttpApi("InformarDadosTransporteContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
@@ -617,9 +648,6 @@ public class M000001 : MigrationBase
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.transporte.informar")
                     .AddEntity("EntradaFiscalContingencia")
-                .AddStep("validarPlanoEmissaoFiscal")
-            .AddStepGroup("confirmacao")
-                .AddStepWait("confirmarPlanoEmissaoFiscal")
                     .HttpApi("ConfirmarPlanoEmissaoFiscalContingencia",
                         new ContingenciaFiscalStepInput(string.Empty, 0, string.Empty, 0, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty),
                         new ContingenciaFiscalStepOutput(string.Empty, string.Empty, string.Empty, 0, 0, 0, false, string.Empty))
@@ -627,6 +655,9 @@ public class M000001 : MigrationBase
                     .Authorization(Authorization.User)
                     .AddScope("fiscal.contingencia.plano.confirmar")
                     .AddEntity("EntradaFiscalContingencia")
+            .AddStepGroup("validacao")
+                .AddStep("validarPlanoEmissaoFiscal")
+            .AddStepGroup("publicacao")
                 .AddStep("publicarPlanoParaSagaFiscal")
             .AddStepGroup("emissao")
                 .AddStepWait("aguardarResultadoEmissaoFiscal")
@@ -877,6 +908,22 @@ public sealed record PublicarCTeAutorizadoParaMDFeOutput(
     bool Publicado,
     string Mensagem);
 
+public sealed record ObterXmlCTeInput(string ChaveAcesso);
+
+public sealed record ObterXmlCTeOutput(
+    string ChaveAcesso,
+    string NomeArquivo,
+    string ContentType,
+    string ArquivoBase64);
+
+public sealed record GerarDacteInput(List<string> ChavesAcesso);
+
+public sealed record GerarDacteOutput(
+    string NomeArquivo,
+    string ContentType,
+    string ArquivoBase64,
+    int Quantidade);
+
 public sealed record SolicitarEmissaoMDFeInput(
     string CorrelationId,
     string CargaId,
@@ -915,6 +962,22 @@ public sealed record EncerrarMDFeOutput(
     string Protocolo,
     string Mensagem,
     DateTime? EncerradoEm);
+
+public sealed record ObterXmlMDFeInput(string ChaveAcesso);
+
+public sealed record ObterXmlMDFeOutput(
+    string ChaveAcesso,
+    string NomeArquivo,
+    string ContentType,
+    string ArquivoBase64);
+
+public sealed record GerarDamdfeInput(List<string> ChavesAcesso);
+
+public sealed record GerarDamdfeOutput(
+    string NomeArquivo,
+    string ContentType,
+    string ArquivoBase64,
+    int Quantidade);
 
 public sealed record ValidarCertificadoDigitalInput(int CertificadoDigitalId);
 

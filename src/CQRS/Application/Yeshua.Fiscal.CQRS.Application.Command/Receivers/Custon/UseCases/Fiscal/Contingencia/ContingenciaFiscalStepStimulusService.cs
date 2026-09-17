@@ -30,9 +30,15 @@ namespace Command.Receivers.UseCase
         private const int StepStatusWaiting = 3;
         private const int StepStatusFailed = 6;
         private const string InboxType = "fiscal.contingencia.step-input.v1";
+        private const string AcaoInformarNotas = "InformarNotasFiscaisContingencia";
+        private const string AcaoEscolherAgrupamento = "EscolherModeloAgrupamentoCTeContingencia";
+        private const string AcaoInformarFrete = "InformarFreteERateioContingencia";
+        private const string AcaoInformarTransporte = "InformarDadosTransporteContingencia";
+        private const string AcaoConfirmarPlano = "ConfirmarPlanoEmissaoFiscalContingencia";
 
         private readonly ILogger _logger = default!;
         private readonly IExecutionContext _executionContext = default!;
+        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IUnitOfWork _unitOfWork = default!;
         private readonly IySagaReadRepository _sagaReadRepository = default!;
         private readonly IySagaWriteRepository _sagaWriteRepository = default!;
@@ -40,20 +46,26 @@ namespace Command.Receivers.UseCase
         private readonly IySagaStepWriteRepository _sagaStepWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
         private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
+        private readonly IDocumentoFiscalOriginarioWriteRepository _documentoFiscalOriginarioWriteRepository = default!;
+        private readonly INFeProdutoSnapshotWriteRepository _nfeProdutoSnapshotWriteRepository = default!;
 
         public ContingenciaFiscalStepStimulusService(
             ILogger logger,
             IExecutionContext executionContext,
+            IDomainTrackingPolicy domainTrackingPolicy,
             IUnitOfWork unitOfWork,
             IySagaReadRepository sagaReadRepository,
             IySagaWriteRepository sagaWriteRepository,
             IySagaStepReadRepository sagaStepReadRepository,
             IySagaStepWriteRepository sagaStepWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
-            INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository)
+            INFeProdutoSnapshotReadRepository nfeProdutoSnapshotReadRepository,
+            IDocumentoFiscalOriginarioWriteRepository documentoFiscalOriginarioWriteRepository,
+            INFeProdutoSnapshotWriteRepository nfeProdutoSnapshotWriteRepository)
         {
             _logger = logger;
             _executionContext = executionContext;
+            _domainTrackingPolicy = domainTrackingPolicy;
             _unitOfWork = unitOfWork;
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
@@ -61,6 +73,8 @@ namespace Command.Receivers.UseCase
             _sagaStepWriteRepository = sagaStepWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
             _nfeProdutoSnapshotReadRepository = nfeProdutoSnapshotReadRepository;
+            _documentoFiscalOriginarioWriteRepository = documentoFiscalOriginarioWriteRepository;
+            _nfeProdutoSnapshotWriteRepository = nfeProdutoSnapshotWriteRepository;
         }
 
         public Task<ContingenciaFiscalStepStimulusResult> SubmitAsync(
@@ -80,7 +94,7 @@ namespace Command.Receivers.UseCase
 
             cargaId = (cargaId ?? string.Empty).Trim();
             correlationId = (correlationId ?? string.Empty).Trim();
-            userAction = string.IsNullOrWhiteSpace(userAction) ? "EnviarEtapa" : userAction.Trim();
+            userAction = NormalizeAction(stepKey, userAction);
 
             if (string.IsNullOrWhiteSpace(cargaId))
                 return Task.FromResult(Rejected(correlationId, cargaId, stepKey, "Carga nao informada."));
@@ -99,9 +113,13 @@ namespace Command.Receivers.UseCase
             if (saga == null || saga.id <= 0)
                 return Task.FromResult(Rejected(correlationId, cargaId, stepKey, "Saga de contingencia fiscal nao encontrada."));
 
-            var inputError = ValidateInput(stepKey, cargaId, documentosOriginariosJson, dadosComplementaresJson);
+            var inputError = ValidateInput(userAction, cargaId, documentosOriginariosJson, dadosComplementaresJson);
             if (!string.IsNullOrWhiteSpace(inputError))
                 return Task.FromResult(Rejected(correlationId, cargaId, stepKey, inputError, saga.id));
+
+            var documentos = string.Equals(userAction, AcaoInformarNotas, StringComparison.OrdinalIgnoreCase)
+                ? FiscalEntradaPayloadReader.ReadItems(documentosOriginariosJson)
+                : new List<JsonElement>();
 
             var waitingStep = _sagaStepReadRepository.GetFirstBySagaStepKeyAndStatuses(
                 saga.id,
@@ -145,6 +163,22 @@ namespace Command.Receivers.UseCase
             _unitOfWork.BeginTran();
             try
             {
+                if (documentos.Count > 0)
+                {
+                    FiscalDocumentosOriginariosPersister.Persist(
+                        _logger,
+                        _domainTrackingPolicy,
+                        _documentoFiscalOriginarioWriteRepository,
+                        _nfeProdutoSnapshotWriteRepository,
+                        new FiscalDocumentosOriginariosPersistRequest(
+                            string.IsNullOrWhiteSpace(correlationId) ? saga.correlationid : correlationId,
+                            cargaId,
+                            "FiscalFront",
+                            "DocumentosOriginariosContingencia",
+                            Guid.NewGuid().ToString()),
+                        documentos);
+                }
+
                 if (saga.status == SagaStatusFailed)
                 {
                     _sagaWriteRepository.UpdateStatus(saga.id, SagaStatusInProgress);
@@ -180,26 +214,26 @@ namespace Command.Receivers.UseCase
             });
         }
 
-        private string ValidateInput(string stepKey, string cargaId, string documentosOriginariosJson, string dadosComplementaresJson)
+        private string ValidateInput(string userAction, string cargaId, string documentosOriginariosJson, string dadosComplementaresJson)
         {
             var missing = new List<string>();
 
-            if (string.Equals(stepKey, ContingenciaFiscalStandardSaga.STEP_1, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(userAction, AcaoInformarNotas, StringComparison.OrdinalIgnoreCase))
             {
                 if (!HasDocumentos(documentosOriginariosJson) && !HasPersistedDocumentos(cargaId))
                     missing.Add("DocumentosOriginarios");
             }
-            else if (string.Equals(stepKey, ContingenciaFiscalStandardSaga.STEP_3, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(userAction, AcaoEscolherAgrupamento, StringComparison.OrdinalIgnoreCase))
             {
                 Require(missing, Command.Receivers.FiscalContingenciaPayload.Text(dadosComplementaresJson, "tipoAgrupamentoCTe", "tipoAgrupamentoCte"), "TipoAgrupamentoCTe");
             }
-            else if (string.Equals(stepKey, ContingenciaFiscalStandardSaga.STEP_5, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(userAction, AcaoInformarFrete, StringComparison.OrdinalIgnoreCase))
             {
                 Require(missing, Command.Receivers.FiscalContingenciaPayload.Text(dadosComplementaresJson, "estrategiaRateioFrete"), "EstrategiaRateioFrete");
                 if (Command.Receivers.FiscalContingenciaPayload.Number(dadosComplementaresJson, "valorFrete", "valorServico") <= 0m)
                     missing.Add("ValorFrete");
             }
-            else if (string.Equals(stepKey, ContingenciaFiscalStandardSaga.STEP_7, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(userAction, AcaoInformarTransporte, StringComparison.OrdinalIgnoreCase))
             {
                 Require(missing, Command.Receivers.FiscalContingenciaPayload.Text(dadosComplementaresJson, "rntrc", "RNTRC"), "RNTRC");
                 Require(missing, Command.Receivers.FiscalContingenciaPayload.Text(dadosComplementaresJson, "placaVeiculo", "placa"), "PlacaVeiculo");
@@ -211,7 +245,7 @@ namespace Command.Receivers.UseCase
                 Require(missing, Command.Receivers.FiscalContingenciaPayload.Text(dadosComplementaresJson, "municipioInicioCodigoIbge", "codigoMunicipioInicio"), "MunicipioInicioCodigoIbge");
                 Require(missing, Command.Receivers.FiscalContingenciaPayload.Text(dadosComplementaresJson, "municipioFimCodigoIbge", "codigoMunicipioFim"), "MunicipioFimCodigoIbge");
             }
-            else if (string.Equals(stepKey, ContingenciaFiscalStandardSaga.STEP_9, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(userAction, AcaoConfirmarPlano, StringComparison.OrdinalIgnoreCase))
             {
                 if (!IsConfirmed(dadosComplementaresJson))
                     missing.Add("Confirmado");
@@ -220,6 +254,18 @@ namespace Command.Receivers.UseCase
             return missing.Count == 0
                 ? string.Empty
                 : "Campos obrigatorios da etapa: " + string.Join(", ", missing) + ".";
+        }
+
+        private static string NormalizeAction(string stepKey, string userAction)
+        {
+            if (!string.IsNullOrWhiteSpace(userAction) &&
+                !string.Equals(userAction, "EnviarEtapa", StringComparison.OrdinalIgnoreCase))
+                return userAction.Trim();
+
+            if (string.Equals(stepKey, ContingenciaFiscalStandardSaga.STEP_4, StringComparison.OrdinalIgnoreCase))
+                return "InformarResultadoEmissaoFiscalContingencia";
+
+            return AcaoInformarNotas;
         }
 
         private bool HasPersistedDocumentos(string cargaId)

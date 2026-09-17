@@ -1,0 +1,134 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration
+// </yeshua>
+
+using System.Net.Http.Json;
+using System.Text.Json.Nodes;
+
+namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.Sesoes;
+
+[SeedTestOrder(9)]
+public partial class SesoesCrudApiSeedTests : ApiIntegrationTestBase
+{
+    private const string CreateEndpoint = "yapi/Sesoes/PostSesoes";
+    private const string ReadEndpoint = "yapi/Sesoes/ReadSesoes";
+    private const string UpdateEndpoint = "yapi/Sesoes/PutSesoes";
+
+    public async Task ExecuteAsync()
+    {
+        using var client = await CreateAuthenticatedClientAsync();
+
+        var createPayload = BuildCreatePayload();
+        CustomizeCreatePayload(createPayload);
+        using var createResponse = await client.PostAsJsonAsync(CreateEndpoint, createPayload, JsonOptions);
+        var createState = await ApiResponseAssertions.ReadSuccessStateAsync(createResponse);
+        var createdId = ApiJson.GetRequiredProperty(createState, "data", "id");
+        ApiResponseAssertions.AssertNodeHasValue(createdId, "created id");
+        ApiSeedTestContext.RegisterCreatedId("Sesoes", createdId);
+
+        var readPayload = BuildReadByIdPayload(createdId);
+        CustomizeReadPayload(readPayload);
+        using var readResponse = await client.PostAsJsonAsync(ReadEndpoint, readPayload, JsonOptions);
+        var readState = await ApiResponseAssertions.ReadSuccessStateAsync(readResponse);
+        var readAssertionHandled = false;
+        CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
+        if (!readAssertionHandled)
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
+
+        var updatePayload = BuildUpdatePayload(createPayload, createdId);
+        CustomizeUpdatePayload(updatePayload);
+        using var updateResponse = await client.PutAsJsonAsync(UpdateEndpoint, updatePayload, JsonOptions);
+        var updateState = await ApiResponseAssertions.ReadSuccessStateAsync(updateResponse);
+        var updatedId = ApiJson.GetRequiredProperty(updateState, "data", "id");
+        ApiResponseAssertions.AssertSameJsonValue(createdId, updatedId, "updated id");
+    }
+
+    private static JsonObject BuildCreatePayload()
+    {
+        return new JsonObject
+        {
+            ["PacienteId"] = ApiSeedTestContext.GetRequiredCreatedId("Paciente", "PacienteId"),
+            ["DataInicio"] = DateTime.UtcNow,
+            ["DataFim"] = DateTime.UtcNow,
+            ["StatusAgendamento"] = 0,
+            ["StatusProntuario"] = 0,
+            ["Prontuario"] = ApiTestData.Text("Sesoes Prontuario", 80),
+            ["QueixaPrincipal"] = ApiTestData.Text("Sesoes QueixaPrincipal", 80),
+            ["RegistroDocumental"] = ApiTestData.Text("Sesoes RegistroDocumental", 80),
+            ["SintomasRelatados"] = ApiTestData.Text("Sesoes SintomasRelatados", 80),
+            ["MudancasDesdeUltimaSessaao"] = 1,
+            ["ComportamentoObservado"] = ApiTestData.Text("Sesoes ComportamentoObservado", 80),
+            ["EstadoEmocionalGeral"] = ApiTestData.Text("Sesoes EstadoEmocionalGeral", 80),
+            ["DiscursoPensamentos"] = ApiTestData.Text("Sesoes DiscursoPensamentos", 80),
+            ["UsoMedicacao"] = ApiTestData.Text("Sesoes UsoMedicacao", 80),
+            ["TecnicasUtilizadas"] = ApiTestData.Text("Sesoes TecnicasUtilizadas", 80),
+            ["QuestionamentosReflexoesAbordadas"] = ApiTestData.Text("Sesoes QuestionamentosReflexoesAbordadas", 80),
+            ["ExerciciosTarefasSugeridas"] = ApiTestData.Text("Sesoes ExerciciosTarefasSugeridas", 80),
+            ["DiagnoosticoHipoteseDiagnoostica"] = ApiTestData.Text("Sesoes DiagnoosticoHipoteseDiagnoostica", 80),
+            ["ObjetivosCurtoPrazo"] = ApiTestData.Text("Sesoes ObjetivosCurtoPrazo", 80),
+            ["ObjetivosLongoPrazo"] = ApiTestData.Text("Sesoes ObjetivosLongoPrazo", 80),
+            ["FrequenciaSugeridaSessooes"] = ApiTestData.Text("Sesoes FrequenciaSugeridaSessooes", 80),
+            ["EncaminhamentoOutrosProfissionais"] = ApiTestData.Text("Sesoes EncaminhamentoOutrosProfissionais", 80),
+            ["InformacoesRelevantesFuturasConsultas"] = ApiTestData.Text("Sesoes InformacoesRelevantesFuturasConsultas", 80),
+            ["FeedbackPacienteSobreProcessoTerapeeutico"] = ApiTestData.Text("Sesoes FeedbackPacienteSobreProcessoTerapeeutico", 80),
+            ["ServicoId"] = ApiSeedTestContext.GetRequiredCreatedId("Servico", "ServicoId"),
+            ["MovimentacaoFinanceiraId"] = ApiSeedTestContext.GetRequiredCreatedId("MovimentacaoFinanceira", "MovimentacaoFinanceiraId"),
+            ["ProfissionalId"] = ApiSeedTestContext.GetRequiredCreatedId("Profissional", "ProfissionalId"),
+        };
+    }
+
+    private static JsonObject BuildReadByIdPayload(JsonNode id)
+    {
+        return new JsonObject
+        {
+            ["Id"] = id.DeepClone(),
+            ["Paginacao"] = ApiTestData.Pagination()
+        };
+    }
+
+    private static JsonObject BuildUpdatePayload(JsonObject createPayload, JsonNode id)
+    {
+        var payload = (JsonObject)createPayload.DeepClone();
+        payload["Id"] = id.DeepClone();
+        payload["PacienteId"] = ApiSeedTestContext.GetRequiredCreatedId("Paciente", "PacienteId");
+        payload["DataInicio"] = DateTime.UtcNow.AddMinutes(1);
+        payload["DataFim"] = DateTime.UtcNow.AddMinutes(1);
+        payload["StatusAgendamento"] = 0;
+        payload["StatusProntuario"] = 0;
+        payload["Prontuario"] = ApiTestData.Text("Sesoes Prontuario Update", 80);
+        payload["QueixaPrincipal"] = ApiTestData.Text("Sesoes QueixaPrincipal Update", 80);
+        payload["RegistroDocumental"] = ApiTestData.Text("Sesoes RegistroDocumental Update", 80);
+        payload["SintomasRelatados"] = ApiTestData.Text("Sesoes SintomasRelatados Update", 80);
+        payload["MudancasDesdeUltimaSessaao"] = 1;
+        payload["ComportamentoObservado"] = ApiTestData.Text("Sesoes ComportamentoObservado Update", 80);
+        payload["EstadoEmocionalGeral"] = ApiTestData.Text("Sesoes EstadoEmocionalGeral Update", 80);
+        payload["DiscursoPensamentos"] = ApiTestData.Text("Sesoes DiscursoPensamentos Update", 80);
+        payload["UsoMedicacao"] = ApiTestData.Text("Sesoes UsoMedicacao Update", 80);
+        payload["TecnicasUtilizadas"] = ApiTestData.Text("Sesoes TecnicasUtilizadas Update", 80);
+        payload["QuestionamentosReflexoesAbordadas"] = ApiTestData.Text("Sesoes QuestionamentosReflexoesAbordadas Update", 80);
+        payload["ExerciciosTarefasSugeridas"] = ApiTestData.Text("Sesoes ExerciciosTarefasSugeridas Update", 80);
+        payload["DiagnoosticoHipoteseDiagnoostica"] = ApiTestData.Text("Sesoes DiagnoosticoHipoteseDiagnoostica Update", 80);
+        payload["ObjetivosCurtoPrazo"] = ApiTestData.Text("Sesoes ObjetivosCurtoPrazo Update", 80);
+        payload["ObjetivosLongoPrazo"] = ApiTestData.Text("Sesoes ObjetivosLongoPrazo Update", 80);
+        payload["FrequenciaSugeridaSessooes"] = ApiTestData.Text("Sesoes FrequenciaSugeridaSessooes Update", 80);
+        payload["EncaminhamentoOutrosProfissionais"] = ApiTestData.Text("Sesoes EncaminhamentoOutrosProfissionais Update", 80);
+        payload["InformacoesRelevantesFuturasConsultas"] = ApiTestData.Text("Sesoes InformacoesRelevantesFuturasConsultas Update", 80);
+        payload["FeedbackPacienteSobreProcessoTerapeeutico"] = ApiTestData.Text("Sesoes FeedbackPacienteSobreProcessoTerapeeutico Update", 80);
+        payload["ServicoId"] = ApiSeedTestContext.GetRequiredCreatedId("Servico", "ServicoId");
+        payload["MovimentacaoFinanceiraId"] = ApiSeedTestContext.GetRequiredCreatedId("MovimentacaoFinanceira", "MovimentacaoFinanceiraId");
+        payload["ProfissionalId"] = ApiSeedTestContext.GetRequiredCreatedId("Profissional", "ProfissionalId");
+        return payload;
+    }
+
+    partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeReadPayload(JsonObject payload);
+    partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
+    partial void CustomizeUpdatePayload(JsonObject payload);
+}
+//Dominio.Schemas.CQRS.SourceCodeIntegrationApiSeedCrudTestMigration

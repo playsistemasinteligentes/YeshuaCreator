@@ -18,7 +18,7 @@ namespace Command.Receivers
 {
     public partial class AguardarResultadoEmissaoFiscalHandler : ISagaStepHandler
     {
-        public string Key => ContingenciaFiscalStandardSaga.STEP_11;
+        public string Key => ContingenciaFiscalStandardSaga.STEP_4;
 
         public bool RequiresExternalStimulus => true;
 

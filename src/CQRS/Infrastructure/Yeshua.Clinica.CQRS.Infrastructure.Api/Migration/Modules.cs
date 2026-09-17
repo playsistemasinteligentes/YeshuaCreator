@@ -32,11 +32,19 @@ namespace Modules
     public class Menu
     {
         public string Title { get; set; }
+        public string Endpoint { get; set; }
+        public string Type { get; set; }
+        public string Page { get; set; }
+        public string Scope { get; set; }
         public List<SubMenu> SubMenus { get; set; } = new();
 
-        public Menu(string title)
+        public Menu(string title, string endpoint = "", string type = "crud", string page = "", string scope = "")
         {
             Title = title;
+            Endpoint = endpoint;
+            Type = type;
+            Page = page;
+            Scope = scope;
         }
 
         public Menu AddSubMenu(SubMenu submenu)
@@ -49,12 +57,50 @@ namespace Modules
     public class SubMenu
     {
         public string Title { get; set; }
-        public string Route { get; set; }
+        public string Endpoint { get; set; }
+        public string Type { get; set; }
+        public string Page { get; set; }
+        public string Scope { get; set; }
 
-        public SubMenu(string title, string route)
+        public SubMenu(string title, string endpoint = "", string type = "crud", string page = "", string scope = "")
         {
             Title = title;
-            Route = route;
+            Endpoint = endpoint;
+            Type = type;
+            Page = page;
+            Scope = scope;
+        }
+    }
+
+    public class ModuleContinuation
+    {
+        public string SourceModule { get; set; }
+        public string SourceSaga { get; set; }
+        public string SourceStep { get; set; }
+        public string Contract { get; set; }
+        public int ContractVersion { get; set; }
+        public string TargetModule { get; set; }
+        public string TargetSaga { get; set; }
+        public bool Required { get; set; }
+        public string Direction { get; set; }
+        public string TransportKind { get; set; }
+        public string Endpoint { get; set; }
+        public string TargetBaseUrlConfigurationKey { get; set; }
+
+        public ModuleContinuation(string sourceModule, string sourceSaga, string sourceStep, string contract, int contractVersion, string targetModule, string targetSaga, bool required, string direction, string transportKind = "", string endpoint = "", string targetBaseUrlConfigurationKey = "")
+        {
+            SourceModule = sourceModule;
+            SourceSaga = sourceSaga;
+            SourceStep = sourceStep;
+            Contract = contract;
+            ContractVersion = contractVersion;
+            TargetModule = targetModule;
+            TargetSaga = targetSaga;
+            Required = required;
+            Direction = direction;
+            TransportKind = transportKind;
+            Endpoint = endpoint;
+            TargetBaseUrlConfigurationKey = targetBaseUrlConfigurationKey;
         }
     }
 
@@ -66,33 +112,44 @@ public static class StaticModules
     {
         Modules.Clear();
         Modules.Add(new Module("PSI", "Clinica  Psicologia"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Clinica"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Especialidade"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Profissional"));
-        Modules.LastOrDefault().Menus.Add(new Menu("DisponibilidadeAgenda"));
-        Modules.LastOrDefault().Menus.Add(new Menu("GrupoServico"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Servico"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Paciente"));
-        Modules.LastOrDefault().Menus.Add(new Menu("MovimentacaoFinanceira"));
-        Modules.LastOrDefault().Menus.Add(new Menu("Sesoes"));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("Clinica", "/getMetaDataClinica", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("Especialidade", "/getMetaDataEspecialidade", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("Profissional", "/getMetaDataProfissional", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("DisponibilidadeAgenda", "/getMetaDataDisponibilidadeAgenda", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("GrupoServico", "/getMetaDataGrupoServico", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("Servico", "/getMetaDataServico", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("Paciente", "/getMetaDataPaciente", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("MovimentacaoFinanceira", "/getMetaDataMovimentacaoFinanceira", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("Sesoes", "/getMetaDataSesoes", "crud", "", ""));
         Modules.Add(new Module("FIN", "Financeiro"));
-        Modules.LastOrDefault().Menus.Add(new Menu("PlanoConta"));
-        Modules.LastOrDefault().Menus.Add(new Menu("MovimentoFinanceiro"));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("PlanoConta", "/getMetaDataPlanoConta", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("MovimentoFinanceiro", "/getMetaDataMovimentoFinanceiro", "crud", "", ""));
         Modules.Add(new Module("ADM", "Administrativo"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yFileUpload"));
-        Modules.LastOrDefault().Menus.Add(new Menu("ySaga"));
-        Modules.LastOrDefault().Menus.Add(new Menu("ySagaStep"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yOutbox"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yInbox"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yTenant"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yUser"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yConfigArcteture"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yConfigNotification"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yPerfil"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yTenantModule"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yUserModule"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yPerfilGrant"));
-        Modules.LastOrDefault().Menus.Add(new Menu("yUserGrant"));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("ySagaStep", "/getMetaDataySagaStep", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yOutbox", "/getMetaDatayOutbox", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yInbox", "/getMetaDatayInbox", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yToken", "/getMetaDatayToken", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yTenant", "/getMetaDatayTenant", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yUser", "/getMetaDatayUser", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yConfigArcteture", "/getMetaDatayConfigArcteture", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yConfigNotification", "/getMetaDatayConfigNotification", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yPerfil", "/getMetaDatayPerfil", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yTenantModule", "/getMetaDatayTenantModule", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yUserModule", "/getMetaDatayUserModule", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yPerfilGrant", "/getMetaDatayPerfilGrant", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("yUserGrant", "/getMetaDatayUserGrant", "crud", "", ""));
+    }
+}
+
+public static class StaticYeshuaModuleContinuations
+{
+    public static readonly List<ModuleContinuation> Continuations = new List<ModuleContinuation>();
+
+    static StaticYeshuaModuleContinuations()
+    {
+        Continuations.Clear();
     }
 }
 }

@@ -28,12 +28,14 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ClinicaEntity(int? id, string nome, string endereco, string telefone ){
  Id = id; 
  Nome = nome; 
  Endereco = endereco; 
  Telefone = telefone; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

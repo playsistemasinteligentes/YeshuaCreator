@@ -25,15 +25,8 @@ public partial class ContingenciaFiscalStandardSagaApiSmokeTests : ApiIntegratio
     private const string ExpectedSagaType = "ContingenciaFiscalStandardSaga";
     private static readonly string[] ExpectedStepKeys =
     {
-        "ReceberNotasFiscaisDaContingencia",
-        "AnalisarNotasFiscaisDaContingencia",
-        "EscolherModeloAgrupamentoCTe",
-        "SimularAgrupamentoCTe",
-        "InformarFreteERateio",
-        "SimularRateioFrete",
-        "InformarDadosTransporte",
+        "PrepararEntradaContingencia",
         "ValidarPlanoEmissaoFiscal",
-        "ConfirmarPlanoEmissaoFiscal",
         "PublicarPlanoParaSagaFiscal",
         "AguardarResultadoEmissaoFiscal",
         "FinalizarContingenciaFiscal",

@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" INSERT INTO DisponibilidadeAgenda (ProfissionalId, DataHora, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@ProfissionalId, @DataHora, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [DisponibilidadeAgenda] ([ProfissionalId], [DataHora], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@ProfissionalId, @DataHora, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,
@@ -44,7 +44,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId, DataHora = @DataHora, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [ProfissionalId] = @ProfissionalId, [DataHora] = @DataHora, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProfissionalId = DisponibilidadeAgenda.ProfissionalId,
@@ -57,7 +57,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProfissionalId(int id, int value)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET ProfissionalId = @ProfissionalId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [ProfissionalId] = @ProfissionalId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ProfissionalId = value,
@@ -67,7 +67,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataHora(int id, DateTime value)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET DataHora = @DataHora WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [DataHora] = @DataHora WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataHora = value,
@@ -77,7 +77,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -87,7 +87,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -97,7 +97,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -107,7 +107,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE DisponibilidadeAgenda SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [DisponibilidadeAgenda] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -117,7 +117,7 @@ namespace Query.Write
         }
         public QueryModel DeleteDisponibilidadeAgendaQuery(IDisponibilidadeAgendaEntity DisponibilidadeAgenda)
         {
-            this.Query = $@" DELETE FROM DisponibilidadeAgenda WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [DisponibilidadeAgenda] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = DisponibilidadeAgenda.Id,

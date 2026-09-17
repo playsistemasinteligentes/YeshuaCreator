@@ -1,5 +1,4 @@
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -20,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IyTenantEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IyTenantEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.yTenantCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var ytenant = new yTenantFactory(_logger, _domainTrackingPolicy).Create(context, c.CnpjCpf, c.Nome, c.UserId);
                  var domainResult = yTenantDomainBehavior.Apply(ytenant, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Delete(ytenant);
-                     return Success("OK", ytenant);
+                     return Task.FromResult(Success("OK", ytenant));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, ytenant);
+                    return Task.FromResult(Error(e, ytenant));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

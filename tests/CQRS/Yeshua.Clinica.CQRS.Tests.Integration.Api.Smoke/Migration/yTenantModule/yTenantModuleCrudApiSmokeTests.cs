@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.yTenantModule;
 
-[SmokeTestOrder(22)]
+[SmokeTestOrder(23)]
 public partial class yTenantModuleCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yTenantModule/PostyTenantModule";
@@ -44,7 +44,7 @@ public partial class yTenantModuleCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);

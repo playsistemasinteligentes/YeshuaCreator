@@ -7176,6 +7176,40 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/Fiscal/CTeUtilitariosObterXmlCTeUseCase", async ([FromServices] Command.Receivers.UseCase.ObterXmlCTeHandler receiver, [FromBody] Command.UseCase.ObterXmlCTeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/CTeUtilitariosGerarDacteUseCase", async ([FromServices] Command.Receivers.UseCase.GerarDacteHandler receiver, [FromBody] Command.UseCase.GerarDacteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/Fiscal/MDFeSolicitarEmissaoMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.SolicitarEmissaoMDFeHandler receiver, [FromBody] Command.UseCase.SolicitarEmissaoMDFeInputCommand command) =>
 {
 try
@@ -7211,6 +7245,40 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Fiscal/MDFeEncerrarMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.EncerrarMDFeHandler receiver, [FromBody] Command.UseCase.EncerrarMDFeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/MDFeUtilitariosObterXmlMDFeUseCase", async ([FromServices] Command.Receivers.UseCase.ObterXmlMDFeHandler receiver, [FromBody] Command.UseCase.ObterXmlMDFeInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Fiscal/MDFeUtilitariosGerarDamdfeUseCase", async ([FromServices] Command.Receivers.UseCase.GerarDamdfeHandler receiver, [FromBody] Command.UseCase.GerarDamdfeInputCommand command) =>
 {
 try
 {

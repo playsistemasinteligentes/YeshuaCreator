@@ -21,16 +21,16 @@
                     public interface IyInboxEntity
 {
     int? Id { get; set; }
-    string MessageId { get; set; }
+    string? MessageId { get; set; }
     string Type { get; set; }
-    string EntityType { get; set; }
-    string EntityId { get; set; }
-    string CorrelationId { get; set; }
+    string? EntityType { get; set; }
+    string? EntityId { get; set; }
+    string? CorrelationId { get; set; }
     string Payload { get; set; }
     int Status { get; set; }
     DateTime CreatedAt { get; set; }
     int RetryCount { get; set; }
-    string LastError { get; set; }
+    string? LastError { get; set; }
     DateTime? ProcessingAt { get; set; }
     DateTime? NextAttemptAt { get; set; }
     int? SagaId { get; set; }

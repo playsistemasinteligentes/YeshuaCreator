@@ -47,7 +47,7 @@ protected partial async Task<State<InformarNotasFiscaisContingenciaOutputCommand
         comand.TenantId,
         comand.CargaId,
         comand.EntradaFiscalContingenciaId,
-        comand.UserAction,
+        "InformarNotasFiscaisContingencia",
         comand.DocumentosOriginariosJson,
         comand.DadosComplementaresJson,
         comand.PayloadHash,

@@ -66,7 +66,10 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddSingleton<Dominio.Interfaces.ILogger>(sp =>
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
+                    builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
+                    builder.Services.AddTransient<SagaResolverRegistry>();
                     builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaStepContinuation, SagaStepContinuation>();
                     builder.Services.AddScoped<OutboxService>();
 
 
@@ -261,6 +264,17 @@ builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKSagaIdReceiver>
 builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKSagaStepIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yInboxReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IyTokenWriteRepository, Input.Repository.yToken.yTokenWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyTokenReadRepository, Read.Repository.yTokenReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IyTokenQueryRead, Query.Read.yTokenQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IyTokenQueryWrite, Query.Write.yTokenQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertyTokenReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateyTokenReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteyTokenReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yTokenReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yTokenReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.yTokenReadFKUserIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IyTenantWriteRepository, Input.Repository.yTenant.yTenantWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyTenantReadRepository, Read.Repository.yTenantReadRepository>();

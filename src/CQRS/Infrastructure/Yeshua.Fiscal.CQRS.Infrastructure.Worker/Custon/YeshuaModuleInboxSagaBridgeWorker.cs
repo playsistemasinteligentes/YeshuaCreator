@@ -2,6 +2,7 @@ using Aplication.Interfaces.Services;
 using Command.Patterns.Command;
 using Dominio.Patterns.Saga;
 using Dominio.Saga;
+using IRepository.Read;
 using IRepository.Write;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Command;
@@ -22,18 +23,27 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
     private const string FiscalSagaType = nameof(EmissaoFiscalCargaStandardSaga);
 
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IySagaReadRepository _sagaReadRepository;
     private readonly IySagaWriteRepository _sagaWriteRepository;
+    private readonly IyInboxReadRepository _inboxReadRepository;
+    private readonly IyInboxWriteRepository _inboxWriteRepository;
     private readonly IExecutionContext _executionContext;
 
     public YeshuaModuleInboxSagaBridgeWorker(
         IUnitOfWork unitOfWork,
+        IySagaReadRepository sagaReadRepository,
         IySagaWriteRepository sagaWriteRepository,
+        IyInboxReadRepository inboxReadRepository,
+        IyInboxWriteRepository inboxWriteRepository,
         Dominio.Interfaces.ILogger logger,
         IExecutionContext context)
         : base(logger, context)
     {
         _unitOfWork = unitOfWork;
+        _sagaReadRepository = sagaReadRepository;
         _sagaWriteRepository = sagaWriteRepository;
+        _inboxReadRepository = inboxReadRepository;
+        _inboxWriteRepository = inboxWriteRepository;
         _executionContext = context;
     }
 
@@ -71,29 +81,12 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
 
     private IEnumerable<yInboxDTO> ClaimStartEvents(int limit)
     {
-        const string sql = @"
-            WITH NextInbox AS
-            (
-                SELECT TOP (@Limit) *
-                  FROM [yInbox] WITH (UPDLOCK, READPAST, ROWLOCK)
-                 WHERE [Status] = @Pending
-                   AND [Type] = @Type
-                 ORDER BY [CreatedAt]
-            )
-            UPDATE NextInbox
-               SET [Status] = @Processing,
-                   [ProcessingAt] = @Now,
-                   [RetryCount] = ISNULL([RetryCount], 0) + 1
-            OUTPUT inserted.*;";
-
-        return _unitOfWork.Query<yInboxDTO>(sql, new
-        {
-            Limit = limit,
+        return _inboxReadRepository.ClaimPendingByType(
+            StartFiscalSagaEvent,
+            limit,
             Pending,
             Processing,
-            Type = StartFiscalSagaEvent,
-            Now = DateTime.UtcNow
-        });
+            DateTime.UtcNow);
     }
 
     private void StartSagaFromInbox(yInboxDTO inbox)
@@ -144,51 +137,21 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
 
     private bool FiscalSagaAlreadyStarted(string correlationId)
     {
-        const string sql = @"
-            SELECT COUNT(1)
-              FROM [ySaga]
-             WHERE [CorrelationId] = @CorrelationId
-               AND [Type] = @Type;";
-
-        return _unitOfWork.ExecuteScalar<int>(sql, new
-        {
-            CorrelationId = correlationId,
-            Type = FiscalSagaType
-        }) > 0;
+        return _sagaReadRepository.GetLatestByTypeEntity(
+            FiscalSagaType,
+            "Carga",
+            null,
+            correlationId) != null;
     }
 
     private void MarkApplied(int inboxId, int? sagaId, int? sagaStepId)
     {
-        const string sql = @"
-            UPDATE [yInbox]
-               SET [Status] = @Applied,
-                   [SagaId] = COALESCE(@SagaId, [SagaId]),
-                   [SagaStepId] = COALESCE(@SagaStepId, [SagaStepId])
-             WHERE [Id] = @InboxId;";
-
-        _unitOfWork.Execute(sql, new
-        {
-            Applied,
-            SagaId = sagaId,
-            SagaStepId = sagaStepId,
-            InboxId = inboxId
-        });
+        _inboxWriteRepository.MarkApplied(inboxId, sagaId, sagaStepId, Applied);
     }
 
     private void MarkDeadLetter(int inboxId, string error)
     {
-        const string sql = @"
-            UPDATE [yInbox]
-               SET [Status] = @DeadLetter,
-                   [LastError] = @Error
-             WHERE [Id] = @InboxId;";
-
-        _unitOfWork.Execute(sql, new
-        {
-            DeadLetter,
-            Error = error,
-            InboxId = inboxId
-        });
+        _inboxWriteRepository.MarkDeadLetter(inboxId, error, DeadLetter);
     }
 
     private static string ExtractSagaCorrelationId(string payload)

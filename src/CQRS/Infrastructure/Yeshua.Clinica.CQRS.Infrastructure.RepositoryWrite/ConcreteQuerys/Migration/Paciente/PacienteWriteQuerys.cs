@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirPacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" INSERT INTO Paciente (Nome, Telefone, DataNascimento, Genero, Escolaridade, Profissao, Endereco, NomeResponsavel, TelefoneResponsavel, Observacao, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @Observacao, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Paciente] ([Nome], [Telefone], [DataNascimento], [Genero], [Escolaridade], [Profissao], [Endereco], [NomeResponsavel], [TelefoneResponsavel], [Observacao], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Nome, @Telefone, @DataNascimento, @Genero, @Escolaridade, @Profissao, @Endereco, @NomeResponsavel, @TelefoneResponsavel, @Observacao, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Nome = Paciente.Nome,
@@ -52,7 +52,7 @@ namespace Query.Write
         }
         public QueryModel UpdatePacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" UPDATE Paciente SET Nome = @Nome, Telefone = @Telefone, DataNascimento = @DataNascimento, Genero = @Genero, Escolaridade = @Escolaridade, Profissao = @Profissao, Endereco = @Endereco, NomeResponsavel = @NomeResponsavel, TelefoneResponsavel = @TelefoneResponsavel, Observacao = @Observacao, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Nome] = @Nome, [Telefone] = @Telefone, [DataNascimento] = @DataNascimento, [Genero] = @Genero, [Escolaridade] = @Escolaridade, [Profissao] = @Profissao, [Endereco] = @Endereco, [NomeResponsavel] = @NomeResponsavel, [TelefoneResponsavel] = @TelefoneResponsavel, [Observacao] = @Observacao, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Nome = Paciente.Nome,
@@ -73,7 +73,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNome(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET Nome = @Nome WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Nome] = @Nome WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Nome = value,
@@ -83,7 +83,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTelefone(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET Telefone = @Telefone WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Telefone] = @Telefone WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Telefone = value,
@@ -93,7 +93,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataNascimento(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Paciente SET DataNascimento = @DataNascimento WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [DataNascimento] = @DataNascimento WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataNascimento = value,
@@ -103,7 +103,7 @@ namespace Query.Write
         }
         public QueryModel UpdateGenero(int id, int value)
         {
-            this.Query = $@" UPDATE Paciente SET Genero = @Genero WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Genero] = @Genero WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Genero = value,
@@ -113,7 +113,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEscolaridade(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET Escolaridade = @Escolaridade WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Escolaridade] = @Escolaridade WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Escolaridade = value,
@@ -123,7 +123,7 @@ namespace Query.Write
         }
         public QueryModel UpdateProfissao(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET Profissao = @Profissao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Profissao] = @Profissao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Profissao = value,
@@ -133,7 +133,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEndereco(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET Endereco = @Endereco WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Endereco] = @Endereco WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Endereco = value,
@@ -143,7 +143,7 @@ namespace Query.Write
         }
         public QueryModel UpdateNomeResponsavel(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET NomeResponsavel = @NomeResponsavel WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [NomeResponsavel] = @NomeResponsavel WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 NomeResponsavel = value,
@@ -153,7 +153,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTelefoneResponsavel(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET TelefoneResponsavel = @TelefoneResponsavel WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [TelefoneResponsavel] = @TelefoneResponsavel WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TelefoneResponsavel = value,
@@ -163,7 +163,7 @@ namespace Query.Write
         }
         public QueryModel UpdateObservacao(int id, string value)
         {
-            this.Query = $@" UPDATE Paciente SET Observacao = @Observacao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Observacao] = @Observacao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Observacao = value,
@@ -173,7 +173,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Paciente SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -183,7 +183,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Paciente SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -193,7 +193,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Paciente SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -203,7 +203,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Paciente SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Paciente] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -213,7 +213,7 @@ namespace Query.Write
         }
         public QueryModel DeletePacienteQuery(IPacienteEntity Paciente)
         {
-            this.Query = $@" DELETE FROM Paciente WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Paciente] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Paciente.Id,

@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -17,6 +15,8 @@ using Dominio.Interfaces;
 using IRepository.Read;
 using IRepository.Write;
 using Repositorio.Outputs;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Receivers.Read
 {
@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<IEnumerable<yConfigNotificationUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IEnumerable<yConfigNotificationUserIdDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is SearchFKCommand c) 
              {    
                 var yConfigNotificationReadRepository = _repository.getyConfigNotificationReadFKUserId(c);
-                return Success("OK", yConfigNotificationReadRepository);
+                return Task.FromResult(Success("OK", yConfigNotificationReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

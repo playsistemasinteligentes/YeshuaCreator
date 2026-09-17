@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyTenantCustom(Command.Read.yTenantReadCommand command, ref DataPagination<yTenantDTO> result, ref bool handled);
+
         public DataPagination<yTenantDTO> getyTenant(ICommandRead command , bool TakeOffId = false)
          {
             if (command is Command.Read.yTenantReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yTenantDTO> getyTenant(Command.Read.yTenantReadCommand command , bool TakeOffId = false)
         {
+            var customResult = new DataPagination<yTenantDTO>();
+            var customHandled = false;
+            TryGetyTenantCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yTenantQuery(command , TakeOffId);
 
                 var itens = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters);
@@ -158,7 +166,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffId);
 
-                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -166,7 +174,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCnpjCpfQuery(value , TakeOffId);
 
-                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -174,7 +182,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value , TakeOffId);
 
-                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -182,7 +190,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffId);
 
-                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -190,7 +198,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffId);
 
-                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -198,7 +206,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffId);
 
-                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters) as List<yTenantDTO>;
+                var result = _unitOfWork.Query<yTenantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

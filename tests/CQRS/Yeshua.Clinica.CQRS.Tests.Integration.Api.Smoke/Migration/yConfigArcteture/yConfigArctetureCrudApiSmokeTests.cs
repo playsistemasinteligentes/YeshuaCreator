@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.yConfigArcteture;
 
-[SmokeTestOrder(18)]
+[SmokeTestOrder(19)]
 public partial class yConfigArctetureCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yConfigArcteture/PostyConfigArcteture";
@@ -44,7 +44,7 @@ public partial class yConfigArctetureCrudApiSmokeTests : ApiIntegrationTestBase
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class yConfigArctetureCrudApiSmokeTests : ApiIntegrationTestBase
     {
         return new JsonObject
         {
-            ["Id"] = 1,
+            ["Id"] = ApiTestData.IntKey(),
             ["AuditTrackerActived"] = 1,
             ["AuditCRUDActived"] = 1,
         };

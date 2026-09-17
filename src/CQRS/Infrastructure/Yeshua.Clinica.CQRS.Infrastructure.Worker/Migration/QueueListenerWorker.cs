@@ -1,4 +1,4 @@
-using Command.Interfaces.Patterns.Queue;
+﻿using Command.Interfaces.Patterns.Queue;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

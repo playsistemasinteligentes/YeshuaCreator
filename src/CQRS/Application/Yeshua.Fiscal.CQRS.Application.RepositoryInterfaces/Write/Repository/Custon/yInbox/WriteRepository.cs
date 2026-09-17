@@ -8,4 +8,13 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration
 // </yeshua>
 
+namespace IRepository.Write
+{
+    public partial interface IyInboxWriteRepository
+    {
+        void MarkApplied(int id, int? sagaId, int? sagaStepId, int appliedStatus);
+        void MarkDeadLetter(int id, string error, int deadLetterStatus);
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

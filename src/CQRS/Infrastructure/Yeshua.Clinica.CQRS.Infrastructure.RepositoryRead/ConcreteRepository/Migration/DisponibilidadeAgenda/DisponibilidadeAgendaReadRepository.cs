@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetDisponibilidadeAgendaCustom(Command.Read.DisponibilidadeAgendaReadCommand command, ref DataPagination<DisponibilidadeAgendaDTO> result, ref bool handled);
+
         public DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(ICommandRead command )
          {
             if (command is Command.Read.DisponibilidadeAgendaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<DisponibilidadeAgendaDTO> getDisponibilidadeAgenda(Command.Read.DisponibilidadeAgendaReadCommand command )
         {
+            var customResult = new DataPagination<DisponibilidadeAgendaDTO>();
+            var customHandled = false;
+            TryGetDisponibilidadeAgendaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.DisponibilidadeAgendaQuery(command );
 
                 var itens = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<DisponibilidadeAgendaProfissionalIdDTO> getDisponibilidadeAgendaReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<DisponibilidadeAgendaProfissionalIdDTO> lista;
             var query = _query.DisponibilidadeAgendaProfissionalIdQuery(command );
 
-                lista = _unitOfWork.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaProfissionalIdDTO>;
+                var lista = _unitOfWork.Query<DisponibilidadeAgendaProfissionalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<DisponibilidadeAgendaTenantIDDTO> getDisponibilidadeAgendaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<DisponibilidadeAgendaTenantIDDTO> lista;
             var query = _query.DisponibilidadeAgendaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<DisponibilidadeAgendaTenantIDDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaTenantIDDTO>;
+                var lista = _unitOfWork.Query<DisponibilidadeAgendaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -96,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<DisponibilidadeAgendaUserIdDTO> getDisponibilidadeAgendaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<DisponibilidadeAgendaUserIdDTO> lista;
             var query = _query.DisponibilidadeAgendaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<DisponibilidadeAgendaUserIdDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaUserIdDTO>;
+                var lista = _unitOfWork.Query<DisponibilidadeAgendaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -228,7 +233,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -236,7 +241,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProfissionalIdQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -244,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataHoraQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -252,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters) as List<DisponibilidadeAgendaDTO>;
+                var result = _unitOfWork.Query<DisponibilidadeAgendaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

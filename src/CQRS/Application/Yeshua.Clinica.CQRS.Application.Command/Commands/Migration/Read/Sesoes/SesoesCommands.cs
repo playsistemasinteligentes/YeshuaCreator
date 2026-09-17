@@ -16,27 +16,27 @@ namespace Command.Read
         public int? PacienteId { get; set; }
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
-        public List<int> StatusAgendamento { get; set; }
-        public List<int> StatusProntuario { get; set; }
-        public string Prontuario { get; set; }
-        public string QueixaPrincipal { get; set; }
-        public string RegistroDocumental { get; set; }
-        public string SintomasRelatados { get; set; }
-        public List<int> MudancasDesdeUltimaSessaao { get; set; }
-        public string ComportamentoObservado { get; set; }
-        public string EstadoEmocionalGeral { get; set; }
-        public string DiscursoPensamentos { get; set; }
-        public string UsoMedicacao { get; set; }
-        public string TecnicasUtilizadas { get; set; }
-        public string QuestionamentosReflexoesAbordadas { get; set; }
-        public string ExerciciosTarefasSugeridas { get; set; }
-        public string DiagnoosticoHipoteseDiagnoostica { get; set; }
-        public string ObjetivosCurtoPrazo { get; set; }
-        public string ObjetivosLongoPrazo { get; set; }
-        public string FrequenciaSugeridaSessooes { get; set; }
-        public string EncaminhamentoOutrosProfissionais { get; set; }
-        public string InformacoesRelevantesFuturasConsultas { get; set; }
-        public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+        public int? StatusAgendamento { get; set; }
+        public int? StatusProntuario { get; set; }
+        public string? Prontuario { get; set; }
+        public string? QueixaPrincipal { get; set; }
+        public string? RegistroDocumental { get; set; }
+        public string? SintomasRelatados { get; set; }
+        public int? MudancasDesdeUltimaSessaao { get; set; }
+        public string? ComportamentoObservado { get; set; }
+        public string? EstadoEmocionalGeral { get; set; }
+        public string? DiscursoPensamentos { get; set; }
+        public string? UsoMedicacao { get; set; }
+        public string? TecnicasUtilizadas { get; set; }
+        public string? QuestionamentosReflexoesAbordadas { get; set; }
+        public string? ExerciciosTarefasSugeridas { get; set; }
+        public string? DiagnoosticoHipoteseDiagnoostica { get; set; }
+        public string? ObjetivosCurtoPrazo { get; set; }
+        public string? ObjetivosLongoPrazo { get; set; }
+        public string? FrequenciaSugeridaSessooes { get; set; }
+        public string? EncaminhamentoOutrosProfissionais { get; set; }
+        public string? InformacoesRelevantesFuturasConsultas { get; set; }
+        public string? FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
         public int? Id { get; set; }
         public int? ServicoId { get; set; }
         public int? MovimentacaoFinanceiraId { get; set; }

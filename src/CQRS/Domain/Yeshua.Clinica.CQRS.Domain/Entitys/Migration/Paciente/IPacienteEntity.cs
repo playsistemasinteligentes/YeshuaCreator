@@ -25,12 +25,12 @@
     string Telefone { get; set; }
     DateTime? DataNascimento { get; set; }
     int? Genero { get; set; }
-    string Escolaridade { get; set; }
-    string Profissao { get; set; }
-    string Endereco { get; set; }
-    string NomeResponsavel { get; set; }
-    string TelefoneResponsavel { get; set; }
-    string Observacao { get; set; }
+    string? Escolaridade { get; set; }
+    string? Profissao { get; set; }
+    string? Endereco { get; set; }
+    string? NomeResponsavel { get; set; }
+    string? TelefoneResponsavel { get; set; }
+    string? Observacao { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

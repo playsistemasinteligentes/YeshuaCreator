@@ -22,7 +22,7 @@
 {
     int? Id { get; set; }
     int? PerfilId { get; set; }
-    string GrantId { get; set; }
+    string? GrantId { get; set; }
     bool? CanGrant { get; set; }
     bool? CanCreate { get; set; }
     bool? CanRead { get; set; }

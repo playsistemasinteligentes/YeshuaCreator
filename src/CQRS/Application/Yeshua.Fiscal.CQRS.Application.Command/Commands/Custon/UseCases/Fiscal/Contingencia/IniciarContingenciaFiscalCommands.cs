@@ -16,6 +16,7 @@ namespace Command.UseCase
     {
         public int SagaId { get; set; }
         public string StepKey { get; set; } = string.Empty;
+        public int StepStatus { get; set; }
         public int SagaStatus { get; set; }
     }
 

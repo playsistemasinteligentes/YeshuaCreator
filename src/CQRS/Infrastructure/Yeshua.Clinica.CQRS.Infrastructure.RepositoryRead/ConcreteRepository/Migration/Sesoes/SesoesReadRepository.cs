@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetSesoesCustom(Command.Read.SesoesReadCommand command, ref DataPagination<SesoesDTO> result, ref bool handled);
+
         public DataPagination<SesoesDTO> getSesoes(ICommandRead command )
          {
             if (command is Command.Read.SesoesReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<SesoesDTO> getSesoes(Command.Read.SesoesReadCommand command )
         {
+            var customResult = new DataPagination<SesoesDTO>();
+            var customHandled = false;
+            TryGetSesoesCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.SesoesQuery(command );
 
                 var itens = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<SesoesPacienteIdDTO> getSesoesReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SesoesPacienteIdDTO> lista;
             var query = _query.SesoesPacienteIdQuery(command );
 
-                lista = _unitOfWork.Query<SesoesPacienteIdDTO>(query.Query,query.Parameters) as List<SesoesPacienteIdDTO>;
+                var lista = _unitOfWork.Query<SesoesPacienteIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<SesoesServicoIdDTO> getSesoesReadFKServicoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SesoesServicoIdDTO> lista;
             var query = _query.SesoesServicoIdQuery(command );
 
-                lista = _unitOfWork.Query<SesoesServicoIdDTO>(query.Query,query.Parameters) as List<SesoesServicoIdDTO>;
+                var lista = _unitOfWork.Query<SesoesServicoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -96,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<SesoesMovimentacaoFinanceiraIdDTO> getSesoesReadFKMovimentacaoFinanceiraId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SesoesMovimentacaoFinanceiraIdDTO> lista;
             var query = _query.SesoesMovimentacaoFinanceiraIdQuery(command );
 
-                lista = _unitOfWork.Query<SesoesMovimentacaoFinanceiraIdDTO>(query.Query,query.Parameters) as List<SesoesMovimentacaoFinanceiraIdDTO>;
+                var lista = _unitOfWork.Query<SesoesMovimentacaoFinanceiraIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -114,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<SesoesProfissionalIdDTO> getSesoesReadFKProfissionalId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SesoesProfissionalIdDTO> lista;
             var query = _query.SesoesProfissionalIdQuery(command );
 
-                lista = _unitOfWork.Query<SesoesProfissionalIdDTO>(query.Query,query.Parameters) as List<SesoesProfissionalIdDTO>;
+                var lista = _unitOfWork.Query<SesoesProfissionalIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -132,10 +136,9 @@ namespace Read.Repository
 
         private IEnumerable<SesoesTenantIDDTO> getSesoesReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SesoesTenantIDDTO> lista;
             var query = _query.SesoesTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<SesoesTenantIDDTO>(query.Query,query.Parameters) as List<SesoesTenantIDDTO>;
+                var lista = _unitOfWork.Query<SesoesTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -150,10 +153,9 @@ namespace Read.Repository
 
         private IEnumerable<SesoesUserIdDTO> getSesoesReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<SesoesUserIdDTO> lista;
             var query = _query.SesoesUserIdQuery(command );
 
-                lista = _unitOfWork.Query<SesoesUserIdDTO>(query.Query,query.Parameters) as List<SesoesUserIdDTO>;
+                var lista = _unitOfWork.Query<SesoesUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -682,7 +684,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPacienteIdQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -690,7 +692,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataInicioQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -698,7 +700,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataFimQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -706,7 +708,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusAgendamentoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -714,7 +716,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusProntuarioQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -722,7 +724,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProntuarioQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -730,7 +732,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQueixaPrincipalQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -738,7 +740,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByRegistroDocumentalQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -746,7 +748,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySintomasRelatadosQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -754,7 +756,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMudancasDesdeUltimaSessaaoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -762,7 +764,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByComportamentoObservadoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -770,7 +772,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEstadoEmocionalGeralQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -778,7 +780,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDiscursoPensamentosQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -786,7 +788,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUsoMedicacaoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -794,7 +796,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTecnicasUtilizadasQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -802,7 +804,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByQuestionamentosReflexoesAbordadasQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -810,7 +812,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByExerciciosTarefasSugeridasQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -818,7 +820,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDiagnoosticoHipoteseDiagnoosticaQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -826,7 +828,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObjetivosCurtoPrazoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -834,7 +836,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByObjetivosLongoPrazoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -842,7 +844,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFrequenciaSugeridaSessooesQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -850,7 +852,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEncaminhamentoOutrosProfissionaisQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -858,7 +860,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByInformacoesRelevantesFuturasConsultasQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -866,7 +868,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByFeedbackPacienteSobreProcessoTerapeeuticoQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -874,7 +876,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -882,7 +884,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByServicoIdQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -890,7 +892,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByMovimentacaoFinanceiraIdQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -898,7 +900,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByProfissionalIdQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -906,7 +908,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -914,7 +916,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -922,7 +924,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -930,7 +932,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters) as List<SesoesDTO>;
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

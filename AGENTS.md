@@ -141,6 +141,11 @@ Miolos que IA/dev devem preencher:
 - `StepWait.HttpApi("NomeDoCommand", input, output)` declara que o estimulo
   de um wait chega por command HTTP normal, seguindo o mesmo padrao de use case
   ja usado pela Engine.
+- Um `StepWait` pode agrupar comandos filhos de tela quando a fase de negocio
+  e livre/preparatoria. Cada filho continua sendo um Command normal gerado pela
+  DSL, atualiza o estado do mesmo step e devolve simulacao/resumo quando
+  aplicavel. Somente o command que valida/fecha a fase deixa o step avancar; os
+  demais aplicam dados e chamam `SetWaiting()` novamente.
 - `AddInboxListenerWorker(...)` tambem torna o step uma `IntencaoWait`, mesmo
   quando a DSL usou `AddStep(...)`, porque consumir inbox significa aguardar
   uma resposta externa para aplicar e continuar. `AddOutBoxPollingWorker(...)`

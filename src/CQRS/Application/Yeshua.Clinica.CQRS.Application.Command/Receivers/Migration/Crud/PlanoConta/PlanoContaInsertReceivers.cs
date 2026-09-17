@@ -1,5 +1,4 @@
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -20,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IPlanoContaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IPlanoContaEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.PlanoContaCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var planoconta = new PlanoContaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Codigo, c.Nome, c.Tipo);
                  var domainResult = PlanoContaDomainBehavior.Apply(planoconta, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(planoconta);
-                     return Success("OK", planoconta);
+                     return Task.FromResult(Success("OK", planoconta));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, planoconta);
+                    return Task.FromResult(Error(e, planoconta));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -1,5 +1,4 @@
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -20,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<ISesoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<ISesoesEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.SesoesCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var sesoes = new SesoesFactory(_logger, _domainTrackingPolicy).Create(context, c.PacienteId, c.DataInicio, c.DataFim, c.StatusAgendamento, c.StatusProntuario, c.Prontuario, c.QueixaPrincipal, c.RegistroDocumental, c.SintomasRelatados, c.MudancasDesdeUltimaSessaao, c.ComportamentoObservado, c.EstadoEmocionalGeral, c.DiscursoPensamentos, c.UsoMedicacao, c.TecnicasUtilizadas, c.QuestionamentosReflexoesAbordadas, c.ExerciciosTarefasSugeridas, c.DiagnoosticoHipoteseDiagnoostica, c.ObjetivosCurtoPrazo, c.ObjetivosLongoPrazo, c.FrequenciaSugeridaSessooes, c.EncaminhamentoOutrosProfissionais, c.InformacoesRelevantesFuturasConsultas, c.FeedbackPacienteSobreProcessoTerapeeutico, c.Id, c.ServicoId, c.MovimentacaoFinanceiraId, c.ProfissionalId);
                  var domainResult = SesoesDomainBehavior.Apply(sesoes, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Insert(sesoes);
-                     return Success("OK", sesoes);
+                     return Task.FromResult(Success("OK", sesoes));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, sesoes);
+                    return Task.FromResult(Error(e, sesoes));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

@@ -113,12 +113,12 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string Telefone { get; set; }
         public DateTime? DataNascimento { get; set; }
         public int? Genero { get; set; }
-        public string Escolaridade { get; set; }
-        public string Profissao { get; set; }
-        public string Endereco { get; set; }
-        public string NomeResponsavel { get; set; }
-        public string TelefoneResponsavel { get; set; }
-        public string Observacao { get; set; }
+        public string? Escolaridade { get; set; }
+        public string? Profissao { get; set; }
+        public string? Endereco { get; set; }
+        public string? NomeResponsavel { get; set; }
+        public string? TelefoneResponsavel { get; set; }
+        public string? Observacao { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -158,25 +158,25 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public DateTime DataFim { get; set; }
         public int? StatusAgendamento { get; set; }
         public int? StatusProntuario { get; set; }
-        public string Prontuario { get; set; }
-        public string QueixaPrincipal { get; set; }
-        public string RegistroDocumental { get; set; }
-        public string SintomasRelatados { get; set; }
+        public string? Prontuario { get; set; }
+        public string? QueixaPrincipal { get; set; }
+        public string? RegistroDocumental { get; set; }
+        public string? SintomasRelatados { get; set; }
         public int? MudancasDesdeUltimaSessaao { get; set; }
-        public string ComportamentoObservado { get; set; }
-        public string EstadoEmocionalGeral { get; set; }
-        public string DiscursoPensamentos { get; set; }
-        public string UsoMedicacao { get; set; }
-        public string TecnicasUtilizadas { get; set; }
-        public string QuestionamentosReflexoesAbordadas { get; set; }
-        public string ExerciciosTarefasSugeridas { get; set; }
-        public string DiagnoosticoHipoteseDiagnoostica { get; set; }
-        public string ObjetivosCurtoPrazo { get; set; }
-        public string ObjetivosLongoPrazo { get; set; }
-        public string FrequenciaSugeridaSessooes { get; set; }
-        public string EncaminhamentoOutrosProfissionais { get; set; }
-        public string InformacoesRelevantesFuturasConsultas { get; set; }
-        public string FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
+        public string? ComportamentoObservado { get; set; }
+        public string? EstadoEmocionalGeral { get; set; }
+        public string? DiscursoPensamentos { get; set; }
+        public string? UsoMedicacao { get; set; }
+        public string? TecnicasUtilizadas { get; set; }
+        public string? QuestionamentosReflexoesAbordadas { get; set; }
+        public string? ExerciciosTarefasSugeridas { get; set; }
+        public string? DiagnoosticoHipoteseDiagnoostica { get; set; }
+        public string? ObjetivosCurtoPrazo { get; set; }
+        public string? ObjetivosLongoPrazo { get; set; }
+        public string? FrequenciaSugeridaSessooes { get; set; }
+        public string? EncaminhamentoOutrosProfissionais { get; set; }
+        public string? InformacoesRelevantesFuturasConsultas { get; set; }
+        public string? FeedbackPacienteSobreProcessoTerapeeutico { get; set; }
         public int? Id { get; set; }
         public int? ServicoId { get; set; }
         public Servico Servico { get; set; }
@@ -235,10 +235,10 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? Id { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
         public long? FileSize { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public int? TenantID { get; set; }
@@ -257,14 +257,14 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string CorrelationId { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
-        public string KeyCurrentStep { get; set; }
+        public string? KeyCurrentStep { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
         public DateTime? NextExecutionAt { get; set; }
         public DateTime? LockedAt { get; set; }
-        public string LockedBy { get; set; }
+        public string? LockedBy { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -287,8 +287,8 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int ExecutionCount { get; set; }
         public DateTime? LastExecutionAt { get; set; }
         public DateTime? CompletedAt { get; set; }
-        public string ErrorMessage { get; set; }
-        public string Payload { get; set; }
+        public string? ErrorMessage { get; set; }
+        public string? Payload { get; set; }
         public int RetryCount { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -303,19 +303,19 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
     public class yOutbox
     {
         public int? Id { get; set; }
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
         public string Type { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
-        public string CorrelationId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
+        public string? CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public int TransportType { get; set; }
-        public string TransportData { get; set; }
+        public string? TransportData { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SentAt { get; set; }
         public int RetryCount { get; set; }
-        public string LastError { get; set; }
+        public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }
@@ -335,16 +335,16 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
     public class yInbox
     {
         public int? Id { get; set; }
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
         public string Type { get; set; }
-        public string EntityType { get; set; }
-        public string EntityId { get; set; }
-        public string CorrelationId { get; set; }
+        public string? EntityType { get; set; }
+        public string? EntityId { get; set; }
+        public string? CorrelationId { get; set; }
         public string Payload { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public int RetryCount { get; set; }
-        public string LastError { get; set; }
+        public string? LastError { get; set; }
         public DateTime? ProcessingAt { get; set; }
         public DateTime? NextAttemptAt { get; set; }
         public int? SagaId { get; set; }
@@ -359,6 +359,26 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public yUser yUser { get; set; }
 
         public static MyApp.QueryBuilder.Query<yInbox> Query() => new MyApp.QueryBuilder.Query<yInbox>();
+    }
+
+    public class yToken
+    {
+        public int? Id { get; set; }
+        public string TokenHash { get; set; }
+        public string? Description { get; set; }
+        public string ConnectorKey { get; set; }
+        public bool Active { get; set; }
+        public DateTime? ValidUntil { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? LastUsedAt { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yToken> Query() => new MyApp.QueryBuilder.Query<yToken>();
     }
 
     public class yTenant
@@ -378,7 +398,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
-        public string Senha { get; set; }
+        public string? Senha { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -407,10 +427,10 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? Id { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
-        public string EmailSmtpClient { get; set; }
+        public string? EmailSmtpClient { get; set; }
         public int? EmailPort { get; set; }
-        public string EmailUserName { get; set; }
-        public string EmailPassword { get; set; }
+        public string? EmailUserName { get; set; }
+        public string? EmailPassword { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
@@ -435,8 +455,8 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yModule
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        public string? Id { get; set; }
+        public string? Description { get; set; }
 
         public static MyApp.QueryBuilder.Query<yModule> Query() => new MyApp.QueryBuilder.Query<yModule>();
     }
@@ -444,7 +464,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
     public class yTenantModule
     {
         public int? Id { get; set; }
-        public string ModuleId { get; set; }
+        public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -460,7 +480,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
     public class yUserModule
     {
         public int? Id { get; set; }
-        public string ModuleId { get; set; }
+        public string? ModuleId { get; set; }
         public yModule yModule { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
@@ -475,8 +495,8 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
 
     public class yGrant
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        public string? Id { get; set; }
+        public string? Description { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -492,7 +512,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
-        public string GrantId { get; set; }
+        public string? GrantId { get; set; }
         public yGrant yGrant { get; set; }
         public bool? CanGrant { get; set; }
         public bool? CanCreate { get; set; }
@@ -515,7 +535,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? Id { get; set; }
         public int? PerfilId { get; set; }
         public yPerfil yPerfil { get; set; }
-        public string GrantId { get; set; }
+        public string? GrantId { get; set; }
         public yGrant yGrant { get; set; }
         public bool? CanGrant { get; set; }
         public bool? CanCreate { get; set; }

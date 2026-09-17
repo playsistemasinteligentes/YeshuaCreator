@@ -20,8 +20,8 @@
                 {
                     public interface IyModuleEntity
 {
-    string Id { get; set; }
-    string Description { get; set; }
+    string? Id { get; set; }
+    string? Description { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

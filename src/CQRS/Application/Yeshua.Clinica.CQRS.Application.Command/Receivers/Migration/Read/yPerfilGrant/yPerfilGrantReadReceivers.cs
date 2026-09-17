@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -17,6 +15,8 @@ using Dominio.Entitys;
 using Dominio.Interfaces;
 using Repositorio.Outputs;
 using IRepository.Read;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Receivers.Read
 {
@@ -37,16 +37,16 @@ namespace Command.Receivers.Read
             _executionContext = context;
         }
 
-        protected override async Task<State<DataPagination<yPerfilGrantDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<DataPagination<yPerfilGrantDTO>>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             if(comand is Command.Read.yPerfilGrantReadCommand c) 
              {    
                 var yPerfilGrantReadRepository = _repository.getyPerfilGrant(c);
-                return Success("OK", yPerfilGrantReadRepository);
+                return Task.FromResult(Success("OK", yPerfilGrantReadRepository));
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

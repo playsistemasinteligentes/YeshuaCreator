@@ -8,4 +8,21 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
 // </yeshua>
 
+using Repositorio.Outputs;
+using System;
+using System.Collections.Generic;
+
+namespace IRepository.Read
+{
+    public partial interface IyInboxReadRepository
+    {
+        IEnumerable<yInboxDTO> ClaimPendingByType(
+            string type,
+            int limit,
+            int pendingStatus,
+            int processingStatus,
+            DateTime processingAt);
+    }
+}
+
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -17,6 +17,10 @@ export async function handleRouting(hash) {
         return;
     }
 
+    if (await tryHandleCustomPage(route)) {
+        return;
+    }
+
     try {
         const res = await fetch(`views/${route.replace('#', '')}.html`);
         if (!res.ok) throw new Error('Página não encontrada...');
@@ -76,4 +80,13 @@ function attachEvents(route) {
     }
 
 
+}
+
+async function tryHandleCustomPage(route) {
+    const routeName = String(route || '').replace('#', '');
+    const handler = window.yeshuaExtensions?.pages?.[routeName];
+    if (typeof handler !== 'function') return false;
+
+    await handler({ route });
+    return true;
 }

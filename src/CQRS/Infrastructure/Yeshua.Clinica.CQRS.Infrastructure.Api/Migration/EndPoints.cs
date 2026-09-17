@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -12,7 +12,11 @@ using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;
 using Modules;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
+using System.IO;
+using System.Xml.Linq;
+using System.Text.RegularExpressions;
 using Shared.Operational;
 namespace API.Migrations
 {
@@ -193,6 +197,15 @@ app.MapPost("/yapi/yInbox/PostyInbox", async ([FromServices] Command.Receivers.W
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/PostyToken", async ([FromServices] Command.Receivers.Write.InsertyTokenReceiver receiver, [FromBody] Command.Write.yTokenCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -440,6 +453,15 @@ app.MapPut("/yapi/yInbox/PutyInbox", async ([FromServices] Command.Receivers.Wri
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/yToken/PutyToken", async ([FromServices] Command.Receivers.Write.UpdateyTokenReceiver receiver, [FromBody] Command.Write.yTokenCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yTenant/PutyTenant", async ([FromServices] Command.Receivers.Write.UpdateyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -683,6 +705,15 @@ app.MapDelete("/yapi/yInbox/DeleteyInbox", async ([FromServices] Command.Receive
 .RequireAuthorization();
 
 
+app.MapDelete("/yapi/yToken/DeleteyToken", async ([FromServices] Command.Receivers.Write.DeleteyTokenReceiver receiver, [FromBody] Command.Write.yTokenCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapDelete("/yapi/yTenant/DeleteyTenant", async ([FromServices] Command.Receivers.Write.DeleteyTenantReceiver receiver, [FromBody] Command.Write.yTenantCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -801,8 +832,18 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                             children = m.Menus.Select(menu => new
                             {
                                 description = menu.Title,
-                                endpoint = $"/getMetaData{menu.Title}",
-                                type = "crud"
+                                endpoint = string.IsNullOrWhiteSpace(menu.Endpoint) ? $"/getMetaData{menu.Title}" : menu.Endpoint,
+                                type = string.IsNullOrWhiteSpace(menu.Type) ? "crud" : menu.Type,
+                                page = menu.Page,
+                                scope = menu.Scope,
+                                children = menu.SubMenus.Select(subMenu => new
+                                {
+                                    description = subMenu.Title,
+                                    endpoint = string.IsNullOrWhiteSpace(subMenu.Endpoint) ? $"/getMetaData{subMenu.Title}" : subMenu.Endpoint,
+                                    type = string.IsNullOrWhiteSpace(subMenu.Type) ? "crud" : subMenu.Type,
+                                    page = subMenu.Page,
+                                    scope = subMenu.Scope
+                                }).ToList()
                             }).ToList()
                         }).ToList();
 
@@ -949,6 +990,15 @@ app.MapPost("/yapi/yInbox/ReadyInbox", async ([FromServices] Command.Receivers.R
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.yInboxEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/ReadyToken", async ([FromServices] Command.Receivers.Read.yTokenReadReceiver receiver, [FromBody] Command.Read.yTokenReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.yTokenEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1844,6 +1894,40 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/yInbox/yInboxReadFKUserId", async ([FromServices] Command.Receivers.Read.yInboxReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/yTokenReadFKTenantID", async ([FromServices] Command.Receivers.Read.yTokenReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/yToken/yTokenReadFKUserId", async ([FromServices] Command.Receivers.Read.yTokenReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
 {
@@ -3519,6 +3603,83 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
             read = "/yInbox/ReadyInbox",
             update = "/yInbox/PutyInbox",
             delete = "/yInbox/DeleteyInbox"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDatayToken", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "yToken",
+        entityDescription = "yToken",
+        source = new
+        {
+            kind = "table",
+            name = "yToken"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/yToken/ReadyToken",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tokenhash", label = "Hash do Token", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descricao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "connectorkey", label = "Conector", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "active", label = "Ativo", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "createdat", label = "Criado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tokenhash", label = "Hash do Token", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "description", label = "Descricao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "connectorkey", label = "Conector", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "active", label = "Ativo", type = "bool", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "createdat", label = "Criado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tokenhash", label = "Hash do Token", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descricao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "connectorkey", label = "Conector", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "active", label = "Ativo", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+            create = "/yToken/PostyToken",
+            read = "/yToken/ReadyToken",
+            update = "/yToken/PutyToken",
+            delete = "/yToken/DeleteyToken"
         }
     };
     return Results.Ok(metadatacrud);

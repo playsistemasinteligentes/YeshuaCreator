@@ -16,7 +16,18 @@ using System.Text.Json.Nodes;
 
 public partial class ContingenciaFiscalStandardSagaApiSmokeTests
 {
+    private const string AcaoInformarNotas = "InformarNotasFiscaisContingencia";
+    private const string AcaoEscolherAgrupamento = "EscolherModeloAgrupamentoCTeContingencia";
+    private const string AcaoInformarFrete = "InformarFreteERateioContingencia";
+    private const string AcaoInformarTransporte = "InformarDadosTransporteContingencia";
+    private const string AcaoConfirmarPlano = "ConfirmarPlanoEmissaoFiscalContingencia";
+    private const string PreparationStepKey = "PrepararEntradaContingencia";
     private const string StartContingenciaEndpoint = "yapi/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase";
+    private const string InformarNotasEndpoint = "yapi/Fiscal/ContingenciaInformarNotasFiscaisContingenciaUseCase";
+    private const string InformarAgrupamentoEndpoint = "yapi/Fiscal/ContingenciaEscolherModeloAgrupamentoCTeContingenciaUseCase";
+    private const string InformarFreteEndpoint = "yapi/Fiscal/ContingenciaInformarFreteERateioContingenciaUseCase";
+    private const string InformarTransporteEndpoint = "yapi/Fiscal/ContingenciaInformarDadosTransporteContingenciaUseCase";
+    private const string ConfirmarPlanoEndpoint = "yapi/Fiscal/ContingenciaConfirmarPlanoEmissaoFiscalContingenciaUseCase";
     private const string ReadInboxEndpoint = "yapi/yInbox/ReadyInbox";
     private const string ExpectedEmissionSagaType = "EmissaoFiscalCargaStandardSaga";
     private const string CteSefazResponseEvent = "fiscal.cte.resposta-sefaz-homologacao";
@@ -92,34 +103,6 @@ public partial class ContingenciaFiscalStandardSagaApiSmokeTests
             ["xmlStorageKey"] = "smoke/contingencia/nfe-produto.xml"
         };
 
-        var complemento = new JsonObject
-        {
-            ["emitenteFiscalDocumento"] = "63249950000174",
-            ["tomadorDocumento"] = "63249950000174",
-            ["transportadorDocumento"] = "63249950000174",
-            ["remetenteDocumento"] = "63249950000174",
-            ["destinatarioDocumento"] = "63249950000174",
-            ["ufInicio"] = "PE",
-            ["ufFim"] = "PE",
-            ["municipioInicioCodigoIbge"] = "2611606",
-            ["municipioFimCodigoIbge"] = "2611606",
-            ["rntrc"] = "45861338",
-            ["placaVeiculo"] = "KYC7G21",
-            ["ufVeiculo"] = "PE",
-            ["condutorDocumento"] = "00000000191",
-            ["condutorNome"] = "CONDUTOR HOMOLOGACAO",
-            ["valorFrete"] = 100.00m,
-            ["valorServico"] = 100.00m,
-            ["tipoAgrupamentoCTe"] = "um_cte_por_nfe",
-            ["estrategiaRateioFrete"] = "proporcional_valor_documento",
-            ["origemRotaFiscal"] = "smoke_contingencia",
-            ["tipoCTe"] = 0,
-            ["tipoServico"] = 0,
-            ["modal"] = 1,
-            ["globalizado"] = 0,
-            ["pendenciasNegocio"] = new JsonArray()
-        };
-
         return new JsonObject
         {
             ["CorrelationId"] = correlationId,
@@ -131,7 +114,7 @@ public partial class ContingenciaFiscalStandardSagaApiSmokeTests
             ["SourceModule"] = "DocumentosOriginariosContingencia",
             ["SourceMessageId"] = Guid.NewGuid().ToString(),
             ["DocumentosOriginariosJson"] = new JsonArray(documento).ToJsonString(JsonOptions),
-            ["DadosComplementaresJson"] = complemento.ToJsonString(JsonOptions),
+            ["DadosComplementaresJson"] = "{}",
             ["PayloadHash"] = string.Empty,
             ["PayloadStorageKey"] = "smoke/contingencia/documentos-originarios.json"
         };
@@ -148,7 +131,286 @@ public partial class ContingenciaFiscalStandardSagaApiSmokeTests
             JsonOptions,
             cancellationToken);
 
-        return await ApiResponseAssertions.ReadSuccessStateAsync(response);
+        var startState = await ApiResponseAssertions.ReadSuccessStateAsync(response);
+        var startData = ReadStateData(startState);
+        var correlationId = GetString(startData, "CorrelationId", "correlationId")
+            ?? GetString(payload, "CorrelationId", "correlationId")
+            ?? string.Empty;
+        var cargaId = GetString(startData, "CargaId", "cargaId")
+            ?? GetString(payload, "CargaId", "cargaId")
+            ?? string.Empty;
+        var entradaId = GetInt(startData, "EntradaFiscalContingenciaId", "entradaFiscalContingenciaId");
+
+        await WaitForPreparationActionAsync(client, correlationId, cargaId, AcaoInformarNotas, cancellationToken);
+        await SendPreparationStimulusAsync(
+            client,
+            InformarNotasEndpoint,
+            payload,
+            correlationId,
+            cargaId,
+            entradaId,
+            AcaoInformarNotas,
+            "{}",
+            cancellationToken);
+
+        await WaitForPreparationActionAsync(client, correlationId, cargaId, AcaoEscolherAgrupamento, cancellationToken);
+        await SendPreparationStimulusAsync(
+            client,
+            InformarAgrupamentoEndpoint,
+            payload,
+            correlationId,
+            cargaId,
+            entradaId,
+            AcaoEscolherAgrupamento,
+            BuildAgrupamentoJson(),
+            cancellationToken);
+
+        await WaitForPreparationActionAsync(client, correlationId, cargaId, AcaoInformarFrete, cancellationToken);
+        await SendPreparationStimulusAsync(
+            client,
+            InformarFreteEndpoint,
+            payload,
+            correlationId,
+            cargaId,
+            entradaId,
+            AcaoInformarFrete,
+            BuildFreteJson(),
+            cancellationToken);
+
+        await WaitForPreparationActionAsync(client, correlationId, cargaId, AcaoInformarTransporte, cancellationToken);
+        await SendPreparationStimulusAsync(
+            client,
+            InformarTransporteEndpoint,
+            payload,
+            correlationId,
+            cargaId,
+            entradaId,
+            AcaoInformarTransporte,
+            BuildTransporteJson(),
+            cancellationToken);
+
+        await WaitForPreparationActionAsync(client, correlationId, cargaId, AcaoConfirmarPlano, cancellationToken);
+        await SendPreparationStimulusAsync(
+            client,
+            ConfirmarPlanoEndpoint,
+            payload,
+            correlationId,
+            cargaId,
+            entradaId,
+            AcaoConfirmarPlano,
+            BuildConfirmacaoJson(),
+            cancellationToken);
+
+        return startState;
+    }
+
+    private static async Task WaitForPreparationActionAsync(
+        HttpClient client,
+        string correlationId,
+        string cargaId,
+        string expectedAction,
+        CancellationToken cancellationToken)
+    {
+        var sagaReadPayload = new JsonObject
+        {
+            ["EntityType"] = "Carga",
+            ["EntityId"] = cargaId,
+            ["CorrelationId"] = correlationId,
+            ["Type"] = "ContingenciaFiscalStandardSaga",
+            ["Paginacao"] = ApiTestData.Pagination(pageSize: 20)
+        };
+        var deadline = DateTime.UtcNow.AddSeconds(45);
+        var lastState = "saga nao encontrada";
+
+        while (DateTime.UtcNow <= deadline)
+        {
+            var saga = await TryReadFirstSagaAsync(client, sagaReadPayload, cancellationToken);
+            if (saga is not null)
+            {
+                var sagaId = ApiJson.GetRequiredProperty(saga, "Id");
+                var steps = await ReadSagaStepsAsync(client, sagaId, cancellationToken);
+                var step = steps
+                    .OfType<JsonObject>()
+                    .FirstOrDefault(item => string.Equals(GetString(item, "StepKey"), PreparationStepKey, StringComparison.OrdinalIgnoreCase));
+
+                if (step is not null)
+                {
+                    var status = GetInt(step, "Status");
+                    var payload = ReadPayload(step);
+                    var currentAction = GetString(payload, "currentAction") ?? string.Empty;
+                    lastState = $"{PreparationStepKey} status={status}; currentAction={currentAction}";
+
+                    if ((status == 3 || status == 6) &&
+                        string.Equals(currentAction, expectedAction, StringComparison.OrdinalIgnoreCase))
+                        return;
+                }
+            }
+
+            await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
+        }
+
+        Assert.True(false, $"A saga nao ficou pronta para '{expectedAction}'. Ultimo estado: {lastState}.");
+    }
+
+    private static async Task SendPreparationStimulusAsync(
+        HttpClient client,
+        string endpoint,
+        JsonObject startPayload,
+        string correlationId,
+        string cargaId,
+        int entradaId,
+        string userAction,
+        string complementoJson,
+        CancellationToken cancellationToken)
+    {
+        var payload = new JsonObject
+        {
+            ["CorrelationId"] = correlationId,
+            ["TenantId"] = GetInt(startPayload, "TenantId", "tenantId"),
+            ["CargaId"] = cargaId,
+            ["EntradaFiscalContingenciaId"] = entradaId,
+            ["UserAction"] = userAction,
+            ["DocumentosOriginariosJson"] = GetString(startPayload, "DocumentosOriginariosJson", "documentosOriginariosJson") ?? string.Empty,
+            ["DadosComplementaresJson"] = complementoJson,
+            ["PayloadHash"] = GetString(startPayload, "PayloadHash", "payloadHash") ?? string.Empty,
+            ["PayloadStorageKey"] = GetString(startPayload, "PayloadStorageKey", "payloadStorageKey") ?? string.Empty,
+        };
+
+        var deadline = DateTime.UtcNow.AddSeconds(30);
+        while (true)
+        {
+            using var response = await client.PostAsJsonAsync(endpoint, payload, JsonOptions, cancellationToken);
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            var state = ParseJsonObject(content);
+            var data = state is null ? null : ReadStateData(state);
+            var message = GetString(data, "Mensagem", "mensagem") ?? content;
+
+            if (response.IsSuccessStatusCode)
+            {
+                Assert.NotNull(data);
+                Assert.True(GetBoolean(data, "Accepted", "accepted"), message);
+                return;
+            }
+
+            if ((int)response.StatusCode == 400 &&
+                message.Contains("nao esta aguardando", StringComparison.OrdinalIgnoreCase) &&
+                DateTime.UtcNow < deadline)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
+                continue;
+            }
+
+            Assert.True(response.IsSuccessStatusCode, $"Expected HTTP success, got {(int)response.StatusCode}. Body: {content}");
+            return;
+        }
+    }
+
+    private static JsonObject ReadStateData(JsonObject state)
+    {
+        return ApiJson.GetProperty(state, "data") as JsonObject ?? state;
+    }
+
+    private static string BuildAgrupamentoJson()
+    {
+        return new JsonObject
+        {
+            ["tipoAgrupamentoCTe"] = "um_cte_por_nfe",
+            ["estrategiaRateioFrete"] = "proporcional_valor_documento"
+        }.ToJsonString(JsonOptions);
+    }
+
+    private static string BuildFreteJson()
+    {
+        return new JsonObject
+        {
+            ["valorFrete"] = 100.00m,
+            ["valorServico"] = 100.00m,
+            ["tipoAgrupamentoCTe"] = "um_cte_por_nfe",
+            ["estrategiaRateioFrete"] = "proporcional_valor_documento"
+        }.ToJsonString(JsonOptions);
+    }
+
+    private static string BuildTransporteJson()
+    {
+        return new JsonObject
+        {
+            ["emitenteFiscalDocumento"] = "63249950000174",
+            ["tomadorDocumento"] = "63249950000174",
+            ["transportadorDocumento"] = "63249950000174",
+            ["remetenteDocumento"] = "63249950000174",
+            ["destinatarioDocumento"] = "63249950000174",
+            ["ufInicio"] = "PE",
+            ["ufFim"] = "PE",
+            ["municipioInicioCodigoIbge"] = "2611606",
+            ["municipioFimCodigoIbge"] = "2611606",
+            ["rntrc"] = "45861338",
+            ["placaVeiculo"] = "KYC7G21",
+            ["ufVeiculo"] = "PE",
+            ["condutorDocumento"] = "00000000191",
+            ["condutorNome"] = "CONDUTOR HOMOLOGACAO",
+            ["tipoCTe"] = 0,
+            ["tipoServico"] = 0,
+            ["modal"] = 1,
+            ["globalizado"] = 0
+        }.ToJsonString(JsonOptions);
+    }
+
+    private static string BuildConfirmacaoJson()
+    {
+        var complemento = JsonNode.Parse(BuildTransporteJson()) as JsonObject ?? new JsonObject();
+        complemento["valorFrete"] = 100.00m;
+        complemento["valorServico"] = 100.00m;
+        complemento["tipoAgrupamentoCTe"] = "um_cte_por_nfe";
+        complemento["estrategiaRateioFrete"] = "proporcional_valor_documento";
+        complemento["confirmado"] = true;
+        return complemento.ToJsonString(JsonOptions);
+    }
+
+    private static JsonObject? ReadPayload(JsonObject item)
+    {
+        var payloadText = GetString(item, "Payload", "payload");
+        if (string.IsNullOrWhiteSpace(payloadText))
+            return null;
+
+        try
+        {
+            return JsonNode.Parse(payloadText) as JsonObject;
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
+    }
+
+    private static string BuildConfirmedComplementoJson(string complementoJson)
+    {
+        JsonObject complemento;
+        try
+        {
+            complemento = JsonNode.Parse(complementoJson) as JsonObject ?? new JsonObject();
+        }
+        catch (JsonException)
+        {
+            complemento = new JsonObject();
+        }
+
+        complemento["confirmado"] = true;
+        return complemento.ToJsonString(JsonOptions);
+    }
+
+    private static JsonObject? ParseJsonObject(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+            return null;
+
+        try
+        {
+            return JsonNode.Parse(content) as JsonObject;
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
     }
 
     private static JsonObject BuildSagaReadPayload(JsonObject _, JsonObject startPayload)

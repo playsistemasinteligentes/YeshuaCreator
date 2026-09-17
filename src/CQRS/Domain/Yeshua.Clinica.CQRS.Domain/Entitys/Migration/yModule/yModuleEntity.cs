@@ -20,10 +20,10 @@
                 {
                     public partial class yModuleEntity : IyModuleEntity
 {
-    public string Id { get; set; }
-    public string Description { get; set; }
-    private List<string> _erroMensagem = null;
- internal yModuleEntity(string id, string description ){
+    public string? Id { get; set; }
+    public string? Description { get; set; }
+    private List<string> _erroMensagem = new List<string>();
+ internal yModuleEntity(string? id, string? description ){
  Id = id; 
  Description = description; 
 }

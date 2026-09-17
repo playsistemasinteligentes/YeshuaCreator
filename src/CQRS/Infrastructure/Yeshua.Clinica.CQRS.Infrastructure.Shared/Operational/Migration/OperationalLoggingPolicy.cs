@@ -234,6 +234,7 @@ private OperationalLoggingDecision Evaluate(
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
                         "yOutbox" => GetyOutboxMask(policy, operation, recordId),
                         "yInbox" => GetyInboxMask(policy, operation, recordId),
+                        "yToken" => GetyTokenMask(policy, operation, recordId),
                         "yTenant" => GetyTenantMask(policy, operation, recordId),
                         "yUser" => GetyUserMask(policy, operation, recordId),
                         "yConfigArcteture" => GetyConfigArctetureMask(policy, operation, recordId),
@@ -802,6 +803,39 @@ private OperationalLoggingDecision Evaluate(
                         mask |= yInboxTrackingFields.Changed;
                     if (DomainFieldTracked(policy, "yInbox", operation, recordId, "UserId"))
                         mask |= yInboxTrackingFields.UserId;
+                    return mask;
+                }
+
+                private ulong GetyTokenMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "Id"))
+                        mask |= yTokenTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "TokenHash"))
+                        mask |= yTokenTrackingFields.TokenHash;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "Description"))
+                        mask |= yTokenTrackingFields.Description;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "ConnectorKey"))
+                        mask |= yTokenTrackingFields.ConnectorKey;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "Active"))
+                        mask |= yTokenTrackingFields.Active;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "ValidUntil"))
+                        mask |= yTokenTrackingFields.ValidUntil;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "CreatedAt"))
+                        mask |= yTokenTrackingFields.CreatedAt;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "LastUsedAt"))
+                        mask |= yTokenTrackingFields.LastUsedAt;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "TenantID"))
+                        mask |= yTokenTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "UserId"))
+                        mask |= yTokenTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "Deleted"))
+                        mask |= yTokenTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "yToken", operation, recordId, "Changed"))
+                        mask |= yTokenTrackingFields.Changed;
                     return mask;
                 }
 

@@ -31,7 +31,7 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal MovimentacaoFinanceiraEntity(int? id, int? pacienteid, int? servicoid, Decimal valor, int tipomovimentacao, DateTime datamovimentacao, Decimal saldoatual ){
  Id = id; 
  PacienteId = pacienteid; 
@@ -40,18 +40,14 @@
  TipoMovimentacao = tipomovimentacao; 
  DataMovimentacao = (datamovimentacao < (new DateTime(1800, 1, 1))) ? DateTime.Now : datamovimentacao; 
  SaldoAtual = saldoatual; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (Valor == null)
-   this._erroMensagem.Add("Valor da Transação deve ser informado.");
-   if (TipoMovimentacao == null)
-   this._erroMensagem.Add("Tipo de Movimentação deve ser informado.");
-   if (DataMovimentacao == null || DataMovimentacao < (new DateTime(1800, 1, 1)))
+   if(DataMovimentacao < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Data da Movimentação deve ser informado.");
-   if (SaldoAtual == null)
-   this._erroMensagem.Add("Saldo Atual deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

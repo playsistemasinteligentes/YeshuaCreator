@@ -13,8 +13,8 @@ namespace Command.Read
 {
     public struct yModuleReadCommand : ICommandRead
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        public string? Id { get; set; }
+        public string? Description { get; set; }
  public Pagination Paginacao { get; set; }
     }
 }

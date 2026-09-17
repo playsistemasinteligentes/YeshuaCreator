@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyUserGrantCustom(Command.Read.yUserGrantReadCommand command, ref DataPagination<yUserGrantDTO> result, ref bool handled);
+
         public DataPagination<yUserGrantDTO> getyUserGrant(ICommandRead command )
          {
             if (command is Command.Read.yUserGrantReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yUserGrantDTO> getyUserGrant(Command.Read.yUserGrantReadCommand command )
         {
+            var customResult = new DataPagination<yUserGrantDTO>();
+            var customHandled = false;
+            TryGetyUserGrantCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yUserGrantQuery(command );
 
                 var itens = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserGrantPerfilIdDTO> getyUserGrantReadFKPerfilId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserGrantPerfilIdDTO> lista;
             var query = _query.yUserGrantPerfilIdQuery(command );
 
-                lista = _unitOfWork.Query<yUserGrantPerfilIdDTO>(query.Query,query.Parameters) as List<yUserGrantPerfilIdDTO>;
+                var lista = _unitOfWork.Query<yUserGrantPerfilIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserGrantGrantIdDTO> getyUserGrantReadFKGrantId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserGrantGrantIdDTO> lista;
             var query = _query.yUserGrantGrantIdQuery(command );
 
-                lista = _unitOfWork.Query<yUserGrantGrantIdDTO>(query.Query,query.Parameters) as List<yUserGrantGrantIdDTO>;
+                var lista = _unitOfWork.Query<yUserGrantGrantIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -96,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserGrantTenantIDDTO> getyUserGrantReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserGrantTenantIDDTO> lista;
             var query = _query.yUserGrantTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<yUserGrantTenantIDDTO>(query.Query,query.Parameters) as List<yUserGrantTenantIDDTO>;
+                var lista = _unitOfWork.Query<yUserGrantTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -114,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<yUserGrantUserIdDTO> getyUserGrantReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<yUserGrantUserIdDTO> lista;
             var query = _query.yUserGrantUserIdQuery(command );
 
-                lista = _unitOfWork.Query<yUserGrantUserIdDTO>(query.Query,query.Parameters) as List<yUserGrantUserIdDTO>;
+                var lista = _unitOfWork.Query<yUserGrantUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -342,7 +346,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -350,7 +354,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPerfilIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -358,7 +362,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByGrantIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -366,7 +370,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCanGrantQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -374,7 +378,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCanCreateQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -382,7 +386,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCanReadQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -390,7 +394,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCanUpdateQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -398,7 +402,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCanDeleteQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -406,7 +410,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValidUntilQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -414,7 +418,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -422,7 +426,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -430,7 +434,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -438,7 +442,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters) as List<yUserGrantDTO>;
+                var result = _unitOfWork.Query<yUserGrantDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -31,15 +31,14 @@ namespace Query.Read
         }
         public QueryModel yModuleQuery(Command.Read.yModuleReadCommand Command )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select Id, Description from yModule ";
+            this.Query = $@" select [Id], [Description] from [yModule] ";
 if (!string.IsNullOrEmpty(Command.Id)) dict["Id"] = $"%{Command.Id}%";
-if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"Id like @Id");
+if (!string.IsNullOrEmpty(Command.Id)) whereClauses.Add($"[Id] like @Id");
 if (!string.IsNullOrEmpty(Command.Description)) dict["Description"] = $"%{Command.Description}%";
-if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description like @Description");
+if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"[Description] like @Description");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -47,19 +46,18 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
             int offset = (page - 1) * pageSize;
             dict["Offset"] = offset;
             dict["PageSize"] = pageSize;
-            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            Query += " ORDER BY [Id] OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel ExistsByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM yModule ";
+            this.Query = $"SELECT 1 FROM [yModule] ";
                       dict["Id"] = value; //04
-                      whereClauses.Add($" Id = @Id ");//04
+                      whereClauses.Add($" [Id] = @Id ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -67,13 +65,12 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
         }
         public QueryModel ExistsByDescriptionQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT 1 FROM yModule ";
+            this.Query = $"SELECT 1 FROM [yModule] ";
                       dict["Description"] = value; //04
-                      whereClauses.Add($" Description = @Description ");//04
+                      whereClauses.Add($" [Description] = @Description ");//04
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -81,13 +78,12 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
         }
         public QueryModel FirstByIdQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Description FROM yModule ";
+            this.Query = $"SELECT [Id], [Description] FROM [yModule] ";
                       dict["Id"] = value; //06
-                      whereClauses.Add($" Id = @Id ");//06
+                      whereClauses.Add($" [Id] = @Id ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
@@ -95,13 +91,12 @@ if (!string.IsNullOrEmpty(Command.Description)) whereClauses.Add($"Description l
         }
         public QueryModel FirstByDescriptionQuery(string value )
         {
-            this.Parameters = null;
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT Id, Description FROM yModule ";
+            this.Query = $"SELECT [Id], [Description] FROM [yModule] ";
                       dict["Description"] = value; //06
-                      whereClauses.Add($" Description = @Description ");//06
+                      whereClauses.Add($" [Description] = @Description ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

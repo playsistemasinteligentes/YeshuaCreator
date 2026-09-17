@@ -134,7 +134,7 @@
                                         }
                                     }
 
-                                    public string Escolaridade
+                                    public string? Escolaridade
                                     {
                                         get => _inner.Escolaridade;
                                         set
@@ -148,7 +148,7 @@
                                         }
                                     }
 
-                                    public string Profissao
+                                    public string? Profissao
                                     {
                                         get => _inner.Profissao;
                                         set
@@ -162,7 +162,7 @@
                                         }
                                     }
 
-                                    public string Endereco
+                                    public string? Endereco
                                     {
                                         get => _inner.Endereco;
                                         set
@@ -176,7 +176,7 @@
                                         }
                                     }
 
-                                    public string NomeResponsavel
+                                    public string? NomeResponsavel
                                     {
                                         get => _inner.NomeResponsavel;
                                         set
@@ -190,7 +190,7 @@
                                         }
                                     }
 
-                                    public string TelefoneResponsavel
+                                    public string? TelefoneResponsavel
                                     {
                                         get => _inner.TelefoneResponsavel;
                                         set
@@ -204,7 +204,7 @@
                                         }
                                     }
 
-                                    public string Observacao
+                                    public string? Observacao
                                     {
                                         get => _inner.Observacao;
                                         set

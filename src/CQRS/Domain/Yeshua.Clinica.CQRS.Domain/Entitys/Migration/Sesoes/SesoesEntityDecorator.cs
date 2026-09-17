@@ -151,7 +151,7 @@
                                         }
                                     }
 
-                                    public string Prontuario
+                                    public string? Prontuario
                                     {
                                         get => _inner.Prontuario;
                                         set
@@ -165,7 +165,7 @@
                                         }
                                     }
 
-                                    public string QueixaPrincipal
+                                    public string? QueixaPrincipal
                                     {
                                         get => _inner.QueixaPrincipal;
                                         set
@@ -179,7 +179,7 @@
                                         }
                                     }
 
-                                    public string RegistroDocumental
+                                    public string? RegistroDocumental
                                     {
                                         get => _inner.RegistroDocumental;
                                         set
@@ -193,7 +193,7 @@
                                         }
                                     }
 
-                                    public string SintomasRelatados
+                                    public string? SintomasRelatados
                                     {
                                         get => _inner.SintomasRelatados;
                                         set
@@ -221,7 +221,7 @@
                                         }
                                     }
 
-                                    public string ComportamentoObservado
+                                    public string? ComportamentoObservado
                                     {
                                         get => _inner.ComportamentoObservado;
                                         set
@@ -235,7 +235,7 @@
                                         }
                                     }
 
-                                    public string EstadoEmocionalGeral
+                                    public string? EstadoEmocionalGeral
                                     {
                                         get => _inner.EstadoEmocionalGeral;
                                         set
@@ -249,7 +249,7 @@
                                         }
                                     }
 
-                                    public string DiscursoPensamentos
+                                    public string? DiscursoPensamentos
                                     {
                                         get => _inner.DiscursoPensamentos;
                                         set
@@ -263,7 +263,7 @@
                                         }
                                     }
 
-                                    public string UsoMedicacao
+                                    public string? UsoMedicacao
                                     {
                                         get => _inner.UsoMedicacao;
                                         set
@@ -277,7 +277,7 @@
                                         }
                                     }
 
-                                    public string TecnicasUtilizadas
+                                    public string? TecnicasUtilizadas
                                     {
                                         get => _inner.TecnicasUtilizadas;
                                         set
@@ -291,7 +291,7 @@
                                         }
                                     }
 
-                                    public string QuestionamentosReflexoesAbordadas
+                                    public string? QuestionamentosReflexoesAbordadas
                                     {
                                         get => _inner.QuestionamentosReflexoesAbordadas;
                                         set
@@ -305,7 +305,7 @@
                                         }
                                     }
 
-                                    public string ExerciciosTarefasSugeridas
+                                    public string? ExerciciosTarefasSugeridas
                                     {
                                         get => _inner.ExerciciosTarefasSugeridas;
                                         set
@@ -319,7 +319,7 @@
                                         }
                                     }
 
-                                    public string DiagnoosticoHipoteseDiagnoostica
+                                    public string? DiagnoosticoHipoteseDiagnoostica
                                     {
                                         get => _inner.DiagnoosticoHipoteseDiagnoostica;
                                         set
@@ -333,7 +333,7 @@
                                         }
                                     }
 
-                                    public string ObjetivosCurtoPrazo
+                                    public string? ObjetivosCurtoPrazo
                                     {
                                         get => _inner.ObjetivosCurtoPrazo;
                                         set
@@ -347,7 +347,7 @@
                                         }
                                     }
 
-                                    public string ObjetivosLongoPrazo
+                                    public string? ObjetivosLongoPrazo
                                     {
                                         get => _inner.ObjetivosLongoPrazo;
                                         set
@@ -361,7 +361,7 @@
                                         }
                                     }
 
-                                    public string FrequenciaSugeridaSessooes
+                                    public string? FrequenciaSugeridaSessooes
                                     {
                                         get => _inner.FrequenciaSugeridaSessooes;
                                         set
@@ -375,7 +375,7 @@
                                         }
                                     }
 
-                                    public string EncaminhamentoOutrosProfissionais
+                                    public string? EncaminhamentoOutrosProfissionais
                                     {
                                         get => _inner.EncaminhamentoOutrosProfissionais;
                                         set
@@ -389,7 +389,7 @@
                                         }
                                     }
 
-                                    public string InformacoesRelevantesFuturasConsultas
+                                    public string? InformacoesRelevantesFuturasConsultas
                                     {
                                         get => _inner.InformacoesRelevantesFuturasConsultas;
                                         set
@@ -403,7 +403,7 @@
                                         }
                                     }
 
-                                    public string FeedbackPacienteSobreProcessoTerapeeutico
+                                    public string? FeedbackPacienteSobreProcessoTerapeeutico
                                     {
                                         get => _inner.FeedbackPacienteSobreProcessoTerapeeutico;
                                         set

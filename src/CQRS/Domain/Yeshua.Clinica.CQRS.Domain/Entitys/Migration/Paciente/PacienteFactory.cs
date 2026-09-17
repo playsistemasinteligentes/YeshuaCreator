@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPacienteEntity Create(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string observacao )
+                                    } public IPacienteEntity Create(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string? escolaridade, string? profissao, string? endereco, string? nomeresponsavel, string? telefoneresponsavel, string? observacao )
                             {
                                 return Create(null, id, nome, telefone, datanascimento, genero, escolaridade, profissao, endereco, nomeresponsavel, telefoneresponsavel, observacao);
                             }
 
                             public IPacienteEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string observacao )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string? escolaridade, string? profissao, string? endereco, string? nomeresponsavel, string? telefoneresponsavel, string? observacao )
                             {
                             var entity = new PacienteEntity(id, nome, telefone, datanascimento, genero, escolaridade, profissao, endereco, nomeresponsavel, telefoneresponsavel, observacao );
 

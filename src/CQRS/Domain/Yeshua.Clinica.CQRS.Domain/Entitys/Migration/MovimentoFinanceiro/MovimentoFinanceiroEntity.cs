@@ -31,29 +31,25 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal MovimentoFinanceiroEntity(int? id, string idorigem, int contadebitoid, Decimal valor, DateTime datamovimento, DateTime? datavencimento, int status ){
  Id = id; 
  IdOrigem = idorigem; 
  ContaDebitoId = contadebitoid; 
  Valor = valor; 
  DataMovimento = (datamovimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datamovimento; 
- DataVencimento = (datavencimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datavencimento; 
+ DataVencimento = datavencimento.HasValue && datavencimento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : datavencimento; 
  Status = status; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(IdOrigem))
    this._erroMensagem.Add("Identificador de Origem deve ser informado.");
-   if (ContaDebitoId == null)
-   this._erroMensagem.Add("Conta Débito deve ser informado.");
-   if (Valor == null)
-   this._erroMensagem.Add("Valor do Movimento deve ser informado.");
-   if (DataMovimento == null || DataMovimento < (new DateTime(1800, 1, 1)))
+   if(DataMovimento < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Data do Movimento deve ser informado.");
-   if (Status == null)
-   this._erroMensagem.Add("Status do Movimento deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

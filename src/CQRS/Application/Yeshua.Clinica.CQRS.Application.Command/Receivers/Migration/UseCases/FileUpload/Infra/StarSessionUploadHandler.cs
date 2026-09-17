@@ -1,5 +1,4 @@
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -20,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.UseCase
@@ -31,7 +31,8 @@ namespace Command.Receivers.UseCase
         private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
         public StarSessionUploadHandler(
             Dominio.Interfaces.ILogger logger,
-            Aplication.Interfaces.Services.IExecutionContext context)
+            Aplication.Interfaces.Services.IExecutionContext context
+)
             : base(logger, context)
         {
             _logger = logger;
@@ -43,7 +44,7 @@ namespace Command.Receivers.UseCase
         {
             try
             {
-                 State<StarSessionUploadOutputCommand> retorno = Success("OK", null);
+                 State<StarSessionUploadOutputCommand> retorno = Success("OK");
                  return await CustomActionHookAsync(retorno, comand, cancellationToken);
             }
             catch (ReceiverException<StarSessionUploadOutputCommand> e)
@@ -52,7 +53,7 @@ namespace Command.Receivers.UseCase
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Error(e);
             }
         }
 protected partial Task<State<StarSessionUploadOutputCommand>> CustomActionHookAsync(State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand, CancellationToken cancellationToken);

@@ -86,7 +86,7 @@
                                         }
                                     }
 
-                                    public string EmailSmtpClient
+                                    public string? EmailSmtpClient
                                     {
                                         get => _inner.EmailSmtpClient;
                                         set
@@ -114,7 +114,7 @@
                                         }
                                     }
 
-                                    public string EmailUserName
+                                    public string? EmailUserName
                                     {
                                         get => _inner.EmailUserName;
                                         set
@@ -128,7 +128,7 @@
                                         }
                                     }
 
-                                    public string EmailPassword
+                                    public string? EmailPassword
                                     {
                                         get => _inner.EmailPassword;
                                         set

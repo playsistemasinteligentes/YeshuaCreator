@@ -37,8 +37,9 @@ namespace Command.Patterns
                 if (step.Status == SagaStepStatus.PendingApply)
                 {
                     handler.ApplyResponse(saga, step, step.Payload);
-                    
-                    saga.CompleteCurrentStep(step.Payload);
+
+                    if (step.Status == SagaStepStatus.PendingApply)
+                        saga.CompleteCurrentStep(step.Payload);
                 }
             }
             catch (Exception e)

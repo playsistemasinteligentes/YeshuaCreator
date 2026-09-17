@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -19,9 +17,130 @@ using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using RepositoryInterfaces.Patterns.Worker;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Command.Patterns
 {
+    public class SagaStepContinuation : ISagaStepContinuation
+    {
+        private const int MaxImmediateSteps = 25;
+        private readonly SagaResolverRegistry _registry;
+        private readonly ISagaExecutor _executor;
+        private readonly IySagaReadRepository _sagaReadRepository;
+        private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IySagaStepReadRepository _sagaStepReadRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+
+        public SagaStepContinuation(
+            Aplication.Interfaces.Services.IExecutionContext context,
+            SagaResolverRegistry registry,
+            ISagaExecutor executor,
+            IySagaReadRepository sagaReadRepository,
+            IySagaWriteRepository sagaWriteRepository,
+            IySagaStepReadRepository sagaStepReadRepository,
+            IUnitOfWork unitOfWork)
+        {
+            _executionContext = context;
+            _registry = registry;
+            _executor = executor;
+            _sagaReadRepository = sagaReadRepository;
+            _sagaWriteRepository = sagaWriteRepository;
+            _sagaStepReadRepository = sagaStepReadRepository;
+            _unitOfWork = unitOfWork;
+        }
+
+        public Task ContinueUntilWaitAsync(ISagaStepStimulusOutput stimulus, CancellationToken cancellationToken = default)
+        {
+            if (stimulus == null || !stimulus.Accepted || stimulus.SagaId <= 0 || stimulus.InboxId <= 0)
+                return Task.CompletedTask;
+
+            var lockedBy = $"Immediate_{Environment.MachineName}_{Guid.NewGuid():N}";
+            var lockedAt = DateTime.UtcNow;
+            var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
+
+            if (!_sagaReadRepository.TryClaimSagaForExecution(stimulus.SagaId, lockedBy, lockedAt, nextExecutionAt))
+                return Task.CompletedTask;
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(stimulus.CorrelationId))
+                    _executionContext.SetTraceId(stimulus.CorrelationId);
+
+                _unitOfWork.BeginTran();
+                try
+                {
+                    var applied = _sagaStepReadRepository.SetPendingApplyByInboxId(stimulus.InboxId);
+                    _unitOfWork.Commit();
+
+                    if (applied <= 0)
+                        return Task.CompletedTask;
+                }
+                catch
+                {
+                    _unitOfWork.Rollback();
+                    throw;
+                }
+
+                RunClaimedSaga(stimulus.SagaId, lockedBy, lockedAt, cancellationToken);
+                return Task.CompletedTask;
+            }
+            finally
+            {
+                _sagaReadRepository.ReleaseLock(stimulus.SagaId, lockedBy);
+            }
+        }
+
+        private void RunClaimedSaga(int sagaId, string lockedBy, DateTime lockedAt, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var sagaDto = _sagaReadRepository.GetByIdWithSteps(sagaId);
+            if (sagaDto == null)
+                return;
+
+            if (sagaDto.tenantid > 0)
+                _executionContext.SetTenantId(sagaDto.tenantid);
+            if (sagaDto.userid > 0)
+                _executionContext.SetUserId(sagaDto.userid);
+            if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
+                _executionContext.SetTraceId(sagaDto.correlationid);
+
+            var saga = _registry.Map(sagaDto);
+            saga.LockedBy = lockedBy;
+            saga.LockedAt = lockedAt;
+
+            if (saga.Status != SagaStatus.InProgress)
+                return;
+
+            var current = saga.GetCurrent();
+            if (current == null || current.Status == SagaStepStatus.WaitingResponse)
+                return;
+
+            var resolver = _registry.Resolve(saga);
+            _executor.ExecuteUntilWait(saga, resolver, MaxImmediateSteps);
+
+            if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
+                return;
+
+            _unitOfWork.BeginTran();
+            try
+            {
+                _sagaWriteRepository.Save(saga);
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
+    }
+
     public class SagaWorkerCommandHandler : ReciverBase<InputCommand, OutputCommand>
     {
         private readonly SagaResolverRegistry _registry;
@@ -29,6 +148,7 @@ namespace Command.Patterns
         private readonly IySagaReadRepository _sagaReadRepository;
         private readonly IySagaWriteRepository _sagaWriteRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
 
         public SagaWorkerCommandHandler(
             Dominio.Interfaces.ILogger logger,
@@ -45,9 +165,10 @@ namespace Command.Patterns
             _sagaReadRepository = sagaReadRepository;
             _sagaWriteRepository = sagaWriteRepository;
             _unitOfWork = unitOfWork;
+            _executionContext = context;
         }
 
-        protected override async Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
+        protected override Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -67,6 +188,13 @@ namespace Command.Patterns
 
                     try
                     {
+                        if (sagaDto.tenantid > 0)
+                            _executionContext.SetTenantId(sagaDto.tenantid);
+                        if (sagaDto.userid > 0)
+                            _executionContext.SetUserId(sagaDto.userid);
+                        if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
+                            _executionContext.SetTraceId(sagaDto.correlationid);
+
                         var saga = _registry.Map(sagaDto);
                         sagaId = saga.CorrelationId.ToString();
                         saga.LockedBy = lockedBy;
@@ -82,7 +210,7 @@ namespace Command.Patterns
                         var resolver = _registry.Resolve(saga);
                         _executor.Execute(saga, resolver);
 
-                        if (!saga.IsDirty)
+                        if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
                             continue;
 
                         _unitOfWork.BeginTran();
@@ -109,32 +237,32 @@ namespace Command.Patterns
                     }
                 }
 
-                return Success("OK", new OutputCommand
+                return Task.FromResult(Success("OK", new OutputCommand
                 {
                     Claimed = sagas.Count,
                     Processed = processed,
                     Failed = failed
-                });
+                }));
             }
             catch (ReceiverException<OutputCommand> ex)
             {
-                return ex.State;
+                return Task.FromResult(ex.State);
             }
             catch (Exception ex)
             {
-                return Error(ex, default);
+                return Task.FromResult(Error(ex));
             }
         }
     }
 
     public partial record InputCommand : ICommand
     {
-        public List<int> lst { get; set; }
+        public List<int> lst { get; set; } = new();
     }
 
     public partial record OutputCommand : ICommand, IWorkerCycleResult
     {
-        public List<int> lst { get; set; }
+        public List<int> lst { get; set; } = new();
         public int BatchLimit => 5;
         public int Claimed { get; init; }
         public int Processed { get; init; }

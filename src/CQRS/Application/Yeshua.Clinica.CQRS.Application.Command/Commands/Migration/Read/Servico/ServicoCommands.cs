@@ -15,7 +15,7 @@ namespace Command.Read
     {
         public int? Id { get; set; }
         public int? GrupoServicoId { get; set; }
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
         public Decimal? Valor { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetyModuleCustom(Command.Read.yModuleReadCommand command, ref DataPagination<yModuleDTO> result, ref bool handled);
+
         public DataPagination<yModuleDTO> getyModule(ICommandRead command )
          {
             if (command is Command.Read.yModuleReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<yModuleDTO> getyModule(Command.Read.yModuleReadCommand command )
         {
+            var customResult = new DataPagination<yModuleDTO>();
+            var customHandled = false;
+            TryGetyModuleCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.yModuleQuery(command );
 
                 var itens = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters);
@@ -94,7 +102,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
+                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -102,7 +110,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescriptionQuery(value );
 
-                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters) as List<yModuleDTO>;
+                var result = _unitOfWork.Query<yModuleDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

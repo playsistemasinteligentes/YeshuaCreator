@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
-            this.Query = $@" INSERT INTO MovimentoFinanceiro (IdOrigem, ContaDebitoId, Valor, DataMovimento, DataVencimento, Status, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@IdOrigem, @ContaDebitoId, @Valor, @DataMovimento, @DataVencimento, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [MovimentoFinanceiro] ([IdOrigem], [ContaDebitoId], [Valor], [DataMovimento], [DataVencimento], [Status], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@IdOrigem, @ContaDebitoId, @Valor, @DataMovimento, @DataVencimento, @Status, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 IdOrigem = MovimentoFinanceiro.IdOrigem,
@@ -48,7 +48,7 @@ namespace Query.Write
         }
         public QueryModel UpdateMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET IdOrigem = @IdOrigem, ContaDebitoId = @ContaDebitoId, Valor = @Valor, DataMovimento = @DataMovimento, DataVencimento = @DataVencimento, Status = @Status, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [IdOrigem] = @IdOrigem, [ContaDebitoId] = @ContaDebitoId, [Valor] = @Valor, [DataMovimento] = @DataMovimento, [DataVencimento] = @DataVencimento, [Status] = @Status, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IdOrigem = MovimentoFinanceiro.IdOrigem,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateIdOrigem(int id, string value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET IdOrigem = @IdOrigem WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [IdOrigem] = @IdOrigem WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 IdOrigem = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateContaDebitoId(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET ContaDebitoId = @ContaDebitoId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [ContaDebitoId] = @ContaDebitoId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 ContaDebitoId = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateValor(int id, Decimal value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET Valor = @Valor WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [Valor] = @Valor WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Valor = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataMovimento(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET DataMovimento = @DataMovimento WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [DataMovimento] = @DataMovimento WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataMovimento = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDataVencimento(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET DataVencimento = @DataVencimento WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [DataVencimento] = @DataVencimento WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 DataVencimento = value,
@@ -115,7 +115,7 @@ namespace Query.Write
         }
         public QueryModel UpdateStatus(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET Status = @Status WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [Status] = @Status WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Status = value,
@@ -125,7 +125,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -135,7 +135,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -145,7 +145,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -155,7 +155,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE MovimentoFinanceiro SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [MovimentoFinanceiro] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -165,7 +165,7 @@ namespace Query.Write
         }
         public QueryModel DeleteMovimentoFinanceiroQuery(IMovimentoFinanceiroEntity MovimentoFinanceiro)
         {
-            this.Query = $@" DELETE FROM MovimentoFinanceiro WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [MovimentoFinanceiro] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = MovimentoFinanceiro.Id,

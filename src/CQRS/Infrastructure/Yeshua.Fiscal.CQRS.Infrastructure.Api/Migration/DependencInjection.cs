@@ -598,15 +598,8 @@ builder.Services.AddTransient<AutorizarMDFeNaSefazHandler>();
 builder.Services.AddTransient<PublicarDocumentosFiscaisDaCargaConcluidosHandler>();
 builder.Services.AddTransient<Dominio.Saga.ContingenciaFiscalStandardSaga>();
 builder.Services.AddTransient<Command.Receivers.ContingenciaFiscalStandardSagaHandlerResolver>();
-builder.Services.AddTransient<ReceberNotasFiscaisDaContingenciaHandler>();
-builder.Services.AddTransient<AnalisarNotasFiscaisDaContingenciaHandler>();
-builder.Services.AddTransient<EscolherModeloAgrupamentoCTeHandler>();
-builder.Services.AddTransient<SimularAgrupamentoCTeHandler>();
-builder.Services.AddTransient<InformarFreteERateioHandler>();
-builder.Services.AddTransient<SimularRateioFreteHandler>();
-builder.Services.AddTransient<InformarDadosTransporteHandler>();
+builder.Services.AddTransient<PrepararEntradaContingenciaHandler>();
 builder.Services.AddTransient<ValidarPlanoEmissaoFiscalHandler>();
-builder.Services.AddTransient<ConfirmarPlanoEmissaoFiscalHandler>();
 builder.Services.AddTransient<PublicarPlanoParaSagaFiscalHandler>();
 builder.Services.AddTransient<AguardarResultadoEmissaoFiscalHandler>();
 builder.Services.AddTransient<FinalizarContingenciaFiscalHandler>();
@@ -640,11 +633,19 @@ builder.Services.AddTransient<Command.Receivers.UseCase.AutorizarCTeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.PublicarCTeAutorizadoParaMDFeHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.ObterXmlCTeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.GerarDacteHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.SolicitarEmissaoMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.AutorizarMDFeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.EncerrarMDFeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ObterXmlMDFeHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.GerarDamdfeHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ValidarCertificadoDigitalHandler>();
 

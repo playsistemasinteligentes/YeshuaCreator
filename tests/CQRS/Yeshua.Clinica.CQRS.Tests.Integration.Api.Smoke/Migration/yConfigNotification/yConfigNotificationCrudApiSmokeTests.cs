@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.yConfigNotification;
 
-[SmokeTestOrder(19)]
+[SmokeTestOrder(20)]
 public partial class yConfigNotificationCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yConfigNotification/PostyConfigNotification";
@@ -44,7 +44,7 @@ public partial class yConfigNotificationCrudApiSmokeTests : ApiIntegrationTestBa
         var readAssertionHandled = false;
         CustomizeReadAssertion(readState, createdId, ref readAssertionHandled);
         if (!readAssertionHandled)
-            ApiResponseAssertions.AssertReadContainsId(readState, createdId);
+            ApiResponseAssertions.AssertReadContainsId(readState, createdId, "id");
 
         var updatePayload = BuildUpdatePayload(createPayload, createdId);
         CustomizeUpdatePayload(updatePayload);
@@ -75,7 +75,7 @@ public partial class yConfigNotificationCrudApiSmokeTests : ApiIntegrationTestBa
     {
         return new JsonObject
         {
-            ["Id"] = 1,
+            ["Id"] = ApiTestData.IntKey(),
             ["EmailSmtpClient"] = ApiTestData.Text("yConfigNotification EmailSmtpClient", 80),
             ["EmailPort"] = 1,
             ["EmailUserName"] = ApiTestData.Text("yConfigNotification EmailUserName", 80),

@@ -1,5 +1,4 @@
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -16,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Comandos.Receivers.CreateConta
@@ -35,19 +35,19 @@ namespace Comandos.Receivers.CreateConta
         }
 
 
-        protected override async Task<State<CreateContaHubAgentReceiver>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<CreateContaHubAgentReceiver>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
             try
             {
-                return Success("OK", null);
+                return Task.FromResult(Success("OK"));
             }
             catch (ReceiverException<CreateContaHubAgentReceiver> e)
             {
-                return e.State;
+                return Task.FromResult(e.State);
             }
             catch (Exception e)
             {
-                return Error(e, default);
+                return Task.FromResult(Error(e));
             }
         }
     }

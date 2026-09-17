@@ -1,5 +1,4 @@
-using System.Threading;
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -20,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Command.Receivers.Write
@@ -44,7 +44,7 @@ namespace Command.Receivers.Write
             _executionContext = context;
         }
 
-        protected override async Task<State<IMovimentacaoFinanceiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
+        protected override Task<State<IMovimentacaoFinanceiraEntity>> ActionAsync(ICommand comand, CancellationToken cancellationToken = default)
         {
              if(comand is Command.Write.MovimentacaoFinanceiraCrudCommand c) 
              {    
@@ -52,21 +52,21 @@ namespace Command.Receivers.Write
                  var movimentacaofinanceira = new MovimentacaoFinanceiraFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.PacienteId, c.ServicoId, c.Valor, c.TipoMovimentacao, c.DataMovimentacao, c.SaldoAtual);
                  var domainResult = MovimentacaoFinanceiraDomainBehavior.Apply(movimentacaofinanceira, context);
                  if (!domainResult.IsValid)
-                     return ValidationError(domainResult.Errors, null);
+                     return Task.FromResult(ValidationError(domainResult.Errors));
 
                  try
                  {
                      _repository.Update(movimentacaofinanceira);
-                     return Success("OK", movimentacaofinanceira);
+                     return Task.FromResult(Success("OK", movimentacaofinanceira));
                  }
                  catch (Exception e)
                  {
-                    return Error(e, movimentacaofinanceira);
+                    return Task.FromResult(Error(e, movimentacaofinanceira));
                  }
             }
             else 
             {
-                 return Error("ErroConversao", default);
+                 return Task.FromResult(Error("ErroConversao"));
             }
         }
     }

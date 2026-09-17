@@ -49,7 +49,7 @@ namespace Command.Receivers.UseCase
                  State<InformarDadosTransporteContingenciaOutputCommand> retorno = Success("OK");
                  return await _sagaStepInvoker.Invoke(
                      "ContingenciaFiscalStandard",
-                     "informarDadosTransporte",
+                     "prepararEntradaContingencia",
                      "Immediate",
                      comand,
                      retorno,

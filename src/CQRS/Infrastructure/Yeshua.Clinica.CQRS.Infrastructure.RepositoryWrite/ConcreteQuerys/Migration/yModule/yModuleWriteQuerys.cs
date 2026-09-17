@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InseriryModuleQuery(IyModuleEntity yModule)
         {
-            this.Query = $@" INSERT INTO yModule (Id, Description) VALUES(@Id, @Description) ";
+            this.Query = $@" INSERT INTO [yModule] ([Id], [Description]) VALUES(@Id, @Description) ";
             this.Parameters = new
             {
                 Id = yModule.Id,
@@ -40,7 +40,7 @@ namespace Query.Write
         }
         public QueryModel UpdateyModuleQuery(IyModuleEntity yModule)
         {
-            this.Query = $@" UPDATE yModule SET Description = @Description WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yModule] SET [Description] = @Description WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = yModule.Description,
@@ -50,7 +50,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescription(string id, string value)
         {
-            this.Query = $@" UPDATE yModule SET Description = @Description WHERE Id = @Id ";
+            this.Query = $@" UPDATE [yModule] SET [Description] = @Description WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Description = value,
@@ -60,7 +60,7 @@ namespace Query.Write
         }
         public QueryModel DeleteyModuleQuery(IyModuleEntity yModule)
         {
-            this.Query = $@" DELETE FROM yModule WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [yModule] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = yModule.Id,

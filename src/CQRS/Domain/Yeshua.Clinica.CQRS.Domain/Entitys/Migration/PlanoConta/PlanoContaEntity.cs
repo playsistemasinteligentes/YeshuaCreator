@@ -28,12 +28,14 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal PlanoContaEntity(int? id, string codigo, string nome, int tipo ){
  Id = id; 
  Codigo = codigo; 
  Nome = nome; 
  Tipo = tipo; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
@@ -42,8 +44,6 @@ _erroMensagem = new List<string>();
    this._erroMensagem.Add("Código da Conta deve ser informado.");
    if(string.IsNullOrEmpty(Nome))
    this._erroMensagem.Add("Nome da Conta deve ser informado.");
-   if (Tipo == null)
-   this._erroMensagem.Add("Tipo da Conta deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

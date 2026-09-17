@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetProfissionalCustom(Command.Read.ProfissionalReadCommand command, ref DataPagination<ProfissionalDTO> result, ref bool handled);
+
         public DataPagination<ProfissionalDTO> getProfissional(ICommandRead command )
          {
             if (command is Command.Read.ProfissionalReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ProfissionalDTO> getProfissional(Command.Read.ProfissionalReadCommand command )
         {
+            var customResult = new DataPagination<ProfissionalDTO>();
+            var customHandled = false;
+            TryGetProfissionalCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ProfissionalQuery(command );
 
                 var itens = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ProfissionalEspecialidadeIdDTO> getProfissionalReadFKEspecialidadeId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ProfissionalEspecialidadeIdDTO> lista;
             var query = _query.ProfissionalEspecialidadeIdQuery(command );
 
-                lista = _unitOfWork.Query<ProfissionalEspecialidadeIdDTO>(query.Query,query.Parameters) as List<ProfissionalEspecialidadeIdDTO>;
+                var lista = _unitOfWork.Query<ProfissionalEspecialidadeIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ProfissionalTenantIDDTO> getProfissionalReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ProfissionalTenantIDDTO> lista;
             var query = _query.ProfissionalTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ProfissionalTenantIDDTO>(query.Query,query.Parameters) as List<ProfissionalTenantIDDTO>;
+                var lista = _unitOfWork.Query<ProfissionalTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -96,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<ProfissionalUserIdDTO> getProfissionalReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ProfissionalUserIdDTO> lista;
             var query = _query.ProfissionalUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ProfissionalUserIdDTO>(query.Query,query.Parameters) as List<ProfissionalUserIdDTO>;
+                var lista = _unitOfWork.Query<ProfissionalUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -244,7 +249,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -252,7 +257,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -260,7 +265,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEspecialidadeIdQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -268,7 +273,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTelefoneQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -276,7 +281,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -284,7 +289,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -292,7 +297,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -300,7 +305,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters) as List<ProfissionalDTO>;
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetGrupoServicoCustom(Command.Read.GrupoServicoReadCommand command, ref DataPagination<GrupoServicoDTO> result, ref bool handled);
+
         public DataPagination<GrupoServicoDTO> getGrupoServico(ICommandRead command )
          {
             if (command is Command.Read.GrupoServicoReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<GrupoServicoDTO> getGrupoServico(Command.Read.GrupoServicoReadCommand command )
         {
+            var customResult = new DataPagination<GrupoServicoDTO>();
+            var customHandled = false;
+            TryGetGrupoServicoCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.GrupoServicoQuery(command );
 
                 var itens = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoServicoTenantIDDTO> getGrupoServicoReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoServicoTenantIDDTO> lista;
             var query = _query.GrupoServicoTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<GrupoServicoTenantIDDTO>(query.Query,query.Parameters) as List<GrupoServicoTenantIDDTO>;
+                var lista = _unitOfWork.Query<GrupoServicoTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<GrupoServicoUserIdDTO> getGrupoServicoReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<GrupoServicoUserIdDTO> lista;
             var query = _query.GrupoServicoUserIdQuery(command );
 
-                lista = _unitOfWork.Query<GrupoServicoUserIdDTO>(query.Query,query.Parameters) as List<GrupoServicoUserIdDTO>;
+                var lista = _unitOfWork.Query<GrupoServicoUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -194,7 +200,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -202,7 +208,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDescricaoQuery(value );
 
-                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -210,7 +216,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -218,7 +224,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -226,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters) as List<GrupoServicoDTO>;
+                var result = _unitOfWork.Query<GrupoServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

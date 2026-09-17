@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetMovimentacaoFinanceiraCustom(Command.Read.MovimentacaoFinanceiraReadCommand command, ref DataPagination<MovimentacaoFinanceiraDTO> result, ref bool handled);
+
         public DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(ICommandRead command )
          {
             if (command is Command.Read.MovimentacaoFinanceiraReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<MovimentacaoFinanceiraDTO> getMovimentacaoFinanceira(Command.Read.MovimentacaoFinanceiraReadCommand command )
         {
+            var customResult = new DataPagination<MovimentacaoFinanceiraDTO>();
+            var customHandled = false;
+            TryGetMovimentacaoFinanceiraCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.MovimentacaoFinanceiraQuery(command );
 
                 var itens = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentacaoFinanceiraPacienteIdDTO> getMovimentacaoFinanceiraReadFKPacienteId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentacaoFinanceiraPacienteIdDTO> lista;
             var query = _query.MovimentacaoFinanceiraPacienteIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraPacienteIdDTO>;
+                var lista = _unitOfWork.Query<MovimentacaoFinanceiraPacienteIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentacaoFinanceiraServicoIdDTO> getMovimentacaoFinanceiraReadFKServicoId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentacaoFinanceiraServicoIdDTO> lista;
             var query = _query.MovimentacaoFinanceiraServicoIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraServicoIdDTO>;
+                var lista = _unitOfWork.Query<MovimentacaoFinanceiraServicoIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -96,10 +102,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentacaoFinanceiraTenantIDDTO> getMovimentacaoFinanceiraReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentacaoFinanceiraTenantIDDTO> lista;
             var query = _query.MovimentacaoFinanceiraTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<MovimentacaoFinanceiraTenantIDDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraTenantIDDTO>;
+                var lista = _unitOfWork.Query<MovimentacaoFinanceiraTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -114,10 +119,9 @@ namespace Read.Repository
 
         private IEnumerable<MovimentacaoFinanceiraUserIdDTO> getMovimentacaoFinanceiraReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<MovimentacaoFinanceiraUserIdDTO> lista;
             var query = _query.MovimentacaoFinanceiraUserIdQuery(command );
 
-                lista = _unitOfWork.Query<MovimentacaoFinanceiraUserIdDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraUserIdDTO>;
+                var lista = _unitOfWork.Query<MovimentacaoFinanceiraUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -310,7 +314,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -318,7 +322,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByPacienteIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -326,7 +330,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByServicoIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -334,7 +338,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByValorQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -342,7 +346,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTipoMovimentacaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -350,7 +354,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDataMovimentacaoQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -358,7 +362,7 @@ namespace Read.Repository
         {
             var query = _query.FirstBySaldoAtualQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -366,7 +370,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -374,7 +378,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -382,7 +386,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -390,7 +394,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters) as List<MovimentacaoFinanceiraDTO>;
+                var result = _unitOfWork.Query<MovimentacaoFinanceiraDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

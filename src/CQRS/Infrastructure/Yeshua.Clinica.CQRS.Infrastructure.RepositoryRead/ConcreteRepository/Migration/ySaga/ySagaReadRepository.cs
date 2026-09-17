@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetySagaCustom(Command.Read.ySagaReadCommand command, ref DataPagination<ySagaDTO> result, ref bool handled);
+
         public DataPagination<ySagaDTO> getySaga(ICommandRead command , bool TakeOffTenantID = false)
          {
             if (command is Command.Read.ySagaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ySagaDTO> getySaga(Command.Read.ySagaReadCommand command , bool TakeOffTenantID = false)
         {
+            var customResult = new DataPagination<ySagaDTO>();
+            var customHandled = false;
+            TryGetySagaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ySagaQuery(command , TakeOffTenantID);
 
                 var itens = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ySagaTenantIDDTO> getySagaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<ySagaTenantIDDTO> lista;
             var query = _query.ySagaTenantIDQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<ySagaTenantIDDTO>(query.Query,query.Parameters) as List<ySagaTenantIDDTO>;
+                var lista = _unitOfWork.Query<ySagaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ySagaUserIdDTO> getySagaReadFKUserId(Command.Patterns.Command.SearchFKCommand command , bool TakeOffTenantID = false)
         {
-            List<ySagaUserIdDTO> lista;
             var query = _query.ySagaUserIdQuery(command , TakeOffTenantID);
 
-                lista = _unitOfWork.Query<ySagaUserIdDTO>(query.Query,query.Parameters) as List<ySagaUserIdDTO>;
+                var lista = _unitOfWork.Query<ySagaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -354,7 +360,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -362,7 +368,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCorrelationIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -370,7 +376,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTypeQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -378,7 +384,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByStatusQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -386,7 +392,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByKeyCurrentStepQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -394,7 +400,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCreatedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -402,7 +408,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByCompletedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -410,7 +416,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEntityTypeQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -418,7 +424,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEntityIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -426,7 +432,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNextExecutionAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -434,7 +440,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLockedAtQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -442,7 +448,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByLockedByQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -450,7 +456,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -458,7 +464,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -466,7 +472,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -474,7 +480,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value , TakeOffTenantID);
 
-                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters) as List<ySagaDTO>;
+                var result = _unitOfWork.Query<ySagaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 

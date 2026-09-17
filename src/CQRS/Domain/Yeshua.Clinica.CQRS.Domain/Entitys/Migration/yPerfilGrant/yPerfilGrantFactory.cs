@@ -28,13 +28,13 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IyPerfilGrantEntity Create(int? id, int? perfilid, string grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil )
+                                    } public IyPerfilGrantEntity Create(int? id, int? perfilid, string? grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil )
                             {
                                 return Create(null, id, perfilid, grantid, cangrant, cancreate, canread, canupdate, candelete, validuntil);
                             }
 
                             public IyPerfilGrantEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? perfilid, string grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? perfilid, string? grantid, bool? cangrant, bool? cancreate, bool? canread, bool? canupdate, bool? candelete, DateTime? validuntil )
                             {
                             var entity = new yPerfilGrantEntity(id, perfilid, grantid, cangrant, cancreate, canread, canupdate, candelete, validuntil );
 

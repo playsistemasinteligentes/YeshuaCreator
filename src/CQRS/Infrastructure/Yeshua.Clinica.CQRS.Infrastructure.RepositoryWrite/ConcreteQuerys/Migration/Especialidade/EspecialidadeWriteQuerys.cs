@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
-            this.Query = $@" INSERT INTO Especialidade (Descricao, TenantID, Deleted, Changed, UserId) OUTPUT INSERTED.Id VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId) ";
+            this.Query = $@" INSERT INTO [Especialidade] ([Descricao], [TenantID], [Deleted], [Changed], [UserId]) OUTPUT INSERTED.[Id] VALUES(@Descricao, @TenantID, @Deleted, @Changed, @UserId) ";
             this.Parameters = new
             {
                 Descricao = Especialidade.Descricao,
@@ -43,7 +43,7 @@ namespace Query.Write
         }
         public QueryModel UpdateEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
-            this.Query = $@" UPDATE Especialidade SET Descricao = @Descricao, Changed = @Changed, UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Especialidade] SET [Descricao] = @Descricao, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = Especialidade.Descricao,
@@ -55,7 +55,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDescricao(int id, string value)
         {
-            this.Query = $@" UPDATE Especialidade SET Descricao = @Descricao WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Especialidade] SET [Descricao] = @Descricao WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Descricao = value,
@@ -65,7 +65,7 @@ namespace Query.Write
         }
         public QueryModel UpdateTenantID(int id, int value)
         {
-            this.Query = $@" UPDATE Especialidade SET TenantID = @TenantID WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Especialidade] SET [TenantID] = @TenantID WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 TenantID = value,
@@ -75,7 +75,7 @@ namespace Query.Write
         }
         public QueryModel UpdateDeleted(int id, bool value)
         {
-            this.Query = $@" UPDATE Especialidade SET Deleted = @Deleted WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Especialidade] SET [Deleted] = @Deleted WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Deleted = value,
@@ -85,7 +85,7 @@ namespace Query.Write
         }
         public QueryModel UpdateChanged(int id, DateTime value)
         {
-            this.Query = $@" UPDATE Especialidade SET Changed = @Changed WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Especialidade] SET [Changed] = @Changed WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Changed = value,
@@ -95,7 +95,7 @@ namespace Query.Write
         }
         public QueryModel UpdateUserId(int id, int value)
         {
-            this.Query = $@" UPDATE Especialidade SET UserId = @UserId WHERE Id = @Id ";
+            this.Query = $@" UPDATE [Especialidade] SET [UserId] = @UserId WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 UserId = value,
@@ -105,7 +105,7 @@ namespace Query.Write
         }
         public QueryModel DeleteEspecialidadeQuery(IEspecialidadeEntity Especialidade)
         {
-            this.Query = $@" DELETE FROM Especialidade WHERE Id = @Id ";
+            this.Query = $@" DELETE FROM [Especialidade] WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 Id = Especialidade.Id,

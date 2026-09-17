@@ -27,16 +27,18 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal DisponibilidadeAgendaEntity(int? id, int? profissionalid, DateTime datahora ){
  Id = id; 
  ProfissionalId = profissionalid; 
  DataHora = (datahora < (new DateTime(1800, 1, 1))) ? DateTime.Now : datahora; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
-   if (DataHora == null || DataHora < (new DateTime(1800, 1, 1)))
+   if(DataHora < (new DateTime(1800, 1, 1)))
    this._erroMensagem.Add("Horário Disponível deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }

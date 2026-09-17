@@ -24,14 +24,14 @@
     string CorrelationId { get; set; }
     string Type { get; set; }
     int Status { get; set; }
-    string KeyCurrentStep { get; set; }
+    string? KeyCurrentStep { get; set; }
     DateTime CreatedAt { get; set; }
     DateTime? CompletedAt { get; set; }
-    string EntityType { get; set; }
-    string EntityId { get; set; }
+    string? EntityType { get; set; }
+    string? EntityId { get; set; }
     DateTime? NextExecutionAt { get; set; }
     DateTime? LockedAt { get; set; }
-    string LockedBy { get; set; }
+    string? LockedBy { get; set; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }

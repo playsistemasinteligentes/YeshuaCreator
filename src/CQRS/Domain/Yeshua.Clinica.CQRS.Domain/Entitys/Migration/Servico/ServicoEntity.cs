@@ -28,20 +28,20 @@
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
+    private List<string> _erroMensagem = new List<string>();
  internal ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal valor ){
  Id = id; 
  GrupoServicoId = gruposervicoid; 
  Nome = nome; 
  Valor = valor; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {
 _erroMensagem = new List<string>();
    if(string.IsNullOrEmpty(Nome))
    this._erroMensagem.Add("Nome do Serviço deve ser informado.");
-   if (Valor == null)
-   this._erroMensagem.Add("Valor do Serviço deve ser informado.");
 return _erroMensagem.Count() <= 0;
 }
 

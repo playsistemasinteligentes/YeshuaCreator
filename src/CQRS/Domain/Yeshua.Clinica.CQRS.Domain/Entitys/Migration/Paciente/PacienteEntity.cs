@@ -25,22 +25,22 @@
     public string Telefone { get; set; }
     public DateTime? DataNascimento { get; set; }
     public int? Genero { get; set; }
-    public string Escolaridade { get; set; }
-    public string Profissao { get; set; }
-    public string Endereco { get; set; }
-    public string NomeResponsavel { get; set; }
-    public string TelefoneResponsavel { get; set; }
-    public string Observacao { get; set; }
+    public string? Escolaridade { get; set; }
+    public string? Profissao { get; set; }
+    public string? Endereco { get; set; }
+    public string? NomeResponsavel { get; set; }
+    public string? TelefoneResponsavel { get; set; }
+    public string? Observacao { get; set; }
     public int? TenantID { get; set; }
     public bool? Deleted { get; set; }
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
-    private List<string> _erroMensagem = null;
- internal PacienteEntity(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string escolaridade, string profissao, string endereco, string nomeresponsavel, string telefoneresponsavel, string observacao ){
+    private List<string> _erroMensagem = new List<string>();
+ internal PacienteEntity(int? id, string nome, string telefone, DateTime? datanascimento, int? genero, string? escolaridade, string? profissao, string? endereco, string? nomeresponsavel, string? telefoneresponsavel, string? observacao ){
  Id = id; 
  Nome = nome; 
  Telefone = telefone; 
- DataNascimento = (datanascimento < (new DateTime(1800, 1, 1))) ? DateTime.Now : datanascimento; 
+ DataNascimento = datanascimento.HasValue && datanascimento.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : datanascimento; 
  Genero = genero; 
  Escolaridade = escolaridade; 
  Profissao = profissao; 
@@ -48,6 +48,8 @@
  NomeResponsavel = nomeresponsavel; 
  TelefoneResponsavel = telefoneresponsavel; 
  Observacao = observacao; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
 }
 public bool isValidData()
 {

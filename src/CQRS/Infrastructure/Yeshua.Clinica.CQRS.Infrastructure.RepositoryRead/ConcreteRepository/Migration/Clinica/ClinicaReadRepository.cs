@@ -40,6 +40,8 @@ namespace Read.Repository
             _query = query;
         }
 
+        partial void TryGetClinicaCustom(Command.Read.ClinicaReadCommand command, ref DataPagination<ClinicaDTO> result, ref bool handled);
+
         public DataPagination<ClinicaDTO> getClinica(ICommandRead command )
          {
             if (command is Command.Read.ClinicaReadCommand c)
@@ -48,6 +50,12 @@ namespace Read.Repository
         }
         private DataPagination<ClinicaDTO> getClinica(Command.Read.ClinicaReadCommand command )
         {
+            var customResult = new DataPagination<ClinicaDTO>();
+            var customHandled = false;
+            TryGetClinicaCustom(command, ref customResult, ref customHandled);
+            if (customHandled)
+                return customResult;
+
             var query = _query.ClinicaQuery(command );
 
                 var itens = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters);
@@ -60,10 +68,9 @@ namespace Read.Repository
 
         private IEnumerable<ClinicaTenantIDDTO> getClinicaReadFKTenantID(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClinicaTenantIDDTO> lista;
             var query = _query.ClinicaTenantIDQuery(command );
 
-                lista = _unitOfWork.Query<ClinicaTenantIDDTO>(query.Query,query.Parameters) as List<ClinicaTenantIDDTO>;
+                var lista = _unitOfWork.Query<ClinicaTenantIDDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -78,10 +85,9 @@ namespace Read.Repository
 
         private IEnumerable<ClinicaUserIdDTO> getClinicaReadFKUserId(Command.Patterns.Command.SearchFKCommand command )
         {
-            List<ClinicaUserIdDTO> lista;
             var query = _query.ClinicaUserIdQuery(command );
 
-                lista = _unitOfWork.Query<ClinicaUserIdDTO>(query.Query,query.Parameters) as List<ClinicaUserIdDTO>;
+                var lista = _unitOfWork.Query<ClinicaUserIdDTO>(query.Query,query.Parameters).ToList();
             return lista;
         }
 
@@ -226,7 +232,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByIdQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -234,7 +240,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByNomeQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -242,7 +248,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByEnderecoQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -250,7 +256,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTelefoneQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -258,7 +264,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByTenantIDQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -266,7 +272,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByDeletedQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -274,7 +280,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByChangedQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
@@ -282,7 +288,7 @@ namespace Read.Repository
         {
             var query = _query.FirstByUserIdQuery(value );
 
-                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters) as List<ClinicaDTO>;
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;
         }
 
