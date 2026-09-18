@@ -14,7 +14,9 @@ using IRepository.Read;
 using IRepository.Write;
 using Repositorio.Outputs;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Command.Receivers
 {
@@ -51,102 +53,151 @@ namespace Command.Receivers
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
         {
-            CTeSolicitacaoFiscalDTO? solicitacao = null;
-            CTeTentativaEmissaoDTO? tentativa = null;
+            var cargaId = saga.EntityId ?? string.Empty;
+            var romaneio = _cteRomaneioConsolidadoReadRepository.FirstByCargaId(cargaId);
+            if (romaneio == null || romaneio.id <= 0)
+                throw new InvalidOperationException($"Carga {cargaId}: romaneio consolidado CT-e nao encontrado para autorizar CT-e.");
 
-            try
+            var solicitacoes = (_cteSolicitacaoFiscalReadRepository.GetAllByRomaneioConsolidadoId(romaneio.id)
+                    ?? Array.Empty<CTeSolicitacaoFiscalDTO>())
+                .OrderBy(x => x.id)
+                .ToList();
+
+            if (solicitacoes.Count == 0)
+                throw new InvalidOperationException($"Carga {cargaId}: solicitacoes fiscais CT-e nao encontradas para autorizar CT-e.");
+
+            var autorizados = 0;
+            var falhas = new List<string>();
+            foreach (var solicitacao in solicitacoes)
             {
-                (solicitacao, tentativa) = CarregarTentativaPreparada(saga);
-                var prepared = CarregarXmlPreparado(tentativa);
-                var result = CteRecepcaoSincV4HomologacaoClient.Autorizar(prepared);
-                var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
-
-                if (!respostaEstruturada)
+                var tentativa = CarregarTentativaPreparada(cargaId, solicitacao);
+                if (tentativa.status == 3)
                 {
-                    var exception = new InvalidOperationException(
-                        $"SEFAZ CT-e nao retornou resposta fiscal estruturada. HTTP={result.HttpStatusCode}; chave={result.Chave}");
-
-                    _logger.CommandFailed(
-                        "Fiscal.CTe.AutorizarCTeNaSefaz.SemRespostaFiscalEstruturada",
-                        step.CorrelationId,
-                        exception,
-                        0);
+                    autorizados++;
+                    continue;
                 }
 
-                if (respostaEstruturada && !result.Autorizado)
+                try
                 {
-                    var rejection = new InvalidOperationException(
-                        $"SEFAZ CT-e rejeitou em homologacao. cStat={result.CodigoRetorno}; xMotivo={result.Motivo}; chave={result.Chave}");
+                    var prepared = CarregarXmlPreparado(tentativa);
+                    var result = CteRecepcaoSincV4HomologacaoClient.Autorizar(prepared);
+                    var respostaEstruturada = result.CodigoRetorno > 0 && !string.IsNullOrWhiteSpace(result.Motivo);
+
+                    if (!respostaEstruturada)
+                    {
+                        var exception = new InvalidOperationException(
+                            $"SEFAZ CT-e nao retornou resposta fiscal estruturada. HTTP={result.HttpStatusCode}; chave={result.Chave}");
+
+                        _logger.CommandFailed(
+                            "Fiscal.CTe.AutorizarCTeNaSefaz.SemRespostaFiscalEstruturada",
+                            step.CorrelationId,
+                            exception,
+                            0);
+                    }
+
+                    if (respostaEstruturada && !result.Autorizado)
+                    {
+                        var rejection = new InvalidOperationException(
+                            $"SEFAZ CT-e rejeitou em homologacao. cStat={result.CodigoRetorno}; xMotivo={result.Motivo}; chave={result.Chave}");
+
+                        _logger.CommandFailed(
+                            "Fiscal.CTe.AutorizarCTeNaSefaz.RejeicaoFiscal",
+                            step.CorrelationId,
+                            rejection,
+                            0);
+                    }
+
+                    RegistrarResultadoTentativa(solicitacao, tentativa, result, respostaEstruturada);
+
+                    SefazFiscalDocumentStore.PersistirCTe(
+                        _documentoFiscalWriteRepository,
+                        _logger,
+                        saga,
+                        step,
+                        result);
+
+                    _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
+                        _logger,
+                        saga,
+                        step,
+                        "fiscal.cte.resposta-sefaz-homologacao",
+                        new
+                        {
+                            origem = "Fiscal",
+                            modo = "sefaz-homologacao",
+                            autorizado = result.Autorizado,
+                            erroTecnico = false,
+                            respostaFiscalEstruturada = respostaEstruturada,
+                            cStat = result.CodigoRetorno,
+                            xMotivo = result.Motivo,
+                            chave = result.Chave,
+                            protocolo = result.Protocolo,
+                            httpStatusCode = result.HttpStatusCode,
+                            cteSolicitacaoFiscalId = solicitacao.id,
+                            entityId = saga.EntityId
+                        }));
+
+                    if (result.Autorizado)
+                        autorizados++;
+                    else
+                        falhas.Add($"solicitacao={solicitacao.id}; cStat={result.CodigoRetorno}; xMotivo={result.Motivo}");
+                }
+                catch (Exception ex)
+                {
+                    RegistrarFalhaTecnica(solicitacao, tentativa, ex);
 
                     _logger.CommandFailed(
-                        "Fiscal.CTe.AutorizarCTeNaSefaz.RejeicaoFiscal",
+                        "Fiscal.CTe.AutorizarCTeNaSefaz.ErroTecnico",
                         step.CorrelationId,
-                        rejection,
+                        ex,
                         0);
+
+                    _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
+                        _logger,
+                        saga,
+                        step,
+                        "fiscal.cte.resposta-sefaz-homologacao",
+                        new
+                        {
+                            origem = "Fiscal",
+                            modo = "sefaz-homologacao",
+                            autorizado = false,
+                            erroTecnico = true,
+                            respostaFiscalEstruturada = false,
+                            cStat = 0,
+                            xMotivo = ex.InnerException == null
+                                ? ex.Message
+                                : ex.Message + " | inner: " + ex.InnerException.Message,
+                            chave = tentativa.chaveacesso,
+                            protocolo = string.Empty,
+                            httpStatusCode = 0,
+                            cteSolicitacaoFiscalId = solicitacao.id,
+                            exceptionType = ex.GetType().FullName,
+                            entityId = saga.EntityId
+                        }));
+
+                    falhas.Add($"solicitacao={solicitacao.id}; erro={ex.Message}");
                 }
-
-                RegistrarResultadoTentativa(solicitacao, tentativa, result, respostaEstruturada);
-
-                SefazFiscalDocumentStore.PersistirCTe(
-                    _documentoFiscalWriteRepository,
-                    _logger,
-                    saga,
-                    step,
-                    result);
-
-                _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
-                    _logger,
-                    saga,
-                    step,
-                    "fiscal.cte.resposta-sefaz-homologacao",
-                    new
-                    {
-                        origem = "Fiscal",
-                        modo = "sefaz-homologacao",
-                        autorizado = result.Autorizado,
-                        erroTecnico = false,
-                        respostaFiscalEstruturada = respostaEstruturada,
-                        cStat = result.CodigoRetorno,
-                        xMotivo = result.Motivo,
-                        chave = result.Chave,
-                        protocolo = result.Protocolo,
-                        httpStatusCode = result.HttpStatusCode,
-                        entityId = saga.EntityId
-                    }));
             }
-            catch (Exception ex)
+
+            if (falhas.Count > 0)
             {
-                RegistrarFalhaTecnica(solicitacao, tentativa, ex);
-
-                _logger.CommandFailed(
-                    "Fiscal.CTe.AutorizarCTeNaSefaz.ErroTecnico",
-                    step.CorrelationId,
-                    ex,
-                    0);
-
-                _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
-                    _logger,
-                    saga,
-                    step,
-                    "fiscal.cte.resposta-sefaz-homologacao",
-                    new
-                    {
-                        origem = "Fiscal",
-                        modo = "sefaz-homologacao",
-                        autorizado = false,
-                        erroTecnico = true,
-                        respostaFiscalEstruturada = false,
-                        cStat = 0,
-                        xMotivo = ex.InnerException == null
-                            ? ex.Message
-                            : ex.Message + " | inner: " + ex.InnerException.Message,
-                        chave = string.Empty,
-                        protocolo = string.Empty,
-                        httpStatusCode = 0,
-                        exceptionType = ex.GetType().FullName,
-                        entityId = saga.EntityId
-                    }));
+                throw new InvalidOperationException(
+                    $"Carga {cargaId}: {autorizados} de {solicitacoes.Count} CT-e autorizados. Falhas: {string.Join(" | ", falhas)}");
             }
+
+            _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
+                _logger,
+                saga,
+                step,
+                "fiscal.cte.lote-autorizado",
+                new
+                {
+                    origem = "Fiscal",
+                    quantidadeSolicitacoes = solicitacoes.Count,
+                    quantidadeAutorizados = autorizados,
+                    entityId = saga.EntityId
+                }));
         }
 
         partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
@@ -154,22 +205,19 @@ namespace Command.Receivers
             _logger.Info($"Fiscal {saga.EntityId}: resposta CT-e SEFAZ homologacao registrada.");
         }
 
-        private (CTeSolicitacaoFiscalDTO Solicitacao, CTeTentativaEmissaoDTO Tentativa) CarregarTentativaPreparada(SagaBase saga)
+        private CTeTentativaEmissaoDTO CarregarTentativaPreparada(
+            string cargaId,
+            CTeSolicitacaoFiscalDTO solicitacao)
         {
-            var cargaId = saga.EntityId ?? string.Empty;
-            var romaneio = _cteRomaneioConsolidadoReadRepository.FirstByCargaId(cargaId);
-            if (romaneio == null || romaneio.id <= 0)
-                throw new InvalidOperationException($"Carga {cargaId}: romaneio consolidado CT-e nao encontrado para autorizar CT-e.");
+            var tentativa = (_cteTentativaEmissaoReadRepository.GetAllByCTeSolicitacaoFiscalId(solicitacao.id)
+                    ?? Array.Empty<CTeTentativaEmissaoDTO>())
+                .OrderByDescending(x => x.id)
+                .FirstOrDefault();
 
-            var solicitacao = _cteSolicitacaoFiscalReadRepository.FirstByRomaneioConsolidadoId(romaneio.id);
-            if (solicitacao == null || solicitacao.id <= 0)
-                throw new InvalidOperationException($"Carga {cargaId}: solicitacao fiscal CT-e nao encontrada para autorizar CT-e.");
-
-            var tentativa = _cteTentativaEmissaoReadRepository.FirstByCTeSolicitacaoFiscalId(solicitacao.id);
             if (tentativa == null || tentativa.id <= 0)
-                throw new InvalidOperationException($"Carga {cargaId}: tentativa CT-e preparada nao encontrada para autorizar CT-e.");
+                throw new InvalidOperationException($"Carga {cargaId}: tentativa CT-e preparada da solicitacao {solicitacao.id} nao encontrada.");
 
-            return (solicitacao, tentativa);
+            return tentativa;
         }
 
         private static CteRecepcaoSincV4Prepared CarregarXmlPreparado(CTeTentativaEmissaoDTO tentativa)

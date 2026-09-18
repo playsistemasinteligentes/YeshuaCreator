@@ -153,6 +153,8 @@ namespace Command.Receivers.UseCase
                 SetDecimalIfMissing(node, "pesoBruto", nfe.PesoBruto);
                 SetDecimalIfMissing(node, "volume", nfe.Volume);
                 SetIfMissing(node, "modelo", nfe.Modelo);
+                SetNodeIfMissing(node, "emitenteSnapshot", ParticipantNode(nfe.Emitente));
+                SetNodeIfMissing(node, "destinatarioSnapshot", ParticipantNode(nfe.Destinatario));
             }
 
             using var normalized = JsonDocument.Parse(node.ToJsonString());
@@ -197,8 +199,8 @@ namespace Command.Receivers.UseCase
                     chave,
                     ChildValue(ide, "nNF"),
                     ChildValue(ide, "serie"),
-                    First(ChildValue(emit, "CNPJ"), ChildValue(emit, "CPF")),
-                    First(ChildValue(dest, "CNPJ"), ChildValue(dest, "CPF")),
+                    ReadParticipant(emit, enderEmit),
+                    ReadParticipant(dest, enderDest),
                     ChildValue(enderEmit, "UF"),
                     ChildValue(enderDest, "UF"),
                     ChildValue(enderEmit, "cMun"),
@@ -274,6 +276,54 @@ namespace Command.Receivers.UseCase
             node[name] = value.Value;
         }
 
+        private static void SetNodeIfMissing(JsonObject node, string name, JsonNode value)
+        {
+            if (HasValue(node, name))
+                return;
+
+            node[name] = value;
+        }
+
+        private static JsonObject ParticipantNode(NFeParticipantData participant)
+        {
+            return new JsonObject
+            {
+                ["documento"] = participant.Documento,
+                ["nome"] = participant.Nome,
+                ["inscricaoEstadual"] = participant.InscricaoEstadual,
+                ["logradouro"] = participant.Logradouro,
+                ["numero"] = participant.Numero,
+                ["complemento"] = participant.Complemento,
+                ["bairro"] = participant.Bairro,
+                ["municipioCodigoIbge"] = participant.MunicipioCodigoIbge,
+                ["municipioNome"] = participant.MunicipioNome,
+                ["uf"] = participant.UF,
+                ["cep"] = participant.Cep,
+                ["paisCodigo"] = participant.PaisCodigo,
+                ["paisNome"] = participant.PaisNome,
+                ["telefone"] = participant.Telefone
+            };
+        }
+
+        private static NFeParticipantData ReadParticipant(XElement? participant, XElement? address)
+        {
+            return new NFeParticipantData(
+                First(ChildValue(participant, "CNPJ"), ChildValue(participant, "CPF")),
+                ChildValue(participant, "xNome"),
+                ChildValue(participant, "IE"),
+                ChildValue(address, "xLgr"),
+                ChildValue(address, "nro"),
+                ChildValue(address, "xCpl"),
+                ChildValue(address, "xBairro"),
+                ChildValue(address, "cMun"),
+                ChildValue(address, "xMun"),
+                ChildValue(address, "UF"),
+                ChildValue(address, "CEP"),
+                ChildValue(address, "cPais"),
+                ChildValue(address, "xPais"),
+                ChildValue(address, "fone"));
+        }
+
         private static bool HasValue(JsonObject node, string name)
         {
             var property = node.FirstOrDefault(x => string.Equals(x.Key, name, StringComparison.OrdinalIgnoreCase));
@@ -316,8 +366,8 @@ namespace Command.Receivers.UseCase
             string ChaveAcesso,
             string Numero,
             string Serie,
-            string EmitenteDocumento,
-            string DestinatarioDocumento,
+            NFeParticipantData Emitente,
+            NFeParticipantData Destinatario,
             string UFOrigem,
             string UFDestino,
             string MunicipioOrigemCodigoIbge,
@@ -325,6 +375,26 @@ namespace Command.Receivers.UseCase
             decimal? ValorDocumento,
             decimal? PesoBruto,
             decimal? Volume,
-            string Modelo);
+            string Modelo)
+        {
+            public string EmitenteDocumento => Emitente.Documento;
+            public string DestinatarioDocumento => Destinatario.Documento;
+        }
+
+        private sealed record NFeParticipantData(
+            string Documento,
+            string Nome,
+            string InscricaoEstadual,
+            string Logradouro,
+            string Numero,
+            string Complemento,
+            string Bairro,
+            string MunicipioCodigoIbge,
+            string MunicipioNome,
+            string UF,
+            string Cep,
+            string PaisCodigo,
+            string PaisNome,
+            string Telefone);
     }
 }

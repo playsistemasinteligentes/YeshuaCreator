@@ -141,6 +141,7 @@ namespace Command.Receivers
             if (existente != null && existente.id > 0)
                 return existente.id;
 
+            var planoEmissaoJson = CarregarPlanoEmissao(input);
             var rotaSnapshotJson = JsonSerializer.Serialize(new
             {
                 resumo.UFInicio,
@@ -149,16 +150,20 @@ namespace Command.Receivers
                 resumo.MunicipioFimCodigoIbge
             });
 
-            var cargaSnapshotJson = JsonSerializer.Serialize(new
+            var cargaSnapshotJson = string.IsNullOrWhiteSpace(planoEmissaoJson)
+                ? JsonSerializer.Serialize(new
             {
                 resumo.CargaId,
                 resumo.QuantidadeDocumentos,
                 resumo.ValorCarga,
                 resumo.PesoBruto,
                 resumo.Volume
-            });
+            })
+                : planoEmissaoJson;
 
-            var preferenciasFiscaisJson = PreferenciasFiscaisJson(input);
+            var preferenciasFiscaisJson = string.IsNullOrWhiteSpace(planoEmissaoJson)
+                ? PreferenciasFiscaisJson(input)
+                : planoEmissaoJson;
 
             var romaneio = new CTeRomaneioConsolidadoFactory(_logger).Create(
                 null,
@@ -183,6 +188,14 @@ namespace Command.Receivers
                 throw new InvalidOperationException($"Carga {resumo.CargaId}: romaneio consolidado CT-e nao recebeu Id apos insert.");
 
             return romaneio.Id.Value;
+        }
+
+        private static string CarregarPlanoEmissao(EntradaFiscalStepInput input)
+        {
+            if (string.IsNullOrWhiteSpace(input.PayloadStorageKey))
+                return string.Empty;
+
+            return FiscalPayloadStore.Read(input.PayloadStorageKey, input.PayloadHash);
         }
 
         private static string PreferenciasFiscaisJson(EntradaFiscalStepInput input)

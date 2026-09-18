@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -58,6 +60,14 @@ namespace Command.Receivers
         string ChaveCTe,
         int TimeoutSeconds)
     {
+        public IReadOnlyList<string> ChavesCTe { get; init; } = Array.Empty<string>();
+        public decimal ValorCarga { get; init; } = 1000m;
+        public decimal PesoBruto { get; init; } = 100m;
+        public decimal ValorContrato { get; init; } = 1000m;
+        public string TipoCarga { get; init; } = "05";
+        public string ProdutoPredominante { get; init; } = "PRODUTO HOMOLOGACAO";
+        public string ObservacaoFiscal { get; init; } = string.Empty;
+
         public static MdfeRecepcaoSincOptions FromEnvironment()
         {
             var fixedOptions = new MdfeRecepcaoSincOptions(
@@ -133,6 +143,9 @@ namespace Command.Receivers
                     OnlyDigits(Environment.GetEnvironmentVariable("YESHUA_MDFE_NCM_PRODUTO_PREDOMINANTE") ?? fixedOptions.NcmProdutoPredominante),
                 Placa =
                     OnlyDigitsLetters(Environment.GetEnvironmentVariable("YESHUA_MDFE_PLACA") ?? GenerateHomologacaoPlate()),
+                TipoCarga = GetValue("YESHUA_MDFE_TIPO_CARGA", "05"),
+                ProdutoPredominante = GetValue("YESHUA_MDFE_PRODUTO_PREDOMINANTE", "PRODUTO HOMOLOGACAO"),
+                ObservacaoFiscal = Environment.GetEnvironmentVariable("YESHUA_MDFE_OBSERVACAO_FISCAL") ?? string.Empty,
                 TimeoutSeconds = GetInt("YESHUA_MDFE_TIMEOUT_SECONDS", fixedOptions.TimeoutSeconds)
             };
         }
@@ -163,7 +176,12 @@ namespace Command.Receivers
             ValidateDigits(CodigoMunicipioDescarga, 7, nameof(CodigoMunicipioDescarga));
             ValidateDigits(Cep, 8, nameof(Cep));
             ValidateDigits(CepDescarga, 8, nameof(CepDescarga));
-            ValidateDigits(OnlyDigits(ChaveCTe), 44, nameof(ChaveCTe));
+            var chavesCTe = EffectiveChavesCTe();
+            if (chavesCTe.Count == 0)
+                throw new InvalidOperationException("Ao menos uma chave CT-e deve ser informada para o MDF-e.");
+
+            foreach (var chaveCTe in chavesCTe)
+                ValidateDigits(chaveCTe, 44, nameof(ChavesCTe));
             ValidateDigits(CnpjResponsavelSeguro, 14, nameof(CnpjResponsavelSeguro));
             ValidateDigits(CnpjSeguradora, 14, nameof(CnpjSeguradora));
             ValidateDigits(NcmProdutoPredominante, 8, nameof(NcmProdutoPredominante));
@@ -179,6 +197,29 @@ namespace Command.Receivers
 
             if (string.IsNullOrWhiteSpace(NumeroAverbacao))
                 throw new InvalidOperationException("A averbacao do seguro MDF-e deve ser informada.");
+
+            if (ValorCarga <= 0m)
+                throw new InvalidOperationException("O valor da carga do MDF-e deve ser maior que zero.");
+
+            if (PesoBruto <= 0m)
+                throw new InvalidOperationException("O peso bruto do MDF-e deve ser maior que zero.");
+
+            if (ValorContrato <= 0m)
+                throw new InvalidOperationException("O valor do contrato do MDF-e deve ser maior que zero.");
+
+            ValidateDigits(TipoCarga, 2, nameof(TipoCarga));
+            if (string.IsNullOrWhiteSpace(ProdutoPredominante))
+                throw new InvalidOperationException("O produto predominante do MDF-e deve ser informado.");
+        }
+
+        public IReadOnlyList<string> EffectiveChavesCTe()
+        {
+            var source = ChavesCTe.Count > 0 ? ChavesCTe : new[] { ChaveCTe };
+            return source
+                .Select(OnlyDigits)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.Ordinal)
+                .ToArray();
         }
 
         private static string GetValue(string envName, string fallback)
@@ -261,7 +302,10 @@ namespace Command.Receivers
         int? Serie,
         string ChaveCTe,
         string XmlMDFe,
-        string XmlHash);
+        string XmlHash)
+    {
+        public IReadOnlyList<string> ChavesCTe { get; init; } = Array.Empty<string>();
+    }
 
     public static class MdfeRecepcaoSincHomologacaoClient
     {
@@ -288,17 +332,40 @@ namespace Command.Receivers
             return Preparar(options);
         }
 
+        public static MdfeRecepcaoSincPrepared Preparar(IReadOnlyCollection<string> chavesCTe)
+        {
+            if (chavesCTe == null || chavesCTe.Count == 0)
+                throw new InvalidOperationException("Ao menos uma chave CT-e deve ser informada para preparar o MDF-e.");
+
+            var normalized = chavesCTe
+                .Select(OnlyDigits)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.Ordinal)
+                .ToArray();
+
+            var options = MdfeRecepcaoSincOptions.FromEnvironment() with
+            {
+                ChaveCTe = normalized[0],
+                ChavesCTe = normalized
+            };
+
+            return Preparar(options);
+        }
+
         public static MdfeRecepcaoSincResult Autorizar(MdfeRecepcaoSincPrepared prepared)
         {
             var options = MdfeRecepcaoSincOptions.FromEnvironment() with
             {
-                ChaveCTe = OnlyDigits(prepared.ChaveCTe)
+                ChaveCTe = OnlyDigits(prepared.ChaveCTe),
+                ChavesCTe = prepared.ChavesCTe.Count > 0
+                    ? prepared.ChavesCTe
+                    : new[] { OnlyDigits(prepared.ChaveCTe) }
             };
 
             return EnviarPreparadoAsync(options, prepared).GetAwaiter().GetResult();
         }
 
-        private static MdfeRecepcaoSincPrepared Preparar(MdfeRecepcaoSincOptions options)
+        internal static MdfeRecepcaoSincPrepared Preparar(MdfeRecepcaoSincOptions options)
         {
             options.ValidateForSend();
 
@@ -314,9 +381,12 @@ namespace Command.Receivers
                 chave,
                 chaveInfo.Numero,
                 chaveInfo.Serie,
-                OnlyDigits(options.ChaveCTe),
+                options.EffectiveChavesCTe()[0],
                 mdfeXml,
-                Hash(mdfeXml));
+                Hash(mdfeXml))
+            {
+                ChavesCTe = options.EffectiveChavesCTe()
+            };
         }
 
         private static async Task<MdfeRecepcaoSincResult> AutorizarAsync(MdfeRecepcaoSincOptions options)
@@ -482,9 +552,15 @@ namespace Command.Receivers
             AppendDocumentos(doc, infMDFe, options);
             AppendSeguro(doc, infMDFe, options);
             AppendProdutoPredominante(doc, infMDFe, options);
-            AppendTotais(doc, infMDFe);
-            AppendElement(doc, infMDFe, "infAdic", string.Empty);
-            AppendElement(doc, (XmlElement)infMDFe.LastChild!, "infCpl", HomologacaoTexto);
+            AppendTotais(doc, infMDFe, options);
+            var infAdic = AppendElement(doc, infMDFe, "infAdic");
+            AppendElement(
+                doc,
+                infAdic,
+                "infCpl",
+                string.IsNullOrWhiteSpace(options.ObservacaoFiscal)
+                    ? HomologacaoTexto
+                    : options.ObservacaoFiscal.Trim());
 
             var infMDFeSupl = AppendElement(doc, mdfe, "infMDFeSupl");
             AppendElement(
@@ -565,10 +641,10 @@ namespace Command.Receivers
 
             var comp = AppendElement(doc, infPag, "Comp");
             AppendElement(doc, comp, "tpComp", "99");
-            AppendElement(doc, comp, "vComp", "1000.00");
+            AppendElement(doc, comp, "vComp", Money(options.ValorContrato));
             AppendElement(doc, comp, "xComp", "FRETE");
 
-            AppendElement(doc, infPag, "vContrato", "1000.00");
+            AppendElement(doc, infPag, "vContrato", Money(options.ValorContrato));
             AppendElement(doc, infPag, "indPag", "0");
 
             var infBanc = AppendElement(doc, infPag, "infBanc");
@@ -599,8 +675,11 @@ namespace Command.Receivers
             AppendElement(doc, descarga, "cMunDescarga", options.CodigoMunicipioDescarga);
             AppendElement(doc, descarga, "xMunDescarga", options.MunicipioDescarga);
 
-            var infCTe = AppendElement(doc, descarga, "infCTe");
-            AppendElement(doc, infCTe, "chCTe", OnlyDigits(options.ChaveCTe));
+            foreach (var chaveCTe in options.EffectiveChavesCTe())
+            {
+                var infCTe = AppendElement(doc, descarga, "infCTe");
+                AppendElement(doc, infCTe, "chCTe", chaveCTe);
+            }
         }
 
         private static void AppendSeguro(XmlDocument doc, XmlElement infMDFe, MdfeRecepcaoSincOptions options)
@@ -620,8 +699,8 @@ namespace Command.Receivers
         private static void AppendProdutoPredominante(XmlDocument doc, XmlElement infMDFe, MdfeRecepcaoSincOptions options)
         {
             var prodPred = AppendElement(doc, infMDFe, "prodPred");
-            AppendElement(doc, prodPred, "tpCarga", "05");
-            AppendElement(doc, prodPred, "xProd", "PRODUTO HOMOLOGACAO");
+            AppendElement(doc, prodPred, "tpCarga", options.TipoCarga);
+            AppendElement(doc, prodPred, "xProd", options.ProdutoPredominante);
             AppendElement(doc, prodPred, "NCM", OnlyDigits(options.NcmProdutoPredominante));
 
             var infLotacao = AppendElement(doc, prodPred, "infLotacao");
@@ -632,13 +711,13 @@ namespace Command.Receivers
             AppendElement(doc, infLocalDescarrega, "CEP", OnlyDigits(options.CepDescarga));
         }
 
-        private static void AppendTotais(XmlDocument doc, XmlElement infMDFe)
+        private static void AppendTotais(XmlDocument doc, XmlElement infMDFe, MdfeRecepcaoSincOptions options)
         {
             var tot = AppendElement(doc, infMDFe, "tot");
-            AppendElement(doc, tot, "qCTe", "1");
-            AppendElement(doc, tot, "vCarga", "1000.00");
+            AppendElement(doc, tot, "qCTe", options.EffectiveChavesCTe().Count.ToString());
+            AppendElement(doc, tot, "vCarga", options.ValorCarga.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture));
             AppendElement(doc, tot, "cUnid", "01");
-            AppendElement(doc, tot, "qCarga", "100.0000");
+            AppendElement(doc, tot, "qCarga", options.PesoBruto.ToString("0.0000", System.Globalization.CultureInfo.InvariantCulture));
         }
 
         private static string SignMdfeXml(string xml, X509Certificate2 certificate)
@@ -790,6 +869,9 @@ namespace Command.Receivers
             element.InnerText = value;
             return element;
         }
+
+        private static string Money(decimal value)
+            => value.ToString("0.00", CultureInfo.InvariantCulture);
 
         private static void AppendElement(XmlDocument doc, XmlElement parent, string name, string value, string xmlNamespace)
         {

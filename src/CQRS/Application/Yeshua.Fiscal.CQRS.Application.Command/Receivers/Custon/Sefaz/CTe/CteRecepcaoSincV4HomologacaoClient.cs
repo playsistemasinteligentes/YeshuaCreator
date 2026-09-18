@@ -1,6 +1,9 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,6 +17,23 @@ using System.Xml;
 
 namespace Command.Receivers
 {
+    internal sealed record CteParticipantOptions(
+        string Documento,
+        string Nome,
+        string InscricaoEstadual,
+        string Logradouro,
+        string Numero,
+        string Bairro,
+        string CodigoMunicipio,
+        string Municipio,
+        string Cep,
+        string Uf)
+    {
+        public static CteParticipantOptions Empty { get; } = new(
+            string.Empty, string.Empty, string.Empty, string.Empty, string.Empty,
+            string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
+    }
+
     internal sealed record CteRecepcaoSincV4Options(
         int Ambiente,
         int CodigoUf,
@@ -27,6 +47,37 @@ namespace Command.Receivers
         string InscricaoEstadual,
         int TimeoutSeconds)
     {
+        public int TipoCTe { get; init; }
+        public int TipoServico { get; init; }
+        public int Modal { get; init; } = 1;
+        public int Globalizado { get; init; }
+        public string UfInicio { get; init; } = "PE";
+        public string UfFim { get; init; } = "PE";
+        public string MunicipioInicioCodigoIbge { get; init; } = "2611606";
+        public string MunicipioInicioNome { get; init; } = "RECIFE";
+        public string MunicipioFimCodigoIbge { get; init; } = "2607901";
+        public string MunicipioFimNome { get; init; } = "JABOATAO DOS GUARARAPES";
+        public string RemetenteDocumento { get; init; } = string.Empty;
+        public string DestinatarioDocumento { get; init; } = string.Empty;
+        public string TomadorDocumento { get; init; } = string.Empty;
+        public CteParticipantOptions Remetente { get; init; } = CteParticipantOptions.Empty;
+        public CteParticipantOptions Destinatario { get; init; } = CteParticipantOptions.Empty;
+        public string NomeFantasiaEmitente { get; init; } = string.Empty;
+        public string LogradouroEmitente { get; init; } = "RUA TESTE";
+        public string NumeroEnderecoEmitente { get; init; } = "100";
+        public string BairroEmitente { get; init; } = "CENTRO";
+        public string CepEmitente { get; init; } = "50000000";
+        public string MunicipioEmitenteCodigoIbge { get; init; } = "2611606";
+        public string MunicipioEmitenteNome { get; init; } = "RECIFE";
+        public string UfEmitente { get; init; } = "PE";
+        public int CrtEmitente { get; init; } = 3;
+        public string ObservacaoFiscal { get; init; } = string.Empty;
+        public string Rntrc { get; init; } = "45861338";
+        public decimal ValorServico { get; init; } = 100m;
+        public decimal ValorCarga { get; init; } = 1000m;
+        public decimal PesoBruto { get; init; } = 100m;
+        public IReadOnlyList<string> ChavesNFe { get; init; } = Array.Empty<string>();
+
         public static CteRecepcaoSincV4Options FromEnvironment()
         {
             var fixedOptions = new CteRecepcaoSincV4Options(
@@ -64,7 +115,27 @@ namespace Command.Receivers
                 InscricaoEstadual =
                     Environment.GetEnvironmentVariable("YESHUA_CTE_IE")
                     ?? Environment.GetEnvironmentVariable("YESHUA_CTE_INSCRICAO_ESTADUAL")
-                    ?? fixedOptions.InscricaoEstadual
+                    ?? fixedOptions.InscricaoEstadual,
+                NomeFantasiaEmitente = Environment.GetEnvironmentVariable("YESHUA_CTE_NOME_FANTASIA") ?? "ZANATA LOGISTICA",
+                LogradouroEmitente = Environment.GetEnvironmentVariable("YESHUA_CTE_ENDERECO_LOGRADOURO") ?? "RUA TESTE",
+                NumeroEnderecoEmitente = Environment.GetEnvironmentVariable("YESHUA_CTE_ENDERECO_NUMERO") ?? "100",
+                BairroEmitente = Environment.GetEnvironmentVariable("YESHUA_CTE_ENDERECO_BAIRRO") ?? "CENTRO",
+                CepEmitente = Environment.GetEnvironmentVariable("YESHUA_CTE_ENDERECO_CEP") ?? "50000000",
+                MunicipioEmitenteCodigoIbge = Environment.GetEnvironmentVariable("YESHUA_CTE_MUNICIPIO_CODIGO_IBGE") ?? "2611606",
+                MunicipioEmitenteNome = Environment.GetEnvironmentVariable("YESHUA_CTE_MUNICIPIO_NOME") ?? "RECIFE",
+                UfEmitente = Environment.GetEnvironmentVariable("YESHUA_CTE_UF") ?? "PE",
+                CrtEmitente = int.TryParse(Environment.GetEnvironmentVariable("YESHUA_CTE_CRT"), out var crt) ? crt : 3,
+                RemetenteDocumento =
+                    Environment.GetEnvironmentVariable("YESHUA_CTE_REMETENTE_DOCUMENTO")
+                    ?? Environment.GetEnvironmentVariable("YESHUA_CTE_CNPJ")
+                    ?? fixedOptions.CnpjEmitente,
+                DestinatarioDocumento = Environment.GetEnvironmentVariable("YESHUA_CTE_DESTINATARIO_DOCUMENTO") ?? "00000000000191",
+                TomadorDocumento =
+                    Environment.GetEnvironmentVariable("YESHUA_CTE_TOMADOR_DOCUMENTO")
+                    ?? Environment.GetEnvironmentVariable("YESHUA_CTE_REMETENTE_DOCUMENTO")
+                    ?? Environment.GetEnvironmentVariable("YESHUA_CTE_CNPJ")
+                    ?? fixedOptions.CnpjEmitente,
+                ObservacaoFiscal = Environment.GetEnvironmentVariable("YESHUA_CTE_OBSERVACAO_FISCAL") ?? string.Empty
             };
         }
 
@@ -87,7 +158,104 @@ namespace Command.Receivers
 
             if (string.IsNullOrWhiteSpace(CertificatePassword))
                 throw new InvalidOperationException("A senha do certificado CT-e deve ser informada.");
+
+            if (Modal != 1)
+                throw new NotSupportedException("O prototipo atual de CT-e implementa somente o modal rodoviario.");
+
+            if (TipoCTe != 0)
+                throw new NotSupportedException("O prototipo atual de CT-e implementa somente CT-e normal.");
+
+            if (TipoServico != 0)
+            {
+                throw new NotSupportedException(
+                    "Subcontratacao e redespacho exigem documentos anteriores e participantes proprios. " +
+                    "O montador atual implementa somente servico normal.");
+            }
+
+            if (Globalizado != 0)
+                throw new NotSupportedException("O CT-e globalizado ainda nao foi implementado no montador XML.");
+
+            if (Ambiente == 1)
+            {
+                throw new NotSupportedException(
+                    "A tributacao do CT-e ainda usa valores de homologacao. " +
+                    "Envio em producao permanece bloqueado ate a politica fiscal real ser implementada.");
+            }
+
+            if (ValorServico <= 0m)
+                throw new InvalidOperationException("O valor do servico do CT-e deve ser maior que zero.");
+
+            if (ValorCarga <= 0m)
+                throw new InvalidOperationException("O valor da carga do CT-e deve ser maior que zero.");
+
+            if (PesoBruto <= 0m)
+                throw new InvalidOperationException("O peso bruto do CT-e deve ser maior que zero.");
+
+            if (string.IsNullOrWhiteSpace(TomadorDocumento))
+                throw new InvalidOperationException("O documento do tomador do CT-e deve ser informado.");
+
+            ValidateParticipant(Remetente, RemetenteDocumento, "remetente");
+            ValidateParticipant(Destinatario, DestinatarioDocumento, "destinatario");
+
+            if (!SameDocument(TomadorDocumento, RemetenteDocumento) &&
+                !SameDocument(TomadorDocumento, DestinatarioDocumento))
+            {
+                throw new NotSupportedException(
+                    "O tomador informado nao e remetente nem destinatario. " +
+                    "O contrato atual ainda nao possui o cadastro completo exigido pelo toma4.");
+            }
+
+            if (string.IsNullOrWhiteSpace(RazaoSocial) ||
+                string.IsNullOrWhiteSpace(InscricaoEstadual) ||
+                string.IsNullOrWhiteSpace(LogradouroEmitente) ||
+                string.IsNullOrWhiteSpace(NumeroEnderecoEmitente) ||
+                string.IsNullOrWhiteSpace(BairroEmitente) ||
+                string.IsNullOrWhiteSpace(CepEmitente) ||
+                string.IsNullOrWhiteSpace(MunicipioEmitenteCodigoIbge) ||
+                string.IsNullOrWhiteSpace(MunicipioEmitenteNome) ||
+                string.IsNullOrWhiteSpace(UfEmitente))
+            {
+                throw new InvalidOperationException("O cadastro fiscal completo do emitente do CT-e deve ser informado.");
+            }
+
+            foreach (var chaveNFe in ChavesNFe)
+            {
+                if (chaveNFe.Length != 44 || chaveNFe.Any(character => character is < '0' or > '9'))
+                    throw new InvalidOperationException("Toda chave NF-e do CT-e deve possuir exatamente 44 digitos.");
+            }
         }
+
+        private static bool SameDocument(string first, string second)
+            => string.Equals(Digits(first), Digits(second), StringComparison.Ordinal);
+
+        private static void ValidateParticipant(
+            CteParticipantOptions participant,
+            string documentFallback,
+            string role)
+        {
+            var document = string.IsNullOrWhiteSpace(participant.Documento)
+                ? documentFallback
+                : participant.Documento;
+            if (Digits(document).Length is not 11 and not 14)
+                throw new InvalidOperationException($"O documento do {role} do CT-e deve ser informado.");
+
+            // pendencia: dados antigos de homologacao nao possuem snapshot completo.
+            // Novas entradas devem sempre preencher CTeParticipanteSnapshot a partir da NF-e.
+            if (!string.IsNullOrWhiteSpace(participant.Documento) &&
+                (string.IsNullOrWhiteSpace(participant.Nome) ||
+                 string.IsNullOrWhiteSpace(participant.Logradouro) ||
+                 string.IsNullOrWhiteSpace(participant.Numero) ||
+                 string.IsNullOrWhiteSpace(participant.Bairro) ||
+                 string.IsNullOrWhiteSpace(participant.CodigoMunicipio) ||
+                 string.IsNullOrWhiteSpace(participant.Municipio) ||
+                 string.IsNullOrWhiteSpace(participant.Uf)))
+            {
+                throw new InvalidOperationException($"O snapshot fiscal completo do {role} do CT-e deve ser informado.");
+            }
+        }
+
+        private static string Digits(string value)
+            => new(value.Where(character => character is >= '0' and <= '9').ToArray());
     }
 
     internal sealed record CteRecepcaoSincV4Result(
@@ -125,6 +293,11 @@ namespace Command.Receivers
             return Preparar(CteRecepcaoSincV4Options.FromEnvironment());
         }
 
+        public static CteRecepcaoSincV4Prepared Preparar(CteRecepcaoSincV4Options options)
+        {
+            return PrepararCore(options);
+        }
+
         public static CteRecepcaoSincV4Result Autorizar(CteRecepcaoSincV4Prepared prepared)
         {
             return EnviarAsync(CteRecepcaoSincV4Options.FromEnvironment(), prepared)
@@ -138,7 +311,7 @@ namespace Command.Receivers
             return await EnviarAsync(options, prepared).ConfigureAwait(false);
         }
 
-        private static CteRecepcaoSincV4Prepared Preparar(CteRecepcaoSincV4Options options)
+        private static CteRecepcaoSincV4Prepared PrepararCore(CteRecepcaoSincV4Options options)
         {
             options.ValidateForSend();
 
@@ -297,79 +470,120 @@ namespace Command.Receivers
             AppendElement(doc, ide, "tpEmis", "1");
             AppendElement(doc, ide, "cDV", chave[^1].ToString());
             AppendElement(doc, ide, "tpAmb", options.Ambiente.ToString());
-            AppendElement(doc, ide, "tpCTe", "0");
+            AppendElement(doc, ide, "tpCTe", options.TipoCTe.ToString(CultureInfo.InvariantCulture));
             AppendElement(doc, ide, "procEmi", "0");
             AppendElement(doc, ide, "verProc", "YESHUA-CTE-001");
-            AppendElement(doc, ide, "cMunEnv", "2611606");
-            AppendElement(doc, ide, "xMunEnv", "RECIFE");
-            AppendElement(doc, ide, "UFEnv", "PE");
-            AppendElement(doc, ide, "modal", "01");
-            AppendElement(doc, ide, "tpServ", "0");
-            AppendElement(doc, ide, "cMunIni", "2611606");
-            AppendElement(doc, ide, "xMunIni", "RECIFE");
-            AppendElement(doc, ide, "UFIni", "PE");
-            AppendElement(doc, ide, "cMunFim", "2607901");
-            AppendElement(doc, ide, "xMunFim", "JABOATAO DOS GUARARAPES");
-            AppendElement(doc, ide, "UFFim", "PE");
+            AppendElement(doc, ide, "cMunEnv", options.MunicipioInicioCodigoIbge);
+            AppendElement(doc, ide, "xMunEnv", options.MunicipioInicioNome);
+            AppendElement(doc, ide, "UFEnv", options.UfInicio);
+            AppendElement(doc, ide, "modal", options.Modal.ToString("D2", CultureInfo.InvariantCulture));
+            AppendElement(doc, ide, "tpServ", options.TipoServico.ToString(CultureInfo.InvariantCulture));
+            AppendElement(doc, ide, "cMunIni", options.MunicipioInicioCodigoIbge);
+            AppendElement(doc, ide, "xMunIni", options.MunicipioInicioNome);
+            AppendElement(doc, ide, "UFIni", options.UfInicio);
+            AppendElement(doc, ide, "cMunFim", options.MunicipioFimCodigoIbge);
+            AppendElement(doc, ide, "xMunFim", options.MunicipioFimNome);
+            AppendElement(doc, ide, "UFFim", options.UfFim);
             AppendElement(doc, ide, "retira", "1");
             AppendElement(doc, ide, "indIEToma", "1");
             var toma3 = AppendElement(doc, ide, "toma3");
-            AppendElement(doc, toma3, "toma", "0");
+            AppendElement(doc, toma3, "toma", ResolveToma3(options).ToString(CultureInfo.InvariantCulture));
+
+            if (!string.IsNullOrWhiteSpace(options.ObservacaoFiscal))
+            {
+                var compl = AppendElement(doc, infCte, "compl");
+                AppendElement(doc, compl, "xObs", options.ObservacaoFiscal.Trim());
+            }
 
             var emit = AppendElement(doc, infCte, "emit");
             AppendElement(doc, emit, "CNPJ", options.CnpjEmitente);
             AppendElement(doc, emit, "IE", options.InscricaoEstadual);
             AppendElement(doc, emit, "xNome", options.RazaoSocial);
-            AppendElement(doc, emit, "xFant", "ZANATA LOGISTICA");
-            AppendEndereco(doc, AppendElement(doc, emit, "enderEmit"), "RUA TESTE", "100", "CENTRO", "2611606", "RECIFE", "50000000", "PE", incluirPais: false);
-            AppendElement(doc, emit, "CRT", "3");
+            if (!string.IsNullOrWhiteSpace(options.NomeFantasiaEmitente))
+                AppendElement(doc, emit, "xFant", options.NomeFantasiaEmitente);
+            AppendEndereco(
+                doc,
+                AppendElement(doc, emit, "enderEmit"),
+                options.LogradouroEmitente,
+                options.NumeroEnderecoEmitente,
+                options.BairroEmitente,
+                options.MunicipioEmitenteCodigoIbge,
+                options.MunicipioEmitenteNome,
+                options.CepEmitente,
+                options.UfEmitente,
+                incluirPais: false);
+            AppendElement(doc, emit, "CRT", options.CrtEmitente.ToString(CultureInfo.InvariantCulture));
 
-            var rem = AppendElement(doc, infCte, "rem");
-            AppendElement(doc, rem, "CNPJ", options.CnpjEmitente);
-            AppendElement(doc, rem, "IE", options.InscricaoEstadual);
-            AppendElement(doc, rem, "xNome", HomologacaoNome);
-            AppendEndereco(doc, AppendElement(doc, rem, "enderReme"), "RUA TESTE", "100", "CENTRO", "2611606", "RECIFE", "50000000", "PE", incluirPais: true);
+            AppendParticipant(
+                doc,
+                infCte,
+                "rem",
+                "enderReme",
+                options.Remetente,
+                options.RemetenteDocumento,
+                options.CnpjEmitente,
+                options.InscricaoEstadual,
+                options.MunicipioInicioCodigoIbge,
+                options.MunicipioInicioNome,
+                options.UfInicio,
+                "RUA TESTE",
+                "100",
+                "50000000");
 
-            var dest = AppendElement(doc, infCte, "dest");
-            AppendElement(doc, dest, "CNPJ", "00000000000191");
-            AppendElement(doc, dest, "IE", "ISENTO");
-            AppendElement(doc, dest, "xNome", HomologacaoNome);
-            AppendEndereco(doc, AppendElement(doc, dest, "enderDest"), "AVENIDA TESTE", "200", "CENTRO", "2607901", "JABOATAO DOS GUARARAPES", "54000000", "PE", incluirPais: true);
+            AppendParticipant(
+                doc,
+                infCte,
+                "dest",
+                "enderDest",
+                options.Destinatario,
+                options.DestinatarioDocumento,
+                "00000000000191",
+                "ISENTO",
+                options.MunicipioFimCodigoIbge,
+                options.MunicipioFimNome,
+                options.UfFim,
+                "AVENIDA TESTE",
+                "200",
+                "54000000");
 
             var vPrest = AppendElement(doc, infCte, "vPrest");
-            AppendElement(doc, vPrest, "vTPrest", "100.00");
-            AppendElement(doc, vPrest, "vRec", "100.00");
+            AppendElement(doc, vPrest, "vTPrest", Money(options.ValorServico));
+            AppendElement(doc, vPrest, "vRec", Money(options.ValorServico));
             var comp = AppendElement(doc, vPrest, "Comp");
             AppendElement(doc, comp, "xNome", "FRETE");
-            AppendElement(doc, comp, "vComp", "100.00");
+            AppendElement(doc, comp, "vComp", Money(options.ValorServico));
 
             var imp = AppendElement(doc, infCte, "imp");
             var icms = AppendElement(doc, imp, "ICMS");
             var icms00 = AppendElement(doc, icms, "ICMS00");
             AppendElement(doc, icms00, "CST", "00");
-            AppendElement(doc, icms00, "vBC", "100.00");
+            AppendElement(doc, icms00, "vBC", Money(options.ValorServico));
             AppendElement(doc, icms00, "pICMS", "12.00");
-            AppendElement(doc, icms00, "vICMS", "12.00");
+            AppendElement(doc, icms00, "vICMS", Money(options.ValorServico * 0.12m));
             AppendIbsCbsHomologacao(doc, imp);
-            AppendElement(doc, imp, "vTotDFe", "100.00");
+            AppendElement(doc, imp, "vTotDFe", Money(options.ValorServico));
 
             var infCteNorm = AppendElement(doc, infCte, "infCTeNorm");
             var infCarga = AppendElement(doc, infCteNorm, "infCarga");
-            AppendElement(doc, infCarga, "vCarga", "1000.00");
+            AppendElement(doc, infCarga, "vCarga", Money(options.ValorCarga));
             AppendElement(doc, infCarga, "proPred", "MERCADORIA HOMOLOGACAO");
             var infQ = AppendElement(doc, infCarga, "infQ");
             AppendElement(doc, infQ, "cUnid", "01");
             AppendElement(doc, infQ, "tpMed", "PESO BRUTO");
-            AppendElement(doc, infQ, "qCarga", "100.0000");
+            AppendElement(doc, infQ, "qCarga", Quantity(options.PesoBruto));
 
             var infDoc = AppendElement(doc, infCteNorm, "infDoc");
-            var infNFe = AppendElement(doc, infDoc, "infNFe");
-            AppendElement(doc, infNFe, "chave", chaveNfeMock);
+            var chavesNFe = options.ChavesNFe.Count > 0 ? options.ChavesNFe : new[] { chaveNfeMock };
+            foreach (var chaveNFe in chavesNFe)
+            {
+                var infNFe = AppendElement(doc, infDoc, "infNFe");
+                AppendElement(doc, infNFe, "chave", chaveNFe);
+            }
 
             var infModal = AppendElement(doc, infCteNorm, "infModal");
             infModal.SetAttribute("versaoModal", "4.00");
             var rodo = AppendElement(doc, infModal, "rodo");
-            AppendElement(doc, rodo, "RNTRC", "45861338");
+            AppendElement(doc, rodo, "RNTRC", options.Rntrc);
 
             var infRespTec = AppendElement(doc, infCte, "infRespTec");
             AppendElement(doc, infRespTec, "CNPJ", options.CnpjEmitente);
@@ -385,6 +599,18 @@ namespace Command.Receivers
                 $"https://homologacao.nfe.fazenda.sp.gov.br/CTeConsulta/qrCode?chCTe={chave}&tpAmb={options.Ambiente}");
 
             return doc.OuterXml;
+        }
+
+        private static int ResolveToma3(CteRecepcaoSincV4Options options)
+        {
+            var tomador = OnlyDigits(options.TomadorDocumento);
+            if (string.Equals(tomador, OnlyDigits(options.RemetenteDocumento), StringComparison.Ordinal))
+                return 0;
+
+            if (string.Equals(tomador, OnlyDigits(options.DestinatarioDocumento), StringComparison.Ordinal))
+                return 3;
+
+            throw new NotSupportedException("O tomador informado exige toma4, ainda nao suportado pelo contrato atual.");
         }
 
         private static void AppendIbsCbsHomologacao(XmlDocument doc, XmlElement imp)
@@ -440,6 +666,68 @@ namespace Command.Receivers
                 AppendElement(doc, parent, "fone", "81999999999");
             }
         }
+
+        private static void AppendParticipant(
+            XmlDocument doc,
+            XmlElement infCte,
+            string elementName,
+            string addressElementName,
+            CteParticipantOptions participant,
+            string documentFallback,
+            string cnpjFallback,
+            string ieFallback,
+            string cityCodeFallback,
+            string cityFallback,
+            string ufFallback,
+            string streetFallback,
+            string numberFallback,
+            string cepFallback)
+        {
+            var element = AppendElement(doc, infCte, elementName);
+            AppendDocumento(
+                doc,
+                element,
+                FirstNotEmpty(participant.Documento, documentFallback),
+                cnpjFallback);
+            AppendElement(doc, element, "IE", FirstNotEmpty(participant.InscricaoEstadual, ieFallback));
+            AppendElement(doc, element, "xNome", FirstNotEmpty(participant.Nome, HomologacaoNome));
+            AppendEndereco(
+                doc,
+                AppendElement(doc, element, addressElementName),
+                FirstNotEmpty(participant.Logradouro, streetFallback),
+                FirstNotEmpty(participant.Numero, numberFallback),
+                FirstNotEmpty(participant.Bairro, "CENTRO"),
+                FirstNotEmpty(participant.CodigoMunicipio, cityCodeFallback),
+                FirstNotEmpty(participant.Municipio, cityFallback),
+                FirstNotEmpty(participant.Cep, cepFallback),
+                FirstNotEmpty(participant.Uf, ufFallback),
+                incluirPais: true);
+        }
+
+        private static string FirstNotEmpty(string first, string fallback)
+            => string.IsNullOrWhiteSpace(first) ? fallback : first;
+
+        private static void AppendDocumento(
+            XmlDocument doc,
+            XmlElement parent,
+            string documento,
+            string fallbackCnpj)
+        {
+            var digits = OnlyDigits(documento);
+            if (digits.Length == 11)
+            {
+                AppendElement(doc, parent, "CPF", digits);
+                return;
+            }
+
+            AppendElement(doc, parent, "CNPJ", digits.Length == 14 ? digits : OnlyDigits(fallbackCnpj));
+        }
+
+        private static string Money(decimal value)
+            => value.ToString("0.00", CultureInfo.InvariantCulture);
+
+        private static string Quantity(decimal value)
+            => value.ToString("0.0000", CultureInfo.InvariantCulture);
 
         private static string SignCteXml(string xml, X509Certificate2 certificate)
         {

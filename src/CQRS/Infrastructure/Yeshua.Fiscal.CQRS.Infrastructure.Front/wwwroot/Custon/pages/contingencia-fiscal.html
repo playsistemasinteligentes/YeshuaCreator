@@ -169,6 +169,18 @@
                         <option value="aps_snapshot">Snapshot APS</option>
                     </select>
                 </label>
+                <label>
+                    Tipo carga MDF-e
+                    <input id="fiscal-tipo-carga-mdfe" type="text" maxlength="2">
+                </label>
+                <label>
+                    Produto predominante MDF-e
+                    <input id="fiscal-produto-predominante-mdfe" type="text">
+                </label>
+                <label>
+                    NCM predominante MDF-e
+                    <input id="fiscal-ncm-produto-predominante-mdfe" type="text" maxlength="8">
+                </label>
                 <label class="wide">
                     Observacao fiscal
                     <textarea id="fiscal-observacao-fiscal" rows="3"></textarea>
@@ -223,7 +235,7 @@
                     <button id="fiscal-send-notas" type="button" class="primary">Enviar XMLs</button>
                     <button id="fiscal-send-preview" type="button">Preview</button>
                     <button id="fiscal-confirmar-plano" type="button" class="primary">Confirmar</button>
-                    <button id="fiscal-consultar-processamento" type="button" hidden>Atualizar</button>
+                    <button id="fiscal-consultar-processamento" type="button" disabled>Atualizar</button>
                     <button id="fiscal-baixar-documentos" type="button" class="primary" disabled>Baixar documentos</button>
                 </div>
             </div>

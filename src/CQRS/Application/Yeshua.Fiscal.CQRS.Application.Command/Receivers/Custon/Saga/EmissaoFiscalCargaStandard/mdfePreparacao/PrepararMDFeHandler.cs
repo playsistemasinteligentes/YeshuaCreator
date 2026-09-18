@@ -14,7 +14,9 @@ using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Command.Receivers
 {
@@ -53,16 +55,19 @@ namespace Command.Receivers
             if (solicitacao == null || solicitacao.id <= 0)
                 throw new InvalidOperationException($"Carga {cargaId}: solicitacao fiscal MDF-e nao encontrada para preparar MDF-e.");
 
-            var documento = _mdfeDocumentoOriginarioReadRepository
-                .GetAllByMDFeSolicitacaoFiscalId(solicitacao.id)
-                .FirstOrDefault(x => string.Equals(x.tipodocumento, "CTe", StringComparison.OrdinalIgnoreCase));
+            var chavesCTe = (_mdfeDocumentoOriginarioReadRepository.GetAllByMDFeSolicitacaoFiscalId(solicitacao.id)
+                    ?? Array.Empty<Repositorio.Outputs.MDFeDocumentoOriginarioDTO>())
+                .Where(x => string.Equals(x.tipodocumento, "CTe", StringComparison.OrdinalIgnoreCase))
+                .Select(x => OnlyDigits(x.chaveacesso ?? string.Empty))
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
 
-            if (documento == null || documento.id <= 0)
-                throw new InvalidOperationException($"Carga {cargaId}: documento CT-e originario nao encontrado para preparar MDF-e.");
+            if (chavesCTe.Count == 0)
+                throw new InvalidOperationException($"Carga {cargaId}: documentos CT-e originarios nao encontrados para preparar MDF-e.");
 
-            var chaveCTe = OnlyDigits(documento.chaveacesso ?? string.Empty);
-            if (chaveCTe.Length != 44)
-                throw new InvalidOperationException($"Carga {cargaId}: chave CT-e originaria invalida para MDF-e.");
+            if (chavesCTe.Any(x => x.Length != 44))
+                throw new InvalidOperationException($"Carga {cargaId}: existe chave CT-e originaria invalida para MDF-e.");
 
             var tentativa = _mdfeTentativaEmissaoReadRepository.FirstByMDFeSolicitacaoFiscalId(solicitacao.id);
             var tentativaId = tentativa?.id ?? 0;
@@ -74,7 +79,8 @@ namespace Command.Receivers
 
             if (tentativaId <= 0)
             {
-                var prepared = MdfeRecepcaoSincHomologacaoClient.Preparar(chaveCTe);
+                var options = BuildOptions(solicitacao, chavesCTe);
+                var prepared = MdfeRecepcaoSincHomologacaoClient.Preparar(options);
                 var storage = SefazFiscalDocumentStore.SalvarXmlResposta("mdfe", "preparacao", prepared.Chave, prepared.XmlMDFe);
 
                 var entity = new MDFeTentativaEmissaoFactory(_logger).Create(
@@ -124,7 +130,7 @@ namespace Command.Receivers
                     chave,
                     numero,
                     serie,
-                    chaveCTe,
+                    quantidadeCTes = chavesCTe.Count,
                     xmlAssinadoStorageKey = storageKey,
                     xmlHash
                 }));
@@ -148,6 +154,102 @@ namespace Command.Receivers
 
             return new string(buffer, 0, count);
         }
+
+        private static MdfeRecepcaoSincOptions BuildOptions(
+            Repositorio.Outputs.MDFeSolicitacaoFiscalDTO solicitacao,
+            IReadOnlyCollection<string> chavesCTe)
+        {
+            var defaults = MdfeRecepcaoSincOptions.FromEnvironment();
+            var snapshot = solicitacao.transportesnapshotjson ?? string.Empty;
+
+            return defaults with
+            {
+                Ambiente = solicitacao.ambiente,
+                CodigoUf = JsonInt(snapshot, "CodigoUf", "codigoUf") ?? CodigoUf(solicitacao.ufcarregamento, defaults.CodigoUf),
+                CnpjEmitente = FirstNotEmpty(JsonText(snapshot, "CnpjEmitente", "cnpjEmitente"), defaults.CnpjEmitente),
+                CodigoMunicipioEmitente = FirstNotEmpty(JsonText(snapshot, "CodigoMunicipioEmitente", "codigoMunicipioEmitente"), defaults.CodigoMunicipioEmitente),
+                MunicipioEmitente = FirstNotEmpty(JsonText(snapshot, "MunicipioEmitente", "municipioEmitente"), defaults.MunicipioEmitente),
+                UfEmitente = FirstNotEmpty(solicitacao.ufcarregamento, defaults.UfEmitente),
+                CodigoMunicipioDescarga = FirstNotEmpty(JsonText(snapshot, "CodigoMunicipioDescarga", "codigoMunicipioDescarga"), defaults.CodigoMunicipioDescarga),
+                MunicipioDescarga = FirstNotEmpty(JsonText(snapshot, "MunicipioDescarga", "municipioDescarga"), defaults.MunicipioDescarga),
+                UfDescarga = FirstNotEmpty(solicitacao.ufdescarregamento, defaults.UfDescarga),
+                Placa = FirstNotEmpty(solicitacao.placaveiculo, defaults.Placa),
+                CondutorCpf = FirstNotEmpty(solicitacao.condutordocumento, defaults.CondutorCpf),
+                CondutorNome = FirstNotEmpty(JsonText(snapshot, "condutorNome", "CondutorNome"), defaults.CondutorNome),
+                Rntrc = FirstNotEmpty(JsonText(snapshot, "Rntrc", "rntrc", "RNTRC"), defaults.Rntrc),
+                Renavam = FirstNotEmpty(JsonText(snapshot, "Renavam", "renavam"), defaults.Renavam),
+                TaraKg = FirstNotEmpty(JsonText(snapshot, "TaraKg", "taraKg"), defaults.TaraKg),
+                CapacidadeKg = FirstNotEmpty(JsonText(snapshot, "CapacidadeKg", "capacidadeKg"), defaults.CapacidadeKg),
+                CapacidadeM3 = FirstNotEmpty(JsonText(snapshot, "CapacidadeM3", "capacidadeM3"), defaults.CapacidadeM3),
+                TipoRodado = FirstNotEmpty(JsonText(snapshot, "TipoRodado", "tipoRodado"), defaults.TipoRodado),
+                TipoCarroceria = FirstNotEmpty(JsonText(snapshot, "TipoCarroceria", "tipoCarroceria"), defaults.TipoCarroceria),
+                TipoCarga = FirstNotEmpty(JsonText(snapshot, "TipoCarga", "tipoCarga"), defaults.TipoCarga),
+                ProdutoPredominante = FirstNotEmpty(JsonText(snapshot, "ProdutoPredominante", "produtoPredominante"), defaults.ProdutoPredominante),
+                NcmProdutoPredominante = FirstNotEmpty(JsonText(snapshot, "NcmProdutoPredominante", "ncmProdutoPredominante"), defaults.NcmProdutoPredominante),
+                ObservacaoFiscal = FirstNotEmpty(JsonText(snapshot, "ObservacaoFiscal", "observacaoFiscal"), defaults.ObservacaoFiscal),
+                ValorCarga = JsonDecimal(snapshot, "ValorCarga", "valorCarga") ?? defaults.ValorCarga,
+                PesoBruto = JsonDecimal(snapshot, "PesoBruto", "pesoBruto") ?? defaults.PesoBruto,
+                ValorContrato = JsonDecimal(snapshot, "ValorContrato", "valorContrato") ?? defaults.ValorContrato,
+                ChavesCTe = chavesCTe.ToArray()
+            };
+        }
+
+        private static string JsonText(string json, params string[] names)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return string.Empty;
+
+            try
+            {
+                using var document = JsonDocument.Parse(json);
+                foreach (var name in names)
+                {
+                    foreach (var property in document.RootElement.EnumerateObject())
+                    {
+                        if (string.Equals(property.Name, name, StringComparison.OrdinalIgnoreCase))
+                            return property.Value.ValueKind == JsonValueKind.String
+                                ? property.Value.GetString() ?? string.Empty
+                                : property.Value.ToString();
+                    }
+                }
+            }
+            catch (JsonException)
+            {
+                return string.Empty;
+            }
+
+            return string.Empty;
+        }
+
+        private static int? JsonInt(string json, params string[] names)
+        {
+            var text = JsonText(json, names);
+            return int.TryParse(text, out var value) ? value : null;
+        }
+
+        private static decimal? JsonDecimal(string json, params string[] names)
+        {
+            var text = JsonText(json, names);
+            return decimal.TryParse(text, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out var value)
+                ? value
+                : null;
+        }
+
+        private static int CodigoUf(string uf, int fallback)
+        {
+            return (uf ?? string.Empty).Trim().ToUpperInvariant() switch
+            {
+                "RO" => 11, "AC" => 12, "AM" => 13, "RR" => 14, "PA" => 15, "AP" => 16, "TO" => 17,
+                "MA" => 21, "PI" => 22, "CE" => 23, "RN" => 24, "PB" => 25, "PE" => 26, "AL" => 27, "SE" => 28, "BA" => 29,
+                "MG" => 31, "ES" => 32, "RJ" => 33, "SP" => 35,
+                "PR" => 41, "SC" => 42, "RS" => 43,
+                "MS" => 50, "MT" => 51, "GO" => 52, "DF" => 53,
+                _ => fallback
+            };
+        }
+
+        private static string FirstNotEmpty(string first, string second)
+            => string.IsNullOrWhiteSpace(first) ? second ?? string.Empty : first;
     }
 }
 

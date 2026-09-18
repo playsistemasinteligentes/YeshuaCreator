@@ -14,6 +14,8 @@ using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Command.Receivers
 {
@@ -52,37 +54,51 @@ namespace Command.Receivers
             if (romaneio == null || romaneio.id <= 0)
                 throw new InvalidOperationException($"Carga {cargaId}: romaneio consolidado CT-e nao encontrado para publicar ao MDF-e.");
 
-            var solicitacao = _cteSolicitacaoFiscalReadRepository.FirstByRomaneioConsolidadoId(romaneio.id);
-            if (solicitacao == null || solicitacao.id <= 0)
-                throw new InvalidOperationException($"Carga {cargaId}: solicitacao fiscal CT-e nao encontrada para publicar ao MDF-e.");
+            var solicitacoes = (_cteSolicitacaoFiscalReadRepository.GetAllByRomaneioConsolidadoId(romaneio.id)
+                    ?? Array.Empty<Repositorio.Outputs.CTeSolicitacaoFiscalDTO>())
+                .OrderBy(x => x.id)
+                .ToList();
 
-            var tentativa = _cteTentativaEmissaoReadRepository.FirstByCTeSolicitacaoFiscalId(solicitacao.id);
-            if (tentativa == null || tentativa.id <= 0)
-                throw new InvalidOperationException($"Carga {cargaId}: tentativa CT-e nao encontrada para publicar ao MDF-e.");
+            if (solicitacoes.Count == 0)
+                throw new InvalidOperationException($"Carga {cargaId}: solicitacoes fiscais CT-e nao encontradas para publicar ao MDF-e.");
 
-            if (tentativa.status != 3)
-                throw new InvalidOperationException($"Carga {cargaId}: CT-e ainda nao autorizado para MDF-e. StatusTentativa={tentativa.status}; cStat={tentativa.codigoretorno}; xMotivo={tentativa.mensagemretorno}");
-
-            var saida = _cteSaidaMDFeReadRepository.FirstByCTeTentativaEmissaoId(tentativa.id);
-            var saidaId = saida?.id ?? 0;
-            if (saidaId <= 0)
+            var saidas = new List<int>(solicitacoes.Count);
+            foreach (var solicitacao in solicitacoes)
             {
-                var entity = new CTeSaidaMDFeFactory(_logger).Create(
-                    null,
-                    tentativa.id,
-                    saga.CorrelationId.ToString(),
-                    tentativa.chaveacesso,
-                    tentativa.xmlhash,
-                    string.Empty,
-                    DateTime.UtcNow,
-                    string.Empty,
-                    1);
+                var tentativa = (_cteTentativaEmissaoReadRepository.GetAllByCTeSolicitacaoFiscalId(solicitacao.id)
+                        ?? Array.Empty<Repositorio.Outputs.CTeTentativaEmissaoDTO>())
+                    .OrderByDescending(x => x.id)
+                    .FirstOrDefault();
 
-                _cteSaidaMDFeWriteRepository.Insert(entity);
-                if (!entity.Id.HasValue || entity.Id.Value <= 0)
-                    throw new InvalidOperationException($"Carga {cargaId}: saida CT-e para MDF-e nao recebeu Id apos insert.");
+                if (tentativa == null || tentativa.id <= 0)
+                    throw new InvalidOperationException($"Carga {cargaId}: tentativa CT-e da solicitacao {solicitacao.id} nao encontrada para publicar ao MDF-e.");
 
-                saidaId = entity.Id.Value;
+                if (tentativa.status != 3)
+                    throw new InvalidOperationException($"Carga {cargaId}: CT-e da solicitacao {solicitacao.id} ainda nao autorizado para MDF-e. StatusTentativa={tentativa.status}; cStat={tentativa.codigoretorno}; xMotivo={tentativa.mensagemretorno}");
+
+                var saida = _cteSaidaMDFeReadRepository.FirstByCTeTentativaEmissaoId(tentativa.id);
+                var saidaId = saida?.id ?? 0;
+                if (saidaId <= 0)
+                {
+                    var entity = new CTeSaidaMDFeFactory(_logger).Create(
+                        null,
+                        tentativa.id,
+                        saga.CorrelationId.ToString(),
+                        tentativa.chaveacesso,
+                        tentativa.xmlhash,
+                        string.Empty,
+                        DateTime.UtcNow,
+                        string.Empty,
+                        1);
+
+                    _cteSaidaMDFeWriteRepository.Insert(entity);
+                    if (!entity.Id.HasValue || entity.Id.Value <= 0)
+                        throw new InvalidOperationException($"Carga {cargaId}: saida CT-e para MDF-e nao recebeu Id apos insert.");
+
+                    saidaId = entity.Id.Value;
+                }
+
+                saidas.Add(saidaId);
             }
 
             _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(
@@ -93,14 +109,10 @@ namespace Command.Receivers
                 new
                 {
                     origem = "Fiscal",
-                    modo = "cte-autorizado-disponivel-para-mdfe",
+                    modo = "ctes-autorizados-disponiveis-para-mdfe",
                     entityId = saga.EntityId,
-                    cteSolicitacaoFiscalId = solicitacao.id,
-                    cteTentativaEmissaoId = tentativa.id,
-                    cteSaidaMDFeId = saidaId,
-                    chave = tentativa.chaveacesso,
-                    protocolo = tentativa.protocoloautorizacao,
-                    xmlHash = tentativa.xmlhash
+                    quantidadeCTes = solicitacoes.Count,
+                    quantidadeSaidasMDFe = saidas.Count
                 }));
         }
 

@@ -3,7 +3,7 @@ window.yeshuaExtensions.menu = window.yeshuaExtensions.menu || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
 
 window.yeshuaExtensions.pages['contingencia-fiscal'] = async function openContingenciaFiscal() {
-    const page = await import('/Custon/pages/contingencia-fiscal.js?v=20260917-followupbutton01');
+    const page = await import('/Custon/pages/contingencia-fiscal.js?v=20260918-mdfeplan01');
     await page.renderContingenciaFiscal();
 };
 

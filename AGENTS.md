@@ -530,6 +530,15 @@ os miolos customizados.
 - MDF-e usa a relacao oficial de servicos do Portal MDF-e/SVRS por ambiente.
   Endpoints, QR Code, timeout, certificado e versao de schema sao configuracoes
   do aplicativo fiscal, nunca constantes escondidas na Engine.
+- `pendencia`: toda contingencia fiscal deve pertencer a um Tenant e apontar
+  para o transportador utilizado. Dados reutilizaveis preenchidos durante a
+  contingencia devem alimentar o cadastro do Tenant, especialmente o
+  transportador e sua referencia de certificado. No recorte inicial, a tela
+  deve aceitar certificado A1/PFX e senha, armazenar o arquivo no storage e
+  disponibiliza-lo para novas contingencias do mesmo Tenant/transportador sem
+  carregar certificado ou senha em payloads e logs. No futuro, o armazenamento
+  deve migrar para uma API/cofre de certificados instalavel localmente pelo
+  cliente; o modulo Fiscal deve conhecer somente uma referencia segura.
 - A pesquisa de CT-e deve evoluir por subassuntos pequenos, conforme
   `docs/Fiscal/CTe/CTE_PLANO_DE_PESQUISA.md`; implementar somente quando houver
   fonte oficial, contrato de entrada, persistencia, erro esperado e evidencia

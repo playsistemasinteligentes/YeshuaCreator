@@ -9,6 +9,19 @@ namespace Command.Receivers
 {
     internal static class FiscalContingenciaPayload
     {
+        private static readonly HashSet<string> TiposAgrupamentoCTeSuportados = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "um_cte_por_nfe",
+            "agrupar_por_destinatario",
+            "cte_unico_da_carga"
+        };
+
+        private static readonly HashSet<string> EstrategiasRateioFreteSuportadas = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "proporcional_valor_documento",
+            "proporcional_peso_bruto"
+        };
+
         public static int EntradaId(string payload)
             => Int(payload, "entradaFiscalContingenciaId", "EntradaFiscalContingenciaId");
 
@@ -101,9 +114,13 @@ namespace Command.Receivers
         public static List<string> Pendencias(EntradaFiscalContingenciaDTO entrada, IEnumerable<NFeProdutoSnapshotDTO> documentos)
         {
             var pendencias = new List<string>();
+            var documentosLista = documentos as IReadOnlyCollection<NFeProdutoSnapshotDTO> ?? documentos.ToArray();
             var complemento = ComplementoJson(entrada);
 
             Require(pendencias, entrada.cargaid, "CargaId");
+            Require(pendencias, Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"), "EmitenteFiscalDocumento");
+            Require(pendencias, Value(entrada.tomadordocumento, complemento, "tomadorDocumento", "cnpjTomador"), "TomadorDocumento");
+            Require(pendencias, Value(entrada.transportadordocumento, complemento, "transportadorDocumento", "cnpjTransportador"), "TransportadorDocumento");
             Require(pendencias, Value(entrada.rntrc, complemento, "rntrc", "RNTRC"), "RNTRC");
             Require(pendencias, Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"), "PlacaVeiculo");
             Require(pendencias, Value(entrada.ufveiculo, complemento, "ufVeiculo", "UFVeiculo"), "UFVeiculo");
@@ -120,17 +137,40 @@ namespace Command.Receivers
             }
             else
             {
-                Require(pendencias, Text(complemento, "tipoAgrupamentoCTe", "tipoAgrupamentoCte"), "TipoAgrupamentoCTe");
-                Require(pendencias, Text(complemento, "estrategiaRateioFrete"), "EstrategiaRateioFrete");
+                var tipoAgrupamento = Text(complemento, "tipoAgrupamentoCTe", "tipoAgrupamentoCte");
+                var estrategiaRateio = Text(complemento, "estrategiaRateioFrete");
+                var tipoCargaMdfe = Text(complemento, "tipoCargaMDFe", "tipoCarga");
+                var produtoPredominanteMdfe = Text(complemento, "produtoPredominanteMDFe", "produtoPredominante");
+                var ncmProdutoPredominanteMdfe = Text(complemento, "ncmProdutoPredominanteMDFe", "ncmProdutoPredominante");
+
+                Require(pendencias, tipoAgrupamento, "TipoAgrupamentoCTe");
+                Require(pendencias, estrategiaRateio, "EstrategiaRateioFrete");
+                Require(pendencias, tipoCargaMdfe, "TipoCargaMDFe");
+                Require(pendencias, produtoPredominanteMdfe, "ProdutoPredominanteMDFe");
+                Require(pendencias, ncmProdutoPredominanteMdfe, "NcmProdutoPredominanteMDFe");
 
                 if (Number(complemento, "valorFrete", "valorServico") <= 0m)
                     pendencias.Add("ValorFrete");
+
+                if (!string.IsNullOrWhiteSpace(tipoCargaMdfe) &&
+                    (tipoCargaMdfe.Length != 2 || !tipoCargaMdfe.All(char.IsDigit)))
+                {
+                    pendencias.Add("TipoCargaMDFeInvalido");
+                }
+
+                if (!string.IsNullOrWhiteSpace(ncmProdutoPredominanteMdfe) &&
+                    (ncmProdutoPredominanteMdfe.Length != 8 || !ncmProdutoPredominanteMdfe.All(char.IsDigit)))
+                {
+                    pendencias.Add("NcmProdutoPredominanteMDFeInvalido");
+                }
+
+                ValidarParametrosDoPlano(pendencias, entrada, documentosLista, tipoAgrupamento, estrategiaRateio);
             }
 
-            if (!documentos.Any())
+            if (!documentosLista.Any())
                 pendencias.Add("DocumentosOriginarios");
 
-            return pendencias;
+            return pendencias.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         }
 
         public static string SummaryJson(EntradaFiscalContingenciaDTO entrada, IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos)
@@ -161,6 +201,9 @@ namespace Command.Receivers
                 tipoAgrupamentoCTe = Text(complemento, "tipoAgrupamentoCTe", "tipoAgrupamentoCte"),
                 estrategiaRateioFrete = Text(complemento, "estrategiaRateioFrete"),
                 origemRotaFiscal = Text(complemento, "origemRotaFiscal"),
+                tipoCargaMDFe = Text(complemento, "tipoCargaMDFe", "tipoCarga"),
+                produtoPredominanteMDFe = Text(complemento, "produtoPredominanteMDFe", "produtoPredominante"),
+                ncmProdutoPredominanteMDFe = Text(complemento, "ncmProdutoPredominanteMDFe", "ncmProdutoPredominante"),
                 observacaoFiscal = Text(complemento, "observacaoFiscal"),
                 dadosComplementaresJson = complemento,
                 documentos = documentos.Select(x => new
@@ -191,6 +234,41 @@ namespace Command.Receivers
             var valorFrete = Number(complemento, "valorFrete", "valorServico");
             var grupos = AgruparDocumentos(entrada, documentos, tipoAgrupamento);
             var totalBaseRateio = grupos.Sum(x => BaseRateio(x.Documentos, estrategiaRateio));
+            var valorFreteRateado = 0m;
+            var podeRatear = valorFrete > 0m &&
+                totalBaseRateio > 0m &&
+                EstrategiasRateioFreteSuportadas.Contains(estrategiaRateio);
+            var ctesPrevistos = grupos.Select((grupo, indice) =>
+            {
+                var baseRateio = BaseRateio(grupo.Documentos, estrategiaRateio);
+                var freteDoGrupo = !podeRatear
+                    ? 0m
+                    : indice == grupos.Count - 1
+                        ? Math.Round(valorFrete - valorFreteRateado, 2, MidpointRounding.AwayFromZero)
+                        : RatearValorFrete(valorFrete, estrategiaRateio, baseRateio, totalBaseRateio);
+                valorFreteRateado += freteDoGrupo;
+
+                return new
+                {
+                    grupo.Chave,
+                    grupo.Descricao,
+                    quantidadeDocumentos = grupo.Documentos.Count,
+                    valorDocumentos = grupo.Documentos.Sum(x => x.valordocumento),
+                    pesoBruto = grupo.Documentos.Sum(x => x.pesobruto),
+                    valorFreteRateado = freteDoGrupo,
+                    documentos = grupo.Documentos.Select(x => new
+                    {
+                        x.chaveacesso,
+                        x.emitentedocumento,
+                        x.destinatariodocumento,
+                        x.uforigem,
+                        x.ufdestino,
+                        x.valordocumento,
+                        x.pesobruto
+                    }).ToArray()
+                };
+            }).ToArray();
+            var pendencias = Pendencias(entrada, documentos);
 
             return JsonSerializer.Serialize(new
             {
@@ -198,7 +276,11 @@ namespace Command.Receivers
                 entrada.id,
                 entrada.correlationid,
                 entrada.cargaid,
+                entrada.tiposolicitante,
                 entrada.ambiente,
+                emitenteFiscalDocumento = Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
+                tomadorDocumento = Value(entrada.tomadordocumento, complemento, "tomadorDocumento", "cnpjTomador"),
+                transportadorDocumento = Value(entrada.transportadordocumento, complemento, "transportadorDocumento", "cnpjTransportador"),
                 rntrc = Value(entrada.rntrc, complemento, "rntrc", "RNTRC"),
                 placaveiculo = Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"),
                 ufveiculo = Value(entrada.ufveiculo, complemento, "ufVeiculo", "UFVeiculo"),
@@ -215,34 +297,41 @@ namespace Command.Receivers
                 valorFrete,
                 tipoAgrupamentoCTe = tipoAgrupamento,
                 estrategiaRateioFrete = estrategiaRateio,
+                tipoCTe = Int(complemento, "tipoCTe", "TipoCTe"),
+                tipoServico = Int(complemento, "tipoServico", "TipoServico"),
+                modal = Int(complemento, "modal", "Modal"),
+                globalizado = Int(complemento, "globalizado", "Globalizado"),
                 origemRotaFiscal = Text(complemento, "origemRotaFiscal"),
                 observacaoFiscal = Text(complemento, "observacaoFiscal"),
                 dadosComplementaresJson = complemento,
                 preferenciasFiscaisJson = complemento,
-                pendencias = Pendencias(entrada, documentos),
-                ctesPrevistos = grupos.Select(grupo =>
+                pendencias,
+                ctesPrevistos,
+                mdfesPrevistos = new[]
                 {
-                    var baseRateio = BaseRateio(grupo.Documentos, estrategiaRateio);
-                    return new
+                    new
                     {
-                        grupo.Chave,
-                        grupo.Descricao,
-                        quantidadeDocumentos = grupo.Documentos.Count,
-                        valorDocumentos = grupo.Documentos.Sum(x => x.valordocumento),
-                        pesoBruto = grupo.Documentos.Sum(x => x.pesobruto),
-                        valorFreteRateado = RatearValorFrete(valorFrete, estrategiaRateio, baseRateio, totalBaseRateio),
-                        documentos = grupo.Documentos.Select(x => new
-                        {
-                            x.chaveacesso,
-                            x.emitentedocumento,
-                            x.destinatariodocumento,
-                            x.uforigem,
-                            x.ufdestino,
-                            x.valordocumento,
-                            x.pesobruto
-                        })
-                    };
-                })
+                        chave = entrada.cargaid,
+                        descricao = "MDF-e da carga",
+                        quantidadeCTes = ctesPrevistos.Length,
+                        ctes = ctesPrevistos.Select(x => x.Chave).ToArray(),
+                        ufinicio = Value(entrada.ufinicio, complemento, "ufInicio", "UFInicio"),
+                        uffim = Value(entrada.uffim, complemento, "ufFim", "UFFim"),
+                        municipioiniciocodigoibge = Value(entrada.municipioiniciocodigoibge, complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"),
+                        municipiofimcodigoibge = Value(entrada.municipiofimcodigoibge, complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"),
+                        rntrc = Value(entrada.rntrc, complemento, "rntrc", "RNTRC"),
+                        placaveiculo = Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"),
+                        condutordocumento = Value(entrada.condutordocumento, complemento, "condutorDocumento", "cpfMotorista", "cpfCondutor"),
+                        condutornome = Value(entrada.condutornome, complemento, "condutorNome", "nomeMotorista", "nomeCondutor"),
+                        tipoCarga = Text(complemento, "tipoCargaMDFe", "tipoCarga"),
+                        produtoPredominante = Text(complemento, "produtoPredominanteMDFe", "produtoPredominante"),
+                        ncmProdutoPredominante = Text(complemento, "ncmProdutoPredominanteMDFe", "ncmProdutoPredominante"),
+                        valorFrete,
+                        valorCarga = documentos.Sum(x => x.valordocumento),
+                        pesoBruto = documentos.Sum(x => x.pesobruto),
+                        observacaoFiscal = Text(complemento, "observacaoFiscal")
+                    }
+                }
             });
         }
 
@@ -288,6 +377,93 @@ namespace Command.Receivers
         {
             if (string.IsNullOrWhiteSpace(value))
                 pendencias.Add(field);
+        }
+
+        private static void ValidarParametrosDoPlano(
+            List<string> pendencias,
+            EntradaFiscalContingenciaDTO entrada,
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos,
+            string tipoAgrupamento,
+            string estrategiaRateio)
+        {
+            if (!string.IsNullOrWhiteSpace(tipoAgrupamento) && !TiposAgrupamentoCTeSuportados.Contains(tipoAgrupamento))
+                pendencias.Add("TipoAgrupamentoCTeInvalido");
+
+            if (!string.IsNullOrWhiteSpace(estrategiaRateio) && !EstrategiasRateioFreteSuportadas.Contains(estrategiaRateio))
+                pendencias.Add("EstrategiaRateioFreteNaoImplementada");
+
+            if (documentos.Count == 0 || !TiposAgrupamentoCTeSuportados.Contains(tipoAgrupamento))
+                return;
+
+            ValidarDocumentosOriginarios(pendencias, documentos);
+
+            if (EstrategiasRateioFreteSuportadas.Contains(estrategiaRateio))
+                ValidarBaseRateio(pendencias, documentos, estrategiaRateio);
+
+            var grupos = AgruparDocumentos(entrada, documentos, tipoAgrupamento);
+            foreach (var grupo in grupos)
+                ValidarGrupoCTe(pendencias, grupo);
+        }
+
+        private static void ValidarDocumentosOriginarios(
+            List<string> pendencias,
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos)
+        {
+            foreach (var documento in documentos)
+            {
+                if (!IsChaveAcessoNFeValida(documento.chaveacesso))
+                    pendencias.Add("DocumentoOriginarioChaveAcessoInvalida");
+
+                if (string.IsNullOrWhiteSpace(documento.emitentedocumento))
+                    pendencias.Add("DocumentoOriginarioEmitente");
+
+                if (string.IsNullOrWhiteSpace(documento.destinatariodocumento))
+                    pendencias.Add("DocumentoOriginarioDestinatario");
+            }
+        }
+
+        private static void ValidarBaseRateio(
+            List<string> pendencias,
+            IReadOnlyCollection<NFeProdutoSnapshotDTO> documentos,
+            string estrategiaRateio)
+        {
+            var totalBase = BaseRateio(documentos, estrategiaRateio);
+            if (totalBase <= 0m)
+            {
+                pendencias.Add(estrategiaRateio.Equals("proporcional_peso_bruto", StringComparison.OrdinalIgnoreCase)
+                    ? "BaseRateioPesoBruto"
+                    : "BaseRateioValorDocumento");
+            }
+        }
+
+        private static void ValidarGrupoCTe(List<string> pendencias, ContingenciaCteGrupo grupo)
+        {
+            if (DistinctNonEmpty(grupo.Documentos.Select(x => x.emitentedocumento)).Count != 1)
+                pendencias.Add("GrupoCTeComEmitenteMisto");
+
+            if (DistinctNonEmpty(grupo.Documentos.Select(x => x.destinatariodocumento)).Count != 1)
+                pendencias.Add("GrupoCTeComDestinatarioMisto");
+
+            if (DistinctNonEmpty(grupo.Documentos.Select(x => x.uforigem)).Count > 1 ||
+                DistinctNonEmpty(grupo.Documentos.Select(x => x.ufdestino)).Count > 1)
+            {
+                pendencias.Add("GrupoCTeComRotaMista");
+            }
+        }
+
+        private static List<string> DistinctNonEmpty(IEnumerable<string?> values)
+            => values
+                .Where(value => !string.IsNullOrWhiteSpace(value))
+                .Select(value => value!.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+        private static bool IsChaveAcessoNFeValida(string? chave)
+        {
+            if (string.IsNullOrWhiteSpace(chave) || chave.Length != 44)
+                return false;
+
+            return chave.All(char.IsDigit);
         }
 
         private static string Value(string? entityValue, string complemento, params string[] names)

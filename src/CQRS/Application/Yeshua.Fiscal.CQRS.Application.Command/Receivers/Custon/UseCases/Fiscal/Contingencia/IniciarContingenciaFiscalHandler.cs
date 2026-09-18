@@ -29,6 +29,12 @@ namespace Command.Receivers.UseCase
 {
     public partial class IniciarContingenciaFiscalHandler
     {
+        // PENDENCIA: vincular toda contingencia ao Tenant e ao transportador selecionado. O transportador
+        // deve manter a referencia do certificado A1 usado nas emissoes. Na primeira contingencia, permitir
+        // upload do PFX e senha, persistir o arquivo no storage e reutilizar essa referencia nas proximas
+        // contingencias do mesmo Tenant/transportador. Nao transportar PFX/senha em payloads ou logs.
+        // Evolucao futura: substituir o storage central por uma API/cofre de certificados instalavel no
+        // ambiente local do cliente, mantendo para o Fiscal apenas uma referencia ao certificado.
         private readonly IUnitOfWork _unitOfWork = default!;
         private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
         private readonly IEntradaFiscalContingenciaReadRepository _repReadEntradaFiscalContingencia = default!;

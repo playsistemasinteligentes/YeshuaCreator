@@ -60,6 +60,8 @@ namespace Command.Receivers
                 : entrada.emissaofiscalcorrelationid;
 
             var preferenciasFiscaisJson = FiscalContingenciaPayload.ComplementoJson(entrada);
+            var planoEmissaoJson = FiscalContingenciaPayload.PlanoEmissaoJson(entrada, documentos);
+            var planoStorage = FiscalPayloadStore.SaveEmissionPlan(entrada.cargaid, planoEmissaoJson);
             var payload = JsonSerializer.Serialize(new
             {
                 type = EventoIniciarSagaFiscal,
@@ -76,8 +78,8 @@ namespace Command.Receivers
                 sourceModule = entrada.sourcemodule,
                 sourceMessageId = entrada.sourcemessageid,
                 romaneioId = entrada.cargaid,
-                payloadHash = string.Empty,
-                payloadStorageKey = string.Empty,
+                payloadHash = planoStorage.Sha256,
+                payloadStorageKey = planoStorage.Path,
                 preferenciasFiscaisJson,
                 quantidadeDocumentos = documentos.Count,
                 valorCarga = documentos.Sum(x => x.valordocumento),
@@ -113,6 +115,8 @@ namespace Command.Receivers
                 entradaFiscalContingenciaId = entrada.id,
                 cargaId = entrada.cargaid,
                 emissaoFiscalCorrelationId = fiscalCorrelationId,
+                payloadHash = planoStorage.Sha256,
+                payloadStorageKey = planoStorage.Path,
                 quantidadeDocumentos = documentos.Count,
                 occurredAtUtc = DateTime.UtcNow
             }));

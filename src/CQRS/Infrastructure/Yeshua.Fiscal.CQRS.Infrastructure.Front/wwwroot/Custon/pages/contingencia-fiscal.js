@@ -1,9 +1,9 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260917-followupbutton01';
-import { showAlert } from '/spa/scripts/alerts.js?v=20260917-followupbutton01';
+import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260918-mdfeplan01';
+import { showAlert } from '/spa/scripts/alerts.js?v=20260918-mdfeplan01';
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20260917-followupbutton01';
+const assetVersion = '20260918-mdfeplan01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
@@ -202,6 +202,9 @@ function bindPreparationPreviewEvents() {
         'fiscal-tipo-agrupamento-cte',
         'fiscal-estrategia-rateio-frete',
         'fiscal-origem-rota-fiscal',
+        'fiscal-tipo-carga-mdfe',
+        'fiscal-produto-predominante-mdfe',
+        'fiscal-ncm-produto-predominante-mdfe',
         'fiscal-observacao-fiscal'
     ];
 
@@ -256,6 +259,9 @@ function resetForm() {
     setValue('fiscal-tipo-agrupamento-cte', 'um_cte_por_nfe');
     setValue('fiscal-estrategia-rateio-frete', 'proporcional_valor_documento');
     setValue('fiscal-origem-rota-fiscal', 'manual_contingencia');
+    setValue('fiscal-tipo-carga-mdfe', '05');
+    setValue('fiscal-produto-predominante-mdfe', 'PRODUTO HOMOLOGACAO');
+    setValue('fiscal-ncm-produto-predominante-mdfe', '87089990');
     setValue('fiscal-observacao-fiscal', '');
 
     setValue('fiscal-nfe-xmls', '');
@@ -462,13 +468,20 @@ async function enviarPreview() {
     }
 
     state.planPreview = planoEmissao;
+    const pendencias = normalizeArray(readField(planoEmissao, 'pendencias', 'Pendencias')).filter(Boolean);
 
     setPreparationSectionStatus('EscolherModeloAgrupamentoCTeContingencia', 'sent');
     setPreparationSectionStatus('InformarFreteERateioContingencia', 'sent');
     setPreparationSectionStatus('InformarDadosTransporteContingencia', 'sent');
-    setPreparationSectionStatus('ConfirmarPlanoEmissaoFiscalContingencia', 'sent');
-    setText('fiscal-contingencia-status', 'preview pronto');
+    setPreparationSectionStatus('ConfirmarPlanoEmissaoFiscalContingencia', pendencias.length > 0 ? 'error' : 'sent');
+    setText('fiscal-contingencia-status', pendencias.length > 0 ? 'preview com pendencias' : 'preview pronto');
     renderPlanPreview();
+    if (pendencias.length > 0) {
+        feedback('Preview calculado com pendencias. Corrija os itens indicados antes de confirmar.');
+        notify('Preview calculado com pendencias.', 'warning');
+        return;
+    }
+
     feedback('Preview enviado. Revise a previa do plano e clique em Confirmar para iniciar o processamento fiscal.');
     notify('Preview enviado. Revise e confirme.', 'success');
 }
@@ -557,7 +570,10 @@ async function baixarDocumentosFiscais() {
 function setProcessingActions(showQuery, downloadAvailable) {
     const queryButton = document.getElementById('fiscal-consultar-processamento');
     const downloadButton = document.getElementById('fiscal-baixar-documentos');
-    if (queryButton) queryButton.hidden = !showQuery;
+
+    if (queryButton) {
+        queryButton.disabled = !showQuery;
+    }
     if (downloadButton) {
         downloadButton.disabled = !downloadAvailable;
     }
@@ -998,6 +1014,9 @@ function buildTransporteComplemento() {
         tipoAgrupamentoCTe: getValue('fiscal-tipo-agrupamento-cte'),
         estrategiaRateioFrete: getValue('fiscal-estrategia-rateio-frete'),
         origemRotaFiscal: getValue('fiscal-origem-rota-fiscal'),
+        tipoCargaMDFe: onlyDigits(getValue('fiscal-tipo-carga-mdfe')),
+        produtoPredominanteMDFe: getValue('fiscal-produto-predominante-mdfe'),
+        ncmProdutoPredominanteMDFe: onlyDigits(getValue('fiscal-ncm-produto-predominante-mdfe')),
         observacaoFiscal: getValue('fiscal-observacao-fiscal'),
         tipoCTe: 0,
         tipoServico: 0,
@@ -1054,7 +1073,8 @@ function invalidatePreview() {
 }
 
 function invalidateSection(section) {
-    if (state.sectionStatus[section] !== 'sent') return;
+    const current = state.sectionStatus[section];
+    if (current !== 'sent' && current !== 'error' && current !== 'ready') return;
     state.sectionStatus[section] = 'pending';
     renderSectionStatus(section, 'pending');
 }
@@ -1132,11 +1152,32 @@ function renderPlanPreview() {
 
 function renderBackendPlanPreview(host, plano) {
     const grupos = normalizeArray(readField(plano, 'ctesPrevistos', 'CtesPrevistos')).map(grupo => ({
+        chave: readField(grupo, 'chave', 'Chave') || '-',
         descricao: readField(grupo, 'descricao', 'Descricao') || '-',
         quantidadeDocumentos: Number(readField(grupo, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0),
         valorDocumentos: Number(readField(grupo, 'valorDocumentos', 'ValorDocumentos') || 0),
         pesoBruto: Number(readField(grupo, 'pesoBruto', 'PesoBruto') || 0),
         valorFreteRateado: Number(readField(grupo, 'valorFreteRateado', 'ValorFreteRateado') || 0)
+    }));
+    const mdfes = normalizeArray(readField(plano, 'mdfesPrevistos', 'MdfesPrevistos')).map(mdfe => ({
+        descricao: readField(mdfe, 'descricao', 'Descricao') || 'MDF-e da carga',
+        quantidadeCTes: Number(readField(mdfe, 'quantidadeCTes', 'QuantidadeCTes') || 0),
+        ctes: normalizeArray(readField(mdfe, 'ctes', 'Ctes')),
+        ufInicio: readField(mdfe, 'ufinicio', 'ufInicio', 'UFInicio') || '-',
+        ufFim: readField(mdfe, 'uffim', 'ufFim', 'UFFim') || '-',
+        municipioInicioCodigoIbge: readField(mdfe, 'municipioiniciocodigoibge', 'municipioInicioCodigoIbge', 'MunicipioInicioCodigoIbge') || '-',
+        municipioFimCodigoIbge: readField(mdfe, 'municipiofimcodigoibge', 'municipioFimCodigoIbge', 'MunicipioFimCodigoIbge') || '-',
+        rntrc: readField(mdfe, 'rntrc', 'RNTRC') || '-',
+        placaVeiculo: readField(mdfe, 'placaveiculo', 'placaVeiculo', 'PlacaVeiculo') || '-',
+        condutorDocumento: readField(mdfe, 'condutordocumento', 'condutorDocumento', 'CondutorDocumento') || '-',
+        condutorNome: readField(mdfe, 'condutornome', 'condutorNome', 'CondutorNome') || '-',
+        tipoCarga: readField(mdfe, 'tipoCarga', 'TipoCarga') || '-',
+        produtoPredominante: readField(mdfe, 'produtoPredominante', 'ProdutoPredominante') || '-',
+        ncmProdutoPredominante: readField(mdfe, 'ncmProdutoPredominante', 'NcmProdutoPredominante') || '-',
+        valorFrete: Number(readField(mdfe, 'valorFrete', 'ValorFrete') || 0),
+        valorCarga: Number(readField(mdfe, 'valorCarga', 'ValorCarga') || 0),
+        pesoBruto: Number(readField(mdfe, 'pesoBruto', 'PesoBruto') || 0),
+        observacaoFiscal: readField(mdfe, 'observacaoFiscal', 'ObservacaoFiscal') || ''
     }));
     const pendencias = normalizeArray(readField(plano, 'pendencias', 'Pendencias'));
     const ufInicio = readField(plano, 'ufinicio', 'ufInicio', 'UFInicio') || '-';
@@ -1149,6 +1190,7 @@ function renderBackendPlanPreview(host, plano) {
         <div class="fiscal-preview-summary">
             ${previewCard('NF-e', String(readField(plano, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0))}
             ${previewCard('CT-e previstos', String(grupos.length))}
+            ${previewCard('MDF-e previstos', String(mdfes.length))}
             ${previewCard('Valor documentos', formatMoney(readField(plano, 'valorCarga', 'ValorCarga') || 0))}
             ${previewCard('Frete', formatMoney(readField(plano, 'valorFrete', 'ValorFrete') || 0))}
             ${previewCard('Peso bruto', formatDecimal(readField(plano, 'pesoBruto', 'PesoBruto') || 0))}
@@ -1157,6 +1199,7 @@ function renderBackendPlanPreview(host, plano) {
         <div class="fiscal-preview-route">Plano calculado pelo backend. Agrupamento: ${escapeHtml(readField(plano, 'tipoAgrupamentoCTe', 'TipoAgrupamentoCTe') || '-')}.</div>
         ${pendencias.length > 0 ? renderPendenciasPreview(pendencias) : ''}
         ${renderCteGroupsPreview(grupos)}
+        ${renderMdfeGroupsPreview(mdfes)}
     `;
 }
 
@@ -1193,6 +1236,28 @@ function renderCteGroupsPreview(grupos) {
                     <strong>CT-e ${index + 1}</strong>
                     <span>${escapeHtml(grupo.descricao)}</span>
                     <span>${grupo.quantidadeDocumentos} NF-e | docs ${formatMoney(grupo.valorDocumentos)} | frete ${formatMoney(grupo.valorFreteRateado)}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function renderMdfeGroupsPreview(mdfes) {
+    if (!mdfes || mdfes.length === 0) {
+        return '<div class="fiscal-preview-empty">Nenhum MDF-e previsto ainda.</div>';
+    }
+
+    return `
+        <div class="fiscal-preview-groups">
+            ${mdfes.map((mdfe, index) => `
+                <div class="fiscal-preview-group">
+                    <strong>MDF-e ${index + 1}</strong>
+                    <span>${escapeHtml(mdfe.descricao)}</span>
+                    <span>${mdfe.quantidadeCTes} CT-e | ${escapeHtml(mdfe.ufInicio)}/${escapeHtml(mdfe.municipioInicioCodigoIbge)} -> ${escapeHtml(mdfe.ufFim)}/${escapeHtml(mdfe.municipioFimCodigoIbge)}</span>
+                    <span>RNTRC ${escapeHtml(mdfe.rntrc)} | placa ${escapeHtml(mdfe.placaVeiculo)} | condutor ${escapeHtml(mdfe.condutorNome)} (${escapeHtml(mdfe.condutorDocumento)})</span>
+                    <span>produto ${escapeHtml(mdfe.produtoPredominante)} | tipo ${escapeHtml(mdfe.tipoCarga)} | NCM ${escapeHtml(mdfe.ncmProdutoPredominante)}</span>
+                    <span>carga ${formatMoney(mdfe.valorCarga)} | frete ${formatMoney(mdfe.valorFrete)} | peso ${formatDecimal(mdfe.pesoBruto)}</span>
+                    ${mdfe.observacaoFiscal ? `<span>observacao: ${escapeHtml(mdfe.observacaoFiscal)}</span>` : ''}
                 </div>
             `).join('')}
         </div>
